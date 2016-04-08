@@ -242,7 +242,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
         {
-            var list = listRepository.Read(i => i.UserId == user.UserId && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items).FirstOrDefault();
+            var list = listRepository.Read(i => i.UserId == user.UserId && 
+                                                i.Type == ListType.Recent && 
+                                                i.CustomerId.Equals(catalogInfo.CustomerId), 
+                                            l => l.Items)
+                                     .FirstOrDefault();
 
             if (list == null)
             {
@@ -312,7 +316,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         Label = item.Label,
                         Par = item.Par,
                         Position = item.Position,
-                        Each = item.Each
+                        Each = item.Each,
+                        CatalogId = item.CatalogId
                     });
                 }
                 listRepository.Create(newList);
@@ -330,7 +335,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             var newList = list.ToEFList();
 
             //Set initial positions
-            if (newList.Items != null && newList.Items.Any() && newList.Items.Max(i => i.Position) == 0)
+            if (newList.Items != null && 
+                newList.Items.Any() && 
+                newList.Items.Max(i => i.Position) == 0)
             {
                 var position = 1;
                 foreach (var item in newList.Items)
@@ -386,7 +393,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
         {
-            var list = listRepository.ReadListForCustomer(catalogInfo, true).Where(l => l.Type == ListType.Notes).FirstOrDefault();
+            var list = listRepository.ReadListForCustomer(catalogInfo, true)
+                                     .Where(l => l.Type == ListType.Notes)
+                                     .FirstOrDefault();
             if (list != null)
             {
                 listItemRepository.Delete(list.Items.Where(i => i.ItemNumber.Equals(ItemNumber)).FirstOrDefault());
@@ -418,7 +427,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         {
             var returnModel = new BlockingCollection<InHistoryReturnModel>();
 
-            var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Worksheet, i => i.Items).FirstOrDefault();
+            var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && 
+                                                l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && 
+                                                l.Type == ListType.Worksheet, 
+                                           i => i.Items)
+                                     .FirstOrDefault();
 
             if (list == null)
                 return itemNumbers.Select(i => new InHistoryReturnModel() { ItemNumber = i, InHistory = false }).ToList();
@@ -435,7 +448,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers)
         {
             ItemHistory[] itemStatistics = _itemHistoryRepository
-                                                   .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
+                                                   .Read(f => f.BranchId.Equals(userContext.BranchId, StringComparison.CurrentCultureIgnoreCase) && 
+                                                              f.CustomerNumber.Equals(userContext.CustomerId))
                                                    .Where(f => itemNumbers.Contains(f.ItemNumber))
                                                    .ToArray();
             return itemStatistics;
@@ -557,7 +571,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             while (totalProcessed < list.Items.Count)
             {
-                var batch = list.Items.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
+                var batch = list.Items.Skip(totalProcessed)
+                                      .Take(50)
+                                      .Select(i => i.ItemNumber)
+                                      .ToList();
 
                 var tempProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
@@ -567,7 +584,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 
 			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
-            List<ItemHistory> itemStatistics = _itemHistoryRepository.Read( f => f.BranchId.Equals( catalogInfo.BranchId ) && f.CustomerNumber.Equals( catalogInfo.CustomerId ) ).ToList();
+            List<ItemHistory> itemStatistics = _itemHistoryRepository.Read( f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
+                                                                                 f.CustomerNumber.Equals(catalogInfo.CustomerId))
+                                                                     .ToList();
 
             Parallel.ForEach(list.Items, listItem => {
                 var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
@@ -612,8 +631,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         };
                     }
                     listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel() {
-                        CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("C")).Select(p => p.AverageUse).FirstOrDefault(),
-                        PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("P")).Select(p => p.AverageUse).FirstOrDefault()
+                        CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && 
+                                                                f.UnitOfMeasure.Equals("C"))
+                                                    .Select(p => p.AverageUse)
+                                                    .FirstOrDefault(),
+                        PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && 
+                                                                   f.UnitOfMeasure.Equals("P"))
+                                                       .Select(p => p.AverageUse)
+                                                       .FirstOrDefault()
                     };
                 }
 
@@ -625,13 +650,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             if (list.Items == null || list.Items.Count == 0)
                 return;
 
-            var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) &&
-                                                 l.BranchId.Equals(catalogInfo.BranchId) &&
+            var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) &&
+                                                 l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) &&
                                                  l.Type == ListType.Notes,
                                             i => i.Items).FirstOrDefault();
             var favorites = listRepository.Read(l => l.UserId == user.UserId &&
-                                                     l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) &&
-                                                     l.BranchId.Equals(catalogInfo.BranchId) &&
+                                                     l.CustomerId.Equals(catalogInfo.CustomerId) &&
+                                                     l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) &&
                                                      l.Type == ListType.Favorite,
                                                 i => i.Items).FirstOrDefault();
 
@@ -674,7 +699,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
         {
-            var list = listRepository.Read(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
+            var list = listRepository.Read(l => l.UserId == user.UserId && 
+                                                l.CustomerId.Equals(catalogInfo.CustomerId) && 
+                                                l.Type == ListType.Favorite, 
+                                           i => i.Items)
+                                     .ToList();
 
             if (list == null)
                 return null;
@@ -701,7 +730,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
                 var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-                clonedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
+                clonedList.IsSharing = sharedlist.Shares.Any() && 
+                                       sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
                                        sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
                 clonedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
@@ -748,7 +778,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
-            var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type == type && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
+            var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly)
+                                     .Where(l => l.Type == type && 
+                                                 l.CustomerId.Equals(catalogInfo.CustomerId) && 
+                                                 l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase))
+                                     .ToList();
 
             if (list == null)
                 return null;
@@ -765,7 +799,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     IsMandatory = l.Type == ListType.Mandatory,
                     IsRecommended = l.Type == ListType.RecommendedItems,
                     SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
-                    IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
+                    IsSharing = l.Shares.Any() && 
+                                l.CustomerId.Equals(catalogInfo.CustomerId) && 
+                                l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase),
                     IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)
                 }).ToList();
             else
@@ -822,7 +858,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
                 var sharedlist = listRepository.Read(l => l.Id.Equals(Id)).FirstOrDefault();
 
-                cachedReturnList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
+                cachedReturnList.IsSharing = sharedlist.Shares.Any() && 
+                                             sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && 
+                                             sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
                 cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
                 var cachedPagedList = ToPagedList(paging, cachedReturnList);
@@ -857,7 +895,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
         {
-            var list = listRepository.Read(i => i.UserId == user.UserId && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
+            var list = listRepository.Read(i => i.UserId == user.UserId && 
+                                                i.Type == ListType.Recent && 
+                                                i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
             var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc })).ToList();
             PopulateProductDetails(catalogInfo, returnItems);
             returnItems.ForEach(delegate(RecentItem item)
@@ -870,7 +910,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
         {
-            var list = listRepository.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
+            var list = listRepository.Read(l => l.Type == ListType.RecommendedItems && 
+                                                l.CustomerId.Equals(catalogInfo.CustomerId) && 
+                                                l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase))
+                                     .FirstOrDefault();
 
             if (list == null || list.Items == null)
                 return new List<RecommendedItemModel>();
@@ -946,9 +989,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     IsReminder = l.Type == ListType.Reminder,
                     IsMandatory = l.Type == ListType.Mandatory,
                     IsRecommended = l.Type == ListType.RecommendedItems,
-                    ReadOnly = l.ReadOnly || (!user.IsInternalUser && l.Type.Equals(ListType.RecommendedItems) || (!user.IsInternalUser && l.Type.Equals(ListType.Mandatory))),
+                    ReadOnly = l.ReadOnly || (!user.IsInternalUser && 
+                                               l.Type.Equals(ListType.RecommendedItems) || 
+                                               (    !user.IsInternalUser && 
+                                                    l.Type.Equals(ListType.Mandatory)
+                                               )
+                                             ),
                     SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
-                    IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
+                    IsSharing = l.Shares.Any() && 
+                                l.CustomerId.Equals(catalogInfo.CustomerId) && 
+                                l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase),
                     IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)
                 }).ToList();
             else
@@ -1001,11 +1051,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             foreach (var customer in shareListModel.Customers)
             {
-                if (!listToShare.Shares.Any(s => s.CustomerId.Equals(customer.CustomerNumber) && s.BranchId.Equals(customer.CustomerBranch)))
-                    listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
+                if (!listToShare.Shares.Any(s => s.CustomerId.Equals(customer.CustomerNumber) &&
+                                                 s.BranchId.Equals(customer.CustomerBranch, StringComparison.InvariantCultureIgnoreCase)))
+                    listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, 
+                                                             BranchId = customer.CustomerBranch });
             }
 
-            var itemsToRemove = listToShare.Shares.Where(l => !shareListModel.Customers.Any(c => c.CustomerNumber.Equals(l.CustomerId) && c.CustomerBranch.Equals(l.BranchId))).Select(l => l).ToList();
+            var itemsToRemove = listToShare.Shares.Where(l => !shareListModel.Customers.Any(c => c.CustomerNumber.Equals(l.CustomerId) && 
+                                                                                                 c.CustomerBranch.Equals(l.BranchId, StringComparison.InvariantCultureIgnoreCase))
+                                                                                           )
+                                                                                       .Select(l => l)
+                                                                                       .ToList();
 
             foreach (var item in itemsToRemove)
                 listShareRepository.Delete(item);
