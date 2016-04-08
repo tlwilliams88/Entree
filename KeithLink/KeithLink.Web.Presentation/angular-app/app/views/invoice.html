@@ -146,7 +146,7 @@
           </thead>
           <tbody ng-if="invoices.length > 0 || showFilter">
           <!-- Filter Row -->
-          <tr class="filter-row" ng-show="showFilter">
+          <tr class="filter-row" ng-show="showFilter" enter-key-filter="filterInvoices(filterRowFields)">
             <td ng-if="!viewingAllCustomers" class="input-col">
               <!-- <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterRowFields.isSelected)"/> -->
             </td>

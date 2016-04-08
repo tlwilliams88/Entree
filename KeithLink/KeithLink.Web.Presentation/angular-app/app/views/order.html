@@ -127,27 +127,27 @@
       </thead>
       <tbody>
         <!-- Filter Row -->
-        <tr class="filter-row" ng-show="showFilter">
+        <tr class="filter-row" ng-show="showFilter" enter-key-filter="filterOrders(filterFields)">
           <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
+            <input id="invoiceNumber" type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
           </td>
           <td></td>
           <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.status">
+            <input id="status" type="text" placeholder="Filter..." ng-model="filterFields.status">
           </td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.invoicestatus">
+            <input id="invoiceStatus" type="text" placeholder="Filter..." ng-model="filterFields.invoicestatus">
           </td>
           <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
+            <input id="poNumber" type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
           </td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-lg hidden-md"></td>
           <td class="input-col">
-            <button type="button" class="btn btn-primary btn-sm" ng-click="filterOrders(filterFields)">Filter</button>
+            <button id="filterBtn" type="button" class="btn btn-primary btn-sm" ng-enter="filterOrders(filterFields)" ng-click="filterOrders(filterFields)">Filter</button>
             <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
           </td>
         </tr>
