@@ -150,7 +150,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
       <div class="col-sm-12">
         <h3>Brands</h3>
         <ul class="nav search-results__facets">
-          <li ng-repeat="brand in facets.brands.available | orderBy: '-count'">
+          <li ng-repeat="brand in facets.brands.available | orderBy: 'name'">
             <input 
               type="checkbox"
               value="brandValue_{{brand.name}}"
