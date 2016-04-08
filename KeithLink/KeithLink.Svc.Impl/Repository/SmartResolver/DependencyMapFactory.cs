@@ -47,8 +47,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             AutofacDependencyMapProvider.AddStagingDependency(builder);
             AutofacDependencyMapProvider.AddElasticSearchDependency(builder);
             AutofacDependencyMapProvider.AddOtherQueueServiceDependencies(builder);
-
-            //AutofacDependencyMapProvider.BuildBaselineDependencies(builder, false);
+            AutofacDependencyMapProvider.AddDatabaseDependencies(builder);
 
             return builder;
         }
@@ -56,7 +55,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
         public static ContainerBuilder GetWebApiContainer() {
             ContainerBuilder builder = new ContainerBuilder();
 
-            AutofacDependencyMapProvider.BuildBaselineDependencies(builder, true);
+            AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
+            AutofacDependencyMapProvider.AddDatabaseDependencies(builder);
 
             return builder;
         }

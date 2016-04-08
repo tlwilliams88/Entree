@@ -99,6 +99,7 @@ angular.module('bekApp')
       branch: null
     };
     $scope.registrationForm.$setPristine();
+    $scope.signUpBool = false;
   };
 
 }]);
