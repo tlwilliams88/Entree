@@ -76,7 +76,7 @@ namespace KeithLink.Svc.Impl
 
 		public void SendEmail(List<string> toAddresses, List<string> ccAddresses, List<string> bccAddresses, string fromAddress, string subject, string body, bool isBodyHtml = false)
         {
-			if (string.IsNullOrEmpty(fromAddress))
+            if (string.IsNullOrEmpty(fromAddress))
                 throw new Exception("Could not send email because property serviceEmailAddress is not defined.");
 
             if (string.IsNullOrEmpty(this.smtpHostName))
@@ -92,7 +92,6 @@ namespace KeithLink.Svc.Impl
 
             if (body.IndexOf("|LOGO|") > -1) // If the logo will be in this email (most notifications) pull its stream from the embedded resource and create an alternate view on the mailmessage
             {
-                _log.WriteInformationLog("EmailClientImpl replacing logo ");
                 body = body.Replace("|LOGO|", "<img src=\"cid:LOGO\" alt=\"BEK\" />");
                 message.Body = body;
                 Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
@@ -100,7 +99,6 @@ namespace KeithLink.Svc.Impl
                 var inlineLogo = new LinkedResource(logoStream);
                 inlineLogo.ContentId = "LOGO";
                 if(logoStream != null && logoStream.Length>0) _log.WriteInformationLog("EmailClientImpl logo image found.");
-                else _log.WriteErrorLog("EmailClientImpl logo image not found.");
                 var view = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
                 view.LinkedResources.Add(inlineLogo);
                 message.AlternateViews.Add(view);
