@@ -60,12 +60,17 @@ namespace KeithLink.Svc.Impl.ETL
 
         #region constructor
 
-        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog, IItemHistoryRepository itemHistoryRepository)
+        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog, IItemHistoryRepository itemHistoryRepository, ICustomerRepository customerRepository,
+            IUserProfileLogic userProfileLogic, IInternalUserAccessRepository internalAccessRepo, IUserProfileRepository userProfileRepo)
         {
             this.stagingRepository = stagingRepository;
             this.dsrLogic = dsrLogic;
             this.eventLog = eventLog;
             this._itemHistoryRepository = itemHistoryRepository;
+            this._customerRepo = customerRepository;
+            _userLogic = userProfileLogic;
+            _userAccessRepo = internalAccessRepo;
+            _userRepo = userProfileRepo;
         }
 
         #endregion
@@ -179,6 +184,9 @@ namespace KeithLink.Svc.Impl.ETL
         /// </summary>
         public void ImportUsersWithAccess() {
             try {
+                DateTime start = DateTime.Now;
+                eventLog.WriteInformationLog( String.Format( "ETL: Internal User Access reference table starting {0}", start.ToString() ) );
+
                 List<Core.Models.Profile.Customer> customers = _customerRepo.GetCustomers();
 
                 foreach (Core.Models.Profile.Customer customer in customers) {
@@ -203,6 +211,9 @@ namespace KeithLink.Svc.Impl.ETL
                         }
                     }
                 }
+
+                TimeSpan took = DateTime.Now - start;
+                eventLog.WriteInformationLog( string.Format( "ETL: Import Process Finished: Internal User Access reference. Process took {0}", took.ToString() ) );
             } catch (Exception e) {
                 eventLog.WriteErrorLog( "ETL: Error importing internal users.", e );
             }

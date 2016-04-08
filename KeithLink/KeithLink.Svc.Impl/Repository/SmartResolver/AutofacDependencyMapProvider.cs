@@ -510,6 +510,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // customer 
             builder.RegisterType<InternalUserAccessRepository>().As<IInternalUserAccessRepository>();
+            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
         }
 
         internal static void AddOtherWebApiDependencies(ContainerBuilder builder)
