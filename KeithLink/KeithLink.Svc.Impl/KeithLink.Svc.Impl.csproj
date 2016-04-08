@@ -333,6 +333,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -1316,6 +1317,7 @@
     <EmbeddedResource Include="Repository\EF\Operational\BEKDBContext.Views.xml">
       <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Images\Logo.png" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

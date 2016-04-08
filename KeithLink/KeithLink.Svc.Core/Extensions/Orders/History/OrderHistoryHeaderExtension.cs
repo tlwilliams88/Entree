@@ -84,7 +84,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.BranchId = value.BranchId;
             entity.CustomerNumber = value.CustomerNumber;
             entity.InvoiceNumber = value.InvoiceNumber;
-            entity.DeliveryDate = value.DeliveryDate;
+            entity.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
             entity.PONumber = value.PONumber;
             //entity.ControlNumber = value.ControlNumber.Trim();
             // the original control number is actually set from the entity already
