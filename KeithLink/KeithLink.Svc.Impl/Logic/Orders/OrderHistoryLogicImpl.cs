@@ -156,7 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 foreach(PurchaseOrder po in Pos) {
                     //string sCreated = po.Properties["DateCreated"].ToString();
-                    DateTime created = DateTime.Parse(po.Properties["DateCreated"].ToString());
+                    DateTime created = DateTime.Parse(po.Properties["DateCreated"].ToString()).ToCentralTime();
                     //// only if they've been created more than 10 minutes ago in the query status
                     if(created < now) {
                         count++;
@@ -173,7 +173,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                         //sbBody.Append(po.Properties["Name"].ToString());
                         sbBody.Append(" with tracking ");
                         sbBody.Append(po.Properties["OrderNumber"].ToString());
-                        sbBody.Append(" last modified");
+                        sbBody.Append(" created");
                         sbBody.Append(" on " + created.ToString("MM-dd-yyyy hh:mm tt"));
                         sbBody.Append(" in status " + po.Properties["Status"].ToString());
                         sbBody.Append(".\n");
