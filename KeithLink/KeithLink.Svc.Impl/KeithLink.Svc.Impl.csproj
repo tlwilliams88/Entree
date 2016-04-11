@@ -810,6 +810,9 @@
     <None Include="Logic\Profile\UserProfileLogicImpl.cs.vsspell">
       <DependentUpon>UserProfileLogicImpl.cs</DependentUpon>
     </None>
+    <None Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.xsc">
+      <DependentUpon>NonBekItemPricingRequest.xsd</DependentUpon>
+    </None>
     <None Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.xsd">
       <SubType>Designer</SubType>
       <Generator>MSDataSetGenerator</Generator>
