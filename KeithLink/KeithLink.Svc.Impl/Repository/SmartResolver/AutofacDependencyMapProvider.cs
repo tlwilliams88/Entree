@@ -520,8 +520,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             ///////////////////////////////////////////////////////////////////////////////
 
             // cache
-            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>().InstancePerRequest();
-            builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>().InstancePerRequest();
+            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
+            builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
             AddDatabaseDependencies(builder, DependencyInstanceType.InstancePerLifetimeScope);
         }
