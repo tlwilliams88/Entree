@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
+  .controller('InventoryReportController', ['$scope', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
+    function($scope, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
       $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
@@ -169,7 +169,7 @@ angular.module('bekApp')
           $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.'
           $scope.inventoryForm.$setDirty();
           listFound.items.forEach($scope.addRow);          
-           $scope.sortTable('position', false);
+           $scope.sortTable('position', true);
         });
        
       };
