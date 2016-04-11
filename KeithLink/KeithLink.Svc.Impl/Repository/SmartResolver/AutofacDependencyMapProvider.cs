@@ -275,6 +275,14 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             if(type == DependencyInstanceType.InstancePerLifetimeScope) {
                 builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             }
+            else if (type == DependencyInstanceType.SingleInstance)
+            {
+                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance();
+            }
+            else if (type == DependencyInstanceType.InstancePerRequest)
+            {
+                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
+            }
             else {
                 builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
             }
@@ -512,8 +520,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             ///////////////////////////////////////////////////////////////////////////////
 
             // cache
-            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
-            builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>().InstancePerRequest();
+            builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>().InstancePerRequest();
 
             AddDatabaseDependencies(builder, DependencyInstanceType.InstancePerLifetimeScope);
         }
