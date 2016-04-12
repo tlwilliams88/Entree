@@ -4,13 +4,22 @@ using KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity;
 
 namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
     public class OrderHistoyrHeaderRepositoryImpl : EFBaseRepository<OrderHistoryHeader>, IOrderHistoryHeaderRepsitory {
+        #region attributes
+        private const string PARMNAME_BRANCHID = "@BranchId";
+        private const string PARMNAME_CUSTOMERNUMBER = "@CustomerNumber";
+        private const string PARMNAME_ITEMNUMBER = "@ItemNumber";
+
+        private const string SQL_GETLASTFIVEORDERS = "[orders].[usp_GetLastFiveOrdersForItem] @BranchId, @CustomerNumber, @ItemNumber";
+        #endregion
+
         #region ctor
         public OrderHistoyrHeaderRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
         #endregion
@@ -20,13 +29,18 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
             return this.Entities.Where(o => o.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) && o.CustomerNumber.Equals(customerNumber)).OrderByDescending(o => o.CreatedUtc);
         }
 
-        public IEnumerable<OrderHistoryHeader> GetLastFiveOrdersByItem(string branchId, string customerNumber, string itemNumber) {
-            var query = (from x in Entities
-                         where x.BranchId.Equals(branchId) && x.CustomerNumber.Equals(customerNumber) && x.OrderDetails.Where(y => y.ItemNumber.Equals(itemNumber)).Count() > 0
-                         orderby x.DeliveryDate descending
-                         select x).Take( 5 );
+        public List<OrderHistoryHeader> GetLastFiveOrdersByItem(string branchId, string customerNumber, string itemNumber) {
+            SqlParameter[] parms = {
+                new SqlParameter(PARMNAME_BRANCHID, branchId),
+                new SqlParameter(PARMNAME_CUSTOMERNUMBER, customerNumber),
+                new SqlParameter(PARMNAME_ITEMNUMBER, itemNumber)
+            };
 
-            return query.ToList();
+            try {
+                return this.UnitOfWork.Context.Database.SqlQuery<OrderHistoryHeader>(SQL_GETLASTFIVEORDERS, parms).ToList();
+            } catch (Exception) {
+                return new List<OrderHistoryHeader>();
+            }
         }
 
         public IEnumerable<OrderHistoryHeader> ReadByConfirmationNumber(string confirmationNumber, string orderSystem) {

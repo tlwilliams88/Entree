@@ -18,13 +18,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
 	public class InternalOrderLogicImpl: IInternalOrderLogic
 	{
+        private readonly IOrderHistoryDetailRepository orderHistoryDetailRepository;
 		private readonly IOrderHistoryHeaderRepsitory orderHistoryHeaderRepository;
 		private readonly IUnitOfWork unitOfWork;
 		private readonly IUserActiveCartRepository userActiveCartRepository;
 
 
-		public InternalOrderLogicImpl(IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, IUserActiveCartRepository userActiveCartRepository)
-		{
+		public InternalOrderLogicImpl(IOrderHistoryHeaderRepsitory orderHistoryRepository, IOrderHistoryDetailRepository detailRepo, IUnitOfWork unitOfWork, 
+                                      IUserActiveCartRepository userActiveCartRepository) {
+            this.orderHistoryDetailRepository = detailRepo;
 			this.orderHistoryHeaderRepository = orderHistoryRepository;
 			this.unitOfWork = unitOfWork;
 			this.userActiveCartRepository = userActiveCartRepository;
@@ -39,7 +41,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {
             List<OrderHistoryFile> returnValue = new List<OrderHistoryFile>();
 
-            IEnumerable<Core.Models.Orders.History.EF.OrderHistoryHeader> history = orderHistoryHeaderRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber );
+            List<Core.Models.Orders.History.EF.OrderHistoryHeader> history = orderHistoryHeaderRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber );
 
             foreach (Core.Models.Orders.History.EF.OrderHistoryHeader h in history) {
                 OrderHistoryFile root = new OrderHistoryFile() {
@@ -62,17 +64,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     }
                 };
 
-                foreach (Core.Models.Orders.History.EF.OrderHistoryDetail d in h.OrderDetails.Where( x => x.ItemNumber.Equals( itemNumber ) )) {
-                    OrderHistoryDetail detail = new OrderHistoryDetail() {
-                        LineNumber = d.LineNumber,
-                        ItemNumber = d.ItemNumber,
-                        OrderQuantity = d.OrderQuantity,
-                        ShippedQuantity = d.ShippedQuantity,
-                    };
-
-                    root.Details.Add( detail );
-                }
-
+                root.Details.AddRange(orderHistoryDetailRepository.Read(d => d.BranchId == h.BranchId &&
+                                                                             d.OrderHistoryHeader.Id == h.Id &&
+                                                                             d.ItemNumber == itemNumber)
+                                                                   .Select(x => new OrderHistoryDetail() {
+                                                                       LineNumber = x.LineNumber,
+                                                                       ItemNumber = x.ItemNumber,
+                                                                       OrderQuantity = x.OrderQuantity,
+                                                                       ShippedQuantity = x.ShippedQuantity})
+                                                                   .ToList());
                 returnValue.Add( root );
             }
 
