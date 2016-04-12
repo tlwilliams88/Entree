@@ -73,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("DeleteRecent", ex);
+                _log.WriteErrorLog("DeleteRecent SelectedUserContext.CustomerID=" + SelectedUserContext.CustomerId, ex);
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
