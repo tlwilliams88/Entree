@@ -275,7 +275,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             AddDatabaseDependencies(builder, DependencyInstanceType.InstancePerLifetimeScope);
         }
 
-        internal static void AddDatabaseDependencies(ContainerBuilder builder, DependencyInstanceType type = DependencyInstanceType.None) {
+        private static void AddDatabaseDependencies(ContainerBuilder builder, DependencyInstanceType type = DependencyInstanceType.None) {
             if(type == DependencyInstanceType.InstancePerLifetimeScope) {
                 builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             }
