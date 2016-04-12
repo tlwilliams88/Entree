@@ -775,6 +775,20 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return returnItems.OrderByDescending(l => l.ModifiedOn).ToList();
         }
 
+        public void DeleteRecent(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            List<List> listcol = _listRepo.Read(i => i.UserId == user.UserId && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items).ToList();
+
+            List list = (List)listcol[0];
+            list.Items.ToList().ForEach(delegate (ListItem item)
+            {
+                _listItemRepo.Delete(item);
+            });
+
+            _listRepo.Delete(list);
+            _uow.SaveChanges();
+        }
+
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
             var list = _listRepo.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
 

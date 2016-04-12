@@ -57,6 +57,31 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
+        /// Delete recently viewed items
+        /// </summary>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiKeyedRoute("recent/")]
+        public Models.OperationReturnModel<bool> DeleteRecent()
+        {            
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                _repo.DeleteRecent(this.AuthenticatedUser, this.SelectedUserContext);
+                retVal.SuccessResponse = true;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("DeleteRecent", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
         /// Add a new recently viewed item
         /// </summary>
         /// <param name="itemnumber"></param>

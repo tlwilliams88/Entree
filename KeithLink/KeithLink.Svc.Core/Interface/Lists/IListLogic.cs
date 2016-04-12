@@ -59,6 +59,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
+        void DeleteRecent(UserProfile user, UserSelectedContext catalogInfo);
+
         List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
         List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo);
