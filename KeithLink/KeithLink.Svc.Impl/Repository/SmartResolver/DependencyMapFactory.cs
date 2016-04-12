@@ -13,8 +13,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
         public static ContainerBuilder GetAccessServiceContainer(){
             ContainerBuilder builder = new ContainerBuilder();
 
-            AutofacDependencyMapProvider.AddEventLogDependency(builder);
-            AutofacDependencyMapProvider.AddStagingDependency(builder);
+            AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
             AutofacDependencyMapProvider.AddOtherAccessServiceDependencies(builder);
 
             return builder;
@@ -23,7 +22,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
         public static ContainerBuilder GetInternalServiceContainer(){
             ContainerBuilder builder = new ContainerBuilder();
 
-            //AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
+            AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
             AutofacDependencyMapProvider.AddOtherInternalServiceDependencies(builder);
 
             return builder;
@@ -32,9 +31,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
         public static ContainerBuilder GetOrderServiceContainer(){
             ContainerBuilder builder = new ContainerBuilder();
 
-            AutofacDependencyMapProvider.AddEventLogDependency(builder);
-            AutofacDependencyMapProvider.AddElasticSearchDependency(builder);
-            AutofacDependencyMapProvider.AddGenericQueueDependency(builder);
+            AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
             AutofacDependencyMapProvider.AddOtherOrderServiceDependencies(builder);
 
             return builder;

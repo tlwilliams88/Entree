@@ -126,6 +126,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
             builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
             builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
+            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
 
             // lists
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
@@ -152,9 +153,12 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
             builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
             builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
+            builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
+            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 
             // other
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
+            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
             builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
@@ -268,10 +272,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
         }
 
         internal static void AddDatabaseDependencies(ContainerBuilder builder, DependencyInstanceType type = DependencyInstanceType.None) {
-            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
-            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
-            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
-
             if(type == DependencyInstanceType.InstancePerLifetimeScope) {
                 builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             }
@@ -290,83 +290,28 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
         internal static void AddOtherInternalServiceDependencies(ContainerBuilder builder)
         {
-            // Local Dependencies?
-            //builder.RegisterType<ETLService>();
-            //builder.RegisterType<ListServcie>();
-            //builder.RegisterType<OrderService>();
-            //builder.RegisterType<PipelineService>();
-            //builder.RegisterType<CacheService>();
-            //builder.RegisterType<ProfileService>();
-
-            /////////////////////////////////////////////////////////////////
-            // these are all of the dependcies needed on top of the baseline
-            /////////////////////////////////////////////////////////////////
-            //builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
-            //builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.ETL.ICatalogLogic>();  // needs to be isolated in internal sevice
-            //builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
-            //builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalListLogic>().As<IInternalListLogic>();
-            //builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
-
-            //builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>(); // this appears to be obsolete
-            //builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
-
-
-            //// no implementation (will throw notimplementedexception if called)
-            //builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            //builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-
-            ////Password Reset
-            //builder.RegisterType<InternalPasswordResetRequestLogicImpl>().As<IInternalPasswordResetLogic>();
-
-            //// DSR Alias
-            //builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
-
-            //builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
-            //builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
-
-            //// ElasticSearch ETL 
-            //builder.RegisterType<ItemImportLogicImpl>().As<IItemImport>();
-            //builder.RegisterType<CategoriesImportLogicImpl>().As<ICategoriesImport>();
-            //builder.RegisterType<HouseBrandsImportLogicImpl>().As<IHouseBrandsImport>();
-
-            //// List ETL
-            //builder.RegisterType<ListImportLogicImpl>().As<IListsImportLogic>();
-            /////////////////////////////////////////////////////////////////
-            /// end of dependencies
-            /////////////////////////////////////////////////////////////////
-
-#if DEMO
-            				builder.RegisterType<DemoStagingRepositoryImpl>().As<IStagingRepository>();
-            				builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#else
-            builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#endif
-
-
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.ETL.ICatalogLogic>();
 
-            builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
-            builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
-            builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
-            builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
-            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
-            builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
-            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
-            builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
-            builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
-            //2nd builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
-            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
-            builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
-            builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
-            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
-            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
-            builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
-            builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
-            // 2nd builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
-            builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
-            builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
+            //builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
+            //builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
+            //builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
+            //builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+            //builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            //builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
+            //builder.RegisterType<ListLogicImpl>().As<IListLogic>();
+            //builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
+            //builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
+            ////2nd builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            //builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
+            //builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
+            //builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
+            //builder.RegisterType<AccountRepository>().As<IAccountRepository>();
+            //builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            //builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
+            //builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
+            //builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+            //builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
 
             builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
             builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
@@ -375,8 +320,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
-            //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
-            //builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
 
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
@@ -565,56 +508,36 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
             builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
             builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
-            builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
-            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
+            //builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
+            //builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 
             builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
         }
 
         internal static void AddOtherOrderServiceDependencies(ContainerBuilder builder)
         {
-            builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
-            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
-            builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
-            builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
-            builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
-            builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
-            builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
-            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
-            builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
-            builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
-            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
+            //builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
+            //builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            //builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
+            //builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
+            //builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
+            //builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
+            //builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
+            //builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
+            //builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
+            //builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
+            //builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
+            //builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
         }
 
         internal static void AddOtherAccessServiceDependencies(ContainerBuilder builder)
         {
-            // PowerMenu
-            builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
-            builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
-
-
             // Service
             builder.RegisterType<AccessRequestLogicImpl>().As<IAccessRequestLogic>();
             builder.RegisterType<KbitRequestLogicImpl>().As<IKbitRequestLogic>();
             builder.RegisterType<KbitRepositoryImpl>().As<IKbitRepository>();
-        }
-
-        internal static void AddGenericQueueDependency(ContainerBuilder builder)
-        {
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-        }
-
-        internal static void AddElasticSearchDependency(ContainerBuilder builder)
-        {
-            builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
-        }
-
-        internal static void AddEventLogDependency(ContainerBuilder builder)
-        {
-            builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
         }
 
         internal static void AddStagingDependency(ContainerBuilder builder)
