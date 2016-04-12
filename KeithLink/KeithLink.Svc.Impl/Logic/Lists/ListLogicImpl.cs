@@ -777,7 +777,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
         public void DeleteRecent(UserProfile user, UserSelectedContext catalogInfo)
         {
-            List<List> listcol = _listRepo.Read(i => i.UserId == user.UserId && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items).ToList();
+            List<List> listcol = null;
+            if(user.UserId != null && catalogInfo.CustomerId != null)
+                listcol = 
+                    _listRepo.Read(i => i.UserId == user.UserId && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items).ToList();
+            else
+                listcol =
+                    _listRepo.Read(i => i.UserId == user.UserId && i.Type == ListType.Recent, l => l.Items).ToList();
 
             List list = (List)listcol[0];
             list.Items.ToList().ForEach(delegate (ListItem item)
