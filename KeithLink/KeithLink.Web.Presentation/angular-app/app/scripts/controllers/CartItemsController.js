@@ -77,7 +77,7 @@ angular.module('bekApp')
 
     addItemWatches(0);
 
-    // set mandatory and reminder lists
+    // set default selected critical items list
     criticalItemsLists.forEach(function(list) {
       if (list.ismandatory) {
         $scope.mandatoryList = list;
@@ -86,21 +86,24 @@ angular.module('bekApp')
       }
     });
 
-    // set default selected critical items list
+    // set mandatory and reminder lists
     // add property isMandatory for carts items that are on the mandatory list
-    if ($scope.mandatoryList) {
+    function setMandatoryAndReminder(){
+      if ($scope.mandatoryList) {
       $scope.mandatoryList.active = true;
       $scope.currentCart.items.forEach(function(item){
         if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
           item.isMandatory = true;
         }
       })
-    } else if ($scope.reminderList) {
-      $scope.reminderList.active = true;
-    } else {
-      $scope.mandatoryList = {};
-      $scope.reminderList = {};
+      } else if ($scope.reminderList) {
+        $scope.reminderList.active = true;
+      } else {
+        $scope.mandatoryList = {};
+        $scope.reminderList = {};
+      }
     }
+    setMandatoryAndReminder();
 
     $scope.resetSubmitDisableFlag = function(checkForm){
       $scope.disableSubmitButtons = ((!$scope.currentCart.items || $scope.currentCart.items.length === 0) || $scope.isOffline || $scope.invalidSelectedDate);
@@ -178,10 +181,10 @@ angular.module('bekApp')
     function invalidItemCheck(items) {
       var invalidItemFound = false;
       items.forEach(function(item){
-        if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && !(item.status == 'Out of Stock')){
+        if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && (item.status.toUpperCase() !== 'OUT OF STOCK')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
-        } else if(item.isMandatory && item.quantity == 0 && $scope.isChangeOrder){
+        } else if(item.isMandatory && item.status.toUpperCase() !== "OUT OF STOCK" && item.quantity == 0 && $scope.isChangeOrder){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
         }
@@ -345,7 +348,7 @@ angular.module('bekApp')
         });
 
         changeOrder.items = $filter('filter')( changeOrder.items, function(item){
-          return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
+          return (item.quantity > 0 || (item.quantity == 0 && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
         });
 
         return OrderService.updateOrder(changeOrder).then(function(order) {
@@ -358,6 +361,8 @@ angular.module('bekApp')
           });
 
           $scope.cartForm.$setPristine();
+          $scope.currentCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
+          setMandatoryAndReminder();
           $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
         }, function(error) {
