@@ -207,6 +207,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     item.MainFrameStatus = "Pending";
             }
 
+            foreach (var item in returnOrder.Items)
+            {
+                //item.RequestDSRContact = "/messaging/RequestDSRContact?itemnumber=" + item.ItemNumber;
+                StringBuilder sbSimilar = new StringBuilder();
+                StringBuilder sbSimilarItem = new StringBuilder();
+                sbSimilarItem.Append(item.CategoryName);
+                sbSimilarItem.Replace(" ", "%20");
+                sbSimilar.Append("/catalog/search/" + sbSimilarItem.ToString() + "/products?dept=&from=0&sdir=asc&size=50");
+                item.GetSimilarItems = sbSimilar.ToString();
+            }
+
             returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 
             return returnOrder;
