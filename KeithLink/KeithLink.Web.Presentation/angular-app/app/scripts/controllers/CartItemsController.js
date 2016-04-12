@@ -505,7 +505,7 @@ angular.module('bekApp')
           }          
         }
         else{
-          $state.go('menu.home'); 
+          $state.go('menu.order'); 
         }  
       });
     };
