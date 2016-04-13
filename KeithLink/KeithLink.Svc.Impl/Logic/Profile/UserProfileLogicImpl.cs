@@ -874,7 +874,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         public Customer GetCustomerByCustomerNumber(string customerNumber, string branchId) {
-            return _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
+            Customer customer = _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
+
+            // add customerusers to customer properties
+            customer.CustomerUsers = new List<UserProfile>();
+            List<UserProfile> users = _csProfile.GetUsersForCustomerOrAccount(customer.CustomerId);
+            customer.CustomerUsers.AddRange(users);
+
+            return customer;
         }
 
         public List<Customer> GetCustomersForExternalUser(Guid userId) {

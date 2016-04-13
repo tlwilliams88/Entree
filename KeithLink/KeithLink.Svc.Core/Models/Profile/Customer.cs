@@ -106,6 +106,10 @@ namespace KeithLink.Svc.Core.Models.Profile
         // This is a temporary whitelisting for just those customers who can view UNFI catalogs
         [DataMember(Name = "canViewUNFI")]
         public bool CanViewUNFI { get; set; }
+
+        [DataMember(Name = "customerusers")]
+        public List<UserProfile> CustomerUsers { get; set; }
+
     }
 
 }
