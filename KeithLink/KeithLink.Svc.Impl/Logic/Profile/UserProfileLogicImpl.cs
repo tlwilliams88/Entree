@@ -878,8 +878,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // add customerusers to customer properties
             customer.CustomerUsers = new List<UserProfile>();
-            List<UserProfile> users = _csProfile.GetUsersForCustomerOrAccount(customer.CustomerId).Distinct().ToList();
-            customer.CustomerUsers.AddRange(users);
+            List<UserProfile> users = _csProfile.GetUsersForCustomerOrAccount(customer.CustomerId);
+            Dictionary<string, UserProfile> dic = new Dictionary<string, UserProfile>();
+            foreach(UserProfile user in users)
+            {
+                if (dic.Keys.Contains(user.EmailAddress) == false)
+                    dic.Add(user.EmailAddress, user);
+            }
+            customer.CustomerUsers.AddRange(dic.Values);
 
             return customer;
         }

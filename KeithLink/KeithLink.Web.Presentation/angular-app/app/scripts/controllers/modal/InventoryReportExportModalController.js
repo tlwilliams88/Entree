@@ -10,6 +10,12 @@ angular.module('bekApp')
   },{
     text: 'PDF',
     value: 'pdf'
+  },{
+    text: 'TAB',
+    value: 'tab'
+  },{
+    text: 'CSV',
+    value: 'csv'
   }]
 
   $scope.export = function(format) {
