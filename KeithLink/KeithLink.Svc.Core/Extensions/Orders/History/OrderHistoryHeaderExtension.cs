@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.CustomerNumber = value.CustomerNumber;
             entity.InvoiceNumber = value.InvoiceNumber;
             entity.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-            entity.PONumber = value.PONumber;
+            entity.PONumber = value.PONumber ?? entity.PONumber;
             //entity.ControlNumber = value.ControlNumber.Trim();
             // the original control number is actually set from the entity already
             // and because the order history header is actually a converted confirmation
@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.BranchId = value.BranchId;
             retVal.CustomerNumber = value.CustomerNumber;
             retVal.InvoiceNumber = value.InvoiceNumber;
-            retVal.DeliveryDate = value.DeliveryDate;
+            retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
             retVal.PONumber = value.PONumber;
             retVal.ControlNumber = value.ControlNumber;
             retVal.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
@@ -171,12 +171,12 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 					break;
 			}
 
-			retVal.DeliveryDate = value.DeliveryDate;
+			retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
 			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
             retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
-			retVal.RequestedShipDate = value.DeliveryDate;
+			retVal.RequestedShipDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
             FillEtaInformation(value, retVal);
@@ -227,13 +227,13 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 					break;
 			}
 
-			retVal.DeliveryDate = value.DeliveryDate;
+			retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
 			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
             retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.ShippedQuantity * d.SellPrice); 
 			retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
-            retVal.RequestedShipDate = value.DeliveryDate;
+            retVal.RequestedShipDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
             FillEtaInformation(value, retVal);
@@ -249,7 +249,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.BranchId = value.BranchId;
             retVal.CustomerNumber = value.CustomerNumber;
             retVal.InvoiceNumber = value.InvoiceNumber;
-            retVal.DeliveryDate = value.DeliveryDate;
+            retVal.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
             retVal.PONumber = value.PONumber;
             retVal.ControlNumber = value.ControlNumber;
             retVal.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
@@ -274,7 +274,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 
             retVal.CustomerNumber = customerInfo.CustomerId;
             retVal.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Processing" : value.Properties["MasterNumber"].ToString();
-            retVal.DeliveryDate = value.Properties["RequestedShipDate"].ToString();
+            retVal.DeliveryDate = value.Properties["RequestedShipDate"].ToString().ToDateTime().Value.ToLongDateFormat();
             retVal.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();
             retVal.ControlNumber = value.Properties["OrderNumber"].ToString();
             retVal.OriginalControlNumber = value.Properties["OrderNumber"].ToString();

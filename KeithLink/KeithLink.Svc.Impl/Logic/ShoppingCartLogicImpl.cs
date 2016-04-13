@@ -426,16 +426,14 @@ namespace KeithLink.Svc.Impl.Logic
                     CreatedDate = new DateTime(),
                     Items = basket.LineItems
                                   .Where(l => string.Equals(l.CatalogName, catalogId, StringComparison.CurrentCultureIgnoreCase))
-                                  .Select(l => new ShoppingCartItem()
-                    {
-                        
-                        ItemNumber = l.ProductId,
-                        Notes = l.Notes,
-                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-                        Each = l.Each.HasValue ? l.Each.Value : false,
-                        CreatedDate = new DateTime(),
-                        CatalogId = l.CatalogName                       
-                    }).ToList()
+                                  .Select(l => new ShoppingCartItem() {
+                                        ItemNumber = l.ProductId,
+                                        Notes = l.Notes,
+                                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                                        Each = l.Each.HasValue ? l.Each.Value : false,
+                                        CreatedDate = new DateTime(),
+                                        CatalogId = l.CatalogName })
+                                  .ToList()
                 };
                 LookupProductDetails(user, catalogInfo, shoppingCart);
 

@@ -41,6 +41,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private readonly IFavoriteLogic _favoriteLogic;
         private readonly IHistoryLogic _historyLogic;
         private readonly IProductImageRepository _imgRepository;
+        private readonly IOrderHistoryDetailRepository _orderDetailRepo;
         private readonly IOrderHistoryHeaderRepsitory _orderHeaderRepo;
         private readonly INoteLogic _noteLogic;
         private readonly IPriceLogic _priceLogic;
@@ -53,8 +54,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         #region constructor
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, ICategoryImageRepository categoryImageRepository, 
                                     ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryHeaderRepo, 
-                                    IExportSettingLogic externalCatalogRepository, IFavoriteLogic favoriteLogic, INoteLogic noteLogic,
-                                    IHistoryLogic historyLogic)
+                                    IOrderHistoryDetailRepository orderHistoryDetailRepo, IExportSettingLogic externalCatalogRepository, IFavoriteLogic favoriteLogic, 
+                                    INoteLogic noteLogic, IHistoryLogic historyLogic)
         {
             _catalogCacheRepository = catalogCacheRepository;
             _catalogRepository = catalogRepository;
@@ -64,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _favoriteLogic = favoriteLogic;
             _historyLogic = historyLogic;
             _imgRepository = imgRepository;
+            _orderDetailRepo = orderHistoryDetailRepo;
             _orderHeaderRepo = orderHistoryHeaderRepo;
             _noteLogic = noteLogic;
             _priceLogic = priceLogic;
@@ -271,7 +273,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber) {
             List<OrderHistoryFile> returnValue = new List<OrderHistoryFile>();
 
-            IEnumerable<EF.OrderHistoryHeader> history = _orderHeaderRepo.GetLastFiveOrdersByItem(catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber);
+            List<EF.OrderHistoryHeader> history = _orderHeaderRepo.GetLastFiveOrdersByItem(catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber);
 
             foreach(EF.OrderHistoryHeader h in history) {
                 OrderHistoryFile root = new OrderHistoryFile() {
@@ -294,17 +296,16 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                     }
                 };
 
-                foreach(EF.OrderHistoryDetail d in h.OrderDetails.Where(x => x.ItemNumber.Equals(itemNumber))) {
-                    OrderHistoryDetail detail = new OrderHistoryDetail() {
-                        LineNumber = d.LineNumber,
-                        ItemNumber = d.ItemNumber,
-                        OrderQuantity = d.OrderQuantity,
-                        ShippedQuantity = d.ShippedQuantity,
-                    };
-
-                    root.Details.Add(detail);
-                }
-
+                root.Details.AddRange(_orderDetailRepo.Read(d => d.BranchId == h.BranchId &&
+                                                                 d.OrderHistoryHeader.Id == h.Id &&
+                                                                 d.ItemNumber == itemNumber)
+                                                      .Select(x => new OrderHistoryDetail() {
+                                                          LineNumber = x.LineNumber,
+                                                          ItemNumber = x.ItemNumber,
+                                                          OrderQuantity = x.OrderQuantity,
+                                                          ShippedQuantity = x.ShippedQuantity
+                                                      })
+                                                      .ToList());
                 returnValue.Add(root);
             }
 

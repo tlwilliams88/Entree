@@ -37,3 +37,13 @@
     margin-top: 0;
   }
 }
+
+.padding-top-15 {
+    padding-top: 15px !important;
+}
+
+@media (orientation:portrait){
+    .hidePortrait {
+        display:none;
+    }
+}

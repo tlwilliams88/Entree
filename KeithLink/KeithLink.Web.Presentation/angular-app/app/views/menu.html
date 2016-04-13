@@ -263,9 +263,9 @@
        </script>
       <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
       <div>
-         <a href="https://itunes.apple.com/us/app/entree-system-powered-by-ben/id985751465?mt=8" target="_blank">iOS App</a>
-        <span class="icon-dot"></span>
-        <a href="https://play.google.com/store/apps/details?id=com.benekeith.entreeprod" target="_blank">Android App</a>
+         <a ng-if="!Android" href="https://itunes.apple.com/us/app/entree-system-powered-by-ben/id985751465?mt=8" target="_blank">iOS App</a>
+        <span ng-if="!iOS && !Android" class="icon-dot"></span>
+        <a ng-if="!iOS" href="https://play.google.com/store/apps/details?id=com.benekeith.entreeprod" target="_blank">Android App</a>
       </div>
       <div>
         <span ng-if="!iOS && !Android">Version: {{webVersionNum}}</span>

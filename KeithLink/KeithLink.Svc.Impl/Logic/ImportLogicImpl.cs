@@ -80,8 +80,8 @@ namespace KeithLink.Svc.Impl.Logic {
                 var validProducts = catalogLogic.GetProductsByIds( catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList() );
 
                 List<ListItemModel> mergedItems = (from x in items
-                                            join y in validProducts.Products on x.ItemNumber.Trim() equals y.ItemNumber.Trim()
-                                            select x).ToList();
+                                                   join y in validProducts.Products on x.ItemNumber.Trim() equals y.ItemNumber.Trim()
+                                                   select x).ToList();
 
                 //if (items.Select( p => p.ItemNumber ).Distinct().Count() != validProducts.Products.Select( o => o.ItemNumber ).Distinct().Count()) {
                 if (items.Distinct().Count() != mergedItems.Distinct().Count()) {
@@ -173,10 +173,11 @@ namespace KeithLink.Svc.Impl.Logic {
                         .Where( line => !String.IsNullOrWhiteSpace( line ) )
                         .Select( i => i.Split( delimiter ) )
                         .Select( l => new ListItemModel() {
-							ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
-							Label = labelColumn == -1 ? string.Empty : l[labelColumn].Replace("\"", string.Empty)
-                        } )
-                        .Where( x => !String.IsNullOrEmpty( x.ItemNumber ) ).ToList();
+                                ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
+                                Label = labelColumn == -1 ? string.Empty : l[labelColumn].Replace("\"", string.Empty),
+                                CatalogId = catalogInfo.BranchId })
+                        .Where( x => !String.IsNullOrEmpty( x.ItemNumber ) )
+                        .ToList();
 
             return returnValue;
         }
@@ -208,7 +209,8 @@ namespace KeithLink.Svc.Impl.Logic {
             while (rdr.Read()) {
                 returnValue.Add( new ListItemModel() {
                     ItemNumber = rdr.GetString( itemNumberColumn ).PadLeft(6, '0'),
-					Label = labelColumn == -1 ? string.Empty : rdr.GetString(labelColumn)
+					Label = labelColumn == -1 ? string.Empty : rdr.GetString(labelColumn),
+                    CatalogId = catalogInfo.BranchId
                 } );
             }
 

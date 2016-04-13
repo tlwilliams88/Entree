@@ -8,19 +8,26 @@ fsm.directive('fsmStickyHeader', function(){
             scrollBody: '=',
             scrollStop: '=',
             scrollableContainer: '=',
-            scrollOffset: '='            
+            scrollOffset: '=',
+            currentPage: '='          
         },
         link: function(scope, element, attributes, control){
             var header = $(element, this);
             var clonedHeader = null;
             var content = $(scope.scrollBody);
             var scrollableContainer = $(scope.scrollableContainer);
-
+            var currentPage = scope.currentPage;
             var scrollOffset = parseInt(scope.scrollOffset, 10) || 0;
 
             if (scrollableContainer.length == 0){
                 scrollableContainer = $(window);
             }
+
+            scope.$watch('currentPage', function(){ 
+                if(scope.currentPage > 0 && clonedHeader && header){                    
+                    determineVisibility();                    
+                }
+            });
 
             function createClone(){
                 /*
@@ -65,8 +72,9 @@ fsm.directive('fsmStickyHeader', function(){
 
                 contentTop += scrollOffset;
 
-                if ( (scrollTop > contentTop) && (scrollTop < contentBottom) ) {
+                if ( (scrollTop > contentTop) && (scrollTop < contentBottom) && !(clonedHeader && header && (scope.currentPage !== scope.thispage) )) {
                     if (!clonedHeader){
+                        scope.thispage = scope.currentPage;
                         createClone();    
                         clonedHeader.css({ "visibility": "visible"});
                     }

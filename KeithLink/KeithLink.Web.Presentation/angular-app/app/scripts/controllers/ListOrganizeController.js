@@ -8,10 +8,11 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListOrganizeController', ['$scope', '$filter', '$timeout', 'list', 'ListService',
-    function($scope, $filter, $timeout, list, ListService) {
+  .controller('ListOrganizeController', ['$scope', '$filter', '$timeout', 'list', 'ListService', 'UtilityService',
+    function($scope, $filter, $timeout, list, ListService, UtilityService) {
 
   var orderBy = $filter('orderBy');
+  $scope.isMobileDevice = UtilityService.isMobileDevice();
 
   function initItemPositions() {
     $scope.list.items.forEach(function(item, index){
@@ -22,7 +23,7 @@ angular.module('bekApp')
   };
 
   function setList(list) {
-    $scope.list = list;    
+    $scope.list = list;
     $scope.list.items.forEach(function(item) {
       item.editPosition = item.position;
       item.positionStarting = item.editPosition;
@@ -38,7 +39,7 @@ angular.module('bekApp')
   initItemPositions();
   function updateItemPositions(listItemId, oldPosition, newPosition) {
     var isMovingUp = oldPosition > newPosition;
-    var duplicatePositionItems = $filter('filter')($scope.list.items, function(item){ 
+    var duplicatePositionItems = $filter('filter')($scope.list.items, function(item){
       return item.position === newPosition;
     });
 
@@ -67,7 +68,7 @@ angular.module('bekApp')
 
   $scope.stopReorder = function (e, ui) {
     $scope.organizeListForm.$setDirty();
-    
+
     var classList = ui.item.attr('class');
     var itemIdClass = classList.substr(classList.indexOf('item_'), classList.indexOf(' ') - classList.indexOf('item_'));
     var listItemId = parseInt(itemIdClass.substr(5), 10);
@@ -91,7 +92,7 @@ angular.module('bekApp')
     updateItemPositions(listItemId, oldPosition, newPosition);
   };
 
-  $scope.deleteItem = function(deletedItem){ 
+  $scope.deleteItem = function(deletedItem){
     deletedItem.isdeleted = true;
     $scope.list.items.forEach(function(item){
       if(item.position && item.position > deletedItem.position){
@@ -103,9 +104,9 @@ angular.module('bekApp')
 
   $scope.changePosition = function(items, movedItem, removeNullValue) {
     if(movedItem.position === '0' || !movedItem.position){
-      if(removeNullValue || movedItem.position === '0'){   
+      if(removeNullValue || movedItem.position === '0'){
         movedItem.position = movedItem.editPosition;
-      }      
+      }
       return;
     }
 
@@ -113,7 +114,7 @@ angular.module('bekApp')
 
     var oldPosition = movedItem.editPosition;
     var newPosition = movedItem.position;
-    
+
     movedItem.editPosition = newPosition;
 
     updateItemPositions(movedItem.listitemid, oldPosition, newPosition);
@@ -127,11 +128,11 @@ angular.module('bekApp')
     $scope.sortField = field;
     $scope.sortDescending = sortDescending;
 
-    $scope.list.items = orderBy($scope.list.items, field, sortDescending);  
+    $scope.list.items = orderBy($scope.list.items, field, sortDescending);
     if($scope.list.items.length && !$scope.list.items[($scope.list.items.length -1)].listitemid){
       var dummy = $scope.list.items.slice($scope.list.items.length -1, $scope.list.items.length );
        $scope.list.items = $scope.list.items.slice(0, $scope.list.items.length -1);
-       $scope.list.items.splice(0,0,dummy[0]);  
+       $scope.list.items.splice(0,0,dummy[0]);
    }
 
     $scope.list.items.forEach(function(item, index) {
@@ -146,8 +147,8 @@ angular.module('bekApp')
   $scope.saveList = function(list) {
     if (!processingSaveList) {
       processingSaveList = true;
-      
-      // remove empty item that is used for ui sortable 
+
+      // remove empty item that is used for ui sortable
       if (list.items.length && !list.items[0].listitemid) {
         list.items.splice(0, 1);
       }

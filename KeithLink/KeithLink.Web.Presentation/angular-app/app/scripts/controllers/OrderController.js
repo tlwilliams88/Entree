@@ -130,7 +130,7 @@ angular.module('bekApp')
         }
  
       } else {
-        $scope.displayMessage('success', 'Successfully received lastest order updates.');
+        $scope.displayMessage('success', 'Successfully received latest order updates.');
         ordersPagingModel.pageIndex = 0;
         ordersPagingModel.filter = [];
         ordersPagingModel.loadData();

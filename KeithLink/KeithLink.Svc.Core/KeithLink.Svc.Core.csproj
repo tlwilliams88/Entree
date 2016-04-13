@@ -415,7 +415,6 @@
     <Compile Include="Interface\SiteCatalog\ICategoryImageRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IDivisionRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IPriceLogic.cs" />
-    <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
     <Compile Include="Models\Brand\BrandsReturn.cs" />

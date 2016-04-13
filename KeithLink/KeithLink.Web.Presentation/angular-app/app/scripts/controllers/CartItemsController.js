@@ -59,7 +59,7 @@ angular.module('bekApp')
       originalBasket.items =  OrderService.filterDeletedOrderItems(originalBasket);
     }
     $scope.currentCart = angular.copy(originalBasket);
-    $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+    $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);    
     $scope.isMobile = ENV.mobileApp;
     $scope.invalidSelectedDate = false;
     $scope.$watch(function () {
@@ -105,6 +105,22 @@ angular.module('bekApp')
     }
     setMandatoryAndReminder();
 
+    function disableDeleteForMandatoryItems(currentCart) {
+        if ($scope.mandatoryList) {
+        $scope.mandatoryList.active = true;
+        currentCart.items.forEach(function(item){
+          if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
+            item.isMandatory = true;
+          }
+        })
+      } else if ($scope.reminderList) {
+        $scope.reminderList.active = true;
+      } else {
+        $scope.mandatoryList = {};
+        $scope.reminderList = {};
+      }
+    };
+
     $scope.resetSubmitDisableFlag = function(checkForm){
       $scope.disableSubmitButtons = ((!$scope.currentCart.items || $scope.currentCart.items.length === 0) || $scope.isOffline || $scope.invalidSelectedDate);
     };
@@ -128,8 +144,14 @@ angular.module('bekApp')
     };
 
     $scope.cancelChanges = function() {
-      $scope.currentCart = angular.copy(originalBasket);
-       $scope.resetSubmitDisableFlag(true);
+      var originalCart = angular.copy(originalBasket);
+      originalCart.items.forEach(function(item) {
+        item.extPrice = PricingService.getPriceForItem(item);
+      });
+      originalCart.subtotal = PricingService.getSubtotalForItemsWithPrice(originalCart.items);
+      disableDeleteForMandatoryItems(originalCart);
+      $scope.currentCart = originalCart;
+      $scope.resetSubmitDisableFlag(true);
       $scope.cartForm.$setPristine();
     };
 
@@ -359,7 +381,7 @@ angular.module('bekApp')
           $scope.currentCart.items.forEach(function(item) {
             item.extPrice = PricingService.getPriceForItem(item);
           });
-
+          disableDeleteForMandatoryItems($scope.currentCart);
           $scope.cartForm.$setPristine();
           $scope.currentCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
           setMandatoryAndReminder();

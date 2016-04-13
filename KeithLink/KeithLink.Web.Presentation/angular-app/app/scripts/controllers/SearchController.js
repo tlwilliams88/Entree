@@ -8,13 +8,13 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'blockUI',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'blockUI', 'CartService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
       $filter,
-      ProductService, CategoryService, Constants, PricingService, // bek custom services
+      ProductService, CategoryService, Constants, PricingService, CartService, // bek custom services
       blockUI
     ) {
 
@@ -22,6 +22,10 @@ angular.module('bekApp')
     if ($scope.userBar) {
       $scope.userBar.universalSearchTerm = '';
     }
+
+    CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
 
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
