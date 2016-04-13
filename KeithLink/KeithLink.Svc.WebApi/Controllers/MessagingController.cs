@@ -219,17 +219,22 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/createalert")]
         public OperationReturnModel<bool> CreateAlertMessage(MailMessageModel mailMessage)
         {
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
             try
             {
                 mailMessage.IsAlert = true;
                 _msgLogic.CreateMailMessage(mailMessage);
-                return new OperationReturnModel<bool>() { SuccessResponse = true };
+                ret.SuccessResponse = true;
+                ret.IsSuccess = true;
             }
             catch (Exception ex)
             {
-                return new OperationReturnModel<bool>() { ErrorMessage = ex.Message, SuccessResponse = false };
-                throw ex;
+                ret.ErrorMessage = ex.Message;
+                ret.SuccessResponse = false;
+                ret.IsSuccess = false;
+                _log.WriteErrorLog("CreateAlertMessage", ex);
             }
+            return ret;
         }
 
         /// <summary>
@@ -241,18 +246,22 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("messaging/mail")]
 		public OperationReturnModel<bool> CreateMessage(MailMessageModel mailMessage)
 		{
-			try
-			{
-				_msgLogic.CreateMailMessage(mailMessage);
-				return new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
-			}
-			catch (Exception ex)
-			{
-                _log.WriteErrorLog("RegisterPushDeviceToken", ex);
-                return new OperationReturnModel<bool>() { ErrorMessage = ex.Message, SuccessResponse = false, IsSuccess = false };
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try
+            {
+                _msgLogic.CreateMailMessage(mailMessage);
+                ret.SuccessResponse = true;
+                ret.IsSuccess = true;
             }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("CreateMessage", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.SuccessResponse = false;
+                ret.IsSuccess = false;
+            }
+            return ret;
         }
-				
         #endregion
     }
 }
