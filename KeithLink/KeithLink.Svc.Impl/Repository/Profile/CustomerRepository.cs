@@ -337,6 +337,29 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return results;
 		}
 
+        public List<Customer> GetCustomersForBranch(string branchId)
+        {
+            var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("Branch=" + branchId));
+            if (customerFromCache == null)
+            {
+                var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+                queryOrg.SearchCriteria.WhereClause = "u_branch_number = '" + branchId + "'"; // org type of customer
+
+                CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+                List<Customer> results = BuildCustomerList(res.CommerceEntities);
+
+                if (results.Count > 0)
+                {
+                    _customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("Branch=" + branchId), TimeSpan.FromHours(4), results);
+                }
+
+                return results;
+            }
+            else {
+                return customerFromCache;
+            }
+        }
+
         public List<Customer> GetCustomersForDSM(string dsmNumber, string branchId)
         {
             var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsmNumber));

@@ -10,5 +10,7 @@ namespace KeithLink.Svc.Core.Models.Profile
         public Nullable<Guid> AccountId { get; set; }
         public Nullable<Guid> CustomerId { get; set; }
         public string Email { get; set; }
+        public string Type { get; set; }
+        public string Branch { get; set; }
     }
 }

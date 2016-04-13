@@ -164,6 +164,54 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
+        public List<Core.Models.Profile.UserProfile> GetInternalUsers()
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("ProfileCustomSearch");
+            queryOrg.SearchCriteria.WhereClause = "u_email_address like '%benekeith.com'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            List<Core.Models.Profile.UserProfile> users = new List<Core.Models.Profile.UserProfile>();
+            if (res.CommerceEntities.Count > 0)
+            {
+                foreach (CommerceEntity ent in res.CommerceEntities)
+                {
+                    users.Add(new Core.Models.Profile.UserProfile()
+                    {
+                        UserId = Guid.Parse(ent.Id),
+                        FirstName = (string)ent.Properties["FirstName"],
+                        LastName = (string)ent.Properties["LastName"],
+                        EmailAddress = (string)ent.Properties["Email"]
+                    });
+                }
+            }
+
+            return users;
+        }
+
+        public List<Core.Models.Profile.UserProfile> GetExternalUsers()
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("ProfileCustomSearch");
+            queryOrg.SearchCriteria.WhereClause = "u_email_address not like '%benekeith.com'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            List<Core.Models.Profile.UserProfile> users = new List<Core.Models.Profile.UserProfile>();
+            if (res.CommerceEntities.Count > 0)
+            {
+                foreach (CommerceEntity ent in res.CommerceEntities)
+                {
+                    users.Add(new Core.Models.Profile.UserProfile()
+                    {
+                        UserId = Guid.Parse(ent.Id),
+                        FirstName = (string)ent.Properties["FirstName"],
+                        LastName = (string)ent.Properties["LastName"],
+                        EmailAddress = (string)ent.Properties["Email"]
+                    });
+                }
+            }
+
+            return users;
+        }
+
         ///// <summary>
         ///// update the user profile in Commerce Server (not implemented)
         ///// </summary>

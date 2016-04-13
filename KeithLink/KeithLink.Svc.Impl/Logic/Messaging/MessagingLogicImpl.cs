@@ -34,13 +34,15 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private readonly IUserPushNotificationDeviceRepository _userPushNotificationDeviceRepository;
         private readonly IPushNotificationMessageProvider _pushNotificationMessageProvider;
         private readonly IEventLogRepository _log;
-        //private readonly IUserProfileLogic _userProfileLogic;
+        //private readonly IUserProfileLogic _userProfileLogic; //makes circular depend.
+        private readonly ICustomerRepository _custRepo;
         private readonly IUserProfileRepository _userRepo;
         #endregion
 
         #region ctor
         public MessagingLogicImpl(IUnitOfWork unitOfWork, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
-                                  IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, IPushNotificationMessageProvider pushNotificationMessageProvider, 
+                                  IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
+                                  IPushNotificationMessageProvider pushNotificationMessageProvider, ICustomerRepository custRepo,
                                   IUserProfileRepository userProfileRepository) {
             _log = eventLogRepository;
             _pushNotificationMessageProvider = pushNotificationMessageProvider;
@@ -48,6 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             _userMessageRepository = userMessageRepository;
             _userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             //_userProfileLogic = userProfileLogic;
+            _custRepo = custRepo;
             _userRepo = userProfileRepository;
             _userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
         }
@@ -91,8 +94,62 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                         });
             }
 
+            //Add messages to all users in the case of system alert
+            if (mailMessage.IsAlert)
+            {
+                if ((mailMessage.BranchesToAlert != null) && (mailMessage.BranchesToAlert.Length > 0))
+                {
+                    //var users = _userProfileLogic.GetUsers(new UserFilterModel()
+                    //{
+                    //    Type = KeithLink.Svc.Core.Constants.EMAILMASK_BRANCHSYSTEMALERT,
+                    //    Branch = mailMessage.BranchToAlert
+                    //});
+                    List<UserProfile> users = new List<UserProfile>();
+                    List<string> branches = Configuration.GetCommaSeparatedValues(mailMessage.BranchesToAlert);
+                    foreach(string branch in branches)
+                    {
+                        List<Customer> customers = _custRepo.GetCustomersForBranch(branch);
+                        Parallel.ForEach(customers,
+                                         new ParallelOptions { MaxDegreeOfParallelism = 4 },
+                                         customer =>
+                                         {
+                                             var lusers = _userRepo.GetUsersForCustomerOrAccount(customer.CustomerId);
+                                             if (lusers != null && lusers.Count > 0)
+                                                 users.AddRange(lusers);
+                                         });
+                    }
+                    foreach (var user in users)
+                        if (!messages.ContainsKey(user.UserId))
+                            messages.Add(user.UserId, new UserMessage()
+                            {
+                                Body = mailMessage.Message.Body,
+                                Subject = mailMessage.Message.Subject,
+                                Label = mailMessage.Message.Label,
+                                Mandatory = mailMessage.Message.Mandatory,
+                                UserId = user.UserId,
+                                NotificationType = mailMessage.Message.NotificationType
+                            });
+                }
+                else
+                {
+                    List<UserProfile> users = _userRepo.GetExternalUsers();
+                    users.AddRange(_userRepo.GetInternalUsers());
+                    foreach (var user in users)
+                        if (!messages.ContainsKey(user.UserId))
+                            messages.Add(user.UserId, new UserMessage()
+                            {
+                                Body = mailMessage.Message.Body,
+                                Subject = mailMessage.Message.Subject,
+                                Label = mailMessage.Message.Label,
+                                Mandatory = mailMessage.Message.Mandatory,
+                                UserId = user.UserId,
+                                NotificationType = mailMessage.Message.NotificationType
+                            });
+                }
+            }
+
             //Create all of the message records
-            foreach(var message in messages)
+            foreach (var message in messages)
                 _userMessageRepository.Create(message.Value);
 
             _uow.SaveChanges();

@@ -25,5 +25,9 @@ namespace KeithLink.Svc.Core.Interface.Profile
         List<UserProfile> GetUsersForCustomerOrAccount(Guid orgId);
 
 		List<CS.UserProfile> GetCSProfileForInternalUsers();
+
+        List<UserProfile> GetInternalUsers();
+
+        List<UserProfile> GetExternalUsers();
     }
 }

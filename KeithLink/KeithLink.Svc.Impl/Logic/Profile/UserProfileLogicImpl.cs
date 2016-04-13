@@ -1253,11 +1253,44 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public UserProfileReturn GetUsers(UserFilterModel userFilters) {
             if (userFilters != null) {
-                if (userFilters.AccountId.HasValue) {
+                if (userFilters.AccountId.HasValue)
+                {
                     return new UserProfileReturn() { UserProfiles = _csProfile.GetUsersForCustomerOrAccount(userFilters.AccountId.Value) };
-                } else if (userFilters.CustomerId.HasValue) {
+                }
+                else if (userFilters.CustomerId.HasValue)
+                {
                     return new UserProfileReturn() { UserProfiles = _csProfile.GetUsersForCustomerOrAccount(userFilters.CustomerId.Value) };
-                } else if (!String.IsNullOrEmpty(userFilters.Email)) {
+                }
+                else if (userFilters.Type.Equals(Constants.EMAILMASK_BRANCHSYSTEMALERT, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    List<Customer> customers = _customerRepo.GetCustomersForBranch(userFilters.Branch);
+                    List<Core.Models.Profile.UserProfile> profiles = new List<Core.Models.Profile.UserProfile>();
+                    foreach (Customer customer in customers)
+                    {
+                        if (customer.AccountId != null)
+                        {
+                            List<UserProfile> customerusers = _csProfile.GetUsersForCustomerOrAccount(customer.CustomerId);
+                            profiles.AddRange(_csProfile.GetUsersForCustomerOrAccount(customer.CustomerId));
+                        }
+                    }
+                    // extra measure to make sure we aren't getting duplicates
+                    List<Core.Models.Profile.UserProfile> dprofiles = new List<Core.Models.Profile.UserProfile>();
+                    dprofiles.AddRange(profiles.Distinct());
+                    return new UserProfileReturn() { UserProfiles = dprofiles };
+                }
+                else if (userFilters.Type.Equals(Constants.EMAILMASK_ALLSYSTEMALERT, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    // special case for systemwide alerts
+                    List<Core.Models.Profile.UserProfile> profiles = new List<Core.Models.Profile.UserProfile>();
+                    profiles.AddRange(_csProfile.GetInternalUsers());
+                    profiles.AddRange(_csProfile.GetExternalUsers());
+                    // extra measure to make sure we aren't getting duplicates
+                    List<Core.Models.Profile.UserProfile> dprofiles = new List<Core.Models.Profile.UserProfile>();
+                    dprofiles.AddRange(profiles.Distinct());
+                    return new UserProfileReturn() { UserProfiles = dprofiles };
+                }
+                else if (!String.IsNullOrEmpty(userFilters.Email))
+                {
                     return GetUserProfile(userFilters.Email);
                 }
             }

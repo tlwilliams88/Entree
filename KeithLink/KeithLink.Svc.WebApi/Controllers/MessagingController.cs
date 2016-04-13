@@ -210,12 +210,34 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
-		/// <summary>
-		/// Create a mail message
-		/// </summary>
-		/// <param name="mailMessage">Message</param>
-		/// <returns></returns>
-		[HttpPost]
+        /// <summary>
+        /// Create a system alert message
+        /// </summary>
+        /// <param name="mailMessage">Message</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("messaging/createalert")]
+        public OperationReturnModel<bool> CreateAlertMessage(MailMessageModel mailMessage)
+        {
+            try
+            {
+                mailMessage.IsAlert = true;
+                _msgLogic.CreateMailMessage(mailMessage);
+                return new OperationReturnModel<bool>() { SuccessResponse = true };
+            }
+            catch (Exception ex)
+            {
+                return new OperationReturnModel<bool>() { ErrorMessage = ex.Message, SuccessResponse = false };
+                throw ex;
+            }
+        }
+
+        /// <summary>
+        /// Create a mail message
+        /// </summary>
+        /// <param name="mailMessage">Message</param>
+        /// <returns></returns>
+        [HttpPost]
 		[ApiKeyedRoute("messaging/mail")]
 		public OperationReturnModel<bool> CreateMessage(MailMessageModel mailMessage)
 		{
