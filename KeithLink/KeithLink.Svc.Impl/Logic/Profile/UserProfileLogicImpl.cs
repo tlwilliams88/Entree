@@ -878,7 +878,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // add customerusers to customer properties
             customer.CustomerUsers = new List<UserProfile>();
-            List<UserProfile> users = _csProfile.GetUsersForCustomerOrAccount(customer.CustomerId);
+            List<UserProfile> users = _csProfile.GetUsersForCustomerOrAccount(customer.CustomerId).Distinct().ToList();
             customer.CustomerUsers.AddRange(users);
 
             return customer;
