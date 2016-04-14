@@ -48,4 +48,14 @@ angular.module('bekApp')
       });
     });
 
+    $scope.clearItems = function(items){
+      if(items){
+        ProductService.clearRecentlyViewedItems(items).then(function(items) {
+          $scope.loadingRecentlyViewedItems = false;
+          $scope.recentlyViewedItems = items;
+        })
+      }
+
+    };
+
   }]);

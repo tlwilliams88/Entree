@@ -192,6 +192,12 @@ angular.module('bekApp')
           });
         },
 
+        clearRecentlyViewedItems: function(items) {
+          return RecentlyViewedItem.delete({
+            items: items
+          }, {}).$promise;
+        },
+
         /****************
         EXPORT
         ****************/
