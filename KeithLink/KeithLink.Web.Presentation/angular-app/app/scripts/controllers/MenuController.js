@@ -376,8 +376,9 @@ angular.module('bekApp')
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
     $scope.canViewMarketing = AccessService.canViewMarketing();
-	  $scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
-	  $scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
+	$scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
+	$scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
     $scope.canRunReports = AccessService.canRunReports();
+	$scope.isSysAdmin = AccessService.isSysAdmin();
   }
 }]);
