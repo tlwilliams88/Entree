@@ -64,7 +64,8 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
         [MaxLength(19)]
         public string ActualDeliveryTime { get; set; }
         public bool? DeliveryOutOfSequence { get; set; }
+        public decimal OrderSubtotal { get; set; }
 
-		public virtual ICollection<OrderHistoryDetail> OrderDetails { get; set; }
+        public virtual ICollection<OrderHistoryDetail> OrderDetails { get; set; }
 	}
 }

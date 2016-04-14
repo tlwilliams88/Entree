@@ -355,7 +355,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     }
 
                     if(returnOrder.Items != null) {
-                        returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+                        if(h.OrderSubtotal>0) returnOrder.OrderTotal = (double)h.OrderSubtotal;
+                        else returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
 
                     customerOrders.Add(returnOrder);

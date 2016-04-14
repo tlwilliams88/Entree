@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets3849cf92b07564faf9951deba3d49701b5b57e5e47a9cab445d891461d86fc34))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets95e50a887c2bd0fac00ee5733b557567113ac5c659b124cc81a3ef56148fba2b))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets3849cf92b07564faf9951deba3d49701b5b57e5e47a9cab445d891461d86fc34 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySets95e50a887c2bd0fac00ee5733b557567113ac5c659b124cc81a3ef56148fba2b : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "3849cf92b07564faf9951deba3d49701b5b57e5e47a9cab445d891461d86fc34"; }
+            get { return "95e50a887c2bd0fac00ee5733b557567113ac5c659b124cc81a3ef56148fba2b"; }
         }
 
         /// <summary>
@@ -1222,7 +1222,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeader
-        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_IsSpecialOrder, T1.OrderHistoryHeader_RelatedControlNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_IsSpecialOrder, T1.OrderHistoryHeader_RelatedControlNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_OrderSubtotal, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -1245,6 +1245,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.EstimatedDeliveryTime AS OrderHistoryHeader_EstimatedDeliveryTime, 
             T.ActualDeliveryTime AS OrderHistoryHeader_ActualDeliveryTime, 
             T.DeliveryOutOfSequence AS OrderHistoryHeader_DeliveryOutOfSequence, 
+            T.OrderSubtotal AS OrderHistoryHeader_OrderSubtotal, 
             T.CreatedUtc AS OrderHistoryHeader_CreatedUtc, 
             T.ModifiedUtc AS OrderHistoryHeader_ModifiedUtc, 
             True AS _from0
@@ -1328,7 +1329,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeaders
-        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_IsSpecialOrder, T1.OrderHistoryHeader_RelatedControlNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_IsSpecialOrder, T1.OrderHistoryHeader_RelatedControlNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_OrderSubtotal, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -1351,6 +1352,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.EstimatedDeliveryTime AS OrderHistoryHeader_EstimatedDeliveryTime, 
             T.ActualDeliveryTime AS OrderHistoryHeader_ActualDeliveryTime, 
             T.DeliveryOutOfSequence AS OrderHistoryHeader_DeliveryOutOfSequence, 
+            T.OrderSubtotal AS OrderHistoryHeader_OrderSubtotal, 
             T.CreatedUtc AS OrderHistoryHeader_CreatedUtc, 
             T.ModifiedUtc AS OrderHistoryHeader_ModifiedUtc, 
             True AS _from0

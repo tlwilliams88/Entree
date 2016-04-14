@@ -324,6 +324,10 @@
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs" />
+    <Compile Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.Designer.cs">
+      <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -801,6 +805,9 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.resx">
+      <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
