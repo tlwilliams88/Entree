@@ -380,7 +380,7 @@ namespace KeithLink.Svc.Impl.Migrations
             orderConfirmationMessage.AppendLine("   </tr>");
             orderConfirmationMessage.AppendLine("   <tr>");
             orderConfirmationMessage.AppendLine("       <td>Invoice Number: {InvoiceNumber}</td>");
-            orderConfirmationMessage.AppendLine("       <td style=\"text-align:right;\">Invoice Total: ${Total}</td>");
+            orderConfirmationMessage.AppendLine("       <td style=\"text-align:right;\">Order subtotal: ${Total}</td>");
             orderConfirmationMessage.AppendLine("   </tr>");
             orderConfirmationMessage.AppendLine("</table>");
             orderConfirmationMessage.AppendLine("<table style=\"width: 100%;\">");
