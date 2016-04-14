@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('MessagePreferenceService', [ '$http', '$q', 'toaster', 'UtilityService', function ($http, $q, toaster, UtilityService) {
+  .factory('MessagingService', [ '$http', '$q', 'toaster', 'UtilityService', function ($http, $q, toaster, UtilityService) {
     
     function transformPreferences(preferences) {
       var customerPreferencesTransformed = [];
@@ -31,8 +31,35 @@ angular.module('bekApp')
       return customerPreferencesTransformed;
     }
 
-    var Service = {
-      
+    var Service = {    
+
+
+      //  BROADCAST MESSAGE CREATION
+
+
+      getBroadcastOptions: function() {
+        //return list of available branches
+        return $http.get('/messaging/createalert');
+      },
+
+      broadcastMandatoryMessage: function(payload) {
+        return $http.post('/messaging/createalert', payload).then(function(response) {           
+          if (!response) {
+            return $q.reject('An error occurred while sending this message.');
+          }
+          return response;
+        });
+      },
+
+      broadcastMessage: function(messagePayload){
+        var promise = $http.post('/messaging/mail', messagePayload);
+        return UtilityService.resolvePromise(promise);
+      },
+
+
+      //  MESSAGE PREFERENCES
+
+
       getPreferencesForCustomer: function(customerNumber, customerBranch) {
         var promise = $http.get('/messaging/preferences/' + customerNumber + '/' + customerBranch);
         return UtilityService.resolvePromise(promise).then(function(customerPreferences) {

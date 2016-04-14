@@ -48,8 +48,11 @@ angular.module('bekApp')
               notification.displayType = 'Mail';
               break;
             }
-            if(notification.mandatory && $filter('filter')(Service.mandatoryMessages, {id: notification.id}).length === 0 && !notification.messageread){
-             Service.mandatoryMessages.push(notification);
+            if(notification.mandatory){
+              notification.displayType = 'News'
+              if($filter('filter')(Service.mandatoryMessages, {id: notification.id}).length === 0 && !notification.messageread){
+                Service.mandatoryMessages.push(notification);
+              }
             }
           });
           return data.successResponse;

@@ -198,6 +198,9 @@ angular.module('bekApp')
     canRunReports: function() {
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     },
+    isSysAdmin: function() {
+      return isSysAdmin();
+    }
 
   };
 
