@@ -2,6 +2,7 @@
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -37,6 +38,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private const string MESSAGE_TEMPLATE_ORDERITEMSOOS = "OrderConfirmationItemsOOS";
         private const string MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL = "OrderConfirmationItemOOSDetail";
         ICatalogRepository _catRepo;
+        private readonly IPriceLogic _priceLogic;
         IEventLogRepository eventLogRepository;
         IUserProfileLogic userProfileLogic;
         IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
@@ -55,11 +57,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                                                         IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
                                                         Func<Channel, IMessageProvider> messageProviderFactory,
                                                         IDsrLogic dsrLogic, ICatalogRepository catalogRepository,
-                                                        IOrderLogic orderLogic)
+                                                        IOrderLogic orderLogic, IPriceLogic priceLogic)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository,
                      userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository,
                      dsrLogic)
         {
+            _priceLogic = priceLogic;
             _catRepo = catalogRepository;
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
@@ -298,9 +301,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             MessageTemplateModel itemsOOSTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMSOOS);
             decimal totalAmount = 0;
             ProductsReturn products = _catRepo.GetProductsByIds(customer.CustomerBranch, notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
+            var pricing = _priceLogic.GetPrices(customer.CustomerBranch, customer.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
             foreach (var line in notification.OrderChange.Items)
             {
                 Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
+                var price = pricing.Prices.Where(p => p.ItemNumber.Equals(line.ItemNumber)).FirstOrDefault();
                 string priceInfo = BuildPriceInfo(line, currentProduct);
                 string extPriceInfo = BuildExtPriceInfo(line, currentProduct);
                 if (line.OriginalStatus == null)
@@ -309,12 +314,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 }
                 if (line.OriginalStatus.Equals("filled", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    totalAmount += (line.QuantityOrdered * line.ItemPrice);
+                    totalAmount += GetLinePrice(line, currentProduct, price);
                     BuildItemDetail(itemOrderInfo, line, priceInfo, extPriceInfo, currentProduct);
                 }
                 else
                 {
-                    totalAmount += (line.QuantityShipped * line.ItemPrice);
+                    totalAmount += GetLinePrice(line, currentProduct, price);
                     BuildExceptionItemDetail(itemOrderInfoOOS, line, priceInfo, extPriceInfo, currentProduct);
                 }
             }
@@ -341,6 +346,27 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 }));
             }
             return totalAmount;
+        }
+
+        private static decimal GetLinePrice(OrderLineChange line, Product currentProduct, Price price)
+        {
+            if (currentProduct.CatchWeight)
+            {
+                if (line.Each) //package catchweight
+                {
+                    return (decimal)PricingHelper.GetCatchweightPriceForPackage
+                        (line.QuantityShipped, int.Parse(currentProduct.Pack), currentProduct.AverageWeight, price.PackagePrice);
+                }
+                else //case catchweight
+                {
+                    return (decimal)PricingHelper.GetCatchweightPriceForCase
+                        (line.QuantityShipped, currentProduct.AverageWeight, price.CasePrice);
+                }
+            }
+            else
+            {
+                return line.QuantityShipped * line.ItemPrice;
+            }
         }
 
         private void BuildExceptionItemDetail(StringBuilder itemOrderInfoOOS, OrderLineChange line, string priceInfo, string extPriceInfo, Product currentProduct)
