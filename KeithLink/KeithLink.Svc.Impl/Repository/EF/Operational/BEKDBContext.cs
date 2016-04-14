@@ -43,6 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 
         // Customers
         public DbSet<ItemHistory> ItemHistory { get; set; }
+        public DbSet<InternalUserAccess> InternalUserAccess { get; set; }
 
         // Invoices
         public DbSet<Invoice> Invoices { get; set; }
@@ -111,6 +112,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 
             // Customers
             modelBuilder.Entity<ItemHistory>().ToTable("ItemHistory", schemaName: "Customers").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<InternalUserAccess>().ToTable( "InternalUserAccess", schemaName: "Customers" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
         }
 
         public override int SaveChanges() {

@@ -323,6 +323,16 @@
     <Compile Include="Models\SiteCatalog\Schemas\PricingRequest.cs">
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Customers\InternalUserAccessRepository.cs" />
+    <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.cs" />
+    <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.Designer.cs">
+      <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
@@ -696,7 +706,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
-    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Operational\SpecialOrderDBContext.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
@@ -801,6 +810,9 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">
+      <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -1299,6 +1311,13 @@
     <Content Include="Dependencies\BarcodeLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Repository\EF\Operational\BEKDBContext.Views.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BEKDBContext.Views.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="Repository\EF\Operational\BEKDBContext.Views.xml">
+      <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Images\Logo.png" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>

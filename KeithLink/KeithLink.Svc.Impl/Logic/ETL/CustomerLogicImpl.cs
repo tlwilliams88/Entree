@@ -9,10 +9,13 @@ using CommerceServer.Core.Runtime.Diagnostics;
 // KeithLink
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Interface.Customers;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Customers.EF;
+using KeithLink.Svc.Core.Models.Paging;
 
 // Core
 using System;
@@ -34,19 +37,40 @@ namespace KeithLink.Svc.Impl.ETL
         private IStagingRepository stagingRepository;
         private IItemHistoryRepository _itemHistoryRepository;
         private IDsrLogic dsrLogic;
+        private IUserProfileLogic _userLogic;
+        private IInternalUserAccessRepository _userAccessRepo;
+        private ICustomerRepository _customerRepo;
+        private IUserProfileRepository _userRepo;
         static ProfileContext profileSystem = null;
         private readonly IEventLogRepository eventLog;
+
+        private enum ProfileOperationType {
+            Create,
+            Update
+        }
+
+        private enum ProfileObjectType
+        {
+            Organization,
+            Address
+        }
+
 
         #endregion
 
         #region constructor
 
-        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog, IItemHistoryRepository itemHistoryRepository)
+        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog, IItemHistoryRepository itemHistoryRepository, ICustomerRepository customerRepository,
+            IUserProfileLogic userProfileLogic, IInternalUserAccessRepository internalAccessRepo, IUserProfileRepository userProfileRepo)
         {
             this.stagingRepository = stagingRepository;
             this.dsrLogic = dsrLogic;
             this.eventLog = eventLog;
             this._itemHistoryRepository = itemHistoryRepository;
+            this._customerRepo = customerRepository;
+            _userLogic = userProfileLogic;
+            _userAccessRepo = internalAccessRepo;
+            _userRepo = userProfileRepo;
         }
 
         #endregion
@@ -75,6 +99,9 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
+        /// <summary>
+        /// Import Customers to Commerce Server
+        /// </summary>
         public void ImportCustomersToOrganizationProfile()
         {
             try
@@ -93,97 +120,105 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
-        /*
-         * deprecated 2015-09-08, JMM -- moved all processing into SQL
         /// <summary>
-        /// Import Customers to CS
+        /// Import DSR data
         /// </summary>
-        public void ImportCustomersToOrganizationProfile()
+        public void ImportDsrInfo()
         {
             try
             {
                 DateTime start = DateTime.Now;
-                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import customers to CS {0}", start.ToString()));
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import dsrs to CS {0}", start.ToString()));
 
-                DataTable customers = stagingRepository.ReadCustomers();
+                DataTable dsrInfo = stagingRepository.ReadDsrInfo();
 
-                List<Organization> orgsForImport = new List<Organization>();
-                List<AddressProfiles> addressesForImport = new List<AddressProfiles>();
-
-                foreach (DataRow row in customers.Rows)
+                foreach (DataRow row in dsrInfo.Rows)
                 {
-                    orgsForImport.Add(CreateOrganizationFromStagedData(row));
-                    addressesForImport.Add(CreateAddressFromStagedData(row));
-                }
-
-                // Get Existing Organizations from CS
-                List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type, preferred_address and natl_or_regl_account_number
-
-                foreach (Organization org in orgsForImport)
-                //Parallel.ForEach(orgsForImport, new ParallelOptions { MaxDegreeOfParallelism = 2 }, org =>
-                {
-                    Hashtable orgValues = null;
-                    Hashtable addressValues = null;
                     try
                     {
-                        //if org exists, then update it
-                        if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
-                        {
-                            org.Id = existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id;
-                            orgValues = GetUpdateOrganizationStatement(org);
-                            stagingRepository.ExecuteProfileObjectQuery(orgValues["Query"].ToString());
-                        }
-                        //if it doesn't exist, then create it
-                        else
-                        {
-                            orgValues = GetCreateOrganizationStatment(org);
-                            stagingRepository.ExecuteProfileObjectQuery(orgValues["Query"].ToString());
-                        }
+                        var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr();
+                        newDsr.Branch = row.GetString("BranchId");
+                        newDsr.DsrNumber = row.GetString("DsrNumber");
+                        newDsr.EmailAddress = row.GetString("EmailAddress");
+                        newDsr.Name = row.GetString("Name");
+                        newDsr.ImageUrl = row.GetString("ImageUrl");
+                        newDsr.PhoneNumber = row.GetString("Phone");
 
-                        AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber && x.AddressType == org.BranchNumber).FirstOrDefault();
-                        string existingOrgId = String.Empty;
-                        if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
-                        {
-                            existingOrgId = existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id;
-                        }
-
-                        DataTable results = GetSingleProfileProperty(ProfileObjectType.Organization, "u_preferred_address", existingOrgId);
-
-                        if (results.Rows.Count > 0)
-                        {
-                            address.Id = results.Rows[0]["u_preferred_address"].ToString();
-                            addressValues = GetUpdateAddressStatement(address);
-                            stagingRepository.ExecuteProfileObjectQuery(addressValues["Query"].ToString());
-
-                        }
-                        else
-                        {
-                            addressValues = GetCreateAddressStatement(address);
-                            stagingRepository.ExecuteProfileObjectQuery(addressValues["Query"].ToString());
-
-                            //update the preferred address of parent object
-                            if (orgValues != null)
-                            {
-                                UpdateSingleProfileProperty(ProfileObjectType.Organization, "u_preferred_address", addressValues["AddressId"].ToString(), orgValues["OrganizationId"].ToString());
-                            }
-                        }
+                        dsrLogic.CreateOrUpdateDsr(newDsr);
                     }
-                    catch (Exception ex)
+                    catch (Exception ex1)
                     {
-                        eventLog.WriteErrorLog(String.Format("ETL: Error Importing customer to CS -- individual customer.  {0} -- {1}", ex.Message, ex.StackTrace));
+                        eventLog.WriteErrorLog(String.Format("ETL: Error importing dsr to CS.  {0} -- {1}", ex1.Message, ex1.StackTrace));
                     }
                 }
-                //);
+
+                //TODO: Move image to multidocs
+                //dsrInfo contains fields:  EmailAddress and EmployeePhoto
+                DataTable dsrImages = stagingRepository.ReadDsrImages();
+                foreach (DataRow row in dsrImages.Rows)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(row["EmployeePhoto"].ToString()))
+                        {
+                            dsrLogic.SendImageToMultiDocs(row.GetString("EmailAddress"), (byte[])row["EmployeePhoto"]);
+                        }
+                    }
+                    catch (Exception ex2)
+                    {
+                        eventLog.WriteErrorLog(String.Format("ETL: Error sending dsr image to multi-docs.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+                    }
+                }
 
                 TimeSpan took = DateTime.Now - start;
-                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import customers to CS.  Process took {0}", took.ToString()));
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import dsrs.  Process took {0}", took.ToString()));
             }
             catch (Exception e)
             {
-                eventLog.WriteErrorLog(String.Format("ETL: Error Importing customers to CS -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+                eventLog.WriteErrorLog(String.Format("ETL: Error Importing dsrs -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
             }
         }
-        */
+
+        /// <summary>
+        /// Import user customer access matrix
+        /// </summary>
+        public void ImportUsersWithAccess() {
+            try {
+                DateTime start = DateTime.Now;
+                eventLog.WriteInformationLog( String.Format( "ETL: Internal User Access reference table starting {0}", start.ToString() ) );
+
+                List<Core.Models.Profile.Customer> customers = _customerRepo.GetCustomers();
+
+                foreach (Core.Models.Profile.Customer customer in customers) {
+                    List<UserProfile> internalUsers = _userRepo.GetCSProfileForInternalUsers();
+
+                    foreach (UserProfile p in internalUsers) {
+                        Core.Models.Profile.UserProfile profile = _userLogic.FillUserProfile( p );
+                        if (profile == null) continue;
+
+                        PagedResults<Core.Models.Profile.Customer> c = _userLogic.CustomerSearch( profile, customer.CustomerNumber, new PagingModel(), null, CustomerSearchType.Customer );
+
+                        if (c.Results != null && c.Results.Where( x => x.CustomerNumber.Equals( customer.CustomerNumber ) &&
+                                                                  x.CustomerBranch.Equals( customer.CustomerBranch, StringComparison.InvariantCultureIgnoreCase ) ).Count() > 0) {
+                            InternalUserAccess model = new InternalUserAccess();
+                            model.CustomerId = customer.CustomerId;
+                            model.CustomerNumber = customer.CustomerNumber;
+                            model.BranchId = customer.CustomerBranch;
+                            model.UserId = profile.UserId;
+                            model.EmailAddress = profile.UserName;
+                            model.RoleId = profile.RoleName;
+                            _userAccessRepo.Save( model );
+                        }
+                    }
+                }
+
+                TimeSpan took = DateTime.Now - start;
+                eventLog.WriteInformationLog( string.Format( "ETL: Import Process Finished: Internal User Access reference. Process took {0}", took.ToString() ) );
+            } catch (Exception e) {
+                eventLog.WriteErrorLog( "ETL: Error importing internal users.", e );
+            }
+        }
+
         /// <summary>
         /// Update a single profile property
         /// </summary>
@@ -478,65 +513,6 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Import DSR data
-        /// </summary>
-        public void ImportDsrInfo()
-        {
-            try
-            {
-                DateTime start = DateTime.Now;
-                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import dsrs to CS {0}", start.ToString()));
-
-                DataTable dsrInfo = stagingRepository.ReadDsrInfo();
-
-                foreach (DataRow row in dsrInfo.Rows)
-                {
-                    try
-                    {
-                        var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr();
-                        newDsr.Branch = row.GetString("BranchId");
-                        newDsr.DsrNumber = row.GetString("DsrNumber");
-                        newDsr.EmailAddress = row.GetString("EmailAddress");
-                        newDsr.Name = row.GetString("Name");
-                        newDsr.ImageUrl = row.GetString("ImageUrl");
-                        newDsr.PhoneNumber = row.GetString("Phone");
-
-                        dsrLogic.CreateOrUpdateDsr(newDsr);
-                    }
-                    catch (Exception ex1)
-                    {
-                        eventLog.WriteErrorLog(String.Format("ETL: Error importing dsr to CS.  {0} -- {1}", ex1.Message, ex1.StackTrace));
-                    }
-                }
-
-                //TODO: Move image to multidocs
-                //dsrInfo contains fields:  EmailAddress and EmployeePhoto
-                DataTable dsrImages = stagingRepository.ReadDsrImages();
-                foreach (DataRow row in dsrImages.Rows)
-                {
-                    try
-                    {
-                        if (!string.IsNullOrEmpty(row["EmployeePhoto"].ToString()))
-                        {
-                            dsrLogic.SendImageToMultiDocs(row.GetString("EmailAddress"), (byte[])row["EmployeePhoto"]);
-                        }
-                    }
-                    catch (Exception ex2)
-                    {
-                        eventLog.WriteErrorLog(String.Format("ETL: Error sending dsr image to multi-docs.  {0} -- {1}", ex2.Message, ex2.StackTrace));
-                    }
-                }
-
-                TimeSpan took = DateTime.Now - start;
-                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import dsrs.  Process took {0}", took.ToString()));
-            }
-            catch (Exception e)
-            {
-                eventLog.WriteErrorLog(String.Format("ETL: Error Importing dsrs -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
-            }
-        }
-
-        /// <summary>
         /// Create address from stage data
         /// </summary>
         /// <param name="row"></param>
@@ -784,20 +760,12 @@ namespace KeithLink.Svc.Impl.ETL
             return profileSystem;
         }
 
-        private enum ProfileOperationType
-        {
-            Create
-            , Update
-        }
-
-        private enum ProfileObjectType
-        {
-            Organization
-            , Address
-        }
-
-        public static string ToSQLFormat(string valueToParse)
-        {
+        /// <summary>
+        /// Convert string special symbols to SQL format
+        /// </summary>
+        /// <param name="valueToParse"></param>
+        /// <returns></returns>
+        public static string ToSQLFormat( string valueToParse ) {
             //replace single quotes with triple quotes for insert
             valueToParse = valueToParse.Replace("'", "''");
             return valueToParse;
