@@ -31,7 +31,6 @@ angular.module('bekApp')
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
-    console.log(window.navigator.useragent);
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE

@@ -462,7 +462,32 @@ angular.module('bekApp')
         }
         }
     }
-  }
+  };
+
+  //Opens modal with payments object passed from payInvoices function
+  //payments object uses getSelectedInvoices function
+  $scope.openInvoiceConfirmation = function(payments) {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/invoiceconfirmationmodal.html',
+      controller: 'InvoiceConfirmationModalController',
+      backdrop: 'static',
+      scope: $scope,
+        resolve: {
+          payments: function () {
+            return payments;
+          }
+        }
+    });
+    //Closes modal window and redirects to transactions window if submit payments button is used
+    modalInstance.result.then(function(){
+        if(modalInstance.result.$$state.value){
+          $scope.invoiceForm.$setPristine();
+          $state.go('menu.transaction');
+        }else{
+          return;
+        }
+    });
+  };
 
   var processingPayInvoices = false;
   $scope.payInvoices = function () {
@@ -471,6 +496,7 @@ angular.module('bekApp')
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
       payments = $scope.defaultDates(payments);
+      processingPayInvoices = false;
       InvoiceService.checkTotals(payments).then(function(resp) {
         if(resp.successResponse.isvalid){  
           $scope.errorMessage = '';
@@ -480,20 +506,14 @@ angular.module('bekApp')
           payments.forEach(function(payment){  
             if(payment.date.length !== 10){
             payment.date = DateService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format(Constants.dateFormat.yearMonthDayDashes);
-          }
-          })
-          InvoiceService.payInvoices(payments).then(function() {
-            $scope.invoiceForm.$setPristine();
-            $state.go('menu.transaction');
-          }).finally(function () {
-             processingPayInvoices = false;
-            });
-        }
-        else{
+            }
+          });
+        } else{
           $scope.displayValidationError(resp);          
           processingPayInvoices = false;
         }    
-    });
+      });
+      $scope.openInvoiceConfirmation(payments);
     }
   };
 
