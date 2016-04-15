@@ -1,7 +1,15 @@
 <div page-header-bar>
   <div header-message>
-    Customer Group: {{customerGroup.name}}
-    <button type="button" confirmed-click="deleteGroup(customerGroup.id)" class="hidden-print btn btn-sm btn-danger" ng-if="canManageCustomerGroups" ng-confirm-click="{{'This will delete the customer group and remove all customer and user associations with this group. Are you sure you want to delete this customer group?'}}">Delete Group</button>
+    Customer Group:
+    <span ng-hide="isRenaming">{{customerGroup.name}}
+      <span ng-if="userProfile.rolename == 'branchismanager' || userProfile.rolename == 'beksysadmin'" class="icon-pencil hand-pointer large-icon text-light" ng-click="startRenamingGroup(customerGroup)"></span>
+    <span ng-if="userProfile.rolename == 'branchismanager' || userProfile.rolename == 'beksysadmin'" confirmed-click="deleteGroup(customerGroup.id)" class="hidden-print icon-trash hand-pointer large-icon text-light" ng-if="canManageCustomerGroups" ng-confirm-click="{{'This will delete the customer group and remove all customer and user associations with this group. Are you sure you want to delete this customer group?'}}"></span>
+    </span>
+    <span ng-show="isRenaming">
+      <input type="text" id="cartName" ng-model="currentGroupName" focus-me="isRenaming" required>
+        <button type="submit" class="btn-no-style icon-checkmark large-icon hand-pointer text-green" ng-click="updateOldGroup(customerGroup, currentGroupName)"></button>
+      <span class="icon-cross large-icon hand-pointer text-red" ng-click="cancelRenamingGroup()"></span>
+    </span>
   </div>
   <div header-buttons></div>
 </div>
