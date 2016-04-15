@@ -669,7 +669,7 @@
                     </tr>
                     <tr ng-if="(selectedList.permissions.canSeeParlevel)">
                       <td>{{selectedList.permissions.alternativeParHeader || 'PAR'}}</td>
-                      <td ng-if="::(selectedList.permissions.canEditParlevel)">
+                      <td ng-if="(selectedList.permissions.canEditParlevel)">
                         <ng-form name="parlevelForm_mobile" class="form-control-group__input">
                             <span class="counter-container">
                               <button selection-model-ignore type="button" class="btn btn-warning icon-minus3 hidden-lg" ng-disabled = "item.parlevel === 0" ng-click="item.parlevel = item.parlevel - 1;"></button>
