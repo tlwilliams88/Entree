@@ -50,9 +50,10 @@ angular.module('bekApp')
 
     $scope.clearItems = function(items){
       if(items){
-        ProductService.clearRecentlyViewedItems(items).then(function(items) {
+        ProductService.clearRecentlyViewedItems(items).then(function() {
           $scope.loadingRecentlyViewedItems = false;
-          $scope.recentlyViewedItems = items;
+          $scope.recentlyViewedItems = '';
+          $scope.displayMessage('success', 'Successfully cleared recently viewed items.')
         })
       }
 
