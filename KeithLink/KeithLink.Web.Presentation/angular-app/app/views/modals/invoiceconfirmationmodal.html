@@ -8,7 +8,7 @@
           
         <table style=""class="table table-border table-striped-rows" navigate-table="mobile">
           <thead>
-            <tr fsm-sticky-header scroll-body="'.table-invoices'" scroll-stop="0" scroll-offset="74 + 64 + 17 + 30">
+            <tr>
               <th>
                 Customer 
                 <span>Name </span>
@@ -43,10 +43,9 @@
              </div>
             </td>
             <td class="display:inline-block; white-space:nowrap;" >
-                  <div>                  
-                    {{payment.account}}
-                  </div>
-                </div>
+              <div>                  
+                {{payment.account}}
+              </div>
             </td>
           </tr>
 
@@ -62,17 +61,14 @@
                     Bank Account
                   </td>            
                   <td>
-                        <div class = "account-info">                  
-                          {{invoice.account}}
-                        </div>
+                    <div class = "account-info">                  
+                      {{invoice.account}}
                     </div>
                   </td>  
                 </tr>
               </table>
             </td>
           </tr>
-
-        </tbody>
 
       </table>
       </div>
@@ -101,4 +97,3 @@
        </div>
     </div>
   </form>
-</div>

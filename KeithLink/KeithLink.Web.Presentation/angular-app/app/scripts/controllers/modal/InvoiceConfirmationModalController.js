@@ -20,18 +20,4 @@ angular.module('bekApp')
     $scope.invoiceModalCancel = function () {
       $modalInstance.close(false);
     };
-
-  //   $scope.paymentsSubmitted = function(modalCloseAndSubmit) {
-  //   var modalInstance = $modal.open({
-  //     templateUrl: 'views/invoice.html',
-  //     controller: 'InvoiceController',
-  //     scope: $scope,
-  //       resolve: {
-  //         modalCloseAndSubmit: function () {
-  //           return redirectToTransactions;
-  //         }
-  //       }
-  //   });
-  // };
-
 }]);
