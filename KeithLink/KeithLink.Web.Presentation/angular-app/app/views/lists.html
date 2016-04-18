@@ -361,7 +361,7 @@
           navigate-table="lists" 
           class="custom-lists__table table table-border table-striped-rows">
           <thead>
-            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163" current-page="currentPage">
+            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="selectedList.allSelected" ng-click="changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort[0].order)"> 
@@ -396,8 +396,10 @@
                 <span>{{selectedList.permissions.alternativeFieldHeader2}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName2" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels || (isIE && selectedList.ismandatory)" ng-click="sortList('label',sort[0].order)" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden'}">
                 <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="(isIE && selectedList.ismandatory)" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden'}">
               </th>
               <th class="hidden-mobile-visible-print" ng-if="(!selectedList.read_only)">
                   Each
@@ -464,7 +466,6 @@
               </td>
               <span class="hidden-sm hidden-xs" >                
               <td ng-if="itemIconsActive" class="hidden-mobile-visible-print" item-icons></td>
-<!--                  loading-->
               <td ng-if="!itemIconsActive" class="hidden-mobile-visible-print">
                 <a ng-if="item.is_specialty_catalog === true"><span class="text-regular icon-leaf"></span></a>
                 <a ng-if="item.inhistory === true"><span class="text-regular icon-history"></span></a>
@@ -480,16 +481,16 @@
                 <a ng-if="item.temp_zone === 'C'"><span class="text-regular icon-thermometer"></span></a>
                 <a ng-if="item.temp_zone === 'D'"><span class="text-regular icon-air"></span></a>
               </td>
-              <td ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
+              <td id="{{item[selectedList.permissions.alternativeFieldName]}}" ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
                 {{item[selectedList.permissions.alternativeFieldName]}}
               </td>
-              <td ng-if="selectedList.permissions.alternativeFieldName2" class="hidden-xs hidden-sm text-center">
+              <td id="{{item[selectedList.permissions.alternativeFieldName2]}}" ng-if="selectedList.permissions.alternativeFieldName2" class="hidden-xs hidden-sm text-center">
                 {{item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
-                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
-                  <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
+              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels) || (isIE && selectedList.ismandatory)">
+                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden'}">
+                  <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
                   </select>
                   <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
@@ -504,12 +505,12 @@
                     focus-me="item.isEditing" 
                     placeholder="New Label..." 
                     ng-required="item.isEditing" 
-                    ng-model-options="{ debounce: 1000 }" ng-model="item.editLabel" />
+                    ng-model="item.editLabel" />
 
                   <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
-              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
+              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)|| (isIE && selectedList.ismandatory)">
                 {{item.label}}
               </td>
               <!-- Label for Print -->
@@ -528,7 +529,7 @@
               </td>
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
-                <span ng-if="isIE">
+<!--                 <span ng-if="isIE">
                   <ng-form name="parlevelForm">
                      <input                    
                       id="parlevel" 
@@ -543,22 +544,16 @@
                       onfocus="this.select();" 
                       onmouseup="return false;"/>
                   </ng-form>
-                </span>
-                <span ng-if="!isIE">
+                </span> -->
                   <ng-form name="parlevelForm">
                      <input                    
                       id="parlevel" 
                       name="parlevel"                    
-                      type="text" 
-                      ng-init="item.parlevel = item.parlevel || 0"     
+                      type="text"     
                       numeric-validation
                       ng-model="item.parlevel"     
-                      ng-blur="initParLvl(item)"
-                      class="text-right input-number bek-no-drag tabstop" 
-                      onfocus="this.select();" 
-                      onmouseup="return false;"/>
+                      class="text-right input-number bek-no-drag tabstop" />
                   </ng-form>
-                </span>
               </td>
 
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" style="padding-top:12px;" ng-if="(selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel)">
@@ -671,19 +666,16 @@
                       <td>{{selectedList.permissions.alternativeParHeader || 'PAR'}}</td>
                       <td ng-if="(selectedList.permissions.canEditParlevel)">
                         <ng-form name="parlevelForm_mobile" class="form-control-group__input">
-                            <span class="counter-container">
-                              <button selection-model-ignore type="button" class="btn btn-warning icon-minus3 hidden-lg" ng-disabled = "item.parlevel === 0" ng-click="item.parlevel = item.parlevel - 1;"></button>
-                                <input 
-                                  id="parlevel" 
-                                  name="parlevel" 
-                                  type="text"
-                                  numeric-validation
-                                  ng-model="item.parlevel" 
-                                  ng-blur="initParLvl(item)"
-                                  class="input-number input-number-mobile text-right bek-no-drag form-control"
-                                />
-                              <button selection-model-ignore type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.parlevel = item.parlevel + 1;"></button>
-                          </span>
+                          <input 
+                            id="parlevel" 
+                            name="parlevel" 
+                            type="text"
+                            numeric-validation  
+                            ng-model="item.parlevel" 
+                            ng-blur="initParLvl(item)"
+                            class="input-number input-number-mobile text-right bek-no-drag form-control"
+                            ng-model-options="{debounce: 500}"
+                            />
                         </ng-form>
                       </td>
                       <td ng-if="(!selectedList.permissions.canEditParlevel)">
@@ -699,6 +691,7 @@
                 </table>
               </td>
             </tr>
+
           </tbody> 
 
           <tfoot ng-if="(selectedList.items.length) === 0 && !loadingResults">
