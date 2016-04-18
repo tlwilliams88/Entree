@@ -99,8 +99,8 @@ angular.module('bekApp')
       var displayText;
 
       if ($scope.paramType === 'category') {
-        CategoryService.getCategories($state.params.catalogType).then(function(data) {
-          angular.forEach(data.categories, function(item, index) {
+        CategoryService.getCategories($state.params.catalogType).then(function(categories) {
+          angular.forEach(categories, function(item, index) {
             if (item.search_name === $scope.paramId) { // for the bread crumb, we map from the search name back to the display name
               displayText = item.name;
             }
