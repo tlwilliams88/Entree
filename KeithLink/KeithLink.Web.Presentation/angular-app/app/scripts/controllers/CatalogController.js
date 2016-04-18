@@ -35,8 +35,8 @@ angular.module('bekApp')
         $scope.recommendedItems = items;
         $scope.loadingRecommendedItems = false;
         
-        CategoryService.getCategories($state.params.catalogType).then(function(data) {
-          $scope.categories = data.categories;
+        CategoryService.getCategories($state.params.catalogType).then(function(categories) {
+          $scope.categories = categories;
           $scope.loadingCategories = false;
           
           BrandService.getHouseBrands().then(function(data){
