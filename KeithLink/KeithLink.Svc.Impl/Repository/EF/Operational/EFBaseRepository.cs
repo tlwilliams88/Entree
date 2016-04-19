@@ -1,5 +1,9 @@
 ﻿using KeithLink.Svc.Core.Models.EF;
+
 using Microsoft.Practices.Unity.Utility;
+
+using EntityFramework.BulkInsert.Extensions;
+
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -20,6 +24,10 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         #endregion
 
         #region methods
+        public virtual void BulkInsert(IEnumerable<T> entities) {
+            UnitOfWork.Context.BulkInsert<T>(entities);
+        }
+
         public virtual void Create(T entity) {
             this.Entities.Add(entity);
         }

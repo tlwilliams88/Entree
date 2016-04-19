@@ -13,6 +13,7 @@ using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.ContentManagement;
+using KeithLink.Svc.Core.Interface.Customers;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
@@ -60,6 +61,7 @@ using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using KeithLink.Svc.Impl.Repository.ContentManagement;
+using KeithLink.Svc.Impl.Repository.Customers;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Email;
 using KeithLink.Svc.Impl.Repository.Invoices;
@@ -113,6 +115,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // customer
             builder.RegisterType<AccountRepository>().As<IAccountRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            builder.RegisterType<InternalUserAccessRepository>().As<IInternalUserAccessRepository>();
 
             // division
             builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
@@ -297,6 +300,18 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // cache
             builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
             builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+
+            // ETL logic
+            builder.RegisterType<CatalogLogicImpl>().As<Core.Interface.ETL.ICatalogLogic>();
+            builder.RegisterType<CategoriesImportLogicImpl>().As<ICategoriesImport>();
+            builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
+            builder.RegisterType<HouseBrandsImportLogicImpl>().As<IHouseBrandsImport>();
+            builder.RegisterType<ItemImportLogicImpl>().As<IItemImport>();
+            builder.RegisterType<ListImportLogicImpl>().As<IListsImportLogic>();
+
+            // ETL repositories
+            builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
+            builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
         }
 
         internal static void AddOtherWebApiDependencies(ContainerBuilder builder)
