@@ -225,7 +225,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             console.log("time per row: ", t/list.length);
                         }
                         busy=false;
-                        if(activeElement && activeElement.nodeName === "INPUT"){
+                        if(activeElement && activeElement.id === 'parlevel'){
                             if(isIE){
                             setTimeout(function(){
                                 activeElement.focus();
@@ -262,7 +262,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                     newScope.$$postDigest(function() {
                         cb(clone);
-                        clone[0].children[0].className += " unoptimized"
                     });
 
                     newScope.$digest();
@@ -301,9 +300,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     // -1 would indicate the row itself was clicked.
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
-                        // var cloneCopy = clone;
-                        // cloneCopy[0].previousElementSibling.children[0].children[12].children[0].children[0].value = previousParLevelValue;
-                        // clone = cloneCopy;
                         scope.itemIconsActive = true;
                         if(scope.list.indexOf(item) % 2 == 0){
                             $target.replaceWith(clone);
@@ -312,13 +308,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             $target.replaceWith(clone);
                         }
 
-                        clone[0].children[0].className += ' unoptimized';
-
                         if(activeElement && evt.type == "focusin"){
-                            // setTimeout(function(){
-                                inputFocus(clone, clone[0], "parentClickHandler, after renderUnoptimized");
+                                inputFocus(clone, clone[0]);
                                 activeElement = '';
-                            // }, 1);
                         }
                         
                         currentRowEls[rowId] = {

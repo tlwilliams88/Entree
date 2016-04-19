@@ -552,7 +552,8 @@
                       type="text"     
                       numeric-validation
                       ng-model="item.parlevel"     
-                      class="text-right input-number bek-no-drag tabstop" />
+                      class="text-right input-number bek-no-drag tabstop"
+                      ng-keypress="parlevelChanged($event)" />
                   </ng-form>
               </td>
 
