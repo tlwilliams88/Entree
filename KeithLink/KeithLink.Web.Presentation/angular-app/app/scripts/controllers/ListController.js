@@ -571,8 +571,8 @@ angular.module('bekApp')
     ********************/
 
     $scope.parlevelChanged = function(evt) {
-      var unicode=evt.keyCode ? evt.keyCode : evt.charCode;
-      if (unicode >= 48 && unicode <= 57) {
+      var keycode=evt.keyCode ? evt.keyCode : evt.charCode;
+      if (keycode >= 48 && keycode <= 57) {
         $scope.listForm.$setDirty();
       }else{
         return;
