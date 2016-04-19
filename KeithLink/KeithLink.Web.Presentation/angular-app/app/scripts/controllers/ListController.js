@@ -31,7 +31,6 @@ angular.module('bekApp')
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
-    console.log(window.navigator.useragent);
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -565,6 +564,19 @@ angular.module('bekApp')
         }
         unselectAllDraggedItems();
       });
+    };
+
+    /********************
+    PARLEVEL
+    ********************/
+
+    $scope.parlevelChanged = function(evt) {
+      var unicode=evt.keyCode ? evt.keyCode : evt.charCode;
+      if (unicode >= 48 && unicode <= 57) {
+        $scope.listForm.$setDirty();
+      }else{
+        return;
+      }
     };
 
 

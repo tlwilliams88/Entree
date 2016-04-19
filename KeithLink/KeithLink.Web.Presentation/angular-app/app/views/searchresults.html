@@ -50,7 +50,7 @@
     </accordion-group>
     <accordion-group is-open="status.openBrand" ng-show="facets.brands.available.length > 0">
     <accordion-heading>
-    Brand<i class="pull-right" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
+    Brands<i class="pull-right" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
   </accordion-heading>
   <div ng-repeat="brand in facets.brands.available" class="panel panel-default">
     <div class="panel-body">
@@ -67,7 +67,7 @@
 
 <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
 <accordion-heading>
-Manufacturer<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
+Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
 </accordion-heading>
 <div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
   <div class="panel-body">
@@ -132,7 +132,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
     <div class="row">
       <div class="col-sm-12">
-        <h3>{{paramType === 'category' ? featuredBreadcrumb.displayText : 'Categories'}}</h3>
+        <h3>Categories</h3>
         <ul class="nav search-results__category" ng-show="facets.categories.available.length > 0">
           <li ng-repeat="category in facets.categories.available | orderBy: '-count'">
             <a 

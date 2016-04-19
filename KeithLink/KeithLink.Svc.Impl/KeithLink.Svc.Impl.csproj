@@ -328,12 +328,15 @@
     <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.Designer.cs">
       <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201604191848159_blank for 1.6.cs" />
+    <Compile Include="Repository\EF\Migrations\201604191848159_blank for 1.6.Designer.cs">
+      <DependentUpon>201604191848159_blank for 1.6.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs" />
+    <Compile Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.Designer.cs">
+      <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -812,6 +815,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">
       <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.resx">
+      <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
@@ -1311,12 +1317,8 @@
     <Content Include="Dependencies\BarcodeLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Repository\EF\Operational\BEKDBContext.Views.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>BEKDBContext.Views.cs</LastGenOutput>
-    </Content>
-    <EmbeddedResource Include="Repository\EF\Operational\BEKDBContext.Views.xml">
-      <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604191848159_blank for 1.6.resx">
+      <DependentUpon>201604191848159_blank for 1.6.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Images\Logo.png" />
     <Content Include="SqlServerTypes\readme.htm" />

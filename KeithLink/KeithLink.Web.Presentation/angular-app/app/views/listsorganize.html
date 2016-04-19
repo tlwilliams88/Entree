@@ -11,183 +11,126 @@
 </div>
 
 <div class="page-content">
-
+  
   <p style="font-size: 14px;">
     <a ui-sref="menu.lists.items({listId: list.listid})"><span class="icon-arrow-left6"></span> Back to List</a>
   </p>
 
   <form
     name="organizeListForm"
-    unsaved-warning-form
-    novalidate
-    class="style-validation-errors"
+    unsaved-warning-form 
+    novalidate 
+    class="style-validation-errors" 
     autocomplete="off">
-    <table
+    <table 
       class="table table-border table-striped-rows table-organize-list"
-      ui-sortable="{
-       handle: '.bek-sortable-handle',
-       stop: stopReorder,
-       tolerance: 'pointer', containment: 'document' }"
+      navigate-table="lists"
+      ui-sortable="{ 
+        stop: stopReorder, 
+        tolerance: 'pointer', 
+        containment: 'document' }" 
       ng-model="list.items">
       <thead>
         <tr fsm-sticky-header scroll-body="'.table-organize-list'" scroll-stop="0">
           <th>#</th>
-          <th
-            class="sort-col-header"
+          <th 
+            class="sort-col-header" 
             ng-click="sort('itemnumber', sortDescending)">
             <span>Item <span sort-icons field="'itemnumber'" sortorder="sortDescending" sortby="sortField">#</span></span>
           </th>
-          <th
-            class="sort-col-header"
+          <th 
+            class="sort-col-header" 
             ng-click="sort('name', sortDescending)">
             <span>Name <span sort-icons field="'name'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th
-            class="sort-col-header hidden-xs hidden-sm"
-            ng-click="sort('brand_extended_description', sortDescending)">
+          <th 
+            class="sort-col-header hidden-xs hidden-sm" 
+            ng-click="sort('brand_extended_description', sortDescending)">            
             <span>Brand <span sort-icons field="'brand_extended_description'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th
-            class="sort-col-header hidden-xs hidden-sm"
-            ng-click="sort('class', sortDescending)">
+          <th 
+            class="sort-col-header hidden-xs hidden-sm" 
+            ng-click="sort('class', sortDescending)">            
             <span>Category<span sort-icons field="'class'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th
-            class="sort-col-header hidden-xs hidden-sm"
+          <th 
+            class="sort-col-header hidden-xs hidden-sm" 
             ng-click="sort('packsize', sortDescending)">
             <span>Pack/Size <span sort-icons field="'packsize'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th
-            class="sort-col-header hidden-xs hidden-sm"
+          <th 
+            class="sort-col-header hidden-xs hidden-sm" 
             ng-click="sort('notes', sortDescending)">
             <span>Notes <span sort-icons field="'notes'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
           <th class="hidden-xs hidden-sm"></th>
           <th class="hidden-xs hidden-sm"></th>
-          <th
-            class="sort-col-header hidden-xs hidden-sm"
+          <th 
+            class="sort-col-header hidden-xs hidden-sm" 
             ng-click="sort('label', sortDescending)">
             <span>Label <span sort-icons field="'label'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th
-            class="sort-col-header hidden-xs hidden-sm"
+          <th 
+            class="sort-col-header hidden-xs hidden-sm" 
             ng-click="sort('par', sortDescending)">
             <span>PAR <span sort-icons field="'par'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th></th>
-          <th></th>
+          <th></th> 
+          <th></th> 
           <th ng-if="list.permissions.canDeleteItems" ></th>
         </tr>
       </thead>
-      <tbody
-        ng-repeat="item in list.items | filter:{listitemid: '!!', isdeleted:'!true'} "
-        class="item_{{item.listitemid}} tableBodySort">
-        <tr class=" tableRowSort" ng-class="{ odd : $odd, even: $even, 'bek-sortable-handle' : !isMobileDevice }">
+      <tbody ng-repeat="item in list.items | filter:{listitemid: '!!', isdeleted:'!true'} " class="item_{{item.listitemid}}">
+        <tr class="ui-draggable-handle" ng-class="{ odd : $odd, even: $even}">
           <td class="input-col">
             <ng-form>
-              <input
+              <input 
                 onfocus="this.select();"
                 type="text"
                 ng-blur="changePosition(list.items, item, true)"
-                integer
+                integer 
                 class="text-right input-number bek-no-drag tabstop"
                 ng-model="item.position"
                 ng-model-options="{debounce: 500}"
                 ng-change="changePosition(list.items, item, false)">
             </ng-form>
           </td>
-          <td>{{item.itemnumber}}</td>
+          <td>{{::item.itemnumber}}</td>
           <td>
-            {{item.name}}
+            {{::item.name}}
           </td>
           <td class="hidden-xs hidden-sm">
-            {{item.brand_extended_description}}
+            {{::item.brand_extended_description}}
           </td>
           <td class="hidden-xs hidden-sm">
-            {{item.class}}
+            {{::item.class}}
           </td>
           <td class="hidden-xs hidden-sm">
-            {{item.packsize}}
+            {{::item.packsize}}
           </td>
           <td class="notes-col hidden-xs hidden-sm">
-            {{item.notes}}
-          </td>
-          <td class="hidden-xs hidden-sm"> 
-          <td>
-              <!-- Specialty Catalog -->
-              <a ng-if="item.is_specialty_catalog === true">
-                <span tooltip="This is a specialty catalog item. This product will not ship immediately." class="text-regular icon-leaf"></span>
-              </a>
-                  
-              <!-- History -->
-              <a ng-if="item.inhistory === true">
-              <span tooltip="Previously ordered" class="text-regular icon-history"></span>
-              </a>
-
-              <!-- Note -->
-              <a ng-if="item.notes">
-                <span tooltip="{{item.notes}}" class="icon-docs text-regular"></span> 
-              </a>
-
-              <!-- Replacement Item -->
-              <a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="item.replacementitem > 0">
-                <span tooltip="Item is being replaced by item # {{item.replacementitem}}" class="text-red icon-cycle"></span>
-              </a>
-              <a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="item.replaceditem > 0">
-                <span tooltip="Item is replacing item # {{item.replaceditem}}" class="text-green icon-cycle"></span>
-              </a>
-              <!-- Substituted Item (orders only) -->
-              <a ng-if="item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item substituted for Item # {{item.substituteditemnumber}}"></span></a>
-              <!-- Deviated Cost -->
-              <a ng-if="item.deviatedcost === 'Y'">
-                <span tooltip="Deviated Price" class="text-regular icon-dollar"></span>
-              </a>
-              <!-- Sell Sheet -->
-              <a ng-if="item.sellsheet === 'Y'" ng-click="openExternalLink('http://multidocs.benekeith.com/SellSheet/GetFile?ItemNumber=' + item.itemnumber)">
-                <span tooltip="Product information sheet" class="text-regular icon-sellsheet"></span>
-              </a>
-              <!-- Child Nutrition -->
-              <a ng-if="item.childnutrition === 'Y'" ng-click="openExternalLink('http://multidocs.benekeith.com/ChildNutrition/GetFile?ItemNumber=' + item.itemnumber)">
-                <span tooltip="Child nutrition information" class="text-regular icon-apple"></span>
-              </a>
-              <!-- Non-Stock -->
-              <a ng-if="item.nonstock === 'Y'">
-                <span tooltip="Contact your DSR to order this item" class="text-regular icon-user"></span>
-              </a>
-              <!-- MSDS -->
-              <!--TEMP ZONE-->
-              <a ng-if="item.temp_zone === 'F'">
-                <span tooltip="Frozen" class="text-regular icon-snowflake"></span>
-              </a>
-              <a ng-if="item.temp_zone === 'C'">
-                <span tooltip="Refrigerated" class="text-regular icon-thermometer"></span>
-              </a>
-              <a ng-if="item.temp_zone === 'D'">
-                <span tooltip="Dry" class="text-regular icon-air"></span>
-              </a>
+            {{::item.notes}}
           </td>
           <td class="hidden-xs hidden-sm">
-            <span tooltip="{{::item.notes}}" ng-if="::item.notes" class="icon-docs"></span>
+            <span tooltip="{{::item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
           <td class="hidden-xs hidden-sm" item-icons></td>
           <td class="hidden-xs hidden-sm label-col">
-            {{item.label}}
+            {{::item.label}}
           </td>
-          <td class="hidden-xs hidden-sm bek-sortable-handle">
+          <td class="hidden-xs hidden-sm">
             {{::item.parlevel}}
           </td>
           <td class="icon-col">
             <span class="hidden-md hidden-lg icon-ellipsis text-light hand large-icon" ng-click="showDetails = !showDetails;"></span>
           </td>
           <td>
-          <span
-            class="icon-list2 bek-sortable-handle"
-            title="Click and drag to reorder list."
-            alt="Click and drag to reorder list."
-            ng-class="{'extra-large-icon' : isMobileDevice, 'large-icon' : !isMobileDevice}"
+          <span         
+            class="hidden-xs hidden-sm icon-list2 large-icon" 
+            tooltip="Click and drag to reorder list."
             style="cursor:move;">
           </span>
           </td>
-          <td ng-if="list.permissions.canDeleteItems" class="nowrap icon-col" ng-class="{'extra-large-icon' : isMobileDevice, 'large-icon' : !isMobileDevice}">
+          <td ng-if="list.permissions.canDeleteItems" class="nowrap large-icon icon-col"> 
             <a ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
           </td>
         </tr>
@@ -201,15 +144,15 @@
               <tbody>
                 <tr>
                   <td>Brand</td>
-                  <td>{{item.brand_extended_description}}</td>
+                  <td>{{::item.brand_extended_description}}</td>
                 </tr>
                 <tr>
                   <td>Pack/Size</td>
-                  <td>{{item.packsize}}</td>
+                  <td>{{::item.packsize}}</td>
                 </tr>
                 <tr>
                   <td>Notes</td>
-                  <td>{{item.notes}}</td>
+                  <td>{{::item.notes}}</td>
                 </tr>
                 <tr>
                 <tr>
@@ -217,11 +160,11 @@
                 </tr>
                 <tr>
                   <td>Label</td>
-                  <td class = "label-col">{{item.label}}</td>
+                  <td class = "label-col">{{::item.label}}</td>
                 </tr>
                 <tr>
                   <td>PAR</td>
-                  <td>{{item.parlevel}}</td>
+                  <td>{{::item.parlevel}}</td>
                 </tr>
               </tbody>
             </table>
@@ -235,7 +178,7 @@
           </td>
         </tr>
       </tfoot>
-
+      
     </table>
   </form>
 

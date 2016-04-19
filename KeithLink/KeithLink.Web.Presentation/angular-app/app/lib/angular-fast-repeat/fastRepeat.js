@@ -32,6 +32,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var currentRowEls = {};
                 var t;
                 var firstLabel;
+                var isIE;
 
                 // The rowTpl will be digested once -- want to make sure it has valid data for the first wasted digest.  Default to first row or {} if no rows
                 var scope = listScope.$new();
@@ -50,12 +51,31 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     renderLabels(scope);
                 });
 
+                // detect IE
+                // returns isIE is true if IE or false, if browser is not IE
+                function detectIE() {
+                    var ua = window.navigator.userAgent;
+
+                    var msie = ua.indexOf('MSIE ');//IE <11
+                    var trident = ua.indexOf('Trident/');//IE 11
+                    if (msie > 0) {
+                      isIE = true;
+                    } else if( trident > 0) {
+                      isIE = true;
+                    } else {
+                      isIE = false;
+                    }
+                }
+                detectIE();
+
                 function renderLabels(scope){
-                    if(scope.item.position == 1 && scope.item.label){
+                    if(listScope.selectedList.name !== "Mandatory"){
+                        if(scope.item.position == 1 && scope.item.label){
                         firstLabel = scope.item.label;
                         scope.item.label = '';
                     }
                     scope.fromRenderLabels = true;
+                    }
                 }
 
                 // Create an offscreen div for the template
@@ -158,8 +178,14 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         previousEl.after(row.el.last());
                         previousEl = row.el.last();
                     });
-                    if(activeElement){
+                    if(activeElement && activeElement.nodeName === "INPUT" && isIE){
+                        setTimeout(function(){
+                            activeElement.focus();
+                        }, 0)
+                    } else if(activeElement && activeElement.nodeName === "INPUT"){
                         activeElement.focus();
+                    } else {
+                        return;
                     }
                 };
 
@@ -172,6 +198,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     activeElement.focus();
                 }
                 listScope.$watch(function(scp){ return JSON.stringify(getter(scp), JSONStripper); }, function(list) {
+                    activeElement = document.activeElement;
                     tplContainer.width(elParent.width());
                     if(!scope.itemIconsActive){
                         scope.itemIconsActive = false;
@@ -190,15 +217,24 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         tplContainer.width(elParent.width());
                         scope.$digest();
 
-                        updateList(rowTpl, scope);
+                        updateList(rowTpl, scope, null);
+                        // inputFocus(rowTpl, item, "PostDigest");
                         if (showProfilingInfo) {
                             t = getTime() - t;
                             console.log("Total time: ", t, "ms");
                             console.log("time per row: ", t/list.length);
                         }
                         busy=false;
-                        if(activeElement){
-                            activeElement.focus();
+                        if(activeElement && activeElement.id === 'parlevel'){
+                            if(isIE){
+                            setTimeout(function(){
+                                activeElement.focus();
+                                activeElement.select();
+                            }, 0)
+                            }else {
+                                activeElement.focus();
+                                activeElement.select();
+                            }
                         }
                     });
                 }, false);
@@ -234,11 +270,16 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 }
 
                 function focusActiveElement(element){
-                    if(element && element.nodeName == "INPUT"){
+                    if(element && element.id === "parlevel"){
                         activeElement = element;
                     } else{
                         return;
                     }
+                }
+
+                function inputFocus(input, item, fromFunction){
+                        input[0].querySelector('#parlevel').focus();
+                        document.activeElement.select();
                 }
 
                 var parentClickHandler = function parentClickHandler(evt) {
@@ -259,9 +300,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     // -1 would indicate the row itself was clicked.
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
-                        // var cloneCopy = clone;
-                        // cloneCopy[0].previousElementSibling.children[0].children[12].children[0].children[0].value = previousParLevelValue;
-                        // clone = cloneCopy;
                         scope.itemIconsActive = true;
                         if(scope.list.indexOf(item) % 2 == 0){
                             $target.replaceWith(clone);
@@ -271,10 +309,8 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         }
 
                         if(activeElement && evt.type == "focusin"){
-                            setTimeout(function(){
-                                clone[0].querySelector('#parlevel').focus();
+                                inputFocus(clone, clone[0]);
                                 activeElement = '';
-                            }, 1);
                         }
                         
                         currentRowEls[rowId] = {

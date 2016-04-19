@@ -35,8 +35,8 @@ angular.module('bekApp')
         $scope.recommendedItems = items;
         $scope.loadingRecommendedItems = false;
         
-        CategoryService.getCategories($state.params.catalogType).then(function(data) {
-          $scope.categories = data.categories;
+        CategoryService.getCategories($state.params.catalogType).then(function(categories) {
+          $scope.categories = categories;
           $scope.loadingCategories = false;
           
           BrandService.getHouseBrands().then(function(data){
@@ -50,9 +50,10 @@ angular.module('bekApp')
 
     $scope.clearItems = function(items){
       if(items){
-        ProductService.clearRecentlyViewedItems(items).then(function(items) {
+        ProductService.clearRecentlyViewedItems(items).then(function() {
           $scope.loadingRecentlyViewedItems = false;
-          $scope.recentlyViewedItems = items;
+          $scope.recentlyViewedItems = '';
+          $scope.displayMessage('success', 'Successfully cleared recently viewed items.')
         })
       }
 

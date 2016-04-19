@@ -55,10 +55,11 @@ angular.module('bekApp')
   
   var processingSaveCustomerGroup = false;
   function saveCustomerGroup(group , showMessage) {
+    var duplicateName = false;
     var deferred = $q.defer();
     if (!processingSaveCustomerGroup) {
       processingSaveCustomerGroup = true;
-      var custUsers = group.customerusers
+      var custUsers = group.customerusers;
       delete group.customerusers;
       CustomerGroupService.updateGroup(group).then(function() {
         group.customerusers = custUsers;
@@ -240,6 +241,49 @@ angular.module('bekApp')
     }, function (errorMessage) {
       $scope.displayMessage('error', 'An error occurred checking if the user exists: ' + errorMessage);
     });
+  };
+
+  $scope.startRenamingGroup = function(group) {
+      $scope.currentGroupName = group.name;
+      $scope.isRenaming = true;
+    };
+
+  $scope.cancelRenamingGroup = function(){
+      $scope.isRenaming = false;
+    };
+
+  $scope.updateOldGroup = function(group, name){
+    var duplicateName = false;
+    // getAllGroups for user
+    CustomerGroupService.getGroups({
+          from: 0,
+          size: 50,
+          sort: [{order: "asc", field: "name"}]
+        }).then(function(customerGroups) {
+
+    if (customerGroups) {
+
+      // Cycle through each group and compare group name to new name
+      customerGroups.results.forEach(function(customerGroup) {
+          if(name === customerGroup.name){
+            duplicateName = (customerGroup.id === group.id) ? false : true;
+            $scope.isRenaming = duplicateName;
+          }
+        });
+
+      // If a duplicate is identified throw an error message immediately
+      // otherwise continue through groups array and save group
+          if(duplicateName){
+            $scope.currentGroupName = name;
+            document.getElementById("cartName").focus();
+            toaster.pop('error', 'Error Saving Group -- Cannot have two groups with the same name. Please try renaming this group once more.');
+          }else {
+            $scope.isRenaming = false;
+            group.name = name;
+            saveCustomerGroup(group, true);
+          }
+      }
+    })
   };
 
    $scope.addExistingUserWithNoGroup = function (profile) {
