@@ -336,7 +336,6 @@ angular.module('bekApp')
 
     $scope.deleteCart = function(cart) {
       CartService.deleteCart(cart.id).then(function() {
-        $scope.goToCart();
         $scope.displayMessage('success', 'Successfully deleted cart.');
         $state.go('menu.order');
       }, function() {
