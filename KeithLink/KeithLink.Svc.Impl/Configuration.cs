@@ -189,6 +189,14 @@ namespace KeithLink.Svc.Impl {
         // Queue Service Functions
         private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
         private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
+
+        // Catalog Service Functions
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_PROCESSTIME = "CatalogServiceUnfiImagesProcessTime";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_REPOSITORY = "CatalogServiceUnfiImagesRepo";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIR = "CatalogServiceUnfiImagesNewOnlyDir";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_MAKETHUMBNAILS = "CatalogServiceUnfiImagesMakeThumbnails";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIRTHUMBS = "CatalogServiceUnfiImagesNewOnlyDirThumbs";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_IXONE_AUTH_TOKEN = "CatalogServiceUnfiImagesIxOneAuthToken";
         #endregion
 
         #region methods
@@ -1094,6 +1102,53 @@ namespace KeithLink.Svc.Impl {
             }
         }
 
+        public static string CatalogServiceUnfiImagesIxOneAuthToken
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_IXONE_AUTH_TOKEN, String.Empty);
+            }
+        }
+
+        public static string CatalogServiceUnfiImagesProcessTime
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_PROCESSTIME, String.Empty);
+            }
+        }
+
+        public static string CatalogServiceUnfiImagesRepo
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_REPOSITORY, String.Empty);
+            }
+        }
+
+        public static string CatalogServiceUnfiImagesNewOnlyDir
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIR, String.Empty);
+            }
+        }
+
+        public static string CatalogServiceUnfiImagesMakeThumbnails
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_MAKETHUMBNAILS, String.Empty);
+            }
+        }
+
+        public static string CatalogServiceUnfiImagesNewOnlyDirThumbs
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIRTHUMBS, String.Empty);
+            }
+        }
         #endregion
     }
 }

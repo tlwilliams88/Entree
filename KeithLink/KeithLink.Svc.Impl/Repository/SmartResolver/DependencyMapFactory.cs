@@ -28,6 +28,16 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             return builder;
         }
 
+        public static ContainerBuilder GetCatalogSvcContainer()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
+            AutofacDependencyMapProvider.AddOtherCatalogServiceDependencies(builder);
+
+            return builder;
+        }
+
         public static ContainerBuilder GetOrderServiceContainer(){
             ContainerBuilder builder = new ContainerBuilder();
 
