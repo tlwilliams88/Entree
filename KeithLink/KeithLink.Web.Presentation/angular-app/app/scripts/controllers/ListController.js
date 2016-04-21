@@ -85,18 +85,19 @@ angular.module('bekApp')
 
     $scope.blockUIAndChangePage = function(page){
         $scope.startingPoint = 0;
-         $scope.endPoint = 0;   
-          var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-          blockUI.start("Loading List...").then(function(){
-            if(visited.length > 0){
-              $timeout(function() {
-                $scope.pageChanged(page, visited);
-              }, 100);
-            }
-            else{
+        $scope.endPoint = 0;
+        $scope.isChangingPage = true;
+        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+        blockUI.start("Loading List...").then(function(){
+          if(visited.length > 0){
+            $timeout(function() {
               $scope.pageChanged(page, visited);
-            }
-          })
+            }, 100);
+          }
+          else{
+            $scope.pageChanged(page, visited);
+          }
+        })
     }
 
      $scope.pageChanged = function(page) {      
@@ -572,7 +573,7 @@ angular.module('bekApp')
 
     $scope.parlevelChanged = function(evt) {
       var keycode=evt.keyCode ? evt.keyCode : evt.charCode;
-      if (keycode >= 48 && keycode <= 57) {
+      if (keycode >= 48 && keycode <= 57 && $scope.listForm.$Pristine) {
         $scope.listForm.$setDirty();
       }else{
         return;
@@ -585,8 +586,8 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
-    }
+      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true'});
+     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
     // helper object is passed in from the drag event
@@ -630,12 +631,17 @@ angular.module('bekApp')
 
     $(window).resize(function(){ 
       $scope.$apply(function(){ 
-      $scope.isDragEnabled();
+        $scope.isDragEnabled();
       });
     });
 
     // Check if element is being dragged, used to enable DOM elements
-    $scope.setIsDragging = function(event, helper, isDragging) {
+    $scope.setIsDragging = function(event, helper, isDragging, itemId ) {
+      $scope.selectedList.items.forEach(function(item){
+        if(itemId === item.listitemid){
+          item.isSelected = true;
+        }
+      })
       $scope.isDragging = isDragging;
     };
 
@@ -658,6 +664,7 @@ angular.module('bekApp')
 
     $scope.deleteItemFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.isDeletingItem = true;
 
       angular.forEach(dragSelection, function(item, index) {
         $scope.deleteItem(item);

@@ -404,7 +404,7 @@ angular.module('bekApp')
   };
 
   $scope.addCustomerToRecipients = function (customer) {
-    if(!$scope.isMandatory){
+    if(!$scope.isMandatory && $filter('filter')($scope.customerRecipients, {id: customer.customerId}).length === 0){
     var newEntry = {};
     newEntry.displayName = customer.customerName;
     newEntry.id = customer.customerId;
@@ -414,7 +414,7 @@ angular.module('bekApp')
   };
 
   $scope.addUserToRecipients = function (user) {    
-    if(!$scope.isMandatory){
+    if(!$scope.isMandatory && $filter('filter')($scope.userRecipients, {id: user.userid}).length === 0){
     var newEntry = {};
       newEntry.displayName = user.firstname + '   ' + user.lastname;
       newEntry.id = user.userid;
