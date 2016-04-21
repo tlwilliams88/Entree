@@ -232,12 +232,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         }
 
                         if(row && index % 2 == 0) {
-                            row.el[0].children[0].className -= ' odd';
                             row.el[0].children[0].className += ' even';
                         }
                         else{
                             row.el[0].children[0].className -= ' even';
-                            row.el[0].children[0].className += ' odd';
                         }
 
                     });
