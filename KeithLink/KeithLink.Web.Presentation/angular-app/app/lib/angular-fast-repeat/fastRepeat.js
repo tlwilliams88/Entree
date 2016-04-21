@@ -283,9 +283,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             console.log("time per row: ", t/list.length);
                         }
                         busy=false;
-                        if(activeElement && activeElement.id === 'parlevel'){
-                            activeElement.focus();    
-                            activeElement.select();                 
+                        if(activeElement && activeElement.id === 'parlevel'){   
+                            activeElement.focus();     
+                            activeElement.select();               
                         }
                     });
                 }, false);
@@ -365,10 +365,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         clone[0].children[0].className += ' unoptimized';
 
                         if(activeElement && evt.type == "focusin"){
-                            // setTimeout(function(){
+                             setTimeout(function(){
                                 inputFocus(clone, clone[0], "parentClickHandler, after renderUnoptimized");
                                 activeElement = '';
-                            // }, 1);
+                             }, 1);
                         }
                         
                         currentRowEls[rowId] = {
