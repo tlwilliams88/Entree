@@ -97,9 +97,9 @@ namespace KeithLink.Common.Impl
             get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_SERVERNAME, string.Empty); }
         }
 
-        public static string CheckForAppSettingsChangeDelayMinutes
+        public static string CheckForAppSettingsChangeDelay
         {
-            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_APPSETTINGS_DELAY_MINUTES, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_APPSETTINGS_DELAY_MINUTES, "3"); }
         }
 
         #endregion
