@@ -19,13 +19,15 @@ namespace KeithLink.Common.Impl
         private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
         private const string KEY_SMTP_SERVERNAME = "SmtpServer";
         private const string KEY_APP_NAME = "AppName";
-        private const string KEY_APPSETTINGS_DELAY_MINUTES = "CheckForAppSettingsChangeDelayMinutes";
         private const string DEFAULT_APPNAME = "Entree";
+
+        // appsetting in database
+        public const string DBAPPSETTINGS_TIME_THRESHOLD_MINUTES = "3";
 
         #endregion
 
         #region properties
-		public static bool LogSystemPerformance
+        public static bool LogSystemPerformance
 		{
 			get
 			{
@@ -96,13 +98,6 @@ namespace KeithLink.Common.Impl
         {
             get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_SERVERNAME, string.Empty); }
         }
-
-        public static string CheckForAppSettingsChangeDelayMinutes
-        {
-            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_APPSETTINGS_DELAY_MINUTES, string.Empty); }
-        }
         #endregion
-
-
     }
 }

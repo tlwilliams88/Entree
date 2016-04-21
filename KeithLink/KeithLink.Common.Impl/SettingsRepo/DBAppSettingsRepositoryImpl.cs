@@ -101,7 +101,7 @@ namespace KeithLink.Common.Impl.SettingsRepo
             try
             {
                 TimeSpan t = DateTime.Now - uniqueCheck;
-                if (t.TotalSeconds > 3)
+                if (t.TotalSeconds > int.Parse(Constants.DBAPPSETTINGS_TIME_THRESHOLD_MINUTES))
                 {
                     uniqueCheck = DateTime.Now;
                     using (var conn = new SqlConnection(KeithLink.Common.Impl.Configuration.AppDataConnectionString))
