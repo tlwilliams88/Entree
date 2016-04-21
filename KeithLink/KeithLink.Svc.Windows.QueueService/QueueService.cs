@@ -24,8 +24,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IConfirmationLogic _confirmationLogic;
         private IOrderHistoryLogic _orderHistoryLogic;
         private ISpecialOrderLogic _specialOrderLogic;
-        private INotificationQueueConsumer _externalNotificationQueueConsumer;
-        private INotificationQueueConsumer _internalNotificationQueueConsumer;
+        private INotificationQueueConsumer _notificationQueueConsumer;
         private IEventLogRepository _log;
         private IEmailClient _emailClient;
 
@@ -33,8 +32,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope lostOrdersScope;
         private ILifetimeScope orderHistoryScope;
         private ILifetimeScope specialOrderScope;
-        private ILifetimeScope externalNotificationScope;
-        private ILifetimeScope internalNotificationScope;
+        private ILifetimeScope notificationScope;
 
         private static bool _checkLostOrdersProcessing;
         private Timer _checkLostOrdersTimer;
@@ -111,14 +109,9 @@ namespace KeithLink.Svc.Windows.QueueService {
         }
 
         private void InitializeNotificationsThread() {
-            externalNotificationScope = container.BeginLifetimeScope();
-
-            _externalNotificationQueueConsumer = externalNotificationScope.Resolve<INotificationQueueConsumer>();
-            _externalNotificationQueueConsumer.ListenForExternalNotificationMessagesOnQueue();
-
-            internalNotificationScope = container.BeginLifetimeScope();
-            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<INotificationQueueConsumer>();
-            _internalNotificationQueueConsumer.ListenForInternalNotificationMessagesOnQueue();
+            notificationScope = container.BeginLifetimeScope();
+            _notificationQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
+            _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void InitializeOrderUpdateThread() {
@@ -160,17 +153,11 @@ namespace KeithLink.Svc.Windows.QueueService {
         }
 
         private void TerminateNotificationsThread() {
-            if (_externalNotificationQueueConsumer != null)
-                _externalNotificationQueueConsumer.Stop();
+            if (_notificationQueueConsumer != null)
+                _notificationQueueConsumer.Stop();
 
-            if (externalNotificationScope != null)
-                externalNotificationScope.Dispose();
-
-            if (_internalNotificationQueueConsumer != null)
-                _internalNotificationQueueConsumer.Stop();
-
-            if (internalNotificationScope != null)
-                internalNotificationScope.Dispose();
+            if (notificationScope != null)
+                notificationScope.Dispose();
         }
 
         private void TerminateCheckLostOrdersTimer() {

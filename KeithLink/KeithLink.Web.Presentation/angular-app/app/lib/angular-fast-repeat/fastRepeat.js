@@ -365,10 +365,15 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         clone[0].children[0].className += ' unoptimized';
 
                         if(activeElement && evt.type == "focusin"){
-                             setTimeout(function(){
-                                inputFocus(clone, clone[0], "parentClickHandler, after renderUnoptimized");
-                                activeElement = '';
+                            if(isIE){
+                                setTimeout(function(){
+                                    inputFocus(clone);
+                                    activeElement = '';
                              }, 1);
+                            }else {
+                                inputFocus(clone);
+                                activeElement = '';
+                            }
                         }
                         
                         currentRowEls[rowId] = {

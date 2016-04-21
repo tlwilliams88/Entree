@@ -17,10 +17,8 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class NotificationQueueConsumerImpl : INotificationQueueConsumer {
         #region attributes
-        private Task listenForQueueMessagesTaskForExternalUsers;
-        private Task listenForQueueMessagesTaskForInternalUsers;
-        private bool doListenForMessagesInTaskForExternalUsers = true;
-        private bool doListenForMessagesInTaskForInternalUsers = true;
+        private Task listenForQueueMessagesTask;
+        private bool doListenForMessagesInTask = true;
 
         private readonly IGenericQueueRepository genericQueueRepository;
         private readonly IEventLogRepository eventLogRepository;
@@ -37,19 +35,15 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         #endregion
 
         #region methods
-        public void ListenForExternalNotificationMessagesOnQueue() {
-            listenForQueueMessagesTaskForExternalUsers = Task.Factory.StartNew(() => ListenToQueueInTaskForExternalUsers());
+        public void ListenForNotificationMessagesOnQueue() {
+            listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTaskForUsers());
         }
 
-        public void ListenForInternalNotificationMessagesOnQueue() {
-            listenForQueueMessagesTaskForInternalUsers = Task.Factory.StartNew( () => ListenToQueueInTaskForInternalUsers() );
-        }
-
-        protected void ListenToQueueInTaskForInternalUsers() {
-            while (doListenForMessagesInTaskForInternalUsers) {
+        protected void ListenToQueueInTaskForUsers() {
+            while (doListenForMessagesInTask) {
                 try {
                     System.Threading.Thread.Sleep(2000);
-                    string msg = ConsumeMessageFromQueueForInternalUsers();
+                    string msg = ConsumeMessageFromQueue();
 
 					if (msg != null) {
                         BaseNotification notification = NotificationExtension.Deserialize(msg);
@@ -57,7 +51,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                         eventLogRepository.WriteInformationLog("Processing notification from queue. Notification: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
 
                         var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
-                        handler.ProcessNotificationForInternalUsers(notification);
+                        handler.ProcessNotification(notification);
                     }
                 } catch (Exception ex) {
 					KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, subject: "Exception processing Notification in Queue Service");
@@ -67,63 +61,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             }
         }
 
-        protected void ListenToQueueInTaskForExternalUsers()
-        {
-            while (doListenForMessagesInTaskForExternalUsers)
-            {
-                try
-                {
-                    System.Threading.Thread.Sleep(2000);
-                    string msg = ConsumeMessageFromQueueForExternalUsers();
-
-                    if (msg != null)
-                    {
-                        BaseNotification notification = NotificationExtension.Deserialize(msg);
-
-                        eventLogRepository.WriteInformationLog("Processing notification from queue. Notification: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
-
-                        var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
-                        handler.ProcessNotificationForExternalUsers(notification);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, subject: "Exception processing Notification in Queue Service");
-
-                    eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
-                }
-            }
-        }
-
-        public string ConsumeMessageFromQueueForExternalUsers() {
-            return this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
-                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotificationExternal);
-        }
-
-        public string ConsumeMessageFromQueueForInternalUsers()
-        {
+        public string ConsumeMessageFromQueue() {
             return this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
                 Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
         }
 
+
         public void Stop()
         {
-            StopExternal();
-            StopInternal();
-        }
-        private void StopExternal() {
-            if (listenForQueueMessagesTaskForExternalUsers != null && doListenForMessagesInTaskForExternalUsers == true) {
-                doListenForMessagesInTaskForExternalUsers = false;
-                listenForQueueMessagesTaskForExternalUsers.Wait();
-            }
-        }
-
-        private void StopInternal()
-        {
-            if (listenForQueueMessagesTaskForInternalUsers != null && doListenForMessagesInTaskForInternalUsers == true)
-            {
-                doListenForMessagesInTaskForInternalUsers = false;
-                listenForQueueMessagesTaskForInternalUsers.Wait();
+            if(listenForQueueMessagesTask != null && doListenForMessagesInTask == true) {
+                doListenForMessagesInTask = false;
+                listenForQueueMessagesTask.Wait();
             }
         }
         #endregion
