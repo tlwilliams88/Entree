@@ -585,8 +585,8 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
-    }
+      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true'});
+     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
     // helper object is passed in from the drag event
