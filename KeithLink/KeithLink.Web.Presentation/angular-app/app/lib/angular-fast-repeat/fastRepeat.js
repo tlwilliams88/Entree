@@ -71,10 +71,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 function renderLabels(scope){
                     if(listScope.selectedList.name !== "Mandatory"){
                         if(scope.item.position == 1 && scope.item.label){
-                        firstLabel = scope.item.label;
-                        scope.item.label = '';
-                    }
-                    scope.fromRenderLabels = true;
+                            firstLabel = scope.item.label;
+                            scope.item.label = '';
+                        }
+                        scope.fromRenderLabels = true;
                     }
                 }
 
@@ -136,99 +136,49 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         var id = item.$$fastRepeatId;
                         var row=currentRowEls[id];
 
-
-                        if(!(listScope.isDeletingItem || listScope.isChangingPage)){
-                            if(row && currentIndex === index) {
-                                // We've already seen this one
-                                if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
-
-                                    // This item has not been compiled and it apparently has changed -- need to rerender
-                                    var newEl = render(item);
-                                    row.el.replaceWith(newEl);
-                                    row.el = newEl;
-                                    row.copy = angular.copy(item);
-                                    row.compiled = false;
-                                    row.item = item;
-                                    if(index % 2 == 0) {
-                                        row.el[0].children[0].className += ' even';
-                                    }
+                        if(row && ((currentIndex === index && !listScope.isDeletingItem) || listScope.isDeletingItem)) {
+                            // We've already seen this one
+                            if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
+                                // This item has not been compiled and it apparently has changed -- need to rerender
+                                var newEl = render(item);
+                                row.el.replaceWith(newEl);
+                                row.el = newEl;
+                                row.copy = angular.copy(item);
+                                row.compiled = false;
+                                row.item = item;
+                                if(index % 2 == 0) {
+                                    row.el[0].children[0].className += ' even';
                                 }
-                            } else if(!row) {
-                                // This must be a new node
-                                if(!disableOpts) {
-                                    row = {
-                                        copy: angular.copy(item),
-                                        item: item,
-                                        el: render(item)
-                                    };
-                                    if(scope.list.indexOf(item) % 2 == 0) {
-                                        row.el[0].children[0].className += ' even';
-                                    }
-                                } else {
-                                    // Optimizations are disabled
-                                    row = {
-                                        copy: angular.copy(item),
-                                        item: item,
-                                        el: $('<div/>'),
-                                        compiled: true
-                                    };
-
-                                    renderUnoptimized(item, function(newEl) {
-                                        row.el.replaceWith(newEl);
-                                        row.el=newEl;
-                                    });
-                                }
-
-                                currentRowEls[id] =  row; 
-                            previousEl.after(row.el.last());
-                            previousEl = row.el.last();
                             }
-                        } else {
-                            if(row) {
-                                // We've already seen this one
-                                if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
+                        } else if(!row) {
+                            // This must be a new node
+                            if(!disableOpts) {
+                                row = {
+                                    copy: angular.copy(item),
+                                    item: item,
+                                    el: render(item)
+                                };
 
-                                    // This item has not been compiled and it apparently has changed -- need to rerender
-                                    var newEl = render(item);
-                                    row.el.replaceWith(newEl);
-                                    row.el = newEl;
-                                    row.copy = angular.copy(item);
-                                    row.compiled = false;
-                                    row.item = item;
-                                    if(index % 2 == 0) {
-                                        row.el[0].children[0].className += ' even';
-                                    }
+                                if(scope.list.indexOf(item) % 2 == 0) {
+                                    row.el[0].children[0].className += ' even';
                                 }
                             } else {
-                                // This must be a new node
-                                if(!disableOpts) {
-                                    row = {
-                                        copy: angular.copy(item),
-                                        item: item,
-                                        el: render(item)
-                                    };
-                                    if(scope.list.indexOf(item) % 2 == 0) {
-                                        row.el[0].children[0].className += ' even';
-                                    }
-                                } else {
-                                    // Optimizations are disabled
-                                    row = {
-                                        copy: angular.copy(item),
-                                        item: item,
-                                        el: $('<div/>'),
-                                        compiled: true
-                                    };
+                                // Optimizations are disabled
+                                row = {
+                                    copy: angular.copy(item),
+                                    item: item,
+                                    el: $('<div/>'),
+                                    compiled: true
+                                };
 
-                                    renderUnoptimized(item, function(newEl) {
-                                        row.el.replaceWith(newEl);
-                                        row.el=newEl;
-                                    });
-                                }
-
-                                currentRowEls[id] =  row; 
+                                renderUnoptimized(item, function(newEl) {
+                                    row.el.replaceWith(newEl);
+                                    row.el=newEl;
+                                });
+                            }
+                            currentRowEls[id] =  row; 
                             previousEl.after(row.el.last());
                             previousEl = row.el.last();
-                            }
                         }
 
                         if(row && index % 2 == 0) {
@@ -245,7 +195,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     listScope.isDeletingItem = false;
    
                 };
-
 
                 // Here is the main watch. Testing has shown that watching the stringified list can
                 // save roughly 500ms per digest in certain cases.
