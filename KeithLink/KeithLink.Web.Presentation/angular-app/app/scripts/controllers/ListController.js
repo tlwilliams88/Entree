@@ -631,12 +631,17 @@ angular.module('bekApp')
 
     $(window).resize(function(){ 
       $scope.$apply(function(){ 
-      $scope.isDragEnabled();
+        $scope.isDragEnabled();
       });
     });
 
     // Check if element is being dragged, used to enable DOM elements
-    $scope.setIsDragging = function(event, helper, isDragging) {
+    $scope.setIsDragging = function(event, helper, isDragging, itemId ) {
+      $scope.selectedList.items.forEach(function(item){
+        if(itemId === item.listitemid){
+          item.isSelected = true;
+        }
+      })
       $scope.isDragging = isDragging;
     };
 
