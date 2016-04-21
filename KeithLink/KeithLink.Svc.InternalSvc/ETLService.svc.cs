@@ -66,15 +66,14 @@ namespace KeithLink.Svc.InternalSvc
         /// <returns></returns>
         public bool ProcessCustomerData()
         {
-            
-            //Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile()).ContinueWith((t) =>
-            //{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-            
-            //Task.Factory.StartNew(() => customerLogic.ImportDsrInfo()).ContinueWith((t) =>
-            //{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
-            Task.Factory.StartNew( () => customerLogic.ImportUsersWithAccess() ).ContinueWith( ( t ) =>
-            { new ErrorHandler().HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+            Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile()).ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => customerLogic.ImportDsrInfo()).ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            // this task actually gets called from the import customers to organization profile. If we wait on that task to complete here, the ETL process could time out and throw an error
+            //Task.Factory.StartNew( () => customerLogic.ImportUsersWithAccess() ).ContinueWith( ( t ) =>
+            //{ new ErrorHandler().HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
 
             return true;
 
