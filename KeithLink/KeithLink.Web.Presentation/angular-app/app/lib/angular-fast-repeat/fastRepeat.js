@@ -33,6 +33,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var t;
                 var firstLabel;
                 var isIE;
+                var currentIndex;
 
                 // The rowTpl will be digested once -- want to make sure it has valid data for the first wasted digest.  Default to first row or {} if no rows
                 var scope = listScope.$new();
@@ -55,7 +56,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 // returns isIE is true if IE or false, if browser is not IE
                 function detectIE() {
                     var ua = window.navigator.userAgent;
-
                     var msie = ua.indexOf('MSIE ');//IE <11
                     var trident = ua.indexOf('Trident/');//IE 11
                     if (msie > 0) {
@@ -86,7 +86,8 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     rowTpl.remove();
                 });
                 tplContainer.css({position: 'absolute', top: '-100%'});
-                var elParent = element.parents().filter(function() { return $(this).css('display') !== 'inline'; }).first();
+                var elParent = element.parents().filter(function() {
+                 return $(this).css('display') !== 'inline'; }).first();
                 tplContainer.width(elParent.width());
                 tplContainer.css({visibility: 'hidden'});
 
@@ -95,6 +96,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var activeElement;
 
                 var updateList = function(rowTpl, scope, forceUpdate) {
+                    var deletedItem = false;
                     focusActiveElement(document.activeElement);
                     if(scope.item.position == 1 && scope.item.label == ''){
                         scope.item.label = firstLabel;
@@ -112,9 +114,12 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     var listByIds = {};
                     angular.forEach(scope.list, function(item) {
                         if(!item.$$fastRepeatId) {
-                            if(item.id) { item.$$fastRepeatId = item.id; }
-                            else if(item._id) { item.$$fastRepeatId = item._id; }
-                            else { item.$$fastRepeatId = ++fastRepeatId; }
+                            if(item.id) {
+                             item.$$fastRepeatId = item.id; }
+                            else if(item._id) {
+                             item.$$fastRepeatId = item._id; }
+                            else {
+                             item.$$fastRepeatId = ++fastRepeatId; }
                         }
                         listByIds[item.$$fastRepeatId] = item;
                     });
@@ -127,66 +132,120 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     });
                     // Add/rearrange all rows
                     var previousEl = element;
-                    angular.forEach(scope.list, function(item) {
+                    angular.forEach(scope.list, function(item , index) {
                         var id = item.$$fastRepeatId;
                         var row=currentRowEls[id];
 
 
-                        if(row) {
-                            // We've already seen this one
-                            if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
-                                // This item has not been compiled and it apparently has changed -- need to rerender
-                                var newEl = render(item);
-                                row.el.replaceWith(newEl);
-                                row.el = newEl;
-                                row.copy = angular.copy(item);
-                                row.compiled = false;
-                                row.item = item;
-                                if(scope.list.indexOf(item) % 2 == 0) {
-                                    row.el[0].children[0].className += ' even';
+                        if(!(listScope.isDeletingItem || listScope.isChangingPage)){
+                            if(row && currentIndex === index) {
+                                // We've already seen this one
+                                if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
+
+                                    // This item has not been compiled and it apparently has changed -- need to rerender
+                                    var newEl = render(item);
+                                    row.el.replaceWith(newEl);
+                                    row.el = newEl;
+                                    row.copy = angular.copy(item);
+                                    row.compiled = false;
+                                    row.item = item;
+                                    if(index % 2 == 0) {
+                                        row.el[0].children[0].className += ' even';
+                                    }
                                 }
+                            } else if(!row) {
+                                // This must be a new node
+                                if(!disableOpts) {
+                                    row = {
+                                        copy: angular.copy(item),
+                                        item: item,
+                                        el: render(item)
+                                    };
+                                    if(scope.list.indexOf(item) % 2 == 0) {
+                                        row.el[0].children[0].className += ' even';
+                                    }
+                                } else {
+                                    // Optimizations are disabled
+                                    row = {
+                                        copy: angular.copy(item),
+                                        item: item,
+                                        el: $('<div/>'),
+                                        compiled: true
+                                    };
+
+                                    renderUnoptimized(item, function(newEl) {
+                                        row.el.replaceWith(newEl);
+                                        row.el=newEl;
+                                    });
+                                }
+
+                                currentRowEls[id] =  row; 
+                            previousEl.after(row.el.last());
+                            previousEl = row.el.last();
                             }
                         } else {
-                            // This must be a new node
+                            if(row) {
+                                // We've already seen this one
+                                if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
 
-                            if(!disableOpts) {
-                                row = {
-                                    copy: angular.copy(item),
-                                    item: item,
-                                    el: render(item)
-                                };
-                                if(scope.list.indexOf(item) % 2 == 0) {
-                                    row.el[0].children[0].className += ' even';
+                                    // This item has not been compiled and it apparently has changed -- need to rerender
+                                    var newEl = render(item);
+                                    row.el.replaceWith(newEl);
+                                    row.el = newEl;
+                                    row.copy = angular.copy(item);
+                                    row.compiled = false;
+                                    row.item = item;
+                                    if(index % 2 == 0) {
+                                        row.el[0].children[0].className += ' even';
+                                    }
                                 }
                             } else {
-                                // Optimizations are disabled
-                                row = {
-                                    copy: angular.copy(item),
-                                    item: item,
-                                    el: $('<div/>'),
-                                    compiled: true
-                                };
+                                // This must be a new node
+                                if(!disableOpts) {
+                                    row = {
+                                        copy: angular.copy(item),
+                                        item: item,
+                                        el: render(item)
+                                    };
+                                    if(scope.list.indexOf(item) % 2 == 0) {
+                                        row.el[0].children[0].className += ' even';
+                                    }
+                                } else {
+                                    // Optimizations are disabled
+                                    row = {
+                                        copy: angular.copy(item),
+                                        item: item,
+                                        el: $('<div/>'),
+                                        compiled: true
+                                    };
 
-                                renderUnoptimized(item, function(newEl) {
-                                    row.el.replaceWith(newEl);
-                                    row.el=newEl;
-                                });
+                                    renderUnoptimized(item, function(newEl) {
+                                        row.el.replaceWith(newEl);
+                                        row.el=newEl;
+                                    });
+                                }
+
+                                currentRowEls[id] =  row; 
+                            previousEl.after(row.el.last());
+                            previousEl = row.el.last();
                             }
-
-                            currentRowEls[id] =  row;
                         }
-                        previousEl.after(row.el.last());
-                        previousEl = row.el.last();
+
+                        if(row && index % 2 == 0) {
+                            row.el[0].children[0].className -= ' odd';
+                            row.el[0].children[0].className += ' even';
+                        }
+                        else{
+                            row.el[0].children[0].className -= ' even';
+                            row.el[0].children[0].className += ' odd';
+                        }
+
                     });
-                    if(activeElement && activeElement.nodeName === "INPUT" && isIE){
-                        setTimeout(function(){
-                            activeElement.focus();
-                        }, 0)
-                    } else if(activeElement && activeElement.nodeName === "INPUT"){
-                        activeElement.focus();
-                    } else {
-                        return;
-                    }
+                    // if(activeElement && activeElement.nodeName === "INPUT"){
+                    //     activeElement.focus();
+                    // }
+                    listScope.isDeletingItem = false;
+   
                 };
 
 
@@ -197,7 +256,8 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 if(activeElement){
                     activeElement.focus();
                 }
-                listScope.$watch(function(scp){ return JSON.stringify(getter(scp), JSONStripper); }, function(list) {
+                listScope.$watch(function(scp){
+                 return JSON.stringify(getter(scp));}, function(list) {                   
                     activeElement = document.activeElement;
                     tplContainer.width(elParent.width());
                     if(!scope.itemIconsActive){
@@ -226,15 +286,8 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         }
                         busy=false;
                         if(activeElement && activeElement.id === 'parlevel'){
-                            if(isIE){
-                            setTimeout(function(){
-                                activeElement.focus();
-                                activeElement.select();
-                            }, 0)
-                            }else {
-                                activeElement.focus();
-                                activeElement.select();
-                            }
+                            activeElement.focus();    
+                            activeElement.select();                 
                         }
                     });
                 }, false);
@@ -255,13 +308,14 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     var newScope = scope.$new(false);
 
                     newScope[repeatVarName] = item;
-                    newScope.fastRepeatStatic = false; newScope.fastRepeatDynamic = true;
+                   // newScope.fastRepeatStatic = false; newScope.fastRepeatDynamic = true;
                     var clone = transclude(newScope, function(clone) {
                         tplContainer.append(clone);
                     });
 
                     newScope.$$postDigest(function() {
                         cb(clone);
+                        clone[0].children[0].className += " unoptimized"
                     });
 
                     newScope.$digest();
@@ -272,8 +326,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 function focusActiveElement(element){
                     if(element && element.id === "parlevel"){
                         activeElement = element;
-                    } else{
-                        return;
                     }
                 }
 
@@ -292,6 +344,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                     var rowId = $target.attr('fast-repeat-id');
                     var item = currentRowEls[rowId].item;
+                    currentIndex = scope.list.indexOf(item) + 1;
                     // if($target[0].previousElementSibling.nodeName !== "THEAD"){
                     //     var previousParLevelValue = $target[0].previousElementSibling.children[0].children[12].children[0].children[0].value;
                     // }
@@ -300,6 +353,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     // -1 would indicate the row itself was clicked.
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
+                        // var cloneCopy = clone;
+                        // cloneCopy[0].previousElementSibling.children[0].children[12].children[0].children[0].value = previousParLevelValue;
+                        // clone = cloneCopy;
                         scope.itemIconsActive = true;
                         if(scope.list.indexOf(item) % 2 == 0){
                             $target.replaceWith(clone);
@@ -308,9 +364,13 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             $target.replaceWith(clone);
                         }
 
+                        clone[0].children[0].className += ' unoptimized';
+
                         if(activeElement && evt.type == "focusin"){
-                                inputFocus(clone, clone[0]);
+                            // setTimeout(function(){
+                                inputFocus(clone, clone[0], "parentClickHandler, after renderUnoptimized");
                                 activeElement = '';
+                            // }, 1);
                         }
                         
                         currentRowEls[rowId] = {
@@ -319,7 +379,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             item: item
                         };
 
-                        setTimeout(function() {
                             if(elIndex >= 0) {
                                 clone.find('*').eq(elIndex).trigger('mouseenter');
                                 clone.find('*').eq(elIndex).trigger('mouseleave');
@@ -327,7 +386,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 clone.trigger('mouseenter');
                                 clone.trigger('mouseleave');
                             }
-                        }, 0);
                     });
 
                     newScope.$digest();
@@ -343,7 +401,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                 var jqWindow = $(window);
                 jqWindow.on('resize', onResize);
-                scope.$on('$destroy', function() { 
+                scope.$on('$destroy', function() {
                     jqWindow.off('resize', onResize);
                     element.parent().off('mouseleave', '[fast-repeat-id]', parentClickHandler);
                 });

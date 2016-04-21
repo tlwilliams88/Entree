@@ -85,18 +85,19 @@ angular.module('bekApp')
 
     $scope.blockUIAndChangePage = function(page){
         $scope.startingPoint = 0;
-         $scope.endPoint = 0;   
-          var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-          blockUI.start("Loading List...").then(function(){
-            if(visited.length > 0){
-              $timeout(function() {
-                $scope.pageChanged(page, visited);
-              }, 100);
-            }
-            else{
+        $scope.endPoint = 0;
+        $scope.isChangingPage = true;
+        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+        blockUI.start("Loading List...").then(function(){
+          if(visited.length > 0){
+            $timeout(function() {
               $scope.pageChanged(page, visited);
-            }
-          })
+            }, 100);
+          }
+          else{
+            $scope.pageChanged(page, visited);
+          }
+        })
     }
 
      $scope.pageChanged = function(page) {      
@@ -572,7 +573,7 @@ angular.module('bekApp')
 
     $scope.parlevelChanged = function(evt) {
       var keycode=evt.keyCode ? evt.keyCode : evt.charCode;
-      if (keycode >= 48 && keycode <= 57) {
+      if (keycode >= 48 && keycode <= 57 && $scope.listForm.$Pristine) {
         $scope.listForm.$setDirty();
       }else{
         return;
@@ -658,6 +659,7 @@ angular.module('bekApp')
 
     $scope.deleteItemFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.isDeletingItem = true;
 
       angular.forEach(dragSelection, function(item, index) {
         $scope.deleteItem(item);

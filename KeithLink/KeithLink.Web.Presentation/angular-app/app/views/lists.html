@@ -489,7 +489,7 @@
               </td>
               <!-- Label -->
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels) || (isIE && selectedList.ismandatory)">
-                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden'}">
+                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden', 'max-width': '0'}">
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
                   </select>
