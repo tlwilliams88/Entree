@@ -513,6 +513,8 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 _log.WriteErrorLog(String.Format("ETL: Error importing organizations to CS -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
             }
+
+            ImportUsersWithAccess();
         }
 
         /// <summary>

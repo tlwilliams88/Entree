@@ -1,25 +1,32 @@
 ﻿using KeithLink.Common.Core.Extensions;
+
 using KeithLink.Common.Core.Logging;
+
 using KeithLink.Svc.Core.Enumerations.Messaging;
+
 using KeithLink.Svc.Core.Extensions.Messaging;
+
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.Profile;
+
 using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+//using KeithLink.Svc.Core.Models.Profile;
+
 using KeithLink.Svc.Impl.Helpers;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging
 {
@@ -60,8 +67,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
-
-        private Message GetEmailMessageForNotification(PaymentConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
+        private Message GetEmailMessageForNotification(PaymentConfirmationNotification notification, Core.Models.Profile.Customer customer)
         {
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
             MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTDETAIL);
@@ -107,7 +113,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         public void ProcessNotification(BaseNotification notification)
         {
-            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.PaymentConfirmation)
+            if (notification.NotificationType != NotificationType.PaymentConfirmation)
                 throw new ApplicationException("notification/handler type mismatch");
 
             // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
@@ -118,7 +124,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
             if (customer == null)
             {
-                System.Text.StringBuilder warningMessage = new StringBuilder();
+                StringBuilder warningMessage = new StringBuilder();
                 warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
                 warningMessage.AppendLine();
                 warningMessage.AppendLine();
@@ -128,101 +134,100 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 _log.WriteWarningLog(warningMessage.ToString());
             }
             else {
-                List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer);
+                List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
                 Message message = GetEmailMessageForNotification(confirmation, customer);
 
                 // send messages to providers...
                 if (recipients != null && recipients.Count > 0)
                 {
-                    base.SendMessage(recipients, message);
+                    SendMessage(recipients, message);
                 }
             }
         }
 
-        public void ProcessNotificationForExternalUsers(BaseNotification notification)
-        {
-            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.PaymentConfirmation)
-                throw new ApplicationException("notification/handler type mismatch");
+        //public void ProcessNotificationForExternalUsers(BaseNotification notification)
+        //{
+        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.PaymentConfirmation)
+        //        throw new ApplicationException("notification/handler type mismatch");
 
-            // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
-            PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
+        //    // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
+        //    PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
 
-            // load up recipients, customer and message
-            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
+        //    // load up recipients, customer and message
+        //    Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
 
-            if (customer == null)
-            {
-                System.Text.StringBuilder warningMessage = new StringBuilder();
-                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
-                warningMessage.AppendLine();
-                warningMessage.AppendLine();
-                warningMessage.AppendLine("Notification:");
-                warningMessage.AppendLine(notification.ToJson());
+        //    if (customer == null)
+        //    {
+        //        System.Text.StringBuilder warningMessage = new StringBuilder();
+        //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+        //        warningMessage.AppendLine();
+        //        warningMessage.AppendLine();
+        //        warningMessage.AppendLine("Notification:");
+        //        warningMessage.AppendLine(notification.ToJson());
 
-                _log.WriteWarningLog(warningMessage.ToString());
-            }
-            else
-            {
-                List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer, false, false, true);
-                Message message = GetEmailMessageForNotification(confirmation, customer);
+        //        _log.WriteWarningLog(warningMessage.ToString());
+        //    }
+        //    else
+        //    {
+        //        List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer, false, false, true);
+        //        Message message = GetEmailMessageForNotification(confirmation, customer);
 
-                // send messages to providers...
-                if (recipients != null && recipients.Count > 0)
-                {
-                    try
-                    {
-                        base.SendMessage(recipients, message);
-                    }
-                    catch (Exception ex)
-                    {
-                        _log.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
-                    }
-                }
-            }
-        }
+        //        // send messages to providers...
+        //        if (recipients != null && recipients.Count > 0)
+        //        {
+        //            try
+        //            {
+        //                base.SendMessage(recipients, message);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                _log.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+        //            }
+        //        }
+        //    }
+        //}
 
-        public void ProcessNotificationForInternalUsers(BaseNotification notification)
-        {
-            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.PaymentConfirmation)
-                throw new ApplicationException("notification/handler type mismatch");
+        //public void ProcessNotificationForInternalUsers(BaseNotification notification)
+        //{
+        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.PaymentConfirmation)
+        //        throw new ApplicationException("notification/handler type mismatch");
 
-            // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
-            PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
+        //    // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
+        //    PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
 
-            // load up recipients, customer and message
-            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
+        //    // load up recipients, customer and message
+        //    Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
 
-            if (customer == null)
-            {
-                System.Text.StringBuilder warningMessage = new StringBuilder();
-                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
-                warningMessage.AppendLine();
-                warningMessage.AppendLine();
-                warningMessage.AppendLine("Notification:");
-                warningMessage.AppendLine(notification.ToJson());
+        //    if (customer == null)
+        //    {
+        //        System.Text.StringBuilder warningMessage = new StringBuilder();
+        //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+        //        warningMessage.AppendLine();
+        //        warningMessage.AppendLine();
+        //        warningMessage.AppendLine("Notification:");
+        //        warningMessage.AppendLine(notification.ToJson());
 
-                _log.WriteWarningLog(warningMessage.ToString());
-            }
-            else
-            {
-                List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer, false, true, false);
-                Message message = GetEmailMessageForNotification(confirmation, customer);
+        //        _log.WriteWarningLog(warningMessage.ToString());
+        //    }
+        //    else
+        //    {
+        //        List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer, false, true, false);
+        //        Message message = GetEmailMessageForNotification(confirmation, customer);
 
-                // send messages to providers...
-                if (recipients != null && recipients.Count > 0)
-                {
-                    try
-                    {
-                        base.SendMessage(recipients, message);
-                    }
-                    catch (Exception ex)
-                    {
-                        _log.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
-                    }
-                }
-            }
-        }
-
+        //        // send messages to providers...
+        //        if (recipients != null && recipients.Count > 0)
+        //        {
+        //            try
+        //            {
+        //                base.SendMessage(recipients, message);
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                _log.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+        //            }
+        //        }
+        //    }
+        //}
         #endregion
     }
 }
