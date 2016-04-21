@@ -232,7 +232,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             console.log("time per row: ", t/list.length);
                         }
                         busy=false;
-                        if(activeElement && activeElement.id === 'parlevel'){   
+                        if(activeElement && activeElement.id === 'fastRepeatDefaultId'){   
                             activeElement.focus();     
                             activeElement.select();               
                         }
@@ -271,13 +271,13 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 }
 
                 function focusActiveElement(element){
-                    if(element && element.id === "parlevel"){
+                    if(element && element.id === "fastRepeatDefaultId"){
                         activeElement = element;
                     }
                 }
 
                 function inputFocus(input, item, fromFunction){
-                        input[0].querySelector('#parlevel').focus();
+                        input[0].querySelector('#fastRepeatDefaultId').focus();
                         document.activeElement.select();
                 }
 
@@ -314,10 +314,15 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         clone[0].children[0].className += ' unoptimized';
 
                         if(activeElement && evt.type == "focusin"){
-                             setTimeout(function(){
-                                inputFocus(clone, clone[0], "parentClickHandler, after renderUnoptimized");
+                            if(isIE){
+                                setTimeout(function(){
+                                    inputFocus(clone);
                                 activeElement = '';
                              }, 1);
+                            }else {
+                                inputFocus(clone);
+                                activeElement = '';
+                            }
                         }
                         
                         currentRowEls[rowId] = {
