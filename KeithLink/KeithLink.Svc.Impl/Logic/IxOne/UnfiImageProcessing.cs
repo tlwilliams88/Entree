@@ -250,10 +250,7 @@ namespace KeithLink.Svc.Impl.Logic.IxOne
             string fname = filename.Substring(filename.LastIndexOf("\\") + 1);
             Image img = Image.FromFile(filename);
             img = ScaleImage(img, 150, 150);
-            dir += "\\thumbnails";
-            Directory.CreateDirectory(dir);
-            img.Save(dir + "\\" + fname, System.Drawing.Imaging.ImageFormat.Jpeg);
-            Console.WriteLine(" Saving " + dir + "\\" + fname);
+            img.Save(Configuration.CatalogServiceUnfiImagesNewOnlyDirThumbs + "\\" + fname, System.Drawing.Imaging.ImageFormat.Jpeg);
         }
 
         /// <summary>
