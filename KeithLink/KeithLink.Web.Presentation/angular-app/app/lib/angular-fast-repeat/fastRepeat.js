@@ -150,7 +150,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                     row.el[0].children[0].className += ' even';
                                 }
                             }
-                        } else if(!row) {
+                        } else if(!row || listScope.isChangingPage) {
                             // This must be a new node
                             if(!disableOpts) {
                                 row = {
@@ -236,6 +236,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             activeElement.focus();     
                             activeElement.select();               
                         }
+                        listScope.isChangingPage = false;
                     });
                 }, false);
 
