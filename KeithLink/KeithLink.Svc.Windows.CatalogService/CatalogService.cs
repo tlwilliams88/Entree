@@ -15,6 +15,7 @@ namespace KeithLink.Svc.Windows.CatalogService
         private IContainer container;
         private IEventLogRepository _log;
         private Task processImagesTask;
+        private bool processImagesRunning;
         private Timer _timer;
 
         const int TIMER_DURATION_TICKMINUTE = 60000;
@@ -64,9 +65,12 @@ namespace KeithLink.Svc.Windows.CatalogService
             if (DateTime.Now.Hour == int.Parse(processTime.Substring
                 (0, processTime.IndexOf(':'))) &&
                 DateTime.Now.Minute == int.Parse(processTime.Substring
-                (processTime.IndexOf(':') + 1)))
+                (processTime.IndexOf(':') + 1)) &&
+                processImagesRunning == false)
             {
+                processImagesRunning = true;
                 processImagesTask = Task.Factory.StartNew(() => UnfiImageProcessing.StartProcessAllImages(_log));
+                processImagesRunning = false;
             }
 
             //compensate for delay in processing to keep at top of minute
