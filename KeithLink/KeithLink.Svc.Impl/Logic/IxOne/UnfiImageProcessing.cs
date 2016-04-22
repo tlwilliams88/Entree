@@ -92,6 +92,7 @@ namespace KeithLink.Svc.Impl.Logic.IxOne
                         Image img = byteArrayToImage(buf);
                         if (img != null)
                         {
+                            Image img2 = (Image)img.Clone();
                             img.Save(Configuration.CatalogServiceUnfiImagesRepo + "\\" + gtin12 + ".jpg",
                                 System.Drawing.Imaging.ImageFormat.Jpeg);
                             img.Save(Configuration.CatalogServiceUnfiImagesNewOnlyDir + "\\" + gtin12 + ".jpg",
