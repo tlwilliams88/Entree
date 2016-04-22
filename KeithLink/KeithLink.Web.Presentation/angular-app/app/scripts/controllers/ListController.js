@@ -563,7 +563,7 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
+      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true'});
     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
@@ -612,8 +612,13 @@ angular.module('bekApp')
       });
     });
 
-    // Check if element is being dragged, used to enable DOM elements
-    $scope.setIsDragging = function(event, helper, isDragging) {
+    // Check if element is being dragged, used to enable DOM elements    
+    $scope.setIsDragging = function(event, helper, isDragging, itemId ) { 
+      $scope.selectedList.items.forEach(function(item){ 
+        if(itemId === item.listitemid){ 
+          item.isSelected = true; 
+        } 
+      })
       $scope.isDragging = isDragging;
     };
 
