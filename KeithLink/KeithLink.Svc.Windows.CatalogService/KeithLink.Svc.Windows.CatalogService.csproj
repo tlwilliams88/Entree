@@ -117,9 +117,6 @@
     <Compile Include="CatalogService.Designer.cs">
       <DependentUpon>CatalogService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\IxOneProduct.cs" />
-    <Compile Include="Helpers\IxOneReturn.cs" />
-    <Compile Include="Helpers\UnfiImageProcessing.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>

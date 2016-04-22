@@ -1,25 +1,12 @@
-﻿using KeithLink.Common.Core.Logging;
-
-using Autofac;
-
-using System;
-using System.Collections.Generic;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using KeithLink.Svc.Impl.Repository.SmartResolver;
-using System.Net;
-using System.IO;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using KeithLink.Svc.Core.Interface.ETL;
-using System.Data;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Windows.CatalogService.Helpers;
-using System.Threading;
+﻿using Autofac;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Logic.IxOne;
+using KeithLink.Svc.Impl.Repository.SmartResolver;
+using System;
+using System.ServiceProcess;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace KeithLink.Svc.Windows.CatalogService
 {

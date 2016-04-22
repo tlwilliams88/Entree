@@ -1,6 +1,7 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Models.IxOne;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +14,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Windows.CatalogService.Helpers
+namespace KeithLink.Svc.Impl.Logic.IxOne
 {
     public class UnfiImageProcessing
     {

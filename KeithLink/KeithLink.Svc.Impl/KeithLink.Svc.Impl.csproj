@@ -277,6 +277,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\IxOne\UnfiImageProcessing.cs" />
     <Compile Include="Logic\Lists\FavoriteLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryLogic.cs" />
     <Compile Include="Logic\Lists\ListLogicImpl.cs" />
@@ -315,6 +316,8 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
+    <Compile Include="Models\IxOne\IxOneProduct.cs" />
+    <Compile Include="Models\IxOne\IxOneReturn.cs" />
     <Compile Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

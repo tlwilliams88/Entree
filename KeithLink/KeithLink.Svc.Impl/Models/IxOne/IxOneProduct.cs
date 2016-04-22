@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Windows.CatalogService.Helpers
+namespace KeithLink.Svc.Impl.Models.IxOne
 {
     public class IxOneProduct
     {
