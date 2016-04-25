@@ -34,8 +34,7 @@ angular
     'sticky',
     'configenv',               // used to inject environment variables into angular through Grunt
     'angulartics', 
-    'angulartics.google.analytics',
-    'gc.fastRepeat'
+    'angulartics.google.analytics'
   ])
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', '$analyticsProvider',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, $analyticsProvider) {

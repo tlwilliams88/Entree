@@ -104,6 +104,7 @@
     <Compile Include="AuditLog\AuditLogRepositoryImpl.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Email\ExceptionEmail.cs" />
     <Compile Include="Email\NewUserEmail.cs" />
     <Compile Include="Logging\EventLogRepositoryImpl.cs" />
