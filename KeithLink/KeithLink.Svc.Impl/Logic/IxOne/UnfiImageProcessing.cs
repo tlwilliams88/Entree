@@ -63,6 +63,18 @@ namespace KeithLink.Svc.Impl.Logic.IxOne
 
             // given our list of items get the list of products they have on file
             IxOneReturn received = GetIXOneList(list);
+            {
+                Dictionary<string, IxOneProduct> dict = new Dictionary<string, IxOneProduct>();
+                foreach(IxOneProduct prod in received.Products)
+                {
+                    if (dict.ContainsKey(prod.UPC) == false)
+                    {
+                        dict.Add(prod.UPC, prod);
+                    }
+                }
+                received.Products.Clear();
+                received.Products.AddRange(dict.Values);
+            }
             _log.WriteInformationLog(" Total they have on file is " + received.Products.Count);
 
             index = 0;
@@ -122,8 +134,12 @@ namespace KeithLink.Svc.Impl.Logic.IxOne
                 filename = product.Filenames.Where(f => f.EndsWith(ANGLE_CENTER + PACK_IN + ".TIF")).First();
             if (product.Filenames.Where(f => f.EndsWith(ANGLE_CENTER + PACK_PREPARED + ".TIF")).Count() > 0)
                 filename = product.Filenames.Where(f => f.EndsWith(ANGLE_CENTER + PACK_PREPARED + ".TIF")).First();
+            if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_OUT + ".TIF")).Count() > 0)
+                filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_OUT + ".TIF")).First();
             if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_IN + ".TIF")).Count() > 0)
                 filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_IN + ".TIF")).First();
+            if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_INNER + ".TIF")).Count() > 0)
+                filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_INNER + ".TIF")).First();
             if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_PREPARED + ".TIF")).Count() > 0)
                 filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_PREPARED + ".TIF")).First();
             return filename;
@@ -250,7 +266,8 @@ namespace KeithLink.Svc.Impl.Logic.IxOne
             string dir = filename.Substring(0, filename.LastIndexOf("\\"));
             string fname = filename.Substring(filename.LastIndexOf("\\") + 1);
             Image img = Image.FromFile(filename);
-            img = ScaleImage(img, 150, 150);
+            img = ScaleImage(img, 
+                int.Parse(Configuration.CatalogServiceUnfiImagesScaleX), int.Parse(Configuration.CatalogServiceUnfiImagesScaleY));
             img.Save(Configuration.CatalogServiceUnfiImagesNewOnlyDirThumbs + "\\" + fname, System.Drawing.Imaging.ImageFormat.Jpeg);
         }
 

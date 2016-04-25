@@ -197,6 +197,8 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_MAKETHUMBNAILS = "CatalogServiceUnfiImagesMakeThumbnails";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIRTHUMBS = "CatalogServiceUnfiImagesNewOnlyDirThumbs";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_IXONE_AUTH_TOKEN = "CatalogServiceUnfiImagesIxOneAuthToken";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_SCALEX = "CatalogServiceUnfiImagesScaleX";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_SCALEY = "CatalogServiceUnfiImagesScaleY";
         #endregion
 
         #region methods
@@ -1147,6 +1149,22 @@ namespace KeithLink.Svc.Impl {
             get
             {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIRTHUMBS, String.Empty);
+            }
+        }
+
+        public static string CatalogServiceUnfiImagesScaleX
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_SCALEX, "200");
+            }
+        }
+
+        public static string CatalogServiceUnfiImagesScaleY
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_SCALEY, "200");
             }
         }
         #endregion
