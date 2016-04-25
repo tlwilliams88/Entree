@@ -547,14 +547,13 @@
                 </span> -->
                   <ng-form name="parlevelForm">
                      <input                    
-                      id="parlevel" 
+                      id="defaultElement-{{currentIndex}}" 
                       name="parlevel"                    
                       type="text"     
                       numeric-validation
                       ng-model="item.parlevel"     
                       class="text-right input-number bek-no-drag tabstop"
-                      ng-keypress="parlevelChanged($event)"
-                      ng-attr-id="{{'fastRepeatDefaultId'}}" />
+                      ng-keypress="parlevelChanged($event)" />
                   </ng-form>
               </td>
 

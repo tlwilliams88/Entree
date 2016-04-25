@@ -83,7 +83,7 @@ angular.module('bekApp')
           }
         }
 
-        if (moveTo) {
+        if (moveTo && !scope.isListPage) {
           e.preventDefault();
 
           moveTo.focus();

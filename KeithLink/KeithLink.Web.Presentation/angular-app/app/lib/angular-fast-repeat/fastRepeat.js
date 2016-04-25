@@ -33,7 +33,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var t;
                 var firstLabel;
                 var isIE;
-                var currentIndex;
+                listScope.currentIndex;
 
                 // The rowTpl will be digested once -- want to make sure it has valid data for the first wasted digest.  Default to first row or {} if no rows
                 var scope = listScope.$new();
@@ -136,7 +136,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         var id = item.$$fastRepeatId;
                         var row=currentRowEls[id];
 
-                        if(row && ((currentIndex === index && !listScope.isDeletingItem) || listScope.isDeletingItem)) {
+                        if(row && ((listScope.currentIndex === index && !listScope.isDeletingItem) || listScope.isDeletingItem)) {
                             // We've already seen this one
                             if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
                                 // This item has not been compiled and it apparently has changed -- need to rerender
@@ -277,9 +277,12 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     }
                 }
 
-                function inputFocus(input, item, fromFunction){
-                        input[0].querySelector('#fastRepeatDefaultId').focus();
-                        document.activeElement.select();
+                function inputFocus(input){
+                    var selectedElement = input[0].querySelector('#defaultElement-' + listScope.currentIndex)
+                    selectedElement.focus();
+
+                        selectedElement.select();
+
                 }
 
                 var parentClickHandler = function parentClickHandler(evt) {
@@ -292,7 +295,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                     var rowId = $target.attr('fast-repeat-id');
                     var item = currentRowEls[rowId].item;
-                    currentIndex = scope.list.indexOf(item) + 1;
+                    listScope.currentIndex = scope.list.indexOf(item) + 1;
                     // if($target[0].previousElementSibling.nodeName !== "THEAD"){
                     //     var previousParLevelValue = $target[0].previousElementSibling.children[0].children[12].children[0].children[0].value;
                     // }
@@ -314,12 +317,12 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                         clone[0].children[0].className += ' unoptimized';
 
-                        if(activeElement && evt.type == "focusin"){
+                        if(listScope.currentIndex && evt.type == "focusin"){
                             if(isIE){
-                                setTimeout(function(){
+                                // setTimeout(function(){
                                     inputFocus(clone);
                                 activeElement = '';
-                             }, 1);
+                             // }, 1);
                             }else {
                                 inputFocus(clone);
                                 activeElement = '';
