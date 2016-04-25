@@ -132,7 +132,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         }
 
         private void AddProductImageInfo(Product ret) {
-            ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
+            if(ret.Unfi != null)
+            {
+                ret.ProductImages = _imgRepository.GetIxOneImageList(ret.UPC).ProductImages;
+            }
+            else
+            {
+                ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
+            }
         }
 
         private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo) {

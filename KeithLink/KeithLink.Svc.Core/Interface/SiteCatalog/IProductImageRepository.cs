@@ -9,5 +9,6 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
     public interface IProductImageRepository
     {
         Models.SiteCatalog.ProductImageReturn GetImageList(string itemNumber);
+        Models.SiteCatalog.ProductImageReturn GetIxOneImageList(string itemNumber);
     }
 }
