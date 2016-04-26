@@ -568,32 +568,40 @@ namespace KeithLink.Svc.Impl.Logic
             //cart.Active = true;
             //basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
         }
-        
-		private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
-		{
-			return new ShoppingCart()
-			{
-				CartId = basket.Id.ToGuid(),
-				Name = basket.DisplayName,
-				BranchId = basket.BranchId,
-				RequestedShipDate = basket.RequestedShipDate, 
-                Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
-				PONumber = basket.PONumber,
-				CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
-				Items = basket.LineItems.Select(l => new ShoppingCartItem()
-				{
-					ItemNumber = l.ProductId,
-					CartItemId = l.Id.ToGuid(),
-					Notes = l.Notes,
-					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-					Each = l.Each.HasValue ? l.Each.Value : false,
-                    Label = l.Label,
-					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    CatalogId = l.CatalogName
-				}).ToList()
-			};
 
-		}
+        private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
+        {
+            ShoppingCart sc = new ShoppingCart()
+            {
+                CartId = basket.Id.ToGuid(),
+                Name = basket.DisplayName,
+                BranchId = basket.BranchId,
+                RequestedShipDate = basket.RequestedShipDate,
+                Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
+                PONumber = basket.PONumber,
+                CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
+                Items = basket.LineItems.Select(l => new ShoppingCartItem()
+                {
+                    ItemNumber = l.ProductId,
+                    CartItemId = l.Id.ToGuid(),
+                    strPosition = l.LinePosition,
+                    Notes = l.Notes,
+                    Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                    Each = l.Each.HasValue ? l.Each.Value : false,
+                    Label = l.Label,
+                    CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    CatalogId = l.CatalogName
+                }).ToList()
+            };
+            foreach (ShoppingCartItem item in sc.Items)
+            {
+                int pos;
+                int.TryParse(item.strPosition, out pos);
+                if (pos > 0) item.Position = pos;
+            }
+            return sc;
+        }
+
 
         public void UpdateCart(UserSelectedContext catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{

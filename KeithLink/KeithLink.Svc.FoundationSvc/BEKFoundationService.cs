@@ -162,11 +162,20 @@ namespace KeithLink.Svc.FoundationSvc
 
                 var basket = context.GetBasket(userId, cartId);
 
-                int startIndex = 1; // main frame needs these to start at 1
+                bool reorder = false;
                 foreach (LineItem lineItem in basket.OrderForms[0].LineItems)
                 {
-                    lineItem["LinePosition"] = startIndex;
-                    startIndex++;
+                    if (lineItem["LinePosition"] == null) reorder = true;
+                    else { if (lineItem["LinePosition"].Equals("0")) reorder = true; }
+                }
+                if (reorder)
+                {
+                    int startIndex = 1; // main frame needs lineposition to not be null
+                    foreach (LineItem lineItem in basket.OrderForms[0].LineItems)
+                    {
+                        lineItem["LinePosition"] = startIndex;
+                        startIndex++;
+                    }
                 }
 
                 PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
@@ -195,11 +204,6 @@ namespace KeithLink.Svc.FoundationSvc
                 CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.OrderForms[0].LineItems.Count];
                 po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
                 po["RequestedShipDate"] = requestedShipDate;
-                int linePosition = 1; // main frame needs these to start at 1
-                foreach (var li in lineItems)
-                    if (linePosition < (int)li["LinePosition"])
-                        linePosition = (int)li["LinePosition"];
-                linePosition++;
 
                 foreach (PurchaseOrderLineItemUpdate i in lineItemUpdates)
                 {
@@ -222,10 +226,8 @@ namespace KeithLink.Svc.FoundationSvc
                         li["CatchWeight"] = i.CatchWeight;
                         li["Each"] = i.Each;
                         li["Notes"] = string.Empty;
-                        li["LinePosition"] = linePosition;
                         li.ProductCatalog = i.Catalog;
                         li.Status = "added";
-                        linePosition++;
                         po.OrderForms[0].LineItems.Add(li);
                     }
                     if (i.Status == "added" && lineItem != null)

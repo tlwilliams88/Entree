@@ -17,7 +17,11 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name = "quantity")]
 		public decimal Quantity { get; set; }
 
-		[DataMember(Name = "packsize")]
+        public string strPosition { get; set; }
+        [DataMember(Name = "position")]
+        public int Position { get; set; }
+
+        [DataMember(Name = "packsize")]
 		public string PackSize { get; set; }
 
 		[DataMember(Name = "name")]
