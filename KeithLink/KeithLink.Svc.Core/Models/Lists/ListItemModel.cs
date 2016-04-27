@@ -40,7 +40,13 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[Description("Pack/Size")]
 		public string PackSize { get; set; }
 
-		[DataMember(Name = "storagetemp", EmitDefaultValue = false)]
+        [Description("Pack")]
+        public string Pack { get; set; }
+
+        [Description("Size")]
+        public string Size { get; set; }
+
+        [DataMember(Name = "storagetemp", EmitDefaultValue = false)]
 		public string StorageTemp { get; set; }
 
 		[DataMember(Name = "category")]
@@ -92,8 +98,9 @@ namespace KeithLink.Svc.Core.Models.Lists
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "Brand", Order = 20, Label = "Brand" });
 
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 21, Label = "Class" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 30, Label = "Pack/Size" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 50, Label = "Note" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 30, Label = "Pack" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 31, Label = "Size" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 50, Label = "Note" });
 
 
 			switch (this.Type)

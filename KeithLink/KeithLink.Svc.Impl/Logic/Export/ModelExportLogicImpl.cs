@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
             MemoryStream stream = OpenXmlSpreadsheetUtilities.MakeSpreadSheet
                 (SetCustomColumnWidths(typeof(T).Name, new DocumentFormat.OpenXml.Spreadsheet.Worksheet()),
                  WriteDataTableToExcelWorksheet(),
-                 "InventoryValuationModel");
+                 typeof(T).Name);
             return stream;
         }
 
@@ -117,6 +117,24 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             width = 15;
                             break;
                         case "PackSize":
+                            width = 12;
+                            break;
+                    }
+                }
+                if (modelName.Equals("ListItemModel"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Name":
+                        case "Brand":
+                        case "ItemClass":
+                        case "Notes":
+                            width = 20;
+                            break;
+                        case "Pack":
+                            width = 8;
+                            break;
+                        case "Size":
                             width = 12;
                             break;
                     }
@@ -249,6 +267,16 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "Pack":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
             return styleInd;
         }
 
@@ -270,6 +298,21 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "TotalQuantityShipped":
                     case "AveragePrice":
                     case "TotalCost":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                switch (fieldName)
+                {
+                    case "Name":
+                    case "Brand":
+                    case "ItemClass":
+                    case "Notes":
+                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                        break;
+                    case "Pack":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
                 }
