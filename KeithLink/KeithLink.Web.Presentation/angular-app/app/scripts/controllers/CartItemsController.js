@@ -223,16 +223,15 @@ angular.module('bekApp')
         processingSaveCart = true;
         var updatedCart = angular.copy(cart);
 
-        // delete items if quantity is 0 or price is 0
-            updatedCart.items = $filter('filter')( updatedCart.items, function(item){
-          return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item));
-        });
+          // delete items if quantity is 0 or price is 0
+          updatedCart.items = $filter('filter')( updatedCart.items, function(item){
+            return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item));
+          });
+          updatedCart.items = $filter('orderBy')(updatedCart.items, $scope.sortBy, $scope.sortOrder);
           $scope.currentCart.items = updatedCart.items;
           $scope.resetSubmitDisableFlag(true);
           return CartService.updateCart(updatedCart).then(function(savedCart) {
           $scope.currentCart.isRenaming = false;
-          $scope.sortBy = null;
-          $scope.sortOrder = false;
 
           // clear and reapply all watches on item quantity and each fields
           clearItemWatches();
@@ -326,6 +325,7 @@ angular.module('bekApp')
 
     $scope.createNewCart = function() {
       CartService.renameCart = true;
+      $filter('orderBy')(array, expression, reverse)
       CartService.createCart().then(function(newCart) {
         $state.go('menu.cart.items', {cartId: newCart.id});
         $scope.displayMessage('success', 'Successfully created new cart.');
@@ -371,7 +371,7 @@ angular.module('bekApp')
         changeOrder.items = $filter('filter')( changeOrder.items, function(item){
           return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
         });
-
+        changeOrder.items = $filter('orderBy')(changeOrder.items, $scope.sortBy, $scope.sortOrder);
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
           $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);

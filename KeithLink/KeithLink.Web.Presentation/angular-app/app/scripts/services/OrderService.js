@@ -77,6 +77,7 @@ angular.module('bekApp')
 
       updateOrder: function(order, params) {
         order.message = 'Saving order...';
+        order.items = UtilityService.setItemPositions(order.items, 'order');
         return Order.update(params, order).$promise.then(function(resp) {
           var changeOrder = resp.successResponse;
           if(changeOrder){
