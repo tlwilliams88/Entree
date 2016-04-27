@@ -1,5 +1,5 @@
 /* globals angular */
-angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse', '$animate', function ($compile, $parse, $animate) {
+angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse', '$animate', function ($compile, $parse, $animate, $rootScope) {
     'use strict';
     var $ = angular.element;
 
@@ -69,7 +69,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 detectIE();
 
                 function renderLabels(scope){
-                    if(listScope.selectedList.name !== "Mandatory"){
+                    if(listScope.selectedList && listScope.selectedList.name !== "Mandatory"){
                         if(scope.item.position == 1 && scope.item.label){
                             firstLabel = scope.item.label;
                             scope.item.label = '';
@@ -151,19 +151,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 }
                             }
                         } else if(!row || listScope.isChangingPage) {
-                            // This must be a new node
-                            if(!disableOpts) {
-                                row = {
-                                    copy: angular.copy(item),
-                                    item: item,
-                                    el: render(item)
-                                };
-
-                                if(scope.list.indexOf(item) % 2 == 0) {
-                                    row.el[0].children[0].className += ' even';
-                                }
-                            } else {
-                                // Optimizations are disabled
                                 row = {
                                     copy: angular.copy(item),
                                     item: item,
@@ -175,7 +162,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                     row.el.replaceWith(newEl);
                                     row.el=newEl;
                                 });
-                            }
                             currentRowEls[id] =  row; 
                             previousEl.after(row.el.last());
                             previousEl = row.el.last();
@@ -189,9 +175,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         }
 
                     });
-                    // if(activeElement && activeElement.nodeName === "INPUT"){
-                    //     activeElement.focus();
-                    // }
                     listScope.isDeletingItem = false;
    
                 };
@@ -200,9 +183,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 // save roughly 500ms per digest in certain cases.
                 // JSONStripper is used to remove the $$fastRepeatId that we attach to the objects.
                 var busy=false;
-                if(activeElement){
-                    activeElement.focus();
-                }
                 listScope.$watch(function(scp){
                  return JSON.stringify(getter(scp));}, function(list) {                   
                     activeElement = document.activeElement;
@@ -225,17 +205,12 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         scope.$digest();
 
                         updateList(rowTpl, scope, null);
-                        // inputFocus(rowTpl, item, "PostDigest");
                         if (showProfilingInfo) {
                             t = getTime() - t;
                             console.log("Total time: ", t, "ms");
                             console.log("time per row: ", t/list.length);
                         }
                         busy=false;
-                        if(activeElement && activeElement.id === 'fastRepeatDefaultId'){   
-                            activeElement.focus();     
-                            activeElement.select();               
-                        }
                         listScope.isChangingPage = false;
                     });
                 }, false);
@@ -256,7 +231,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     var newScope = scope.$new(false);
 
                     newScope[repeatVarName] = item;
-                   // newScope.fastRepeatStatic = false; newScope.fastRepeatDynamic = true;
+                   newScope.fastRepeatStatic = false; newScope.fastRepeatDynamic = true;
                     var clone = transclude(newScope, function(clone) {
                         tplContainer.append(clone);
                     });
@@ -278,11 +253,11 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 }
 
                 function inputFocus(input){
-                    var selectedElement = input[0].querySelector('#defaultElement-' + listScope.currentIndex)
-                    selectedElement.focus();
-
-                        selectedElement.select();
-
+                    listScope.selectedElement = input[0].querySelector('#defaultElement-' + listScope.currentIndex)
+                    listScope.selectedElement.className += ' SelectedElement';
+                    listScope.selectedElement.focus(function(){
+                        $rootScope.$broadcast('changed');
+                    });
                 }
 
                 var parentClickHandler = function parentClickHandler(evt) {
@@ -296,17 +271,11 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     var rowId = $target.attr('fast-repeat-id');
                     var item = currentRowEls[rowId].item;
                     listScope.currentIndex = scope.list.indexOf(item) + 1;
-                    // if($target[0].previousElementSibling.nodeName !== "THEAD"){
-                    //     var previousParLevelValue = $target[0].previousElementSibling.children[0].children[12].children[0].children[0].value;
-                    // }
 
                     // Find index of clicked dom element in list of all children element of the row.
                     // -1 would indicate the row itself was clicked.
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
-                        // var cloneCopy = clone;
-                        // cloneCopy[0].previousElementSibling.children[0].children[12].children[0].children[0].value = previousParLevelValue;
-                        // clone = cloneCopy;
                         scope.itemIconsActive = true;
                         if(scope.list.indexOf(item) % 2 == 0){
                             $target.replaceWith(clone);
@@ -318,15 +287,8 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         clone[0].children[0].className += ' unoptimized';
 
                         if(listScope.currentIndex && evt.type == "focusin"){
-                            if(isIE){
-                                // setTimeout(function(){
-                                    inputFocus(clone);
-                                activeElement = '';
-                             // }, 1);
-                            }else {
-                                inputFocus(clone);
-                                activeElement = '';
-                            }
+                            inputFocus(clone);
+                            activeElement = '';
                         }
                         
                         currentRowEls[rowId] = {
@@ -336,11 +298,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         };
 
                             if(elIndex >= 0) {
-                                clone.find('*').eq(elIndex).trigger('mouseenter');
-                                clone.find('*').eq(elIndex).trigger('mouseleave');
+                                clone.find('*').eq(elIndex).trigger('hover');
                             } else {
-                                clone.trigger('mouseenter');
-                                clone.trigger('mouseleave');
+                                clone.trigger('hover');
                             }
                     });
 

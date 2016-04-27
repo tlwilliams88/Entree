@@ -15,6 +15,7 @@ angular.module('bekApp')
   return function(scope, element, attr) {
 
     element.on('keyup', 'input[type="text"]', handleNavigation);
+    scope.$on('changed', 'input[type="text"]', handleNavigation);
 
     function getPreviousTabstop(row) {
       return row.prevUntil('tr td .tabstop').find('.tabstop').last()[0];
@@ -83,12 +84,26 @@ angular.module('bekApp')
           }
         }
 
-        if (moveTo && !scope.isListPage) {
-          e.preventDefault();
-
-          moveTo.focus();
+        if (moveTo) {
+          //Need to slow focus and select in IE due to processing of updating list in fastRepeat directive
+          if(scope.isIE){
+            setTimeout(function(){
+              e.preventDefault();
+              moveTo.focus();
+            }, 0)
+          }else {
+            e.preventDefault();
+            moveTo.focus();
+          }
           if (moveTo.type != 'checkbox') {
-            moveTo.select();
+            if(scope.isIE){
+              setTimeout(function(){
+                moveTo.select();
+              }, 0)
+            }else {
+              moveTo.select();
+            }
+
           }
         }
 

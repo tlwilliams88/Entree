@@ -396,10 +396,9 @@
                 <span>{{selectedList.permissions.alternativeFieldHeader2}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName2" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels || (isIE && selectedList.ismandatory)" ng-click="sortList('label',sort[0].order)" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden'}">
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
                 <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="(isIE && selectedList.ismandatory)" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden'}">
               </th>
               <th class="hidden-mobile-visible-print" ng-if="(!selectedList.read_only)">
                   Each
@@ -488,8 +487,8 @@
                 {{item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels) || (isIE && selectedList.ismandatory)">
-                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10" ng-style="isIE && selectedList.ismandatory && {'visibility': 'hidden', 'max-width': '0'}">
+              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
+                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
                   </select>
@@ -510,7 +509,7 @@
                   <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
-              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)|| (isIE && selectedList.ismandatory)">
+              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
                 {{item.label}}
               </td>
               <!-- Label for Print -->
@@ -553,7 +552,7 @@
                       numeric-validation
                       ng-model="item.parlevel"     
                       class="text-right input-number bek-no-drag tabstop"
-                      ng-keypress="parlevelChanged($event)" />
+                      ng-keypress="parlevelChanged($event)"/>
                   </ng-form>
               </td>
 

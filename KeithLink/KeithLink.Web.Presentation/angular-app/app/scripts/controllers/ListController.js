@@ -31,7 +31,6 @@ angular.module('bekApp')
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
-    $scope.isListPage = true;
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -574,7 +573,7 @@ angular.module('bekApp')
 
     $scope.parlevelChanged = function(evt) {
       var keycode=evt.keyCode ? evt.keyCode : evt.charCode;
-      if (keycode >= 48 && keycode <= 57 && $scope.listForm.$Pristine) {
+      if (keycode >= jskeycodes.int0 && keycode <= jskeycodes.int9 && $scope.listForm.$Pristine) {
         $scope.listForm.$setDirty();
       }else{
         return;
