@@ -20,6 +20,7 @@ namespace KeithLink.Svc.Impl.Helpers
         public const UInt32 RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL = 5;
         public const UInt32 BOLD_CELL = 6;
         public const UInt32 ITALIC_CELL = 7;
+        public const UInt32 NUMBER_F2_CELL = 12;
         private ICustomerRepository _customerRepo;
         public OpenXmlSpreadsheetUtilities(ICustomerRepository customerRepo)
         {
@@ -131,21 +132,22 @@ namespace KeithLink.Svc.Impl.Helpers
                         new DiagonalBorder())
                 ),
                 new CellFormats(
-                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 0 },                          // Index 0 â€“ The default cell style.  If a cell does not have a style index applied it will use this style combination instead
-                    new CellFormat(new Alignment() { Horizontal = HorizontalAlignmentValues.Right }) { FontId = 0, FillId = 0, BorderId = 0 },       // Index 1 â€“ Right Aligned 
-                    new CellFormat(new Alignment() { WrapText = true }) { FontId = 0, FillId = 0, BorderId = 0 },       // Index 2 â€“ Text Wrap
-                    new CellFormat(new Alignment() { Horizontal = HorizontalAlignmentValues.Right, WrapText = true }) { FontId = 0, FillId = 0, BorderId = 0 },       // Index 3 â€“ Right,Text Wrap
-                    new CellFormat(new Alignment() { WrapText = true }) { FontId = 1, FillId = 0, BorderId = 0 },       // Index 4 â€“ Text Wrap Bold
-                    new CellFormat(new Alignment() { Horizontal = HorizontalAlignmentValues.Right, WrapText = true }) { FontId = 1, FillId = 0, BorderId = 0 },       // Index 5 â€“ Right,Text Wrap,Bold
-                    new CellFormat() { FontId = 1, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 6 â€“ Bold
-                    new CellFormat() { FontId = 2, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 7 â€“ Italic
-                    new CellFormat() { FontId = 3, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 8 â€“ Times Roman
-                    new CellFormat() { FontId = 0, FillId = 2, BorderId = 0, ApplyFill = true },       // Index 9 â€“ Yellow Fill
-                    new CellFormat(                                                                   // Index 10 â€“ Alignment
+                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 0 },                          // Index 0 The default cell style.  If a cell does not have a style index applied it will use this style combination instead
+                    new CellFormat(new Alignment() { Horizontal = HorizontalAlignmentValues.Right }) { FontId = 0, FillId = 0, BorderId = 0 },       // Index 1 Right Aligned 
+                    new CellFormat(new Alignment() { WrapText = true }) { FontId = 0, FillId = 0, BorderId = 0 },       // Index 2 Text Wrap
+                    new CellFormat(new Alignment() { Horizontal = HorizontalAlignmentValues.Right, WrapText = true }) { FontId = 0, FillId = 0, BorderId = 0 },       // Index 3 Right,Text Wrap
+                    new CellFormat(new Alignment() { WrapText = true }) { FontId = 1, FillId = 0, BorderId = 0 },       // Index 4 Text Wrap Bold
+                    new CellFormat(new Alignment() { Horizontal = HorizontalAlignmentValues.Right, WrapText = true }) { FontId = 1, FillId = 0, BorderId = 0 },       // Index 5 Right,Text Wrap,Bold
+                    new CellFormat() { FontId = 1, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 6 Bold
+                    new CellFormat() { FontId = 2, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 7 Italic
+                    new CellFormat() { FontId = 3, FillId = 0, BorderId = 0, ApplyFont = true },       // Index 8 Times Roman
+                    new CellFormat() { FontId = 0, FillId = 2, BorderId = 0, ApplyFill = true },       // Index 9 Yellow Fill
+                    new CellFormat(                                                                   // Index 10 Alignment
                         new Alignment() { Horizontal = HorizontalAlignmentValues.Center, Vertical = VerticalAlignmentValues.Center }
                     )
                     { FontId = 0, FillId = 0, BorderId = 0, ApplyAlignment = true },
-                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 1, ApplyBorder = true }      // Index 11 â€“ Border
+                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 1, ApplyBorder = true },      // Index 11 Border
+                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 0, NumberFormatId = 2 }      // Index 12 F2 Number
                 )
             ); // return
         }

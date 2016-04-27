@@ -201,19 +201,20 @@ namespace KeithLink.Svc.Core.Models.Orders
 			var defaultConfig = new List<ExportModelConfiguration>();
 
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 10 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 20 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 30 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 40 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Quantity", Order = 50 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Order = 60 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "QantityShipped", Order = 70 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 10 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 20 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 30 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 40 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 50 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 60 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Order = 70 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "QantityShipped", Order = 75 });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "EachYN", Order = 80 });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "Price", Order = 90 });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "Status", Order = 100 });
 
 
-			return defaultConfig;
+            return defaultConfig;
 		}
 	}
 }

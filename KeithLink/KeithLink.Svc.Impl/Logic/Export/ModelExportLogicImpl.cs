@@ -121,7 +121,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             break;
                     }
                 }
-                if (modelName.Equals("ListItemModel"))
+                else if (modelName.Equals("ListItemModel"))
                 {
                     switch (config.Field)
                     {
@@ -135,6 +135,27 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             width = 8;
                             break;
                         case "Size":
+                            width = 12;
+                            break;
+                    }
+                }
+                else if (modelName.Equals("OrderLine"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Name":
+                        case "BrandExtendedDescription":
+                        case "ItemClass":
+                        case "Notes":
+                        case "Status":
+                            width = 20;
+                            break;
+                        case "Pack":
+                            width = 8;
+                            break;
+                        case "Size":
+                        case "QuantityOrdered":
+                        case "QantityShipped":
                             width = 12;
                             break;
                     }
@@ -224,10 +245,14 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         {
                             var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                             uint styleInd = SetStyleForCell(typeof(T).Name, config.Field);
+                            CellValues celltype = SetCellValuesForCell(typeof(T).Name, config.Field);
                             if (property != null)
                             {
                                 OpenXmlSpreadsheetUtilities.AppendTextCell
-                                    (excelColumnNames[columnIndex] + rowIndex.ToString(), this.GetFieldValue(item, property).Trim(), newExcelRow, CellValues.String, styleInd);
+                                    (excelColumnNames[columnIndex] + rowIndex.ToString(), 
+                                    this.GetFieldValue(item, property).Trim(), newExcelRow, 
+                                    celltype, 
+                                    styleInd);
                             }
                         }
                         else
@@ -277,6 +302,20 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("OrderLine"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "Pack":
+                    case "QuantityOrdered":
+                    case "QantityShipped":
+                    case "EachYN":
+                    case "Price":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
             return styleInd;
         }
 
@@ -317,7 +356,46 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("OrderLine"))
+            {
+                switch (fieldName)
+                {
+                    case "Name":
+                    case "ItemClass":
+                    case "BrandExtendedDescription":
+                    case "Notes":
+                    case "Status":
+                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                        break;
+                    case "Pack":
+                    case "QuantityOrdered":
+                    case "QantityShipped":
+                    case "EachYN":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "Price":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
             return styleInd;
+        }
+
+        private CellValues SetCellValuesForCell(string modelName, string fieldName)
+        {
+            CellValues celltype = CellValues.String;
+            if (modelName.Equals("OrderLine"))
+            {
+                switch (fieldName)
+                {
+                    case "QuantityOrdered":
+                    case "QantityShipped":
+                    case "Price":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            return celltype;
         }
 
         private static string GetExcelColumnName(int columnIndex)
