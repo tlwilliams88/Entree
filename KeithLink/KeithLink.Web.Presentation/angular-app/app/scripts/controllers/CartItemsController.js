@@ -71,6 +71,16 @@ angular.module('bekApp')
       }
     });
 
+    OrderService.getRecentlyOrderedUNFIItems().then(function(recentlyOrdered){
+      if(recentlyOrdered){
+        $scope.recentlyOrderedUnfiItems = recentlyOrdered.items;
+      }
+      else{
+        $scope.recentlyOrderedUnfiItems = [];
+      }
+      
+    })
+
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
     }
@@ -263,6 +273,7 @@ angular.module('bekApp')
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
+            $scope.setRecentlyOrderedUNFIItems(cart);
             var orderNumber = -1;
             var index;
             for (index in data.ordersReturned) {
@@ -310,6 +321,24 @@ angular.module('bekApp')
           });
       }
     };
+
+    $scope.setRecentlyOrderedUNFIItems = function(cart){
+      var itemsAdded = false;
+      if(cart.items && cart.items.length > 0){
+        var unfiItems = $filter('filter')(cart.items, {is_specialty_catalog: true});
+        if(unfiItems.length > 0){
+          unfiItems.forEach(function(unfiItem){
+            if($filter('filter')($scope.recentlyOrderedUnfiItems, {itemnumber: unfiItem.itemnumber}).length === 0){
+              $scope.recentlyOrderedUnfiItems.unshift(unfiItem);
+              itemsAdded = true;
+            }
+          })
+          if(itemsAdded){
+            OrderService.UpdateRecentlyOrderedUNFIItems($scope.recentlyOrderedUnfiItems);
+          }
+        }        
+      }
+    }
 
     $scope.renameCart = function (cartId, cartName) {
       var cart = angular.copy($scope.currentCart);
@@ -407,6 +436,7 @@ angular.module('bekApp')
         $scope.saveChangeOrder(order)
           .then(OrderService.resubmitOrder)
           .then(function(invoiceNumber) {
+            $scope.setRecentlyOrderedUNFIItems(order);
             $scope.displayMessage('success', 'Successfully submitted change order.');
             $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
           }, function(error) {

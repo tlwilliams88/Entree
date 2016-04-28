@@ -136,6 +136,32 @@ angular.module('bekApp')
         });
       },
 
+      /****************************
+      RECENTLY ORDERED UNFI ITEMS
+      ****************************/
+
+      getRecentlyOrderedUNFIItems: function() {
+        return $http.get('/recent/order/UNFI').then(function(response){
+          return response.data.successResponse;
+      });
+      },
+
+      clearRecentlyOrderedUNFIItems: function() {
+        return $http.delete('/recent/order/UNFI').then(function(response){
+          return response.data.successResponse;
+        });
+      },
+
+      UpdateRecentlyOrderedUNFIItems: function(recentlyOrdered) {
+        var payload = {
+          catalog:"UNFI",
+          items:recentlyOrdered
+        }
+        return $http.post('/recent/order', payload).then(function(response) {
+          return response.data.successResponse;
+        });
+      },
+
       /********************
       EXPORT
       ********************/

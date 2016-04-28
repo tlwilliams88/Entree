@@ -10,7 +10,7 @@
   <!-- Recently Viewed Items -->
   <div class="row">
   	<div class="col-sm-12">
-  		<h2>Recently Viewed Items <span><a class="clearRecent" ng-if="recentlyViewedItems.length > 0" ng-click="clearItems(recentlyViewedItems)"> Clear</a></span></h2>
+  		<h2>Recently Viewed Items <span><a class="clearRecent" ng-if="recentlyViewedItems.length > 0" ng-click="clearRecentlyViewedItems()"> Clear</a></span></h2>
       <div loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></div>
 
   		<div ng-show="!loadingRecentlyViewedItems && recentlyViewedItems.length > 0">
