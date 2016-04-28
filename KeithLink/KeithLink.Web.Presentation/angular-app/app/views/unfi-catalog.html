@@ -36,7 +36,7 @@
 
       <div ng-show="!loadingrecentlyOrderedUnfiItems && recentlyOrderedUnfiItems.length > 0">
         <ul class="horizontal-slide hidden-xs hidden-sm">
-          <li ng-repeat="item in recentlyOrderedUnfiItems.slice().reverse()" class="item-holder">
+          <li ng-repeat="item in recentlyOrderedUnfiItems" class="item-holder">
             <div class="featured-item text-center">
               <img 
                 ng-if="item.images.length > 0" 
