@@ -949,26 +949,35 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
         public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo)
         {
-            IEnumerable<List> list = _listRepo.Read(i => i.UserId == user.UserId &&
-                                           i.Type == ListType.RecentOrderedNonBEK &&
-                                           i.BranchId.Equals(catalogInfo.BranchId) &&
-                                           i.CustomerId.Equals(catalogInfo.CustomerId),
-                                      l => l.Items);
-            List<RecentNonBEKItem> returnItems = list.SelectMany(i => i.Items
-                .Select(l => new RecentNonBEKItem() {
-                    ItemNumber = l.ItemNumber,
-                    CatalogId = l.CatalogId,
-                    ModifiedOn = l.ModifiedUtc }))
-                .ToList();
-
-            PopulateProductDetails(catalogInfo, returnItems);
-
-            returnItems.ForEach(delegate (RecentNonBEKItem item)
+            try
             {
-                item.Images = _productImageRepo.GetNonBEKImageList(item.Upc).ProductImages;
-            });
+                IEnumerable<List> list = _listRepo.Read(i => i.UserId == user.UserId &&
+                                               i.Type == ListType.RecentOrderedNonBEK &&
+                                               i.BranchId.Equals(catalogInfo.BranchId) &&
+                                               i.CustomerId.Equals(catalogInfo.CustomerId),
+                                          l => l.Items);
+                List<RecentNonBEKItem> returnItems = list.SelectMany(i => i.Items
+                    .Select(l => new RecentNonBEKItem()
+                    {
+                        ItemNumber = l.ItemNumber,
+                        CatalogId = l.CatalogId,
+                        ModifiedOn = l.ModifiedUtc
+                    }))
+                    .ToList();
 
-            return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
+                PopulateProductDetails(catalogInfo, returnItems);
+
+                returnItems.ForEach(delegate (RecentNonBEKItem item)
+                {
+                    item.Images = _productImageRepo.GetNonBEKImageList(item.Upc).ProductImages;
+                });
+
+                return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
+            }
+            catch
+            {
+                return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = new List<RecentNonBEKItem>() };
+            }
         }
 
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
