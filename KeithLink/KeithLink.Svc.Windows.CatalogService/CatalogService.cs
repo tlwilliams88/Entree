@@ -1,7 +1,7 @@
 ﻿using Autofac;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Logic.IxOne;
+using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 using System;
 using System.ServiceProcess;
@@ -74,9 +74,9 @@ namespace KeithLink.Svc.Windows.CatalogService
             }
 
             //compensate for delay in processing to keep at top of minute
-            int frac = 1000 - DateTime.Now.Millisecond;
-            int sec = 59 - DateTime.Now.Second;
-            _timer.Change((sec * 1000) + frac, TIMER_DURATION_TICKMINUTE);
+            //int frac = 1000 - DateTime.Now.Millisecond;
+            //int sec = 59 - DateTime.Now.Second;
+            //_timer.Change((sec * 1000) + frac, TIMER_DURATION_TICKMINUTE);
         }
     }
 }

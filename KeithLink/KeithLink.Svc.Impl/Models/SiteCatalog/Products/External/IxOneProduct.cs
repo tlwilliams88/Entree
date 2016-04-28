@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Models.IxOne
+namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
 {
     public class IxOneProduct
     {

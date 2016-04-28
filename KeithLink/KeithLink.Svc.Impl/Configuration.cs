@@ -135,6 +135,8 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_APP_NAME = "AppName";
         private const string KEY_DURATION_TOKEN = "TokenDuration";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
+        private const string KEY_MULTIDOCS_NONBEKIMAGELIST_ENDPOINT = "MultiDocsNonBEKImageListEndpoint";
+        private const string KEY_MULTIDOCS_BEKIMAGELIST_ENDPOINT = "MultiDocsBEKImageListEndpoint";
         private const string KEY_MULTIDOCS_PROXY_URL = "MultiDocsProxyUrl";
 		private const string KEY_REQUIRE_HTTPS = "RequireHttps";
 		private const string KEY_RECENT_ITEMS_TO_KEEP = "RecentItemsToKeep";
@@ -655,6 +657,24 @@ namespace KeithLink.Svc.Impl {
                 string configValue = DBAppSettingsRepositoryImpl.GetValue(KEY_MULTIDOCS_PROXY_URL, string.Empty);
                 if (!String.IsNullOrEmpty(configValue) && !configValue.EndsWith("/"))
                     configValue = configValue + "/";
+                return configValue;
+            }
+        }
+
+        public static string MultiDocsBEKImageListEndpoint
+        {
+            get
+            {
+                string configValue = DBAppSettingsRepositoryImpl.GetValue(KEY_MULTIDOCS_BEKIMAGELIST_ENDPOINT, string.Empty);
+                return configValue;
+            }
+        }
+
+        public static string MultiDocsNonBEKImageListEndpoint
+        {
+            get
+            {
+                string configValue = DBAppSettingsRepositoryImpl.GetValue(KEY_MULTIDOCS_NONBEKIMAGELIST_ENDPOINT, string.Empty);
                 return configValue;
             }
         }

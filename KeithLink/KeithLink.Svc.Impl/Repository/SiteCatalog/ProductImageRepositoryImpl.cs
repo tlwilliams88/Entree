@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using KeithLink.Common.Core.Extensions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             using (HttpClient client = new HttpClient())
             {
-                StringBuilder queryString = new StringBuilder("ItemImage/GetList/");
-                queryString.Append(itemNumber);
-
-                string endPoint = string.Concat(Configuration.MultiDocsUrl, queryString);
+                string endPoint = Configuration.MultiDocsBEKImageListEndpoint.Inject(new
+                {
+                    baseUrl = Configuration.MultiDocsUrl,
+                    ItemNumber = itemNumber
+                });
 
                 System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
 
@@ -39,16 +41,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             return retVal;
         }
-        public KeithLink.Svc.Core.Models.SiteCatalog.ProductImageReturn GetIxOneImageList(string UPC)
+        public KeithLink.Svc.Core.Models.SiteCatalog.ProductImageReturn GetNonBEKImageList(string UPC)
         {
             KeithLink.Svc.Core.Models.SiteCatalog.ProductImageReturn retVal = new Core.Models.SiteCatalog.ProductImageReturn();
 
             using (HttpClient client = new HttpClient())
             {
-                StringBuilder queryString = new StringBuilder("ItemImage/GetIxOneList/");
-                queryString.Append(UPC);
+                string endPoint = Configuration.MultiDocsNonBEKImageListEndpoint.Inject(new {
+                    baseUrl = Configuration.MultiDocsUrl,
+                    UPC = UPC
+                });
 
-                string endPoint = string.Concat(Configuration.MultiDocsUrl, queryString);
 
                 System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
 
