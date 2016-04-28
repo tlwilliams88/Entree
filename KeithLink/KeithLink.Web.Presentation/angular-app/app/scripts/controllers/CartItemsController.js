@@ -77,8 +77,7 @@ angular.module('bekApp')
       }
       else{
         $scope.recentlyOrderedUnfiItems = [];
-      }
-      
+      }      
     })
 
     if (!$scope.isChangeOrder) {
