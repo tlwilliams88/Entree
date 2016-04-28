@@ -211,6 +211,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                     BranchId = newlist.Catalog,
                     Items = new List<ListItemModel>()
                 }, ListType.RecentOrderedNonBEK);
+                // grab a pointer to the newly created list
                 list = _listRepo.Read(i => i.UserId == user.UserId &&
                                i.Type == ListType.RecentOrderedNonBEK &&
                                i.BranchId == newlist.Catalog &&
@@ -219,17 +220,28 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                     .FirstOrDefault();
                 list.Items = new List<ListItem>();
             }
+            else
+            {
+                list.Items = list.Items.ToList();
+            }
+            // Identify specific warehouse - needed for product lookup
             Dictionary<string, string> externalCatalogDict = 
                 _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
             foreach (string itemNumber in newlist.Items.Select(i => i.ItemNumber).ToList()) {
+                // Insert newest at the start of the list while filtering out duplicates
                 var item = list.Items.Where(i => i.ItemNumber.Equals(itemNumber)).FirstOrDefault();
-                if(item != null) {
-                    _listItemRepo.Update(item);
-                } else {
-                    if(list.Items.Count >= Configuration.RecentItemsToKeep)
-                        _listItemRepo.Delete(list.Items.OrderBy(i => i.ModifiedUtc).FirstOrDefault());
-
-                    list.Items.Add(new ListItem() { ItemNumber = itemNumber, CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()] });
+                if (item != null)
+                {
+                    _listItemRepo.Delete(item);
+                }
+                ((List<ListItem>)list.Items).Insert(0, new ListItem() { ItemNumber = itemNumber, CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()] });
+            }
+            // tailor list number to configured value
+            if (list.Items.Count >= Configuration.RecentItemsToKeep)
+            {
+                while (list.Items.Count >= Configuration.RecentItemsToKeep)
+                {
+                    _listItemRepo.Delete(list.Items.Last());
                 }
             }
 
