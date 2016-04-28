@@ -40,6 +40,31 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return retVal;
         }
 
+        public KeithLink.Svc.Core.Models.SiteCatalog.ProductImageReturn GetNonBEKImageList(string UPC)
+        {
+            KeithLink.Svc.Core.Models.SiteCatalog.ProductImageReturn retVal = new Core.Models.SiteCatalog.ProductImageReturn();
+
+            using (HttpClient client = new HttpClient())
+            {
+                StringBuilder queryString = new StringBuilder("ItemImage/GetIxOneList/");
+                queryString.Append(UPC);
+
+                string endPoint = string.Concat(Configuration.MultiDocsUrl, queryString);
+
+                System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    retVal.ProductImages = JsonConvert.DeserializeObject<List<KeithLink.Svc.Core.Models.SiteCatalog.ProductImage>>(response.Content.ReadAsStringAsync().Result);
+                    if (retVal.ProductImages != null && !String.IsNullOrEmpty(Configuration.MultiDocsProxyUrl))
+                        foreach (var pi in retVal.ProductImages)
+                            if (pi != null && !String.IsNullOrEmpty(pi.Url))
+                                pi.Url = pi.Url.Replace(Configuration.MultiDocsUrl, Configuration.MultiDocsProxyUrl);
+                }
+            }
+
+            return retVal;
+        }
         #endregion
     }
 }

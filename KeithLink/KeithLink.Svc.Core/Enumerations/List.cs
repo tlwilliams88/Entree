@@ -26,13 +26,14 @@ namespace KeithLink.Svc.Core.Enumerations.List
 		Favorite,
 		Contract,
 		Recent,
-		Notes,
+        Notes,
 		Worksheet,
 		ContractItemsAdded,
 		ContractItemsDeleted,
 		Reminder,
 		Mandatory,
 		RecommendedItems,
-		InventoryValuation
-	}
+		InventoryValuation,
+        RecentOrderedNonBEK
+    }
 }

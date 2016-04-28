@@ -21,6 +21,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
 
+        void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist);
+
         Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext, UserProfile userProfile);
 
         List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
@@ -59,7 +61,11 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
+        RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo);
+
         void DeleteRecent(UserProfile user, UserSelectedContext catalogInfo);
+
+        void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo);
 
         List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
