@@ -48,6 +48,47 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 aggregations = ElasticSearchAggregations
             };
         }
+
+        private dynamic BuildBoolMultiMatchQuery(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
+            List<dynamic> statusFields = BuildStatusFilter();
+
+            List<dynamic> musts = new List<dynamic>();
+            musts.Add(new {
+                multi_match = new {
+                query = searchExpression,
+                @type = "most_fields",
+                fields = fieldsToSearch,
+                @operator = "and"
+                }
+            });
+            musts.Add(new {
+                match = new {
+                    name_ngram_analyzed = new {
+                        query = searchExpression,
+                        @operator = "and",
+                        minimum_should_match = "75%"
+                    }
+                }
+            });
+
+            return new {
+                from = searchModel.From,
+                size = searchModel.Size,
+                query = new {
+                    @bool = new {
+                        must = musts,
+                        must_not = new {
+                            match = new {
+                                isProprietary = "true"
+                            }
+                        }
+                    },
+
+                },
+                sort = BuildSort(searchModel.SField, searchModel.SDir),
+                aggregations = ElasticSearchAggregations
+            };
+        }
 		
         /// <summary>
         /// filter out items with unwanted statuses
@@ -199,12 +240,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
 
             // preferred item boosts
-            boosts.Add(new { filter = new { term = new { preferreditemcode = "A" } }, 
-                boost_factor = 300 });
-            boosts.Add(new { filter = new { term = new { preferreditemcode = "B" } }, 
-                boost_factor = 200 });
-            boosts.Add(new { filter = new { term = new { preferreditemcode = "C" } }, 
-                boost_factor = 100 });
+            //boosts.Add(new { filter = new { term = new { preferreditemcode = "A" } }, 
+            //    boost_factor = 300 });
+            //boosts.Add(new { filter = new { term = new { preferreditemcode = "B" } }, 
+            //    boost_factor = 200 });
+            //boosts.Add(new { filter = new { term = new { preferreditemcode = "C" } }, 
+            //    boost_factor = 100 });
 
 
             return boosts;
@@ -364,7 +405,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 termSearch = String.Join(" OR ", digitSearchTerms);
             }
 
-            dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
+            //dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
+            dynamic termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
 
             string branch = catalogInfo.BranchId.ToLower();
