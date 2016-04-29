@@ -1016,7 +1016,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Logic\IxOne\" />
     <Folder Include="Schemas\" />
   </ItemGroup>
   <ItemGroup>

@@ -21,6 +21,8 @@ namespace KeithLink.Svc.Impl.Helpers
         public const UInt32 BOLD_CELL = 6;
         public const UInt32 ITALIC_CELL = 7;
         public const UInt32 NUMBER_F2_CELL = 12;
+        public const UInt32 SHORTDATE_CELL = 14;
+
         private ICustomerRepository _customerRepo;
         public OpenXmlSpreadsheetUtilities(ICustomerRepository customerRepo)
         {
@@ -147,7 +149,9 @@ namespace KeithLink.Svc.Impl.Helpers
                     )
                     { FontId = 0, FillId = 0, BorderId = 0, ApplyAlignment = true },
                     new CellFormat() { FontId = 0, FillId = 0, BorderId = 1, ApplyBorder = true },      // Index 11 Border
-                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 0, NumberFormatId = 2 }      // Index 12 F2 Number
+                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 0, NumberFormatId = 4, ApplyNumberFormat = true },      // Index 12 F2 Number
+                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 0, NumberFormatId = 9, ApplyNumberFormat = true },      // Index 13 Percent
+                    new CellFormat() { FontId = 0, FillId = 0, BorderId = 0, NumberFormatId = 14, ApplyNumberFormat = true }      // Index 14 Short Date
                 )
             ); // return
         }
@@ -181,31 +185,25 @@ namespace KeithLink.Svc.Impl.Helpers
 
         public static uint AddTitleRow(uint rowIndex, string modelName, string[] excelColumnNames, string reportTitle, SheetData sheetData)
         {
-            if (modelName.Equals("ItemUsageReportItemModel") | modelName.Equals("InventoryValuationModel"))
-            {
-                var titleRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
-                OpenXmlSpreadsheetUtilities.AppendTextCell
-                    (excelColumnNames[0] + rowIndex.ToString(), reportTitle, titleRow, CellValues.String, OpenXmlSpreadsheetUtilities.BOLD_CELL);
-                sheetData.Append(titleRow);
-                rowIndex++;
-            }
+            var titleRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
+            OpenXmlSpreadsheetUtilities.AppendTextCell
+                (excelColumnNames[0] + rowIndex.ToString(), reportTitle, titleRow, CellValues.String, OpenXmlSpreadsheetUtilities.BOLD_CELL);
+            sheetData.Append(titleRow);
+            rowIndex++;
             return rowIndex;
         }
 
         public static uint AddCustomerRow(uint rowIndex, string modelName, string[] excelColumnNames, Customer customer, SheetData sheetData)
         {
-            if (modelName.Equals("ItemUsageReportItemModel") | modelName.Equals("InventoryValuationModel"))
-            {
-                var customerRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
-                AppendTextCell
-                    (excelColumnNames[0] + rowIndex.ToString(), customer.CustomerBranch, customerRow, CellValues.String, OpenXmlSpreadsheetUtilities.ITALIC_CELL);
-                AppendTextCell
-                    (excelColumnNames[1] + rowIndex.ToString(), customer.CustomerNumber, customerRow, CellValues.String, OpenXmlSpreadsheetUtilities.ITALIC_CELL);
-                AppendTextCell
-                    (excelColumnNames[2] + rowIndex.ToString(), customer.CustomerName, customerRow, CellValues.String, OpenXmlSpreadsheetUtilities.ITALIC_CELL);
-                sheetData.Append(customerRow);
-                rowIndex++;
-            }
+            var customerRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
+            AppendTextCell
+                (excelColumnNames[0] + rowIndex.ToString(), customer.CustomerBranch, customerRow, CellValues.String, OpenXmlSpreadsheetUtilities.ITALIC_CELL);
+            AppendTextCell
+                (excelColumnNames[1] + rowIndex.ToString(), customer.CustomerNumber, customerRow, CellValues.String, OpenXmlSpreadsheetUtilities.ITALIC_CELL);
+            AppendTextCell
+                (excelColumnNames[2] + rowIndex.ToString(), customer.CustomerName, customerRow, CellValues.String, OpenXmlSpreadsheetUtilities.ITALIC_CELL);
+            sheetData.Append(customerRow);
+            rowIndex++;
             return rowIndex;
         }
 

@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -9,6 +10,7 @@ using KeithLink.Svc.Impl.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -56,6 +58,25 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
                 {
                     sb.AppendLine("Item Usage Report");
+                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
+                    List<string> cust = new List<string>();
+                    cust.Add(customer.CustomerBranch);
+                    cust.Add(customer.CustomerNumber);
+                    cust.Add(customer.CustomerName);
+                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
+                }
+                else if (typeof(T).Name.Equals("ListItemModel"))
+                {
+                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
+                    List<string> cust = new List<string>();
+                    cust.Add(customer.CustomerBranch);
+                    cust.Add(customer.CustomerNumber);
+                    cust.Add(customer.CustomerName);
+                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
+                }
+                else if (typeof(T).Name.Equals("InvoiceModel"))
+                {
+                    sb.AppendLine("Invoices");
                     Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
                     List<string> cust = new List<string>();
                     cust.Add(customer.CustomerBranch);
@@ -160,6 +181,26 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             break;
                     }
                 }
+                else if (modelName.Equals("InvoiceModel"))
+                {
+                    switch (config.Field)
+                    {
+                        case "InvoiceNumber":
+                        case "PONumber":
+                        case "TypeDescription":
+                            width = 12;
+                            break;
+                        case "InvoiceAmount":
+                        case "Amount":
+                            width = 16;
+                            break;
+                        case "InvoiceDate":
+                        case "DueDate":
+                            width = 14;
+                            break;
+                    }
+                }
+
                 if (width > 0)
                     OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, colIndex, width);
             }
@@ -186,10 +227,27 @@ namespace KeithLink.Svc.Impl.Logic.Export
             //
             //  Create the Header row in our Excel Worksheet
             //
-            rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
-                (rowIndex, typeof(T).Name, excelColumnNames, "Item Usage Report", sheetData);
-            rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
-                (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+            if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+            {
+                rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
+                    (rowIndex, typeof(T).Name, excelColumnNames, "Item Usage Report", sheetData);
+                rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
+                    (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+            }
+            else if (typeof(T).Name.Equals("ListItemModel"))
+            {
+                //rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
+                //    (rowIndex, typeof(T).Name, excelColumnNames, ((ListItemModel)Model).Name, sheetData);
+                rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
+                    (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+            }
+            else if (typeof(T).Name.Equals("InvoiceModel"))
+            {
+                rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
+                    (rowIndex, typeof(T).Name, excelColumnNames, "Invoices", sheetData);
+                rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
+                    (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+            }
 
             var headerRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
             sheetData.Append(headerRow);
@@ -316,6 +374,19 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "InvoiceDate":
+                    case "DueDate":
+                    case "InvoiceAmount":
+                    case "Amount":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
             return styleInd;
         }
 
@@ -378,6 +449,21 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                switch (fieldName)
+                {
+                    case "InvoiceDate":
+                    case "DueDate":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "InvoiceAmount":
+                    case "Amount":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
             return styleInd;
         }
 
@@ -391,6 +477,16 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "QuantityOrdered":
                     case "QantityShipped":
                     case "Price":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                switch (fieldName)
+                {
+                    case "InvoiceAmount":
+                    case "Amount":
                         celltype = CellValues.Number;
                         break;
                 }
@@ -469,8 +565,13 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 return this.GetAttributeFieldValue(value.GetType(), value.ToString());
 
             if (property.PropertyType == typeof(Boolean))
+            {
                 return value.ToString().Equals("False") ? "N" : "Y";
-
+            }
+            else if (property.PropertyType == typeof(DateTime?) && value != null)
+            {
+                return ((DateTime)value).ToShortDateString();
+            }
             return value.ToString();
         }
 
