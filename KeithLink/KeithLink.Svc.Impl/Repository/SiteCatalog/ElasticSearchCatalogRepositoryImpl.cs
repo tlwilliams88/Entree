@@ -62,16 +62,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 }
             });
 
-            //musts.Add(new {
-            //    match = new {
-            //        name_ngram_analyzed = new {
-            //            query = searchExpression,
-            //            @operator = "and",
-            //            minimum_should_match = "75%"
-            //        }
-            //    }
-            //});
-
             return new {
                 from = searchModel.From,
                 size = searchModel.Size,
