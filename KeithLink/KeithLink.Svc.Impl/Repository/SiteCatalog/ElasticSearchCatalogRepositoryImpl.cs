@@ -89,14 +89,66 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         private dynamic BuildBoolMultiMatchQueryForDigits(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
             List<dynamic> statusFields = BuildStatusFilter();
-
-            List<dynamic> musts = new List<dynamic>();
-            musts.Add(new {
-                multi_match = new {
-                    query = searchExpression,
-                    @type = "most_fields",
-                    fields = fieldsToSearch,
-                    @operator = "and"
+            string wildcardText = string.Format("*{0}*", searchExpression);
+            List<dynamic> shoulds = new List<dynamic>();
+            shoulds.Add(new {
+                match = new {
+                    itemnumber = new {
+                        query = searchExpression,
+                        boost = 5
+                    }
+                }
+            });
+            shoulds.Add(new {
+                wildcard = new {
+                    itemnumber = new {
+                        value = wildcardText,
+                        boost = 5
+                    }
+                }
+            });
+            shoulds.Add(new {
+                match = new {
+                    mfrnumber = new {
+                        query = searchExpression,
+                        boost = 3
+                    }
+                }
+            });
+            shoulds.Add(new {
+                wildcard = new {
+                    mfrnumber = new {
+                        value = wildcardText,
+                        boost = 3
+                    }
+                }
+            });
+            shoulds.Add(new {
+                match = new {
+                    gtin = new {
+                        query = searchExpression
+                    }
+                }
+            });
+            shoulds.Add(new {
+                wildcard = new {
+                    gtin = new {
+                        value = wildcardText
+                    }
+                }
+            });
+            shoulds.Add(new {
+                match = new {
+                    upc = new {
+                        query = searchExpression
+                    }
+                }
+            });
+            shoulds.Add(new {
+                wildcard = new {
+                    upc = new {
+                        value = wildcardText
+                    }
                 }
             });
 
@@ -105,7 +157,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 size = searchModel.Size,
                 query = new {
                     @bool = new {
-                        must = musts,
+                        should = shoulds,
                         must_not = statusFields
                     }
                 },
@@ -126,6 +178,81 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return new { multi_match =
                     new { query = category, fields = 
                         new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
+        }
+
+        private dynamic BuildDigitMatchQuery(string fieldName, string searchText, int? fieldBoost) {
+            dynamic query = null;
+
+            if (fieldBoost.HasValue) {
+                query = new {
+                    match = new {
+                        fieldName = new {
+                            query = searchText,
+                            boost = fieldBoost
+                        }
+                    }
+                };
+            } else {
+                query = new {
+                    match = new {
+                        fieldName = new {
+                            query = searchText
+                        }
+                    }
+                };
+            }
+
+            return query;
+        }
+
+        private List<dynamic> BuildDigitQuery(List<string> searchFields, string searchTerms) {
+            const char SPLIT_CHAR = '^';
+            const Int16 INDEX_FIELDNAME = 0;
+            const Int16 INDEX_BOOST = 1;
+            const Int16 INDEX_NOTFOUND = -1;
+
+            List<dynamic> searchClauses = new List<dynamic>();
+
+            foreach (string searchField in searchFields) {
+                if (searchField.IndexOf(SPLIT_CHAR) == INDEX_NOTFOUND) {
+                    searchClauses.Add(BuildDigitMatchQuery(searchField, searchTerms, null));
+                    searchClauses.Add(BuildDigitWildcardQuery(searchField, searchTerms, null));
+                } else {
+                    string[] fieldBoost = searchField.Split(SPLIT_CHAR);
+                    int boost = int.Parse(fieldBoost[INDEX_BOOST]);
+
+                    searchClauses.Add(BuildDigitMatchQuery(fieldBoost[INDEX_FIELDNAME], searchTerms, boost));
+                    searchClauses.Add(BuildDigitWildcardQuery(fieldBoost[INDEX_FIELDNAME], searchTerms, boost));
+                }
+            }
+
+            return searchClauses;
+        }
+
+        private dynamic BuildDigitWildcardQuery(string fieldName, string searchText, int? fieldBoost) {
+            dynamic query = null;
+            string text = string.Format("*{0}*", searchText);
+
+            if (fieldBoost.HasValue) {
+                query = new {
+                    wildcard = new {
+                        fieldName = new {
+                            value = text,
+                            boost = fieldBoost
+                        }
+                    }
+                };
+            } else {
+                query = new {
+                    wildcard = new {
+                        value = new {
+                            query = text
+                        }
+                    }
+                };
+            }
+
+            return query;
         }
 
         private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category = "", string department = "") {
