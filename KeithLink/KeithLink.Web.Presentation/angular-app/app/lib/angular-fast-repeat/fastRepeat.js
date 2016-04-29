@@ -136,7 +136,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         var id = item.$$fastRepeatId;
                         var row=currentRowEls[id];
 
-                        if(row && ((listScope.currentIndex === index && !listScope.isDeletingItem) || listScope.isDeletingItem)) {
+                        if(row && ((listScope.currentIndex === index && !(listScope.isDeletingItem && listScope.isChangingPage)) || listScope.isDeletingItem)) {
                             // We've already seen this one
                             if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
                                 // This item has not been compiled and it apparently has changed -- need to rerender
@@ -146,26 +146,39 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 row.copy = angular.copy(item);
                                 row.compiled = false;
                                 row.item = item;
-                                if(index % 2 == 0) {
+                                if(scope.list.indexOf(item) % 2 == 0) {
                                     row.el[0].children[0].className += ' even';
                                 }
                             }
                         } else if(!row || listScope.isChangingPage) {
+                            if(!disableOpts) {
                                 row = {
                                     copy: angular.copy(item),
                                     item: item,
-                                    el: $('<div/>'),
-                                    compiled: true
+                                    el: render(item)
                                 };
+                                if(scope.list.indexOf(item) % 2 == 0) {
+                                    row.el[0].children[0].className += ' even';
+                                }
+                            }else{
+                                row = {
+                                copy: angular.copy(item),
+                                item: item,
+                                el: $('<div/>'),
+                                compiled: true
+                            };
 
                                 renderUnoptimized(item, function(newEl) {
                                     row.el.replaceWith(newEl);
                                     row.el=newEl;
                                 });
-                            currentRowEls[id] =  row; 
-                            previousEl.after(row.el.last());
-                            previousEl = row.el.last();
+
+                            }
+                                currentRowEls[id] =  row; 
+                                previousEl.after(row.el.last());
+                                previousEl = row.el.last();
                         }
+
 
                         if(row && index % 2 == 0) {
                             row.el[0].children[0].className += ' even';

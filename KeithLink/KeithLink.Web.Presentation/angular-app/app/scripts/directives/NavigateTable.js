@@ -11,7 +11,7 @@
  */
 
 angular.module('bekApp')
-.directive('navigateTable', [ function(){
+.directive('navigateTable', ['$timeout', function($timeout){
   return function(scope, element, attr) {
 
     element.on('keyup', 'input[type="text"]', handleNavigation);
@@ -87,23 +87,21 @@ angular.module('bekApp')
         if (moveTo) {
           //Need to slow focus and select in IE due to processing of updating list in fastRepeat directive
           if(scope.isIE){
-            setTimeout(function(){
+            $timeout(function(){
               e.preventDefault();
               moveTo.focus();
             }, 0)
+
           }else {
             e.preventDefault();
             moveTo.focus();
           }
           if (moveTo.type != 'checkbox') {
             if(scope.isIE){
-              setTimeout(function(){
-                moveTo.select();
-              }, 0)
+              return;
             }else {
               moveTo.select();
             }
-
           }
         }
 
