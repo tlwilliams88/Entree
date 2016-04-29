@@ -61,15 +61,16 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 @operator = "and"
                 }
             });
-            musts.Add(new {
-                match = new {
-                    name_ngram_analyzed = new {
-                        query = searchExpression,
-                        @operator = "and",
-                        minimum_should_match = "75%"
-                    }
-                }
-            });
+
+            //musts.Add(new {
+            //    match = new {
+            //        name_ngram_analyzed = new {
+            //            query = searchExpression,
+            //            @operator = "and",
+            //            minimum_should_match = "75%"
+            //        }
+            //    }
+            //});
 
             return new {
                 from = searchModel.From,
@@ -107,7 +108,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         must = musts,
                         must_not = statusFields
                     }
-
                 },
                 sort = BuildSort(searchModel.SField, searchModel.SDir),
                 aggregations = ElasticSearchAggregations
