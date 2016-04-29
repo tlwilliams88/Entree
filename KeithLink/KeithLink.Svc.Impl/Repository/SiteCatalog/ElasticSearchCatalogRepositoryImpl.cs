@@ -53,21 +53,21 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             List<dynamic> statusFields = BuildStatusFilter();
 
             List<dynamic> musts = new List<dynamic>();
-            musts.Add(new {
+            musts.Add( new {
                 multi_match = new {
-                query = searchExpression,
-                @type = "most_fields",
-                fields = fieldsToSearch,
-                @operator = "and"
-                }
-            });
+                    query = searchExpression,
+                    @type = "most_fields",
+                    fields = fieldsToSearch,
+                    @operator = "and"
+                },
+            } );
 
             return new {
                 from = searchModel.From,
                 size = searchModel.Size,
                 query = new {
                     @bool = new {
-                        must = musts,
+                        should = musts,
                         must_not = new {
                             match = new {
                                 isProprietary = "true"
