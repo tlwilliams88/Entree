@@ -67,14 +67,36 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 size = searchModel.Size,
                 query = new {
                     @bool = new {
-                        should = musts,
-                        must_not = new {
-                            match = new {
-                                isProprietary = "true"
-                            }
-                        }
-                    },
+                        must = musts,
+                        must_not = statusFields
+                    }
+                },
+                sort = BuildSort(searchModel.SField, searchModel.SDir),
+                aggregations = ElasticSearchAggregations
+            };
+        }
 
+        private dynamic BuildBoolMultiMatchQueryForDigits(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
+            List<dynamic> statusFields = BuildStatusFilter();
+
+            List<dynamic> musts = new List<dynamic>();
+            musts.Add(new {
+                multi_match = new {
+                    query = searchExpression,
+                    @type = "most_fields",
+                    fields = fieldsToSearch,
+                    @operator = "and"
+                }
+            });
+
+            return new {
+                from = searchModel.From,
+                size = searchModel.Size,
+                query = new {
+                    @bool = new {
+                        must = musts,
+                        must_not = statusFields
+                    }
                 },
                 sort = BuildSort(searchModel.SField, searchModel.SDir),
                 aggregations = ElasticSearchAggregations
@@ -386,18 +408,27 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
             string termSearch = search;
-            List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
+            List<string> fieldsToSearch = null;
+            dynamic termSearchExpression = null;
+
             System.Text.RegularExpressions.Regex matchOnlyDigits = new System.Text.RegularExpressions.Regex(@"^\d+$");
-            
+
             // results in a search string like '1234 OR upc:*1234 OR gtin:*1234 OR itemnumber:*1234'
-            if (matchOnlyDigits.IsMatch(search)) { 
-                List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + search + "*"))).ToList();
-                digitSearchTerms.Insert(0, search);
-                termSearch = String.Join(" OR ", digitSearchTerms);
+            //if (matchOnlyDigits.IsMatch(searchTerm))
+            //{
+            //    List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + searchTerm + "*"))).ToList();
+            //    digitSearchTerms.Insert(0, searchTerm);
+            //    termSearch = String.Join(" OR ", digitSearchTerms);
+            //}
+            if (matchOnlyDigits.IsMatch(search)) {
+                fieldsToSearch = Configuration.ElasticSearchDigitSearchFields;
+                termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, filterTerms, fieldsToSearch, termSearch);
+            } else {
+                fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
+                termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
             }
 
-            //dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
-            dynamic termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
+            //dynamic termSearchExpression = ;
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
 
             string branch = catalogInfo.BranchId.ToLower();
@@ -427,50 +458,45 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
-            /*
-            //searching count func
-            string searchBody = @"{
-						""query"":{
-						""term"" : { ""name"" : """ + searchTerm + @""" }
-						}}";
-
-            ElasticsearchResponse<DynamicDictionary> res = _client.Count(index.ToLower(), searchBody);
-
-
-            if (res.Response != null)
-            {
-                return res.Response["count"];
-            }
-            else
-            {
-                return 0;
-            }*/
-
             int size = GetProductPagingSize(searchModel.Size);
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
             string termSearch = searchTerm;
-            List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
+            List<string> fieldsToSearch = null;
+            dynamic termSearchExpression = null;
+
             System.Text.RegularExpressions.Regex matchOnlyDigits = new System.Text.RegularExpressions.Regex(@"^\d+$");
 
             // results in a search string like '1234 OR upc:*1234 OR gtin:*1234 OR itemnumber:*1234'
-            if (matchOnlyDigits.IsMatch(searchTerm))
-            {
-                List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + searchTerm + "*"))).ToList();
-                digitSearchTerms.Insert(0, searchTerm);
-                termSearch = String.Join(" OR ", digitSearchTerms);
+            //if (matchOnlyDigits.IsMatch(searchTerm))
+            //{
+            //    List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + searchTerm + "*"))).ToList();
+            //    digitSearchTerms.Insert(0, searchTerm);
+            //    termSearch = String.Join(" OR ", digitSearchTerms);
+            //}
+            if (matchOnlyDigits.IsMatch(searchTerm)) {
+                fieldsToSearch = Configuration.ElasticSearchDigitSearchFields;
+                termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, filterTerms, fieldsToSearch, termSearch);
+            } else {
+                fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
+                termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
             }
 
-            dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
+            //dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
             var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
 
             string branch = catalogInfo.BranchId.ToLower();
 
-            var res = _client.Search(branch.ToLower(), "product", termSearchExpression);
-            if (res.Response["hits"]["total"] != null) 
-                return Convert.ToInt32(res.Response["hits"]["total"].Value);
-            else 
-                return 0;
+            try {
+                var res = _client.Search(branch.ToLower(), "product", termSearchExpression);
+                if (res.Response["hits"]["total"] != null)
+                    return Convert.ToInt32(res.Response["hits"]["total"].Value);
+                else
+                    return 0;
+            } catch (Exception) {
+                
+                throw;
+            }
         }
 
         //private delegate TResult Func<in T, out TResult>();
