@@ -120,40 +120,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
         }
 
-        private dynamic BuildProprietaryItemFilter( UserSelectedContext catalogInfo, string department ) {
-            List<dynamic> proprietaryItems = new List<dynamic>();
-
-            //Build filter for proprietary items
-			if(!string.IsNullOrEmpty(catalogInfo.CustomerId))
-				proprietaryItems.Add(new { query_string = new { query = string.Format("isproprietary:false OR (isproprietary:true AND proprietarycustomers: {0})", catalogInfo.CustomerId) } });
-			else
-				proprietaryItems.Add(new { match = new { isproprietary = false } }); //No CustomerId (Guest), filter out all proprietary items
-
-            if (!string.IsNullOrEmpty(department)) {
-                proprietaryItems.Add(new { match = new { @department = department } });
-            }
-
-            return proprietaryItems;
-        }
-
-        private List<dynamic> BuildFacetsFilter( string facetFilters ) {
-            List<dynamic> mustClause = new List<dynamic>();
-            string facetSeparator = "___";
-            string[] facets = facetFilters.Split(new string[] { facetSeparator }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (string s in facets)
-            {
-                string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                string[] values = s.Substring(s.IndexOf(":") + 1).Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                string keyValue = ElasticSearchAggregationsMap[keyValues[0]];
-                string selectedValues = String.Join("\",\"", values);
-                ExpandoObject keyValueSelectedValues = new ExpandoObject();
-                (keyValueSelectedValues as IDictionary<string, object>).Add(keyValue, values);
-                mustClause.Add(new { terms = keyValueSelectedValues });
-            }
-
-            return mustClause;
-        }
-
         private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category = "", string department = "") {
             List<dynamic> mustClause = new List<dynamic>();
             string facetSeparator = "___";
@@ -182,13 +148,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (!String.IsNullOrEmpty(category))
                 mustClause.Add(BuildCategoryFilter(category));
 
-            List<dynamic> fieldFilterTerms = BuildStatusFilter();
-
-            ExpandoObject filterTerms = new ExpandoObject();
-            (filterTerms as IDictionary<string, object>).Add("bool", new { must = mustClause, must_not = fieldFilterTerms });
-
-            return filterTerms;
-
+            return mustClause;
         }
         
         private dynamic BuildFunctionScoreQuery(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
@@ -442,13 +402,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
-
-            List<dynamic> newFilterTerms = BuildProprietaryItemFilter( catalogInfo, searchModel.Dept );
-            //List<dynamic> facetFilterTerms = BuildFacetsFilter( searchModel.Facets );
-            if (searchModel.Facets != null && searchModel.Facets.Length > 0) {
-                newFilterTerms.Add( BuildFacetsFilter( searchModel.Facets ) );
-            }
+            List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
             string termSearch = search;
             List<string> fieldsToSearch = null;
@@ -465,10 +419,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             //}
             if (matchOnlyDigits.IsMatch(search)) {
                 fieldsToSearch = Configuration.ElasticSearchDigitSearchFields;
-                termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, filterTerms, fieldsToSearch, termSearch);
+                //termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, filterTerms, fieldsToSearch, termSearch);
             } else {
                 fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
-                termSearchExpression = BuildBoolMultiMatchQuery(searchModel, newFilterTerms, fieldsToSearch, termSearch);
+                termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
             }
 
             //dynamic termSearchExpression = ;
@@ -508,9 +462,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
             int size = GetProductPagingSize(searchModel.Size);
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
-
-            List<dynamic> newFilterTerms = BuildProprietaryItemFilter( catalogInfo, searchModel.Dept );
+            List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
             string termSearch = searchTerm;
             List<string> fieldsToSearch = null;
@@ -527,10 +479,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             //}
             if (matchOnlyDigits.IsMatch(searchTerm)) {
                 fieldsToSearch = Configuration.ElasticSearchDigitSearchFields;
-                termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, filterTerms, fieldsToSearch, termSearch);
+                //termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, filterTerms, fieldsToSearch, termSearch);
             } else {
                 fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
-                termSearchExpression = BuildBoolMultiMatchQuery(searchModel, newFilterTerms, fieldsToSearch, termSearch);
+                termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
             }
 
             //dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
