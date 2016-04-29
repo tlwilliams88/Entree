@@ -136,7 +136,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         var id = item.$$fastRepeatId;
                         var row=currentRowEls[id];
 
-                        if(row && ((listScope.currentIndex === index && !(listScope.isDeletingItem && listScope.isChangingPage)) || listScope.isDeletingItem)) {
+                        if(row && ((listScope.currentIndex === index && !(listScope.isDeletingItem || listScope.isChangingPage)) || listScope.isDeletingItem)) {
                             // We've already seen this one
                             if((!row.compiled && (forceUpdate || !angular.equals(row.copy, item))) || (row.compiled && row.item!==item)) {
                                 // This item has not been compiled and it apparently has changed -- need to rerender
