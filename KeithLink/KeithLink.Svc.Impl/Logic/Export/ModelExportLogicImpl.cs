@@ -156,6 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             width = 8;
                             break;
                         case "Size":
+                        case "parlevel":
                             width = 12;
                             break;
                     }
