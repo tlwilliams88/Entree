@@ -310,13 +310,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (!String.IsNullOrEmpty(category))
                 mustClause.Add(BuildCategoryFilter(category));
 
-            List<dynamic> fieldFilterTerms = BuildStatusFilter();
-
-            ExpandoObject filterTerms = new ExpandoObject();
-            (filterTerms as IDictionary<string, object>).Add("bool", new { must = mustClause, must_not = fieldFilterTerms });
-
-            return filterTerms;
-
+            return mustClause;
         }
         
         private dynamic BuildFunctionScoreQuery(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
@@ -570,7 +564,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
+            //ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
             //List<dynamic> newFilterTerms = new List<dynamic>();
             List<dynamic> newFilterTerms = BuildProprietaryItemFilter(catalogInfo, searchModel.Dept);
@@ -630,7 +624,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
             int size = GetProductPagingSize(searchModel.Size);
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
+            //ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
             //List<dynamic> newFilterTerms = new List<dynamic>();
             List<dynamic> newFilterTerms = BuildProprietaryItemFilter(catalogInfo, searchModel.Dept);
