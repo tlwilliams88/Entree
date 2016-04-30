@@ -327,11 +327,15 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                                 english = new {
                                     type = "string",
                                     analyzer = "english"
+                                },
+                                ngram = new {
+                                    type = "string",
+                                    analyzer = "ngram_analyzer"
                                 }
                             }
                         },
                         name_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        name_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer="whitespace_analyzer" },
+                        name_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
                         mfrname_not_analyzed = new { type = "string", index = "not_analyzed" },
                         preferreditemcode = new { type = "string", index = "not_analyzed" },
                         status1_not_analyzed = new { type = "string", index = "not_analyzed" },
@@ -339,7 +343,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                             @properties = new {
                                 diet = new {
                                     @properties = new {
-                                        diettype = new { type="string", index="not_analyzed"}
+                                        diettype = new { type = "string", index = "not_analyzed" }
                                     }
                                 }
                             }
