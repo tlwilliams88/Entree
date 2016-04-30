@@ -334,6 +334,42 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                                 }
                             }
                         },
+                        itemnumber = new {
+                            type = "string",
+                            fields = new {
+                                ngram = new {
+                                    type = "string",
+                                    analyzer = "ngram_analyzer"
+                                }
+                            }
+                        },
+                        mfrnumber = new {
+                            type = "string",
+                            fields = new {
+                                ngram = new {
+                                    type = "string",
+                                    analyzer = "ngram_analyzer"
+                                }
+                            }
+                        },
+                        gtin = new {
+                            type = "string",
+                            fields = new {
+                                ngram = new {
+                                    type = "string",
+                                    analyzer = "ngram_analyzer"
+                                }
+                            }
+                        },
+                        upc = new {
+                            type = "string",
+                            fields = new {
+                                ngram = new {
+                                    type = "string",
+                                    analyzer = "ngram_analyzer"
+                                }
+                            }
+                        },
                         name_not_analyzed = new { type = "string", index = "not_analyzed" },
                         name_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
                         mfrname_not_analyzed = new { type = "string", index = "not_analyzed" },
