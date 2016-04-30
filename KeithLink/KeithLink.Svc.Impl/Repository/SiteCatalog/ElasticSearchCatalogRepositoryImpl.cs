@@ -312,7 +312,42 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             return mustClause;
         }
-        
+
+        private dynamic BuildFilterTermsWithMustNot( string facetFilters, UserSelectedContext catalogInfo, string category = "", string department = "" ) {
+            List<dynamic> mustClause = new List<dynamic>();
+            string facetSeparator = "___";
+            string[] facets = facetFilters.Split( new string[] { facetSeparator }, StringSplitOptions.RemoveEmptyEntries );
+            foreach (string s in facets) {
+                string[] keyValues = s.Split( new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries );
+                string[] values = s.Substring( s.IndexOf( ":" ) + 1 ).Split( new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries );
+                string keyValue = ElasticSearchAggregationsMap[keyValues[0]];
+                string selectedValues = String.Join( "\",\"", values );
+                ExpandoObject keyValueSelectedValues = new ExpandoObject();
+                (keyValueSelectedValues as IDictionary<string, object>).Add( keyValue, values );
+                mustClause.Add( new { terms = keyValueSelectedValues } );
+            }
+
+            //Build filter for proprietary items
+            if (!string.IsNullOrEmpty( catalogInfo.CustomerId ))
+                mustClause.Add( new { query_string = new { query = string.Format( "isproprietary:false OR (isproprietary:true AND proprietarycustomers: {0})", catalogInfo.CustomerId ) } } );
+            else
+                mustClause.Add( new { match = new { isproprietary = false } } ); //No CustomerId (Guest), filter out all proprietary items
+
+            if (!string.IsNullOrEmpty( department )) {
+                mustClause.Add( new { match = new { @department = department } } );
+            }
+
+            if (!String.IsNullOrEmpty( category ))
+                mustClause.Add( BuildCategoryFilter( category ) );
+
+            List<dynamic> fieldFilterTerms = BuildStatusFilter();
+
+            ExpandoObject filterTerms = new ExpandoObject();
+            (filterTerms as IDictionary<string, object>).Add( "bool", new { must = mustClause, must_not = fieldFilterTerms } );
+
+            return filterTerms;
+        }
+
         private dynamic BuildFunctionScoreQuery(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
             List<dynamic> shouldQueries = new List<dynamic>();
             shouldQueries.Add(
@@ -534,11 +569,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             //List<string> childCategories = 
             //    GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
 
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, category: category);
+            ExpandoObject filterTerms = BuildFilterTermsWithMustNot(searchModel.Facets, catalogInfo, category: category);
 
             //string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
-            dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
+            dynamic categorySearchExpression = BuildBoolFunctionScoreQuery( searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
             var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
