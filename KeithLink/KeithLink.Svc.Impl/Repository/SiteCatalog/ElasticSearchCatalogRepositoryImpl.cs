@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 },
             } );
 
-            //musts.Add( filterTerms );
+            musts.Add( filterTerms );
 
             return new {
                 from = searchModel.From,
@@ -564,15 +564,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
-            //ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
-
-            //List<dynamic> newFilterTerms = new List<dynamic>();
-            List<dynamic> newFilterTerms = BuildProprietaryItemFilter(catalogInfo, searchModel.Dept);
-            if (searchModel.Facets != null && searchModel.Facets.Length > 0) {
-                newFilterTerms.Add(BuildFacetsFilter(searchModel.Facets));
-            }
-
-            string termSearch = search;
+            List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
+                        string termSearch = search;
             List<string> fieldsToSearch = null;
             dynamic termSearchExpression = null;
 
@@ -586,7 +579,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 //termSearchExpression = BuildBoolMultiMatchQuery(searchModel, newFilterTerms, fieldsToSearch, termSearch);
             }
 
-            termSearchExpression = BuildBoolMultiMatchQuery(searchModel, newFilterTerms, fieldsToSearch, termSearch);
+            termSearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
 
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
 
