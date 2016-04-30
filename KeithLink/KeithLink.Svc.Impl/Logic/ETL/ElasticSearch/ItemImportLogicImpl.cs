@@ -339,7 +339,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                             fields = new {
                                 ngram = new {
                                     type = "string",
-                                    analyzer = "ngram_analyzer"
+                                    analyzer = "ngram_analyzer",
+                                    search_analyzer = "whitespace_analyzer"
                                 }
                             }
                         },
@@ -348,7 +349,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                             fields = new {
                                 ngram = new {
                                     type = "string",
-                                    analyzer = "ngram_analyzer"
+                                    analyzer = "ngram_analyzer",
+                                    search_analyzer = "whitespace_analyzer"
                                 }
                             }
                         },
@@ -357,7 +359,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                             fields = new {
                                 ngram = new {
                                     type = "string",
-                                    analyzer = "ngram_analyzer"
+                                    analyzer = "ngram_analyzer",
+                                    search_analyzer = "whitespace_analyzer"
                                 }
                             }
                         },
@@ -366,7 +369,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                             fields = new {
                                 ngram = new {
                                     type = "string",
-                                    analyzer = "ngram_analyzer"
+                                    analyzer = "ngram_analyzer",
+                                    search_analyzer = "whitespace_analyzer"
                                 }
                             }
                         },
