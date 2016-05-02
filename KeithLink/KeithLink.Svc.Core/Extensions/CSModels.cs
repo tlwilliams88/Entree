@@ -31,20 +31,22 @@ namespace KeithLink.Svc.Core.Extensions
 
 		public static CS.LineItem ToLineItem(this ShoppingCartItem cartItem)
 		{
-			return new CS.LineItem() {
-                Id = cartItem.CartItemId.ToCommerceServerFormat(), 
-                CatalogName = cartItem.CatalogId, 
-                Notes = cartItem.Notes, 
-                ProductId = cartItem.ItemNumber, 
+            CS.LineItem lineItem = new CS.LineItem()
+            {
+                Id = cartItem.CartItemId.ToCommerceServerFormat(),
+                CatalogName = cartItem.CatalogId,
+                Notes = cartItem.Notes,
+                ProductId = cartItem.ItemNumber,
                 DisplayName = cartItem.Name,
                 Quantity = cartItem.Quantity,
-                LinePosition = cartItem.Position.ToString(),
                 Each = cartItem.Each,
                 CatchWeight = cartItem.CatchWeight,
                 Label = cartItem.Label,
                 ParLevel = cartItem.ParLevel,
                 IsCombinedQuantity = cartItem.IsCombinedQuantity,
             };
+            lineItem.Properties["LinePosition"] = cartItem.Position.ToString();
+            return lineItem;
 		}
 
 		public static Division ToDivision(this CS.Catalog catalog)

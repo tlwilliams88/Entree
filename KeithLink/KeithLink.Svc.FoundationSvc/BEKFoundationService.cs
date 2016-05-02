@@ -170,6 +170,8 @@ namespace KeithLink.Svc.FoundationSvc
                 }
                 if (reorder)
                 {
+                    EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                    eventLog.WriteInformationLog("SaveCartAsOrder : reorder");
                     int startIndex = 1; // main frame needs lineposition to not be null
                     foreach (LineItem lineItem in basket.OrderForms[0].LineItems)
                     {

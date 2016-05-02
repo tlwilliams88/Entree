@@ -505,7 +505,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             orderFormLineItem["SubstitutedItemNumber"] = substitutedItemNumber;
 			orderFormLineItem.PlacedPrice = (decimal)placedPrice;
             orderFormLineItem.ProductId = currentItemNumber;
-            orderFormLineItem["LinePosition"] = lineNumber;
+            //orderFormLineItem["LinePosition"] = lineNumber;
         }
 
         private static void SetCsPoStatusFromLineItems(PurchaseOrder po, LineItem[] lineItems, bool isChangeOrder) {
