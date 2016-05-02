@@ -97,14 +97,14 @@ angular.module('bekApp')
 
     // set mandatory and reminder lists
     // add property isMandatory for carts items that are on the mandatory list
-    function setMandatoryAndReminder(){
+    function setMandatoryAndReminder(cart){
       if ($scope.mandatoryList) {
-      $scope.mandatoryList.active = true;
-      $scope.currentCart.items.forEach(function(item){
-        if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
-          item.isMandatory = true;
-        }
-      })
+        $scope.mandatoryList.active = true;
+          cart.items.forEach(function(item){
+            if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
+              item.isMandatory = true;
+            }
+          })
       } else if ($scope.reminderList) {
         $scope.reminderList.active = true;
       } else {
@@ -112,23 +112,7 @@ angular.module('bekApp')
         $scope.reminderList = {};
       }
     }
-    setMandatoryAndReminder();
-
-    function disableDeleteForMandatoryItems(currentCart) {
-        if ($scope.mandatoryList) {
-        $scope.mandatoryList.active = true;
-        currentCart.items.forEach(function(item){
-          if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
-            item.isMandatory = true;
-          }
-        })
-      } else if ($scope.reminderList) {
-        $scope.reminderList.active = true;
-      } else {
-        $scope.mandatoryList = {};
-        $scope.reminderList = {};
-      }
-    };
+    setMandatoryAndReminder($scope.currentCart);
 
     $scope.resetSubmitDisableFlag = function(checkForm){
       $scope.disableSubmitButtons = ((!$scope.currentCart.items || $scope.currentCart.items.length === 0) || $scope.isOffline || $scope.invalidSelectedDate);
@@ -158,7 +142,7 @@ angular.module('bekApp')
         item.extPrice = PricingService.getPriceForItem(item);
       });
       originalCart.subtotal = PricingService.getSubtotalForItemsWithPrice(originalCart.items);
-      disableDeleteForMandatoryItems(originalCart);
+      setMandatoryAndReminder(originalCart);
       $scope.currentCart = originalCart;
       $scope.resetSubmitDisableFlag(true);
       $scope.cartForm.$setPristine();
@@ -408,10 +392,9 @@ angular.module('bekApp')
           $scope.currentCart.items.forEach(function(item) {
             item.extPrice = PricingService.getPriceForItem(item);
           });
-          disableDeleteForMandatoryItems($scope.currentCart);
           $scope.cartForm.$setPristine();
           $scope.currentCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
-          setMandatoryAndReminder();
+          setMandatoryAndReminder($scope.currentCart);
           $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
         }, function(error) {
