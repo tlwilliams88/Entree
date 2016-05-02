@@ -11,11 +11,10 @@
  */
 
 angular.module('bekApp')
-.directive('navigateTable', ['$timeout', function($timeout){
+.directive('navigateTable', [ function(){
   return function(scope, element, attr) {
 
     element.on('keyup', 'input[type="text"]', handleNavigation);
-    scope.$on('changed', 'input[type="text"]', handleNavigation);
 
     function getPreviousTabstop(row) {
       return row.prevUntil('tr td .tabstop').find('.tabstop').last()[0];
@@ -85,23 +84,11 @@ angular.module('bekApp')
         }
 
         if (moveTo) {
-          //Need to slow focus and select in IE due to processing of updating list in fastRepeat directive
-          if(scope.isIE){
-            $timeout(function(){
-              e.preventDefault();
-              moveTo.focus();
-            }, 0)
+          e.preventDefault();
 
-          }else {
-            e.preventDefault();
-            moveTo.focus();
-          }
+          moveTo.focus();
           if (moveTo.type != 'checkbox') {
-            if(scope.isIE){
-              return;
-            }else {
-              moveTo.select();
-            }
+            moveTo.select();
           }
         }
 

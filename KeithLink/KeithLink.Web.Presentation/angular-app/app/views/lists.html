@@ -112,6 +112,11 @@
     Cancel
   </button>
    
+<!-- 
+  <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__button button-right">
+    Lists <span ng-if="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
+  </div> -->
+
   <div class="btn-group pull-right" dropdown is-open="status.listsisopen">
     <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-right text-regular">Lists <span class="icon-arrow-down5"></span></a>
     <ul class="dropdown-menu" role="menu">
@@ -127,7 +132,27 @@
 
     </ul>
   </div>
+
 </div>
+
+<div class="custom-lists hidden-md hidden-lg" ng-if="displayedListNames">
+  <div class="btn-group-vertical list-names text-blue">
+    <button 
+      type="button" 
+      ng-repeat="list in lists | sortLists track by list.listid" 
+      ng-click="goToList(list)" 
+      ng-class="{'current-list' : list.listid == selectedList.listid}" 
+      class="custom-lists__name btn btn-default btn-list">
+      {{list.name}}
+    </button>
+    <button 
+      type="button" 
+      ng-click="createList()" 
+      class="btn btn-default btn-list">
+      Create a List...
+    </button>
+  </div>
+</div> <!-- end Mobile subheader bar -->
 
 <div class="page-content">
   <div class="row">
@@ -371,11 +396,10 @@
                 <span>{{::selectedList.permissions.alternativeFieldHeader2}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName2" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
                 <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              </th>
-              <th class="hidden-mobile-visible-print" ng-if="(!selectedList.read_only)">
+              <th class="hidden-mobile-visible-print" ng-if="::(!selectedList.read_only)">
                   Each
               </th>
               <th ng-if="canSeePrices" class="hidden-mobile-visible-print">
@@ -446,10 +470,10 @@
                 {{::item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
+              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
-                  <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
-                    <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
+                  <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in ::labels track by label" class="label-width">
+                    <option value="">Select A Label </option>
                   </select>
                   <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
@@ -468,8 +492,8 @@
                   <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
-              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
-                {{item.label}}
+              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-if="::(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
+                {{::item.label}}
               </td>
               <!-- Label for Print -->
               <td class="visible-print label-col" ng-if="::(selectedList.permissions.canSeeLabels)">
@@ -486,18 +510,17 @@
                 <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
               </td>
               <!-- Parlevel -->
-              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
-                  <ng-form name="parlevelForm">
-                     <input                    
-                      id="defaultElement-{{currentIndex}}" 
-                      name="parlevel"                    
-                      type="text"     
-                      numeric-validation
-                      ng-model="item.parlevel"     
-                      class="text-right input-number bek-no-drag tabstop"
-                      ng-keypress="parlevelChanged($event)"
-                      onfocus="this.select()"/>
-                  </ng-form>
+              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
+                <ng-form name="parlevelForm">
+                   <input                    
+                    id="parlevel" 
+                    name="parlevel"                    
+                    type="text" 
+                    numeric-validation 
+                    ng-model="item.parlevel" 
+                    ng-blur="initParLvl(item)"
+                    class="text-right input-number bek-no-drag tabstop" />
+                </ng-form>
               </td>
 
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" style="padding-top:12px;" ng-if="::(selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel)">
@@ -507,24 +530,14 @@
               <td class="visible-print hidden-drag" ng-if="::(selectedList.permissions.canSeeParlevel)">
                 {{::item.parlevel}}
               </td> 
-              <td class="nowrap hidden-print large-icon icon-col">
-                <div
-                  id="optionsdropdown"
-                  ng-if="!item.activeElement"
-                  class="context-menu-template context-menu__in-list hidden-print"
-                  ng-mouseenter="item.activeElement = true"
-                  ng-style="!(showRowOptionsDropdown && item.canOrder) && {'visibility': 'hidden'}">           
-                  <a class="icon-plus2"></a>
-                </div>
-                <div
-                  id="optionsdropdown"
-                  ng-if="item.activeElement"
-                  class="context-menu-template context-menu__in-list hidden-print"
-                  context-menu-template
-                  ng-style="!(showRowOptionsDropdown && item.canOrder) && {'visibility': 'hidden'}">           
-                  <a class="icon-plus2"></a>
-                </div>                   
-                <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
+              <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
+                  <div
+                      ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
+                      context-menu-template
+                      class="context-menu-template context-menu__in-list hidden-print">           
+                      <a class="icon-plus2"></a>
+                  </div>                    
+                    <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
               </td>
 
             </tr>
