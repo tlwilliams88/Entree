@@ -13,11 +13,12 @@ namespace KeithLink.Common.Impl
 		{
 #if DEMO
 			return "Demo";
+#elif BETA
+            return "BETA";
 #elif TEST
 			return "QA";
 #elif RELEASE
 			return "Production";
-
 #elif STAGE
 			return "Staging";
 #elif DEV
@@ -25,6 +26,6 @@ namespace KeithLink.Common.Impl
 #elif DEBUG
 			return "Local Development";
 #endif
-		}
+        }
 	}
 }
