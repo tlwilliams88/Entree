@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		private string pack;
 		
 		[DataMember(Name = "itemnumber")]
-		[Description("Item")]
+		[Description("Item #")]
 		public string ItemNumber { get; set; }
 
         [DataMember(Name = "isvalid")]
@@ -47,7 +47,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		public bool CaseOnly { get; set; }
 
 		[DataMember(Name = "unitprice")]
-		public decimal UnitCost
+        [Description("Portion Cost")]
+        public decimal UnitCost
 		{
 			get
 			{

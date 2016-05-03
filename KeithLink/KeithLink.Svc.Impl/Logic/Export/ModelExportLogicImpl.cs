@@ -184,6 +184,27 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             break;
                     }
                 }
+                else if (modelName.Equals("Product"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Name":
+                        case "BrandExtendedDescription":
+                            width = 20;
+                            break;
+                        case "Pack":
+                            width = 8;
+                            break;
+                        case "UnitCost":
+                            width = 14;
+                            break;
+                        case "CasePrice":
+                        case "PackagePrice":
+                        case "Size":
+                            width = 12;
+                            break;
+                    }
+                }
                 else if (modelName.Equals("Order"))
                 {
                     switch (config.Field)
@@ -401,6 +422,19 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("Product"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "Pack":
+                    case "UnitCost":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
             else if (modelName.Equals("OrderLine"))
             {
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
@@ -485,6 +519,25 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("Product"))
+            {
+                switch (fieldName)
+                {
+                    case "Name":
+                    case "BrandExtendedDescription":
+                    case "Size":
+                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                        break;
+                    case "Pack":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "UnitCost":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
             else if (modelName.Equals("OrderLine"))
             {
                 switch (fieldName)
@@ -560,6 +613,17 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 switch (fieldName)
                 {
                     case "Price":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Product"))
+            {
+                switch (fieldName)
+                {
+                    case "UnitCost":
+                    case "CasePrice":
+                    case "PackagePrice":
                         celltype = CellValues.Number;
                         break;
                 }

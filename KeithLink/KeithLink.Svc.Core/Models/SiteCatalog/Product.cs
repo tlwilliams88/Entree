@@ -31,10 +31,13 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
             var defaultConfig = new List<ExportModelConfiguration>();
 
             defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 10, Label = "Brand" });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 30, Label = "Pack/Size" });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 40, Label = "Price" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 10, Label = "Name" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 20, Label = "Brand" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 30, Label = "Pack" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 40, Label = "Size" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "CaseOnly", Order = 50, Label = "Each" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "UnitCost", Order = 60, Label = "Cost" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 70, Label = "Price" });
 
 
             return defaultConfig;
