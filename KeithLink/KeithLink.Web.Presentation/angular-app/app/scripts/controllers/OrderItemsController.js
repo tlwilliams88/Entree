@@ -4,6 +4,8 @@ angular.module('bekApp')
 .controller('OrderItemsController', ['$scope', '$modal', '$filter', 'order', 'OrderService', 'ListService',
   function ($scope, $modal, $filter, order, OrderService, ListService) {
 
+  $scope.sortOrder = false;
+  $scope.sortBy = 'linenumber';
 
   $scope.filterDeletedItems = function(order){ 
     order.items =  OrderService.filterDeletedOrderItems(order);
