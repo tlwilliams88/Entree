@@ -351,29 +351,16 @@ namespace KeithLink.Svc.Impl.Logic.Export
                                 Order = config.Order,
                                 Selected = config.Selected
                             };
-                            try
-                            {
-                                if (thisConfig.Label.Equals("Price") &&
-                                    properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
-                                {
-                                    PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                                    string each = GetFieldValue(item, eachProperty).Trim();
-                                    if (each.Equals("Y"))
-                                    {
-                                        thisConfig.Field = "PackagePrice";
-                                    }
-                                }
-                            }
-                            catch { }
+                            SetPriceConfig(properties, item, thisConfig);
                             var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                             uint styleInd = SetStyleForCell(typeof(T).Name, thisConfig.Field);
                             CellValues celltype = SetCellValuesForCell(typeof(T).Name, thisConfig.Field);
                             if (property != null)
                             {
                                 OpenXmlSpreadsheetUtilities.AppendTextCell
-                                    (excelColumnNames[columnIndex] + rowIndex.ToString(), 
-                                    this.GetFieldValue(item, property).Trim(), newExcelRow, 
-                                    celltype, 
+                                    (excelColumnNames[columnIndex] + rowIndex.ToString(),
+                                    this.GetFieldValue(item, property).Trim(), newExcelRow,
+                                    celltype,
                                     styleInd);
                             }
                         }
@@ -395,6 +382,24 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 }
             }
             return sheetData;
+        }
+
+        private void SetPriceConfig(PropertyInfo[] properties, T item, ExportModelConfiguration thisConfig)
+        {
+            if (thisConfig.Label != null &&
+                thisConfig.Label.Equals("Price") &&
+                properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
+            {
+                PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                if (eachProperty != null)
+                {
+                    string each = GetFieldValue(item, eachProperty).Trim();
+                    if (each.Equals("Y"))
+                    {
+                        thisConfig.Field = "PackagePrice";
+                    }
+                }
+            }
         }
 
         private uint SetStyleForHeaderCell(string modelName, string fieldName)
