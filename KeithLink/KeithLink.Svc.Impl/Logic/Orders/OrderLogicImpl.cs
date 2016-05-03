@@ -251,7 +251,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
-            return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+            return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).OrderByDescending(o => o.CreatedDate).ToList<Order>();
         }
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
