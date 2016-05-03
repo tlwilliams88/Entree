@@ -253,10 +253,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 int linePosition = Convert.ToInt32(detail.RecordNumber);
 
                 LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (linePosition)).FirstOrDefault();
+                //LineItem orderFormLineItem = lineItems.Where(x => x.ProductId == detail.ItemNumber).FirstOrDefault();
 
-                if (orderFormLineItem != null) {
+                if (orderFormLineItem != null)
+                {
                     SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem));
-                } else { }
+                }
+                else { }
             }
         }
 

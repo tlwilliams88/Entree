@@ -339,6 +339,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return null;
 			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
+            cart.Items = cart.Items.OrderBy(i => i.Position).ToList();
 			var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
@@ -426,8 +427,10 @@ namespace KeithLink.Svc.Impl.Logic
                     CreatedDate = new DateTime(),
                     Items = basket.LineItems
                                   .Where(l => string.Equals(l.CatalogName, catalogId, StringComparison.CurrentCultureIgnoreCase))
+                                  .OrderBy(l => int.Parse(l.Properties["LinePosition"].ToString()))
                                   .Select(l => new ShoppingCartItem() {
                                         ItemNumber = l.ProductId,
+                                        Position = int.Parse(l.Properties["LinePosition"].ToString()),
                                         Notes = l.Notes,
                                         Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
                                         Each = l.Each.HasValue ? l.Each.Value : false,
@@ -580,7 +583,8 @@ namespace KeithLink.Svc.Impl.Logic
                 Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
                 PONumber = basket.PONumber,
                 CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
-                Items = basket.LineItems.Select(l => new ShoppingCartItem()
+                Items = basket.LineItems
+                    .Select(l => new ShoppingCartItem()
                 {
                     ItemNumber = l.ProductId,
                     CartItemId = l.Id.ToGuid(),
