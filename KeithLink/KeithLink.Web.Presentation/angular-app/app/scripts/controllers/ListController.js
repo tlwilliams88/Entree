@@ -30,6 +30,25 @@ angular.module('bekApp')
     $scope.numberListNamesToShow = 10;
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
+    $scope.showRowOptionsDropdown = false;
+
+    // detect IE
+    // returns $scope.isIE is true if IE or false, if browser is not IE
+    function detectIE() {
+        var ua = window.navigator.userAgent;
+
+        var msie = ua.indexOf('MSIE ');//IE <11
+        var trident = ua.indexOf('Trident/');//IE 11
+        if (msie > 0) {
+          $scope.isIE = true;
+        } else if( trident > 0) {
+          $scope.isIE = true;
+        } else {
+          $scope.isIE = false;
+        }
+    }
+    detectIE();
+   
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -66,18 +85,19 @@ angular.module('bekApp')
 
     $scope.blockUIAndChangePage = function(page){
         $scope.startingPoint = 0;
-         $scope.endPoint = 0;   
-          var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-          blockUI.start("Loading List...").then(function(){
-            if(visited.length > 0){
-              $timeout(function() {
-                $scope.pageChanged(page, visited);
-              }, 100);
-            }
-            else{
+        $scope.endPoint = 0;       
+        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+        blockUI.start("Loading List...").then(function(){
+          if(visited.length > 0){
+            $timeout(function() {
+              $scope.isChangingPage = true;
               $scope.pageChanged(page, visited);
-            }
-          })
+            }, 100);
+          }
+          else{
+            $scope.pageChanged(page, visited);
+          }
+        })
     }
 
      $scope.pageChanged = function(page) {      
@@ -143,6 +163,7 @@ angular.module('bekApp')
 
     function resetPage(list, initialPageLoad) {
       $scope.initPagingValues();
+      $scope.activeElement = true;
       $scope.selectedList = angular.copy(list);
       $scope.totalItems = $scope.selectedList.itemCount;
       originalList = list;
@@ -551,11 +572,13 @@ angular.module('bekApp')
     ********************/
 
     $scope.parlevelChanged = function(evt) {
-      var unicode=e.keyCode? e.keyCode : e.charCode
-      if ((unicode >= 48 && unicode <= 57) || (unicode >= 96 && unicode <= 105)) {
-        alert('number')
+      var keycode=evt.keyCode ? evt.keyCode : evt.charCode;
+      if (keycode >= Constants.jskeycodes.int0 && keycode <= Constants.jskeycodes.int9 && $scope.listForm.$pristine) {
+        $scope.listForm.$setDirty();
+      }else{
+        return;
       }
-    }
+    };
 
 
     /********************
@@ -564,7 +587,7 @@ angular.module('bekApp')
 
     function getMultipleSelectedItems() {
       return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true'});
-    }
+     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
     // helper object is passed in from the drag event
@@ -608,16 +631,16 @@ angular.module('bekApp')
 
     $(window).resize(function(){ 
       $scope.$apply(function(){ 
-      $scope.isDragEnabled();
+        $scope.isDragEnabled();
       });
     });
 
-    // Check if element is being dragged, used to enable DOM elements    
-    $scope.setIsDragging = function(event, helper, isDragging, itemId ) { 
-      $scope.selectedList.items.forEach(function(item){ 
-        if(itemId === item.listitemid){ 
-          item.isSelected = true; 
-        } 
+    // Check if element is being dragged, used to enable DOM elements
+    $scope.setIsDragging = function(event, helper, isDragging, itemId ) {
+      $scope.selectedList.items.forEach(function(item){
+        if(itemId === item.listitemid){
+          item.isSelected = true;
+        }
       })
       $scope.isDragging = isDragging;
     };
@@ -641,6 +664,7 @@ angular.module('bekApp')
 
     $scope.deleteItemFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.isDeletingItem = true;
 
       angular.forEach(dragSelection, function(item, index) {
         $scope.deleteItem(item);
@@ -751,6 +775,10 @@ angular.module('bekApp')
         }
       });
     };
+
+    if((($scope.canManageLists || $scope.canCreateOrders || $scope.canSubmitOrders))){
+      $scope.showRowOptionsDropdown = true;
+    }
 
     resetPage(angular.copy(originalList), true);
     // $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
