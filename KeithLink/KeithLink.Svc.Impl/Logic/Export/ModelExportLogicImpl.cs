@@ -120,7 +120,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
         {
             uint colIndex = 0;
             int width = 0;
-            foreach (ExportModelConfiguration config in exportConfig)
+            foreach (ExportModelConfiguration config in exportConfig.OrderBy(c => c.Order))
             {
                 colIndex++;
                 width = 0;
@@ -149,15 +149,16 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         case "Name":
                         case "Brand":
                         case "ItemClass":
+                        case "label":
                         case "Notes":
                             width = 20;
                             break;
                         case "Pack":
-                            width = 8;
+                        case "ParLevel":
+                            width = 6;
                             break;
                         case "Size":
-                        case "parlevel":
-                            width = 12;
+                            width = 10;
                             break;
                     }
                 }
@@ -302,9 +303,26 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         var propertyName = config.Field.Split('.');
                         if (propertyName.Length == 1)
                         {
-                            var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                            uint styleInd = SetStyleForCell(typeof(T).Name, config.Field);
-                            CellValues celltype = SetCellValuesForCell(typeof(T).Name, config.Field);
+                            ExportModelConfiguration thisConfig = new ExportModelConfiguration()
+                            { // just a shallow copy
+                                Field = config.Field,
+                                Label = config.Label,
+                                Order = config.Order,
+                                Selected = config.Selected
+                            };
+                            if (thisConfig.Label.Equals("Price") && 
+                                properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
+                            {
+                                PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                                string each = GetFieldValue(item, eachProperty).Trim();
+                                if (each.Equals("Y"))
+                                {
+                                    thisConfig.Field = "PackagePrice";
+                                }
+                            }
+                            var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                            uint styleInd = SetStyleForCell(typeof(T).Name, thisConfig.Field);
+                            CellValues celltype = SetCellValuesForCell(typeof(T).Name, thisConfig.Field);
                             if (property != null)
                             {
                                 OpenXmlSpreadsheetUtilities.AppendTextCell
@@ -357,6 +375,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 switch (fieldName)
                 {
                     case "Pack":
+                    case "CasePrice":
+                    case "PackagePrice":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
                         break;
                 }
@@ -424,6 +444,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                         break;
                     case "Pack":
+                    case "CasePrice":
+                    case "PackagePrice":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
                 }
@@ -477,6 +499,16 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 {
                     case "QuantityOrdered":
                     case "QantityShipped":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                switch (fieldName)
+                {
                     case "Price":
                         celltype = CellValues.Number;
                         break;
@@ -568,6 +600,14 @@ namespace KeithLink.Svc.Impl.Logic.Export
             if (property.PropertyType == typeof(Boolean))
             {
                 return value.ToString().Equals("False") ? "N" : "Y";
+            }
+            else if (property.PropertyType == typeof(Boolean?) && value != null)
+            {
+                return value.ToString().Equals("False") ? "N" : "Y";
+            }
+            else if (property.PropertyType == typeof(DateTime))
+            {
+                return ((DateTime)value).ToShortDateString();
             }
             else if (property.PropertyType == typeof(DateTime?) && value != null)
             {
