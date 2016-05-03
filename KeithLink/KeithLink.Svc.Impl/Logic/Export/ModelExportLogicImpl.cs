@@ -184,6 +184,24 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             break;
                     }
                 }
+                else if (modelName.Equals("Order"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Status":
+                        case "InvoiceStatus":
+                        case "PONumber":
+                        case "OrderSystem":
+                            width = 20;
+                            break;
+                        case "CreatedDate":
+                        case "DeliveryDate":
+                        case "ItemCount":
+                        case "OrderTotal":
+                            width = 12;
+                            break;
+                    }
+                }
                 else if (modelName.Equals("InvoiceModel"))
                 {
                     switch (config.Field)
@@ -396,6 +414,19 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("Order"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "CreatedDate":
+                    case "DeliveryDate":
+                    case "ItemCount":
+                    case "OrderTotal":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
             else if (modelName.Equals("InvoiceModel"))
             {
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
@@ -475,6 +506,21 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("Order"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                switch (fieldName)
+                {
+                    case "CreatedDate":
+                    case "DeliveryDate":
+                    case "ItemCount":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_CELL;
+                        break;
+                    case "OrderTotal":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
             else if (modelName.Equals("InvoiceModel"))
             {
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
@@ -523,6 +569,15 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 {
                     case "InvoiceAmount":
                     case "Amount":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Order"))
+            {
+                switch (fieldName)
+                {
+                    case "OrderTotal":
                         celltype = CellValues.Number;
                         break;
                 }
