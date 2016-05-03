@@ -351,16 +351,20 @@ namespace KeithLink.Svc.Impl.Logic.Export
                                 Order = config.Order,
                                 Selected = config.Selected
                             };
-                            if (thisConfig.Label.Equals("Price") && 
-                                properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
+                            try
                             {
-                                PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                                string each = GetFieldValue(item, eachProperty).Trim();
-                                if (each.Equals("Y"))
+                                if (thisConfig.Label.Equals("Price") &&
+                                    properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
                                 {
-                                    thisConfig.Field = "PackagePrice";
+                                    PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                                    string each = GetFieldValue(item, eachProperty).Trim();
+                                    if (each.Equals("Y"))
+                                    {
+                                        thisConfig.Field = "PackagePrice";
+                                    }
                                 }
                             }
+                            catch { }
                             var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                             uint styleInd = SetStyleForCell(typeof(T).Name, thisConfig.Field);
                             CellValues celltype = SetCellValuesForCell(typeof(T).Name, thisConfig.Field);
