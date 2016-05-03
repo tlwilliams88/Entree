@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public string StorageTemp { get; set; }
 
 		[DataMember(Name = "category")]
-		[Description("Category")]
+		[Description("Contract Category")]
 		public string Category { get; set; }
 
 		[DataMember(Name = "fromdate")]
@@ -97,7 +97,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 10, Label = "Name" });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "Brand", Order = 20, Label = "Brand" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 30, Label = "Class" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 30, Label = "Category" });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 40, Label = "Pack" });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 50, Label = "Size" });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 60, Label = "Note" });
@@ -110,14 +110,13 @@ namespace KeithLink.Svc.Core.Models.Lists
 				case ListType.Favorite:
 					break;
 				case ListType.Custom:
-					defaultConfig.Add(new ExportModelConfiguration() { Field = "label", Order = 35, Label = "Label" });
+					defaultConfig.Add(new ExportModelConfiguration() { Field = "label", Order = 65, Label = "Label" });
 					defaultConfig.Add(new ExportModelConfiguration() { Field = "parlevel", Order = 85, Label = "PAR" });
 					break;
 				case ListType.Contract:
 				case ListType.ContractItemsAdded:
 				case ListType.ContractItemsDeleted:
-					defaultConfig.Add(new ExportModelConfiguration() { Field = "Category", Order = 35, Label = "Category" });
-					defaultConfig.Add(new ExportModelConfiguration() { Field = "label", Order = 55, Label = "Label" });
+					defaultConfig.Add(new ExportModelConfiguration() { Field = "Category", Order = 65, Label = "Contract Category" });
 					break;
 				default:
 					break;

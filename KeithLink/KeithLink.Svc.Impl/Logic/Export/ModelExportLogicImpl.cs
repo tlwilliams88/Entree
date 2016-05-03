@@ -150,6 +150,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         case "Brand":
                         case "ItemClass":
                         case "label":
+                        case "Category":
                         case "Notes":
                             width = 20;
                             break;
@@ -440,6 +441,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "Name":
                     case "Brand":
                     case "ItemClass":
+                    case "label":
+                    case "Category":
                     case "Notes":
                         styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                         break;

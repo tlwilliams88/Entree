@@ -151,7 +151,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		public string CategoryName { get; set; }
 
 		[DataMember(Name = "class", EmitDefaultValue = false)]
-		[Description("Class")]
+		[Description("Category")]
 		public string ItemClass { get; set; }
 
 		[DataMember(Name = "vendor_num", EmitDefaultValue = false)]
