@@ -266,7 +266,7 @@ angular.module('bekApp')
                     message  = 'Successfully submitted order.';
                 }
 
-                if (data.ordersReturned[0] != null) {
+                if (data.ordersReturned && data.ordersReturned[0] != null) {
                     orderNumber = data.ordersReturned[0].ordernumber;
                 } else {
                     orderNumber = null;
