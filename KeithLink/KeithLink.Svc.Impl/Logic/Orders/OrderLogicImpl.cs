@@ -658,6 +658,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
                 ChangeOrderStatus = lineItem.Status,
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
+                LineNumber = int.Parse(lineItem.Properties["LinePosition"].ToString()),
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"]
             };
