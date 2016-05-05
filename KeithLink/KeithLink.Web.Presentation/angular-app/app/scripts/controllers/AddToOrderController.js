@@ -51,7 +51,8 @@ angular.module('bekApp')
     $scope.openQuickAddModal = function() {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/cartquickaddmodal.html',
-        controller: 'CartQuickAddModalController'
+        controller: 'CartQuickAddModalController',
+        backdrop:'static'
       });
    
       modalInstance.result.then(function(cartId) {

@@ -60,7 +60,8 @@ angular.module('bekApp')
   $scope.openInventoryModal = function() {
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/cartquickaddmodal.html',
-      controller: 'CartQuickAddModalController'
+      controller: 'CartQuickAddModalController',
+      backdrop:'static'
     });
 
   };
