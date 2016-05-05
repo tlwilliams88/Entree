@@ -438,14 +438,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     /**********
     PAGING
     **********/
-    function applyFocusToFirstQtyField(){
-      $timeout(function() {
-        $('#rowForFocus').find('input:first').focus();
-      }, 2000);
-    }
 
     $scope.refreshQuantities = function(){
       $scope.clearedWhilePristine = false;
+       $('#rowForFocus').find('input:first').focus();
         flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
         getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
     }
@@ -456,14 +452,12 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         }
         $scope.visitedPages = [];
         listPagingModel.filterListItems(searchTerm)
-        applyFocusToFirstQtyField();
         $stateParams.searchTerm = '';
         clearItemWatches(watches);       
       }
       else{
         $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
-            applyFocusToFirstQtyField();
             if($scope.isRedirecting(resp)){
               //do nothing
             }
@@ -503,7 +497,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.setCurrentPageAfterRedirect(1);
       // angular.element(orderSearchForm.searchBar).focus();
       $scope.orderSearchForm.$setPristine();
-      applyFocusToFirstQtyField();
     };
   
 
