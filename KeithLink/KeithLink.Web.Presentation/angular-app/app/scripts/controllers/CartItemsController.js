@@ -217,24 +217,24 @@ angular.module('bekApp')
         var updatedCart = angular.copy(cart);
 
         // delete items if quantity is 0 or price is 0
-            updatedCart.items = $filter('filter')( updatedCart.items, function(item){
-          return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item));
-        });
+          updatedCart.items = $filter('filter')( updatedCart.items, function(item){
+            return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
+          });
           $scope.currentCart.items = updatedCart.items;
           $scope.resetSubmitDisableFlag(true);
           return CartService.updateCart(updatedCart).then(function(savedCart) {
-          $scope.currentCart.isRenaming = false;
-          $scope.sortBy = null;
-          $scope.sortOrder = false;
+            $scope.currentCart.isRenaming = false;
+            $scope.sortBy = null;
+            $scope.sortOrder = false;
 
-          // clear and reapply all watches on item quantity and each fields
-          clearItemWatches();
-          $scope.currentCart = savedCart;
-          addItemWatches(0);
+            // clear and reapply all watches on item quantity and each fields
+            clearItemWatches();
+            $scope.currentCart = savedCart;
+            addItemWatches(0);
 
-          $scope.cartForm.$setPristine();
-          $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
-          return savedCart.id;
+            $scope.cartForm.$setPristine();
+            $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
+            return savedCart.id;
         }, function() {
           $scope.displayMessage('error', 'Error saving cart ' + updatedCart.name);
         }).finally(function() {
@@ -279,7 +279,7 @@ angular.module('bekApp')
                     message  = 'Successfully submitted order.';
                 }
 
-                if (data.ordersReturned[0] != null) {
+                if (data.ordersReturned && data.ordersReturned[0] != null) {
                     orderNumber = data.ordersReturned[0].ordernumber;
                 } else {
                     orderNumber = null;
