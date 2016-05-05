@@ -441,9 +441,12 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
     $scope.refreshQuantities = function(){
       $scope.clearedWhilePristine = false;
-       $('#rowForFocus').find('input:first').focus();
+       
         flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
         getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
+        $timeout(function() {
+          $('#rowForFocus').find('input:first').focus();
+        }, 100);
     }
     $scope.filterItems = function(searchTerm) {  
       if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
