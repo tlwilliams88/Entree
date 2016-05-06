@@ -220,8 +220,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             if (detail == null) {
                 return 0;
             } else {
-                if (detail.SplitPriceNet == null) { detail.SplitPriceNet = 0; }
-                if (detail.PriceNet == null) { detail.PriceNet = 0; }
+                //if (detail.SplitPriceNet == null) { detail.SplitPriceNet = 0; }
+                //if (detail.PriceNet == null) { detail.PriceNet = 0; }
 
                 return splitCase ? detail.SplitPriceNet : detail.PriceNet;
             }

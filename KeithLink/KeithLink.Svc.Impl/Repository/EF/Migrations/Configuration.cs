@@ -467,6 +467,21 @@ namespace KeithLink.Svc.Impl.Migrations
                     Type = MessageTemplateType.Email,
                     Body = orderRejectedMessage.ToString()
                 });
+
+            System.Text.StringBuilder dsrRequestMessage = new System.Text.StringBuilder();
+            dsrRequestMessage.AppendLine("{NotifHeader}{UserFirstName} {UserLastName} would like to be contacted regarding the following item: {ItemNumber}.");
+            dsrRequestMessage.AppendLine(" This user can be contacted by e-mail at {UserEmail}");
+
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate
+                {
+                    TemplateKey = "DSRContactRequest",
+                    Subject = "Ben E. Keith: DSR Contact Request for {CustomerNumber}-{CustomerName}",
+                    IsBodyHtml = true,
+                    Type = MessageTemplateType.Email,
+                    Body = dsrRequestMessage.ToString()
+                });
         }
     }
 

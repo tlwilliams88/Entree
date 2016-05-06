@@ -77,13 +77,13 @@ angular.module('bekApp')
 
       updateOrder: function(order, params) {
         order.message = 'Saving order...';
-        order.items = UtilityService.setItemPositions(order.items, 'order');
-        return Order.update(params, order).$promise.then(function(resp) {
-          var changeOrder = resp.successResponse;
-          if(changeOrder){
-            PricingService.updateCaculatedFields(changeOrder.items);
+        order.items.forEach(function(item){
+          if(item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'){
+            item.quantity = item.quantityordered;
           }
-          
+        })
+        return Order.update(params, order).$promise.then(function(changeOrder) {
+          PricingService.updateCaculatedFields(changeOrder.items);
           return changeOrder;
         });
       },
@@ -134,6 +134,32 @@ angular.module('bekApp')
       pollOrderHistory: function() {
         return Order.pollOrderHistory().$promise.then(function(resp){
           return resp.successResponse;
+        });
+      },
+
+      /****************************
+      RECENTLY ORDERED UNFI ITEMS
+      ****************************/
+
+      getRecentlyOrderedUNFIItems: function() {
+        return $http.get('/recent/order/UNFI').then(function(response){
+          return response.data.successResponse;
+      });
+      },
+
+      clearRecentlyOrderedUNFIItems: function() {
+        return $http.delete('/recent/order/UNFI').then(function(response){
+          return response.data.successResponse;
+        });
+      },
+
+      UpdateRecentlyOrderedUNFIItems: function(recentlyOrdered) {
+        var payload = {
+          catalog:"UNFI",
+          items:recentlyOrdered
+        }
+        return $http.post('/recent/order', payload).then(function(response) {
+          return response.data.successResponse;
         });
       },
 

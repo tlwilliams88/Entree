@@ -85,12 +85,12 @@ angular.module('bekApp')
 
     $scope.blockUIAndChangePage = function(page){
         $scope.startingPoint = 0;
-        $scope.endPoint = 0;
-        $scope.isChangingPage = true;
+        $scope.endPoint = 0;       
         var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
         blockUI.start("Loading List...").then(function(){
           if(visited.length > 0){
             $timeout(function() {
+              $scope.isChangingPage = true;
               $scope.pageChanged(page, visited);
             }, 100);
           }
@@ -573,7 +573,7 @@ angular.module('bekApp')
 
     $scope.parlevelChanged = function(evt) {
       var keycode=evt.keyCode ? evt.keyCode : evt.charCode;
-      if (keycode >= 48 && keycode <= 57 && $scope.listForm.$Pristine) {
+      if (keycode >= Constants.jskeycodes.int0 && keycode <= Constants.jskeycodes.int9 && $scope.listForm.$pristine) {
         $scope.listForm.$setDirty();
       }else{
         return;

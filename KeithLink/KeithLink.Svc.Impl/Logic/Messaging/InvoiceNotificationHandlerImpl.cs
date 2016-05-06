@@ -39,16 +39,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 throw new ApplicationException("notification/handler type mismatch");
         }
 
-        public void ProcessNotificationForExternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
-        {
-            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.InvoiceAttention)
-                throw new ApplicationException("notification/handler type mismatch");
-        }
+        //public void ProcessNotificationForExternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
+        //{
+        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.InvoiceAttention)
+        //        throw new ApplicationException("notification/handler type mismatch");
+        //}
 
-        public void ProcessNotificationForInternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
-        {
-            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.InvoiceAttention)
-                throw new ApplicationException("notification/handler type mismatch");
-        }
+        //public void ProcessNotificationForInternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
+        //{
+        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.InvoiceAttention)
+        //        throw new ApplicationException("notification/handler type mismatch");
+        //}
     }
 }

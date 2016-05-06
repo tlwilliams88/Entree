@@ -210,6 +210,59 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _uow.SaveChanges();
         }
 
+        public void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist) {
+            List list = _listRepo.Read(i => i.UserId == user.UserId && 
+                                           i.Type == ListType.RecentOrderedNonBEK &&
+                                           i.BranchId == newlist.Catalog &&
+                                           i.CustomerId.Equals(catalogInfo.CustomerId), 
+                                      l => l.Items)
+                                .FirstOrDefault();
+
+            if(list == null) {
+                //Create a new recently ordered list
+                this.CreateList(user.UserId, new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = newlist.Catalog }, 
+                    new ListModel() {
+                    Name = "Recent Orders",
+                    BranchId = newlist.Catalog,
+                    Items = new List<ListItemModel>()
+                }, ListType.RecentOrderedNonBEK);
+                // grab a pointer to the newly created list
+                list = _listRepo.Read(i => i.UserId == user.UserId &&
+                               i.Type == ListType.RecentOrderedNonBEK &&
+                               i.BranchId == newlist.Catalog &&
+                               i.CustomerId.Equals(catalogInfo.CustomerId),
+                          l => l.Items)
+                    .FirstOrDefault();
+                list.Items = new List<ListItem>();
+            }
+            else
+            {
+                list.Items = list.Items.ToList();
+            }
+            // Identify specific warehouse - needed for product lookup
+            Dictionary<string, string> externalCatalogDict = 
+                _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
+            foreach (string itemNumber in newlist.Items.Select(i => i.ItemNumber).ToList()) {
+                // Insert newest at the start of the list while filtering out duplicates
+                var item = list.Items.Where(i => i.ItemNumber.Equals(itemNumber)).FirstOrDefault();
+                if (item != null)
+                {
+                    _listItemRepo.Delete(item);
+                }
+                ((List<ListItem>)list.Items).Insert(0, new ListItem() { ItemNumber = itemNumber, CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()] });
+            }
+            // tailor list number to configured value
+            if (list.Items.Count >= Configuration.RecentItemsToKeep)
+            {
+                while (list.Items.Count >= Configuration.RecentItemsToKeep)
+                {
+                    _listItemRepo.Delete(list.Items.Last());
+                }
+            }
+
+            _uow.SaveChanges();
+        }
+
         public void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
         {
             var list = _listRepo.Read(i => i.UserId == user.UserId &&
@@ -432,12 +485,45 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _uow.SaveChanges();
         }
 
+<<<<<<< HEAD
         private void GenerateNewRecommendItemNotification(string customerId, string branchId)
         {
             try
             {
                 var notifcation = new HasNewsNotification()
                 {
+=======
+        public void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            List<List> listcol = null;
+            if (user.UserId != null &&
+               catalogInfo.CustomerId != null)
+                listcol =
+                    _listRepo.Read(i => i.UserId == user.UserId &&
+                                        i.Type == ListType.RecentOrderedNonBEK &&
+                                        i.CustomerId.Equals(catalogInfo.CustomerId),
+                                   l => l.Items)
+                             .ToList();
+            else
+                listcol =
+                    _listRepo.Read(i => i.UserId == user.UserId &&
+                                        i.Type == ListType.RecentOrderedNonBEK,
+                                   l => l.Items)
+                             .ToList();
+
+            List list = (List)listcol[0];
+            list.Items.ToList().ForEach(delegate (ListItem item) {
+                _listItemRepo.Delete(item);
+            });
+
+            _listRepo.Delete(list);
+            _uow.SaveChanges();
+        }
+
+        private void GenerateNewRecommendItemNotification(string customerId, string branchId) {
+            try {
+                var notifcation = new HasNewsNotification() {
+>>>>>>> dev_v1.6.0
                     CustomerNumber = customerId,
                     BranchId = branchId,
                     Subject = "New recommended items",
@@ -739,6 +825,26 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             });
         }
 
+        private void PopulateProductDetails(UserSelectedContext catalogInfo, List<RecentNonBEKItem> returnList)
+        {
+            if (returnList == null)
+                return;
+
+            var products = _catalogLogic.GetProductsByIds(returnList[0].CatalogId,
+                                                          returnList.Select(i => i.ItemNumber)
+                                                                    .Distinct()
+                                                                    .ToList());
+            returnList.ForEach(delegate (RecentNonBEKItem item) {
+                var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber))
+                                               .FirstOrDefault();
+                if (product != null)
+                {
+                    item.Name = product.Name;
+                    item.Upc = product.UPC;
+                }
+            });
+        }
+
         //public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo) {
         //    var list = _listRepo.Read(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
 
@@ -948,8 +1054,45 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                               .ToList();
         }
 
+<<<<<<< HEAD
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
         {
+=======
+        public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            try
+            {
+                IEnumerable<List> list = _listRepo.Read(i => i.UserId == user.UserId &&
+                                               i.Type == ListType.RecentOrderedNonBEK &&
+                                               i.BranchId.Equals(catalogInfo.BranchId) &&
+                                               i.CustomerId.Equals(catalogInfo.CustomerId),
+                                          l => l.Items);
+                List<RecentNonBEKItem> returnItems = list.SelectMany(i => i.Items
+                    .Select(l => new RecentNonBEKItem()
+                    {
+                        ItemNumber = l.ItemNumber,
+                        CatalogId = l.CatalogId,
+                        ModifiedOn = l.ModifiedUtc
+                    }))
+                    .ToList();
+
+                PopulateProductDetails(catalogInfo, returnItems);
+
+                returnItems.ForEach(delegate (RecentNonBEKItem item)
+                {
+                    item.Images = _productImageRepo.GetNonBEKImageList(item.Upc).ProductImages;
+                });
+
+                return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
+            }
+            catch
+            {
+                return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = new List<RecentNonBEKItem>() };
+            }
+        }
+
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+>>>>>>> dev_v1.6.0
             var list = _listRepo.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
 
             if (list == null || list.Items == null)

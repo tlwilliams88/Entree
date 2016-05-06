@@ -57,6 +57,33 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
+        /// Get the recently ordered special order items list
+        /// </summary>
+        /// <param name="catalog">the catalog identifying a list of recently ordered items</param>
+        [HttpGet]
+        [ApiKeyedRoute("recent/order/{catalog}")]
+        public Models.OperationReturnModel<RecentNonBEKList> RecentOrder(string catalog)
+        {
+            Models.OperationReturnModel<RecentNonBEKList> retVal = new Models.OperationReturnModel<RecentNonBEKList>();
+            try
+            {
+                retVal.SuccessResponse = _repo.ReadRecentOrder(this.AuthenticatedUser, 
+                    new Core.Models.SiteCatalog.UserSelectedContext() {
+                        CustomerId = SelectedUserContext.CustomerId,
+                        BranchId = catalog });
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ReadRecentOrder", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
         /// Delete recently viewed items
         /// </summary>
         /// <returns></returns>
@@ -82,6 +109,34 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
+        /// Delete a recently ordered special order items list
+        /// </summary>
+        /// <param name="catalog">the catalog for the special order items</param>
+        [HttpDelete]
+        [ApiKeyedRoute("recent/order/{catalog}")]
+        public Models.OperationReturnModel<bool> DeleteRecentOrder(string catalog)
+        {
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                _repo.DeleteRecentlyOrdered(this.AuthenticatedUser, 
+                    new Core.Models.SiteCatalog.UserSelectedContext() {
+                        CustomerId = SelectedUserContext.CustomerId,
+                        BranchId = catalog });
+                retVal.SuccessResponse = true;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("DeleteRecent SelectedUserContext.CustomerID=" + SelectedUserContext.CustomerId, ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
         /// Add a new recently viewed item
         /// </summary>
         /// <param name="itemnumber"></param>
@@ -92,6 +147,31 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
                 _repo.AddRecentlyViewedItem(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
+                retVal.SuccessResponse = true;
+                retVal.IsSuccess = retVal.SuccessResponse;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Recent(string itemnumber)", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Add recently ordered special order items
+        /// </summary>
+        /// <param name="list">a recentnonbeklist containing the catalog and a list of itemnumbers</param>
+        [HttpPost]
+        [ApiKeyedRoute("recent/order")]
+        public Models.OperationReturnModel<bool> PostRecentOrder(RecentNonBEKList list)
+        {
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                _repo.AddRecentlyOrderedItems(this.AuthenticatedUser, this.SelectedUserContext, list);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }

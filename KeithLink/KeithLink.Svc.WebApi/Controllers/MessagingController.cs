@@ -262,6 +262,30 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             return ret;
         }
+
+        /// <summary>
+        /// Send a message to the DSR to request contact about a certain item
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("messaging/RequestDSRContact")]
+        public OperationReturnModel<int>  RequestDSRContact(string itemnumber)
+        {
+            OperationReturnModel<int> ret = new OperationReturnModel<int>();
+            try
+            {
+                ret.SuccessResponse = _msgLogic.RequestDSRContact(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("RequestDSRContact", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.SuccessResponse = -1;
+                ret.IsSuccess = false;
+            }
+            return ret;
+        }
         #endregion
     }
 }

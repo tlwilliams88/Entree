@@ -21,10 +21,13 @@ namespace KeithLink.Common.Impl
         private const string KEY_APP_NAME = "AppName";
         private const string DEFAULT_APPNAME = "Entree";
 
+        // appsetting in database
+        public const string DBAPPSETTINGS_TIME_THRESHOLD_MINUTES = "3";
+
         #endregion
 
         #region properties
-		public static bool LogSystemPerformance
+        public static bool LogSystemPerformance
 		{
 			get
 			{
@@ -96,7 +99,5 @@ namespace KeithLink.Common.Impl
             get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_SERVERNAME, string.Empty); }
         }
         #endregion
-
-
     }
 }

@@ -10,6 +10,7 @@ using KeithLink.Svc.Core.Interface.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.SpecialOrders;
 
+using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Newtonsoft.Json;
@@ -89,20 +90,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void ProcessSpecialOrderItemUpdate(string rawOrder) {
-            SpecialOrderResponseModel specialorder = new SpecialOrderResponseModel();
-            specialorder = JsonConvert.DeserializeObject<SpecialOrderResponseModel>(rawOrder);
+            SpecialOrderResponseModel specialorder = JsonConvert.DeserializeObject<SpecialOrderResponseModel>(rawOrder);
 
-            while((specialorder != null) && (specialorder.MessageId != null) && (specialorder.Header.RequestHeaderId != null) && (specialorder.Item.LineNumber != null)) {
-                _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0}) with status {1}", specialorder.MessageId, specialorder.Item.ItemStatusId));
+            _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0}) with status {1}", specialorder.MessageId, specialorder.Item.ItemStatusId));
 
-                EF.OrderHistoryDetail detail = FindOrderHistoryDetailForUpdate(specialorder);
+            // retry trying to find the record up to 3 times. some times an exception is thrown for a bad command definition, but then processes fine the next time
+            EF.OrderHistoryDetail detail = Retry.Do<EF.OrderHistoryDetail>(() => FindOrderHistoryDetailForUpdate(specialorder), TimeSpan.FromSeconds(5), 3);
 
-                if(detail != null) // only process if we match the order specified on this system
-                {
-                    ProcessOrderHistoryDetailByUpdateStatus(specialorder, detail);
-                } else {
-                    _log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
-                }
+            if (detail != null) { // only process if we match the order specified on this system
+                ProcessOrderHistoryDetailByUpdateStatus(specialorder, detail);
+            } else {
+                _log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
             }
         }
 
@@ -110,10 +108,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             EF.OrderHistoryDetail detail = null;
 
             // try to find detail by specialorderheaderid and linenumber
-            if(!String.IsNullOrEmpty(specialorder.Header.RequestHeaderId) && !String.IsNullOrEmpty(specialorder.Item.LineNumber)) {
-                detail = _detailRepo.Read(d => d.SpecialOrderHeaderId == specialorder.Header.RequestHeaderId &&
+            if (!String.IsNullOrEmpty(specialorder.Header.RequestHeaderId) && !String.IsNullOrEmpty(specialorder.Item.LineNumber)) {
+                detail = _detailRepo.Read(d => d.BranchId.Equals(specialorder.Header.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                               d.SpecialOrderHeaderId == specialorder.Header.RequestHeaderId &&
                                                d.SpecialOrderLineNumber == specialorder.Item.LineNumber).FirstOrDefault();
             }
+
             return detail;
         }
 
