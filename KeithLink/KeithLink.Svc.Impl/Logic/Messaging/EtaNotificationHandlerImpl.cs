@@ -128,7 +128,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     if (etaInfo != null){
                         order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
                         order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : DateTime.Parse(etaInfo.EstimatedTime).ToLongDateFormatWithTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : etaInfo.ActualTime;
+                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : DateTime.Parse(etaInfo.ActualTime).ToLongDateFormatWithTime();
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
