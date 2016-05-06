@@ -27,6 +27,7 @@ angular.module('bekApp')
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
+    $scope.allSelected = false;
     $scope.numberListNamesToShow = 10;
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
@@ -109,6 +110,7 @@ angular.module('bekApp')
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
       $scope.setRange();
       $scope.selectedList.allSelected = false;
+      $scope.allSelected = false;
       var deletedItems = [];
       $scope.selectedList.items.forEach(function(item){
         if(item.deleted){

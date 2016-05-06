@@ -115,7 +115,7 @@ angular.module('bekApp')
         } else if (typeof items === 'object') { // if one item
           newCart.items = [items];
         }
- 
+        newCart.items = UtilityService.setItemPositions(newCart.items, 'cart');
         // TODO: move this out of here
         // set default quantity to 1
         angular.forEach(newCart.items, function (item, index) {
@@ -226,6 +226,7 @@ angular.module('bekApp')
       // returns promise and updated cart object
       updateCart: function(cart, params) {
         cart.message = 'Saving cart...';
+        cart.items = UtilityService.setItemPositions(cart.items, 'cart');
         return Cart.update(params, cart).$promise.then(function(response) {
 
           // update cache
