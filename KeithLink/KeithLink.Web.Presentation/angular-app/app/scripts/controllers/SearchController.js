@@ -418,6 +418,7 @@ angular.module('bekApp')
     };
 
     $scope.infiniteScrollLoadMore = function() {
+      document.activeElement.blur();
       if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
         return;
       }

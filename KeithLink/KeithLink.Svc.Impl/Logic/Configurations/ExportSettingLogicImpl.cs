@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
 
             switch (type) {
                 case ExportType.List:
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "Position", Label = "Position" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Position", Label = "Line #" });
                     break;
                 case ExportType.Order:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Label = "Order #" });
@@ -109,7 +109,8 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             options.Fields.Add(new ExportModelConfiguration() { Field = "Favorite", Label = "Favorite" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Description", Label = "Description" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Label = "Brand" });
-            options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Label = "Pack/Size" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Pack", Label = "Pack" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Size", Label = "Size" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "PackagePrice", Label = "Pack Price" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryId", Label = "Category" });

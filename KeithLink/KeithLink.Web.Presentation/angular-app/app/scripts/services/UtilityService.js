@@ -90,7 +90,7 @@ angular.module('bekApp')
           });
         });
       },
-
+     
       /**
        * general way to resolve most of our endpoints that return an object of the following format
        * where the request was sucessful if successResponse is not null

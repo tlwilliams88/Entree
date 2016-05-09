@@ -115,7 +115,7 @@ angular.module('bekApp')
         } else if (typeof items === 'object') { // if one item
           newCart.items = [items];
         }
- 
+
         // TODO: move this out of here
         // set default quantity to 1
         angular.forEach(newCart.items, function (item, index) {

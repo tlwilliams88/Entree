@@ -1,8 +1,8 @@
 <div page-header-bar>
   <div header-message>
-    Inventory Valuation Report
-  <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6" ng-click="clearReport(report.listid)" type="button">Clear</button> 
- <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right" ng-click="saveReport(report)" type="button">Save</button>
+    Inventory Valuation Report<span style="padding-left:50px;" class = "visible-print pull-right">{{::userProfile.displayname}}</span>
+  <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6 hidden-print" ng-click="clearReport(report.listid)" type="button">Clear</button> 
+ <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right hidden-print" ng-click="saveReport(report)" type="button">Save</button>
   </div>
   <div header-buttons>
   <button class="btn btn-lg btn-primary" 
@@ -191,9 +191,9 @@
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
             <td class="hidden-mobile-visible-print label-col">{{::item.label}}</td>
             <td class="input-col nowrap counter-container">  
-            <button type="button" class="btn btn-warning icon-minus3 hidden-lg" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1;"></button> 
+            <button type="button" class="btn btn-warning icon-minus3 hidden-lg hidden-print" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1;"></button> 
               <input type="text" numeric-validation class="input-number tabstop" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity" min="0" length="5" autocomplete="off">
-              <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.quantity = item.quantity + 1;"></button> 
+              <button type="button" class="btn btn-warning icon-plus3 hidden-lg hidden-print" ng-click="item.quantity = item.quantity + 1;"></button> 
             </td>
             <td class="input-col hidden-xs hidden-sm">
               <input ng-if="item.packageprice > 0" ng-checked = "::((item.caseprice == 0) || item.each)" ng-disabled = "::(item.caseprice == 0)" name="each" type="checkbox" ng-model="item.each">

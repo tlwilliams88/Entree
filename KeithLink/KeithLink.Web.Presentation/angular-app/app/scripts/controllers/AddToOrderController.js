@@ -51,7 +51,8 @@ angular.module('bekApp')
     $scope.openQuickAddModal = function() {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/cartquickaddmodal.html',
-        controller: 'CartQuickAddModalController'
+        controller: 'CartQuickAddModalController',
+        backdrop:'static'
       });
    
       modalInstance.result.then(function(cartId) {
@@ -438,16 +439,15 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     /**********
     PAGING
     **********/
-    function applyFocusToFirstQtyField(){
-      $timeout(function() {
-        $('#rowForFocus').find('input:first').focus();
-      }, 2000);
-    }
 
     $scope.refreshQuantities = function(){
       $scope.clearedWhilePristine = false;
+       
         flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
         getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
+        $timeout(function() {
+          $('#rowForFocus').find('input:first').focus();
+        }, 100);
     }
     $scope.filterItems = function(searchTerm) {  
       if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
@@ -456,14 +456,12 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         }
         $scope.visitedPages = [];
         listPagingModel.filterListItems(searchTerm)
-        applyFocusToFirstQtyField();
         $stateParams.searchTerm = '';
         clearItemWatches(watches);       
       }
       else{
         $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
-            applyFocusToFirstQtyField();
             if($scope.isRedirecting(resp)){
               //do nothing
             }
@@ -503,7 +501,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.setCurrentPageAfterRedirect(1);
       // angular.element(orderSearchForm.searchBar).focus();
       $scope.orderSearchForm.$setPristine();
-      applyFocusToFirstQtyField();
     };
   
 
