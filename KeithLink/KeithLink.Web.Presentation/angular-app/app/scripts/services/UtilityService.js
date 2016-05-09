@@ -90,19 +90,7 @@ angular.module('bekApp')
           });
         });
       },
-
-      setItemPositions: function(items, type){
-        if(items && items.length > 0){
-          items.forEach(function(item, index){
-            item.position = index + 1;
-            if(type === 'order'){
-              item.linenumber = index + 1;
-            }
-          })
-        }
-        return items;
-      },
-
+     
       /**
        * general way to resolve most of our endpoints that return an object of the following format
        * where the request was sucessful if successResponse is not null

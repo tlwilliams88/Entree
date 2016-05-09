@@ -220,7 +220,6 @@ angular.module('bekApp')
           updatedCart.items = $filter('filter')( updatedCart.items, function(item){
             return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
           });
-		  updatedCart.items = $filter('orderBy')(updatedCart.items, $scope.sortBy, $scope.sortOrder);
           $scope.currentCart.items = updatedCart.items;
           $scope.resetSubmitDisableFlag(true);
           return CartService.updateCart(updatedCart).then(function(savedCart) {
@@ -384,7 +383,7 @@ angular.module('bekApp')
         changeOrder.items = $filter('filter')( changeOrder.items, function(item){
           return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
         });
-        changeOrder.items = $filter('orderBy')(changeOrder.items, $scope.sortBy, $scope.sortOrder);
+
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
           $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
