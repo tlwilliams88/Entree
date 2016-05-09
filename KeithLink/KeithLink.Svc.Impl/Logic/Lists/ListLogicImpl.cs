@@ -1062,11 +1062,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             try
             {
-                IEnumerable<List> list = _listRepo.Read(i => i.UserId == user.UserId &&
-                                               i.Type == ListType.RecentOrderedNonBEK &&
-                                               i.BranchId.Equals(catalogInfo.BranchId) &&
-                                               i.CustomerId.Equals(catalogInfo.CustomerId),
-                                          l => l.Items);
+                var list = _listRepo.Read(i => i.UserId == user.UserId &&
+                                          i.Type == ListType.RecentOrderedNonBEK &&
+                                          i.BranchId.Equals(catalogInfo.BranchId) &&
+                                          i.CustomerId.Equals(catalogInfo.CustomerId),
+                                          l => l.Items).ToList();
                 List<RecentNonBEKItem> returnItems = list.SelectMany(i => i.Items
                     .Select(l => new RecentNonBEKItem()
                     {
@@ -1084,10 +1084,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 });
 
                 return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
-            }
-            catch
+            }catch (Exception ex)
             {
-                return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = new List<RecentNonBEKItem>() };
+                DeleteRecentlyOrdered(user, catalogInfo);
+                _log.WriteInformationLog(" Getting recently ordered items list failed, reset list", ex);
+                return null;
             }
         }
 
