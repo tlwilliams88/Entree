@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             _context = request.context;
             foreach (InventoryValuationModel item in request.ReportData)
             {
-                if (item.PackSize.IndexOf('/') > -1)
+                if (item.PackSize != null && item.PackSize.IndexOf('/') > -1)
                 {
                     item.Pack = item.PackSize.Substring(0, item.PackSize.IndexOf('/')).Trim();
                     item.Size = item.PackSize.Substring(item.PackSize.IndexOf('/') + 1).Trim();
