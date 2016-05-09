@@ -164,6 +164,7 @@ angular.module('bekApp')
     $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
 
     function resetPage(list, initialPageLoad) {
+      console.log('resetPage')
       $scope.initPagingValues();
       $scope.activeElement = true;
       $scope.selectedList = angular.copy(list);
@@ -192,6 +193,7 @@ angular.module('bekApp')
     };
 
     function appendListItems(list) {
+      console.log('appendListItems')
       list.items.forEach(function(item) {
         item.editPosition = item.position;
       });
@@ -224,10 +226,12 @@ angular.module('bekApp')
     }
 
     function startLoading() {
+      console.log('startLoading')
       $scope.loadingResults = true;
     }
 
     function stopLoading() {
+      console.log('stopLoading')
       $scope.loadingResults = false;
     }
 
