@@ -449,8 +449,8 @@ Global
 		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Debug|x86.ActiveCfg = Debug|x86
 		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Debug|x86.Build.0 = Debug|x86
-		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Dev|Any CPU.ActiveCfg = Dev|x86
-		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Dev|Any CPU.Build.0 = Dev|x86
+		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Dev|Any CPU.ActiveCfg = Test|x86
+		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Dev|Any CPU.Build.0 = Test|x86
 		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Dev|Mixed Platforms.ActiveCfg = Dev2|x86
 		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Dev|Mixed Platforms.Build.0 = Dev2|x86
 		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}.Dev|x86.ActiveCfg = Dev2|x86
@@ -565,23 +565,23 @@ Global
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Debug|x86.ActiveCfg = Debug|x86
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Debug|x86.Build.0 = Debug|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Any CPU.ActiveCfg = Dev|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Any CPU.Build.0 = Dev|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Mixed Platforms.ActiveCfg = Dev|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Mixed Platforms.Build.0 = Dev|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|x86.ActiveCfg = Dev|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|x86.Build.0 = Dev|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Any CPU.ActiveCfg = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Any CPU.Build.0 = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Mixed Platforms.ActiveCfg = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|Mixed Platforms.Build.0 = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|x86.ActiveCfg = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Dev|x86.Build.0 = Dev2|x86
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Release|Any CPU.ActiveCfg = Release|x86
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Release|Mixed Platforms.Build.0 = Release|x86
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Release|x86.ActiveCfg = Release|x86
 		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Release|x86.Build.0 = Release|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Any CPU.ActiveCfg = Test|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Any CPU.Build.0 = Test|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Mixed Platforms.ActiveCfg = Stage|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Mixed Platforms.Build.0 = Stage|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|x86.ActiveCfg = Stage|x86
-		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|x86.Build.0 = Stage|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Any CPU.ActiveCfg = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Any CPU.Build.0 = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Mixed Platforms.ActiveCfg = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|Mixed Platforms.Build.0 = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|x86.ActiveCfg = Dev2|x86
+		{2D8F5E57-4E08-4AE7-9F73-EFBB81AAD859}.Test|x86.Build.0 = Dev2|x86
 		{1C71392C-BD17-4714-8931-B6E2E05E1BAC}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
 		{1C71392C-BD17-4714-8931-B6E2E05E1BAC}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{1C71392C-BD17-4714-8931-B6E2E05E1BAC}.Beta|Mixed Platforms.ActiveCfg = Beta|Any CPU
@@ -693,7 +693,7 @@ Global
 		{AA7148F3-4279-4018-9528-B48BCEED9EA6} = {A9F6E41E-096C-42D1-9D8F-0FB92F98DF1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal
