@@ -83,6 +83,7 @@ angular.module('bekApp')
           }
         })
         return Order.update(params, order).$promise.then(function(changeOrder) {
+          changeOrder = changeOrder.successResponse;
           PricingService.updateCaculatedFields(changeOrder.items);
           return changeOrder;
         });
