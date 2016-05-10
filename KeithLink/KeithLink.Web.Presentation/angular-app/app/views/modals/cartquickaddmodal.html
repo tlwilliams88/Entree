@@ -24,7 +24,14 @@
             <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
           </td>
           <td class="input-col">
-            <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
+            <ng-form class="hidden-print" name="quantityForm">
+              <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
+                <span class="counter-container">
+                  <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile-modal hidden-mobile-modal" ng-disabled = "item.quantity === 0" ng-click="item.quantity = item.quantity -1;"></button>
+                    <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
+                  <button type="button" class="btn btn-warning icon-plus3 hidden-lg show-mobile-modal hidden-mobile-modal" ng-click="item.quantity = item.quantity + 1;"></button>
+                </span>
+              </ng-form>
           </td>
           <td class="input-col">
             <input name="each" type="checkbox" ng-model="item.each">
