@@ -269,7 +269,7 @@ angular.module('bekApp')
         $scope.sortField  = '';
       }
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params,$stateParams.deptName);
     }
 
     //Load list of products and block UI with message
