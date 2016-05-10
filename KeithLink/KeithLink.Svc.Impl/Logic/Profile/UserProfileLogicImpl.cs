@@ -1261,7 +1261,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 {
                     return new UserProfileReturn() { UserProfiles = _csProfile.GetUsersForCustomerOrAccount(userFilters.CustomerId.Value) };
                 }
-                else if (userFilters.Type.Equals(Constants.EMAILMASK_BRANCHSYSTEMALERT, StringComparison.CurrentCultureIgnoreCase))
+                else if (userFilters.Type != null && userFilters.Type.Equals(Constants.EMAILMASK_BRANCHSYSTEMALERT, StringComparison.CurrentCultureIgnoreCase))
                 {
                     List<Customer> customers = _customerRepo.GetCustomersForBranch(userFilters.Branch);
                     List<Core.Models.Profile.UserProfile> profiles = new List<Core.Models.Profile.UserProfile>();
@@ -1278,7 +1278,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     dprofiles.AddRange(profiles.Distinct());
                     return new UserProfileReturn() { UserProfiles = dprofiles };
                 }
-                else if (userFilters.Type.Equals(Constants.EMAILMASK_ALLSYSTEMALERT, StringComparison.CurrentCultureIgnoreCase))
+                else if (userFilters.Type != null && userFilters.Type.Equals(Constants.EMAILMASK_ALLSYSTEMALERT, StringComparison.CurrentCultureIgnoreCase))
                 {
                     // special case for systemwide alerts
                     List<Core.Models.Profile.UserProfile> profiles = new List<Core.Models.Profile.UserProfile>();
