@@ -216,6 +216,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 sbSimilarItem.Replace(" ", "%20");
                 sbSimilar.Append("/catalog/search/" + sbSimilarItem.ToString() + "/products?dept=&from=0&sdir=asc&size=50");
                 item.GetSimilarItems = sbSimilar.ToString();
+                item.RequestDSRContact = "messaging/RequestDSRContact?itemnumber=" + item.ItemNumber;
             }
 
             returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);

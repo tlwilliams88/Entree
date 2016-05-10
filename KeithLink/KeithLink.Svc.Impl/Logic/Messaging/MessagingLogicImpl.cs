@@ -24,10 +24,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Models.Configuration;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class MessagingLogicImpl : IMessagingLogic {
         #region attributes
+        private const string MESSAGE_TEMPLATE_DSRCONTACTREQUEST = "DSRContactRequest";
         private readonly IUnitOfWork _uow;
         private readonly IUserMessageRepository _userMessageRepository;
         private readonly IUserMessagingPreferenceRepository _userMessagingPreferenceRepository;
@@ -37,13 +41,15 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         //private readonly IUserProfileLogic _userProfileLogic; //makes circular depend.
         private readonly ICustomerRepository _custRepo;
         private readonly IUserProfileRepository _userRepo;
+        private readonly IMessageTemplateLogic _messageTemplateLogic;
+        private readonly IEmailClient _emailClient;
         #endregion
 
         #region ctor
         public MessagingLogicImpl(IUnitOfWork unitOfWork, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
                                   IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
                                   IPushNotificationMessageProvider pushNotificationMessageProvider, ICustomerRepository custRepo,
-                                  IUserProfileRepository userProfileRepository) {
+                                  IMessageTemplateLogic messageTemplateLogic, IEmailClient emailClient, IUserProfileRepository userProfileRepository) {
             _log = eventLogRepository;
             _pushNotificationMessageProvider = pushNotificationMessageProvider;
             _uow = unitOfWork;
@@ -52,11 +58,50 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             //_userProfileLogic = userProfileLogic;
             _custRepo = custRepo;
             _userRepo = userProfileRepository;
+            _emailClient = emailClient;
+            _messageTemplateLogic = messageTemplateLogic;
             _userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
         }
         #endregion
 
         #region methods
+        public int RequestDSRContact(UserProfile user, UserSelectedContext catalogInfo, string itemnumber)
+        {
+            try
+            {
+                Svc.Core.Models.Profile.Customer customer = _custRepo.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+                StringBuilder header = _messageTemplateLogic.BuildHeader("Customer Contact Request", customer);
+                MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_DSRCONTACTREQUEST);
+                StringBuilder sbSubject = new StringBuilder();
+                sbSubject.Append(template.Subject.Inject(new
+                {
+                    CustomerNumber = customer.CustomerNumber,
+                    CustomerName = customer.CustomerName
+                }));
+                StringBuilder sbBody = new StringBuilder();
+                sbBody.Append(template.Body.Inject(new
+                {
+                    NotifHeader = header.ToString(),
+                    UserFirstName = user.FirstName,
+                    UserLastName = user.LastName,
+                    ItemNumber = itemnumber,
+                    UserEmail = user.EmailAddress
+                }));
+                if ((user.PhoneNumber != null) && (user.PhoneNumber.Length > 0))
+                    sbBody.Append(" [or by phone at " + user.PhoneNumber + "]");
+                sbBody.Append(".");
+                List<string> toAddresses = new List<string>();
+                toAddresses.Add(customer.Dsr.EmailAddress);
+                _log.WriteInformationLog(string.Format("DSRRequest to {0}: {1}, {2}", customer.Dsr.EmailAddress, sbSubject.ToString(), sbBody.ToString()));
+                _emailClient.SendEmail(toAddresses, null, null, sbSubject.ToString(), sbBody.ToString(), template.IsBodyHtml);
+                return 1;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
         public void CreateMailMessage(MailMessageModel mailMessage) {
             Dictionary<Guid, UserMessage> messages = new Dictionary<Guid, UserMessage>();
 

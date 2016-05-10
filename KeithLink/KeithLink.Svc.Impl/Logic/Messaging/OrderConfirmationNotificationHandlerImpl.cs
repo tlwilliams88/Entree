@@ -152,6 +152,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             var pricing = _priceLogic.GetPrices(customer.CustomerBranch, customer.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
             foreach(var line in notification.OrderChange.Items) {
                 Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
+                if(currentProduct == null)
+                {
+                    currentProduct = _catRepo.GetProductById(line.ItemCatalog, line.ItemNumber);
+                }
                 var price = pricing.Prices.Where(p => p.ItemNumber.Equals(line.ItemNumber)).FirstOrDefault();
                 string priceInfo = BuildPriceInfo(line, currentProduct);
                 string extPriceInfo = BuildExtPriceInfo(line, currentProduct);
@@ -215,10 +219,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             }
             StringBuilder originalOrderInfo = new StringBuilder();
             decimal totalAmount = BuildOrderTables(notification, customer, orderLineChanges, originalOrderInfo);
-            if(totalAmount > 0)
                 return MakeConfirmationMessage(notification, customer, originalOrderInfo, totalAmount);
-            else
-                return null;
         }
 
         private string GetInvoiceNumber(OrderConfirmationNotification notification, Customer customer) {

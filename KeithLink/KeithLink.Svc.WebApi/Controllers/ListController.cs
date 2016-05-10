@@ -402,8 +402,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
                         FilterType = "contains",
                         Value = paging.Terms,
                         Condition = "||",
-                        Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = paging.Terms, FilterType = "contains" }, new FilterInfo() { Condition = "||", Field = "Name", Value = paging.Terms, FilterType = "contains" } }
+                        Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = paging.Terms, FilterType = "contains" },
+                                                           new FilterInfo() { Condition = "||", Field = "Name", Value = paging.Terms, FilterType = "contains" } }
                     };
+                    if(paging.Terms.IndexOf(' ') > -1)
+                    {
+                        string reverse = string.Format("{1} {0}", paging.Terms.Substring(0, paging.Terms.IndexOf(' ')), 
+                                                                  paging.Terms.Substring(paging.Terms.IndexOf(' ') + 1));
+                        paging.Filter.Filters.Add(new FilterInfo() { Condition = "||", Field = "Name", Value = reverse, FilterType = "contains" });
+                    }
                 }
                 //var stopWatch = new System.Diagnostics.Stopwatch(); //Temp: Remove
                 //stopWatch.Start();

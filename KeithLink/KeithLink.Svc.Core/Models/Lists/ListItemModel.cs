@@ -34,6 +34,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         public decimal ParLevel { get; set; }
 
         [DataMember(Name = "position")]
+        [Description("Line #")]
         public int Position { get; set; }
 
 		[DataMember(Name = "packsize")]

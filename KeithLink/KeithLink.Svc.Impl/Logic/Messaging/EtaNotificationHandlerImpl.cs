@@ -126,9 +126,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
 
                     if (etaInfo != null){
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : DateTime.Parse(etaInfo.EstimatedTime).ToLongDateFormatWithTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : etaInfo.ActualTime;
+                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : GetOffsetTimeString(etaInfo.ScheduledTime);
+                        //eventLogRepository.WriteInformationLog(string.Format(" ScheduledTime input {0}; saved {1}", etaInfo.ScheduledTime, GetOffsetTimeString(etaInfo.ScheduledTime)));
+                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : GetOffsetTimeString(etaInfo.EstimatedTime);
+                        //eventLogRepository.WriteInformationLog(string.Format(" EstimatedTime input {0}; saved {1}", etaInfo.EstimatedTime, GetOffsetTimeString(etaInfo.EstimatedTime)));
+                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : GetOffsetTimeString(etaInfo.ActualTime);
+                        //eventLogRepository.WriteInformationLog(string.Format(" ActualTime input {0}; saved {1}", etaInfo.ActualTime, GetOffsetTimeString(etaInfo.ActualTime)));
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;

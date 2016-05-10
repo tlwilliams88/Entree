@@ -8,6 +8,8 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Messaging {
     public interface IMessagingLogic {
+        int RequestDSRContact(UserProfile user, UserSelectedContext catalogInfo, string itemnumber);
+
         void CreateMailMessage(MailMessageModel mailMessage);
 
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);

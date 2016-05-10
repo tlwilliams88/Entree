@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             _context = request.context;
             foreach (InventoryValuationModel item in request.ReportData)
             {
-                if (item.PackSize.IndexOf('/') > -1)
+                if (item.PackSize != null && item.PackSize.IndexOf('/') > -1)
                 {
                     item.Pack = item.PackSize.Substring(0, item.PackSize.IndexOf('/')).Trim();
                     item.Size = item.PackSize.Substring(item.PackSize.IndexOf('/') + 1).Trim();
@@ -81,72 +81,82 @@ namespace KeithLink.Svc.Impl.Logic.Reports
         private StringBuilder GenerateInventoryValuationTextReport(InventoryValuationRequestModel request)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Inventory Valuation Report\n");
-            WriteTextHeaders(request, sb);
-            WriteTextData(request, sb);
-            WriteTextSum(request, sb);
+            sb.AppendLine("Inventory Valuation Report");
+            Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
+            sb.AppendLine(string.Format("{0}{1}{2}{3}{4}", 
+                customer.CustomerName, UseAppropriateDelimiter(request),
+                customer.CustomerNumber, UseAppropriateDelimiter(request),
+                customer.CustomerBranch));
+            sb.AppendLine(WriteTextHeaders(request).ToString());
+            sb.Append(WriteTextData(request).ToString());
+            sb.AppendLine(WriteTextSum(request).ToString());
             return sb;
         }
 
-        private void WriteTextSum(InventoryValuationRequestModel request, StringBuilder sb)
+        private StringBuilder WriteTextSum(InventoryValuationRequestModel request)
         {
-            WriteTextValue("Total", request, sb, true);
-            WriteTextValue(request.ReportData.Sum(x => x.ExtPrice).ToString("F2"), request, sb, false);
-            sb.Append("\n");
+            StringBuilder ret = new StringBuilder();
+            ret.Append(WriteTextValue("Total", request, true));
+            ret.Append(WriteTextValue(request.ReportData.Sum(x => x.ExtPrice).ToString("F2"), request, false));
+            return ret;
         }
 
-        private void WriteTextData(InventoryValuationRequestModel request, StringBuilder sb)
+        private StringBuilder WriteTextData(InventoryValuationRequestModel request)
         {
+            StringBuilder ret = new StringBuilder();
             foreach (var datarow in request.ReportData)
             {
-                WriteTextValue(datarow.ItemId, request, sb, true);
-                WriteTextValue(datarow.Brand, request, sb, true);
-                WriteTextValue(datarow.Name, request, sb, true);
-                WriteTextValue(datarow.Description, request, sb, true);
-                WriteTextValue(datarow.Pack, request, sb, true);
-                WriteTextValue(datarow.Size, request, sb, true);
-                WriteTextValue(datarow.Label, request, sb, true);
-                WriteTextValue((datarow.Each ? "Y" : "N"), request, sb, true);
-                WriteTextValue(datarow.Price.ToString("F2"), request, sb, true);
-                WriteTextValue(datarow.Quantity.ToString("F0"), request, sb, true);
-                WriteTextValue(datarow.ExtPrice.ToString("F2"), request, sb, false);
-                sb.Append("\n");
+                ret.Append(WriteTextValue(datarow.ItemId, request, true));
+                ret.Append(WriteTextValue(datarow.Name, request, true));
+                ret.Append(WriteTextValue(datarow.Brand, request, true));
+                ret.Append(WriteTextValue(datarow.Category, request, true));
+                ret.Append(WriteTextValue(datarow.Pack, request, true));
+                ret.Append(WriteTextValue(datarow.Size, request, true));
+                ret.Append(WriteTextValue(datarow.Label, request, true));
+                ret.Append(WriteTextValue((datarow.Each ? "Y" : "N"), request, true));
+                ret.Append(WriteTextValue(datarow.Price.ToString("F2"), request, true));
+                ret.Append(WriteTextValue(datarow.Quantity.ToString("F0"), request, true));
+                ret.AppendLine(WriteTextValue(datarow.ExtPrice.ToString("F2"), request, false));
             }
+            return ret;
         }
 
-        private void WriteTextHeaders(InventoryValuationRequestModel request, StringBuilder sb)
+        private StringBuilder WriteTextHeaders(InventoryValuationRequestModel request)
         {
-            WriteTextValue("Item", request, sb, true);
-            WriteTextValue("Brand", request, sb, true);
-            WriteTextValue("Name", request, sb, true);
-            WriteTextValue("Description", request, sb, true);
-            WriteTextValue("Pack", request, sb, true);
-            WriteTextValue("Size", request, sb, true);
-            WriteTextValue("Label", request, sb, true);
-            WriteTextValue("Each", request, sb, true);
-            WriteTextValue("Price", request, sb, true);
-            WriteTextValue("Quantity", request, sb, true);
-            WriteTextValue("ExtPrice", request, sb, false);
-            sb.Append("\n");
+            StringBuilder ret = new StringBuilder();
+            ret.Append(WriteTextValue("Item", request, true));
+            ret.Append(WriteTextValue("Name", request, true));
+            ret.Append(WriteTextValue("Brand", request, true));
+            ret.Append(WriteTextValue("Category", request, true));
+            ret.Append(WriteTextValue("Pack", request, true));
+            ret.Append(WriteTextValue("Size", request, true));
+            ret.Append(WriteTextValue("Label", request, true));
+            ret.Append(WriteTextValue("Each", request, true));
+            ret.Append(WriteTextValue("Price", request, true));
+            ret.Append(WriteTextValue("Quantity", request, true));
+            ret.Append(WriteTextValue("ExtPrice", request, false));
+
+            return ret;
         }
 
-        private void WriteTextValue(string Value, InventoryValuationRequestModel request, StringBuilder sb, bool endWithDelimiter)
+        private string WriteTextValue(string Value, InventoryValuationRequestModel request, bool endWithDelimiter)
         {
-            sb.Append(Value);
-            if (endWithDelimiter) UseAppropriateDelimiter(request, sb);
+            return (endWithDelimiter) ? Value + UseAppropriateDelimiter(request) : Value;
         }
 
-        private void UseAppropriateDelimiter(InventoryValuationRequestModel request, StringBuilder sb)
+        private string UseAppropriateDelimiter(InventoryValuationRequestModel request)
         {
+            string ret;
             switch (request.ReportFormat.ToLower())
             {
                 case "csv":
-                    sb.Append(",");
+                    ret = ",";
                     break;
                 default:
-                    sb.Append("\t");
+                    ret = "\t";
                     break;
             }
+            return ret;
         }
 
         #region Generate Excel Report
@@ -177,9 +187,9 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 
             string[] excelColumnNames = new string[11];
             excelColumnNames[0] = "Item";
-            excelColumnNames[1] = "Brand";
-            excelColumnNames[2] = "Name";
-            excelColumnNames[3] = "Description";
+            excelColumnNames[1] = "Name";
+            excelColumnNames[2] = "Brand";
+            excelColumnNames[3] = "Category";
             excelColumnNames[4] = "Pack";
             excelColumnNames[5] = "Size";
             excelColumnNames[6] = "Label";
@@ -197,9 +207,9 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             sheetData.Append(headerRow);
 
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), "Item", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), "Brand", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "Name", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "Description", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), "Name", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "Brand", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "Category", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), "Pack", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), "Size", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "Label", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
@@ -220,9 +230,9 @@ namespace KeithLink.Svc.Impl.Logic.Reports
                 {
 
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), item.ItemId, newExcelRow);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Brand, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.Name, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Description, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Name,  newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.Brand, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Category, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.Pack, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), item.Size, newExcelRow);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), item.Label, newExcelRow);
