@@ -16,8 +16,8 @@ namespace KeithLink.Svc.Core.Models.Reports
 		public string Name { get; set; }
         [DataMember(Name = "brand")]
         public string Brand { get; set; }
-        [DataMember(Name = "description")]
-        public string Description { get; set; }
+        [DataMember(Name = "class")]
+        public string Category { get; set; }
         [DataMember(Name = "quantity")]
 		public decimal Quantity { get; set; }
 		[DataMember(Name = "price")]
