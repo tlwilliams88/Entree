@@ -107,16 +107,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 }
             }
 
-            //Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
-            //foreach(Recipient rec in recipients)
-            //{
-            //    if(dict.Keys.Contains(rec.ProviderEndpoint, StringComparer.CurrentCultureIgnoreCase) == false)
-            //    {
-            //        dict.Add(rec.ProviderEndpoint, rec);
-            //    }
-            //}
+            Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
+            foreach (Recipient rec in recipients)
+            {
+                string dupkey = rec.UserId + "_" + rec.CustomerNumber;
+                if (dict.Keys.Contains(dupkey, StringComparer.CurrentCultureIgnoreCase) == false)
+                {
+                    dict.Add(dupkey, rec);
+                }
+            }
 
-            return recipients;
+            return dict.Values.ToList();
         }
 
         protected void SendMessage(List<Recipient> recipients, Message message) {
