@@ -107,7 +107,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 }
             }
 
-            return recipients;
+            Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
+            foreach(Recipient rec in recipients)
+            {
+                if(dict.Keys.Contains(rec.ProviderEndpoint, StringComparer.CurrentCultureIgnoreCase) == false)
+                {
+                    dict.Add(rec.ProviderEndpoint, rec);
+                }
+            }
+
+            return dict.Values.ToList();
         }
 
         protected void SendMessage(List<Recipient> recipients, Message message) {
