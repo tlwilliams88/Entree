@@ -93,7 +93,7 @@ Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'i
     id="dietId_{{diet.name}}"
     ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
     ng-click="toggleSelection(facets.dietary.selected, diet.name)">
-    <label for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="manufacturer.count > 0">({{diet.count}})</label>
+    <label for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
   </div>
 </div>
 </accordion-group>
@@ -189,7 +189,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
               ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
               ng-click="toggleSelection(facets.dietary.selected, diet.name)"
               class="input-margin-5px">
-            <label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="manufacturer.count > 0">({{diet.count}})</span></label>
+            <label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</span></label>
           </li>
         </ul>
     </div>
