@@ -77,13 +77,13 @@ angular.module('bekApp')
 
       updateOrder: function(order, params) {
         order.message = 'Saving order...';
-		order.items = UtilityService.setItemPositions(order.items, 'order');
         order.items.forEach(function(item){
           if(item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'){
             item.quantity = item.quantityordered;
           }
         })
         return Order.update(params, order).$promise.then(function(changeOrder) {
+          changeOrder = changeOrder.successResponse;
           PricingService.updateCaculatedFields(changeOrder.items);
           return changeOrder;
         });

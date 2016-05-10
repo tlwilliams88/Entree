@@ -14,10 +14,10 @@ namespace KeithLink.Svc.Core.Models.Reports
 		public string ItemId { get; set; }
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
-        [DataMember(Name = "brand")]
+        [DataMember(Name = "brand_extended_description")]
         public string Brand { get; set; }
-        [DataMember(Name = "description")]
-        public string Description { get; set; }
+        [DataMember(Name = "class")]
+        public string Category { get; set; }
         [DataMember(Name = "quantity")]
 		public decimal Quantity { get; set; }
 		[DataMember(Name = "price")]

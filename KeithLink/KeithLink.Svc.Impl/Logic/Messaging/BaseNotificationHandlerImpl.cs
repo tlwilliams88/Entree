@@ -107,7 +107,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 }
             }
 
-            return recipients;
+            Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
+            foreach (Recipient rec in recipients)
+            {
+                string dupkey = rec.UserId + "_" + rec.CustomerNumber;
+                if (dict.Keys.Contains(dupkey, StringComparer.CurrentCultureIgnoreCase) == false)
+                {
+                    dict.Add(dupkey, rec);
+                }
+            }
+
+            return dict.Values.ToList();
         }
 
         protected void SendMessage(List<Recipient> recipients, Message message) {
