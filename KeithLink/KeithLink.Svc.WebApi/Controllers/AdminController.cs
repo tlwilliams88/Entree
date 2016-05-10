@@ -23,8 +23,8 @@ namespace KeithLink.Svc.WebApi.Controllers
     [Authorize(Roles = Constants.ROLE_NAME_SYSADMIN)]
     public class AdminController : BaseController {
         #region attributes
-        private readonly IEventLogRepository         _log;
         private readonly IAppSettingLogic            _appSettings;
+        private readonly IEventLogRepository         _log;
         #endregion
 
         #region ctor
@@ -66,16 +66,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// change the value of the application setting
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
+        /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
         [ApiKeyedRoute("appsettings")]
-        public OperationReturnModel<bool> UpdateSetting(string key, string value) {
+        public OperationReturnModel<bool> UpdateSetting(Setting model) {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                SettingUpdate results = _appSettings.SaveSetting(key, value);
+                SettingUpdate results = _appSettings.SaveSetting(model.Key, model.Value);
 
                 string message = "App Setting updated by {UserName}. Key = {Key}, Original Value = {OrgValue}, Updated Value = {NewValue}";
                 object stringValues = new {

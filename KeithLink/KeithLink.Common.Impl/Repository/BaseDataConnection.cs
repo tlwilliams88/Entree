@@ -45,6 +45,7 @@ namespace KeithLink.Common.Impl.Repository {
 
         public void ExecuteCommand(SqlCommand cmd) {
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Connection = Connection;
 
             if(this.Connection.State == ConnectionState.Closed) { this.Connection.Open(); }
 
@@ -52,7 +53,7 @@ namespace KeithLink.Common.Impl.Repository {
 
             if(!_pool) {
                 this.Connection.Close();
-                this.Connection.Dispose();
+                //this.Connection.Dispose();
             }
 
         }
@@ -72,6 +73,7 @@ namespace KeithLink.Common.Impl.Repository {
 
         public SqlDataReader GetDataReader(SqlCommand cmd) {
             cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Connection = Connection;
 
             if(this.Connection.State == ConnectionState.Closed) { this.Connection.Open(); }
 

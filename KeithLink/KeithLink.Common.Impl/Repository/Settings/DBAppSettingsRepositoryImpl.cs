@@ -38,9 +38,9 @@ namespace KeithLink.Common.Impl.Repository.Settings
         #endregion
 
         #region ctor
-        private DBAppSettingsRepositoryImpl() {
+        public DBAppSettingsRepositoryImpl() {
             _log = new EventLogRepositoryImpl(Configuration.ApplicationName);
-
+            
             Init();
         }
         #endregion
