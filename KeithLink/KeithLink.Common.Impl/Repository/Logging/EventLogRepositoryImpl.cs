@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+
+using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
-namespace KeithLink.Common.Impl.Logging
+namespace KeithLink.Common.Impl.Repository.Logging
 {
-    public class EventLogRepositoryImpl : KeithLink.Common.Core.Logging.IEventLogRepository
+    public class EventLogRepositoryImpl : IEventLogRepository
     {
         #region attributes
         private BEKlibrary.EventLog.BusinessLayer.LogEntry _log;
@@ -22,13 +21,12 @@ namespace KeithLink.Common.Impl.Logging
             else
                 _log = new BEKlibrary.EventLog.BusinessLayer.LogEntry(Environment.MachineName, applicationName);
         }
-            
         #endregion
 
         #region methods
         private string GetLogMessage(string message, Exception ex)
         {
-            System.Text.StringBuilder msg = new StringBuilder();
+            StringBuilder msg = new StringBuilder();
 					
 			msg.Append(message);
             msg.AppendLine(":");

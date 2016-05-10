@@ -11,7 +11,7 @@ using System.ComponentModel;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Models.Configuration;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl

@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Orders;

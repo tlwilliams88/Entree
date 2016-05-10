@@ -2,7 +2,7 @@
 using CommerceServer.Core.Runtime.Orders;
 
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Events.EventArgs;

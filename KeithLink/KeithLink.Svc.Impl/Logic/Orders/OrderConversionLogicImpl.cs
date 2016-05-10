@@ -1,6 +1,6 @@
 ﻿using CommerceServer.Core;
 using CommerceServer.Core.Runtime.Orders;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;

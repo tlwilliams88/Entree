@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;

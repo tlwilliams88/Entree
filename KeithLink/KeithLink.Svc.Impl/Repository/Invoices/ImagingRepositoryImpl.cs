@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Models.Invoices.Imaging.Document;

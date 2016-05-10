@@ -1,11 +1,6 @@
 ﻿using KeithLink.Common.Core.Enumerations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace KeithLink.Common.Core.AuditLog
+namespace KeithLink.Common.Core.Interfaces.Logging
 {
 	public interface IAuditLogRepository
 	{

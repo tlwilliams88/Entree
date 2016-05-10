@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Common.Impl.Email;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Interface.Orders;

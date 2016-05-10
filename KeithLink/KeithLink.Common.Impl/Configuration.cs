@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Impl.SettingsRepo;
+﻿using KeithLink.Common.Impl.Repository.Settings;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Common.Impl
 {
-    public class Configuration : KeithLink.Common.Core.ConfigurationFacade
+    public class Configuration : Core.ConfigurationFacade
     {
         #region attributes
         private const string KEY_LOGGING_CONNECTIONSTRING = "EventLog";

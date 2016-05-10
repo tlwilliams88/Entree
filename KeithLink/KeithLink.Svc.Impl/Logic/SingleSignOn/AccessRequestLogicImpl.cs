@@ -1,5 +1,5 @@
 ﻿using KeithLink.Common.Impl.Email;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
 using KeithLink.Svc.Core.Interface.SingleSignOn;
 using KeithLink.Svc.Core.Interface.PowerMenu;

@@ -1,7 +1,7 @@
-﻿using KeithLink.Common.Core.AuditLog;
-using KeithLink.Common.Core.Enumerations;
+﻿using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core;
 

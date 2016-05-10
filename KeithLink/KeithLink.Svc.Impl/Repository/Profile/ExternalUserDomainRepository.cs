@@ -1,21 +1,15 @@
-﻿using KeithLink.Common.Core.AuditLog;
-using KeithLink.Common.Core.Enumerations;
-using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Enumerations;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.Authentication;
-using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Authentication;
-using KeithLink.Svc.Core.Models.Profile;
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {

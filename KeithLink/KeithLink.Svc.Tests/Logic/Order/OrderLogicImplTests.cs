@@ -1,5 +1,5 @@
 ﻿using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Impl.Logging;
+using KeithLink.Common.Impl.Repository.Logging;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;

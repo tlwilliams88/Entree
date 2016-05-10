@@ -25,7 +25,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.IO;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers {
 	[Authorize]

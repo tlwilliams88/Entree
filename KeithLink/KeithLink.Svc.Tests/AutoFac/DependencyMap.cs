@@ -1,6 +1,5 @@
-﻿using KeithLink.Common.Core.AuditLog;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Impl.Repository.Logging;
 
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
@@ -21,7 +20,6 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
-using KeithLink.Common.Impl.AuditLog;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.ContentManagement;

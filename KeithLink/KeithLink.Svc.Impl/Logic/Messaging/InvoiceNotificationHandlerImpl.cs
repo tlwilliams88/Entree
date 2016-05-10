@@ -8,7 +8,7 @@ using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging

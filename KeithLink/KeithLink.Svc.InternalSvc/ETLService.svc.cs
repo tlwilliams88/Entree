@@ -1,5 +1,5 @@
 ﻿// KeithLink
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
 using KeithLink.Svc.Impl.ETL;

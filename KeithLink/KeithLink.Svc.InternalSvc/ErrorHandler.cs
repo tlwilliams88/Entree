@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Wcf;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;

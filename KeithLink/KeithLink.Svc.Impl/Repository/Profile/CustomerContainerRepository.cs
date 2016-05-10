@@ -2,7 +2,7 @@
 using System;
 using System.DirectoryServices;
 using System.Text;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {

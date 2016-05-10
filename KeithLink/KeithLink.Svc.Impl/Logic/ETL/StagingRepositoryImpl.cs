@@ -1,7 +1,7 @@
 ﻿// KeithLink
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Impl.Models;
 using System.IO;
 // Core

@@ -100,7 +100,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuditLog\IAuditLogRepository.cs" />
+    <Compile Include="Interfaces\IDatabaseConnection.cs" />
+    <Compile Include="Interfaces\Logging\IAuditLogRepository.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationFacade.cs" />
@@ -111,7 +112,11 @@
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
-    <Compile Include="Logging\IEventLogRepository.cs" />
+    <Compile Include="Interfaces\Logging\IEventLogRepository.cs" />
+    <Compile Include="Interfaces\Settings\IAppSettingLogic.cs" />
+    <Compile Include="Interfaces\Settings\IDBAppSettingsRepository.cs" />
+    <Compile Include="Models\Settings\Setting.cs" />
+    <Compile Include="Models\Settings\SettingUpdate.cs" />
     <Compile Include="Parsing\StringHelpers.cs" />
     <Compile Include="Performance\PerformanceLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
