@@ -18,12 +18,6 @@ angular.module('bekApp')
     });
   };
 
-  $scope.contactDSR = function(contact){
-    OrderService.contactDSR(contact).then(function(resp){
-      $scope.displayMessage('success', 'Successfully messaged DSR regarding item.');
-    })
-  };
-
   function calculatePieces(order){   
     var pieceCount = 0;
     if(order.items && order.items.length > 0){
