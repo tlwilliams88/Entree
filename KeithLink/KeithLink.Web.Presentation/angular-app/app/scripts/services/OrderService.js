@@ -139,6 +139,16 @@ angular.module('bekApp')
       },
 
       /****************************
+      CONTACT DSR
+      ****************************/
+
+      contactDSR: function(contact) {
+        return $http.get(contact).then(function(response){
+          return response.data.successResponse;
+        })
+      },
+
+      /****************************
       RECENTLY ORDERED UNFI ITEMS
       ****************************/
 

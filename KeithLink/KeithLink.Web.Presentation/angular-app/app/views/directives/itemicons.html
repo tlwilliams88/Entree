@@ -52,4 +52,8 @@
 <a ng-if="item.temp_zone === 'D'">
   <span tooltip="Dry" class="text-regular icon-air"></span>
 </a>
+
+<a ng-if="item.isoutofstock" ng-click="contactDSR(item.requestdsrcontact)">
+	<span tooltip="Contact DSR" class="text-regular icon-mail"> </span>
+</a>
 </span>
