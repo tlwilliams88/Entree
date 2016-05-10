@@ -50,6 +50,8 @@ namespace KeithLink.Common.Impl.Repository.Settings
             try {
                 TimeSpan t = DateTime.Now - uniqueCheck;
                 if(t.TotalSeconds > int.Parse(Constants.DBAPPSETTINGS_TIME_THRESHOLD_MINUTES)) {
+                    uniqueCheck = DateTime.Now;
+
                     Setting updateFlag = Read(KEY_UPDATEFLAG);
 
                     if(updateFlag.Value.Equals(uniqueValue.ToString(), StringComparison.InvariantCultureIgnoreCase) == false) {
