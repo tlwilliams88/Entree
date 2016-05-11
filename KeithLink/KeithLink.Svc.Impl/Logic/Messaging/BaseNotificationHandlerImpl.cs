@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
             foreach (Recipient rec in recipients)
             {
-                string dupkey = rec.UserId + "_" + rec.CustomerNumber;
+                string dupkey = rec.UserId + "_" + rec.CustomerNumber + "_" + rec.ProviderEndpoint;
                 if (dict.Keys.Contains(dupkey, StringComparer.CurrentCultureIgnoreCase) == false)
                 {
                     dict.Add(dupkey, rec);
