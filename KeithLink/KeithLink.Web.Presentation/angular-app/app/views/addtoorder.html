@@ -208,7 +208,7 @@
           <tr id="rowForFocus">
             <td>
               {{::item.position}}
-              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
+              <a ng-if="$last || clearedWhilePristine" ng-init="postPageLoadInit();"></a>
             </td>
             <td>
               <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{::item.itemnumber}}</a>
@@ -453,7 +453,7 @@
           <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType : 'UNFI' })">{{::item.itemnumber}}</a>
           <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
           <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
-          <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
+          <a ng-if="$last || clearedWhilePristine" ng-init="postPageLoadInit();"></a>
         </td>
         <td class="hidden-mobile-visible-print notes-col">
           {{::item.notes}}

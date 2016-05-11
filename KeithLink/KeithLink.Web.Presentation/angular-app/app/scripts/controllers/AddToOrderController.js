@@ -440,7 +440,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     PAGING
     **********/
 
-    $scope.refreshQuantities = function(){
+    $scope.postPageLoadInit = function(){
       $scope.clearedWhilePristine = false;
        
         flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
