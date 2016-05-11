@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Core.Extensions
 			{
 				foreach (var innerFilter in activeFilter.Filters)
 				{
-					var expression = BuildFilterExpresion<TEntity>(innerFilter, activeFilter.Logic, multipleValuePropertyNames);
+					var expression = BuildFilterExpresion<TEntity>(innerFilter, innerFilter.Logic, multipleValuePropertyNames);
 
 					if (innerExpression == null)
 						innerExpression = expression;
