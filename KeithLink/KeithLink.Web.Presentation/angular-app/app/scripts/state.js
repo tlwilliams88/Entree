@@ -652,6 +652,25 @@ angular.module('bekApp')
       url: '/404/',
       templateUrl: 'views/404.html'
     });
+
+  $stateProvider
+    .state('menu.configsettings', {
+      url: '/configsettings/',
+      templateUrl: 'views/configsettings.html',
+      controller: 'ConfigSettingsController',
+      resolve: {
+        security: ['UserProfileService', '$q', function(UserProfileService, $q) {
+          return UserProfileService.getCurrentUserProfile().then(function(resp){
+            var profile = resp;
+
+          if(profile.rolename !== 'beksysadmin'){
+            return $q.reject('User Not Authorized');
+          }
+          });
+        }]
+
+      }
+    });
   
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
