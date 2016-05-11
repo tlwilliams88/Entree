@@ -538,10 +538,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         
         public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
+            
+            List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
-
-            dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
+            dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
 
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", categorySearchExpression);
         }
