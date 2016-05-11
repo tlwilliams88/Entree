@@ -129,6 +129,7 @@ namespace KeithLink.Svc.Impl
 
             try {
                 client.Send( message );
+                _log.WriteInformationLog(string.Format(" Sending email to {0}", message.To.ToArray().ToString()));
             } catch (Exception e) {
                 throw e;                
             } finally {
