@@ -485,14 +485,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _uow.SaveChanges();
         }
 
-<<<<<<< HEAD
-        private void GenerateNewRecommendItemNotification(string customerId, string branchId)
-        {
-            try
-            {
-                var notifcation = new HasNewsNotification()
-                {
-=======
         public void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo)
         {
             List<List> listcol = null;
@@ -523,7 +515,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         private void GenerateNewRecommendItemNotification(string customerId, string branchId) {
             try {
                 var notifcation = new HasNewsNotification() {
->>>>>>> dev_v1.6.0
                     CustomerNumber = customerId,
                     BranchId = branchId,
                     Subject = "New recommended items",
@@ -1054,10 +1045,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                               .ToList();
         }
 
-<<<<<<< HEAD
-        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
-        {
-=======
         public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo)
         {
             try
@@ -1093,7 +1080,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         }
 
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
->>>>>>> dev_v1.6.0
             var list = _listRepo.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
 
             if (list == null || list.Items == null)

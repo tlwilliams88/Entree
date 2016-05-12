@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using KeithLink.Common.Impl.Repository.Settings;
 using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Interface.Profile;
@@ -55,35 +56,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
             if (exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) || exportType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
-                {
-                    sb.AppendLine("Item Usage Report");
-                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
-                    List<string> cust = new List<string>();
-                    cust.Add(customer.CustomerBranch);
-                    cust.Add(customer.CustomerNumber);
-                    cust.Add(customer.CustomerName);
-                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
-                }
-                else if (typeof(T).Name.Equals("ListItemModel"))
-                {
-                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
-                    List<string> cust = new List<string>();
-                    cust.Add(customer.CustomerBranch);
-                    cust.Add(customer.CustomerNumber);
-                    cust.Add(customer.CustomerName);
-                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
-                }
-                else if (typeof(T).Name.Equals("InvoiceModel"))
-                {
-                    sb.AppendLine("Invoices");
-                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
-                    List<string> cust = new List<string>();
-                    cust.Add(customer.CustomerBranch);
-                    cust.Add(customer.CustomerNumber);
-                    cust.Add(customer.CustomerName);
-                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
-                }
+                AddTitleToTextExport(exportType, sb);
+                AddCustomerToTextExport(exportType, sb);
                 this.WriteHeaderRecord(sb, exportType);
             }
 
@@ -106,6 +80,35 @@ namespace KeithLink.Svc.Impl.Logic.Export
             return ms;
         }
 
+        private void AddCustomerToTextExport(string exportType, StringBuilder sb)
+        {
+            List<string> exports = Configuration.ExportAddCustomer;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.Equals(typeof(T).Name))
+                {
+                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
+                    List<string> cust = new List<string>();
+                    cust.Add(customer.CustomerBranch);
+                    cust.Add(customer.CustomerNumber);
+                    cust.Add(customer.CustomerName);
+                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
+                }
+            }
+        }
+
+        private void AddTitleToTextExport(string exportType, StringBuilder sb)
+        {
+            List<string> exports = Configuration.ExportAddTitle;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.StartsWith(typeof(T).Name))
+                {
+                    sb.AppendLine(gettitle.Substring(gettitle.IndexOf(';') + 1));
+                }
+            }
+        }
+
         #region Excel Export
         private MemoryStream GenerateExcelExport()
         {
@@ -124,46 +127,12 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 colIndex++;
                 width = 0;
-                if (modelName.Equals("ItemUsageReportItemModel"))
+                try
                 {
-                    switch (config.Field)
-                    {
-                        case "Name":
-                        case "Brand":
-                        case "Class":
-                        case "ManufacturerName":
-                            width = 25;
-                            break;
-                        case "UPC":
-                            width = 15;
-                            break;
-                        case "PackSize":
-                            width = 12;
-                            break;
-                    }
+                    width = int.Parse(DBAppSettingsRepositoryImpl.GetValue("EW." + modelName + "." + config.Field, "0"));
                 }
-                else if (modelName.Equals("ListItemModel"))
-                {
-                    switch (config.Field)
-                    {
-                        case "Name":
-                        case "Brand":
-                        case "ItemClass":
-                        case "label":
-                        case "Category":
-                        case "Notes":
-                            width = 20;
-                            break;
-                        case "Pack":
-                        case "ParLevel":
-                            width = 6;
-                            break;
-                        case "Size":
-                            width = 10;
-                            break;
-                    }
-                }
-                else if (modelName.Equals("OrderLine"))
+                catch { }
+                if (modelName.Equals("OrderLine"))
                 {
                     switch (config.Field)
                     {
@@ -270,27 +239,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
             //
             //  Create the Header row in our Excel Worksheet
             //
-            if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
-            {
-                rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
-                    (rowIndex, typeof(T).Name, excelColumnNames, "Item Usage Report", sheetData);
-                rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
-                    (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
-            }
-            else if (typeof(T).Name.Equals("ListItemModel"))
-            {
-                //rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
-                //    (rowIndex, typeof(T).Name, excelColumnNames, ((ListItemModel)Model).Name, sheetData);
-                rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
-                    (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
-            }
-            else if (typeof(T).Name.Equals("InvoiceModel"))
-            {
-                rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
-                    (rowIndex, typeof(T).Name, excelColumnNames, "Invoices", sheetData);
-                rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
-                    (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
-            }
+            rowIndex = AddTitleToExcelExport(sheetData, excelColumnNames, rowIndex);
+            rowIndex = AddCustomerToExcelExport(sheetData, excelColumnNames, rowIndex);
 
             var headerRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
             sheetData.Append(headerRow);
@@ -382,6 +332,36 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 }
             }
             return sheetData;
+        }
+
+        private uint AddCustomerToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            List<string> exports = Configuration.ExportAddCustomer;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.Equals(typeof(T).Name))
+                {
+                    rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
+                        (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+                }
+            }
+
+            return rowIndex;
+        }
+
+        private static uint AddTitleToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            List<string> exports = Configuration.ExportAddTitle;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.StartsWith(typeof(T).Name))
+                {
+                    rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
+                        (rowIndex, typeof(T).Name, excelColumnNames, gettitle.Substring(gettitle.IndexOf(';') + 1), sheetData);
+                }
+            }
+
+            return rowIndex;
         }
 
         private void SetPriceConfig(PropertyInfo[] properties, T item, ExportModelConfiguration thisConfig)

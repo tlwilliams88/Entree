@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
@@ -7,6 +6,7 @@ using System;
 using System.ServiceProcess;
 using System.Threading.Tasks;
 using System.Threading;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.Windows.CatalogService
 {
