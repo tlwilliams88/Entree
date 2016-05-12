@@ -8,7 +8,7 @@ using CommerceServer.Core.Runtime.Diagnostics;
 
 // KeithLink
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core;
 

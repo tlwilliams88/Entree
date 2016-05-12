@@ -6,7 +6,6 @@ using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
-using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Cache;

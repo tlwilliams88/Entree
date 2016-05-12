@@ -1,10 +1,9 @@
 ﻿using Autofac;
-using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl.Logic.SingleSignOn;
 using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.SingleSignOn;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.SingleSignOn;
 using KeithLink.Svc.Core.Interface.PowerMenu;
 using System;

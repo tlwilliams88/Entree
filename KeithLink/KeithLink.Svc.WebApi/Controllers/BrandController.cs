@@ -11,7 +11,7 @@ using KeithLink.Svc.Core.Models.Brand;
 using KeithLink.Svc.Core.Interface.Brand;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.WebApi.Models;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {

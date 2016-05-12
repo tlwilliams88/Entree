@@ -1,5 +1,5 @@
 ﻿using KeithLink.Common.Core.Helpers;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.Messaging;
 

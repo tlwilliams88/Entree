@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 	public class UnitOfWork : IUnitOfWork {
-		private IEventLogRepository eventLogRepository;
-		
 		#region ctor
 		public UnitOfWork(IEventLogRepository eventLogRepository)
 		{

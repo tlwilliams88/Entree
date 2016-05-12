@@ -1,5 +1,5 @@
 ﻿using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Extensions.Messaging;
@@ -17,8 +17,11 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class NotificationQueueConsumerImpl : INotificationQueueConsumer {
         #region attributes
+        private const int TWO_SECOND_DELAY = 2000;
+
         private Task listenForQueueMessagesTask;
         private bool doListenForMessagesInTask = true;
+        private bool consumingMessages = false;
 
         private readonly IGenericQueueRepository genericQueueRepository;
         private readonly IEventLogRepository eventLogRepository;
@@ -41,22 +44,38 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
         protected void ListenToQueueInTaskForUsers() {
             while (doListenForMessagesInTask) {
+                consumingMessages = true;
+
                 try {
-                    System.Threading.Thread.Sleep(2000);
-                    string msg = ConsumeMessageFromQueue();
-
-					if (msg != null) {
-                        BaseNotification notification = NotificationExtension.Deserialize(msg);
-                        
-                        eventLogRepository.WriteInformationLog("Processing notification from queue. Notification: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
-
-                        var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
-                        handler.ProcessNotification(notification);
-                    }
+                    ConsumeMessages();
                 } catch (Exception ex) {
+                    consumingMessages = false;
 					KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, subject: "Exception processing Notification in Queue Service");
 
                     eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
+                }
+            }
+            System.Threading.Thread.Sleep(TWO_SECOND_DELAY);
+        }
+
+        private void ConsumeMessages()
+        {
+            while (consumingMessages && doListenForMessagesInTask)
+            {
+                string msg = ConsumeMessageFromQueue();
+
+                if (msg != null)
+                {
+                    BaseNotification notification = NotificationExtension.Deserialize(msg);
+
+                    eventLogRepository.WriteInformationLog("Processing notification from queue. Notification: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
+
+                    var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
+                    handler.ProcessNotification(notification);
+                }
+                else
+                {
+                    consumingMessages = false;
                 }
             }
         }

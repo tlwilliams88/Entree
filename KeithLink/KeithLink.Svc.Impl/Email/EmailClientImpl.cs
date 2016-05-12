@@ -11,7 +11,7 @@ using System.ComponentModel;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Models.Configuration;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl
@@ -98,7 +98,7 @@ namespace KeithLink.Svc.Impl
                 Stream logoStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Images.Logo.png");
                 var inlineLogo = new LinkedResource(logoStream);
                 inlineLogo.ContentId = "LOGO";
-                if(logoStream != null && logoStream.Length>0) _log.WriteInformationLog("EmailClientImpl logo image found.");
+                //if(logoStream != null && logoStream.Length>0) _log.WriteInformationLog("EmailClientImpl logo image found.");
                 var view = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
                 view.LinkedResources.Add(inlineLogo);
                 message.AlternateViews.Add(view);
@@ -129,6 +129,7 @@ namespace KeithLink.Svc.Impl
 
             try {
                 client.Send( message );
+                //_log.WriteInformationLog(string.Format(" Sending email to {0}", string.Join(",", toAddresses.ToArray())));
             } catch (Exception e) {
                 throw e;                
             } finally {

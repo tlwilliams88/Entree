@@ -192,10 +192,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.asdf.config">
-      <DependentUpon>App.config</DependentUpon>
-      <IsTransformFile>True</IsTransformFile>
-    </None>
     <None Include="App.Beta.config">
       <DependentUpon>App.config</DependentUpon>
       <SubType>Designer</SubType>

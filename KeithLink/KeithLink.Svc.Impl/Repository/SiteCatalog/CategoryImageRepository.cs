@@ -9,7 +9,7 @@ using System.Net.Http.Headers;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using Newtonsoft.Json;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {

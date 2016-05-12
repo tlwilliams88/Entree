@@ -1,15 +1,12 @@
-﻿using KeithLink.Common.Core.AuditLog;
-using KeithLink.Common.Core.Enumerations;
+﻿using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Helpers;
+using KeithLink.Common.Core.Interfaces.Logging;
+
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace KeithLink.Common.Impl.AuditLog
+namespace KeithLink.Common.Impl.Repository.Logging
 {
 	public class AuditLogRepositoryImpl: IAuditLogRepository
 	{

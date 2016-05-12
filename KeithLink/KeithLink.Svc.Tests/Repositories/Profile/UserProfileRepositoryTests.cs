@@ -1,6 +1,5 @@
 ﻿// KeithLink
-using KeithLink.Common.Impl.AuditLog;
-using KeithLink.Common.Impl.Logging;
+using KeithLink.Common.Impl.Repository.Logging;
 
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.Profile;

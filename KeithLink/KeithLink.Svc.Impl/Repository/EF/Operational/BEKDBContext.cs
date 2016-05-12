@@ -1,5 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Messaging.EF;

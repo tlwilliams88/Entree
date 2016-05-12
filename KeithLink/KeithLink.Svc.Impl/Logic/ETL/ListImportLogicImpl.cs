@@ -1,6 +1,6 @@
 ﻿// KeithLink
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.InternalCatalog;

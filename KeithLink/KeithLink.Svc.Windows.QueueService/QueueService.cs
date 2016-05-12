@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;

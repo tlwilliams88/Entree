@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KeithLink.Common.Impl.Repository.Logging;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,8 +21,7 @@ namespace KeithLink.Svc.FoundationSvc
         {
             try
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink.FoundationSvc");
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl("KeithLink.FoundationSvc");
                 eventLog.WriteInformationLog("Foundation Service Starting Up");
             }
             catch (Exception ex)

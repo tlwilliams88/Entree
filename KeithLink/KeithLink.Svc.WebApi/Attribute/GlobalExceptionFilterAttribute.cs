@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,9 +22,7 @@ namespace KeithLink.Svc.WebApi.Attribute
 
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
-            eventLogRepository = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(KeithLink.Common.Core.Logging.IEventLogRepository))
-                as KeithLink.Common.Core.Logging.IEventLogRepository;
-
+            eventLogRepository = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IEventLogRepository)) as IEventLogRepository;
 			
 			var errorMessage = string.Empty;
 

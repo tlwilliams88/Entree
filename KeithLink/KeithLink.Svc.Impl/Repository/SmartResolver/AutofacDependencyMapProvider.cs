@@ -1,8 +1,10 @@
-﻿using KeithLink.Common.Core.AuditLog;
-using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Core.Interfaces.Settings;
 
-using KeithLink.Common.Impl.AuditLog;
-using KeithLink.Common.Impl.Logging;
+using KeithLink.Common.Impl.Logic.Settings;
+
+using KeithLink.Common.Impl.Repository.Logging;
+using KeithLink.Common.Impl.Repository.Settings;
 
 using KeithLink.Svc.Core.Enumerations.Messaging;
 
@@ -160,8 +162,9 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 
             // other
-            builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+            builder.RegisterType<DBAppSettingsRepositoryImpl>().As<IDBAppSettingsRepository>().SingleInstance();
+            builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
@@ -252,6 +255,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<UserActiveCartLogicImpl>().As<IUserActiveCartLogic>();
 
             // other
+            builder.RegisterType<AppSettingLogicImpl>().As<IAppSettingLogic>();
             builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
             builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
             builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();

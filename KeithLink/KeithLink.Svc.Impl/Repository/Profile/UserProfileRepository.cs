@@ -1,14 +1,11 @@
-﻿using CommerceServer.Foundation;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Interfaces.Logging;
+
 using KeithLink.Svc.Impl.Helpers;
+
+using CommerceServer.Foundation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {

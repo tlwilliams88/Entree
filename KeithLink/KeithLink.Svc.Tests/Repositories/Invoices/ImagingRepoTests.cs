@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Impl.Repository.Logging;
 using KeithLink.Svc.Impl.Repository.Invoices;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;

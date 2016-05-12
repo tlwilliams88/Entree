@@ -1,8 +1,7 @@
 ﻿using CommerceServer.Foundation;
 
-using KeithLink.Common.Core.AuditLog;
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.Profile;
 
@@ -13,7 +12,6 @@ using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Profile;
 
 using KeithLink.Svc.Core.Models.Generated;
-using EF = KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 
