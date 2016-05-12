@@ -8,14 +8,17 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'blockUI',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'blockUI',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
       $filter,
+      $timeout,
       ProductService, CategoryService, Constants, PricingService, CartService, // bek custom services
-      blockUI
+      blockUI,
+      LocalStorage,
+      PagingModel
     ) {
 
     // clear keyword search term at top of the page
@@ -36,7 +39,6 @@ angular.module('bekApp')
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
 
-    $scope.loadingResults = false;
     $scope.sortField = null;
     $scope.sortReverse = false;
 
@@ -86,6 +88,142 @@ angular.module('bekApp')
         showMore: true
       }
     };
+
+    $scope.initPagingValues = function(){
+      $scope.visitedPages = [];
+      $scope.rangeStartOffset = 0;
+      $scope.rangeEndOffset = 0;
+      $scope.itemCountOffset = 0;
+    }
+
+    $scope.initPagingValues();
+
+    /*************
+    PAGINATION
+    *************/
+
+    $scope.blockUIAndChangePage = function(page){
+        $scope.startingPoint = 0;
+        $scope.endPoint = 0;       
+        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+        blockUI.start("Loading List...").then(function(){
+          if(visited.length > 0){
+            $timeout(function() {
+              $scope.isChangingPage = true;
+              $scope.pageChanged(page, visited);
+            }, 100);
+          }
+          else{
+            $scope.pageChanged(page, visited);
+          }
+        })
+    }
+
+    $scope.pagingPageSize = 15;
+
+     $scope.setStartAndEndPoints = function(page){
+      var foundStartPoint = false;
+        page.forEach(function(item, index){
+          if(page && item.itemnumber === page[0].itemnumber){
+            $scope.startingPoint = index;
+            $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
+            foundStartPoint = true;
+          }
+        })
+
+        if(!foundStartPoint){
+          appendProducts(page);
+        }
+        //We need two calls for stop here because we have two paging directives on the view. If the page change is triggered 
+        //automatically (deleting all items on page/saving) the event will fire twice and two loading overlays will be generated.
+        blockUI.stop();
+        blockUI.stop();
+     }
+    
+     $scope.pageChanged = function(page) {      
+      $scope.rangeStartOffset = 0;
+      $scope.rangeEndOffset = 0;
+      $scope.loadingPage = true;    
+      $scope.currentPage = page.currentPage;
+      $scope.startingPoint = ((page.currentPage - 1)*$scope.pagingPageSize) + 1;
+      $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
+      $scope.firstPageItem = ($scope.currentPage * $scope.pagingPageSize) - ($scope.pagingPageSize - 1);
+      $scope.setRange();
+      var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
+      if(!visited.length){
+        $scope.products = $scope.productResults.slice($scope.firstPageItem, $scope.endPoint);
+        appendProducts($scope.products)
+        blockUI.stop();
+        blockUI.stop();
+      }else {
+        $scope.setStartAndEndPoints($scope.products);
+        $scope.visitedPages.forEach(function(page){
+          if(page.page == $scope.currentPage){
+            $scope.products = page.items;
+          }
+        })
+      }
+     };
+
+    $scope.setRange = function(){
+      $scope.endPoint = $scope.endPoint;
+      $scope.rangeStart = $scope.startingPoint;
+      $scope.rangeEnd = ($scope.endPoint > $scope.totalProducts) ? $scope.totalProducts : $scope.endPoint - 1;
+      if($scope.rangeStart === 0){
+        $scope.rangeStart++;
+        if($scope.rangeEnd === $scope.pagingPageSize - 1){
+          $scope.rangeEnd ++;
+        }
+      }
+    }
+
+    function resetPage(results, initialPageLoad) {
+      $scope.initPagingValues();
+      $scope.activeElement = true;
+      $scope.totalItems = $scope.totalProducts;
+      $scope.rangeStartOffset = 0;
+      $scope.rangeEndOffset = 0;
+
+      if(initialPageLoad){      
+        $scope.currentPage = 1;
+        $scope.firstPageItem = ($scope.currentPage * $scope.pagingPageSize) - ($scope.pagingPageSize);
+        $scope.products = $scope.productResults.slice($scope.firstPageItem, ($scope.currentPage * $scope.pagingPageSize));
+        $scope.setStartAndEndPoints($scope.products);
+        $scope.visitedPages.push({page: 1, items: $scope.products, deletedCount: 0});
+      }
+      $scope.setRange();
+    };
+
+    function appendProducts(results) {
+      $scope.visitedPages.push({page: $scope.currentPage, items: results, deletedCount: 0});
+      //Since pages can be visited out of order, sort visited pages into numeric order.
+      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
+        var sorterval1 = obj1.page;      
+        var sorterval2 = obj2.page;       
+        return sorterval1 - sorterval2;
+      });
+
+      if($scope.totalProducts === 0){
+        $scope.startingPoint = 0;
+        $scope.endPoint = 0;
+      }
+      else{
+       $scope.setStartAndEndPoints(results);
+      }
+    };
+
+    function startLoading() {
+      $scope.loadingResults = true;
+    }
+
+    function stopLoading() {
+      $scope.loadingResults = false;
+      blockUI.stop();
+    }
+
+    if($stateParams.sortingParams && $stateParams.sortingParams.sort.length){
+      $scope.sort = $stateParams.sortingParams.sort;
+    }
 
     /*************
     BREADCRUMBS
@@ -268,17 +406,18 @@ angular.module('bekApp')
       if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
         $scope.sortField  = '';
       }
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params,$stateParams.deptName);
+      var params = ProductService.getSearchParams(null, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
     }
 
     //Load list of products and block UI with message
     function loadProducts(appendResults) {
-      $scope.loadingResults = true;
-
-
       return blockUI.start("Loading Products...").then(function(){
         return getData().then(function(data) {
+        var page = 1;
+        $scope.productResults = data.products;
+        $scope.totalProducts = data.totalcount;
+        resetPage(data.products, true);
         $scope.totalItems = data.totalcount;
         if (data.catalogCounts != null) {
             $scope.bekItemCount = data.catalogCounts.bek;
@@ -293,12 +432,14 @@ angular.module('bekApp')
           $scope.products.push.apply($scope.products, data.products);
         // replace existing data (for sort, filter)
         } else {
-          $scope.products = data.products;
-          updateFacetCount($scope.facets.brands, data.facets.brands);
-          updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
-          updateFacetCount($scope.facets.categories, data.facets.categories);
-          updateFacetCount($scope.facets.dietary, data.facets.dietary);
-          updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
+          $scope.allProducts = data.products;
+          $scope.setStartAndEndPoints($scope.products);
+          $scope.products = $scope.allProducts.slice($scope.startingPoint, $scope.endPoint);
+          // updateFacetCount($scope.facets.brands, data.facets.brands);
+          // updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
+          // updateFacetCount($scope.facets.categories, data.facets.categories);
+          // updateFacetCount($scope.facets.dietary, data.facets.dietary);
+          // updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
         }
 
         setBreadcrumbs(data);
@@ -312,25 +453,24 @@ angular.module('bekApp')
       }, function(error) {
         $scope.searchMessage = 'Error loading products.';
       }).finally(function() {
-        $scope.loadingResults = false;
       });
     }
 
-    function updateFacetCount(facets, data){
-      facets.available.forEach(function(facet){
-        var facetName = $filter('filter') (data, {name: facet.name})
-        facet.count = 0;
-        if(facetName.length > 0 && facet.name){
-          facet.count = facetName[0].count;
-        }
-      })
-    }
+
 
     /*************
     FACETS
     *************/
     $scope.clearFacets = function() {
-      $scope.facets.categories.selected = [];
+      $scope.facets.categories.selected = [];    // function updateFacetCount(facets, data){
+    //   facets.available.forEach(function(facet){
+    //     var facetName = $filter('filter') (data, {name: facet.name})
+    //     facet.count = 0;
+    //     if(facetName.length > 0 && facet.name){
+    //       facet.count = facetName[0].count;
+    //     }
+    //   })
+    // }
       $scope.facets.brands.selected = [];
       $scope.facets.mfrname.selected = [];
       $scope.facets.dietary.selected = [];
@@ -417,20 +557,6 @@ angular.module('bekApp')
       }
     };
 
-    $scope.infiniteScrollLoadMore = function() {
-      document.activeElement.blur();
-      if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
-        return;
-      }
-      var sortfieldholder = $scope.sortField;
-      $scope.itemIndex += $scope.itemsPerPage;
-      loadProducts(true).then(function(){
-        if(sortfieldholder === 'itemnumber' && $state.params.catalogType != 'BEK'){
-          $scope.UNFISortByItemNumber(!$scope.itemNumberDesc);
-        }
-      });      
-    };
-
     $scope.toggleSelection = function(facetList, selectedFacet) {
       $scope.noFiltersSelected = false;
       $scope.itemsPerPage = 50;
@@ -443,7 +569,7 @@ angular.module('bekApp')
         facetList.push(selectedFacet);
       }
 
-      loadProducts();
+      loadProducts().then($scope.refreshFacets);
     };
 
     $scope.goToItemDetails = function(item) {

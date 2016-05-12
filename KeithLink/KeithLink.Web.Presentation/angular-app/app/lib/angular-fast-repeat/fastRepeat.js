@@ -98,7 +98,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var updateList = function(rowTpl, scope, forceUpdate) {
                     var deletedItem = false;
                     focusActiveElement(document.activeElement);
-                    if(scope.item.position == 1 && scope.item.label == ''){
+                    if(scope.item && scope.item.position == 1 && scope.item.label == ''){
                         scope.item.label = firstLabel;
                         scope.fromRenderLabels = false;
                     }

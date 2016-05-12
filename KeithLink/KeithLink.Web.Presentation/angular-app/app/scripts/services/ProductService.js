@@ -93,12 +93,12 @@ angular.module('bekApp')
           return url;
         },
 
-        searchCatalog: function(type, id, catalogType, params, department) {
+        searchCatalog: function(type, id, catalogType, params) {
           if(type === 'search'){
 
             var dept = (params.dept === '') ? 'All' : params.dept;
        
-            $analytics.eventTrack('Search Department', {  category: 'Search', label: department });
+            $analytics.eventTrack('Search Department', {  category: 'Search', label: dept });
             $analytics.eventTrack('Search Terms', {  category: 'Search', label: id });
           }
 
@@ -109,22 +109,27 @@ angular.module('bekApp')
           };
 
           return $http.get(url, config).then(function(response) {
-            var data = response.data.successResponse;
+            var dataTotalCount = response.data.successResponse.totalcount;
+            config.params.size = dataTotalCount;
 
-            // convert nonstock data structure to match other itemspecs
-            if (data.facets.nonstock && data.facets.nonstock.length > 0) {
-              data.facets.nonstock.forEach(function(nonstockItem) {
-                if (nonstockItem.name === 'y') {
-                  data.facets.itemspecs.push({
-                    name: 'nonstock',
-                    count: nonstockItem.count // yes
-                  });
-                }
-              });
-            }
+            return $http.get(url, config).then(function(response){
+              var data = response.data.successResponse;
 
-            return data;
-          });
+              // convert nonstock data structure to match other itemspecs
+              if (data.facets.nonstock && data.facets.nonstock.length > 0) {
+                data.facets.nonstock.forEach(function(nonstockItem) {
+                  if (nonstockItem.name === 'y') {
+                    data.facets.itemspecs.push({
+                      name: 'nonstock',
+                      count: nonstockItem.count // yes
+                    });
+                  }
+                });
+              }
+
+              return data;
+            });
+          })
         },
 
         getProductDetails: function(itemNumber, catalogType) {
