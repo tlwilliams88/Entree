@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 StringBuilder queryString = new StringBuilder("ItemImage/GetList/");
                 queryString.Append(itemNumber);
 
-                if(isBekItem) { queryString.Append("?BEKItem=false"); }
+                if(!isBekItem) { queryString.Append("?BEKItem=false"); }
 
                 Uri multiDocsUri = new Uri(Configuration.MultiDocsUrl);
                 Uri endPoint = new Uri (multiDocsUri, queryString.ToString());
