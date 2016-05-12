@@ -136,7 +136,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
             if (ret.Unfi != null)
             {
-                ret.ProductImages = _imgRepository.GetNonBEKImageList(ret.UPC).ProductImages;
+                ret.ProductImages = _imgRepository.GetImageList(ret.UPC, false).ProductImages;
             }
             else
             {

@@ -981,7 +981,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
                 returnItems.ForEach(delegate (RecentNonBEKItem item)
                 {
-                    item.Images = _productImageRepo.GetNonBEKImageList(item.Upc).ProductImages;
+                    item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
                 });
 
                 return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
