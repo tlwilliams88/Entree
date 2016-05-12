@@ -407,9 +407,36 @@ namespace KeithLink.Svc.WebApi.Controllers {
                     };
                     if(paging.Terms.IndexOf(' ') > -1)
                     {
-                        string reverse = string.Format("{1} {0}", paging.Terms.Substring(0, paging.Terms.IndexOf(' ')), 
-                                                                  paging.Terms.Substring(paging.Terms.IndexOf(' ') + 1));
-                        paging.Filter.Filters.Add(new FilterInfo() { Condition = "||", Field = "Name", Value = reverse, FilterType = "contains" });
+                        string[] words = paging.Terms.Split(' ');
+                        paging.Filter = new FilterInfo()
+                        {
+                            Field = "ItemNumber",
+                            FilterType = "contains",
+                            Value = paging.Terms,
+                            Condition = "||",
+                            Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "&&", Field = "Label", Value = words[0], FilterType = "contains" },
+                                                           new FilterInfo() { Condition = "&&", Field = "Name", Value = words[0], FilterType = "contains" } }
+                        };
+                        foreach (string word in words)
+                        {
+                            paging.Filter.Filters[0].Filters = new List<FilterInfo>();
+                            paging.Filter.Filters[0].Filters.Add
+                                (new FilterInfo()
+                                {
+                                    Condition = "&&",
+                                    Field = "Label",
+                                    Value = word,
+                                    FilterType = "contains" });
+                            paging.Filter.Filters[1].Filters = new List<FilterInfo>();
+                            paging.Filter.Filters[1].Filters.Add
+                                (new FilterInfo()
+                                {
+                                    Condition = "&&",
+                                    Field = "Name",
+                                    Value = word,
+                                    FilterType = "contains"
+                                });
+                        }
                     }
                 }
                 //var stopWatch = new System.Diagnostics.Stopwatch(); //Temp: Remove

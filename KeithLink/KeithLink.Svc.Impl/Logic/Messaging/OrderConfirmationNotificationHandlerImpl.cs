@@ -80,16 +80,29 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #region methods
         private void BuildExceptionItemDetail(StringBuilder itemOrderInfoOOS, OrderLineChange line, string priceInfo, string extPriceInfo, Product currentProduct) {
             MessageTemplateModel itemOOSDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL);
+            StringBuilder number = new StringBuilder();
+            number.Append(line.ItemNumber);
+            if (line.SubstitutedItemNumber != null && line.SubstitutedItemNumber.Trim().Length > 0)
+            {
+                number.Append(" to " + line.SubstitutedItemNumber);
+            }
+            StringBuilder status = new StringBuilder();
+            status.Append(line.OriginalStatus);
+            if (line.NewStatus != null && line.NewStatus.Trim().Length > 0)
+            {
+                status.Append(" to " + line.NewStatus);
+            }
+
             itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new {
-                ProductNumber = line.ItemNumber,
+                ProductNumber = number.ToString(),
                 ProductDescription = line.ItemDescription,
-                Brand = "",
+                Brand = currentProduct.Brand,
                 Quantity = line.QuantityOrdered.ToString(),
                 Sent = line.QuantityShipped.ToString(),
-                Pack = "",
-                Size = "",
+                Pack = currentProduct.Pack,
+                Size = currentProduct.Size,
                 Price = priceInfo,
-                Status = line.OriginalStatus
+                Status = status.ToString()
             }));
         }
 
@@ -126,17 +139,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 //    (String.IsNullOrEmpty(line.SubstitutedItemNumber) ? string.Empty : ("replace by: " + line.SubstitutedItemNumber)) +
                 //    "  Status: " + line.NewStatus + (line.NewStatus == line.OriginalStatus || string.IsNullOrEmpty(line.OriginalStatus)
                 //                                        ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
-                string number = line.ItemNumber;
-                if(String.IsNullOrEmpty(line.SubstitutedItemNumber) == false) {
-                    number += " replace by: " + line.SubstitutedItemNumber;
+                StringBuilder number = new StringBuilder();
+                number.Append(line.ItemNumber);
+                if(line.SubstitutedItemNumber != null && line.SubstitutedItemNumber.Trim().Length>0)
+                {
+                    number.Append(" to " + line.SubstitutedItemNumber);
                 }
-                string status = line.NewStatus;
-                if(String.IsNullOrEmpty(line.OriginalStatus) == false) {
-                    status += " change from : " + line.OriginalStatus;
+                StringBuilder status = new StringBuilder();
+                status.Append(line.OriginalStatus);
+                if (line.NewStatus != null && line.NewStatus.Trim().Length > 0)
+                {
+                    status.Append(" to " + line.NewStatus);
                 }
                 orderLineChanges.Append(changeDetailTemplate.Body.Inject(new {
-                    Number = number,
-                    Status = status
+                    ProductNumber = number.ToString(),
+                    Status = status.ToString()
                 }));
 
             }
