@@ -407,7 +407,7 @@ angular.module('bekApp')
         $scope.sortField  = '';
       }
       var params = ProductService.getSearchParams(null, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName);
     }
 
     //Load list of products and block UI with message
@@ -435,11 +435,11 @@ angular.module('bekApp')
           $scope.allProducts = data.products;
           $scope.setStartAndEndPoints($scope.products);
           $scope.products = $scope.allProducts.slice($scope.startingPoint, $scope.endPoint);
-          // updateFacetCount($scope.facets.brands, data.facets.brands);
-          // updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
-          // updateFacetCount($scope.facets.categories, data.facets.categories);
-          // updateFacetCount($scope.facets.dietary, data.facets.dietary);
-          // updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
+          updateFacetCount($scope.facets.brands, data.facets.brands);
+          updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
+          updateFacetCount($scope.facets.categories, data.facets.categories);
+          updateFacetCount($scope.facets.dietary, data.facets.dietary);
+          updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
         }
 
         setBreadcrumbs(data);
@@ -461,16 +461,19 @@ angular.module('bekApp')
     /*************
     FACETS
     *************/
+
+    function updateFacetCount(facets, data){
+      facets.available.forEach(function(facet){
+        var facetName = $filter('filter') (data, {name: facet.name})
+        facet.count = 0;
+        if(facetName.length > 0 && facet.name){
+          facet.count = facetName[0].count;
+        }
+      })
+    }
+
     $scope.clearFacets = function() {
-      $scope.facets.categories.selected = [];    // function updateFacetCount(facets, data){
-    //   facets.available.forEach(function(facet){
-    //     var facetName = $filter('filter') (data, {name: facet.name})
-    //     facet.count = 0;
-    //     if(facetName.length > 0 && facet.name){
-    //       facet.count = facetName[0].count;
-    //     }
-    //   })
-    // }
+      $scope.facets.categories.selected = [];
       $scope.facets.brands.selected = [];
       $scope.facets.mfrname.selected = [];
       $scope.facets.dietary.selected = [];

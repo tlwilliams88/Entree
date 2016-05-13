@@ -93,12 +93,12 @@ angular.module('bekApp')
           return url;
         },
 
-        searchCatalog: function(type, id, catalogType, params) {
+        searchCatalog: function(type, id, catalogType, params, department) {
           if(type === 'search'){
 
             var dept = (params.dept === '') ? 'All' : params.dept;
        
-            $analytics.eventTrack('Search Department', {  category: 'Search', label: dept });
+            $analytics.eventTrack('Search Department', {  category: 'Search', label: department });
             $analytics.eventTrack('Search Terms', {  category: 'Search', label: id });
           }
 

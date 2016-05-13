@@ -48,7 +48,7 @@
                 <a 
                 ng-click="toggleSelection(facets.categories.selected, category.name)" 
                 ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
-                {{category.categoryname}} ({{category.count}})
+                {{category.categoryname}} <span ng-show="category.count > 0">({{category.count}})</span>
               </a>
             </li>
           </ul>
@@ -70,7 +70,7 @@
               ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
               ng-disabled="brand.name === featuredBreadcrumb.displayText"
               ng-click="toggleSelection(facets.brands.selected, brand.name)">
-            <label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
+            <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -92,7 +92,7 @@ Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManuf
               ng-checked="facets.mfrname.selected.indexOf(manufacturer.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
               ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
               ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
-            <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} ({{manufacturer.count}})</label>
+            <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
           </li>
         </ul>
   </div>
@@ -113,7 +113,7 @@ Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'i
               id="dietId_{{diet.name}}"
               ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
               ng-click="toggleSelection(facets.dietary.selected, diet.name)">
-            <label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} ({{diet.count}})</label>
+            <label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
           </li>
         </ul>
   </div>
@@ -133,7 +133,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                 id="dietId_{{diet.name}}"
                 ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
                 ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
-              <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span> {{spec.displayname}} ({{spec.count}})</label>
+              <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</span></label>
             </li>
           </ul>
   </div>
@@ -158,7 +158,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
             <a 
             ng-click="toggleSelection(facets.categories.selected, category.name)" 
             ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
-            {{category.categoryname}} ({{category.count}})
+            {{category.categoryname}} <span ng-show="category.count > 0">({{category.count}})</span>
           </a>
         </li>
       </ul>
@@ -179,7 +179,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
               ng-disabled="brand.name === featuredBreadcrumb.displayText"
               ng-click="toggleSelection(facets.brands.selected, brand.name)"
               class="input-margin-5px">
-            <label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
+            <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -197,7 +197,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
               ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
               ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)"
               class="input-margin-5px">
-            <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} ({{manufacturer.count}})</label>
+            <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -214,7 +214,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
               ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
               ng-click="toggleSelection(facets.dietary.selected, diet.name)"
               class="input-margin-5px">
-            <label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} ({{diet.count}})</label>
+            <label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -231,7 +231,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                 ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
                 ng-click="toggleSelection(facets.itemspecs.selected, spec.name)"
                 class="input-margin-5px">
-              <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span> {{spec.displayname}} ({{spec.count}})</label>
+              <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</span></label>
             </li>
           </ul>
       </div>
