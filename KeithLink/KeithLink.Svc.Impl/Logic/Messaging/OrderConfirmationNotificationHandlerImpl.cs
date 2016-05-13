@@ -95,7 +95,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
             itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new {
                 ProductNumber = number.ToString(),
-                ProductDescription = line.ItemDescription,
+                ProductDescription = currentProduct.Name,
                 Brand = currentProduct.Brand,
                 Quantity = line.QuantityOrdered.ToString(),
                 Sent = line.QuantityShipped.ToString(),
@@ -121,7 +121,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             MessageTemplateModel itemDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMDETAIL);
             itemOrderInfo.Append(itemDetailTemplate.Body.Inject(new {
                 ProductNumber = line.ItemNumber,
-                ProductDescription = line.ItemDescription,
+                ProductDescription = currentProduct.Name,
                 Brand = currentProduct.Brand,
                 Quantity = line.QuantityOrdered.ToString(),
                 Sent = line.QuantityOrdered.ToString(),
