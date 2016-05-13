@@ -65,7 +65,8 @@
         </div>
         
         <div class="info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group">
-          <span class="nav-description text-light">Selected Order</span>
+          <span class="nav-description text-light" ng-if="isChangeOrder" >Selected Order</span>
+          <span class="nav-description text-light" ng-if="!isChangeOrder" >Cart Name</span>
           <span class="nav-title" ng-hide="isRenaming">{{selectedCart.name || selectedCart.invoicenumber || 'New Cart'}} 
             <span ng-if="::!isChangeOrder" class="icon-pencil hand large-icon text-light" ng-click="startRenamingCart(selectedCart.name)"></span>
           </span>
