@@ -122,7 +122,7 @@ angular.module('bekApp')
         } else {
           // do not double-count items in both the list and cart 
           if (item.isHidden === true) {
-            item.quantity = 0;
+            item.quantity = '';
           }
           newCartItems.push(item);
         }
@@ -163,7 +163,9 @@ angular.module('bekApp')
             if(lastInstanceInAppendedItems && lastInstanceInAppendedItems.name){
               var alreadyAccountedFor = false;
               listItems.forEach(function(listItem){
-                if(listItem.itemnumber === lastInstanceInAppendedItems.itemnumber && listItem.listitemid !== lastInstanceInAppendedItems.listitemid){
+                if(listItem.itemnumber === lastInstanceInAppendedItems.itemnumber
+                 && listItem.listitemid !== lastInstanceInAppendedItems.listitemid
+                  && $filter('filter')($scope.appendedItems, {listitemid: listItem.listitemid}).length === 0){
                   alreadyAccountedFor = true;
                 }
               })
@@ -178,7 +180,7 @@ angular.module('bekApp')
             if(!$stateParams.listItems){
               $scope.selectedList.items.forEach(function(listItem, index){
               if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
-                $scope.selectedList.items[index].quantity = 0;
+                $scope.selectedList.items[index].quantity = '';
               }
                 if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
                   $scope.selectedList.items[index].quantity = cartItem.quantity;
@@ -194,7 +196,6 @@ angular.module('bekApp')
       });
         $scope.appendedItems = [];           
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-        removeInitialQuantity();
     }
 
     $scope.blockUIAndChangePage = function(page){
@@ -411,8 +412,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       selectedList.items.forEach(function(item){
         if(item.quantity < 1){
           item.quantity = ''
-        } else {
-          return;
         }
       })
     }
@@ -449,6 +448,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           $('#rowForFocus').find('input:first').focus();
         }, 100);
     }
+
     $scope.filterItems = function(searchTerm) {  
       if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
         if($stateParams.searchTerm ){
@@ -577,6 +577,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           order: sortOrder
         }];
         clearItemWatches(watches);
+        $stateParams.listItems = undefined;
         listPagingModel.sortListItems($scope.sort);
       }
     };
@@ -618,7 +619,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           }
         }
        var searchTerm = '';
-        if($scope.orderSearchTerm && $scope.createFromSearch){
+        if($scope.orderSearchTerm && $scope.creatingCart){
          var searchTerm = $scope.orderSearchTerm;
         }
 
@@ -676,32 +677,22 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       });
 
       if(duplicateName){
-        $scope.tempCartName = '';
-        angular.element(renameCartForm.cartName).focus();
+        $scope.tempCartName = '';         
         toaster.pop('error', 'Error Saving Cart -- Cannot have two carts with the same name. Please rename this cart');
+        $timeout(function() {
+          angular.element(renameCartForm.cartName).focus();
+        }, 100);      
       }
       else{
         $scope.addToOrderForm.$setDirty();
-        if (cartId === 'New') {
-        // don't need to call the backend function for new cart
         $scope.selectedCart.name = name;
         $scope.isRenaming = false;
         CartService.renameCart = false;
         $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+          $('#rowForFocus').find('input:first').focus();
           $scope.isRedirecting(resp);
-        })
-      } else {
-        // call backend to update cart
-        var cart = angular.copy($scope.selectedCart);
-        cart.name = name;
-        CartService.updateCart(cart).then(function(updatedCart) {
-          $scope.selectedCart.name = updatedCart.name;
-          $scope.isRenaming = false;
-          CartService.renameCart = false;
-        });
-      }
+        })     
     }
-        $('#rowForFocus').find('input:first').focus(); 
     };
 
     $scope.generateNewCartForDisplay = function() {
@@ -817,7 +808,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     $scope.isRedirecting = function(resp){
-      if(resp.message && resp.message === "Creating cart..."){ 
+      if(resp === 'renamingCart'){
+        return true;
+      }
+      else if(resp.message && resp.message === "Creating cart..."){ 
         $scope.redirect($scope.selectedList.listid, resp);
         return true;
       }
@@ -844,12 +838,17 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
       } 
-      else { 
-        if($scope.selectedCart.id === 'New' && $scope.tempCartName === ''){
-          $scope.createFromSearch = true;
+      else {
+
+        if($scope.selectedCart.id === 'New'){
+          $scope.creatingCart = true;
         } 
-        else if($scope.tempCartName){
-          $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+
+        if($scope.tempCartName){
+           $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+          var deferred = $q.defer();
+          deferred.resolve('renamingCart');
+          return deferred.promise;
         }
         else if($scope.fromFilterItems) {
           $scope.fromFilterItems = false;
@@ -933,7 +932,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         if (quantity > -1) {
           item.quantity = quantity;
         } else {
-          item.quantity = 0;
+          item.quantity = '';
         }
       }
     };
