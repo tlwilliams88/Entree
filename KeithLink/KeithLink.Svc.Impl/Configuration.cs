@@ -505,7 +505,7 @@ namespace KeithLink.Svc.Impl {
 
         public static string EntreeSiteURL {
             get {
-                return GetValue(KEY_ENTREE_SITE_URL, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_ENTREE_SITE_URL, string.Empty);
             }
         }
 
