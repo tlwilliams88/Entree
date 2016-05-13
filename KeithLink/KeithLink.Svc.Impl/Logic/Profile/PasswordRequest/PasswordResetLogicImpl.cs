@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile.PasswordRequest {
         }
 
         public void GeneratePasswordResetLink(string emailAddress) {
-            if(ProfileHelper.IsInternalAddress(emailAddress)) {
+            if(!ProfileHelper.IsInternalAddress(emailAddress)) {
                 var profile = _profileRepo.GetCSProfile(emailAddress);
 
                 if(profile != null) {

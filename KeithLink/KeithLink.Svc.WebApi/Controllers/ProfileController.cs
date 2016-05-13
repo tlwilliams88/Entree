@@ -918,7 +918,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
 
             try {
-                _passwordLogic.GenerateNewUserPasswordLink(emailAddress);
+                _passwordLogic.GeneratePasswordResetLink(emailAddress);
                 returnValue.IsSuccess = true;
                 returnValue.SuccessResponse = true;
             } catch (Exception ex) {

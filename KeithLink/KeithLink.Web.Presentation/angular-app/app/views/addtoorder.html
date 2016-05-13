@@ -65,7 +65,8 @@
         </div>
         
         <div class="info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group">
-          <span class="nav-description text-light">Selected Order</span>
+          <span class="nav-description text-light" ng-if="isChangeOrder" >Selected Order</span>
+          <span class="nav-description text-light" ng-if="!isChangeOrder" >Cart Name</span>
           <span class="nav-title" ng-hide="isRenaming">{{selectedCart.name || selectedCart.invoicenumber || 'New Cart'}} 
             <span ng-if="::!isChangeOrder" class="icon-pencil hand large-icon text-light" ng-click="startRenamingCart(selectedCart.name)"></span>
           </span>
@@ -131,8 +132,8 @@
         class="form-control mousetrap" 
         placeholder="Search current list by keyword, item # or label" />
       <span class="input-group-btn">
-        <button type="submit" ng-disabled="orderSearchTerm.length === 0" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-        <button type="button" ng-disabled="orderSearchTerm.length === 0" ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+        <button type="submit" ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+        <button type="button" ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0" ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
       </span>
     </div>
   </form>

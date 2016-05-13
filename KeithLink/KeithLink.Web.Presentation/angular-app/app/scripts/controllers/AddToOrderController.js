@@ -448,6 +448,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           $('#rowForFocus').find('input:first').focus();
         }, 100);
     }
+
     $scope.filterItems = function(searchTerm) {  
       if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
         if($stateParams.searchTerm ){
@@ -676,32 +677,22 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       });
 
       if(duplicateName){
-        $scope.tempCartName = '';
-        angular.element(renameCartForm.cartName).focus();
+        $scope.tempCartName = '';         
         toaster.pop('error', 'Error Saving Cart -- Cannot have two carts with the same name. Please rename this cart');
+        $timeout(function() {
+          angular.element(renameCartForm.cartName).focus();
+        }, 100);      
       }
       else{
         $scope.addToOrderForm.$setDirty();
-        if (cartId === 'New') {
-        // don't need to call the backend function for new cart
         $scope.selectedCart.name = name;
         $scope.isRenaming = false;
         CartService.renameCart = false;
         $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+          $('#rowForFocus').find('input:first').focus();
           $scope.isRedirecting(resp);
-        })
-      } else {
-        // call backend to update cart
-        var cart = angular.copy($scope.selectedCart);
-        cart.name = name;
-        CartService.updateCart(cart).then(function(updatedCart) {
-          $scope.selectedCart.name = updatedCart.name;
-          $scope.isRenaming = false;
-          CartService.renameCart = false;
-        });
-      }
+        })     
     }
-        $('#rowForFocus').find('input:first').focus(); 
     };
 
     $scope.generateNewCartForDisplay = function() {
@@ -817,7 +808,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     $scope.isRedirecting = function(resp){
-      if(resp.message && resp.message === "Creating cart..."){ 
+      if(resp === 'renamingCart'){
+        return true;
+      }
+      else if(resp.message && resp.message === "Creating cart..."){ 
         $scope.redirect($scope.selectedList.listid, resp);
         return true;
       }
@@ -851,7 +845,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         } 
 
         if($scope.tempCartName){
-          return $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+           $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+          var deferred = $q.defer();
+          deferred.resolve('renamingCart');
+          return deferred.promise;
         }
         else if($scope.fromFilterItems) {
           $scope.fromFilterItems = false;
