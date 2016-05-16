@@ -29,6 +29,7 @@ angular.module('bekApp')
      yearMonthDayFullTimestampDashes: 'YYYY-MM-DD HH:mm:ss.SSSS',
      yearMonthDayHourMinute : 'YYYYMMDDHHmm',
      monthDayYearSlashes: 'MM/DD/YYYY',
+     monthDayYearTimeDashes: 'MM-DD-YYYY h:mma',
      monthDayYearHourMinuteSecondSlashes: 'MM/DD/YYYY HH:mm:ss',
      yearMonthDayHourMinuteSecondDashes: 'YYYY-MM-DDTHH:mm:ss',
      yearMonthDayDashes : 'YYYY-MM-DD',

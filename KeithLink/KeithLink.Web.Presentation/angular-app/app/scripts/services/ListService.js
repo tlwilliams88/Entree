@@ -397,9 +397,8 @@ angular.module('bekApp')
             newList.name = params.name;
           }
           else{
-            newList.name = UtilityService.generateName('List', Service.lists);
-          }
-          
+            newList.name = UtilityService.generateName('New List', Service.lists);
+          }          
           
           return newList;
         },
