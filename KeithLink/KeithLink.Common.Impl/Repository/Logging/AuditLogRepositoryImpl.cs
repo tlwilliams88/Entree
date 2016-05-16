@@ -14,7 +14,7 @@ namespace KeithLink.Common.Impl.Repository.Logging
 		{
 			try
 			{
-				using (var conn = new SqlConnection(Configuration.AuditLogConnectionString))
+				using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
 				{
 					using (var cmd = new SqlCommand("[dbo].[spCreateAuditLogEntry]", conn))
 					{

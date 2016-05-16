@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'Constants', 'UtilityService', 'DateService', 'PricingService', 'ExportService', 'Cart',
-    function ($http, $q, $upload, ENV, toaster, Constants, UtilityService, DateService, PricingService, ExportService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'SessionService', 'Constants', 'UtilityService', 'DateService', 'PricingService', 'ExportService', 'Cart',
+    function ($http, $q, $upload, ENV, toaster, SessionService, Constants, UtilityService, DateService, PricingService, ExportService, Cart) {
  
     var Service = {
       
@@ -127,7 +127,7 @@ angular.module('bekApp')
         if (name && name !== 'New') {
           newCart.name = name;
         } else {
-          newCart.name = UtilityService.generateName('Cart', Service.cartHeaders);
+          newCart.name = UtilityService.generateName(SessionService.userProfile.firstname, Service.cartHeaders);
         }
  
         newCart.requestedshipdate = shipDate;

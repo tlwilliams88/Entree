@@ -16,7 +16,7 @@ namespace KeithLink.Common.Impl.Repository {
 
         #region ctor
         public BaseDataConnection() {
-            _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["AppDataConnection"].ConnectionString;
+            _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["BEKDBContext"].ConnectionString;
 
             _connection = new SqlConnection(_connectionString);
             _disposedValue = false;
