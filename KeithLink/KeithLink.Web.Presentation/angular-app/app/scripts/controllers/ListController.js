@@ -23,7 +23,7 @@ angular.module('bekApp')
     });
 
     $scope.lists = ListService.lists;
-    $scope.labels = ListService.labels.successResponse;
+    $scope.labels = ListService.labels;
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
@@ -434,13 +434,7 @@ angular.module('bekApp')
        listPagingModel.resetPaging();
 
         return ListService.updateList(updatedList, false, params)
-          .then(resetPage)
-          .then(function(){
-            ListService.getAllLabels().then(function(resp){
-              $scope.labels = resp;
-            })
-          })
-          .finally(function() {
+          .then(resetPage).finally(function() {
             processingSaveList = false;
           });
       }
