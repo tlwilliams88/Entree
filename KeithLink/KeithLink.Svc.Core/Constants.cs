@@ -302,5 +302,8 @@ namespace KeithLink.Svc.Core
         // system alerts
         public const string EMAILMASK_ALLSYSTEMALERT = "ALERTALL";
         public const string EMAILMASK_BRANCHSYSTEMALERT = "ALERTBRANCH";
+
+        // queue action retries
+        public const int QUEUE_REPO_RETRY_COUNT = 5;
     }
 }

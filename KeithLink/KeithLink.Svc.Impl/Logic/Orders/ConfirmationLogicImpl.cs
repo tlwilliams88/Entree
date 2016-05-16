@@ -206,8 +206,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// </summary>
         /// <returns></returns>
         public ConfirmationFile GetFileFromQueue() {
-            string fileFromQueue = genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer,
-                Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueConfirmation);
+            string fileFromQueue = KeithLink.Svc.Impl.Helpers.Retry.Do<string>
+                (() => genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer,
+                Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueConfirmation),
+                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
             if (fileFromQueue == null)
                 return null; // a null return indicates no message on queue
             else if (String.IsNullOrEmpty(fileFromQueue))
