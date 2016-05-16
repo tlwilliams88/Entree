@@ -52,7 +52,7 @@ namespace KeithLink.Svc.Impl {
 
         // Elasticsearch / Commerce Server / Application specific
         private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
-        private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
+        private const string KEY_BEKDB_CONNECTIONSTRING = "BEKDBContext";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
         private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
         private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
@@ -385,8 +385,9 @@ namespace KeithLink.Svc.Impl {
             }
         }
 
-        public static string AppDataConnectionString {
-            get { return GetConnectionString(KEY_APPDATA_CONNECTIONSTRING); }
+        public static string BEKDBConnectionString
+        {
+            get { return GetConnectionString(KEY_BEKDB_CONNECTIONSTRING); }
         }
 
         public static string ApplicationName {

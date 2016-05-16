@@ -14,7 +14,7 @@ namespace KeithLink.Common.Impl
         private const string KEY_LOGGING_CONNECTIONSTRING = "EventLog";
 		private const string KEY_LOG_SYSTEM_PERFORMANCE = "LogSystemPerformanceWithErrors";
 		private const string KEY_AUDITLOG_CONNECTIONSTRING = "AuditLog";
-        private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
+        private const string KEY_BEKDB_CONNECTIONSTRING = "BEKDBContext";
         private const string KEY_IS_PRODUCTION = "IsProduction";
         private const string KEY_SMTP_FAILUREADDRESS = "FailureEmailAddress";
         private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -40,10 +40,6 @@ namespace KeithLink.Common.Impl
 			}
 		}
 
-		public static string AuditLogConnectionString
-		{
-			get { return GetConnectionString(KEY_AUDITLOG_CONNECTIONSTRING); }
-		}
         public static string ApplicationName
         {
             get
@@ -51,9 +47,9 @@ namespace KeithLink.Common.Impl
                 return GetValue(KEY_APP_NAME, DEFAULT_APPNAME);
             }
         }
-        public static string AppDataConnectionString
+        public static string BEKDBConnectionString
         {
-            get { return GetConnectionString(KEY_APPDATA_CONNECTIONSTRING); }
+            get { return GetConnectionString(KEY_BEKDB_CONNECTIONSTRING); }
         }
 
         public static string FailureEmailAddress
