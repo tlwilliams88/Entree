@@ -76,7 +76,7 @@ namespace KeithLink.Svc.FoundationSvc
             try {
                 string controlNumber = string.Empty;
                 // get tracking number from DB
-                using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AppDataConnection"].ConnectionString)) {
+                using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["BEKDBContext"].ConnectionString)) {
                     using (SqlCommand cmd = new SqlCommand("Orders.usp_GetNextControlNumber", conn)) {
                         cmd.CommandType = CommandType.StoredProcedure;
                         SqlParameter parm = new SqlParameter();
