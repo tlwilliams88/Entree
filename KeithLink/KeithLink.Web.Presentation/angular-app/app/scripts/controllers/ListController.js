@@ -435,6 +435,11 @@ angular.module('bekApp')
 
         return ListService.updateList(updatedList, false, params)
           .then(resetPage)
+          .then(function(){
+            ListService.getAllLabels().then(function(resp){
+              $scope.labels = resp;
+            })
+          })
           .finally(function() {
             processingSaveList = false;
           });
