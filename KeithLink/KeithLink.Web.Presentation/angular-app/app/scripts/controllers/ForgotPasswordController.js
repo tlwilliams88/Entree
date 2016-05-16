@@ -5,7 +5,7 @@ angular.module('bekApp')
     function ($scope, UserProfileService, $state, validToken, $stateParams, toaster) {
 
     var token = validToken.data;
-    var validToken = validToken.data.emailAddress;
+    var validToken = validToken.data.successResponse;
 
     $scope.isTokenValid = (validToken && validToken.length > 0) ? true : false;
     
