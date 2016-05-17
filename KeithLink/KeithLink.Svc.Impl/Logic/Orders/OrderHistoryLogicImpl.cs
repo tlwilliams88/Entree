@@ -187,7 +187,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             StringBuilder sbMsgBody = new StringBuilder();
             List<string> statuses = Configuration.CheckLostOrdersStatus;
             foreach(string status in statuses)
-                CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, status);
+            {
+                
+                KeithLink.Svc.Impl.Helpers.Retry.Do
+                    (() => CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, status),
+                    TimeSpan.FromSeconds(1), Constants.QUEUE_CHECKLOSTORDERS_RETRY_COUNT);
+            }
             sBody = sbMsgBody.ToString();
             if(sbMsgSubject.Length > 0)
                 sbMsgSubject.Insert(0, "QSvc on " + Environment.MachineName + "; ");

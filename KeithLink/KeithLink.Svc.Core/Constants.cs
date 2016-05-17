@@ -305,5 +305,6 @@ namespace KeithLink.Svc.Core
 
         // queue action retries
         public const int QUEUE_REPO_RETRY_COUNT = 5;
+        public const int QUEUE_CHECKLOSTORDERS_RETRY_COUNT = 5;
     }
 }
