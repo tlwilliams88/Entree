@@ -156,7 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 foreach(PurchaseOrder po in Pos) {
                     //string sCreated = po.Properties["DateCreated"].ToString();
-                    DateTime modified = DateTime.Parse(po.Properties["LastModified"].ToString()).ToCentralTime();
+                    DateTime modified = DateTime.Parse(po.Properties["DateModified"].ToString()).ToCentralTime();
                     //// only if they've been created more than 10 minutes ago in the query status
                     if(modified < now) {
                         count++;
