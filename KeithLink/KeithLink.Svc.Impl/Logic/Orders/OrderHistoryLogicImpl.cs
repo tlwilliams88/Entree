@@ -201,10 +201,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         private void CheckForLostOrdersByStatus(StringBuilder sbMsgSubject, StringBuilder sbMsgBody, string qStatus) {
             List<PurchaseOrder> Pos = _poRepo.GetPurchaseOrdersByStatus(qStatus);
-            StringBuilder sbAppendSubject;
-            StringBuilder sbAppendBody;
-            BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
-            if(sbAppendSubject.Length > 0) {
+            StringBuilder sbAppendSubject = new StringBuilder();
+            StringBuilder sbAppendBody = new StringBuilder();
+            if(Pos != null)
+            {
+                BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
+            }
+            if (sbAppendSubject.Length > 0) {
                 if(sbMsgSubject.Length > 0)
                     sbMsgSubject.Append(", ");
                 sbMsgSubject.Append(sbAppendSubject.ToString());
