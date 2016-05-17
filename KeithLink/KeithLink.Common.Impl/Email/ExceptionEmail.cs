@@ -6,6 +6,7 @@ namespace KeithLink.Common.Impl.Email {
     public static class ExceptionEmail {
         #region attributes
         private const string EMAIL_FAILURE_SUBJECT = "Exception encountered in KeithLink Order Service";
+        private static DateTime delayFilterRabbitMQ;
         #endregion
 
         public static void Send(Exception currentExcpetion, string additionalMessage = null, string subject = null, Attachment attach = null) {
@@ -42,6 +43,14 @@ namespace KeithLink.Common.Impl.Email {
                 msg.Body = body.ToString();
 
                 SmtpClient mailServer = new SmtpClient(Configuration.SmtpServerAddress);
+
+                if (msg.Body.Contains("Problems encountered while connecting to Rabbit MQ Server."))
+                // filter the specific queueconnectionexception down to 1 per 5 minutes
+                {
+                    if (delayFilterRabbitMQ != null && DateTime.Now - delayFilterRabbitMQ < TimeSpan.FromMinutes(5)) return;
+                    delayFilterRabbitMQ = DateTime.Now;
+                }
+
                 try
                 {
                     mailServer.Send(msg);
@@ -50,7 +59,6 @@ namespace KeithLink.Common.Impl.Email {
                 {
                    //TODO:  add event log error message
                 }
-                
             }
         }
 

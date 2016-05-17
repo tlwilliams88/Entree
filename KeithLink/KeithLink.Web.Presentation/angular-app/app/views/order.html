@@ -28,7 +28,7 @@
       <thead>
         <tr>
           <th class="input-col">
-            <input type="checkbox" ng-model="allCartsSelected" ng-change="toggleAllCarts(allCartsSelected)" />
+            <input type="checkbox" ng-model="allCartsSelected" ng-disabled="!carts" ng-change="toggleAllCarts(allCartsSelected)" />
           </th>
           <th>
             Name

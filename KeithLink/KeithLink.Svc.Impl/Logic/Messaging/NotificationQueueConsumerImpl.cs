@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class NotificationQueueConsumerImpl : INotificationQueueConsumer {
@@ -81,8 +82,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         }
 
         public string ConsumeMessageFromQueue() {
-            return this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
-                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
+            return 
+                KeithLink.Svc.Impl.Helpers.Retry.Do<string>
+                (() => this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification), 
+                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
         }
 
 

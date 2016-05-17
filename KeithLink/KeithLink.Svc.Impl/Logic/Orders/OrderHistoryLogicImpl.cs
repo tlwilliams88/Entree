@@ -39,7 +39,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
-
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -156,7 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 foreach(PurchaseOrder po in Pos) {
                     //string sCreated = po.Properties["DateCreated"].ToString();
-                    DateTime modified = DateTime.Parse(po.Properties["LastModified"].ToString()).ToCentralTime();
+                    DateTime modified = DateTime.Parse(po.Properties["DateModified"].ToString()).ToCentralTime();
                     //// only if they've been created more than 10 minutes ago in the query status
                     if(modified < now) {
                         count++;
@@ -187,7 +187,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             StringBuilder sbMsgBody = new StringBuilder();
             List<string> statuses = Configuration.CheckLostOrdersStatus;
             foreach(string status in statuses)
-                CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, status);
+            {
+                
+                KeithLink.Svc.Impl.Helpers.Retry.Do
+                    (() => CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, status),
+                    TimeSpan.FromSeconds(1), Constants.QUEUE_CHECKLOSTORDERS_RETRY_COUNT);
+            }
             sBody = sbMsgBody.ToString();
             if(sbMsgSubject.Length > 0)
                 sbMsgSubject.Insert(0, "QSvc on " + Environment.MachineName + "; ");
@@ -196,10 +201,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         private void CheckForLostOrdersByStatus(StringBuilder sbMsgSubject, StringBuilder sbMsgBody, string qStatus) {
             List<PurchaseOrder> Pos = _poRepo.GetPurchaseOrdersByStatus(qStatus);
-            StringBuilder sbAppendSubject;
-            StringBuilder sbAppendBody;
-            BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
-            if(sbAppendSubject.Length > 0) {
+            StringBuilder sbAppendSubject = new StringBuilder();
+            StringBuilder sbAppendBody = new StringBuilder();
+            if(Pos != null)
+            {
+                BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
+            }
+            if (sbAppendSubject.Length > 0) {
                 if(sbMsgSubject.Length > 0)
                     sbMsgSubject.Append(", ");
                 sbMsgSubject.Append(sbAppendSubject.ToString());
@@ -555,8 +563,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private string ReadOrderFromQueue() {
-            return _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
-                                           Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+            return
+                KeithLink.Svc.Impl.Helpers.Retry.Do<string>
+                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
+                Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates),
+                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
         }
 
         private void RemoveEmptyPurchaseOrder() { }

@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UtilityService', [ '$q', function ($q) {
+  .factory('UtilityService', [ '$q', 'DateService', 'Constants', function ($q, DateService, Constants) {
 
     function isUsedName(namesList, name, number) {
       return namesList.indexOf(name + ' ' + number) > -1;
@@ -18,23 +18,28 @@ angular.module('bekApp')
       
       /**
        * generates a unique name for new lists and carts
-       * @param  {String} nameText   string to be used when generating the name, "New <nameText> 1"
+       * @param  {String} nameText   string to be used when generating the name
        * @param  {Array} collection  array of objects that must have a "name" property. Used to determine what will be a unique name
        * @return {String}            generated name string, "New List 1" for example
        */
       generateName: function(nameText, collection) {
-        var name = 'New ' + nameText,
-          number = 0;
         var namesList = [];
-        angular.forEach(collection, function(item, index) {
+        //Select the numeric portion of the name. Can be numeric indicator for lists or datetime of creation for carts
+        var number = (nameText === "New List") ? 0 : DateService.momentObject().format(Constants.dateFormat.monthDayYearTimeDashes);
+
+        angular.forEach(collection, function(item) {
           namesList.push(item.name);
         });
-        var isNameUsed = isUsedName(namesList, name, number);
+        var isNameUsed = isUsedName(namesList, nameText, number);
+        var duplicates = 0;
+        var tempNumber = number;
         while (isNameUsed) {
-          number++;
-          isNameUsed = isUsedName(namesList, name, number);
+          duplicates++;
+          //Increment indicator for lists or increment indicator and append to date for carts
+          tempNumber = (nameText === "New List") ? duplicates : number + ' - '+duplicates;
+          isNameUsed = isUsedName(namesList, nameText, tempNumber);
         }
-        return name + ' ' + number;
+        return nameText + ' ' + tempNumber;
       },
 
       /**

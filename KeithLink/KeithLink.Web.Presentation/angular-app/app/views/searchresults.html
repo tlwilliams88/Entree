@@ -148,20 +148,22 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 
 <div class="row" style="margin-top:15px;">
 
-<!-- Filters -->
-<div class="col-sm-3 hidden-xs hidden-sm search-results__filters" style="background-color:#F6F3EE;">
-  <div class="row">
-    <div class="col-sm-11">
-      <h3>Categories<span style="font-size:11px; padding-bottom:-50px;"><a class="pull-right" ng-click="clearFacets()">Clear Facets</a></span></h3>
-        <ul class="nav search-results__category" ng-show="facets.categories.available.length > 0">
-          <li ng-repeat="category in facets.categories.available | orderBy: '-count'">
-            <a 
-            ng-click="toggleSelection(facets.categories.selected, category.name)" 
-            ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
-            {{category.categoryname}} <span ng-show="category.count > 0">({{category.count}})</span>
-          </a>
-        </li>
-      </ul>
+  <!-- Filters -->
+  
+  <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3>Categories<span style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
+          <ul class="nav search-results__category" ng-show="facets.categories.available.length > 0">
+            <li ng-repeat="category in facets.categories.available | orderBy: '-count'">
+              <a
+              ng-click="toggleSelection(facets.categories.selected, category.name)" 
+              ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
+              {{category.categoryname}} 
+              <span ng-show="category.count > 0">({{category.count}})</span>
+            </a>
+          </li>
+        </ul>
     </div>
   </div>
 

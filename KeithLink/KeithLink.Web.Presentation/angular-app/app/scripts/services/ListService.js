@@ -397,9 +397,8 @@ angular.module('bekApp')
             newList.name = params.name;
           }
           else{
-            newList.name = UtilityService.generateName('List', Service.lists);
-          }
-          
+            newList.name = UtilityService.generateName('New List', Service.lists);
+          }          
           
           return newList;
         },
@@ -644,7 +643,7 @@ angular.module('bekApp')
         // returns array of labels are strings that are found in all lists for the user
         getAllLabels: function() {
           return $http.get('/list/labels').then(function(response) {
-            angular.copy(response.data, Service.labels);
+            angular.copy(response.data.successResponse, Service.labels);
             return response.data.successResponse;
           });
         },
