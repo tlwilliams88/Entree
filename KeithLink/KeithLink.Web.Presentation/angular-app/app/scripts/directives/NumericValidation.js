@@ -36,7 +36,8 @@ angular.module('bekApp')
           }
 
         var truncatedVal ='';
-        if (attrs.id === 'inventoryRep' || attrs.id==="parlevel"  || attrs.id==="onHand") {
+        var allowTwoDecimals = (attrs.id === 'inventoryRep' || attrs.id==="parlevel"  || attrs.id==="onHand" || attrs.id.indexOf('defaultElement') != -1)
+        if (allowTwoDecimals) {
           //allows for 2 decimal places
           truncatedVal = truncateViewValue(2,viewValue);
           scope.checkRegex = (directive.REGEXP2.test(truncatedVal) || directive.REGEXP.test(truncatedVal));
