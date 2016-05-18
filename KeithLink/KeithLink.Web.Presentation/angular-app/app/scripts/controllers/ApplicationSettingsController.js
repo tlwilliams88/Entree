@@ -143,6 +143,7 @@
             //generate string that represents the sort order settings
             //format is one string with two sections
             //each section contains a three letter identifier, and four characters representing the field and desc/asc order
+            //A better description of this exists on the BEK ecommerce wiki under the title: Default Sort String: Explaination
             var sortOrder = 'lis';
 
             var firstSort =  $filter('filter')($scope.listFields, {order: 1})[0];

@@ -202,6 +202,8 @@ angular.module('bekApp')
              { 'field': 'parlevel', 'order': ''}];
              
              //Decode stored sort preferences and buils params sort object with it.
+             //A description of how this works exists on the BEK ecommerce wiki under the title: Default Sort String: Explaination
+
              if(filterObject && filterObject.length > 6){        
               var settings = []
               if(page === 'addToOrder'){
