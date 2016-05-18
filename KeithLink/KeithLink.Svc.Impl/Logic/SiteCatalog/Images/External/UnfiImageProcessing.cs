@@ -5,11 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
 {
@@ -37,32 +39,46 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
         private static readonly string PACK_CASE = "A";
         private static readonly string PACK_INNER = "B";
         private static readonly string PACK_PREPARED = "D";
+        private static readonly string IX_ONE_PRODUCTIMAGE_JSON_REQUEST = 
+"{\"PageNumber\": 1," +
+"\"PageSize\": 1000," +
+"\"DataFilters\": [" +
+"{\"EntityName\": \"Product\"," +
+"\"PropertyName\": \"UPC12\"," +
+"\"Operator\": \"IN\"," +
+"\"Comparator\": \"{0}\"" +
+"}" +
+"]," +
+"\"PropertyListing\": [" +
+"{\"EntityName\": \"Product\"," +
+"\"PropertyName\": \"UPC12\"" +
+"}," +
+"{\"EntityName\": \"Product\"," +
+"\"PropertyName\": \"StandardizedImage\"" +
+"}," +
+"{\"EntityName\": \"StandardizedImage\"," +
+"\"PropertyName\": \"OriginalFileName\"" +
+"}" +
+"]" +
+"}";
+        private static readonly string IX_ONE_PRODUCTIMAGE_GET_URL =
+            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
         public static void StartProcessAllImages(IEventLogRepository log)
         {
             _log = log;
             imageScaleTasks = new List<Task>();
-            List<DataRow> list = new List<DataRow>();
-            var repo = new KeithLink.Svc.Impl.ETL.StagingRepositoryImpl(_log);
 
             // recursively create directories for saving images if they don't exist
             Directory.CreateDirectory(Configuration.CatalogServiceUnfiImagesRepo);
-            Directory.CreateDirectory(Configuration.CatalogServiceUnfiImagesNewOnlyDir);
-            Directory.CreateDirectory(Configuration.CatalogServiceUnfiImagesNewOnlyDirThumbs);
 
-            // get our list of items from etl staging
-            var itemTable = repo.ReadUNFIItems();
-            foreach (DataRow row in itemTable.Rows)
-            {
-                //list.Add(row.GetString("RetailUPC"), row.GetString("ItemNumber"));
-                list.Add(row);
-            }
+            List<DataRow> list = GetUnfiProductsInOurData();
             _log.WriteInformationLog(" Total we have in staging is " + list.Count);
 
             // given our list of items get the list of products they have on file
             IxOneReturn received = GetIXOneList(list);
             {
                 Dictionary<string, IxOneProduct> dict = new Dictionary<string, IxOneProduct>();
-                foreach(IxOneProduct prod in received.Products)
+                foreach (IxOneProduct prod in received.Products)
                 {
                     if (dict.ContainsKey(prod.UPC) == false)
                     {
@@ -80,7 +96,22 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
                 index++;
                 if (product.Filenames.Count > 0)
                 {
-                    ProcessItem(product.UPC, ChooseBestFilename(product));
+                    string best = ChooseBestFilename(product);
+                    foreach (string filename in product.Filenames)
+                    {
+                        string thisName = null;
+                        // Set the best image to be the first alphabetically
+                        if (filename.Equals(best, StringComparison.CurrentCultureIgnoreCase))
+                        {
+                            thisName = filename.Substring(0, filename.IndexOf("_"));
+                            thisName += "_AAAA.JPG";
+                        }
+                        else
+                        {
+                            thisName = filename.Replace(".TIF", ".JPG");
+                        }
+                        ProcessItem(thisName, filename);
+                    }
                 }
                 if (index * 10 == 0) { _log.WriteInformationLog(" Processed " + index); }
             });
@@ -88,11 +119,27 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             imageScaleTasks.Clear();
         }
 
-        private static void ProcessItem(string gtin12, string filename)
+        private static List<DataRow> GetUnfiProductsInOurData()
+        {
+            Dictionary<string, DataRow> dict = new Dictionary<string, DataRow>();
+            // get our list of items from etl staging
+            var repo = new KeithLink.Svc.Impl.ETL.StagingRepositoryImpl(_log);
+            var itemTable = repo.ReadUNFIItems();
+            foreach (DataRow row in itemTable.Rows)
+            {
+                if(dict.ContainsKey(row.GetString("RetailUPC")) == false)
+                {
+                    dict.Add(row.GetString("RetailUPC"), row);
+                }
+            }
+            return dict.Values.ToList();
+        }
+
+        private static void ProcessItem(string savedas, string filename)
         {
             try
             {
-                FileInfo fi = new FileInfo(Configuration.CatalogServiceUnfiImagesRepo + "\\" + gtin12 + ".jpg");
+                FileInfo fi = new FileInfo(Configuration.CatalogServiceUnfiImagesRepo + "\\" + savedas);
                 if (!fi.Exists)
                 {
                     byte[] buf = GetIXOneImage(filename);
@@ -102,19 +149,13 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
                         if (img != null)
                         {
                             Image img2 = (Image)img.Clone();
-                            img.Save(Configuration.CatalogServiceUnfiImagesRepo + "\\" + gtin12 + ".jpg",
+                            img.Save(Configuration.CatalogServiceUnfiImagesRepo + "\\" + savedas,
                                 System.Drawing.Imaging.ImageFormat.Jpeg);
-                            img.Save(Configuration.CatalogServiceUnfiImagesNewOnlyDir + "\\" + gtin12 + ".jpg",
-                                System.Drawing.Imaging.ImageFormat.Jpeg);
-                            if (Configuration.CatalogServiceUnfiImagesMakeThumbnails.Equals
-                                ("true", StringComparison.CurrentCultureIgnoreCase))
-                            {
-                                ScaleImage(Configuration.CatalogServiceUnfiImagesNewOnlyDir + "\\" + gtin12 + ".jpg");
-                            }
                         }
                     }
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 _log.WriteErrorLog("ProcessItem", ex);
             }
@@ -142,11 +183,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             return filename;
         }
 
-        private static IxOneReturn GetIXOneList(List<DataRow> items)
+         private static IxOneReturn GetIXOneList(List<DataRow> items)
         {            
             IxOneReturn received = null;
             if (items.Count > 1000)
             {
+                // recursively nest calls in blocks of 1000
                 received = GetIXOneList(items.Skip(1000).ToList());
                 items = items.Take(1000).ToList();
             }
@@ -168,28 +210,29 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
                     DataRow dr = items[items.Count - 1];
                     sbUPC.Append("'" + dr.GetString("RetailUPC") + "'");
                 }
-                string json =
-"{\"PageNumber\": 1," +
-  "\"PageSize\": 1000," +
-  "\"DataFilters\": [" +
-    "{\"EntityName\": \"Product\"," +
-     "\"PropertyName\": \"UPC12\"," +
-     "\"Operator\": \"IN\"," +
-     "\"Comparator\": \"" + sbUPC.ToString() + "\"" +
-    "}" +
-    "]," +
-   "\"PropertyListing\": [" +
-    "{\"EntityName\": \"Product\"," +
-     "\"PropertyName\": \"UPC12\"" +
-    "}," +
-    "{\"EntityName\": \"Product\"," +
-     "\"PropertyName\": \"StandardizedImage\"" +
-    "}," +
-    "{\"EntityName\": \"StandardizedImage\"," +
-     "\"PropertyName\": \"OriginalFileName\"" +
-    "}" +
-   "]" +
- "}";
+
+                // build dynamic request for images and then serialize as json
+                dynamic request = new ExpandoObject();
+                request.PageNumber = 1;
+                request.PageSize = 1000;
+                request.DataFilters = new List<ExpandoObject>();
+                request.DataFilters.Add(new ExpandoObject());
+                request.DataFilters[0].EntityName = "Product";
+                request.DataFilters[0].PropertyName = "UPC12";
+                request.DataFilters[0].Operator = "IN";
+                request.DataFilters[0].Comparator = sbUPC.ToString();
+                request.PropertyListing = new List<ExpandoObject>();
+                request.PropertyListing.Add(new ExpandoObject());
+                request.PropertyListing[0].EntityName = "Product";
+                request.PropertyListing[0].PropertyName = "UPC12";
+                request.PropertyListing.Add(new ExpandoObject());
+                request.PropertyListing[1].EntityName = "Product";
+                request.PropertyListing[1].PropertyName = "StandardizedImage";
+                request.PropertyListing.Add(new ExpandoObject());
+                request.PropertyListing[2].EntityName = "StandardizedImage";
+                request.PropertyListing[2].PropertyName = "OriginalFileName";
+
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(request);
 
                 streamWriter.Write(json);
                 streamWriter.Flush();
@@ -206,11 +249,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             IxOneReturn get = new IxOneReturn(result);
             if(received != null)
             {
-                //_log.WriteInformationLog(" Received " + get.Products.Count + " add to " + received.Products.Count);
-                //foreach(var product in received.Products)
-                //{
-                //    _log.WriteInformationLog(" Received - " + product.ToString());
-                //}
+                // add in products received in nested calls
                 get.Products.AddRange(received.Products);
             }
         
