@@ -71,6 +71,9 @@ angular.module('bekApp')
         $scope.calculatePieces($scope.combinedItems);
         $scope.itemCount = $scope.combinedItems.length;
       }
+      if(newVal === '0'){
+        removeQuantity(item);
+      }
       if(item !== undefined){
         item.extPrice = PricingService.getPriceForItem(item);
       }  
@@ -130,7 +133,6 @@ angular.module('bekApp')
         newCartItems = $filter('filter')(newCartItems, function(item) {
         return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'));
       });
-      removeInitialQuantity(listItems);
       return newCartItems;
     }
 
@@ -198,7 +200,7 @@ angular.module('bekApp')
     }
 
     $scope.blockUIAndChangePage = function(page){
-      //Check if items for page already exist in the controller     
+      //Check if items for page already exist in the controller  
       $scope.startingPoint = 0;
       $scope.endPoint = 0;    
       var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
@@ -407,28 +409,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       })
     }
 
-    function removeInitialQuantity(items, from){
-      //Removes quantity and/or onhand at initial page load
-      if(!(items) || items.length == 0){
-        selectedList.items.forEach(function(item){
-          if(item.quantity < 1){
-            item.quantity = ''
-            if((item.quantity > 0 || item.quantity < 1) && item.onhand < 1){
-              item.onhand = ''
-            }
-          }
-        })
-      //Removes quantity and/or onhand for all other conditions
-      }else{
-        items.forEach(function(item){
-          if(item.quantity < 1){
-            item.quantity = ''
-            if((item.quantity > 0 || item.quantity < 1) && item.onhand < 1){
-              item.onhand = ''
-            }
-          }
-        })
-      }
+    function removeQuantity(item){
+      //Removes quantity from item in functions onItemQuantityChanged, confirmQuantity, onItemOnHandAmountChanged
+      return item.quantity = '';
     }
 
     if($stateParams.sortingParams && $stateParams.sortingParams.sort.length > 0){
@@ -540,20 +523,20 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
     $scope.confirmQuantity = function(type, item, value) {
 
-      if((value === undefined || value === 0) && type === 'onhand'){
-        item.onhand = '0';
+      if((value === 0 || item.quantity === '') && type === 'onhand'){
+        item.onhand = '0';    
         $scope.onItemOnHandAmountChanged(item);
       }
       if((!value || value === undefined) && type === 'quantity'){
-        item.quantity = '0';
+        removeQuantity(item);
       }
-          var pattern = /^([0-9])\1+$/; // repeating digits pattern
+      var pattern = /^([0-9])\1+$/; // repeating digits pattern
       if (value > 50 || (value > 0 && pattern.test(value))) {
-        var isConfirmed = window.confirm('Do you want to continue with entered quatity of ' + value + '?');
+        var isConfirmed = window.confirm('Do you want to continue with entered quantity of ' + value + '?');
         if (!isConfirmed) {
           // clear input
           if(type==='quantity'){
-            item.quantity = null;
+            removeQuantity(item);
           }
           else{
             item.onhand=null;
@@ -940,10 +923,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           item.onhand = offset = 0;
         }
         var quantity = Math.ceil(item.parlevel - offset);
-        if (quantity > -1) {
+        if (quantity > 0) {
           item.quantity = quantity;
         } else {
-          item.quantity = '';
+          removeQuantity(item);
         }
       }
     };

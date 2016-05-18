@@ -288,6 +288,13 @@ angular.module('bekApp')
               // transform paged data
               list.itemCount = list.items.totalResults;
               list.items = list.items.results;
+              list.items.forEach(function(item){
+                if(item.onhand < 0.01){
+                  item.onhand = ''
+                } else if(item.quantity < 1){
+                    item.quantity = ''
+                }
+              })
 
               // get calculated fields
               PricingService.updateCaculatedFields(list.items);
