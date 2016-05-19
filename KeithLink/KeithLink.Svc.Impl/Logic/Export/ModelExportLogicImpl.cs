@@ -212,6 +212,20 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             break;
                     }
                 }
+                else if (modelName.Equals("ListItemModel"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Name":
+                        case "Brand":
+                        case "ItemClass":
+                        case "Category":
+                        case "label":
+                        case "Notes":
+                            width = 16;
+                            break;
+                    }
+                }
 
                 if (width > 0)
                     OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, colIndex, width);
@@ -407,6 +421,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "Pack":
                     case "CasePrice":
                     case "PackagePrice":
+                    case "parlevel":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
                         break;
                 }
@@ -504,6 +519,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "Pack":
                     case "CasePrice":
                     case "PackagePrice":
+                    case "parlevel":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
                 }
@@ -602,6 +618,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 switch (fieldName)
                 {
                     case "Price":
+                    case "parlevel":
                         celltype = CellValues.Number;
                         break;
                 }
