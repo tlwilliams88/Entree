@@ -1,7 +1,9 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using KeithLink.Common.Impl.Repository.Settings;
 using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -9,6 +11,7 @@ using KeithLink.Svc.Impl.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -53,16 +56,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
             if (exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) || exportType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
             {
-                if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
-                {
-                    sb.AppendLine("Item Usage Report");
-                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
-                    List<string> cust = new List<string>();
-                    cust.Add(customer.CustomerBranch);
-                    cust.Add(customer.CustomerNumber);
-                    cust.Add(customer.CustomerName);
-                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
-                }
+                AddTitleToTextExport(exportType, sb);
+                AddCustomerToTextExport(exportType, sb);
                 this.WriteHeaderRecord(sb, exportType);
             }
 
@@ -85,13 +80,42 @@ namespace KeithLink.Svc.Impl.Logic.Export
             return ms;
         }
 
+        private void AddCustomerToTextExport(string exportType, StringBuilder sb)
+        {
+            List<string> exports = Configuration.ExportAddCustomer;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.Equals(typeof(T).Name))
+                {
+                    Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
+                    List<string> cust = new List<string>();
+                    cust.Add(customer.CustomerBranch);
+                    cust.Add(customer.CustomerNumber);
+                    cust.Add(customer.CustomerName);
+                    sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
+                }
+            }
+        }
+
+        private void AddTitleToTextExport(string exportType, StringBuilder sb)
+        {
+            List<string> exports = Configuration.ExportAddTitle;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.StartsWith(typeof(T).Name))
+                {
+                    sb.AppendLine(gettitle.Substring(gettitle.IndexOf(';') + 1));
+                }
+            }
+        }
+
         #region Excel Export
         private MemoryStream GenerateExcelExport()
         {
             MemoryStream stream = OpenXmlSpreadsheetUtilities.MakeSpreadSheet
                 (SetCustomColumnWidths(typeof(T).Name, new DocumentFormat.OpenXml.Spreadsheet.Worksheet()),
                  WriteDataTableToExcelWorksheet(),
-                 "InventoryValuationModel");
+                 typeof(T).Name);
             return stream;
         }
 
@@ -99,28 +123,96 @@ namespace KeithLink.Svc.Impl.Logic.Export
         {
             uint colIndex = 0;
             int width = 0;
-            foreach (ExportModelConfiguration config in exportConfig)
+            foreach (ExportModelConfiguration config in exportConfig.OrderBy(c => c.Order))
             {
                 colIndex++;
                 width = 0;
-                if (modelName.Equals("ItemUsageReportItemModel"))
+                try
+                {
+                    width = int.Parse(DBAppSettingsRepositoryImpl.GetValue("EW." + modelName + "." + config.Field, "0"));
+                }
+                catch { }
+                if (modelName.Equals("OrderLine"))
                 {
                     switch (config.Field)
                     {
                         case "Name":
-                        case "Brand":
-                        case "Class":
-                        case "ManufacturerName":
-                            width = 25;
+                        case "BrandExtendedDescription":
+                        case "ItemClass":
+                        case "Notes":
+                        case "Status":
+                            width = 20;
                             break;
-                        case "UPC":
-                            width = 15;
+                        case "Pack":
+                            width = 8;
                             break;
-                        case "PackSize":
+                        case "Size":
+                        case "QuantityOrdered":
+                        case "QantityShipped":
                             width = 12;
                             break;
                     }
                 }
+                else if (modelName.Equals("Product"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Name":
+                        case "BrandExtendedDescription":
+                            width = 20;
+                            break;
+                        case "Pack":
+                            width = 8;
+                            break;
+                        case "UnitCost":
+                            width = 14;
+                            break;
+                        case "CasePrice":
+                        case "PackagePrice":
+                        case "Size":
+                            width = 12;
+                            break;
+                    }
+                }
+                else if (modelName.Equals("Order"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Status":
+                        case "InvoiceStatus":
+                        case "PONumber":
+                        case "OrderSystem":
+                            width = 20;
+                            break;
+                        case "InvoiceNumber":
+                        case "CreatedDate":
+                        case "DeliveryDate":
+                        case "ItemCount":
+                        case "OrderTotal":
+                            width = 12;
+                            break;
+                    }
+                }
+                else if (modelName.Equals("InvoiceModel"))
+                {
+                    switch (config.Field)
+                    {
+                        case "InvoiceNumber":
+                        case "PONumber":
+                        case "TypeDescription":
+                            width = 12;
+                            break;
+                        case "InvoiceAmount":
+                        case "Amount":
+                            width = 16;
+                            break;
+                        case "InvoiceDate":
+                        case "DueDate":
+                            width = 14;
+                            break;
+                    }
+                }
+
                 if (width > 0)
                     OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, colIndex, width);
             }
@@ -147,10 +239,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
             //
             //  Create the Header row in our Excel Worksheet
             //
-            rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
-                (rowIndex, typeof(T).Name, excelColumnNames, "Item Usage Report", sheetData);
-            rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
-                (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+            rowIndex = AddTitleToExcelExport(sheetData, excelColumnNames, rowIndex);
+            rowIndex = AddCustomerToExcelExport(sheetData, excelColumnNames, rowIndex);
 
             var headerRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
             sheetData.Append(headerRow);
@@ -204,12 +294,24 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         var propertyName = config.Field.Split('.');
                         if (propertyName.Length == 1)
                         {
-                            var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                            uint styleInd = SetStyleForCell(typeof(T).Name, config.Field);
+                            ExportModelConfiguration thisConfig = new ExportModelConfiguration()
+                            { // just a shallow copy
+                                Field = config.Field,
+                                Label = config.Label,
+                                Order = config.Order,
+                                Selected = config.Selected
+                            };
+                            SetPriceConfig(properties, item, thisConfig);
+                            var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                            uint styleInd = SetStyleForCell(typeof(T).Name, thisConfig.Field);
+                            CellValues celltype = SetCellValuesForCell(typeof(T).Name, thisConfig.Field);
                             if (property != null)
                             {
                                 OpenXmlSpreadsheetUtilities.AppendTextCell
-                                    (excelColumnNames[columnIndex] + rowIndex.ToString(), this.GetFieldValue(item, property).Trim(), newExcelRow, CellValues.String, styleInd);
+                                    (excelColumnNames[columnIndex] + rowIndex.ToString(),
+                                    this.GetFieldValue(item, property).Trim(), newExcelRow,
+                                    celltype,
+                                    styleInd);
                             }
                         }
                         else
@@ -232,6 +334,54 @@ namespace KeithLink.Svc.Impl.Logic.Export
             return sheetData;
         }
 
+        private uint AddCustomerToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            List<string> exports = Configuration.ExportAddCustomer;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.Equals(typeof(T).Name))
+                {
+                    rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
+                        (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+                }
+            }
+
+            return rowIndex;
+        }
+
+        private static uint AddTitleToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            List<string> exports = Configuration.ExportAddTitle;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.StartsWith(typeof(T).Name))
+                {
+                    rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
+                        (rowIndex, typeof(T).Name, excelColumnNames, gettitle.Substring(gettitle.IndexOf(';') + 1), sheetData);
+                }
+            }
+
+            return rowIndex;
+        }
+
+        private void SetPriceConfig(PropertyInfo[] properties, T item, ExportModelConfiguration thisConfig)
+        {
+            if (thisConfig.Label != null &&
+                thisConfig.Label.Equals("Price") &&
+                properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
+            {
+                PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                if (eachProperty != null)
+                {
+                    string each = GetFieldValue(item, eachProperty).Trim();
+                    if (each.Equals("Y"))
+                    {
+                        thisConfig.Field = "PackagePrice";
+                    }
+                }
+            }
+        }
+
         private uint SetStyleForHeaderCell(string modelName, string fieldName)
         {
             uint styleInd = OpenXmlSpreadsheetUtilities.DEFAULT_CELL;
@@ -245,6 +395,71 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "TotalQuantityShipped":
                     case "AveragePrice":
                     case "TotalCost":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "Pack":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Product"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "Pack":
+                    case "UnitCost":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("OrderLine"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "Pack":
+                    case "QuantityOrdered":
+                    case "QantityShipped":
+                    case "EachYN":
+                    case "Price":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Order"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "CreatedDate":
+                    case "DeliveryDate":
+                    case "ItemCount":
+                    case "OrderTotal":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "InvoiceDate":
+                    case "DueDate":
+                    case "InvoiceAmount":
+                    case "Amount":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
                         break;
                 }
@@ -274,7 +489,154 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                switch (fieldName)
+                {
+                    case "Name":
+                    case "Brand":
+                    case "ItemClass":
+                    case "label":
+                    case "Category":
+                    case "Notes":
+                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                        break;
+                    case "Pack":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Product"))
+            {
+                switch (fieldName)
+                {
+                    case "Name":
+                    case "BrandExtendedDescription":
+                    case "Size":
+                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                        break;
+                    case "Pack":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "UnitCost":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("OrderLine"))
+            {
+                switch (fieldName)
+                {
+                    case "Name":
+                    case "ItemClass":
+                    case "BrandExtendedDescription":
+                    case "Notes":
+                    case "Status":
+                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                        break;
+                    case "Pack":
+                    case "QuantityOrdered":
+                    case "QantityShipped":
+                    case "EachYN":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "Price":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Order"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                switch (fieldName)
+                {
+                    case "CreatedDate":
+                    case "DeliveryDate":
+                    case "ItemCount":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_CELL;
+                        break;
+                    case "OrderTotal":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                switch (fieldName)
+                {
+                    case "InvoiceDate":
+                    case "DueDate":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "InvoiceAmount":
+                    case "Amount":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
             return styleInd;
+        }
+
+        private CellValues SetCellValuesForCell(string modelName, string fieldName)
+        {
+            CellValues celltype = CellValues.String;
+            if (modelName.Equals("OrderLine"))
+            {
+                switch (fieldName)
+                {
+                    case "QuantityOrdered":
+                    case "QantityShipped":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                switch (fieldName)
+                {
+                    case "Price":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Product"))
+            {
+                switch (fieldName)
+                {
+                    case "UnitCost":
+                    case "CasePrice":
+                    case "PackagePrice":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                switch (fieldName)
+                {
+                    case "InvoiceAmount":
+                    case "Amount":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("Order"))
+            {
+                switch (fieldName)
+                {
+                    case "OrderTotal":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            return celltype;
         }
 
         private static string GetExcelColumnName(int columnIndex)
@@ -348,8 +710,21 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 return this.GetAttributeFieldValue(value.GetType(), value.ToString());
 
             if (property.PropertyType == typeof(Boolean))
+            {
                 return value.ToString().Equals("False") ? "N" : "Y";
-
+            }
+            else if (property.PropertyType == typeof(Boolean?) && value != null)
+            {
+                return value.ToString().Equals("False") ? "N" : "Y";
+            }
+            else if (property.PropertyType == typeof(DateTime))
+            {
+                return ((DateTime)value).ToShortDateString();
+            }
+            else if (property.PropertyType == typeof(DateTime?) && value != null)
+            {
+                return ((DateTime)value).ToShortDateString();
+            }
             return value.ToString();
         }
 

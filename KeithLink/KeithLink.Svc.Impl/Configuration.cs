@@ -189,6 +189,10 @@ namespace KeithLink.Svc.Impl {
         // Queue Service Functions
         private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
         private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
+
+        // Export Settings
+        private const string KEY_EXPORT_ADDTITLE = "ExportAddTitle";
+        private const string KEY_EXPORT_ADDCUSTOMER = "ExportAddCustomer";
         #endregion
 
         #region methods
@@ -226,6 +230,24 @@ namespace KeithLink.Svc.Impl {
         #endregion
 
         #region properties
+        public static List<string> ExportAddCustomer
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_EXPORT_ADDCUSTOMER, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static List<string> ExportAddTitle
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_EXPORT_ADDTITLE, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
         public static string AccessGroupKbitAdmin {
             get {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);

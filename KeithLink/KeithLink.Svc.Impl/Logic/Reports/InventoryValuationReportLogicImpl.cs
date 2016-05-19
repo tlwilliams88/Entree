@@ -83,7 +83,7 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Inventory Valuation Report");
             Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
-            sb.AppendLine(string.Format("{0}{1}{2}{3}{4}", 
+            sb.AppendLine(string.Format("{0}{1}{2}{3}{4}",
                 customer.CustomerName, UseAppropriateDelimiter(request),
                 customer.CustomerNumber, UseAppropriateDelimiter(request),
                 customer.CustomerBranch));
@@ -230,7 +230,7 @@ namespace KeithLink.Svc.Impl.Logic.Reports
                 {
 
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), item.ItemId, newExcelRow);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Name,  newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Name, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.Brand, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Category, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.Pack, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
