@@ -27,6 +27,8 @@ namespace KeithLink.Common.Impl.Logic.Settings {
         public List<Setting> ReadAllSettings() {
             return _repo.ReadAll()
                         .Where(s => s.Key.Equals(KEY_UPDATEFLAG, StringComparison.InvariantCultureIgnoreCase) == false)
+                        .OrderBy(s => s.Comment)
+                        .ThenBy(s => s.Key)
                         .ToList();
         }
 
