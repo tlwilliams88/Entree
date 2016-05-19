@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Core.Extensions {
             retVal.InvoiceDate = value.InvoiceDate;
             retVal.OrderDate = value.InvoiceDate;
             retVal.IsPayable = value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && customer != null && customer.KPayCustomer;
-            //retVal.TransactionCount = value.TransactionCount;
+            retVal.TransactionCount = value.TransactionCount;
 
             return retVal;
         }
