@@ -926,7 +926,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         var quantity = Math.ceil(item.parlevel - offset);
         if (quantity > 0) {
           item.quantity = quantity;
-        } else if(item.quantity > 0 && (item.onhand === 0 || item.onhand === '')) {
+        } else if(item.quantity > 0 && (item.onhand.toString() === '0' || item.onhand === '')) {
           return;
         } else{
           removeQuantity(item);
