@@ -174,6 +174,8 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 2, 20);
             OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 3, 20);
             OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 4, 20);
+            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 7, 20);
+            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 11, 10);
             return workSheet;
         }
 

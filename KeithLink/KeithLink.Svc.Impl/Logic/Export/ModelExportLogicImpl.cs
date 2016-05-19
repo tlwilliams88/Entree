@@ -182,11 +182,11 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         case "InvoiceStatus":
                         case "PONumber":
                         case "OrderSystem":
+                        case "DeliveryDate":
                             width = 20;
                             break;
                         case "InvoiceNumber":
                         case "CreatedDate":
-                        case "DeliveryDate":
                         case "ItemCount":
                         case "OrderTotal":
                             width = 12;
