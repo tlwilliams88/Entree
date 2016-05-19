@@ -184,7 +184,9 @@ namespace KeithLink.Svc.WebApi.Controllers
             HttpResponseMessage ret;
             try
             {
-                var orders = _orderLogic.GetOrders(AuthenticatedUser.UserId, SelectedUserContext);
+                var orders = _orderLogic.GetOrders(AuthenticatedUser.UserId, SelectedUserContext)
+                                        .OrderByDescending(o => o.CreatedDate)
+                                        .ToList();
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, Core.Enumerations.List.ListType.Custom, 
                                                         exportRequest.Fields, exportRequest.SelectedType);

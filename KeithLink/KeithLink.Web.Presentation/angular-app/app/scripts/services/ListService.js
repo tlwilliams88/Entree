@@ -202,6 +202,8 @@ angular.module('bekApp')
              { 'field': 'parlevel', 'order': ''}];
              
              //Decode stored sort preferences and buils params sort object with it.
+             //A description of how this works exists on the BEK ecommerce wiki under the title: Default Sort String: Explaination
+
              if(filterObject && filterObject.length > 6){        
               var settings = []
               if(page === 'addToOrder'){
@@ -286,6 +288,13 @@ angular.module('bekApp')
               // transform paged data
               list.itemCount = list.items.totalResults;
               list.items = list.items.results;
+              list.items.forEach(function(item){
+                if(item.onhand < 0.01){
+                  item.onhand = ''
+                } else if(item.quantity < 1){
+                    item.quantity = ''
+                }
+              })
 
               // get calculated fields
               PricingService.updateCaculatedFields(list.items);

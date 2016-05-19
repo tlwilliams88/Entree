@@ -512,7 +512,8 @@ angular.module('bekApp')
       updateItemPositions();
     };
 
-    $scope.deleteMultipleItems = function() {   
+    $scope.deleteMultipleItems = function() {
+    $scope.isDeletingItem = true;  
       $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
         if(item.isSelected){
           item.isdeleted = true;

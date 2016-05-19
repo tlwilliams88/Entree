@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic.Lists {
     public class ListLogicImpl : IListLogic {
@@ -49,6 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         private readonly IPriceLogic                _priceLogic;
         private readonly IProductImageRepository    _productImageRepo;
         private readonly IGenericQueueRepository    _queueRepo;
+        private readonly ISettingsRepository        _settingsRepo;
         private readonly IUnitOfWork                _uow;
 
         private const string CACHE_GROUPNAME = "UserList";
@@ -60,7 +62,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         public ListLogicImpl(IUnitOfWork unitOfWork, IListRepository listRepository, IListItemRepository listItemRepository, 
                             ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic,
                             IProductImageRepository productImageRepository, IListShareRepository listShareRepository, ICustomerRepository customerRepository, 
-                            IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository, 
+                            IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository, ISettingsRepository settingsRepo,
                             IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository) {
             _cache = listCacheRepository;
             _catalogLogic = catalogLogic;
@@ -74,6 +76,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             _priceLogic = priceLogic;
             _productImageRepo = productImageRepository;
             _queueRepo = queueRepository;
+            _settingsRepo = settingsRepo;
             _uow = unitOfWork;
         }
         #endregion
@@ -779,45 +782,71 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         /// <param name="includePrice">return prices with the list</param>
         /// <returns>ListModel with header and detail info</returns>
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true) {
-            var cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
-            if(cachedList != null) {
-                var clonedList = cachedList.Clone();
+            ListModel listClone = null;
 
-                MarkFavoritesAndAddNotes(user, clonedList, catalogInfo);
+            var cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
+            if (cachedList != null)
+            {
+                listClone = cachedList.Clone();
+
+                MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
 
                 var sharedlist = _listRepo.Read(l => l.Id.Equals(Id), i => i.Items)
                                           .FirstOrDefault();
 
-                clonedList.IsSharing = sharedlist.Shares.Any() && 
+                listClone.IsSharing = sharedlist.Shares.Any() &&
                                        sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
                                        sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
-                clonedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+                listClone.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+            }
+            else
+            {
+                var list = _listRepo.Read(l => l.Id.Equals(Id), i => i.Items)
+                                    .FirstOrDefault();
 
-                if(includePrice)
-                    LookupPrices(user, clonedList.Items, catalogInfo);
+                if (list == null)
+                    return null;
 
-                return clonedList;
+                var returnList = list.ToListModel(catalogInfo);
+
+                LookupProductDetails(user, returnList, catalogInfo);
+                _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), returnList);
+
+                listClone = returnList.Clone();
+
+                MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
             }
 
-            var list = _listRepo.Read(l => l.Id.Equals(Id), i => i.Items)
-                                .FirstOrDefault();
-
-            if(list == null)
-                return null;
-
-            var returnList = list.ToListModel(catalogInfo);
-
-            LookupProductDetails(user, returnList, catalogInfo);
-            _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), returnList);
-
-            var listClone = returnList.Clone();
-
-            MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
-
-            if(includePrice)
+            if (includePrice)
                 LookupPrices(user, listClone.Items, catalogInfo);
 
+            if (listClone.Type == ListType.Worksheet | // a.k.a. History
+                listClone.Type == ListType.Contract |
+                listClone.Type == ListType.RecommendedItems |
+                listClone.Type == ListType.Mandatory)
+            {
+                ApplyDefaultListSort(user, listClone);
+            }
+
             return listClone;
+        }
+
+        private void ApplyDefaultListSort(UserProfile user, ListModel listClone)
+        {
+            string setting = _settingsRepo.ReadByUser(user.UserId)
+                                          .Where(s => s.Key.Equals("sortpreferences", StringComparison.CurrentCultureIgnoreCase))
+                                          .Select(s => s.Value)
+                                          .FirstOrDefault();
+            if (setting != null && setting.IndexOf("lis", StringComparison.CurrentCultureIgnoreCase) > -1)
+            {
+                setting = setting.Substring(setting.IndexOf("lis", StringComparison.CurrentCultureIgnoreCase) + 3);
+                if (setting.IndexOf("ato", StringComparison.CurrentCultureIgnoreCase) > -1)
+                {
+                    setting = setting.Substring(0, setting.IndexOf("ato", StringComparison.CurrentCultureIgnoreCase));
+                }
+                setting = ListSortHelper.GetSort(setting);
+                listClone.Items = ListSortHelper.SortOrderItems(setting, listClone.Items);
+            }
         }
 
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false) {
