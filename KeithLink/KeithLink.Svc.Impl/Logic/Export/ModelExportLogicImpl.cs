@@ -182,11 +182,11 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         case "InvoiceStatus":
                         case "PONumber":
                         case "OrderSystem":
+                        case "DeliveryDate":
                             width = 20;
                             break;
                         case "InvoiceNumber":
                         case "CreatedDate":
-                        case "DeliveryDate":
                         case "ItemCount":
                         case "OrderTotal":
                             width = 12;
@@ -209,6 +209,20 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         case "InvoiceDate":
                         case "DueDate":
                             width = 14;
+                            break;
+                    }
+                }
+                else if (modelName.Equals("ListItemModel"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Name":
+                        case "Brand":
+                        case "ItemClass":
+                        case "Category":
+                        case "label":
+                        case "Notes":
+                            width = 16;
                             break;
                     }
                 }
@@ -407,6 +421,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "Pack":
                     case "CasePrice":
                     case "PackagePrice":
+                    case "parlevel":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
                         break;
                 }
@@ -504,6 +519,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "Pack":
                     case "CasePrice":
                     case "PackagePrice":
+                    case "parlevel":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
                 }
@@ -602,6 +618,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 switch (fieldName)
                 {
                     case "Price":
+                    case "parlevel":
                         celltype = CellValues.Number;
                         break;
                 }
