@@ -1,23 +1,17 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InvoiceConfirmationModalController', ['$scope', '$state', '$modalInstance', '$filter', 'InvoiceService', 'payments',
-  function ($scope, $state, $modalInstance, $filter, InvoiceService, payments) {
+.controller('InvoiceTransactionSummaryModalController', ['$scope', '$modalInstance', 'invoiceNumber', 'InvoiceService', 
+  function ($scope, $modalInstance, invoiceNumber, InvoiceService) {
 
-  $scope.payments = payments;
 
-    $scope.payInvoicesFromModal = function(){
-        InvoiceService.payInvoices(payments).then(function(invoiceNumber) {
-            $scope.displayMessage('success', 'Successfully submitted payment(s)');
-            $modalInstance.close(true);
-          }, function(error) {
-            $scope.displayMessage('error', error);
-          }).finally(function () {
-             processingPayInvoices = false;
-          });
-    };
+  InvoiceService.getInvoiceTransactions(invoiceNumber).then(function(invoiceTransactions){
+	  $scope.invoiceTransactions = invoiceTransactions;
+  });
 
-    $scope.invoiceModalCancel = function () {
-      $modalInstance.close(false);
-    };
+
+  $scope.closeModal = function() {
+    $modalInstance.dismiss('cancel');
+  };
+
 }]);

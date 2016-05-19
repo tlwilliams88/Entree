@@ -77,44 +77,44 @@ namespace KeithLink.Svc.Impl.Helpers
         {
             return new Stylesheet(
                 new Fonts(
-                    new Font(                                                               // Index 0 â€“ The default font.
+                    new Font(                                                               // Index 0 Ã¢â‚¬â€œ The default font.
                         new FontSize() { Val = 11 },
                         new Color() { Rgb = new HexBinaryValue() { Value = "00000000" } },
                         new FontName() { Val = "Arial" }),
-                    new Font(                                                               // Index 1 â€“ The bold font.
+                    new Font(                                                               // Index 1 Ã¢â‚¬â€œ The bold font.
                         new Bold(),
                         new FontSize() { Val = 12 },
                         new Color() { Rgb = new HexBinaryValue() { Value = "00000000" } },
                         new FontName() { Val = "Arial" }),
-                    new Font(                                                               // Index 2 â€“ The Italic font.
+                    new Font(                                                               // Index 2 Ã¢â‚¬â€œ The Italic font.
                         new Italic(),
                         new FontSize() { Val = 11 },
                         new Color() { Rgb = new HexBinaryValue() { Value = "00000000" } },
                         new FontName() { Val = "Arial" }),
-                    new Font(                                                               // Index 2 â€“ The Times Roman font. with 16 size
+                    new Font(                                                               // Index 2 Ã¢â‚¬â€œ The Times Roman font. with 16 size
                         new FontSize() { Val = 16 },
                         new Color() { Rgb = new HexBinaryValue() { Value = "00000000" } },
                         new FontName() { Val = "Times New Roman" })
                 ),
                 new Fills(
-                    new Fill(                                                           // Index 0 â€“ The default fill.
+                    new Fill(                                                           // Index 0 Ã¢â‚¬â€œ The default fill.
                         new PatternFill() { PatternType = PatternValues.None }),
-                    new Fill(                                                           // Index 1 â€“ The default fill of gray 125 (required)
+                    new Fill(                                                           // Index 1 Ã¢â‚¬â€œ The default fill of gray 125 (required)
                         new PatternFill() { PatternType = PatternValues.Gray125 }),
-                    new Fill(                                                           // Index 2 â€“ The yellow fill.
+                    new Fill(                                                           // Index 2 Ã¢â‚¬â€œ The yellow fill.
                         new PatternFill(
                             new ForegroundColor() { Rgb = new HexBinaryValue() { Value = "FFFFFF00" } }
                         )
                         { PatternType = PatternValues.Solid })
                 ),
                 new Borders(
-                    new Border(                                                         // Index 0 â€“ The default border.
+                    new Border(                                                         // Index 0 Ã¢â‚¬â€œ The default border.
                         new LeftBorder(),
                         new RightBorder(),
                         new TopBorder(),
                         new BottomBorder(),
                         new DiagonalBorder()),
-                    new Border(                                                         // Index 1 â€“ Applies a Left, Right, Top, Bottom border to a cell
+                    new Border(                                                         // Index 1 Ã¢â‚¬â€œ Applies a Left, Right, Top, Bottom border to a cell
                         new LeftBorder(
                             new Color() { Auto = true }
                         )

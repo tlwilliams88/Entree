@@ -16,18 +16,19 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name = "product")]
     [Serializable]
-    public class Product: BaseProductInfo, IExportableModel
+    public class Product : BaseProductInfo, IExportableModel
     {
         #region ctor
         public Product()
         {
             ProductImages = new List<ProductImage>();
-            OrderHistory = new Dictionary<string,int>();
+            OrderHistory = new Dictionary<string, int>();
         }
         #endregion
 
         #region methods
-        public List<ExportModelConfiguration> DefaultExportConfiguration() {
+        public List<ExportModelConfiguration> DefaultExportConfiguration()
+        {
             var defaultConfig = new List<ExportModelConfiguration>();
 
             defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
@@ -44,37 +45,38 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         }
 
         [OnSerializing]
-        void OnSerializing(StreamingContext context) {
+        void OnSerializing(StreamingContext context)
+        {
             //Do not output a "blank" upc
             if (this.UPC != null)
             {
                 if (this.UPC.Equals("00000000000000"))
                     this.UPC = string.Empty;
             }
-            
+
         }
         #endregion
 
         #region properties
         [DataMember(Name = "ext_description")]
         public string ExtendedDescription { get; set; }
-		                        
+
         [DataMember(Name = "cube")]
-        public string CaseCube { get; set; }		
-        
+        public string CaseCube { get; set; }
+
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }
 
-		[DataMember(Name = "isproprietary")]
-		public bool IsProprietary { get; set; }
+        [DataMember(Name = "isproprietary")]
+        public bool IsProprietary { get; set; }
 
-        [DataMember( Name = "orderhistory" )]
+        [DataMember(Name = "orderhistory")]
         public Dictionary<string, int> OrderHistory { get; set; }
 
-		[DataMember(Name ="inhistory")]
-		public bool InHistory { get; set; }
+        [DataMember(Name = "inhistory")]
+        public bool InHistory { get; set; }
         #endregion
-	}
+    }
 
-	
+
 }

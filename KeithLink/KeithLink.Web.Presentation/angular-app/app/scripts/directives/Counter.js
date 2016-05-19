@@ -144,7 +144,7 @@ angular.module('bekApp')
         scope.confirmQuantity = function(qty, item) {
           var pattern = /^([0-9])\1+$/; // repeating digits pattern
           if(!item.value){
-            item.value = 0;
+            item.value = '';
           }
 
           if (qty > 50 || pattern.test(qty)) {

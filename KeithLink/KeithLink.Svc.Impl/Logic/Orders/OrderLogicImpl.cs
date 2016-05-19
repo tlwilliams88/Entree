@@ -143,7 +143,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
                 
                 if(po == null) {
-                    throw new Exception("An order with invoice #" + invoiceNumber + " is not able to be selected in this data.");
+                    //throw new Exception("An order with invoice #" + invoiceNumber + " is not able to be selected in this data.");
+                    // No Order exists, return null
+                    return null;
                 } else {
                     returnOrder = po.ToOrder();
                     PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);

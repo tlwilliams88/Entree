@@ -14,8 +14,9 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Orders
 {
-	[DataContract(Name = "OrderLine")]
-	public class OrderLine : BaseProductInfo, IExportableModel {
+    [DataContract(Name = "OrderLine")]
+    public class OrderLine : BaseProductInfo, IExportableModel
+    {
         [DataMember(Name = "catalogtype")]
         public string CatalogType { get; set; }
 
@@ -29,73 +30,74 @@ namespace KeithLink.Svc.Core.Models.Orders
         public string RequestDSRContact { get; set; }
 
         [DataMember(Name = "linetotal")]
-        public double LineTotal {
+        public double LineTotal
+        {
             get
             {
-				if (this.IsDeleted)
-					return 0;
+                if (this.IsDeleted)
+                    return 0;
 
                 if (this.CatchWeight)
                 {
-					if (!string.IsNullOrEmpty(this.OrderStatus) && this.OrderStatus.Equals("i", StringComparison.CurrentCultureIgnoreCase) && this.TotalShippedWeight > 0)
-						return (double)this.TotalShippedWeight * this.Price;
-					else
-					{
-						if (this.Each) //package catchweight
-						{
+                    if (!string.IsNullOrEmpty(this.OrderStatus) && this.OrderStatus.Equals("i", StringComparison.CurrentCultureIgnoreCase) && this.TotalShippedWeight > 0)
+                        return (double)this.TotalShippedWeight * this.Price;
+                    else
+                    {
+                        if (this.Each) //package catchweight
+                        {
                             return PricingHelper.GetCatchweightPriceForPackage(QantityShipped, int.Parse(Pack), AverageWeight, Price);
-						}
-						else //case catchweight
-						{
+                        }
+                        else //case catchweight
+                        {
                             return PricingHelper.GetCatchweightPriceForCase(QantityShipped, AverageWeight, Price);
-						}
-					}
+                        }
+                    }
                 }
                 else
                 {
-					return this.QantityShipped * this.Price; 
+                    return this.QantityShipped * this.Price;
                 }
             }
-            set { } 
+            set { }
         }
 
-		private int _quantity;
-		[DataMember(Name = "quantity")]
-		[Description("# Requested")]
-		public int Quantity
-		{
-			get { if (IsDeleted) return 0; return _quantity; }
-			set { _quantity = value; }
-		}
-				
+        private int _quantity;
+        [DataMember(Name = "quantity")]
+        [Description("# Requested")]
+        public int Quantity
+        {
+            get { if (IsDeleted) return 0; return _quantity; }
+            set { _quantity = value; }
+        }
+
         //[DataMember(Name = "packsize")]
         //public string PackSize { get; set; }
-		
-		[DataMember(Name = "each")]
-		public bool Each { get; set; }
 
-		[DataMember(Name = "eachyn")]
-		[Description("Each")]
+        [DataMember(Name = "each")]
+        public bool Each { get; set; }
+
+        [DataMember(Name = "eachyn")]
+        [Description("Each")]
         public string EachYN { get { return this.Each ? "Y" : "N"; } set { } }
-		
-		[DataMember(Name = "storagetemp")]
-		public string StorageTemp { get; set; }
 
-		[DataMember(Name = "price")]
-		public double Price { get; set; }
+        [DataMember(Name = "storagetemp")]
+        public string StorageTemp { get; set; }
 
-		private int _quantityOrders;
+        [DataMember(Name = "price")]
+        public double Price { get; set; }
+
+        private int _quantityOrders;
         [DataMember(Name = "quantityordered")]
-		[Description("# Ordered")]
-		public int QuantityOrdered
-		{
-			get { if (IsDeleted) return 0; return _quantityOrders; }
-			set { _quantityOrders = value; }
-		}
+        [Description("# Ordered")]
+        public int QuantityOrdered
+        {
+            get { if (IsDeleted) return 0; return _quantityOrders; }
+            set { _quantityOrders = value; }
+        }
 
-		private int _quantityShipped;
+        private int _quantityShipped;
         [DataMember(Name = "quantityshipped")]
-		[Description("# Shipped")]
+        [Description("# Shipped")]
         public int QantityShipped { get; set; }
 
         [DataMember(Name = "isoutofstock")]
@@ -122,15 +124,18 @@ namespace KeithLink.Svc.Core.Models.Orders
         public string GetSimilarItems { get; set; }
 
         [DataMember(Name = "status")]
-        public string Status { 
-            get {
+        public string Status
+        {
+            get
+            {
 
-				if (this.IsDeleted)
-					return Constants.ITEM_DELETED_STATUS;
+                if (this.IsDeleted)
+                    return Constants.ITEM_DELETED_STATUS;
 
                 string mfStatus = string.IsNullOrEmpty(MainFrameStatus) ? string.Empty : MainFrameStatus.ToUpper().Trim();
 
-                switch (mfStatus) {
+                switch (mfStatus)
+                {
                     case Constants.CONFIRMATION_DETAIL_FILLED_CODE:
                         return Constants.CONFIRMATION_DETAIL_FILLED_STATUS;
                     case Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_CODE:
@@ -184,40 +189,40 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "mainframestatus")]
         public string MainFrameStatus { get; set; }
 
-		[DataMember(Name = "changeorderstatus")]
-		public string ChangeOrderStatus { get; set; }
+        [DataMember(Name = "changeorderstatus")]
+        public string ChangeOrderStatus { get; set; }
 
         [DataMember(Name = "substituteditemnumber")]
         public string SubstitutedItemNumber { get; set; }
 
-		[DataMember(Name = "totalshippedqeight")]
-		public decimal TotalShippedWeight { get; set; }
+        [DataMember(Name = "totalshippedqeight")]
+        public decimal TotalShippedWeight { get; set; }
 
-		[DataMember(Name = "orderstatus")]
-		public string OrderStatus { get; set; }
+        [DataMember(Name = "orderstatus")]
+        public string OrderStatus { get; set; }
 
-		[DataMember(Name = "isdeleted")]
-		public bool IsDeleted { get; set; }
+        [DataMember(Name = "isdeleted")]
+        public bool IsDeleted { get; set; }
 
-		public List<ExportModelConfiguration> DefaultExportConfiguration()
-		{
-			var defaultConfig = new List<ExportModelConfiguration>();
+        public List<ExportModelConfiguration> DefaultExportConfiguration()
+        {
+            var defaultConfig = new List<ExportModelConfiguration>();
 
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1 });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 10 });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 20 });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 30 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 40 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 40 });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 50 });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 60 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Order = 70 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "QantityShipped", Order = 75 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "EachYN", Order = 80 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Price", Order = 90 });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Status", Order = 100 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Order = 70 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "QantityShipped", Order = 75 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "EachYN", Order = 80 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Price", Order = 90 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Status", Order = 100 });
 
 
             return defaultConfig;
-		}
-	}
+        }
+    }
 }

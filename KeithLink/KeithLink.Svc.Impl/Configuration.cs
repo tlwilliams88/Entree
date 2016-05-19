@@ -263,10 +263,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string AccessGroupKbitAdmin
-        {
-            get
-            {
+        public static string AccessGroupKbitAdmin {
+            get {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);
             }
         }

@@ -183,21 +183,17 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
             }
 
             //Get transactions
-            var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-            invoiceModel.Transactions = transactions.Select(t => t.ToTransationModel()).ToList();
-
-            //Retrieve invoice details, from order history
-
-            //var details = _orderHistoryRepo.Read(o => o.InvoiceNumber.Equals(invoiceNumber), d => d.OrderDetails).FirstOrDefault();
-
-            //if(details != null && details.OrderDetails != null) {
-            //    invoiceModel.Items = details.OrderDetails.Select(d => d.ToInvoiceItem()).ToList();
-            //}
-
-            ////look up product details
-            //LookupProductDetails(invoiceModel, userContext);
+            invoiceModel.Transactions = GetInvoiceTransactions(userContext, invoiceNumber);
 
             return invoiceModel;
+        }
+
+        public List<InvoiceTransactionModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
+            List<InvoiceTransactionModel> transactions = new List<InvoiceTransactionModel>();
+
+            transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoiceNumber).Select(t => t.ToTransationModel()).ToList();
+
+            return transactions;
         }
 
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers) {
