@@ -1,11 +1,11 @@
 
    <div class="modal-header">
-    <h3 class="modal-title">Transaction History for {{invoice.invoicenumber}}</h3>
+    <h3 class="modal-title">Transaction History for Invoice {{invoiceTransactions.invoicenumber}}</h3>
 </div>
 <div class="modal-body">
 
   <form>
-    <div  ng-if="invoice.transactions.length > 0">
+    <div  ng-if="invoiceTransactions.length > 0">
      
       <table class="table table-striped-rows table-border table-narrow" style="width:100%;">
         <thead>
@@ -15,14 +15,14 @@
             <th>Amount</th>
           </tr>
         </thead>
-        <tr ng-repeat="transaction in invoice.transactions" ng-class="{ odd : $odd, even: $even}">
+        <tr ng-repeat="transaction in invoiceTransactions" ng-class="{ odd : $odd, even: $even}">
           <td>{{transaction.invoicedate | formatDate}}</td>
           <td>{{transaction.typedescription}}</td>
           <td>{{transaction.amount | currency}}</td>
         </tr>
       </table>
     </div>
-      <div ng-if="invoice.transactions.length === 0">
+      <div ng-if="invoiceTransactions.length === 0">
         No transaction history.
       </div>
   </form>

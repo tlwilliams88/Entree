@@ -22,7 +22,17 @@ angular.module('bekApp')
       getInvoice: function(invoiceNumber) {
         return Invoice.getInvoice({
           invoiceNumber: invoiceNumber
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
+      },
+
+      getInvoiceTransactions: function(invoiceNumber){
+        return Invoice.getInvoiceTransactions({
+          invoiceNumber: invoiceNumber
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        })
       },
 
       getInvoiceImage: function(invoiceNumber) {
@@ -34,17 +44,6 @@ angular.module('bekApp')
       getAllOpenInvoices: function(params){
         return Invoice.getAllOpen(params).$promise;
       },
-
-      // for all customers
-      // getPendingTransactions: function(params) {
-      //   return Invoice.getAllPendingTransactions(params).$promise.then(function (data) {
-      //     // add data to wrapper object so it matches format of getInvoices endpoints
-      //     var wrapper = {
-      //       pagedresults: data
-      //     };
-      //     return wrapper;
-      //   });
-      // },
 
       payInvoices: function(payments) {
         payments.forEach(function(payment) {     
@@ -75,10 +74,6 @@ angular.module('bekApp')
       },
 
       exportInvoice: function(config, params) {
-        // {
-        //   "paging": {"size":50,"from":0,"filter":{"filter":[],"field":"statusdescription","value":"Past Due"}},
-        //   "export": {"selectedtype": "CSV"}
-        // }
         var exportParams = {
           paging: params.paging,
           export: config

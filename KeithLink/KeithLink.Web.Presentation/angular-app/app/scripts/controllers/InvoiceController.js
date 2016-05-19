@@ -181,8 +181,8 @@ angular.module('bekApp')
         windowClass: 'color-background-modal',
         scope: $scope,
         resolve: {
-          invoice: function() {
-            return invoice;
+          invoiceNumber: function() {
+            return invoice.invoicenumber;
           }
         }
       });
