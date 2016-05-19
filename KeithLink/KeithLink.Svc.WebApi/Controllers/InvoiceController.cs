@@ -211,16 +211,45 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/{invoiceNumber}")]
-        public Models.OperationReturnModel<InvoiceModel> InvoiceTransactions(string invoiceNumber) {
+        public Models.OperationReturnModel<InvoiceModel> InvoiceDetails(string invoiceNumber) {
             Models.OperationReturnModel<InvoiceModel> retVal = new Models.OperationReturnModel<InvoiceModel>();
             try
             {
                 InvoiceModel inv = _invLogic.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
+
                 Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
+                if (order != null)
+                {
+                    inv.Items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
+                }
 
-                inv.Items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
+                    retVal.SuccessResponse = inv;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("InvoiceTransactions", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-                retVal.SuccessResponse = inv;
+            return retVal;
+        }
+
+        /// <summary>
+        /// Invoice transaction details
+        /// </summary>
+        /// <param name="invoiceNumber"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("invoice/transactions/{invoiceNumber}")]
+        public Models.OperationReturnModel<List<InvoiceTransactionModel>> InvoiceTransactions(string invoiceNumber) {
+            Models.OperationReturnModel<List<InvoiceTransactionModel>> retVal = new Models.OperationReturnModel<List<InvoiceTransactionModel>>();
+            try
+            {
+                List<InvoiceTransactionModel> transactions = _invLogic.GetInvoiceTransactions(this.SelectedUserContext, invoiceNumber);
+
+                retVal.SuccessResponse = transactions;
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
