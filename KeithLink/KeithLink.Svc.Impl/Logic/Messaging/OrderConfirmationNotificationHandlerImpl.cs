@@ -218,10 +218,18 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private string BuildPriceInfo(OrderLineChange line, Product currentProduct) {
             string priceInfo = line.ItemPrice.ToString("f2");
-            if(line.Each)
+            if (currentProduct.CatchWeight)
+            {
+                priceInfo += " per lb";
+            }
+            else if (line.Each)
+            {
                 priceInfo += " per package";
+            }
             else
+            {
                 priceInfo += " per case";
+            }
             return priceInfo;
         }
 
