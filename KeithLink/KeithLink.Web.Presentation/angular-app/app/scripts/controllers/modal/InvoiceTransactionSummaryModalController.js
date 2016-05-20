@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InvoiceTransactionSummaryModalController', ['$scope', '$modalInstance', 'invoice', 'InvoiceService', 
-  function ($scope, $modalInstance, invoice, InvoiceService) {
+.controller('InvoiceTransactionSummaryModalController', ['$scope', '$modalInstance', 'invoiceNumber', 'InvoiceService', 
+  function ($scope, $modalInstance, invoiceNumber, InvoiceService) {
 
 
-  InvoiceService.getInvoice(invoice.invoicenumber).then(function(invoice){
-	  $scope.invoice = invoice;
+  InvoiceService.getInvoiceTransactions(invoiceNumber).then(function(invoiceTransactions){
+	  $scope.invoiceTransactions = invoiceTransactions;
   });
 
 
