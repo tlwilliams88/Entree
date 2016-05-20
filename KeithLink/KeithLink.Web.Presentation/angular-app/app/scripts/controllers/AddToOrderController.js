@@ -523,9 +523,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
     $scope.confirmQuantity = function(type, item, value) {
 
-      if((value === 0 || item.quantity === '') && type === 'onhand'){
+      if((value === 0 || value === undefined || item.quantity === '') && !(item.onhand > 0) && type === 'onhand'){
         item.onhand = '0';    
         $scope.onItemOnHandAmountChanged(item);
+        item.onhand = ''
       }
       if((!value || value === undefined) && type === 'quantity'){
         removeQuantity(item);
@@ -925,7 +926,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         var quantity = Math.ceil(item.parlevel - offset);
         if (quantity > 0) {
           item.quantity = quantity;
-        } else {
+        } else if(item.quantity > 0 && (item.onhand.toString() === '0' || item.onhand === '')) {
+          return;
+        } else{
           removeQuantity(item);
         }
       }
