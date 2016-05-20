@@ -1,5 +1,6 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl.Models.SiteCatalog.Products.External;
 using System;
 using System.Collections.Generic;
@@ -15,57 +16,40 @@ using System.Web.Script.Serialization;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
 {
-    public class UnfiImageProcessing
+    public class UnfiImageProcessing : IExternalImageProcessorUnfi
     {
-        public static int index;
-        private static IEventLogRepository _log;
-        private static List<Task> imageScaleTasks;
-        private static readonly string FILETYPE_STANDARDRES = "A";
-        private static readonly string FILETYPE_HIGHRES = "C";
-        private static readonly string FACING_FRONT = "1";
-        private static readonly string FACING_LEFT = "2";
-        private static readonly string FACING_TOP = "3";
-        private static readonly string FACING_BACK = "7";
-        private static readonly string FACING_RIGHT = "8";
-        private static readonly string FACING_DISPLAY = "D";
-        private static readonly string FACING_NUTRITION = "N";
-        private static readonly string FACING_INGREDIENTS = "I";
-        private static readonly string ANGLE_CENTER = "C";
-        private static readonly string ANGLE_LEFT = "L";
-        private static readonly string ANGLE_RIGHT = "R";
-        private static readonly string ANGLE_NOPLUNGE = "N";
-        private static readonly string PACK_IN = "1";
-        private static readonly string PACK_OUT = "0";
-        private static readonly string PACK_CASE = "A";
-        private static readonly string PACK_INNER = "B";
-        private static readonly string PACK_PREPARED = "D";
-        private static readonly string IX_ONE_PRODUCTIMAGE_JSON_REQUEST = 
-"{\"PageNumber\": 1," +
-"\"PageSize\": 1000," +
-"\"DataFilters\": [" +
-"{\"EntityName\": \"Product\"," +
-"\"PropertyName\": \"UPC12\"," +
-"\"Operator\": \"IN\"," +
-"\"Comparator\": \"{0}\"" +
-"}" +
-"]," +
-"\"PropertyListing\": [" +
-"{\"EntityName\": \"Product\"," +
-"\"PropertyName\": \"UPC12\"" +
-"}," +
-"{\"EntityName\": \"Product\"," +
-"\"PropertyName\": \"StandardizedImage\"" +
-"}," +
-"{\"EntityName\": \"StandardizedImage\"," +
-"\"PropertyName\": \"OriginalFileName\"" +
-"}" +
-"]" +
-"}";
-        private static readonly string IX_ONE_PRODUCTIMAGE_GET_URL =
+        public int index;
+        private readonly IEventLogRepository _log;
+        private List<Task> imageScaleTasks;
+        private readonly string FILETYPE_STANDARDRES = "A";
+        private readonly string FILETYPE_HIGHRES = "C";
+        private readonly string FACING_FRONT = "1";
+        private readonly string FACING_LEFT = "2";
+        private readonly string FACING_TOP = "3";
+        private readonly string FACING_BACK = "7";
+        private readonly string FACING_RIGHT = "8";
+        private readonly string FACING_DISPLAY = "D";
+        private readonly string FACING_NUTRITION = "N";
+        private readonly string FACING_INGREDIENTS = "I";
+        private readonly string ANGLE_CENTER = "C";
+        private readonly string ANGLE_LEFT = "L";
+        private readonly string ANGLE_RIGHT = "R";
+        private readonly string ANGLE_NOPLUNGE = "N";
+        private readonly string PACK_IN = "1";
+        private readonly string PACK_OUT = "0";
+        private readonly string PACK_CASE = "A";
+        private readonly string PACK_INNER = "B";
+        private readonly string PACK_PREPARED = "D";
+        private readonly string IX_ONE_PRODUCTIMAGE_GET_URL =
             "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
-        public static void StartProcessAllImages(IEventLogRepository log)
+
+        public UnfiImageProcessing(IEventLogRepository log)
         {
             _log = log;
+        }
+
+        public void StartProcessAllImages()
+        {
             imageScaleTasks = new List<Task>();
 
             // recursively create directories for saving images if they don't exist
@@ -113,13 +97,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
                         ProcessItem(thisName, filename);
                     }
                 }
-                if (index * 10 == 0) { _log.WriteInformationLog(" Processed " + index); }
             });
             _log.WriteInformationLog(" Download Complete");
             imageScaleTasks.Clear();
         }
 
-        private static List<DataRow> GetUnfiProductsInOurData()
+        private List<DataRow> GetUnfiProductsInOurData()
         {
             Dictionary<string, DataRow> dict = new Dictionary<string, DataRow>();
             // get our list of items from etl staging
@@ -135,7 +118,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             return dict.Values.ToList();
         }
 
-        private static void ProcessItem(string savedas, string filename)
+        private void ProcessItem(string savedas, string filename)
         {
             try
             {
@@ -161,7 +144,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             }
         }
 
-        private static string ChooseBestFilename(IxOneProduct product)
+        private string ChooseBestFilename(IxOneProduct product)
         { // priority is from bottom up
             string filename = product.Filenames[0];
             if (product.Filenames.Where(f => f.EndsWith(ANGLE_NOPLUNGE + PACK_IN + ".TIF")).Count() > 0)
@@ -183,7 +166,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             return filename;
         }
 
-         private static IxOneReturn GetIXOneList(List<DataRow> items)
+         private IxOneReturn GetIXOneList(List<DataRow> items)
         {            
             IxOneReturn received = null;
             if (items.Count > 1000)
@@ -256,7 +239,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             return get;
         }
 
-        private static byte[] GetIXOneImage(string filename)
+        private byte[] GetIXOneImage(string filename)
         {
             try
             {
@@ -273,12 +256,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             {
                 //Console.WriteLine("Exception caught in download image: {0}",
                 //                  ex.ToString());
-                //_log.WriteErrorLog("Download Image", ex);
+                _log.WriteErrorLog(string.Format("Unfi Download Image({0})", filename), ex);
 
                 return null;
             }
         }
-        private static Image byteArrayToImage(byte[] bytesArr)
+        private Image byteArrayToImage(byte[] bytesArr)
         {
             try
             {
@@ -290,44 +273,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             {
                 //Console.WriteLine("Exception caught in byteArrayToImage: {0}",
                 //                  ex.ToString());
-                //_log.WriteErrorLog("byteArrayToImage", ex);
+                _log.WriteErrorLog("Unfi byteArrayToImage", ex);
 
                 return null;
             }
-        }
-
-        private static void ScaleImage(string filename)
-        {
-            // Start the HandleFile method.
-            string dir = filename.Substring(0, filename.LastIndexOf("\\"));
-            string fname = filename.Substring(filename.LastIndexOf("\\") + 1);
-            Image img = Image.FromFile(filename);
-            img = ScaleImage(img, 
-                int.Parse(Configuration.CatalogServiceUnfiImagesScaleX), int.Parse(Configuration.CatalogServiceUnfiImagesScaleY));
-            img.Save(Configuration.CatalogServiceUnfiImagesNewOnlyDirThumbs + "\\" + fname, System.Drawing.Imaging.ImageFormat.Jpeg);
-        }
-
-        /// <summary>
-        /// Scales an image proportionally.  Returns a bitmap.
-        /// </summary>
-        /// <param name="image"></param>
-        /// <param name="maxWidth"></param>
-        /// <param name="maxHeight"></param>
-        /// <returns></returns>
-        private static Bitmap ScaleImage(Image image, int maxWidth, int maxHeight)
-        {
-            var ratioX = (double)maxWidth / image.Width;
-            var ratioY = (double)maxHeight / image.Height;
-            var ratio = Math.Min(ratioX, ratioY);
-
-            var newWidth = (int)(image.Width * ratio);
-            var newHeight = (int)(image.Height * ratio);
-
-            var newImage = new Bitmap(newWidth, newHeight);
-            Graphics.FromImage(newImage).DrawImage(image, 0, 0, newWidth, newHeight);
-            Bitmap bmp = new Bitmap(newImage);
-
-            return bmp;
         }
     }
 }

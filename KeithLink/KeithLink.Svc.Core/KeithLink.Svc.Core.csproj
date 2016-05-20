@@ -277,6 +277,7 @@
     <Compile Include="Interface\SingleSignOn\IAccessRequestLogic.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
+    <Compile Include="Interface\SiteCatalog\IExternalImageProcessorUnfi.cs" />
     <Compile Include="Interface\SpecialOrders\ISpecialOrderDBContext.cs" />
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />

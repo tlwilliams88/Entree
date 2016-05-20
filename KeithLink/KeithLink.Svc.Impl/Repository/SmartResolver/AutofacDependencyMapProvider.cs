@@ -91,6 +91,7 @@ using Autofac.Features.Indexed;
 
 using System;
 using KeithLink.Svc.Core.Enumerations.Dependencies;
+using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -196,6 +197,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
+            builder.RegisterType<UnfiImageProcessing>().As<IExternalImageProcessorUnfi>();
 
             // customer
             builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
