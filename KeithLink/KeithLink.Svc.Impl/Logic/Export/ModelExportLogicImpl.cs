@@ -691,7 +691,15 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
                 if (propertyName.Length == 1)
                 {
-                    var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                    ExportModelConfiguration thisConfig = new ExportModelConfiguration()
+                    { // just a shallow copy
+                        Field = config.Field,
+                        Label = config.Label,
+                        Order = config.Order,
+                        Selected = config.Selected
+                    };
+                    SetPriceConfig(properties, item, thisConfig);
+                    var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                     if (property != null)
                     {
                         itemRecord.Add(string.Format("\"{0}\"", this.GetFieldValue(item, property).Trim()));

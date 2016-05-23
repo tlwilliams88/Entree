@@ -18,6 +18,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.Configurations;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -30,6 +32,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		#region attributes
         private readonly IUserActiveCartLogic _activeCartLogic;
 		private readonly IShoppingCartLogic _shoppingCartLogic;
+        private readonly IExportSettingLogic _exportLogic;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -43,9 +46,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="userActiveCartLogic"></param>
         public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, 
-                                      IUserActiveCartLogic userActiveCartLogic) : base(profileLogic) {
+                                      IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic) : base(profileLogic) {
             _activeCartLogic = userActiveCartLogic;
 			_shoppingCartLogic = shoppingCartLogic;
+            _exportLogic = exportSettingsLogic;
             _log = logRepo;
         }
         #endregion
@@ -181,6 +185,60 @@ namespace KeithLink.Svc.WebApi.Controllers
             catch (Exception ex)
             {
                 _log.WriteErrorLog("POST Cart", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Export a specific cart
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <param name="exportRequest">Export options</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("cart/export/{cartId}")]
+        public HttpResponseMessage ExportCartDetail(Guid cartId, ExportRequestModel exportRequest)
+        {
+            HttpResponseMessage ret;
+            try
+            {
+                var cart = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                if (exportRequest.Fields != null)
+                    _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.CartDetail, Core.Enumerations.List.ListType.Custom,
+                                                        exportRequest.Fields, exportRequest.SelectedType);
+
+                ret = ExportModel<ShoppingCartItem>(cart.Items, exportRequest, SelectedUserContext);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("ExportCartDetail", ex);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Retrieve export options for a specific cart
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("cart/export/{cartId}")]
+        public Models.OperationReturnModel<ExportOptionsModel> ExportCartDetail(Guid cartId)
+        {
+            Models.OperationReturnModel<ExportOptionsModel> retVal = new Models.OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                retVal.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.CartDetail, 0);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ExportCartDetail", ex);
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }

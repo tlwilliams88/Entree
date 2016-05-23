@@ -351,6 +351,10 @@ namespace KeithLink.Svc.Impl.Logic
                 int qty = (int)item.Quantity;
                 int pack;
                 if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
+                if (item.PackSize.IndexOf("/") > -1)
+                {
+                    item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
+                }
 
                 cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
             }

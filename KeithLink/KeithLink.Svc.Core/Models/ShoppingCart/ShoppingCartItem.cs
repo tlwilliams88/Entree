@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Models.SiteCatalog;
+﻿using KeithLink.Svc.Core.Interface.ModelExport;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +11,8 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.ShoppingCart
 {
 	[DataContract(Name="ShoppingCartItem")]
-	public class ShoppingCartItem: BaseProductInfo
-	{
+	public class ShoppingCartItem: BaseProductInfo, IExportableModel
+    {
 		[DataMember(Name = "cartitemid")]
 		public Guid CartItemId { get; set; }
 
@@ -24,7 +26,7 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
         [DataMember(Name = "packsize")]
 		public string PackSize { get; set; }
 
-		[DataMember(Name = "name")]
+        [DataMember(Name = "name")]
 		public string Name { get; set; }
 
 		[DataMember(Name ="notes")]
@@ -68,5 +70,22 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 				return (double)this.Quantity * Price;
 			}
 		}
-	}
+        public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
+        {
+            var defaultConfig = new List<ExportModelConfiguration>();
+
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item #" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 10, Label = "Name" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Brand", Order = 20, Label = "Brand" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 30, Label = "Class" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 40, Label = "Notes" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 50, Label = "Pack" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 60, Label = "Size" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Quantity", Order = 70, Label = "Qty" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Each", Order = 80, Label = "Each" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 90, Label = "Price" });
+
+            return defaultConfig;
+        }
+    }
 }
