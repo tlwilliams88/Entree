@@ -339,6 +339,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
         internal static void AddOtherOrderServiceDependencies(ContainerBuilder builder)
         {
+            builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
         }
 
         internal static void AddOtherAccessServiceDependencies(ContainerBuilder builder)
