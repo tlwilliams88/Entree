@@ -155,6 +155,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                     prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                             .FirstOrDefault()
                                             .InHistory;
+                    AddProductImageInfo(prod);
                 });
             }
         }

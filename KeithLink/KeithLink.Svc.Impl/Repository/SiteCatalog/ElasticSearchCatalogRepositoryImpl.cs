@@ -564,7 +564,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         }
         
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
-            int size = GetProductPagingSize(searchModel.Size);
+            int size = 0;
+            if (searchModel.Size > 0)
+            {
+                size = GetProductPagingSize(searchModel.Size);
+            }
 
             //List<string> childCategories = 
             //    GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
@@ -573,12 +577,26 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             //string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
-            dynamic categorySearchExpression = BuildBoolFunctionScoreQuery( searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
+            dynamic categorySearchExpression = BuildBoolFunctionScoreQuery( searchModel.From, size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
             var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
 
-            return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
+            ProductsReturn ret = GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
+
+            if (searchModel.Size == 0)
+            {
+                size = ret.TotalCount;
+
+                categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir,
+                    filterTerms);
+
+                query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+
+                ret = GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
+            }
+
+            return ret;
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
