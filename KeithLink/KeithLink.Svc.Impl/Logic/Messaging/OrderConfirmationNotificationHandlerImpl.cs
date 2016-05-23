@@ -220,7 +220,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             string priceInfo = line.ItemPrice.ToString("f2");
             if (currentProduct.CatchWeight)
             {
-                priceInfo += " per lb";
+                priceInfo += " per LB";
             }
             else if (line.Each)
             {
