@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
+  .controller('InventoryReportController', ['$scope', '$filter', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
+    function($scope, $filter, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
       $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
@@ -18,6 +18,8 @@ angular.module('bekApp')
       $scope.listsLoading = true;
       $scope.numberReportNamesToShow = 10;
       $scope.today = DateService.momentObject().format(Constants.dateFormat.yearMonthDayDashes);
+
+      var orderBy = $filter('orderBy');
       
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;
@@ -174,13 +176,32 @@ angular.module('bekApp')
        
       };
 
-      $scope.sortTable = function(field, sortDescending) {
-        $scope.sortDescending = $scope.sortField === field ? !sortDescending : false;
+      $scope.sortTable = function(field, oldSortDescending) {
+        var sortDescending = !oldSortDescending;
+        if (oldSortDescending) {
+          sortDescending = false;
+        }
         $scope.sortField = field;
+        $scope.sortDescending = sortDescending;
+
+        $scope.report.items = orderBy($scope.report.items, field, sortDescending);
+        if($scope.report.items.length && !$scope.report.items[($scope.report.items.length -1)].listitemid){
+          var dummy = $scope.report.items.slice($scope.report.items.length -1, $scope.report.items.length );
+          $scope.report.items = $scope.report.items.slice(0, $scope.report.items.length -1);
+          $scope.report.items.splice(0,0,dummy[0]);
+        }
+
+        $scope.report.items.forEach(function(item, index) {
+            var itemIndex = index + 1;
+            item.position = itemIndex;
+        });
+
+        $scope.inventoryForm.$setDirty();
       };
 
-      $scope.saveReport = function(scopeReport) {
-        var report = angular.copy(scopeReport);
+      $scope.saveReport = function() {
+        // $scope.report.items.reverse();
+        var report = angular.copy($scope.report);
         var sameDayReports = [];
         if(!report.name){         
           report.name = $scope.today;
@@ -281,6 +302,11 @@ angular.module('bekApp')
       };
 
       $scope.openExportModal = function() {
+
+        if($scope.inventoryForm.$dirty){
+          $scope.saveReport($scope.report);
+        }
+
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/inventoryreportexportmodal.html',
           controller: 'InventoryReportExportModalController',

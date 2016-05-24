@@ -141,22 +141,22 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 
 <div>
-    <div class="row" ng-show="facets.brands.available.length > 0">
-      <div class="col-sm-12">
-        <h3>Brands</h3>
-        <ul class="nav search-results__facets">
-          <li ng-repeat="brand in facets.brands.available | orderBy: 'name'">
-            <input 
-              type="checkbox"
-              value="brandValue_{{brand.name}}"
-              id="brandId_{{brand.name}}"
-              ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
-              ng-disabled="brand.name === featuredBreadcrumb.displayText"
-              ng-click="toggleSelection(facets.brands.selected, brand.name)"
-              class="input-margin-5px">
-            <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
-          </li>
-        </ul>
+  <div class="row" ng-show="facets.brands.available.length > 0">
+    <div class="col-sm-12">
+      <h3>Brands</h3>
+      <ul class="nav search-results__facets">
+        <li ng-repeat="brand in facets.brands.available | orderBy: 'name'">
+          <input 
+            type="checkbox"
+            value="brandValue_{{brand.name}}"
+            id="brandId_{{brand.name}}"
+            ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
+            ng-disabled="brand.name === featuredBreadcrumb.displayText"
+            ng-click="toggleSelection(facets.brands.selected, brand.name)"
+            class="input-margin-5px">
+          <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="row" ng-show="facets.dietary.available.length > 0">
@@ -197,32 +197,33 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   <div class="row" ng-show="facets.itemspecs.available.length > 0">
     <div class="col-sm-12">
       <h3>Item Specifications</h3>
-          <ul class="nav search-results__facets">
-            <li ng-repeat="spec in facets.itemspecs.available | orderBy: '-count'">
-              <input 
-                type="checkbox"
-                value="specValue_{{spec.name}}"
-                id="dietId_{{diet.name}}"
-                ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
-                ng-click="toggleSelection(facets.itemspecs.selected, spec.name)"
-                class="input-margin-5px">
-              <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</span></label>
-            </li>
-          </ul>
-      </div>
+        <ul class="nav search-results__facets">
+          <li ng-repeat="spec in facets.itemspecs.available | orderBy: '-count'">
+            <input 
+              type="checkbox"
+              value="specValue_{{spec.name}}"
+              id="dietId_{{diet.name}}"
+              ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
+              ng-click="toggleSelection(facets.itemspecs.selected, spec.name)"
+              class="input-margin-5px">
+            <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</span></label>
+          </li>
+        </ul>
     </div>
-<!--     </div>
-      <div calls="col-sm-12" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0">
-          <h3>Catalogs</h3>
+  </div>
+    <div class="row" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0">
+      <div class="col-sm-12">
+        <h3>Catalogs</h3>
           <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>
           <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
-          <input
+<!--           <input
              type="checkbox"
              id="unfi-checkbox"
              ng-click="unfiCheckboxClick()">
              <label for="unfi-checkbox">Natural and Organic (100)</label>
+      </div> -->
       </div>
-</div> -->
+    </div>
   </div>
 </div>
 
