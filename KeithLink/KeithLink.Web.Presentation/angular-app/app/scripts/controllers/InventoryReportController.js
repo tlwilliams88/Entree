@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
+  .controller('InventoryReportController', ['$scope', '$filter', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
+    function($scope, $filter, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
       $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
@@ -18,6 +18,8 @@ angular.module('bekApp')
       $scope.listsLoading = true;
       $scope.numberReportNamesToShow = 10;
       $scope.today = DateService.momentObject().format(Constants.dateFormat.yearMonthDayDashes);
+
+      var orderBy = $filter('orderBy');
       
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;
@@ -177,6 +179,15 @@ angular.module('bekApp')
       $scope.sortTable = function(field, sortDescending) {
         $scope.sortDescending = $scope.sortField === field ? !sortDescending : false;
         $scope.sortField = field;
+
+        $scope.report.items = orderBy($scope.report.items, field, sortDescending);
+
+        $scope.report.items.forEach(function(item, index) {
+          item.position = index;
+          item.editPosition = item.position;
+        });
+
+        $scope.inventoryForm.$setDirty();
       };
 
       $scope.saveReport = function(scopeReport) {
@@ -281,6 +292,11 @@ angular.module('bekApp')
       };
 
       $scope.openExportModal = function() {
+
+        if($scope.inventoryForm.$dirty){
+          $scope.saveReport($scope.report);
+        }
+
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/inventoryreportexportmodal.html',
           controller: 'InventoryReportExportModalController',
