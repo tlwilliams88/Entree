@@ -181,11 +181,18 @@ angular.module('bekApp')
         $scope.sortField = field;
 
         $scope.report.items = orderBy($scope.report.items, field, sortDescending);
+        // if($scope.report.items.length && !$scope.report.items[($scope.report.items.length -1)].listitemid){
+        //   var dummy = $scope.report.items.slice($scope.report.items.length -1, $scope.report.items.length );
+        //   $scope.report.items = $scope.report.items.slice(0, $scope.report.items.length -1);
+        //   $scope.report.items.splice(0,0,dummy[0]);
+        // }
 
-        $scope.report.items.forEach(function(item, index) {
-          item.position = index;
-          item.editPosition = item.position;
-        });
+        // $scope.report.items.forEach(function(item, index) {
+        //     item.position = index;
+        //     if(item.position === 0){
+              
+        //     }
+        // });
 
         $scope.inventoryForm.$setDirty();
       };
