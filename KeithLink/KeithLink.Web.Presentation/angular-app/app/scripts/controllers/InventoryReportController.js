@@ -176,29 +176,32 @@ angular.module('bekApp')
        
       };
 
-      $scope.sortTable = function(field, sortDescending) {
-        $scope.sortDescending = $scope.sortField === field ? !sortDescending : false;
+      $scope.sortTable = function(field, oldSortDescending) {
+        var sortDescending = !oldSortDescending;
+        if (oldSortDescending) {
+          sortDescending = false;
+        }
         $scope.sortField = field;
+        $scope.sortDescending = sortDescending;
 
         $scope.report.items = orderBy($scope.report.items, field, sortDescending);
-        // if($scope.report.items.length && !$scope.report.items[($scope.report.items.length -1)].listitemid){
-        //   var dummy = $scope.report.items.slice($scope.report.items.length -1, $scope.report.items.length );
-        //   $scope.report.items = $scope.report.items.slice(0, $scope.report.items.length -1);
-        //   $scope.report.items.splice(0,0,dummy[0]);
-        // }
+        if($scope.report.items.length && !$scope.report.items[($scope.report.items.length -1)].listitemid){
+          var dummy = $scope.report.items.slice($scope.report.items.length -1, $scope.report.items.length );
+          $scope.report.items = $scope.report.items.slice(0, $scope.report.items.length -1);
+          $scope.report.items.splice(0,0,dummy[0]);
+        }
 
-        // $scope.report.items.forEach(function(item, index) {
-        //     item.position = index;
-        //     if(item.position === 0){
-              
-        //     }
-        // });
+        $scope.report.items.forEach(function(item, index) {
+            var itemIndex = index + 1;
+            item.position = itemIndex;
+        });
 
         $scope.inventoryForm.$setDirty();
       };
 
-      $scope.saveReport = function(scopeReport) {
-        var report = angular.copy(scopeReport);
+      $scope.saveReport = function() {
+        // $scope.report.items.reverse();
+        var report = angular.copy($scope.report);
         var sameDayReports = [];
         if(!report.name){         
           report.name = $scope.today;
@@ -301,6 +304,7 @@ angular.module('bekApp')
       $scope.openExportModal = function() {
 
         if($scope.inventoryForm.$dirty){
+          $scope.report.items.reverse();
           $scope.saveReport($scope.report);
         }
 
