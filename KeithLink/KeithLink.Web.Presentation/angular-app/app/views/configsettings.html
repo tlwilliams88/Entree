@@ -3,37 +3,44 @@
     Configuration Settings
   </div>
   <div header-buttons></div>
+    <button class="btn btn-lg btn-primary pull-right" 
+    ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine" 
+    ng-click="saveConfig(configSettings)" type="button">Save
+  </button>
 </div>
 
 <div class="page-content">
-    <form name="configSettingsForm">
-        <div class="col-md-12">
-          <table class="table table-striped-rows table-border">
-            <thead>
-              <tr>
-                <th class="col-sm-1 col-md-3">Key</th>
-                <th class="col-sm-4 col-md-6">Value</th>
-                <th class="col-sm-1 col-md-2">Comment</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr ng-repeat="setting in configSettings" ng-class="{ odd : $odd, even: $even }">
-                <td>{{setting.key}}</td>
-                <td>
-                    <form name="settingValueForm">
-                       <input
-                        style="width:70%"              
-                        name="settingValueInput"                    
-                        type="text"     
-                        ng-model="setting.value"     
-                        onfocus="this.select()"
-                        ng-blur="saveConfig(setting)" />
-                    </form>
-                </td>
-                <td>{{setting.comment}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-    </form>
+  <form name="configSettingsForm">
+      <div class="col-md-12">
+        <table class="table table-striped-rows table-border">
+          <thead>
+            <tr>
+              <th class="col-sm-1 col-md-3">Key</th>
+              <th class="col-sm-1 col-md-2">Old Value</th>
+              <th class="col-sm-1 col-md-3">New Value</th>
+              <th class="col-sm-1 col-md-1">Comment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="setting in configSettings" ng-class="{ odd : $odd, even: $even }">
+              <td>{{setting.key}}</td>
+              <td>
+                <label style="max-width: 200px; word-wrap: break-word">{{setting.value}}</label>
+              </td>
+              <td>
+                <form name="settingValueForm">
+                  <input
+                  style="width:70%"       
+                  name="settingValueInput"                    
+                  type="text"     
+                  ng-model="setting.newvalue"    
+                  onfocus="this.select()"/>
+                </form>
+              </td>
+              <td>{{setting.comment}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+  </form>
 </div>
