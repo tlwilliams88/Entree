@@ -304,7 +304,6 @@ angular.module('bekApp')
       $scope.openExportModal = function() {
 
         if($scope.inventoryForm.$dirty){
-          $scope.report.items.reverse();
           $scope.saveReport($scope.report);
         }
 
