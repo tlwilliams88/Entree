@@ -121,6 +121,7 @@
     <Compile Include="Email\NewUserEmail.cs" />
     <Compile Include="Repository\Logging\EventLogRepositoryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Settings\AppSettingsDictionary.cs" />
     <Compile Include="Repository\Settings\DBAppSettingsRepositoryImpl.cs" />
   </ItemGroup>
   <ItemGroup>
