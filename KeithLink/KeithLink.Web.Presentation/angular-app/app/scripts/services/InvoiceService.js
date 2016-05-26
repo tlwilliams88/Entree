@@ -42,7 +42,9 @@ angular.module('bekApp')
 
       // for all customers
       getAllOpenInvoices: function(params){
-        return Invoice.getAllOpen(params).$promise;
+        return Invoice.getAllOpen(params).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       payInvoices: function(payments) {
