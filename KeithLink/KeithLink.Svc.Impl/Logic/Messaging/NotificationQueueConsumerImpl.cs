@@ -55,8 +55,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
                     eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
                 }
+
+                System.Threading.Thread.Sleep(TWO_SECOND_DELAY);
             }
-            System.Threading.Thread.Sleep(TWO_SECOND_DELAY);
         }
 
         private void ConsumeMessages()
