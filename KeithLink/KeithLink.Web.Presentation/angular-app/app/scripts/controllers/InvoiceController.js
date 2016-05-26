@@ -119,7 +119,7 @@ angular.module('bekApp')
   }
 
   function setInvoices(data) {
-    $scope.invoices = data.pagedresults.results
+    $scope.invoices = data.pagedresults.results;
     if($scope.invoices.length){
       $scope.invoices.forEach(function(invoice){
         invoice.failedBatchValidation = false;       
