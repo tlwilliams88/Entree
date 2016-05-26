@@ -178,7 +178,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                 {
                     while (DateTime.Now.Hour < 5)
                     {
-                        _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, asleep");
+                        //_log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, asleep");
                         System.Threading.Thread.Sleep(60000);
                     }
                 }
@@ -187,7 +187,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                 if (DateTime.Now.Minute == 0)
                 //if (true) // testing only
                 {
-                    _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run");
+                    //_log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run");
                     try {
                         string subject;
                         string body;
@@ -200,7 +200,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                         sbMsgBody.Append( body );
 
                         if ((subject != null) && (subject.Length > 0) && (body != null) && (body.Length > 0)) {
-                            _log.WriteErrorLog("BEK: " + subject + ";" + body );
+                            //_log.WriteErrorLog("BEK: " + subject + ";" + body );
                             _emailClient.SendEmail(Configuration.FailureEmailAdresses,null,null, "BEK: " + subject, body);
                         }
                     } catch (Exception ex) {

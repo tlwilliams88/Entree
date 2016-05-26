@@ -32,6 +32,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Threading;
+using KeithLink.Svc.Impl.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -237,7 +239,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public void ListenForQueueMessages() {
-            this.queueListenerTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
+            this.queueListenerTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask(),
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach, 
+                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_CONFIRMATIONS));
         }
 
         private void ListenForQueueMessagesInTask() {

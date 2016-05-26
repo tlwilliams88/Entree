@@ -20,6 +20,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
+using KeithLink.Svc.Impl.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class SpecialOrderLogicImpl : ISpecialOrderLogic {
@@ -51,11 +53,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #region methods
         // queue listener methods
         public void ListenForQueueMessages() {
-            _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
+            _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask(),
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach, 
+                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_SPECIALORDERUPDATES));
         }
 
         private void ListenForQueueMessagesInTask() {
-            while(_keepListening) {
+            while (_keepListening) {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
                 try {

@@ -14,11 +14,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core;
+using System.Threading;
+using KeithLink.Svc.Impl.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class NotificationQueueConsumerImpl : INotificationQueueConsumer {
         #region attributes
-        private const int TWO_SECOND_DELAY = 2000;
+        private const int TWO_SECOND_DELAY = 10000;
 
         private Task listenForQueueMessagesTask;
         private bool doListenForMessagesInTask = true;
@@ -40,23 +42,27 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
         #region methods
         public void ListenForNotificationMessagesOnQueue() {
-            listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTaskForUsers());
+            listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTaskForUsers(), 
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach, 
+                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_NOTIFICATIONS) );
         }
 
         protected void ListenToQueueInTaskForUsers() {
             while (doListenForMessagesInTask) {
                 consumingMessages = true;
 
-                try {
+                try
+                {
                     ConsumeMessages();
-                } catch (Exception ex) {
+                }
+                catch (Exception ex) {
                     consumingMessages = false;
 					KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, subject: "Exception processing Notification in Queue Service");
 
                     eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
                 }
+                System.Threading.Thread.Sleep(TWO_SECOND_DELAY);
             }
-            System.Threading.Thread.Sleep(TWO_SECOND_DELAY);
         }
 
         private void ConsumeMessages()

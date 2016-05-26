@@ -825,6 +825,7 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
+    <Compile Include="Tasks\LimitedConcurrencyLevelTaskScheduler.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">

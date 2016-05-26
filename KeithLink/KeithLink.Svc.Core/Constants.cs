@@ -8,6 +8,10 @@ namespace KeithLink.Svc.Core
 {
     public class Constants
     {
+        public const int LIMITEDCONCURRENCYTASK_ORDERUPDATES = 4;
+        public const int LIMITEDCONCURRENCYTASK_SPECIALORDERUPDATES = 2;
+        public const int LIMITEDCONCURRENCYTASK_CONFIRMATIONS = 4;
+        public const int LIMITEDCONCURRENCYTASK_NOTIFICATIONS = 6;
         public static string ReturnSizeQueryStringParam { get { return "size"; } }
         public static string ReturnFromQueryStringParam { get { return "from"; } }
 
