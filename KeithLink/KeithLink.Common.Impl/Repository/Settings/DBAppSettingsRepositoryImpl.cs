@@ -30,31 +30,30 @@ namespace KeithLink.Common.Impl.Repository.Settings
         private const string SPNAME_GETALL = "[Configuration].[ReadAppSettings]";
         private const string SPNAME_UPDATE = "[Configuration].[SaveAppSetting]";
 
-        static DBAppSettingsRepositoryImpl _instance = new DBAppSettingsRepositoryImpl();
         private IEventLogRepository _log;
-        private Dictionary<string, string> dict;
-        private StringBuilder uniqueValue;
-        private DateTime uniqueCheck;
         #endregion
 
         #region ctor
         public DBAppSettingsRepositoryImpl() {
             _log = new EventLogRepositoryImpl(Configuration.ApplicationName);
             
-            Init();
+            if(AppSettingsDictionary.UniqueValue == null)
+            {
+                Init();
+            }
         }
         #endregion
 
         #region methods
         private void CheckForAppSettingsChange() {
             try {
-                TimeSpan t = DateTime.Now - uniqueCheck;
+                TimeSpan t = DateTime.Now - AppSettingsDictionary.UniqueCheck;
                 if(t.TotalSeconds > int.Parse(Constants.DBAPPSETTINGS_TIME_THRESHOLD_MINUTES)) {
-                    uniqueCheck = DateTime.Now;
+                    AppSettingsDictionary.UniqueCheck = DateTime.Now;
 
                     Setting updateFlag = Read(KEY_UPDATEFLAG);
 
-                    if(updateFlag.Value.Equals(uniqueValue.ToString(), StringComparison.InvariantCultureIgnoreCase) == false) {
+                    if(updateFlag.Value.Equals(AppSettingsDictionary.UniqueValue.ToString(), StringComparison.InvariantCultureIgnoreCase) == false) {
                         Init();
                     }
                 }
@@ -64,18 +63,14 @@ namespace KeithLink.Common.Impl.Repository.Settings
         }
 
         public static DBAppSettingsRepositoryImpl GetInstance() {
-            if(_instance == null) {
-                _instance = new DBAppSettingsRepositoryImpl();
-            }
-
-            return _instance;
+            return new DBAppSettingsRepositoryImpl();
         }
 
         private string GetInstanceValue(string key, string defaultval) {
             CheckForAppSettingsChange();
 
             try {
-                string val = dict[key];
+                string val = AppSettingsDictionary.GetSetting(key);
 
                 if (val == null) return defaultval;
 
@@ -95,22 +90,24 @@ namespace KeithLink.Common.Impl.Repository.Settings
             try {
                 _log.WriteInformationLog("Initializing DBAppSettingsRepository");
 
+                AppSettingsDictionary.Reset();
+
                 List<Setting> settings = ReadAll();
 
-                dict = settings.Where(s => s.Key.Equals(KEY_UPDATEFLAG, StringComparison.InvariantCultureIgnoreCase) == false )
-                               .ToDictionary(s => s.Key, s => s.Value);
+                AppSettingsDictionary.AddSettings(settings.Where(s => s.Key.Equals(KEY_UPDATEFLAG, StringComparison.InvariantCultureIgnoreCase) == false )
+                               .ToDictionary(s => s.Key, s => s.Value));
 
                 Setting updateFlag = settings.Where(s => s.Key.Equals(KEY_UPDATEFLAG, StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
 
                 if(updateFlag != null) {
-                    uniqueValue = new StringBuilder(updateFlag.Value);
+                    AppSettingsDictionary.UniqueValue = new StringBuilder(updateFlag.Value);
                 } else {
-                    uniqueValue = new StringBuilder(string.Empty);
+                    AppSettingsDictionary.UniqueValue = new StringBuilder(string.Empty);
                 }
 
-                uniqueCheck = DateTime.Now;
+                AppSettingsDictionary.UniqueCheck = DateTime.Now;
 
-                _log.WriteInformationLog(" DBAppSettingsRepository, " + dict.Count + " settings");
+                _log.WriteInformationLog(" DBAppSettingsRepository, " + AppSettingsDictionary.CountSettings + " settings");
                 _log.WriteInformationLog("Init DBAppSettingsRepository Complete");
             } catch(Exception ex) {
                 _log.WriteErrorLog("Failed to initialize DBAppSettingsRepository", ex);
