@@ -1,26 +1,30 @@
 <div page-header-bar>
   <div header-message>
     Configuration Settings
+    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="saveConfig(configSettings)" ng-disabled="!isverified" ng-show="verifySettings">
+    Save</button>
+    <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" ng-click="verifySettings = !verifySettings" ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine"  ng-show="!verifySettings">Verify</button>
   </div>
-  <div header-buttons></div>
-  <button class="btn btn-lg btn-primary pull-right" 
-    ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine" 
-    ng-click="verifySettings = !verifySettings" type="button" ng-show="!verifySettings">
-    Verify
-  </button>
-  <button class="btn btn-lg btn-primary pull-right"
-    ng-disabled="!isverified"
-    ng-click="saveConfig(configSettings)" type="button" ng-show="verifySettings">
-    Save
-  </button>
-  <label ng-if="verifySettings" class="text-red pull-right" style="padding:10px 20px 0 0;">
-    Please verify your changes below by checking the checkbox
-  </label>
+  <div header-buttons>
+    <label ng-if="verifySettings" class="text-red pull-right-sm" style="padding:10px 20px 0 0;">
+      Please verify your changes below by checking the checkbox
+    </label>
+    <button class="btn-lg btn btn-danger pull-right-sm hidden-print" 
+      ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine" 
+      ng-click="verifySettings = !verifySettings" type="button" ng-show="!verifySettings">
+      Verify
+    </button>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print"
+      ng-disabled="!isverified"
+      ng-click="saveConfig(configSettings)" type="button" ng-show="verifySettings">
+      Save
+    </button>
+  </div>
 </div>
 
 <div class="page-content">
   <div class="col-md-12">
-  <form name="configSettingsForm">
+  <form name="configSettingsForm" unsaved-warning-form autocomplete="off">
     <table class="table table-striped-rows table-border">
       <thead>
         <tr>
