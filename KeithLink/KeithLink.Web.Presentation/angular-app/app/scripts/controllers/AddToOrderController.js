@@ -479,9 +479,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.orderSearchTerm = '';
       $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
-        if($scope.selectedList.items.length == 1){
-          $scope.addToOrderForm.$setDirty();
-        }
         $scope.filterItems( $scope.orderSearchTerm)
         $scope.clearedWhilePristine = true;      
       }
@@ -515,21 +512,12 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       });
 
       Mousetrap.bind(['alt+z'], function(e) {
-        if($scope.selectedList.items.length == 1 && $scope.addToOrderForm.$pristine){
-          $scope.addToOrderForm.$setDirty();
-        }    
         angular.element(orderSearchForm.searchBar).focus();
       });
 
       Mousetrap.bind(['alt+o'], function(e){
         angular.element(quickOrder).focus();{
           $scope.openQuickAddModal()
-        }
-      })
-
-      angular.element(orderSearchForm.searchBar).mouseup(function(){
-        if($scope.selectedList.items.length == 1 && $scope.addToOrderForm.$pristine){
-          $scope.addToOrderForm.$setDirty();
         }
       })
 
