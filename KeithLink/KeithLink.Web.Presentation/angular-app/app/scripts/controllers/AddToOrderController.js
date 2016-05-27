@@ -511,8 +511,11 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         })
       });
 
-      Mousetrap.bind(['alt+z'], function(e) {      
-       angular.element(orderSearchForm.searchBar).focus();
+      Mousetrap.bind(['alt+z'], function(e) {
+        if($scope.selectedList.items.length == 1 && $scope.addToOrderForm.$pristine){
+          $scope.addToOrderForm.$setDirty();
+        }    
+        angular.element(orderSearchForm.searchBar).focus();
       });
 
       Mousetrap.bind(['alt+o'], function(e){
