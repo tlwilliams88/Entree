@@ -527,6 +527,12 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         }
       })
 
+      angular.element(orderSearchForm.searchBar).mouseup(function(){
+        if($scope.selectedList.items.length == 1 && $scope.addToOrderForm.$pristine){
+          $scope.addToOrderForm.$setDirty();
+        }
+      })
+
     $scope.confirmQuantity = function(type, item, value) {
 
       if((value === 0 || value === undefined || item.quantity === '') && !(item.onhand > 0) && type === 'onhand'){
