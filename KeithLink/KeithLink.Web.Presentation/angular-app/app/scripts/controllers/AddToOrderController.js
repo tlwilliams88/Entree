@@ -480,7 +480,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
         if($scope.selectedList.items.length == 1){
-          $scope.addToOrderForm.$setDirty;
+          $scope.addToOrderForm.$setDirty();
         }
         $scope.filterItems( $scope.orderSearchTerm)
         $scope.clearedWhilePristine = true;      
