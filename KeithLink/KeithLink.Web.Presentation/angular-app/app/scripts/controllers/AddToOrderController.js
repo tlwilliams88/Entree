@@ -479,6 +479,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.orderSearchTerm = '';
       $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
+        if($scope.selectedList.items.length == 1){
+          $scope.addToOrderForm.$setDirty;
+        }
         $scope.filterItems( $scope.orderSearchTerm)
         $scope.clearedWhilePristine = true;      
       }
