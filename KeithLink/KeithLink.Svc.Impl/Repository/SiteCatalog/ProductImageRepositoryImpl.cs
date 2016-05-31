@@ -20,9 +20,18 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             using (HttpClient client = new HttpClient()) {
                 StringBuilder queryString = new StringBuilder("ItemImage/GetList/");
-                queryString.Append(itemNumber);
 
-                if(!isBekItem) { queryString.Append("?BEKItem=false"); }
+                if(!isBekItem)
+                {
+                    queryString.Append("00");
+                    queryString.Append(itemNumber);
+                    queryString.Append("?BEKItem=false");
+                }
+                else
+                {
+                    queryString.Append(itemNumber);
+
+                }
 
                 Uri multiDocsUri = new Uri(Configuration.MultiDocsUrl);
                 Uri endPoint = new Uri (multiDocsUri, queryString.ToString());
