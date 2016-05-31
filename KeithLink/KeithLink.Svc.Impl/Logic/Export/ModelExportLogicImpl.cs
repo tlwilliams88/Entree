@@ -690,7 +690,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 var propertyName = config.Field.Split('.');
 
                 if (propertyName.Length == 1)
-                {
+                { // fix in general for exports; this adds correction in pricing to both text-based and excel-based exports
                     ExportModelConfiguration thisConfig = new ExportModelConfiguration()
                     { // just a shallow copy
                         Field = config.Field,

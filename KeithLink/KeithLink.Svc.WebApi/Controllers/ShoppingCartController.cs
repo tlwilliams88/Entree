@@ -197,7 +197,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         /// <param name="cartId"></param>
         /// <param name="exportRequest">Export options</param>
-        /// <returns></returns>
+        /// <returns> </returns>
         [HttpPost]
         [ApiKeyedRoute("cart/export/{cartId}")]
         public HttpResponseMessage ExportCartDetail(Guid cartId, ExportRequestModel exportRequest)
@@ -225,7 +225,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// Retrieve export options for a specific cart
         /// </summary>
         /// <param name="cartId"></param>
-        /// <returns></returns>
+        /// <returns> </returns>
         [HttpGet]
         [ApiKeyedRoute("cart/export/{cartId}")]
         public Models.OperationReturnModel<ExportOptionsModel> ExportCartDetail(Guid cartId)

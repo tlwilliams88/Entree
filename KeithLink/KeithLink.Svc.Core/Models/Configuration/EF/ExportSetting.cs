@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Core.Models.Configuration.EF
 		ItemUsage,
 		PendingTransactions,
 		MarketingPreferences,
-        CartDetail
+        CartDetail 
     }
 
     public class ExportSetting: BaseEFModel

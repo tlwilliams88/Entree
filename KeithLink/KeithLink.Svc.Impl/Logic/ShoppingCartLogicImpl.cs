@@ -352,7 +352,7 @@ namespace KeithLink.Svc.Impl.Logic
                 int pack;
                 if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
                 if (item.PackSize.IndexOf("/") > -1)
-                {
+                { // added to aid exporting separate pack and size on cart export
                     item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
                 }
 
