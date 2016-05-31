@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.ShoppingCart
 {
 	[DataContract(Name="ShoppingCartItem")]
-	public class ShoppingCartItem: BaseProductInfo, IExportableModel
+	public class ShoppingCartItem: BaseProductInfo, IExportableModel 
     {
 		[DataMember(Name = "cartitemid")]
 		public Guid CartItemId { get; set; }
