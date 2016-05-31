@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Impl.Tasks;
 
 namespace KeithLink.Svc.Windows.CatalogService
 {
@@ -75,7 +76,9 @@ namespace KeithLink.Svc.Windows.CatalogService
                 processImagesRunning = true;
                 unfiImagesScope = container.BeginLifetimeScope();
                 _unfiImageProcessor = unfiImagesScope.Resolve<IExternalImageProcessorUnfi>();
-                processImagesTask = Task.Factory.StartNew(() => _unfiImageProcessor.StartProcessAllImages());
+                processImagesTask = Task.Factory.StartNew(() => _unfiImageProcessor.StartProcessAllImages(),
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach,
+                new LimitedConcurrencyLevelTaskScheduler(3));
                 processImagesRunning = false;
             }
 
