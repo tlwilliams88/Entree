@@ -98,7 +98,7 @@ angular.module('bekApp')
       }
     }
     
-        // combine cart and list items and total their quantities
+    // combine cart and list items and total their quantities
     function getCombinedCartAndListItems(cartItems, listItems) {    
       var items = angular.copy(cartItems.concat(listItems));
       // combine quantities if itemnumber is a duplicate
@@ -126,7 +126,7 @@ angular.module('bekApp')
       });
         // remove items with 0 quantity
         newCartItems = $filter('filter')(newCartItems, function(item) {
-        return item.quantity > 0;
+        return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'));
       });
       return newCartItems;
     }
@@ -858,7 +858,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       var invalidItemFound = false;
 
       updatedCart.items.forEach(function(cartitem){
-        if (!cartitem.extPrice && !(cartitem.extPrice > 0)){
+        if (!cartitem.extPrice && !(cartitem.extPrice > 0) && !(cartitem.quantity == 0 && cartitem.status && cartitem.status.toUpperCase() === 'OUT OF STOCK')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Cannot create cart. Item ' + cartitem.itemnumber +' is invalid.  Please contact DSR for more information.');
         }

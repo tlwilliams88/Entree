@@ -42,9 +42,9 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
  
-  $scope.webVersionNum = '1.5.0';
-  $scope.androidVersionNum = '1.5.0';
-  $scope.iOSVersionNum = '1.5.0';
+  $scope.webVersionNum = '1.5.4';
+  $scope.androidVersionNum = '1.5.4';
+  $scope.iOSVersionNum = '1.5.4';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
