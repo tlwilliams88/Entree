@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             // recursively create directories for saving images if they don't exist
             Directory.CreateDirectory(Configuration.CatalogServiceUnfiImagesRepo);
 
-            List<string> list = GetUnfiProductsInOurData().DistinctByUPC();
+            List<string> list = GetUnfiProductUpcsInOurData();
             _log.WriteInformationLog(" Total Unique UNFI products we have in staging is " + list.Count);
 
             // given our list of items get the list of products they have on file
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
             _log.WriteInformationLog(" Download Complete");
         }
 
-        private List<string> GetUnfiProductsInOurData()
+        private List<string> GetUnfiProductUpcsInOurData()
         {
             Dictionary<string, DataRow> dict = new Dictionary<string, DataRow>();
             // get our list of items from etl staging
@@ -55,25 +55,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
                     dict.Add(row.GetString("RetailUPC"), row);
                 }
             }
-            return dict.Keys.ToList();
-        }
-    }
-
-    public static class SpecificListExtensions
-    {
-        public static List<string> DistinctByUPC(this List<string> list)
-        {
+            // reorders the list of upcs in alphabetical list
             List<string> newList = new List<string>();
-            Dictionary<string, string> dict = new Dictionary<string, string>();
-            foreach (string upc in list)
+            newList.AddRange(dict.Keys.ToList());
+            Dictionary<string, string> dic = new Dictionary<string, string>();
+            foreach (string upc in newList)
             {
-                if (dict.ContainsKey(upc) == false)
+                if (dic.ContainsKey(upc) == false)
                 {
-                    dict.Add(upc, upc);
+                    dic.Add(upc, upc);
                 }
             }
-            newList.AddRange(dict.OrderBy(d => d.Key).Select(d => d.Key).ToList());
-            return newList;
+            return dict.OrderBy(d => d.Key).Select(d => d.Key).ToList();
         }
     }
 }

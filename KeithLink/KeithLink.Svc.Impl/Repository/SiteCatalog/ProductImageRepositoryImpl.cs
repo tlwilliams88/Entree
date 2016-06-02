@@ -22,7 +22,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 StringBuilder queryString = new StringBuilder("ItemImage/GetList/");
 
                 if(!isBekItem)
-                {
+                { // the UPC we have on file is a gtin12; the format the image provider saved the images as is gtin14
+                    // so we prepend 00 on the front of the number
                     queryString.Append("00");
                     queryString.Append(itemNumber);
                     queryString.Append("?BEKItem=false");
