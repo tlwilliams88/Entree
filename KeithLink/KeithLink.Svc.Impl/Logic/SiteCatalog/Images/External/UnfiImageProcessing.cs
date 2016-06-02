@@ -56,16 +56,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External
                 }
             }
             // reorders the list of upcs in alphabetical list
-            List<string> newList = new List<string>();
-            newList.AddRange(dict.Keys.ToList());
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            foreach (string upc in newList)
-            {
-                if (dic.ContainsKey(upc) == false)
-                {
-                    dic.Add(upc, upc);
-                }
-            }
             return dict.OrderBy(d => d.Key).Select(d => d.Key).ToList();
         }
     }
