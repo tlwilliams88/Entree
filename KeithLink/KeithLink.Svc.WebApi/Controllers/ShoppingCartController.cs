@@ -160,9 +160,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                ret.ReasonPhrase = ex.Message;
                 _log.WriteErrorLog("List Export", ex);
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             return ret;
         }

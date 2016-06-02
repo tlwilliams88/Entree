@@ -110,9 +110,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch(Exception ex)
             {
-                retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.InternalServerError };
-                retVal.ReasonPhrase = ex.Message;
                 _log.WriteErrorLog("ExportItemUsage", ex);
+                retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.InternalServerError };
             }
             return retVal;
         }
@@ -168,9 +167,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.InternalServerError };
-                retVal.ReasonPhrase = ex.Message;
                 _log.WriteErrorLog("GenerateInventoryValuationReport", ex);
+                retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.InternalServerError };
             }
             return retVal;
         }
