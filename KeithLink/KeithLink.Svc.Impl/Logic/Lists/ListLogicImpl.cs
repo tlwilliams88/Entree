@@ -908,19 +908,29 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         private void ApplyDefaultListSort(UserProfile user, ListModel listClone)
         {
-            string setting = _settingsRepo.ReadByUser(user.UserId)
+            StringBuilder setting = new StringBuilder();
+            setting.Append(_settingsRepo.ReadByUser(user.UserId)
                                           .Where(s => s.Key.Equals("sortpreferences", StringComparison.CurrentCultureIgnoreCase))
                                           .Select(s => s.Value)
-                                          .FirstOrDefault();
-            if (setting != null && setting.IndexOf("lis", StringComparison.CurrentCultureIgnoreCase) > -1)
+                                          .FirstOrDefault());
+            if (setting.Length > 0 && setting.ToString().IndexOf("lis", StringComparison.CurrentCultureIgnoreCase) > -1)
             {
-                setting = setting.Substring(setting.IndexOf("lis", StringComparison.CurrentCultureIgnoreCase) + 3);
-                if (setting.IndexOf("ato", StringComparison.CurrentCultureIgnoreCase) > -1)
                 {
-                    setting = setting.Substring(0, setting.IndexOf("ato", StringComparison.CurrentCultureIgnoreCase));
+                    string remstr = setting.ToString().Substring(setting.ToString().IndexOf("lis", StringComparison.CurrentCultureIgnoreCase), 
+                                                                 setting.ToString().IndexOf("lis", StringComparison.CurrentCultureIgnoreCase) + 3);
+                    setting.Replace(remstr, "");
                 }
-                setting = ListSortHelper.GetSort(setting);
-                listClone.Items = ListSortHelper.SortOrderItems(setting, listClone.Items);
+                if (setting.ToString().IndexOf("ato", StringComparison.CurrentCultureIgnoreCase) > -1)
+                {
+                    setting.Length = setting.ToString().IndexOf("ato", StringComparison.CurrentCultureIgnoreCase);
+                }
+                if (setting.Length > 0) // if user has setup a default sort before and deleted it, or has no default sort yet, we
+                                        // need this if to handle that
+                {
+                    string realsort = ListSortHelper.GetSort(setting.ToString());
+                    setting.Clear().Append(realsort);
+                    listClone.Items = ListSortHelper.SortOrderItems(setting.ToString(), listClone.Items);
+                }
             }
         }
 

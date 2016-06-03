@@ -560,6 +560,24 @@ angular.module('bekApp')
       }
     };
 
+    $scope.infiniteScrollLoadMore = function() {
+      
+      if(document.activeElement){
+        document.activeElement.blur();
+      }
+
+      if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
+        return;
+      }
+      var sortfieldholder = $scope.sortField;
+      $scope.itemIndex += $scope.itemsPerPage;
+      loadProducts(true).then(function(){
+        if(sortfieldholder === 'itemnumber' && $state.params.catalogType != 'BEK'){
+          $scope.UNFISortByItemNumber(!$scope.itemNumberDesc);
+        }
+      });      
+    };
+
     $scope.toggleSelection = function(facetList, selectedFacet) {
       $scope.noFiltersSelected = false;
       $scope.itemsPerPage = 50;

@@ -79,6 +79,7 @@ angular.module('bekApp')
           }
           case key.down:
             case key.enter: {
+            e.preventDefault();
             moveTo = getNextTabstop(row);
             break;
           }

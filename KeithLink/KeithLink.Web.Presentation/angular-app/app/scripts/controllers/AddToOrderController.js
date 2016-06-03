@@ -511,8 +511,8 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         })
       });
 
-      Mousetrap.bind(['alt+z'], function(e) {      
-       angular.element(orderSearchForm.searchBar).focus();
+      Mousetrap.bind(['alt+z'], function(e) {
+        angular.element(orderSearchForm.searchBar).focus();
       });
 
       Mousetrap.bind(['alt+o'], function(e){
