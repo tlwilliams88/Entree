@@ -719,7 +719,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     listItem.SellSheet = prod.SellSheet;
                     listItem.CatchWeight = prod.CatchWeight;
                     listItem.ItemClass = prod.ItemClass;
-                    listItem.CategoryId = prod.CategoryId;
+                    listItem.CategoryCode = prod.CategoryCode;
+                    listItem.SubCategoryCode = prod.SubCategoryCode;
                     listItem.CategoryName = prod.CategoryName;
                     listItem.UPC = prod.UPC;
                     listItem.VendorItemNumber = prod.VendorItemNumber;

@@ -762,7 +762,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.Description = oProd._source.description;
             p.Cases = oProd._source.cases;
             p.ExtendedDescription = string.Empty;
-            p.CategoryId = oProd._source.categoryid;
+            p.CategoryCode = oProd._source.parentcategoryid;
+            p.SubCategoryCode = oProd._source.categoryid;
             p.ReplacedItem = oProd._source.replaceditem;
             p.ReplacementItem = oProd._source.replacementitem;
             p.ChildNutrition = oProd._source.childnutrition;

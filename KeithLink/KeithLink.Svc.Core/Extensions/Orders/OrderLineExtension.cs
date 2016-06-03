@@ -32,7 +32,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             retVal.CatchWeight = value.CatchWeight;
             retVal.TempZone = value.TempZone;
             retVal.ItemClass = value.ItemClass;
-            retVal.CategoryId = value.CategoryId;
+            retVal.CategoryCode = value.CategoryCode;
+            retVal.SubCategoryCode = value.SubCategoryCode;
             retVal.CategoryName = value.CategoryName;
             retVal.UPC = value.UPC;
             retVal.VendorItemNumber = value.VendorItemNumber;
