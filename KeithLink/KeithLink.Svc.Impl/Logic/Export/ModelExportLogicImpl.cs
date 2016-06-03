@@ -489,12 +489,12 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 switch (fieldName)
                 {
-                    case "Name":
-                    case "Brand":
-                    case "Class":
-                    case "ManufacturerName":
-                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                        break;
+                    //case "Name": // they don't want wrapped cells per danny
+                    //case "Brand":
+                    //case "Class":
+                    //case "ManufacturerName":
+                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                    //    break;
                     case "Pack":
                     case "TotalQuantityOrdered":
                     case "TotalQuantityShipped":
@@ -508,14 +508,14 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 switch (fieldName)
                 {
-                    case "Name":
-                    case "Brand":
-                    case "ItemClass":
-                    case "label":
-                    case "Category":
-                    case "Notes":
-                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                        break;
+                    //case "Name": // they don't want wrapped cells per danny
+                    //case "Brand":
+                    //case "ItemClass":
+                    //case "label":
+                    //case "Category":
+                    //case "Notes":
+                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                    //    break;
                     case "Pack":
                     case "CasePrice":
                     case "PackagePrice":
@@ -528,11 +528,11 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 switch (fieldName)
                 {
-                    case "Name":
-                    case "BrandExtendedDescription":
-                    case "Size":
-                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                        break;
+                    //case "Name": // they don't want wrapped cells per danny
+                    //case "BrandExtendedDescription":
+                    //case "Size":
+                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                    //    break;
                     case "Pack":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
@@ -547,13 +547,13 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 switch (fieldName)
                 {
-                    case "Name":
-                    case "ItemClass":
-                    case "BrandExtendedDescription":
-                    case "Notes":
-                    case "Status":
-                        styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                        break;
+                    //case "Name": // they don't want wrapped cells per danny
+                    //case "ItemClass":
+                    //case "BrandExtendedDescription":
+                    //case "Notes":
+                    //case "Status":
+                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
+                    //    break;
                     case "Pack":
                     case "QuantityOrdered":
                     case "QantityShipped":
@@ -570,11 +570,11 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                 switch (fieldName)
                 {
-                    case "CreatedDate":
-                    case "DeliveryDate":
-                    case "ItemCount":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_CELL;
-                        break;
+                    //case "CreatedDate": // they don't want wrapped cells per danny
+                    //case "DeliveryDate":
+                    //case "ItemCount":
+                    //    styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_CELL;
+                    //    break;
                     case "OrderTotal":
                         styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
                         break;
