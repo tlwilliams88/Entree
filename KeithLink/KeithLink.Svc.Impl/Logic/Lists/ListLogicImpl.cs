@@ -844,8 +844,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 {
                     setting = setting.Substring(0, setting.IndexOf("ato", StringComparison.CurrentCultureIgnoreCase));
                 }
-                setting = ListSortHelper.GetSort(setting);
-                listClone.Items = ListSortHelper.SortOrderItems(setting, listClone.Items);
+                if (setting.Length > 0) // if user has setup a default sort before and deleted it, or has no default sort yet, we
+                                        // need this if to handle that
+                {
+                    setting = ListSortHelper.GetSort(setting);
+                    listClone.Items = ListSortHelper.SortOrderItems(setting, listClone.Items);
+                }
             }
         }
 
