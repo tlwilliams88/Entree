@@ -40,7 +40,10 @@ angular.module('bekApp')
         $scope.loadingResults = false;
         $scope.totalCost = 0;
         angular.forEach(items, function(item, index) {
-            $scope.totalCost += Number(item.totalcost);
+          var itemCost = Number(item.totalcost);
+          if($.isNumeric(itemCost)){
+            $scope.totalCost += itemCost;
+          }
         });
         return $scope.totalCost;
       });
