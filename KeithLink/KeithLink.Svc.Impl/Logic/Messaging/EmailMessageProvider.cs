@@ -6,6 +6,7 @@ using KeithLink.Svc.Core.Models.Messaging.Provider;
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class EmailMessageProvider : IMessageProvider {
@@ -23,16 +24,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
         #region methods
         public void SendMessage(List<Recipient> recipients, Message message) {
-            if(recipients == null)
+            if(recipients == null || recipients.Count == 0)
                 return;
 
-            foreach(var recipient in recipients) {
+            Parallel.ForEach(recipients, (recipient) => {
                 try {
                     emailClient.SendEmail(new List<string>() { recipient.ProviderEndpoint }, null, null, message.MessageSubject, message.MessageBody, message.BodyIsHtml);
                 } catch(Exception ex) {
                     eventLogRepository.WriteErrorLog("EmailMessageProvider: Error sending email", ex);
                 }
-            }
+            });
         }
         #endregion
     }
