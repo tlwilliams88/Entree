@@ -5,7 +5,7 @@ using CommerceServer.Core.Profiles;
 // KeithLink
 using KeithLink.Common.Core;
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.ETL;
@@ -114,15 +114,15 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly IEventLogRepository eventLog;
         private readonly IUserProfileLogic userProfileLogic;
 
-		private readonly IInternalListLogic listLogic;
-        private readonly IInternalMessagingLogic messageLogic;
+		private readonly IListLogic listLogic;
+        private readonly IMessagingLogic messageLogic;
         
         #endregion
 
         #region constructor
-        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository,
-            IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
-			IEventLogRepository eventLog, IUserProfileLogic userProfile, IInternalListLogic listLogic, IInternalMessagingLogic messageLogic)
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
+			                    IEventLogRepository eventLog, IUserProfileLogic userProfile, IListLogic listLogic, 
+                                IMessagingLogic messageLogic)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
@@ -132,10 +132,142 @@ namespace KeithLink.Svc.Impl.ETL
 			this.listLogic = listLogic;
             this.messageLogic = messageLogic;
         }
-        
         #endregion
-        
+
         #region methods
+        private MSCommerceCatalogCollection2Catalog[] BuildCatalogs() {
+            var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
+            var dataTable = stagingRepository.ReadAllBranches();
+
+            foreach(DataRow row in dataTable.Rows) {
+                var newCatalog = new MSCommerceCatalogCollection2Catalog() { name = row.GetString("BranchId"), productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
+                newCatalog.DisplayName = CreateDisplayName(row.GetString("Description"));
+
+                newCatalog.Category = GenerateCategories();
+                newCatalog.Product = GenerateProducts(row.GetString("BranchId"));
+                catalogs.Add(newCatalog);
+            }
+
+            return catalogs.ToArray();
+        }
+
+        private MSCommerceCatalogCollection2Catalog[] BuildUNFICatalogs() {
+            var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
+
+            var warehouses = stagingRepository.ReadDistinctUNFIWarehouses();
+
+            foreach(var warehouse in warehouses) {
+                var newCatalog = new MSCommerceCatalogCollection2Catalog() { name = string.Format("unfi_{0}", warehouse), productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
+                newCatalog.DisplayName = CreateDisplayName(string.Format("UNFI_{0}", warehouse));
+
+                newCatalog.Category = GenerateUNFICategories();
+                newCatalog.Product = GenerateUNFIProducts(warehouse);
+                catalogs.Add(newCatalog);
+            }
+
+            return catalogs.ToArray();
+        }
+
+        private static DisplayName[] CreateDisplayName(string value) {
+            return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
+        }
+
+        private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories() {
+            List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
+
+            var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
+
+
+
+            var dataTable = stagingRepository.ReadParentCategories();
+            var childTable = stagingRepository.ReadSubCategories();
+
+            foreach(DataRow cat in dataTable.Rows) {
+                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = cat.GetString("CategoryId"), Definition = "Category" };
+                newSubCat.DisplayName = CreateDisplayName(cat.GetString("CategoryName"));
+                categories.Add(newSubCat);
+            }
+
+            foreach(DataRow subCat in childTable.Rows) {
+
+                if(prefixesToExclude.Contains(subCat.GetString("CategoryId").Substring(0, 2)))
+                    continue;
+
+                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("CategoryId"), Definition = "Category" };
+                newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
+                newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
+                categories.Add(newSubCat);
+
+
+            }
+
+            return categories.ToArray();
+        }
+
+        private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts(string branchId) {
+            var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
+            var itemTable = stagingRepository.ReadItems(branchId);
+            var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
+
+            foreach(DataRow row in itemTable.Rows) {
+                if(prefixesToExclude.Contains(row.GetString("CategoryId").Substring(0, 2)))
+                    continue;
+
+                var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ItemId"), Definition = "Item" };
+                newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Name") } };
+                newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("CategoryId"), rank = "0" } };
+                newProd.listprice = "0";
+                products.Add(newProd);
+            }
+
+            return products.ToArray();
+        }
+
+        private MSCommerceCatalogCollection2CatalogCategory[] GenerateUNFICategories() {
+            List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
+
+            var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
+
+
+
+            var dataTable = stagingRepository.ReadUNFIItems();
+            DataView dataView = new DataView(dataTable);
+            var parentCategories = dataView.ToTable(true, "Category");
+            var childCategories = dataView.ToTable(true, "Category", "Subgroup");
+
+            foreach(DataRow cat in parentCategories.Rows) {
+                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = cat.GetString("Category"), Definition = "Category" };
+                newSubCat.DisplayName = CreateDisplayName(cat.GetString("Category"));
+                categories.Add(newSubCat);
+            }
+
+            foreach(DataRow subCat in childCategories.Rows) {
+                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("Subgroup"), Definition = "Category" };
+                newSubCat.DisplayName = CreateDisplayName(subCat.GetString("Subgroup"));
+                newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = subCat.GetString("Category") } };
+                categories.Add(newSubCat);
+
+
+            }
+
+            return categories.ToArray();
+        }
+
+        private MSCommerceCatalogCollection2CatalogProduct[] GenerateUNFIProducts(string warehouse) {
+            var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
+            var itemTable = stagingRepository.ReadUNFIItems(warehouse);
+
+
+            foreach(DataRow row in itemTable.Rows) {
+                var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ProductNumber"), Definition = "Item" };
+                newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Description") } };
+                newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("Subgroup"), rank = "0" } };
+                newProd.listprice = "0";
+                products.Add(newProd);
+            }
+
+            return products.ToArray();
+        }
 
         public void ImportCatalog()
         {
@@ -202,164 +334,6 @@ namespace KeithLink.Svc.Impl.ETL
 				eventLog.WriteErrorLog(String.Format("ETL: Error Importing catalog -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
 			}
 		}
-
-        #endregion
-
-        #region helper methods
-
-
-		private MSCommerceCatalogCollection2Catalog[] BuildUNFICatalogs()
-		{
-			var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
-
-			var warehouses = stagingRepository.ReadDistinctUNFIWarehouses();
-
-			foreach (var warehouse in warehouses)
-			{
-				var newCatalog = new MSCommerceCatalogCollection2Catalog() { name = string.Format("unfi_{0}",warehouse), productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
-				newCatalog.DisplayName = CreateDisplayName(string.Format("UNFI_{0}",warehouse));
-
-				newCatalog.Category = GenerateUNFICategories();
-				newCatalog.Product = GenerateUNFIProducts(warehouse);
-				catalogs.Add(newCatalog);
-			}
-
-			return catalogs.ToArray();
-		}
-
-		private MSCommerceCatalogCollection2CatalogCategory[] GenerateUNFICategories()
-		{
-			List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
-
-			var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
-
-
-
-			var dataTable = stagingRepository.ReadUNFIItems();
-			DataView dataView = new DataView(dataTable);
-			var parentCategories = dataView.ToTable(true, "Category");
-			var childCategories = dataView.ToTable(true, "Category", "Subgroup");
-
-			foreach (DataRow cat in parentCategories.Rows)
-			{
-				var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = cat.GetString("Category"), Definition = "Category" };
-				newSubCat.DisplayName = CreateDisplayName(cat.GetString("Category"));
-				categories.Add(newSubCat);
-			}
-
-			foreach (DataRow subCat in childCategories.Rows)
-			{
-				var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("Subgroup"), Definition = "Category" };
-				newSubCat.DisplayName = CreateDisplayName(subCat.GetString("Subgroup"));
-				newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = subCat.GetString("Category") } };
-				categories.Add(newSubCat);
-
-
-			}
-
-			return categories.ToArray();
-		}
-
-		private MSCommerceCatalogCollection2CatalogProduct[] GenerateUNFIProducts(string warehouse)
-		{
-			var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
-			var itemTable = stagingRepository.ReadUNFIItems(warehouse);
-			
-
-			foreach (DataRow row in itemTable.Rows)
-			{
-				var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ProductNumber"), Definition = "Item" };
-				newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Description") } };
-				newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("Subgroup"), rank = "0" } };
-				newProd.listprice = "0";
-				products.Add(newProd);
-			}
-
-			return products.ToArray();
-		}
-
-
-
-        private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()
-        {
-            var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
-            var dataTable = stagingRepository.ReadAllBranches();
-
-            foreach (DataRow row in dataTable.Rows)
-            {
-                var newCatalog = new MSCommerceCatalogCollection2Catalog() { name = row.GetString("BranchId"), productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
-                newCatalog.DisplayName = CreateDisplayName(row.GetString("Description"));
-
-                newCatalog.Category = GenerateCategories();
-                newCatalog.Product = GenerateProducts(row.GetString("BranchId"));
-                catalogs.Add(newCatalog);
-            }
-
-            return catalogs.ToArray();
-        }
-                
-        private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts(string branchId)
-        {
-            var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
-            var itemTable = stagingRepository.ReadItems(branchId);
-			var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
-
-            foreach (DataRow row in itemTable.Rows)
-            {
-				if(prefixesToExclude.Contains(row.GetString("CategoryId").Substring(0,2)))
-					continue;
-
-                var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ItemId"), Definition = "Item" };
-                newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Name") } };
-                newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("CategoryId"), rank = "0" } };
-				newProd.listprice = "0";
-                products.Add(newProd);
-            }
-
-            return products.ToArray();
-        }
-
-        private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories()
-        {
-            List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
-
-            var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
-            
-
-            
-            var dataTable = stagingRepository.ReadParentCategories();
-            var childTable = stagingRepository.ReadSubCategories();
-
-            foreach (DataRow cat in dataTable.Rows)
-            {
-                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = cat.GetString("CategoryId"), Definition = "Category" };
-                newSubCat.DisplayName = CreateDisplayName(cat.GetString("CategoryName"));
-                categories.Add(newSubCat);
-            }
-
-			foreach (DataRow subCat in childTable.Rows)
-			{
-
-				if (prefixesToExclude.Contains(subCat.GetString("CategoryId").Substring(0, 2)))
-					continue;
-
-				var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("CategoryId"), Definition = "Category" };
-				newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
-				newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
-				categories.Add(newSubCat);
-
-
-			}
-
-            return categories.ToArray();
-        }
-        
-        private static DisplayName[] CreateDisplayName(string value)
-        {
-            return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
-        }
-       
         #endregion  
-
     }
 }

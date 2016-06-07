@@ -29,8 +29,8 @@ headerText    : text - value displayed at the top of the export window ('Invoice
 ******/
 
 angular.module('bekApp')
-.controller('ExportModalController', ['$scope', '$filter', '$modalInstance', 'exportConfig', 'exportMethod', 'exportParams', 'headerText',
-  function ($scope, $filter, $modalInstance, exportConfig, exportMethod, exportParams, headerText) {
+.controller('ExportModalController', ['$scope', '$filter', '$modalInstance', '$analytics', 'exportConfig', 'exportMethod', 'exportParams', 'headerText', 'location',
+  function ($scope, $filter, $modalInstance, $analytics, exportConfig, exportMethod, exportParams, headerText, location) {
 
   $scope.headerText = headerText;
   $scope.selectedFields = [];
@@ -55,6 +55,8 @@ angular.module('bekApp')
   }
 
   $scope.defaultExport = function() {
+    //fix this
+    $analytics.eventTrack(location.action, {  category: location.category, label: 'Default Export' });
     var config = {
       selectedtype: $scope.exportConfig.selectedtype
       // do not set fields for default export
@@ -63,6 +65,8 @@ angular.module('bekApp')
   };
 
   $scope.customExport = function() {
+    //fix this
+    $analytics.eventTrack(location.action, {  category: location.category, label: 'Custom Export' });
     // prepare config object with user's export settings
     $scope.selectedFields.forEach(function(field, index) {
       field.selected = true;

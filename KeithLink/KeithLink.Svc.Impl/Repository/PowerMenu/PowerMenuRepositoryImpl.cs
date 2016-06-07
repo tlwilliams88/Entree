@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Http;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+
 using KeithLink.Svc.Core.Interface.PowerMenu;
 using KeithLink.Svc.Core.Models.PowerMenu;
-using KeithLink.Svc.Core.Extensions.PowerMenu;
+
+using System;
+using System.Net.Http;
 
 namespace KeithLink.Svc.Impl.Repository.PowerMenu {
     public class PowerMenuRepositoryImpl : IPowerMenuRepository {

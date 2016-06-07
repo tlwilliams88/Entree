@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Windows.OrderService {
             ServiceBase[] ServicesToRun;
                 
             ServicesToRun = new ServiceBase[] { 
-                new OrderService(AutofacContainerBuilder.BuildContainer()) 
+                new OrderService() 
             };
 
             if (Environment.UserInteractive)

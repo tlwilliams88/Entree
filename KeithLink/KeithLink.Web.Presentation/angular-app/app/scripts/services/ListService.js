@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
-    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -174,12 +174,12 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-          return List.query(params).$promise.then(function(lists) {
-            lists.forEach(function(list) {
+          return List.get(params).$promise.then(function(lists) {
+            lists.successResponse.forEach(function(list) {
               updateListPermissions(list);
             });
-            angular.copy(lists, Service.lists);
-            return lists;
+            angular.copy(lists.successResponse, Service.lists);
+            return lists.successResponse;
           });
         },
 
@@ -202,6 +202,8 @@ angular.module('bekApp')
              { 'field': 'parlevel', 'order': ''}];
              
              //Decode stored sort preferences and buils params sort object with it.
+             //A description of how this works exists on the BEK ecommerce wiki under the title: Default Sort String: Explaination
+
              if(filterObject && filterObject.length > 6){        
               var settings = []
               if(page === 'addToOrder'){
@@ -231,7 +233,9 @@ angular.module('bekApp')
         },
 
         getListsByType: function(type, params) {
-          return List.getByType({ type: type }, { params: params }).$promise;
+          return List.getByType({ type: type }, { params: params }).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         // accepts listId (guid)
@@ -246,7 +250,7 @@ angular.module('bekApp')
             params: params
           };
           return $http.get('/list/' + listId, data).then(function(response) {
-            var list = response.data;
+            var list = response.data.successResponse;
             if (!list) {
               return $q.reject('No list found.');
             }
@@ -276,7 +280,7 @@ angular.module('bekApp')
 
             Service.sortObject = params.sort;
             return $http.post('/list/' + listId, params).then(function(response) {
-              var list = response.data;
+              var list = response.data.successResponse;
               if (!list) {
                 return $q.reject('No list found.');
               }
@@ -284,6 +288,13 @@ angular.module('bekApp')
               // transform paged data
               list.itemCount = list.items.totalResults;
               list.items = list.items.results;
+              list.items.forEach(function(item){
+                if(item.onhand < 0.01){
+                  item.onhand = ''
+                } else if(item.quantity < 1){
+                    item.quantity = ''
+                }
+              })
 
               // get calculated fields
               PricingService.updateCaculatedFields(list.items);
@@ -310,7 +321,9 @@ angular.module('bekApp')
         getExportConfig: function(listId) {
           return List.exportConfig({
             listId: listId
-          }).$promise;
+          }).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         exportList: function(config, listId) {
@@ -393,9 +406,8 @@ angular.module('bekApp')
             newList.name = params.name;
           }
           else{
-            newList.name = UtilityService.generateName('List', Service.lists);
-          }
-          
+            newList.name = UtilityService.generateName('New List', Service.lists);
+          }          
           
           return newList;
         },
@@ -408,12 +420,12 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-
+          $analytics.eventTrack('Create List', {  category: 'Lists'});
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');
-            return Service.getList(response.listitemid);
+            return Service.getList(response.successResponse.listitemid);
           }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
             return $q.reject(error);
@@ -429,9 +441,9 @@ angular.module('bekApp')
             data: { options: options },
             file: file, // or list of files ($files) for html5 only
           }).then(function(response) {
-            var data = response.data;
+            var data = response.data.successResponse;
 
-            if (data.success) {
+            if (response.data.isSuccess && data.success) {
               // add new list to cache
               var list = {
                 listid: data.listid,
@@ -448,8 +460,12 @@ angular.module('bekApp')
 
               deferred.resolve(data);
             } else {
-              toaster.pop('error', null, data.errormsg);
-              deferred.reject(data.errormsg);
+              var errorMessage = response.data.errorMessage;
+              if(data && data.errormsg){
+                toaster.pop('error', null, data.errormsg);
+                errorMessage = data.errormsg;
+              }
+              deferred.reject(errorMessage);
             }
           });
 
@@ -462,6 +478,7 @@ angular.module('bekApp')
           list.message = 'Saving list...';
 
           return List.update(null, list).$promise.then(function(response) {
+            var list = response.successResponse;
             
             // update labels
             angular.forEach(list.items, function(item, index) {
@@ -472,13 +489,13 @@ angular.module('bekApp')
 
             var promise;
             if (getEntireList) {
-              promise = Service.getListWithItems(response.listid, { includePrice: false });
+              promise = Service.getListWithItems(list.listid, { includePrice: false });
             } else {
-              promise = Service.getList(response.listid, params);
+              promise = Service.getList(list.listid, params);
             }
 
             return promise.then(function(list) {
-              toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
+              toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
               return list;
             });
           }, function(error) {
@@ -529,7 +546,7 @@ angular.module('bekApp')
           return List.addItem({
             listId: listId
           }, item).$promise.then(function(response) {
-            item.listitemid = response.listitemid;
+            item.listitemid = response.successResponse.listitemid;
             item.editPosition = 0;
 
             if (!doNotDisplayMessage) {
@@ -547,7 +564,7 @@ angular.module('bekApp')
           return List.updateItem({}, item).$promise.then(function(response) {
             // TODO: add label to Service.labels if it does not exist
             // TODO: replace item in Service.lists
-            return response.data;
+            return response.data.successResponse;
           });
         },
 
@@ -635,8 +652,8 @@ angular.module('bekApp')
         // returns array of labels are strings that are found in all lists for the user
         getAllLabels: function() {
           return $http.get('/list/labels').then(function(response) {
-            angular.copy(response.data, Service.labels);
-            return response.data;
+            angular.copy(response.data.successResponse, Service.labels);
+            return response.data.successResponse;
           });
         },
 
@@ -655,6 +672,7 @@ angular.module('bekApp')
         },
 
         addItemToFavorites: function(item) {
+          $analytics.eventTrack('Add Favorite', {  category: 'Lists'});
           return Service.addItem(Service.getFavoritesList().listid, item, true);
         },
 
@@ -669,11 +687,14 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getCriticalItems().$promise.then(function(criticalLists) {
-            criticalLists.forEach(function(list) {
-              PricingService.updateCaculatedFields(list.items);
-            });
-            return criticalLists;
+          return List.getCriticalItems().$promise.then(function(resp) {
+            if(resp.successResponse){
+              resp.successResponse.forEach(function(list) {
+                PricingService.updateCaculatedFields(list.items);
+              });
+            }
+
+            return resp.successResponse;
           });
         },
 
@@ -692,7 +713,9 @@ angular.module('bekApp')
         },
 
         getRecommendedItems: function() {
-          return List.getRecommendedItems().$promise;
+          return List.getRecommendedItems().$promise.then(function(response){
+            return response.successResponse;
+          });
         },
 
         findRecommendedList: function() {
@@ -734,7 +757,7 @@ angular.module('bekApp')
 
           return List.copyList(copyListData).$promise.then(function(newLists) {
             toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
-            return newLists;
+            return newLists.successResponse;
           }, function(error) {
             toaster.pop('error', null, 'Error copying list.');
             return $q.reject(error);

@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Test.Logic.Profile {
 
         #region attributes
 
-        private ISettingsLogicImpl _settingsLogic;
+        private ISettingsLogic _settingsLogic;
         private IContainer _container;
 
         #endregion
@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Test.Logic.Profile {
         public void init() {
             _container = DependencyMap.Build();
 
-            _settingsLogic = _container.Resolve<ISettingsLogicImpl>();
+            _settingsLogic = _container.Resolve<ISettingsLogic>();
         }
 
         public ProfileSettingsTests() {

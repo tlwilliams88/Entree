@@ -39,7 +39,7 @@ angular.module('bekApp')
 
     getGroups: function(params) {
       return $http.post('/profile/accounts', params).then(function(response) {
-        return response.data;
+        return response.data.successResponse;
       });
     },
 

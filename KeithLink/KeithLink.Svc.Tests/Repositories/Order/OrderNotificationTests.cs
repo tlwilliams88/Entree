@@ -1,35 +1,10 @@
 ﻿using Autofac;
 
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Interface.Profile;
 
-using KeithLink.Common.Impl.AuditLog;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Enumerations.Order;
-using KeithLink.Svc.Core.Models.Orders;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
-using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Impl.Logic.Messaging;
-using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Logic.Profile;
-using KeithLink.Svc.Impl.Repository.Cache;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-using KeithLink.Svc.Impl.Repository.Invoices;
-using KeithLink.Svc.Impl.Repository.Messaging;
-using KeithLink.Svc.Impl.Repository.OnlinePayments;
-using KeithLink.Svc.Impl.Repository.Queue;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.Impl.Repository.Orders.History.EF;
-using KeithLink.Svc.WebApi.Repository.Messaging;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
 
 namespace KeithLink.Svc.Test.Repositories.Order
     {

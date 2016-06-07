@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $q, $modal, $stateParams, $state, toaster, reports, ProductService, PricingService, ListService, List) {
+  .controller('InventoryReportController', ['$scope', '$filter', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
+    function($scope, $filter, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
       $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
@@ -17,7 +17,9 @@ angular.module('bekApp')
       $scope.confirmQuantity = ListService.confirmQuantity;
       $scope.listsLoading = true;
       $scope.numberReportNamesToShow = 10;
-      $scope.today = moment().format('YYYY-MM-DD');
+      $scope.today = DateService.momentObject().format(Constants.dateFormat.yearMonthDayDashes);
+
+      var orderBy = $filter('orderBy');
       
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;
@@ -49,7 +51,7 @@ angular.module('bekApp')
         if(reports && reports.length > 0){
           var lastIndex = reports.length - 1;
           if($stateParams.listid){
-            if($stateParams.listid === 'newReport'){ 
+            if($stateParams.listid === 'newReport'){
             //Call save function to create new report             
               $scope.saveReport($scope.report);
               $scope.showMoreReportNames = ((lastIndex + 1) > $scope.numberReportNamesToShow) ? true : false;
@@ -169,18 +171,37 @@ angular.module('bekApp')
           $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.'
           $scope.inventoryForm.$setDirty();
           listFound.items.forEach($scope.addRow);          
-           $scope.sortTable('position', false);
+           $scope.sortTable('position', true);
         });
        
       };
 
-      $scope.sortTable = function(field, sortDescending) {
-        $scope.sortDescending = $scope.sortField === field ? !sortDescending : false;
+      $scope.sortTable = function(field, oldSortDescending) {
+        var sortDescending = !oldSortDescending;
+        if (oldSortDescending) {
+          sortDescending = false;
+        }
         $scope.sortField = field;
+        $scope.sortDescending = sortDescending;
+
+        $scope.report.items = orderBy($scope.report.items, field, sortDescending);
+        if($scope.report.items.length && !$scope.report.items[($scope.report.items.length -1)].listitemid){
+          var dummy = $scope.report.items.slice($scope.report.items.length -1, $scope.report.items.length );
+          $scope.report.items = $scope.report.items.slice(0, $scope.report.items.length -1);
+          $scope.report.items.splice(0,0,dummy[0]);
+        }
+
+        $scope.report.items.forEach(function(item, index) {
+            var itemIndex = index + 1;
+            item.position = itemIndex;
+        });
+
+        $scope.inventoryForm.$setDirty();
       };
 
-      $scope.saveReport = function(scopeReport) {
-        var report = angular.copy(scopeReport);
+      $scope.saveReport = function() {
+        // $scope.report.items.reverse();
+        var report = angular.copy($scope.report);
         var sameDayReports = [];
         if(!report.name){         
           report.name = $scope.today;
@@ -218,6 +239,7 @@ angular.module('bekApp')
         if (report.listid) {
           promise = List.update({}, report).$promise;
         } else {
+          $analytics.eventTrack('Run Inventory Valuation', {  category: 'Reports'});
           promise = List.save({ type: 'InventoryValuation' }, report).$promise;
           creatingList = true;
         }
@@ -280,6 +302,11 @@ angular.module('bekApp')
       };
 
       $scope.openExportModal = function() {
+
+        if($scope.inventoryForm.$dirty){
+          $scope.saveReport($scope.report);
+        }
+
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/inventoryreportexportmodal.html',
           controller: 'InventoryReportExportModalController',

@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart',
-    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'SessionService', 'Constants', 'UtilityService', 'DateService', 'PricingService', 'ExportService', 'Cart',
+    function ($http, $q, $upload, ENV, toaster, SessionService, Constants, UtilityService, DateService, PricingService, ExportService, Cart) {
  
     var Service = {
       
@@ -29,8 +29,9 @@ angular.module('bekApp')
       },
  
       getCartHeaders: function() {
-        return Cart.query({header: true}).$promise
-          .then(function(cartHeaders) {
+        return Cart.get({header: true}).$promise
+          .then(function(resp) {
+            var cartHeaders = resp.successResponse;
             angular.copy(cartHeaders, Service.cartHeaders);
             return cartHeaders;
           });
@@ -41,7 +42,8 @@ angular.module('bekApp')
       getCart: function(cartId) {
         return Cart.get({ 
           cartId: cartId,
-        }).$promise.then(function(cart) {
+        }).$promise.then(function(resp) {
+          var cart = resp.successResponse;
             Service.cartContainsSpecialItems = false;
             var i;
             if(cart.items && cart.items.length > 0){
@@ -113,7 +115,7 @@ angular.module('bekApp')
         } else if (typeof items === 'object') { // if one item
           newCart.items = [items];
         }
- 
+
         // TODO: move this out of here
         // set default quantity to 1
         angular.forEach(newCart.items, function (item, index) {
@@ -125,7 +127,7 @@ angular.module('bekApp')
         if (name && name !== 'New') {
           newCart.name = name;
         } else {
-          newCart.name = UtilityService.generateName('Cart', Service.cartHeaders);
+          newCart.name = UtilityService.generateName(SessionService.userProfile.firstname, Service.cartHeaders);
         }
  
         newCart.requestedshipdate = shipDate;
@@ -148,7 +150,7 @@ angular.module('bekApp')
         newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
           
-          newCart.id = response.listitemid;
+          newCart.id = response.successResponse.listitemid;
           newCart.createddate = new Date();
           newCart.itemcount = newCart.items.length;
           newCart.items = [];
@@ -167,8 +169,8 @@ angular.module('bekApp')
           data: { options: options },
           file: file, // or list of files ($files) for html5 only
         }).then(function(response) {
-          var data = response.data;
-          if (data.success) {
+          var data = response.data.successResponse;
+          if (response.data.isSuccess && data.success) {
             var cart = {
               id: data.listid,
               name: 'Imported Cart'
@@ -184,8 +186,12 @@ angular.module('bekApp')
  
             deferred.resolve(data);
           } else {
-            toaster.pop('error', null, data.errormsg);
-            deferred.reject(data.errormsg);
+            var errorMessage = response.data.errorMessage;
+            if(data && data.errormsg){
+              toaster.pop('error', null, data.errormsg);
+              errorMessage = data.errormsg;
+            }
+            deferred.reject(errorMessage);
           }
         });
  
@@ -194,13 +200,13 @@ angular.module('bekApp')
  
       validateQuickAdd: function(items) {
         return $http.post('/cart/quickadd/validate', items).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         });
       },
 
       quickAdd: function(items) {
-        return Cart.quickAdd({}, items).$promise.then(function(response) {
- 
+        return Cart.quickAdd({}, items).$promise.then(function(resp) {
+          var response = resp.successResponse;
           if (response.success) {
             return response.id;
           } else {
@@ -231,8 +237,8 @@ angular.module('bekApp')
               cartHeaderToUpdate.name = cart.name;
             }
           });
-
-          return Service.getCart(response.id);
+          var cartId = response.successResponse.id || null;
+          return Service.getCart(cartId);
         });
       },
  
@@ -252,7 +258,7 @@ angular.module('bekApp')
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
           
-          return response;
+          return response.successResponse;
         });
       },
  
@@ -285,7 +291,7 @@ angular.module('bekApp')
         }
         
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
-          return response;
+          return response.successResponse;
         });
       },
  
@@ -322,16 +328,19 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
-            var cutoffDate = moment(data.shipdates[0].cutoffdatetime).format();
-            var now = moment().tz("America/Chicago").format();
+            var dates = data.successResponse;
+            if(dates.shipdates.length > 0){
+            var cutoffDate = DateService.momentObject(dates.shipdates[0].cutoffdatetime).format();
+            var now = DateService.momentObject().tz("America/Chicago").format();
 
             var invalidSelectedDate = (now > cutoffDate) ? true : false;
             if(invalidSelectedDate){
-              data.shipdates = data.shipdates.slice(1,data.shipdates.length);
+             dates.shipdates = dates.shipdates.slice(1,dates.shipdates.length);
             }
-            angular.copy(data.shipdates, Service.shipDates);
-            deferred.resolve(data.shipdates);
-            return data.shipdates;
+            angular.copy(dates.shipdates, Service.shipDates);
+            deferred.resolve(dates.shipdates);
+            return dates.shipdates;
+        }
           }); 
         }
         return deferred.promise;
@@ -340,9 +349,9 @@ angular.module('bekApp')
       findCutoffDate: function(cart) {
         var shipDateFound;
         if (cart && cart.requestedshipdate) {
-          var selectedShipDate = moment(cart.requestedshipdate.substr(0, 10)).format('YYYY-MM-DD');
+          var selectedShipDate = DateService.momentObject(cart.requestedshipdate.substr(0, 10)).format(Constants.dateFormat.yearMonthDayDashes);
           angular.forEach(Service.shipDates, function(shipDate) {
-            if (selectedShipDate == moment(shipDate.shipdate).format('YYYY-MM-DD')) {
+            if (selectedShipDate == DateService.momentObject(shipDate.shipdate).format(Constants.dateFormat.yearMonthDayDashes)) {
               shipDateFound = shipDate;
             }
           });
@@ -357,14 +366,16 @@ angular.module('bekApp')
           var deletedCart = Service.findCartById(cartId);
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
-          return data;
+          return data.successResponse;
         });
       },
  
       setActiveCart: function(cartId) {
         return Cart.setActive({
           cartId: cartId
-        }, null).$promise;
+        }, null).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       }
     };
  

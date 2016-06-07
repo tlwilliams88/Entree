@@ -32,7 +32,7 @@ angular.module('bekApp')
           }
         };
         return $http.get('/profile/customer', data).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         });
       },
 
@@ -43,13 +43,13 @@ angular.module('bekApp')
 
       saveAccountingSettings: function(profile) {
         return $http.post('/profile/customer/viewpricing/', profile).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         });
       },
 
       getAccountBalanceInfo: function() {
         return $http.get('/profile/customer/balance').then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         }, function() {
           return $q.reject('Error getting account balance information.');
         });

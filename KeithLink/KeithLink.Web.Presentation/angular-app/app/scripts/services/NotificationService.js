@@ -17,8 +17,8 @@ angular.module('bekApp')
       
       getUnreadMessageCount: function() {
         return $http.get('/messaging/usermessages/unreadcount').then(function(response) {
-          Service.setUnreadCount(response.data);
-          return response.data;
+          Service.setUnreadCount(response.data.successResponse);
+          return response.data.successResponse;
         });
       },
 
@@ -28,7 +28,7 @@ angular.module('bekApp')
 
       getMessages: function(params) {      
         return Notification.save(params).$promise.then(function(data) {
-          data.results.forEach(function(notification) {
+          data.successResponse.results.forEach(function(notification) {
             switch (notification.notificationtype) {
               case 0: // My order is confirmed
               case 1: // My order is shipped
@@ -48,11 +48,14 @@ angular.module('bekApp')
               notification.displayType = 'Mail';
               break;
             }
-            if(notification.mandatory && $filter('filter')(Service.mandatoryMessages, {id: notification.id}).length === 0 && !notification.messageread){
-             Service.mandatoryMessages.push(notification);
+            if(notification.mandatory){
+              notification.displayType = 'News'
+              if($filter('filter')(Service.mandatoryMessages, {id: notification.id}).length === 0 && !notification.messageread){
+                Service.mandatoryMessages.push(notification);
+              }
             }
           });
-          return data;
+          return data.successResponse;
         });
       },
 

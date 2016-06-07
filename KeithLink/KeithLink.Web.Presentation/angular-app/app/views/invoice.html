@@ -63,7 +63,7 @@
             class="btn btn-primary btn-lg pay-btn" 
             analytics-on 
             analytics-category="Invoices" 
-            analytics-event="Pay Invoices">
+            analytics-event="Pay Invoice">
             <span ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" >Pay Invoice(s)</span>
             <span ng-if="selectedFilterView.name === 'Invoices Pending Payment'" >Update Payment(s)</span>
           </button>
@@ -146,7 +146,7 @@
           </thead>
           <tbody ng-if="invoices.length > 0 || showFilter">
           <!-- Filter Row -->
-          <tr class="filter-row" ng-show="showFilter">
+          <tr class="filter-row" ng-show="showFilter" enter-key-filter="filterInvoices(filterRowFields)">
             <td ng-if="!viewingAllCustomers" class="input-col">
               <!-- <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterRowFields.isSelected)"/> -->
             </td>
@@ -222,7 +222,14 @@
              </div>
             </td>
             <td class="text-center icon-col large-icon hidden-mobile-visible-print">
-              <a ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" target="_blank" class="icon-camera"></a>
+            <a 
+              ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" 
+              target="_blank" 
+              class="icon-camera"  
+              analytics-on
+              analytics-category="Invoices" 
+              analytics-event="View Invoice Image">
+            </a>
             </td>
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
             <a 
@@ -398,7 +405,14 @@
                 </tr>
                 <tr>
                   <td class="large-icon" colspan="2">
-                    <a ng-if="invoice.invoicelink" ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" class="icon-camera"></a>
+                    <a 
+                      ng-if="invoice.invoicelink" 
+                      ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" 
+                      class="icon-camera"
+                      analytics-on
+                      analytics-category="Invoices" 
+                      analytics-event="View Invoice Image">
+                    </a>
                    </td>
                 </tr>
               </table>

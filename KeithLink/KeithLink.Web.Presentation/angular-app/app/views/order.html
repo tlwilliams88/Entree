@@ -28,7 +28,7 @@
       <thead>
         <tr>
           <th class="input-col">
-            <input type="checkbox" ng-model="allCartsSelected" ng-change="toggleAllCarts(allCartsSelected)" />
+            <input type="checkbox" ng-model="allCartsSelected" ng-disabled="!carts" ng-change="toggleAllCarts(allCartsSelected)" />
           </th>
           <th>
             Name
@@ -103,8 +103,10 @@
             <span>Date <span sort-icons field="'deliverydate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">Item Count</th>
-          <th class="sort-col-header text-right hidden-mobile-visible-print" ng-click="sortOrders('ordertotal', !sort.sortDescending)">
-            <span>Total <span sort-icons field="'ordertotal'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortOrders('ordertotal', !sort.sortDescending)">
+            <span>Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span>
+            <span sort-icons field="'ordertotal'" sortorder="sort.sortDescending" sortby="sort.field"></span>
+          </span>
           </th>
           <!-- <th class="hidden-mobile-visible-print">Invoice #</th> -->
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortOrders('invoicestatus', !sort.sortDescending)">
@@ -125,26 +127,27 @@
       </thead>
       <tbody>
         <!-- Filter Row -->
-        <tr class="filter-row" ng-show="showFilter">
+        <tr class="filter-row" ng-show="showFilter" enter-key-filter="filterOrders(filterFields)">
           <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
+            <input id="invoiceNumber" type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
           </td>
           <td></td>
           <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.status">
+            <input id="status" type="text" placeholder="Filter..." ng-model="filterFields.status">
           </td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.invoicestatus">
+            <input id="invoiceStatus" type="text" placeholder="Filter..." ng-model="filterFields.invoicestatus">
           </td>
           <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
+            <input id="poNumber" type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
           </td>
           <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-lg hidden-md"></td>
           <td class="input-col">
-            <button type="button" class="btn btn-primary btn-sm" ng-click="filterOrders(filterFields)">Filter</button>
+            <button id="filterBtn" type="button" class="btn btn-primary btn-sm" ng-enter="filterOrders(filterFields)" ng-click="filterOrders(filterFields)">Filter</button>
             <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
           </td>
         </tr>
@@ -157,7 +160,7 @@
           <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
           <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate }}  <span ng-if='order.isspecialorder' data-tooltip="Entr&eacute;e Special Order:&#xa;Date of arrival at Ben E. Keith warehouse.&#xa;Items will ship on order following arrival date." class="icon-leaf"></span></td>
           <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
-          <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
+          <td class="hidden-mobile-visible-print">{{order.ordertotal | currency}}</td>
           <td ng-class="{ 'text-red': order.invoicestatus === 'Past Due', 'text-green': order.invoicestatus === 'Paid' }" class="hidden-mobile-visible-print">
             {{order.invoicestatus || 'N/A'}}
           </td>
@@ -168,7 +171,7 @@
           </td>
         </tr>
         <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
-          <td colspan="4">
+          <td colspan="6">
             <table>
               <colgroup>
                 <col width="25%" />
@@ -183,7 +186,7 @@
                 <td>{{order.itemcount}}</td>
               </tr>
               <tr>
-                <td>Total</td>
+                <td>Subtotal  <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span></td>
                 <td>{{order.ordertotal | currency}}</td>
               </tr>
               <!-- <tr>

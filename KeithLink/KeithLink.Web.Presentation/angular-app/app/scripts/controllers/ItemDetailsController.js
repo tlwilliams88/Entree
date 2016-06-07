@@ -8,9 +8,12 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService',
-    function ($scope, $modal, item, ProductService, AccessService, PricingService) {
+  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService',
+    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService) {
     
+    if(!item){
+      $state.go('menu.home');
+    }
     var originalItemNotes = item.notes;
 
     $scope.item = item;

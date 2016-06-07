@@ -1,0 +1,99 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Payment Confirmation</h3>
+</div>
+
+  <form name="invoiceForm">
+
+        <div class="modal-body" style="margin-top:15px;">
+          
+        <table style=""class="table table-border table-striped-rows" navigate-table="mobile">
+          <thead>
+            <tr>
+              <th>
+                Customer 
+                <span>Name </span>
+              </th>
+              <th>
+                Reference
+                <span># </span>
+              </th>
+              <th>
+                Invoice Amount
+              </th>
+              <th>Payment Amt</th>
+              <th>Bank Account</th>
+            </tr>
+          </thead>
+
+          <tr ng-repeat="payment in payments" ng-class="{ odd: $odd, even: $even}">
+            <td>
+              {{::payment.customername}}
+            </td>
+            <td>
+              <a format="telephone=no" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)">{{::payment.invoicenumber}}</a>
+            </td>
+            <td >
+              <div style="display:inline-block; white-space:nowrap;">
+              <span class="pull-left" >{{::payment.invoiceamount | currency}}</span>
+             </div>
+            </td>
+            <td >
+              <div style="display:inline-block; white-space:nowrap;">
+              <span class="pull-left" >{{::payment.amount | currency}}</span>
+             </div>
+            </td>
+            <td class="display:inline-block; white-space:nowrap;" >
+              <div>                  
+                {{payment.account}}
+              </div>
+            </td>
+          </tr>
+
+          <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
+            <td colspan="5">
+              <table>
+                <colgroup>
+                  <col width="25%" />
+                  <col width="75%" />
+                </colgroup>
+                <tr>
+                  <td>
+                    Bank Account
+                  </td>            
+                  <td>
+                    <div class = "account-info">                  
+                      {{invoice.account}}
+                    </div>
+                  </td>  
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+      </table>
+      </div>
+
+      <div class="modal-footer">
+      <div class="total-amt invoice-modal-amount">Total:
+        <span>{{totalPaymentAmount() | currency}}</span>
+      </div>
+      <div 
+          ng-show="hasPayableInvoices" 
+          class="total-line">
+          <button 
+          type="button" 
+          class="btn-lg btn btn-default" 
+          ng-click="invoiceModalCancel()">Cancel
+          </button>
+          <button
+            type="button" 
+            ng-click="payInvoicesFromModal()"
+            class="btn btn-primary btn-lg pay-btn" 
+            analytics-on 
+            analytics-category="Invoices" 
+            analytics-event="Pay Invoices">
+            <span ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" >Submit Payment(s)</span>
+          </button>
+       </div>
+    </div>
+  </form>

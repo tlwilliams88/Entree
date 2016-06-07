@@ -99,11 +99,9 @@ angular.module('bekApp')
       *************/
 
        $scope.addItemToChangeOrder = function(order, item) {
-        var orderItem = {
-          quantity: 1,
-          itemnumber: item.itemnumber,
-          each: item.each
-        };
+        var orderItem = angular.copy(item);
+        orderItem.quantity = (orderItem.quantity && orderItem.quantity > 0) ? orderItem.quantity : 1;
+        orderItem.each = (orderItem.each) ? true : false;
         order.items.push(orderItem);
 
         var params = {

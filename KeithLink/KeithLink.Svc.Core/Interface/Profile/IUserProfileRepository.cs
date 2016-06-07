@@ -1,22 +1,33 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using CS = KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Profile;
+
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Profile
 {
     public interface IUserProfileRepository
     {
 		void CreateUserProfile(string createdBy, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
-        void DeleteUserProfile(string userName);        
-        
-        Core.Models.Generated.UserProfile GetCSProfile(string emailAddress);        
-        Core.Models.Generated.UserProfile GetCSProfile(Guid userId);
-		void UpdateUserProfile(string updatedBy, Guid id, string emailAddres, string firstName, string lastName, string phoneNumber, string branchId);
-        List<Core.Models.Profile.UserProfile> GetUsersForCustomerOrAccount(Guid orgId);
 
-		List<Core.Models.Generated.UserProfile> GetCSProfileForInternalUsers();
+        void DeleteUserProfile(string userName);
+
+        void UpdateUserProfileLastLogin(Guid id);
+
+        void UpdateUserProfileLastAccess(Guid id);
+
+        CS.UserProfile GetCSProfile(string emailAddress);  
+              
+        CS.UserProfile GetCSProfile(Guid userId);
+
+		void UpdateUserProfile(string updatedBy, Guid id, string emailAddres, string firstName, string lastName, string phoneNumber, string branchId);
+
+        List<UserProfile> GetUsersForCustomerOrAccount(Guid orgId);
+
+		List<CS.UserProfile> GetCSProfileForInternalUsers();
+
+        List<UserProfile> GetInternalUsers();
+
+        List<UserProfile> GetExternalUsers();
     }
 }

@@ -10,8 +10,8 @@ customers : array - list of customer objects the current user has access to shar
 ******/
 
 angular.module('bekApp')
-.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'CustomerPagingModel', 'list',
-  function ($scope, $modalInstance, ListService, CustomerPagingModel, list) {
+.controller('ReplicateListModalController', ['$scope', '$modalInstance', '$analytics', 'ListService', 'CustomerPagingModel', 'list',
+  function ($scope, $modalInstance, $analytics, ListService, CustomerPagingModel, list) {
 
   $scope.list = list;
   $scope.selectedShareCustomers = [];
@@ -60,6 +60,7 @@ angular.module('bekApp')
   };
 
   $scope.shareList = function(list, customers) {
+    $analytics.eventTrack('Give List', {  category: 'Lists', label: 'Share List' });
     ListService.shareList(list, customers).then(function() {
       var sharedwith = [];
       customers.forEach(function(customer) {
@@ -70,6 +71,7 @@ angular.module('bekApp')
   };
 
   $scope.copyList = function(list, customers) {
+    $analytics.eventTrack('Give List', {  category: 'Lists', label: 'Copy List' });
     ListService.copyList(list, customers).then(function() {
       $modalInstance.close(list.sharedwith);
     });

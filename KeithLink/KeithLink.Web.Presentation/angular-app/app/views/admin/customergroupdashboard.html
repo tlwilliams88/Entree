@@ -1,7 +1,15 @@
 <div page-header-bar>
   <div header-message>
-    Customer Group: {{customerGroup.name}}
-    <button type="button" confirmed-click="deleteGroup(customerGroup.id)" class="hidden-print btn btn-sm btn-danger" ng-if="canManageCustomerGroups" ng-confirm-click="{{'This will delete the customer group and remove all customer and user associations with this group. Are you sure you want to delete this customer group?'}}">Delete Group</button>
+    Customer Group:
+    <span ng-hide="isRenaming">{{customerGroup.name}}
+      <span ng-if="userProfile.rolename == 'branchismanager' || userProfile.rolename == 'beksysadmin'" class="icon-pencil hand-pointer large-icon text-light" ng-click="startRenamingGroup(customerGroup)"></span>
+    <span ng-if="userProfile.rolename == 'branchismanager' || userProfile.rolename == 'beksysadmin'" confirmed-click="deleteGroup(customerGroup.id)" class="hidden-print icon-trash hand-pointer large-icon text-light" ng-if="canManageCustomerGroups" ng-confirm-click="{{'This will delete the customer group and remove all customer and user associations with this group. Are you sure you want to delete this customer group?'}}"></span>
+    </span>
+    <span ng-show="isRenaming">
+      <input type="text" id="cartName" ng-model="currentGroupName" focus-me="isRenaming" required>
+        <button type="submit" class="btn-no-style icon-checkmark large-icon hand-pointer text-green" ng-click="updateOldGroup(customerGroup, currentGroupName)"></button>
+      <span class="icon-cross large-icon hand-pointer text-red" ng-click="cancelRenamingGroup()"></span>
+    </span>
   </div>
   <div header-buttons></div>
 </div>
@@ -231,22 +239,55 @@
     
   </div>
 </div>
-<h3>Broadcast a Message</h3>
+
 <form name="broadcastMessageForm">
-  <div class="row">
+  <div class="row">    
     <div class="col-md-6">
+      <h3>Broadcast a Message</h3>
       <label for="subjectHeader" class="control-label">Subject Header <span class="text-red">*</span></label>
       <input type="text" id="subjectHeader" required ng-model="broadcast.subject" class="form-control" placeholder="Enter Subject Header Here">
       <br>
       <label for="bodyContent" class="control-label">Body Content</label>
       <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
-      <button type="submit" class="btn btn-primary btn-lg top-buffer" ng-disabled="broadcastMessageForm.$invalid || (customerRecipients.length === 0 && userRecipients.length === 0)" ng-click="sendMessage(broadcast, customerRecipients, userRecipients)">Send Message</button>
+      <button type="submit" class="btn btn-primary btn-lg top-buffer" ng-disabled="broadcastMessageForm.$invalid || (customerRecipients.length === 0 && userRecipients.length === 0 && branchRecipients.length === 0)" ng-click="sendMessage(broadcast, customerRecipients, userRecipients)">Send Message</button>
     </div>
     <div class="col-md-6 padding-top-xs padding-top-sm">
-      <label class="control-label">Broadcast Recipients <span class="text-red">*</span> <span style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span></label>
+
+      <ul class="list-unstyled">
+
+        <li style="margin-top:6px;" ng-show="isSysAdmin">
+          <div>
+            <span>
+              <input id="isMandatory" type="checkbox" ng-model="isMandatory" ng-click="resetMessageFields()">
+              <label style="margin-right:10px;" for="useParlevel">This Message is Mandatory</label>
+            </span>
+            <span ng-show="isMandatory">
+            <span>Branches:&nbsp;&nbsp;&nbsp;
+            <select style="margin-bottom:6px;" ng-change="selectBranch(selectedBranch)"  ng-model="selectedBranch.name">
+                <option style="display:none" selected disabled value="">Select Branches</option>
+              <option ng-repeat="branch in availableBranches track by branch.name" value="{{branch.name}}" ng-show="!branch.selected && !allUsersSelected">{{branch.id}} - {{branch.name}}</option>
+            </select>
+            </span>
+          </span>
+          </div>
+        </li>
+
+        <li>
+          <label class="control-label">Broadcast Recipients
+            <span class="text-red">*</span>
+            <span ng-if="isMandatory" style="color: grey; font-size: 10px;">(Add more with the drop down menu above)</span>
+            <span ng-if="!isMandatory" style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span>
+          </label>
+        </li>
+
+      </ul>
+      
+      
+
       <ul class="form-control list-unstyled infiniteScroll" style="min-height: 135px;">
         <li ng-repeat="recipient in customerRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, customerRecipients)"></span> {{recipient.displayName}} (Customer)</li>
         <li ng-repeat="recipient in userRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, userRecipients)"></span> {{recipient.displayName}} (User)</li>
+        <li ng-repeat="recipient in branchRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="deselectBranch(recipient.displayName); removeFromRecipients(recipient.id, branchRecipients)"></span> {{recipient.id}} - {{recipient.displayName}} (Branch)</li>
       </ul>
     </div>
   </div>

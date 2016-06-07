@@ -14,11 +14,15 @@ angular.module('bekApp')
     var Service = {
 
       getPendingTransactions: function(params) {
-        return Invoice.getAllPendingTransactions(params).$promise;
+        return Invoice.getAllPendingTransactions(params).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       getTransactionExportConfig: function(invoiceNumber) {
-        return Invoice.getTransactionExportConfig({}).$promise;
+        return Invoice.getTransactionExportConfig({}).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportTransactions: function(config, params) {

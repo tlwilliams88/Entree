@@ -1,5 +1,5 @@
-﻿using KeithLink.Common.Core.AuditLog;
-using KeithLink.Common.Core.Extensions;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
@@ -13,23 +13,23 @@ using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
 using KeithLink.Svc.Core.Helpers;
 
-using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Cart;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Interface.Configuration;
 
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.ModelExport;
 
 // Core
 using System;
@@ -52,18 +52,21 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IGenericQueueRepository queueRepository;
 		private readonly IBasketLogic basketLogic;
-		private readonly IListServiceRepository listServiceRepository;
+		private readonly IListLogic listServiceRepository;
+        private readonly INoteLogic _noteLogic;
         private readonly IOrderQueueLogic orderQueueLogic;
-		private readonly IOrderServiceRepository orderServiceRepository;
+        private readonly IOrderHistoryLogic _historyLogic;
 		private readonly IAuditLogRepository auditLogRepository;
-        private IExternalCatalogServiceRepository externalServiceRepository;
+        private readonly IExportSettingLogic externalServiceRepository;
+        private readonly IUserActiveCartLogic _activeCartLogic;
 		#endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
-									 IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, ICustomerRepository customerRepository,
-                                    IAuditLogRepository auditLogRepository, IExternalCatalogServiceRepository externalServiceRepository)
+									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
+                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
+                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
@@ -71,12 +74,14 @@ namespace KeithLink.Svc.Impl.Logic
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
 			this.listServiceRepository = listServiceRepository;
+            _noteLogic = noteLogic;
 			this.basketLogic = basketLogic;
             this.orderQueueLogic = orderQueueLogic;
-			this.orderServiceRepository = orderServiceRepository;
+			_historyLogic = orderHistoryLogic;
 			this.customerRepository = customerRepository;
 			this.auditLogRepository = auditLogRepository;
             this.externalServiceRepository = externalServiceRepository;
+            _activeCartLogic = userActiveCartLogic;
 		}
         #endregion
 
@@ -291,7 +296,7 @@ namespace KeithLink.Svc.Impl.Logic
 				!string.IsNullOrEmpty(b.CustomerId) &&
 				b.CustomerId.Equals(catalogInfo.CustomerId));
 
-			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
+			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
 
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new ShoppingCart() 
@@ -309,7 +314,7 @@ namespace KeithLink.Svc.Impl.Logic
 			else
 			{
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
-				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+				var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
@@ -332,9 +337,9 @@ namespace KeithLink.Svc.Impl.Logic
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			if (basket == null)
 				return null;
-			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
+			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
-			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+			var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
 
@@ -419,16 +424,16 @@ namespace KeithLink.Svc.Impl.Logic
                     Active = false,
                     PONumber = basket.PONumber,
                     CreatedDate = new DateTime(),
-                    Items = basket.LineItems.Where(l => string.Equals(l.CatalogName, catalogId, StringComparison.CurrentCultureIgnoreCase)).Select(l => new ShoppingCartItem()
-                    {
-                        
-                        ItemNumber = l.ProductId,
-                        Notes = l.Notes,
-                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-                        Each = l.Each.HasValue ? l.Each.Value : false,
-                        CreatedDate = new DateTime(),
-                        CatalogId = l.CatalogName                       
-                    }).ToList()
+                    Items = basket.LineItems
+                                  .Where(l => string.Equals(l.CatalogName, catalogId, StringComparison.CurrentCultureIgnoreCase))
+                                  .Select(l => new ShoppingCartItem() {
+                                        ItemNumber = l.ProductId,
+                                        Notes = l.Notes,
+                                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                                        Each = l.Each.HasValue ? l.Each.Value : false,
+                                        CreatedDate = new DateTime(),
+                                        CatalogId = l.CatalogName })
+                                  .ToList()
                 };
                 LookupProductDetails(user, catalogInfo, shoppingCart);
 
@@ -472,7 +477,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
 
-                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
+                _historyLogic.SaveOrder(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
 
                 if (isSpecialOrder)
                 {
@@ -506,7 +511,7 @@ namespace KeithLink.Svc.Impl.Logic
                 List<string> childOrderIds = returnOrders.OrdersReturned.Where(o => o.IsSpecialOrder).Select(ro => ro.OrderNumber).ToList();
 
                 foreach (string orderId in childOrderIds) {
-                    orderServiceRepository.UpdateRelatedOrderNumber(orderId, parentOrderId);
+                    _historyLogic.UpdateRelatedOrderNumber(orderId, parentOrderId);
                 }
             }
 

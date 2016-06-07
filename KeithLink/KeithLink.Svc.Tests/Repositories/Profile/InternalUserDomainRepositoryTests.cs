@@ -1,6 +1,6 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Impl.Repository.Logging;
 using KeithLink.Svc.Impl.Repository.Profile;
-using System;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Repositories.Profile

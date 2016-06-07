@@ -1,14 +1,11 @@
-﻿using CommerceServer.Foundation;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Interfaces.Logging;
+
 using KeithLink.Svc.Impl.Helpers;
+
+using CommerceServer.Foundation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -97,6 +94,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("LastLoginDate");
+            profileQuery.Model.Properties.Add("LastActivityDate");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
             profileQuery.Model.Properties.Add("DefaultBranch");
@@ -143,7 +142,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 			profileQuery.Model.Properties.Add("Id");
 			profileQuery.Model.Properties.Add("Email");
-			profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastLoginDate");
+            profileQuery.Model.Properties.Add("LastActivityDate");
+            profileQuery.Model.Properties.Add("FirstName");
 			profileQuery.Model.Properties.Add("LastName");
 			profileQuery.Model.Properties.Add("DefaultBranch");
 			profileQuery.Model.Properties.Add("DefaultCustomer");
@@ -158,6 +159,54 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             } else {
                 return (Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0];
             }
+        }
+
+        public List<Core.Models.Profile.UserProfile> GetInternalUsers()
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("ProfileCustomSearch");
+            queryOrg.SearchCriteria.WhereClause = "u_email_address like '%benekeith.com'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            List<Core.Models.Profile.UserProfile> users = new List<Core.Models.Profile.UserProfile>();
+            if (res.CommerceEntities.Count > 0)
+            {
+                foreach (CommerceEntity ent in res.CommerceEntities)
+                {
+                    users.Add(new Core.Models.Profile.UserProfile()
+                    {
+                        UserId = Guid.Parse(ent.Id),
+                        FirstName = (string)ent.Properties["FirstName"],
+                        LastName = (string)ent.Properties["LastName"],
+                        EmailAddress = (string)ent.Properties["Email"]
+                    });
+                }
+            }
+
+            return users;
+        }
+
+        public List<Core.Models.Profile.UserProfile> GetExternalUsers()
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("ProfileCustomSearch");
+            queryOrg.SearchCriteria.WhereClause = "u_email_address not like '%benekeith.com'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            List<Core.Models.Profile.UserProfile> users = new List<Core.Models.Profile.UserProfile>();
+            if (res.CommerceEntities.Count > 0)
+            {
+                foreach (CommerceEntity ent in res.CommerceEntities)
+                {
+                    users.Add(new Core.Models.Profile.UserProfile()
+                    {
+                        UserId = Guid.Parse(ent.Id),
+                        FirstName = (string)ent.Properties["FirstName"],
+                        LastName = (string)ent.Properties["LastName"],
+                        EmailAddress = (string)ent.Properties["Email"]
+                    });
+                }
+            }
+
+            return users;
         }
 
         ///// <summary>
@@ -179,6 +228,29 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
 			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, updatedBy, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
+        }
+
+
+        public void UpdateUserProfileLastLogin(Guid id)
+        {
+            var updateQuery = new CommerceUpdate<Core.Models.Generated.UserProfile>("UserProfile");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToCommerceServerFormat();
+
+            updateQuery.Model.LastLoginDate = DateTime.Now;
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+            _auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, null, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
+        }
+
+        public void UpdateUserProfileLastAccess(Guid id)
+        {
+            var updateQuery = new CommerceUpdate<Core.Models.Generated.UserProfile>("UserProfile");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToCommerceServerFormat();
+
+            updateQuery.Model.LastActivityDate = DateTime.Now;
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+            _auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, null, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
         }
         #endregion
     }

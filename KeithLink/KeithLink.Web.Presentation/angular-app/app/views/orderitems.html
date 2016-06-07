@@ -40,7 +40,7 @@
           <div class="order-item-value-2" ng-if="UNFIOrder.deliveryoutofsequence == true || (UNFIOrder.scheduleddeliverytime != null && UNFIOrder.estimateddeliverytime == null)">N/A</div>
         </div>
         <div class="order-item">
-          <div class="order-item-title">Total Cost</div>
+          <div class="order-item-title">Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span></div>
           <div class="order-item-value-1">{{UNFIOrder.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
           <div class="order-item-value-2">
@@ -276,7 +276,7 @@
           <div class="order-item-value-2" ng-if="order.deliveryoutofsequence == true || (order.scheduleddeliverytime != null && order.estimateddeliverytime == null)">N/A</div>
         </div>
         <div class="order-item">
-          <div class="order-item-title">Total Cost</div>
+          <div class="order-item-title">Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span></div>
           <div class="order-item-value-1">{{order.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
           <div class="order-item-value-2">
@@ -390,7 +390,7 @@
         </td>
       </tr> <!-- end Filter Row -->
 
-      <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
+      <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }" ng-style="item.status !== 'PENDING' && item.status !== 'Filled' && item.status !== 'Pending' && item.status !== 'FILLED' && {'border-left': '3px solid #dc6a6a'}">
         <td ng-class="{ 'red-border': item.substituteditemnumber }">
           <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
           <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>

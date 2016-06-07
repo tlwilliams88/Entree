@@ -1,58 +1,91 @@
-﻿using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.IO;
-using KeithLink.Svc.Core.Interface.Profile;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Profile;
+
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
+
 using KeithLink.Svc.WebApi.Models;
+
+using System;
+using System.Collections.Generic;
+using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// end points for handling messaging
+    /// </summary>
 	[Authorize]
     public class MessagingController : BaseController {
         #region attributes
-        private readonly IMessagingServiceRepository messagingServiceRepository;
+        private readonly IMessagingLogic _msgLogic;
         private readonly IUserProfileLogic userProfileLogic;
+        private readonly IEventLogRepository _log;
         #endregion
 
         #region ctor
-		public MessagingController(IUserProfileLogic profileLogic, IMessagingServiceRepository messagingServiceRepository)
-			: base(profileLogic)
-		{
-            this.messagingServiceRepository = messagingServiceRepository;
-            this.userProfileLogic = profileLogic;
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="profileLogic"></param>
+        /// <param name="messagingServiceRepository"></param>
+		public MessagingController(IUserProfileLogic profileLogic, IMessagingLogic messagingLogic, IEventLogRepository logRepo)
+			: base(profileLogic) {
+            _msgLogic = messagingLogic;
+            userProfileLogic = profileLogic;
+            _log = logRepo;
         }
         #endregion
 
         #region methods
-		/// <summary>
-		/// Retrieve paged list of user messages
-		/// </summary>
-		/// <param name="paging">Paging options</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Retrieve paged list of user messages
+        /// </summary>
+        /// <param name="paging">Paging options</param>
+        /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("messaging/usermessages/")]
-		public PagedResults<UserMessageModel> usermessages(PagingModel paging)
+		public Models.OperationReturnModel<PagedResults<UserMessageModel>> usermessages(PagingModel paging)
         {
-            return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
+            Models.OperationReturnModel<PagedResults<UserMessageModel>> retVal = new Models.OperationReturnModel<PagedResults<UserMessageModel>>();
+            try
+            {
+                retVal.SuccessResponse = _msgLogic.ReadPagedUserMessages(this.AuthenticatedUser, paging);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("usermessages", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
 		/// <summary>
 		/// Mark a message as read by the user
 		/// </summary>
-		/// <param name="updatedUserMessages">Array of read messages</param>
 		[HttpPut]
         [ApiKeyedRoute("messaging/usermessages/markasread")]
-        public void UpdateReadMessages()
+        public Models.OperationReturnModel<bool> UpdateReadMessages()
         {
-            messagingServiceRepository.MarkAllReadByUser(this.AuthenticatedUser);
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                _msgLogic.MarkAllReadByUser(this.AuthenticatedUser);
+                retVal.SuccessResponse = true;
+                retVal.IsSuccess = retVal.SuccessResponse;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("UpdateReadMessages", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
 		/// <summary>
@@ -61,9 +94,22 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("messaging/usermessages/unreadcount")]
-        public int ReadUnreadMessageCount()
+        public Models.OperationReturnModel<int> ReadUnreadMessageCount()
         {
-            return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser.UserId);
+            Models.OperationReturnModel<int> retVal = new Models.OperationReturnModel<int>();
+            try
+            {
+                retVal.SuccessResponse = _msgLogic.GetUnreadMessagesCount(this.AuthenticatedUser.UserId);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ReadUnreadMessageCount", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
 		/// <summary>
@@ -75,9 +121,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<bool> UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel)
         {
-            messagingServiceRepository.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
-            ret.SuccessResponse = true;
+            try
+            {
+                _msgLogic.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
+                ret.SuccessResponse = true;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("UpdateMessagingPreferences", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
+
             return ret;
         }
 
@@ -89,7 +146,19 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences()
         {
-            return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferences(this.AuthenticatedUser.UserId) };
+            Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> ret = new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>();
+            try
+            {
+                ret.SuccessResponse = userProfileLogic.GetMessagingPreferences(this.AuthenticatedUser.UserId);
+                ret.IsSuccess = true;
+            }
+            catch(Exception ex)
+            {
+                _log.WriteErrorLog("GetMessagingPreferences", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
+            return ret;
         }
 
 		/// <summary>
@@ -102,46 +171,121 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("messaging/preferences/{customerId}/{branchId}")]
 		public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences(string customerId, string branchId)
 		{
-			return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferencesForCustomer(this.AuthenticatedUser.UserId, customerId, branchId) };
-		}
+            Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> ret = new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>();
+            try
+            {
+                ret.SuccessResponse = userProfileLogic.GetMessagingPreferencesForCustomer(this.AuthenticatedUser.UserId, customerId, branchId);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetMessagingPreferences", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
+            return ret;
+        }
 
-		/// <summary>
-		/// Register a push device (mobile device)
-		/// </summary>
-		/// <param name="pushDeviceModel">Registration information</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Register a push device (mobile device)
+        /// </summary>
+        /// <param name="pushDeviceModel">Registration information</param>
+        /// <returns></returns>
         [HttpPut]
         [ApiKeyedRoute("messaging/registerpushdevice")]
         public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)
         {
-            messagingServiceRepository.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
-            ret.SuccessResponse = true;
+            try
+            {
+                _msgLogic.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
+                ret.SuccessResponse = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("RegisterPushDeviceToken", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
             return ret;
         }
 
-		/// <summary>
-		/// Create a mail message
-		/// </summary>
-		/// <param name="mailMessage">Message</param>
-		/// <returns></returns>
-		[HttpPost]
+        /// <summary>
+        /// Create a system alert message
+        /// </summary>
+        /// <param name="mailMessage">Message</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("messaging/createalert")]
+        public OperationReturnModel<bool> CreateAlertMessage(MailMessageModel mailMessage)
+        {
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try
+            {
+                mailMessage.IsAlert = true;
+                _msgLogic.CreateMailMessage(mailMessage);
+                ret.SuccessResponse = true;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.ErrorMessage = ex.Message;
+                ret.SuccessResponse = false;
+                ret.IsSuccess = false;
+                _log.WriteErrorLog("CreateAlertMessage", ex);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Create a mail message
+        /// </summary>
+        /// <param name="mailMessage">Message</param>
+        /// <returns></returns>
+        [HttpPost]
 		[ApiKeyedRoute("messaging/mail")]
 		public OperationReturnModel<bool> CreateMessage(MailMessageModel mailMessage)
 		{
-			try
-			{
-				messagingServiceRepository.CreateMailMessage(mailMessage);
-				return new OperationReturnModel<bool>() { SuccessResponse = true };
-			}
-			catch (Exception ex)
-			{
-				return new OperationReturnModel<bool>() { ErrorMessage = ex.Message, SuccessResponse = false };
-				throw ex;
-			}
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try
+            {
+                _msgLogic.CreateMailMessage(mailMessage);
+                ret.SuccessResponse = true;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("CreateMessage", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.SuccessResponse = false;
+                ret.IsSuccess = false;
+            }
+            return ret;
+        }
 
-		}
-				
+        /// <summary>
+        /// Send a message to the DSR to request contact about a certain item
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("messaging/RequestDSRContact")]
+        public OperationReturnModel<int>  RequestDSRContact(string itemnumber)
+        {
+            OperationReturnModel<int> ret = new OperationReturnModel<int>();
+            try
+            {
+                ret.SuccessResponse = _msgLogic.RequestDSRContact(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("RequestDSRContact", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.SuccessResponse = -1;
+                ret.IsSuccess = false;
+            }
+            return ret;
+        }
         #endregion
     }
 }

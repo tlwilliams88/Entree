@@ -23,6 +23,7 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,14 +38,15 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Autofac.Integration.Wcf">
       <HintPath>..\packages\Autofac.Wcf.3.0.1\lib\net40\Autofac.Integration.Wcf.dll</HintPath>
@@ -118,6 +120,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
@@ -140,18 +146,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CacheService.svc" />
-    <Content Include="ContentManagementService.svc" />
-    <Content Include="DsrService.svc" />
-    <Content Include="ProfileService.svc" />
-    <Content Include="ReportService.svc" />
-    <Content Include="DivisionService.svc" />
-    <Content Include="ConfigurationService.svc" />
-    <Content Include="MessagingService.svc" />
-    <Content Include="InvoiceService.svc" />
-    <Content Include="ListServcie.svc" />
-    <Content Include="OnlinePaymentService.svc" />
-    <Content Include="OrderService.svc" />
     <Content Include="ETLService.svc" />
     <Content Include="Global.asax" />
     <Content Include="PipelineService.svc" />
@@ -162,55 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacContainerBuilder.cs" />
-    <Compile Include="CacheService.svc.cs">
-      <DependentUpon>CacheService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="ContentManagementService.svc.cs">
-      <DependentUpon>ContentManagementService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="DsrService.svc.cs">
-      <DependentUpon>DsrService.svc</DependentUpon>
-    </Compile>
     <Compile Include="GlobalErrorBehaviorAttribute.cs" />
-    <Compile Include="Interfaces\IDsrService.cs" />
-    <Compile Include="Interfaces\ICacheService.cs" />
-    <Compile Include="Interfaces\IReportService.cs" />
-    <Compile Include="Interfaces\IProfileService.cs" />
-    <Compile Include="ProfileService.svc.cs">
-      <DependentUpon>ProfileService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="ReportService.svc.cs">
-      <DependentUpon>ReportService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="DivisionService.svc.cs">
-      <DependentUpon>DivisionService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigurationService.svc.cs">
-      <DependentUpon>ConfigurationService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\IConfigurationService.cs" />
-    <Compile Include="Interfaces\IContentManagementService.cs" />
-    <Compile Include="Interfaces\IDivisionService.cs" />
-    <Compile Include="Interfaces\IOnlinePaymentService.cs" />
-    <Compile Include="MessagingService.svc.cs">
-      <DependentUpon>MessagingService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\IInvoiceService.cs" />
-    <Compile Include="Interfaces\IListServcie.cs" />
-    <Compile Include="Interfaces\IMessagingService.cs" />
-    <Compile Include="Interfaces\IOrderService.cs" />
-    <Compile Include="InvoiceService.svc.cs">
-      <DependentUpon>InvoiceService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="ListServcie.svc.cs">
-      <DependentUpon>ListServcie.svc</DependentUpon>
-    </Compile>
-    <Compile Include="OnlinePaymentService.svc.cs">
-      <DependentUpon>OnlinePaymentService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="OrderService.svc.cs">
-      <DependentUpon>OrderService.svc</DependentUpon>
-    </Compile>
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ETLService.svc.cs">
       <DependentUpon>ETLService.svc</DependentUpon>
@@ -299,7 +245,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;TEST</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -308,7 +254,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;STAGE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -327,14 +273,23 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev2|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;BETA</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'asdf|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>

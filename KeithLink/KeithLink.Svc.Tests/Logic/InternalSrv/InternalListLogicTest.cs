@@ -1,39 +1,30 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Repository.SiteCatalog;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Repository.Lists;
-using KeithLink.Svc.Test.Mock;
-using FizzWare.NBuilder;
-using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
-using Autofac;
+﻿using KeithLink.Svc.Core.Interface.Lists;
+
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Profile;
+
+using Autofac;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+
 namespace KeithLink.Svc.Test.Logic
 {
     [TestClass]
     public class InternalListLogicTests
     {
-		private readonly IInternalListLogic listLogic;
+		private readonly IListLogic listLogic;
+        private readonly IFavoriteLogic _favoriteLogic;
+        private readonly IHistoryLogic _historyLogic;
+        private readonly INoteLogic _noteLogic;
+
 		public InternalListLogicTests()
 		{
 			var container = DependencyMap.Build();
 
-			listLogic = container.Resolve<IInternalListLogic>();				
+			listLogic = container.Resolve<IListLogic>();
+            _favoriteLogic = container.Resolve<IFavoriteLogic>();
+            _historyLogic = container.Resolve<IHistoryLogic>();
+            _noteLogic = container.Resolve<INoteLogic>();
 		}
 
 		[TestMethod]
@@ -93,7 +84,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void ReadFavories()
 		{
-			var favorites = listLogic.ReadFavorites(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
+			var favorites = _favoriteLogic.GetFavoritedItemNumbers(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
 			Assert.IsNotNull(favorites);
 		}
         
@@ -122,7 +113,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void ReadNotes()
 		{
-			var notes = listLogic.ReadNotes(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
+			var notes = _noteLogic.GetNotes(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
 			Assert.IsNotNull(notes);
 		}
 
@@ -197,7 +188,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void ItemsInHistoryList()
 		{
-			var list = listLogic.ItemsInHistoryList(TestSessionObject.TestUserContext, new List<string>() { "023011" });
+			var list = _historyLogic.ItemsInHistoryList(TestSessionObject.TestUserContext, new List<string>() { "023011" });
 		}
 
         

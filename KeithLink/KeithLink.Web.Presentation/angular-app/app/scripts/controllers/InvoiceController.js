@@ -1,8 +1,8 @@
   'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel',
-    function ($scope, $filter, $modal, accounts, InvoiceService, $rootScope, LocalStorage, CartService, CustomerService, $state, PagingModel) {
+  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel',
+    function ($scope, $filter, $modal, accounts, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -21,16 +21,16 @@ angular.module('bekApp')
   $scope.selectedInvoiceContext = $scope.invoiceCustomerContexts[1];
   $scope.accounts = accounts;
  
-  $scope.currDate = new Date();  
-  $scope.currDate = moment($scope.currDate).format('YYYY-MM-DD');
-  
-  if(moment.utc().format('HHmmss') < 190000){
-    $scope.mindate = moment($scope.currDate);
+  $scope.currDate = DateService.momentObject().format(Constants.dateFormat.yearMonthDayDashes);
+
+  if(DateService.momentObject().utc().format(Constants.dateFormat.hourMinuteSecond) < 190000){
+    $scope.mindate = DateService.momentObject($scope.currDate);
+
   }
   else{
-    $scope.mindate = moment($scope.currDate).add(1,'d');
+    $scope.mindate = DateService.momentObject($scope.currDate).add(1,'d');
   }
-  $scope.tomorrow = moment($scope.mindate).format('YYYY-MM-DD');
+  $scope.tomorrow = $scope.mindate.format(Constants.dateFormat.yearMonthDayDashes);
 
   $scope.datepickerOptions = {
     minDate: $scope.mindate,
@@ -107,16 +107,19 @@ angular.module('bekApp')
       }
 
       // calculate max payment date
-      var date = moment(invoice.duedate).add(2, 'd');     
+    var date = {};
       if(invoice.amount < 0){
-        date = moment( date ).add(1, 'year');
+        date = DateService.momentObject(invoice.duedate.substr(0,10)).add(1, 'year');
       }
-       invoice.maxPaymentDate = date.format('YYYY-MM-DD');
+      else{
+        date = DateService.momentObject(invoice.duedate.substr(0,10)).subtract(1, 'd')
+      }
+       invoice.maxPaymentDate = date.format(Constants.dateFormat.yearMonthDayDashes);
     });
   }
 
   function setInvoices(data) {
-    $scope.invoices = data.pagedresults.results
+    $scope.invoices = data.pagedresults.results;
     if($scope.invoices.length){
       $scope.invoices.forEach(function(invoice){
         invoice.failedBatchValidation = false;       
@@ -178,8 +181,8 @@ angular.module('bekApp')
         windowClass: 'color-background-modal',
         scope: $scope,
         resolve: {
-          invoice: function() {
-            return invoice;
+          invoiceNumber: function() {
+            return invoice.invoicenumber;
           }
         }
       });
@@ -219,13 +222,13 @@ angular.module('bekApp')
 
   $scope.setDateSortValues = function(invoice){
     if((invoice.userCanPayInvoice || (invoice.statusdescription === 'Payment Pending' || invoice.statusdescription === 'Past Due')) && invoice.date){
-      return invoice.date;
+      return invoice.date.substr(0,10);
     }
     if(invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due' && !invoice.date){
       return $scope.tomorrow;
     }
-    if(invoice.statusdescription === 'Payment Pending' && !invoice.date){
-      return invoice.pendingtransaction.date;
+    if(invoice.statusdescription === 'Payment Pending' && !invoice.date && invoice.pendingtransaction){
+      return invoice.pendingtransaction.date.substr(0,10);
     }
   };
 
@@ -235,8 +238,8 @@ angular.module('bekApp')
     };
 
    $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
-        var sorterval1 = moment($scope.setDateSortValues(obj1));
-        var sorterval2 = moment($scope.setDateSortValues(obj2));
+        var sorterval1 = DateService.momentObject($scope.setDateSortValues(obj1));
+        var sorterval2 = DateService.momentObject($scope.setDateSortValues(obj2));
 
         $scope.ascendingDate = !ascendingDate;    
         if(!sorterval1){
@@ -430,7 +433,7 @@ angular.module('bekApp')
         if((payment.statusdescription === 'Payment Pending') || (payment.statusdescription === 'Past Due' && payment.amount < 0)){
           
         if(payment.statusdescription === 'Payment Pending' && !payment.date){
-             payment.date = moment(payment.pendingtransaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD");
+             payment.date = DateService.momentObject(payment.pendingtransaction.date,Constants.dateFormat.yearMonthDayHourMinuteSecondDashes).format(Constants.dateFormat.yearMonthDayDashes);
             }                       
         }
         
@@ -439,7 +442,7 @@ angular.module('bekApp')
         }
 
         if(payment.date.length !== 10){
-          payment.date = moment(payment.date).format("YYYY-MM-DD");
+          payment.date = DateService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format(Constants.dateFormat.yearMonthDayDashes);
         }
 
       });
@@ -459,7 +462,32 @@ angular.module('bekApp')
         }
         }
     }
-  }
+  };
+
+  //Opens modal with payments object passed from payInvoices function
+  //payments object uses getSelectedInvoices function
+  $scope.openInvoiceConfirmation = function(payments) {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/invoiceconfirmationmodal.html',
+      controller: 'InvoiceConfirmationModalController',
+      backdrop: 'static',
+      scope: $scope,
+        resolve: {
+          payments: function () {
+            return payments;
+          }
+        }
+    });
+    //Closes modal window and redirects to transactions window if submit payments button is used
+    modalInstance.result.then(function(){
+        if(modalInstance.result.$$state.value){
+          $scope.invoiceForm.$setPristine();
+          $state.go('menu.transaction');
+        }else{
+          return;
+        }
+    });
+  };
 
   var processingPayInvoices = false;
   $scope.payInvoices = function () {
@@ -468,6 +496,7 @@ angular.module('bekApp')
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
       payments = $scope.defaultDates(payments);
+      processingPayInvoices = false;
       InvoiceService.checkTotals(payments).then(function(resp) {
         if(resp.successResponse.isvalid){  
           $scope.errorMessage = '';
@@ -476,21 +505,15 @@ angular.module('bekApp')
           });
           payments.forEach(function(payment){  
             if(payment.date.length !== 10){
-            payment.date = moment(payment.date).format("YYYY-MM-DD");
-          }
-          })
-          InvoiceService.payInvoices(payments).then(function() {
-            $scope.invoiceForm.$setPristine();
-            $state.go('menu.transaction');
-          }).finally(function () {
-             processingPayInvoices = false;
-            });
-        }
-        else{
+            payment.date = DateService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format(Constants.dateFormat.yearMonthDayDashes);
+            }
+          });
+        } else{
           $scope.displayValidationError(resp);          
           processingPayInvoices = false;
         }    
-    });
+      });
+      $scope.openInvoiceConfirmation(payments);
     }
   };
 
@@ -540,8 +563,11 @@ angular.module('bekApp')
         if(invoice.pendingtransaction || invoice.date){
           invoiceDate = invoice.date || invoice.pendingtransaction.date;
         }
-
-        if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(resp.successResponse.transactions[0].date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === moment(invoiceDate).format('YYYYMMDD') && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
+        if(transaction.account === invoice.account
+        && transaction.customernumber === invoice.customernumber
+        && transaction.branchid === invoice.branchid
+        && DateService.momentObject(resp.successResponse.transactions[0].date,Constants.dateFormat.yearMonthDayHourMinuteSecondDashes).format(Constants.dateFormat.yearMonthDay) === DateService.momentObject(invoiceDate.substr(0,10)).format(Constants.dateFormat.yearMonthDay)
+        && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
           invoice.failedBatchValidation = true;
         }
       }); 
@@ -558,6 +584,9 @@ angular.module('bekApp')
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
       resolve: {
+        location: function() {
+          return {category:'Invoices', action:'Export Invoices'}
+        },
         headerText: function () {
           return 'Invoices';
         },

@@ -1,24 +1,8 @@
-﻿using Autofac;
+﻿using KeithLink.Svc.Impl.Repository.SmartResolver;
+
+using Autofac;
 using Autofac.Integration.Wcf;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Orders.Confirmations;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Models.Orders.Confirmations;
-using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.InternalSvc.Interfaces;
-using CommerceServer.Core.Runtime.Orders;
-using CommerceServer.Core.Orders;
-using CommerceServer.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web;
-using System.Web.Security;
-using System.Web.SessionState;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -26,10 +10,10 @@ namespace KeithLink.Svc.InternalSvc
        #region events
         protected void Application_Start(object sender, EventArgs e)
         {
-            IContainer container = AutofacContainerBuilder.BuildContainer();
-            AutofacHostFactory.Container = container;
+            ContainerBuilder container = DependencyMapFactory.GetInternalServiceContainer();
+            AutofacContainerBuilder.AddServiceReferences(ref container);
 
-            
+            AutofacHostFactory.Container = container.Build();
         }
 
         protected void Session_Start(object sender, EventArgs e)

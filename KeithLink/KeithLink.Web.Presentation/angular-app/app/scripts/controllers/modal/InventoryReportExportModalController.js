@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InventoryReportExportModalController', ['$scope', '$modalInstance', 'items', 'ExportService',
-  function ($scope, $modalInstance, items, ExportService) {
+.controller('InventoryReportExportModalController', ['$scope', '$analytics', '$modalInstance', 'items', 'ExportService',
+  function ($scope, $analytics, $modalInstance, items, ExportService) {
 
   $scope.formats = [{
     text: 'Excel',
@@ -10,9 +10,16 @@ angular.module('bekApp')
   },{
     text: 'PDF',
     value: 'pdf'
+  },{
+    text: 'TAB',
+    value: 'tab'
+  },{
+    text: 'CSV',
+    value: 'csv'
   }]
 
   $scope.export = function(format) {
+    $analytics.eventTrack('Export Inventory Valuation', {category: 'Reports'});
     ExportService.exportInventoryValueReport(format, items);
   };
 

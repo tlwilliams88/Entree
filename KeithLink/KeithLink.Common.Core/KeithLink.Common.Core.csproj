@@ -88,6 +88,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'asdf|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\asdf\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;DEV</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -100,20 +109,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuditLog\IAuditLogRepository.cs" />
+    <Compile Include="Interfaces\IDatabaseConnection.cs" />
+    <Compile Include="Interfaces\Logging\IAuditLogRepository.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationFacade.cs" />
     <Compile Include="Crypto.cs" />
-    <Compile Include="Email\NewUserEmail.cs" />
-    <Compile Include="Email\ExceptionEmail.cs" />
     <Compile Include="Enumerations\AuditType.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
-    <Compile Include="Logging\IEventLogRepository.cs" />
+    <Compile Include="Interfaces\Logging\IEventLogRepository.cs" />
+    <Compile Include="Interfaces\Settings\IAppSettingLogic.cs" />
+    <Compile Include="Interfaces\Settings\IDBAppSettingsRepository.cs" />
+    <Compile Include="Models\Settings\Setting.cs" />
+    <Compile Include="Models\Settings\SettingUpdate.cs" />
     <Compile Include="Parsing\StringHelpers.cs" />
     <Compile Include="Performance\PerformanceLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -122,6 +134,7 @@
   <ItemGroup>
     <None Include="KeithLink.Svc.FoundationSvc.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

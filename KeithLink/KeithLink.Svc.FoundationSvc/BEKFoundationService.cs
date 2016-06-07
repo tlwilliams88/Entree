@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Impl.Repository.Logging;
 using KeithLink.Svc.FoundationSvc.Interface;
 
 using CommerceServer.Core;
@@ -39,8 +39,7 @@ namespace KeithLink.Svc.FoundationSvc
                 po.Save();
                 return po.TrackingNumber;
             } catch (Exception ex) {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in CancelPurchaseOrder: ", ex);
 
                 throw ex;
@@ -77,7 +76,7 @@ namespace KeithLink.Svc.FoundationSvc
             try {
                 string controlNumber = string.Empty;
                 // get tracking number from DB
-                using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AppDataConnection"].ConnectionString)) {
+                using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["BEKDBContext"].ConnectionString)) {
                     using (SqlCommand cmd = new SqlCommand("Orders.usp_GetNextControlNumber", conn)) {
                         cmd.CommandType = CommandType.StoredProcedure;
                         SqlParameter parm = new SqlParameter();
@@ -90,8 +89,7 @@ namespace KeithLink.Svc.FoundationSvc
                 }
                 return controlNumber;
             } catch (Exception ex) {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in GetNextControlNumber: ", ex);
 
                 throw ex;
@@ -103,8 +101,7 @@ namespace KeithLink.Svc.FoundationSvc
                 CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();
                 return context.GetPurchaseOrder(userId, cartId);
             } catch (Exception ex) {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in GetPurchaseOrder: ", ex);
 
                 throw ex;
@@ -250,8 +247,7 @@ namespace KeithLink.Svc.FoundationSvc
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in UpdatePurchaseOrder: ", ex);
 
                 throw ex;
@@ -266,8 +262,7 @@ namespace KeithLink.Svc.FoundationSvc
                 po.Status = status;
                 po.Save();
             } catch (Exception ex) {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error Updating Purchase Order Status: ", ex);
 
                 throw;

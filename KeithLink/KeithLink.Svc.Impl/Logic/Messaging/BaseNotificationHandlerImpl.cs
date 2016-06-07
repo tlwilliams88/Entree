@@ -1,17 +1,14 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public abstract class BaseNotificationHandlerImpl {
@@ -22,45 +19,34 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         private Func<Channel, IMessageProvider> messageProviderFactory;
         private IEventLogRepository log;
-        private IDsrServiceRepository dsrServiceRepository;
+        private IDsrLogic _dsrLogic;
         #endregion
 
         #region ctor
         public BaseNotificationHandlerImpl(IUserProfileLogic userProfileLogic , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository, 
                                                             IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, IEventLogRepository log, 
-                                                            IDsrServiceRepository dsrServiceRepository) {
+                                                            IDsrLogic dsrLogic) {
             this.userProfileLogic = userProfileLogic;
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
             this.customerRepository = customerRepository;
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.messageProviderFactory = messageProviderFactory;
             this.log = log;
-            this.dsrServiceRepository = dsrServiceRepository;
+            _dsrLogic = dsrLogic;
         }
         #endregion
 
         #region methods
-        protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer, bool dsrDSMOnly = false, bool getOnlyInternal = false, bool getOnlyExternal = false) {
+        protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer, bool dsrDSMOnly = false) {
             if (customer == null) { return new List<Recipient>(); }
 
             Svc.Core.Models.Profile.UserProfileReturn users = new Core.Models.Profile.UserProfileReturn();
 
-            if (getOnlyInternal && !dsrDSMOnly && !getOnlyExternal)
-            {
-                //get all internal users and no external users
-                users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
-            }
-            else if (getOnlyExternal && !dsrDSMOnly && !getOnlyInternal)
-            {
-                //get all external users and no internal users
-                users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
-            }
-            else if (dsrDSMOnly && !getOnlyExternal && !getOnlyInternal)
-            {
+            if (dsrDSMOnly) {
                 //Only load DSRs and DSMs for the customer
 
                 //Load DSRs
-                var dsr = dsrServiceRepository.GetDsr(customer.CustomerBranch, customer.DsrNumber);
+                var dsr = _dsrLogic.GetDsr(customer.CustomerBranch, customer.DsrNumber);
                 if (dsr != null && dsr.DsrNumber != "000" && !string.IsNullOrEmpty(dsr.EmailAddress)) {
                     users = (userProfileLogic.GetUserProfile(dsr.EmailAddress));
                 }
@@ -71,7 +57,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 if (dsm != null) {
                     users.UserProfiles.Add(dsm);
                 }
-
             } else {
                 users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
                 users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
@@ -122,7 +107,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 }
             }
 
-            return recipients;
+            Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
+            foreach (Recipient rec in recipients)
+            {
+                string dupkey = rec.UserId + "_" + rec.CustomerNumber + "_" + rec.Channel + "_" + rec.ProviderEndpoint;
+                if (dict.Keys.Contains(dupkey, StringComparer.CurrentCultureIgnoreCase) == false)
+                {
+                    dict.Add(dupkey, rec);
+                }
+            }
+
+            return dict.Values.ToList();
         }
 
         protected void SendMessage(List<Recipient> recipients, Message message) {

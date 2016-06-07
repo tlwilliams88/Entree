@@ -8,8 +8,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 {
     public interface INotificationQueueConsumer
     {
-        void ListenForInternalNotificationMessagesOnQueue();
-        void ListenForExternalNotificationMessagesOnQueue();
+        void ListenForNotificationMessagesOnQueue();
+
         void Stop();
     }
 }

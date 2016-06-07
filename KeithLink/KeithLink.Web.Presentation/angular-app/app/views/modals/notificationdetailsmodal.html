@@ -9,11 +9,11 @@
   <h4 style="margin-top:20px;">Subject: {{notification.subject}}</h4>
   <pre style="margin-bottom:20px; overflow-y:scroll; height: 200px;" ng-class="{ 'text-red': notification.mandatory }" ng-bind-html="notification.body"></pre>
 
+<span ng-if="!notification.mandatory">
   <div class="row">
     <label class="col-xs-4" for="">Label</label>
-    <div class="col-xs-8">{{notification.label}}</div>
+    <div class="col-xs-8">{{notification.displayType}}</div>
   </div>
-
   <div class="row">
     <label class="col-xs-4" for="">Customer #</label>
     <div class="col-xs-8">{{notification.customernumber}}</div>
@@ -22,11 +22,11 @@
     <label class="col-xs-4" for="">Customer Name</label>
     <div class="col-xs-8">{{notification.customername}}</div>
   </div>
-
   <div class="row">
     <label class="col-xs-4" for="">Type</label>
     <div class="col-xs-8">{{notification.notificationtypedescription}}</div>
   </div>
+</span>
 
 </div>
 <div class="modal-footer">

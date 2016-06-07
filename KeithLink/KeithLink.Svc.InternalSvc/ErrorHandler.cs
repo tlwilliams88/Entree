@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Wcf;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
 
-			eventLogRepository.WriteErrorLog("Unhandled Servie Exception", error);
+			eventLogRepository.WriteErrorLog("Unhandled Service Exception", error);
 
 			return false;
 		}

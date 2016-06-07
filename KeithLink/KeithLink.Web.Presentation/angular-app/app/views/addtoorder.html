@@ -6,7 +6,7 @@
   </div>
   <div header-buttons ng-hide="invalidParams">
     <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ui-sref="menu.home">Cancel Order</button>
-    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity(true)" ng-disabled="addToOrderForm.$invalid || addToOrderForm.$pristine">Save</button>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity(true)" ng-disabled="addToOrderForm.$invalid">Save</button>
     <a class="btn-lg btn btn-default pull-right-sm hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
     <button title="Print" class="btn btn-default btn-icon" ng-click="saveBeforePrint()"><span class="icon-printer"></span></button>
     <!--<button id="quickOrder"class="btn btn-default btn-icon-right" title="Quick Order Entry" ng-click="openQuickAddModal()"><span class="glyphicon glyphicon-list-alt"></span></button>-->
@@ -65,7 +65,8 @@
         </div>
         
         <div class="info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group">
-          <span class="nav-description text-light">Selected Order</span>
+          <span class="nav-description text-light" ng-if="isChangeOrder" >Selected Order</span>
+          <span class="nav-description text-light" ng-if="!isChangeOrder" >Cart Name</span>
           <span class="nav-title" ng-hide="isRenaming">{{selectedCart.name || selectedCart.invoicenumber || 'New Cart'}} 
             <span ng-if="::!isChangeOrder" class="icon-pencil hand large-icon text-light" ng-click="startRenamingCart(selectedCart.name)"></span>
           </span>
@@ -131,8 +132,8 @@
         class="form-control mousetrap" 
         placeholder="Search current list by keyword, item # or label" />
       <span class="input-group-btn">
-        <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-        <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+        <button type="submit" ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+        <button type="button" ng-disabled="!orderSearchTerm || orderSearchTerm.length === 0" ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
       </span>
     </div>
   </form>
@@ -208,7 +209,7 @@
           <tr id="rowForFocus">
             <td>
               {{::item.position}}
-              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
+              <a ng-if="$last || clearedWhilePristine" ng-init="postPageLoadInit();"></a>
             </td>
             <td>
               <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{::item.itemnumber}}</a>
@@ -255,7 +256,6 @@
                   numeric-validation                                
                   ng-model="item.onhand"
                   name="onhand"
-                  ng-init = "item.onhand = item.onhand + 0;"
                   row-highlight
                   />
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  
@@ -454,7 +454,7 @@
           <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType : 'UNFI' })">{{::item.itemnumber}}</a>
           <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
           <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
-          <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
+          <a ng-if="$last || clearedWhilePristine" ng-init="postPageLoadInit();"></a>
         </td>
         <td class="hidden-mobile-visible-print notes-col">
           {{::item.notes}}

@@ -17,7 +17,8 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "ListItem")]
-    public class ListItemModel:BaseProductInfo, IComparable, IExportableModel {
+    public class ListItemModel : BaseProductInfo, IComparable, IExportableModel
+    {
 
         #region properties
 
@@ -31,44 +32,51 @@ namespace KeithLink.Svc.Core.Models.Lists
         public string Label { get; set; }
 
         [DataMember(Name = "parlevel")]
+        [Description("PAR")]
         public decimal ParLevel { get; set; }
 
         [DataMember(Name = "position")]
         public int Position { get; set; }
 
-		[DataMember(Name = "packsize")]
-		[Description("Pack/Size")]
-		public string PackSize { get; set; }
+        [DataMember(Name = "packsize")]
+        [Description("Pack/Size")]
+        public string PackSize { get; set; }
 
-		[DataMember(Name = "storagetemp", EmitDefaultValue = false)]
-		public string StorageTemp { get; set; }
+        [Description("Pack")]
+        public string Pack { get; set; }
 
-		[DataMember(Name = "category")]
-		[Description("Category")]
-		public string Category { get; set; }
+        [Description("Size")]
+        public string Size { get; set; }
 
-		[DataMember(Name = "fromdate")]
-		[Description("From Date")]
-		public DateTime? FromDate { get; set; }
+        [DataMember(Name = "storagetemp", EmitDefaultValue = false)]
+        public string StorageTemp { get; set; }
 
-		[DataMember(Name = "todate")]
-		[Description("To Date")]
-		public DateTime? ToDate { get; set; }
+        [DataMember(Name = "category")]
+        [Description("Contract Category")]
+        public string Category { get; set; }
 
-		[DataMember(Name = "quantity")]
-		public decimal Quantity { get; set; }
+        [DataMember(Name = "fromdate")]
+        [Description("From Date")]
+        public DateTime? FromDate { get; set; }
+
+        [DataMember(Name = "todate")]
+        [Description("To Date")]
+        public DateTime? ToDate { get; set; }
+
+        [DataMember(Name = "quantity")]
+        public decimal Quantity { get; set; }
 
         public DateTime CreatedUtc { get; set; }
 
         public DateTime ModifiedUtc { get; set; }
 
-		[DataMember(Name = "isdeleted")]
-		public bool IsDelete { get; set; }
+        [DataMember(Name = "isdeleted")]
+        public bool IsDelete { get; set; }
 
-		[DataMember]
-		public ListType Type { get; set; }
+        [DataMember]
+        public ListType Type { get; set; }
 
-        [DataMember( Name = "itemstatistics" )]
+        [DataMember(Name = "itemstatistics")]
         public ItemHistoryModel ItemStatistics { get; set; }
 
         [DataMember(Name = "catalog_id")]
@@ -79,43 +87,44 @@ namespace KeithLink.Svc.Core.Models.Lists
         #region functions
 
         public int CompareTo(object obj)
-		{
-			return this.Position.CompareTo(((ListItemModel)obj).Position);
-		}
+        {
+            return this.Position.CompareTo(((ListItemModel)obj).Position);
+        }
 
-		public List<ExportModelConfiguration> DefaultExportConfiguration()
-		{
-			var defaultConfig = new List<ExportModelConfiguration>();
+        public List<ExportModelConfiguration> DefaultExportConfiguration()
+        {
+            var defaultConfig = new List<ExportModelConfiguration>();
 
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 10, Label = "Name" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Brand", Order = 20, Label = "Brand" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 10, Label = "Name" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Brand", Order = 20, Label = "Brand" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 30, Label = "Category" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 40, Label = "Pack" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 50, Label = "Size" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 60, Label = "Note" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Each", Order = 70, Label = "Each" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 80, Label = "Price" });
 
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemClass", Order = 21, Label = "Class" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 30, Label = "Pack/Size" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Notes", Order = 50, Label = "Note" });
 
+            switch (this.Type)
+            {
+                case ListType.Favorite:
+                    break;
+                case ListType.Custom:
+                    defaultConfig.Add(new ExportModelConfiguration() { Field = "label", Order = 65, Label = "Label" });
+                    defaultConfig.Add(new ExportModelConfiguration() { Field = "parlevel", Order = 85, Label = "PAR" });
+                    break;
+                case ListType.Contract:
+                case ListType.ContractItemsAdded:
+                case ListType.ContractItemsDeleted:
+                    defaultConfig.Add(new ExportModelConfiguration() { Field = "Category", Order = 65, Label = "Contract Category" });
+                    break;
+                default:
+                    break;
 
-			switch (this.Type)
-			{
-				case ListType.Favorite:
-					break;
-				case ListType.Custom:
-					defaultConfig.Add(new ExportModelConfiguration() { Field = "label", Order = 41, Label = "Label" });
-					defaultConfig.Add(new ExportModelConfiguration() { Field = "parlevel", Order = 51, Label = "Par" });
-					break;
-				case ListType.Contract:
-				case ListType.ContractItemsAdded:
-				case ListType.ContractItemsDeleted:
-					defaultConfig.Add(new ExportModelConfiguration() { Field = "Category", Order = 41, Label = "Category" });
-					defaultConfig.Add(new ExportModelConfiguration() { Field = "label", Order = 42, Label = "Label" });
-					break;
-				default:
-					break;
+            }
 
-			}
-
-			return defaultConfig;
+            return defaultConfig;
 
         }
 

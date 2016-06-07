@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MarketingController', ['$scope', '$modal', 'MarketingService', 'UtilityService', 'CartService', 'ReportService',
-    function($scope, $modal, MarketingService, UtilityService, CartService, ReportService) {
+  .controller('MarketingController', ['$scope', '$modal', 'MarketingService', 'DateService', 'CartService', 'ReportService',
+    function($scope, $modal, MarketingService, DateService, CartService, ReportService) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -18,7 +18,7 @@ angular.module('bekApp')
 
       function getRegisteredUsers() {
         $scope.loadingResults = true;
-        MarketingService.getUsersAndMarketingInfo(UtilityService.formatJavascriptDate($scope.fromDate), UtilityService.formatJavascriptDate($scope.toDate)).then(function(users) {
+        MarketingService.getUsersAndMarketingInfo(DateService.formatJavascriptDate($scope.fromDate), DateService.formatJavascriptDate($scope.toDate)).then(function(users) {
           $scope.users = users;
         }).finally(function() {
           $scope.loadingResults = false;
@@ -63,6 +63,9 @@ angular.module('bekApp')
           templateUrl: 'views/modals/exportmodal.html',
           controller: 'ExportModalController',
           resolve: {
+            location: function() {
+              return {category:'Marketing', action:'Export Registered Users'}
+            },
             headerText: function() {
               return 'Registered Users';
             },
@@ -74,8 +77,8 @@ angular.module('bekApp')
             },
             exportParams: function() {
               var params = {
-                from: UtilityService.formatJavascriptDate($scope.fromDate),
-                to: UtilityService.formatJavascriptDate($scope.toDate)
+                from: DateService.formatJavascriptDate($scope.fromDate),
+                to: DateService.formatJavascriptDate($scope.toDate)
               };
               return '/profile/export/marketinginfo?' + jQuery.param(params);
             }

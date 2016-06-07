@@ -12,11 +12,9 @@ namespace KeithLink.Svc.Windows.AccessService {
         /// The main entry point for the application.
         /// </summary>
         static void Main() {
-            IContainer container = AutofacContainerBuilder.BuildContainer();
-
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] { 
-                new AccessService(container) 
+                new AccessService() 
             };
 
             if (Environment.UserInteractive) {

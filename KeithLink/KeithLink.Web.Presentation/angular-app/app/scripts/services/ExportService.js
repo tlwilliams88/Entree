@@ -24,7 +24,7 @@ angular.module('bekApp')
 
       var filename;
 
-      if (fileType === 'CSV') {
+      if (fileType === 'CSV' || fileType === 'csv' ) {
         filename = 'entree.csv';
       } else if (fileType === 'EXCEL' || fileType === 'excel' ) {
         filename = 'entree.xlsx';

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KeithLink.Common.Impl.Repository.Settings;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +8,72 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Common.Impl
 {
-    public class Configuration : KeithLink.Common.Core.ConfigurationFacade
+    public class Configuration : Core.ConfigurationFacade
     {
         #region attributes
         private const string KEY_LOGGING_CONNECTIONSTRING = "EventLog";
 		private const string KEY_LOG_SYSTEM_PERFORMANCE = "LogSystemPerformanceWithErrors";
 		private const string KEY_AUDITLOG_CONNECTIONSTRING = "AuditLog";
-        
+        private const string KEY_BEKDB_CONNECTIONSTRING = "BEKDBContext";
+        private const string KEY_IS_PRODUCTION = "IsProduction";
+        private const string KEY_SMTP_FAILUREADDRESS = "FailureEmailAddress";
+        private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
+        private const string KEY_SMTP_SERVERNAME = "SmtpServer";
+        private const string KEY_APP_NAME = "AppName";
+        private const string DEFAULT_APPNAME = "Entree";
+
+        // appsetting in database
+        public const string DBAPPSETTINGS_TIME_THRESHOLD_MINUTES = "3";
+
         #endregion
 
         #region properties
+        public static bool LogSystemPerformance
+		{
+			get
+			{
+				bool retVal;
+
+				bool.TryParse(DBAppSettingsRepositoryImpl.GetValue(KEY_LOG_SYSTEM_PERFORMANCE, "false"), out retVal);
+
+				return retVal;
+			}
+		}
+
+        public static string ApplicationName
+        {
+            get
+            {
+                return GetValue(KEY_APP_NAME, DEFAULT_APPNAME);
+            }
+        }
+        public static string BEKDBConnectionString
+        {
+            get { return GetConnectionString(KEY_BEKDB_CONNECTIONSTRING); }
+        }
+
+        public static string FailureEmailAddress
+        {
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_FAILUREADDRESS, string.Empty); }
+        }
+
+        public static string FromEmailAddress
+        {
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_FROMADDRESS, string.Empty); }
+        }
+
+        public static bool IsProduction
+        {
+            get
+            {
+                bool retVal;
+
+                bool.TryParse(DBAppSettingsRepositoryImpl.GetValue(KEY_IS_PRODUCTION, "false"), out retVal);
+
+                return retVal;
+            }
+        }
+
         public static string LoggingConnectionString
         {
             get
@@ -33,25 +91,10 @@ namespace KeithLink.Common.Impl
             }
         }
 
-		public static bool LogSystemPerformance
-		{
-			get
-			{
-				bool retVal;
-
-				bool.TryParse(GetValue(KEY_LOG_SYSTEM_PERFORMANCE, "false"), out retVal);
-
-				return retVal;
-			}
-		}
-
-		public static string AuditLogConnectionString
-		{
-			get { return GetConnectionString(KEY_AUDITLOG_CONNECTIONSTRING); }
-		}
-
+        public static string SmtpServerAddress
+        {
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_SERVERNAME, string.Empty); }
+        }
         #endregion
-
-
     }
 }

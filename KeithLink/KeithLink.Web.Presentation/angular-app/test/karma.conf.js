@@ -37,7 +37,7 @@ module.exports = function(config) {
       'app/lib/angulartics/angulartics.min.js',
       'app/lib/angulartics/angulartics-ga.min.js',
       'app/lib/mousetrap/mousetrap.min.js',
-
+      'app/lib/angular-fast-repeat/fastRepeat.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',

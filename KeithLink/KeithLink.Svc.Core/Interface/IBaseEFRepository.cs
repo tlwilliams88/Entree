@@ -9,7 +9,9 @@ namespace KeithLink.Svc.Core.Interface
 {
 	public interface IBaseEFREpository<T> where T : class
 	{
-		// Using CRUD (Create, Read, Update, Delete) naming convention...
+        // Using CRUD (Create, Read, Update, Delete) naming convention...
+        void BulkInsert(IEnumerable<T> entities);
+
 		void Create(T domainObject);
 		void CreateOrUpdate(T domainObject);
 		void Update(T domainObject);

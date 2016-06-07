@@ -14,13 +14,25 @@ angular.module('bekApp')
     var Service = {
 
       getInvoices: function(params) {
-        return Invoice.save(params).$promise;
+        return Invoice.save(params).$promise.then(function(resp){
+          return resp.successResponse;          
+        });
       },
 
       getInvoice: function(invoiceNumber) {
         return Invoice.getInvoice({
           invoiceNumber: invoiceNumber
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
+      },
+
+      getInvoiceTransactions: function(invoiceNumber){
+        return Invoice.getInvoiceTransactions({
+          invoiceNumber: invoiceNumber
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        })
       },
 
       getInvoiceImage: function(invoiceNumber) {
@@ -30,26 +42,19 @@ angular.module('bekApp')
 
       // for all customers
       getAllOpenInvoices: function(params){
-        return Invoice.getAllOpen(params).$promise;
+        return Invoice.getAllOpen(params).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
-
-      // for all customers
-      // getPendingTransactions: function(params) {
-      //   return Invoice.getAllPendingTransactions(params).$promise.then(function (data) {
-      //     // add data to wrapper object so it matches format of getInvoices endpoints
-      //     var wrapper = {
-      //       pagedresults: data
-      //     };
-      //     return wrapper;
-      //   });
-      // },
 
       payInvoices: function(payments) {
         payments.forEach(function(payment) {     
         payment.amount = parseFloat(payment.paymentAmount);
       });
 
-        return Invoice.pay({}, payments).$promise;
+        return Invoice.pay({}, payments).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       checkTotals: function(payments) {
@@ -65,14 +70,12 @@ angular.module('bekApp')
       ********************/
 
       getExportConfig: function() {
-        return Invoice.getInvoiceExportConfig({}).$promise;
+        return Invoice.getInvoiceExportConfig({}).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportInvoice: function(config, params) {
-        // {
-        //   "paging": {"size":50,"from":0,"filter":{"filter":[],"field":"statusdescription","value":"Past Due"}},
-        //   "export": {"selectedtype": "CSV"}
-        // }
         var exportParams = {
           paging: params.paging,
           export: config
@@ -103,7 +106,9 @@ angular.module('bekApp')
       getDetailExportConfig: function(invoiceNumber) {
         return Invoice.getDetailExportConfig({
           invoiceNumber: invoiceNumber
-        }).$promise;
+        }).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportInvoiceDetails: function(config, invoiceNumber) {

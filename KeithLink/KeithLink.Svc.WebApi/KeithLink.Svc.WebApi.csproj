@@ -21,6 +21,7 @@
     <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,16 +37,18 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac">
-      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Integration.WebApi">
-      <HintPath>..\packages\Autofac.WebApi2.3.3.3\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+    <Reference Include="Autofac.Integration.WebApi, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServer.Foundation.Presentation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
@@ -66,24 +69,28 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Cors, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Cors.3.0.1\lib\net45\Microsoft.Owin.Cors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -142,8 +149,8 @@
       <HintPath>..\packages\Microsoft.SqlServer.Types.11.0.2\lib\net20\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
@@ -153,14 +160,15 @@
     </Reference>
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Net.Http.WebRequest" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
-    <Reference Include="System.Web.Cors">
-      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.0\lib\net45\System.Web.Cors.dll</HintPath>
+    <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -172,15 +180,20 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Web.Http.Cors">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.0\lib\net45\System.Web.Http.Cors.dll</HintPath>
+    <Reference Include="System.Web.Http.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Cors.5.2.3\lib\net45\System.Web.Http.Cors.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Forms" />
@@ -191,11 +204,6 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System.Web.Http.WebHost">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\packages\Microsoft.SqlServer.Types.11.0.2\nativeBinaries\x64\msvcr100.dll">
@@ -215,249 +223,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Global.asax" />
-    <Content Include="KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Invoices.TermModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportOptionsModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.Order.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Reports.ItemUsageReportItemModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.CustomerAccountBalanceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.Dsr.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.OrderHeader.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.PagedListModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.ListCopyResultModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.EF.DsrAlias.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.DsrAliasModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Configuration.EF.ExternalCatalog.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportExternalCatalog.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModelReturn.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Customers.EF.ItemHistory.datasource" />
     <None Include="Properties\PublishProfiles\Beta.pubxml" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev2.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
-    <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <Content Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.disco" />
-    <None Include="Service References\com.benekeith.ContentManagementService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ContentManagementService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ContentManagementService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap" />
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.wsdl" />
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.DsrService\DsrService.wsdl" />
-    <None Include="Service References\com.benekeith.DsrService\DsrService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DsrService\DsrService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DsrService\DsrService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
-    <None Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService61.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
-    <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ListService\ListServcie7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie71.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie9.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie91.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
-    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.wsdl" />
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService51.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService53.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService62.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
-    <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.OrderService\OrderService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService51.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.disco" />
-    <None Include="Service References\com.benekeith.OnlinePaymentService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.OnlinePaymentService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.OnlinePaymentService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.disco" />
-    <None Include="Service References\com.benekeith.ConfigurationService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ConfigurationService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ConfigurationService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.DsrService\DsrService.disco" />
-    <None Include="Service References\com.benekeith.DsrService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.DsrService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.DsrService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService.wsdl" />
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService.disco" />
-    <None Include="Service References\com.benekeith.ReportService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ReportService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ReportService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Services\PowerMenuPricing.asmx" />
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService.disco" />
-    <None Include="Service References\com.benekeith.ProfileService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ProfileService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ProfileService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="SqlServerTypes\readme.htm" />
     <EmbeddedResource Include="SwaggerUI.css">
       <LogicalName>SwaggerUI.css</LogicalName>
@@ -469,7 +244,6 @@
   <ItemGroup>
     <Compile Include="App_Start\ApiKeyedRoute.cs" />
     <Compile Include="App_Start\ApiKeyedRouteConstraint.cs" />
-    <Compile Include="App_Start\DependencyMap.cs" />
     <Compile Include="App_Start\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -477,6 +251,7 @@
     <Compile Include="Attribute\AuthorizationAttribute.cs" />
     <Compile Include="Attribute\RequireHttpsAttribute.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CacheController.cs" />
@@ -488,7 +263,6 @@
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ItemNoteController.cs" />
     <Compile Include="Controllers\ListController.cs" />
-    <Compile Include="Controllers\OnlinePaymentController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RecentItemController.cs" />
@@ -497,6 +271,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Attribute\GlobalExceptionFilterAttribute.cs" />
+    <Compile Include="Helpers\ListPrintHelper.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GuestProfileModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -509,78 +284,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Repository\Configurations\ExternalCatalogServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Configurations\ExportSettingServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\ContentManagement\ContentManagementServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
-    <Compile Include="Repository\Profile\DsrServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
-    <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
-    <Compile Include="Service References\com.benekeith.ConfigurationService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.ContentManagementService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.DivisionService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.DsrService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.InvoiceService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.ListService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.OnlinePaymentService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.ProfileService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.ReportService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Services\PowerMenuPricing.asmx.cs">
       <DependentUpon>PowerMenuPricing.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\PowerMenuPricingHandler.ashx.cs">
       <DependentUpon>PowerMenuPricingHandler.ashx</DependentUpon>
@@ -595,116 +300,7 @@
     <Content Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.wsdl" />
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService.wsdl" />
-    <None Include="Service References\com.benekeith.ReportService\ReportService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Services\PowerMenuPricingHandler.ashx" />
-    <None Include="Service References\com.benekeith.ReportService\ReportService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -755,22 +351,6 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.ConfigurationService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.ContentManagementService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.DsrService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.OnlinePaymentService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.ProfileService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.ReportService\" />
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -778,7 +358,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -787,7 +367,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;TEST</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -797,7 +377,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;STAGE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -818,15 +398,25 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev2|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
     <DocumentationFile>bin\KeithLink.Svc.WebApi.XML</DocumentationFile>
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
     <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;BETA</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'asdf|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
+    <DocumentationFile>bin\KeithLink.Svc.WebApi.XML</DocumentationFile>
+    <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>

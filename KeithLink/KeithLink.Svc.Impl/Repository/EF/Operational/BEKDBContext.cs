@@ -1,7 +1,5 @@
-﻿using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Core.Models.ContentManagement.EF;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Orders.EF;
@@ -42,11 +40,9 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         public DbSet<MessageTemplate> MessageTemplates { get; set; }
         public DbSet<ExternalCatalog> ExternalCatalogs { get; set; }
 
-        // ContentManagement
-        public DbSet<ContentItem> ContentItems { get; set; }
-
         // Customers
         public DbSet<ItemHistory> ItemHistory { get; set; }
+        public DbSet<InternalUserAccess> InternalUserAccess { get; set; }
 
         // Invoices
         public DbSet<Invoice> Invoices { get; set; }
@@ -108,9 +104,6 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             modelBuilder.Entity<ExportSetting>().ToTable( "ExportSettings", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ExternalCatalog>().ToTable("ExternalCatalogs", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            // ContentManagement
-            modelBuilder.Entity<ContentItem>().ToTable( "ContentItems", schemaName: "ContentManagement" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
-
             // Profile
             modelBuilder.Entity<MarketingPreference>().ToTable("MarketingPreferences", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Settings>().ToTable( "Settings", schemaName: "Profile" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
@@ -118,6 +111,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 
             // Customers
             modelBuilder.Entity<ItemHistory>().ToTable("ItemHistory", schemaName: "Customers").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<InternalUserAccess>().ToTable( "InternalUserAccess", schemaName: "Customers" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
         }
 
         public override int SaveChanges() {

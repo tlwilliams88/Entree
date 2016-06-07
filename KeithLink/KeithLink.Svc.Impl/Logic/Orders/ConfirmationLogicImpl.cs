@@ -2,7 +2,7 @@
 using CommerceServer.Core.Runtime.Orders;
 
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Events.EventArgs;
@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _log.WriteErrorLog(string.Concat("Exception encountered in ConfirmationLogic: ", e.Exception.Message));
             _log.WriteWarningLog("Listener will stop processing and will need to be restarted");
 
-            KeithLink.Common.Core.Email.ExceptionEmail.Send(e.Exception, "Listener will stop processing and will need to be restarted");
+            KeithLink.Common.Impl.Email.ExceptionEmail.Send(e.Exception, "Listener will stop processing and will need to be restarted");
         }
 
         #endregion
@@ -206,8 +206,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// </summary>
         /// <returns></returns>
         public ConfirmationFile GetFileFromQueue() {
-            string fileFromQueue = genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer,
-                Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueConfirmation);
+            string fileFromQueue = KeithLink.Svc.Impl.Helpers.Retry.Do<string>
+                (() => genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer,
+                Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueConfirmation),
+                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
             if (fileFromQueue == null)
                 return null; // a null return indicates no message on queue
             else if (String.IsNullOrEmpty(fileFromQueue))
@@ -220,8 +222,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             if (detail == null) {
                 return 0;
             } else {
-                if (detail.SplitPriceNet == null) { detail.SplitPriceNet = 0; }
-                if (detail.PriceNet == null) { detail.PriceNet = 0; }
+                //if (detail.SplitPriceNet == null) { detail.SplitPriceNet = 0; }
+                //if (detail.PriceNet == null) { detail.PriceNet = 0; }
 
                 return splitCase ? detail.SplitPriceNet : detail.PriceNet;
             }
@@ -254,7 +256,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                             KeithLink.Svc.Impl.Helpers.Retry.Do(() => _conversionLogic.SaveConfirmationAsOrderHistory(confirmation), TimeSpan.FromSeconds(1), 5);
                         } catch (Exception e) {
                             _log.WriteErrorLog("Error processing confirmation in Queue service", e);
-                            KeithLink.Common.Core.Email.ExceptionEmail.Send(e, subject: "Exception processing Confirmation in Queue Service");
+                            KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, subject: "Exception processing Confirmation in Queue Service");
 
                             confirmation.ErrorMessage = e.Message;
                             confirmation.ErrorStack = e.StackTrace;

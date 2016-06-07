@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -24,7 +24,7 @@ using System.IO;
 namespace KeithLink.Svc.Impl.Logic {
     public class ImportLogicImpl : IImportLogic {
         #region attributes
-        private IListServiceRepository listServiceRepository;
+        private IListLogic listServiceRepository;
         private ICatalogLogic catalogLogic;
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Logic {
         #endregion
 
         #region ctor
-        public ImportLogicImpl( IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic ) {
+        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic ) {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
             this.eventLogRepository = eventLogRepository;
@@ -139,7 +139,7 @@ namespace KeithLink.Svc.Impl.Logic {
 						break;
 				}
 
-				KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, errorMessage, "File Import Error", attach);
+				KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, errorMessage, "File Import Error", attach);
 			}
 			catch (Exception emailEx)
 			{
@@ -250,7 +250,7 @@ namespace KeithLink.Svc.Impl.Logic {
             } catch (Exception e) {
                 returnModel.Success = false;
                 Error(String.Format(e.Message.ToString()));
-                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, String.Format("User: {0} for customer {1} in {2} failed importing an order from file: {3}.", user.UserId, catalogInfo.CustomerId, catalogInfo.BranchId, file.FileName));
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, String.Format("User: {0} for customer {1} in {2} failed importing an order from file: {3}.", user.UserId, catalogInfo.CustomerId, catalogInfo.BranchId, file.FileName));
             }
 
 			CalculateCartSupTotal(catalogInfo, newCart, items);

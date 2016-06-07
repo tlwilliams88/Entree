@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Impl.Repository.Logging;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Impl.Logic.Orders;

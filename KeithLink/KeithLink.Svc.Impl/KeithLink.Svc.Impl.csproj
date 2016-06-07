@@ -27,14 +27,14 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Dev\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
@@ -42,7 +42,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <OutputPath>bin\Test\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;TEST</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,7 +51,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
     <OutputPath>bin\Stage\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;STAGE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -70,14 +70,23 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev2|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Dev2\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
     <DebugType>full</DebugType>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
     <OutputPath>bin\Beta\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;BETA</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'asdf|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\asdf\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;DEV</DefineConstants>
+    <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -86,9 +95,21 @@
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=3.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.3.4.0\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="AWSSDK, Version=2.3.5.0, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AWSSDK.2.3.5.0\lib\net45\AWSSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="BarcodeLib, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\BarcodeLib.dll</HintPath>
     </Reference>
     <Reference Include="CommerceServer.Core.Catalog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -204,9 +225,9 @@
     <Reference Include="RabbitMQ.Client">
       <HintPath>..\packages\RabbitMQ.Client.3.3.5\lib\net30\RabbitMQ.Client.dll</HintPath>
     </Reference>
-    <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
+    <Reference Include="RestSharp, Version=105.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -217,14 +238,18 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -239,6 +264,10 @@
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="Helpers\ListSortHelper.cs" />
+    <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
+    <Compile Include="Helpers\ProfileHelper.cs" />
+    <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
     <Compile Include="Logic\ETL\ListImportLogicImpl.cs" />
@@ -256,46 +285,43 @@
     <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalExportSettingsLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalOnlinePaymentLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalReportLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalSpecialOrderLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
+    <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Lists\FavoriteLogicImpl.cs" />
+    <Compile Include="Logic\Lists\HistoryLogic.cs" />
+    <Compile Include="Logic\Lists\ListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\NoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EtaNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\HasNewsNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\InvoiceNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EmailMessageProvider.cs" />
+    <Compile Include="Logic\Messaging\MessagingLogicImpl.cs" />
     <Compile Include="Logic\Messaging\PaymentConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\WebMessageProvider.cs" />
     <Compile Include="Logic\Messaging\MessageTemplateLogicImpl.cs" />
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
+    <Compile Include="Logic\OnlinePayments\OnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
-    <Compile Include="Logic\Orders\NoOrderConverionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
+    <Compile Include="Logic\Orders\SpecialOrderLogicImpl.cs" />
+    <Compile Include="Logic\Orders\UserActiveCartLogicImpl.cs" />
     <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
+    <Compile Include="Logic\Profile\DsrAliasLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
-    <Compile Include="Logic\Profile\NoSettingsLogicImpl.cs" />
+    <Compile Include="Logic\Profile\MarketingPreferencesLogicImpl.cs" />
+    <Compile Include="Logic\Profile\PasswordRequest\PasswordResetLogicImpl.cs" />
     <Compile Include="Logic\Profile\SettingsLogicImpl.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\Reports\InventoryValuationReportLogicImpl.cs" />
+    <Compile Include="Logic\Reports\ReportLogic.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
@@ -306,19 +332,30 @@
     </Compile>
     <Compile Include="Models\SiteCatalog\Schemas\PricingRequest.cs">
       <DependentUpon>PricingRequest.xsd</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Repository\Customers\InternalUserAccessRepository.cs" />
+    <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.cs" />
+    <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.Designer.cs">
+      <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201604191848159_blank for 1.6.cs" />
+    <Compile Include="Repository\EF\Migrations\201604191848159_blank for 1.6.Designer.cs">
+      <DependentUpon>201604191848159_blank for 1.6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs" />
+    <Compile Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.Designer.cs">
+      <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
+    <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
     <Compile Include="Repository\Cache\CacheRepositoryImpl.cs" />
-    <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
-    <Compile Include="Repository\Configurations\InternalExternalCatalogServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExternalCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
-    <Compile Include="Repository\Configurations\NoExternalCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementExternalRepositoryImpl.cs" />
-    <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
@@ -623,6 +660,10 @@
     <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.Designer.cs">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201601222158104_Remove content managment tables.cs" />
+    <Compile Include="Repository\EF\Migrations\201601222158104_Remove content managment tables.Designer.cs">
+      <DependentUpon>201601222158104_Remove content managment tables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201511172254161_Extend Order History Detail for UNFI.cs" />
     <Compile Include="Repository\EF\Migrations\201511172254161_Extend Order History Detail for UNFI.Designer.cs">
       <DependentUpon>201511172254161_Extend Order History Detail for UNFI.cs</DependentUpon>
@@ -646,6 +687,10 @@
     <Compile Include="Repository\EF\Migrations\201602232102536_change_dates_to_strings.cs" />
     <Compile Include="Repository\EF\Migrations\201602232102536_change_dates_to_strings.Designer.cs">
       <DependentUpon>201602232102536_change_dates_to_strings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201603162117290_remove content items table after 1_5 merge.cs" />
+    <Compile Include="Repository\EF\Migrations\201603162117290_remove content items table after 1_5 merge.Designer.cs">
+      <DependentUpon>201603162117290_remove content items table after 1_5 merge.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -674,36 +719,28 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
-    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Operational\SpecialOrderDBContext.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\ImagingRepositoryImpl.cs" />
-    <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\TermRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListShareRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\NoListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserPushNotificationDeviceRepositoryImpl.cs" />
-    <Compile Include="Repository\Messaging\NoMessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Invoice\KPayInvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Log\KPayLogRepositoryImpl.cs" />
-    <Compile Include="Repository\OnlinePayments\NoOnlinePaymentServiceRepository.cs" />
     <Compile Include="Repository\OnlinePayments\Payment\KPayPaymentTransactionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
-    <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
-    <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\CustomerTopicRepositoryImpl.cs" />
-    <Compile Include="Repository\Orders\NoSpecialOrderRepository.cs" />
     <Compile Include="Repository\Orders\SpecialOrderRepository.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
@@ -711,8 +748,6 @@
     <Compile Include="Repository\Orders\History\OrderUpdateQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateRequestQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateRequestSocketRepositoryImpl.cs" />
-    <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
-    <Compile Include="Repository\Orders\NoOrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\UserActiveCartRepositoryImpl.cs" />
@@ -730,12 +765,6 @@
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\ItemHistoryRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\MarketingPreferencesRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\NoDsrAliasLogicImpl.cs" />
-    <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
-    <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
-    <Compile Include="Repository\Profile\NoSettingsRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\PasswordReset\NoPasswordResetServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\SettingsRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
@@ -750,7 +779,6 @@
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ElasticSearchCatalogRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\NoDivisionServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
@@ -795,12 +823,21 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">
+      <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.resx">
+      <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Caching.config" />
     <None Include="Logic\Profile\UserProfileLogicImpl.cs.vsspell">
       <DependentUpon>UserProfileLogicImpl.cs</DependentUpon>
+    </None>
+    <None Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.xsc">
+      <DependentUpon>NonBekItemPricingRequest.xsd</DependentUpon>
     </None>
     <None Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.xsd">
       <SubType>Designer</SubType>
@@ -843,6 +880,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <None Include="RequestTemplates\RequestTemplates.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RequestTemplates.cs</LastGenOutput>
@@ -985,7 +1023,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repository\InternalSvc\" />
     <Folder Include="Schemas\" />
   </ItemGroup>
   <ItemGroup>
@@ -1032,7 +1069,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
-    <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>
@@ -1261,6 +1297,9 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.resx">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201601222158104_Remove content managment tables.resx">
+      <DependentUpon>201601222158104_Remove content managment tables.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201511172254161_Extend Order History Detail for UNFI.resx">
       <DependentUpon>201511172254161_Extend Order History Detail for UNFI.cs</DependentUpon>
     </EmbeddedResource>
@@ -1279,9 +1318,19 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201602232102536_change_dates_to_strings.resx">
       <DependentUpon>201602232102536_change_dates_to_strings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201603162117290_remove content items table after 1_5 merge.resx">
+      <DependentUpon>201603162117290_remove content items table after 1_5 merge.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.FoundationService\FoundationService.disco" />
+    <Content Include="Dependencies\BarcodeLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604191848159_blank for 1.6.resx">
+      <DependentUpon>201604191848159_blank for 1.6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Images\Logo.png" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

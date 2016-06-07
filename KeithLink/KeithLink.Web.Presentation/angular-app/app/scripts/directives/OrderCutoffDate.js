@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-.directive('orderCutoffDate', [function() {
+.directive('orderCutoffDate', ['DateService' , function(DateService) {
   var directive = {
     require: 'ngModel',
     restrict: 'A',
@@ -12,8 +12,8 @@ angular.module('bekApp')
       function checkValidity(viewValue) {
         if(scope.$modelValue || scope.$modelValue === undefined){
 
-             var cutoffDate = moment(viewValue).format();
-             var now = moment().tz("America/Chicago").format();
+             var cutoffDate = DateService.momentObject(viewValue).format();             
+             var now = DateService.momentObject().tz("America/Chicago").format();
 
           if (now < cutoffDate) {
             

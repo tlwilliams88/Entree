@@ -42,9 +42,9 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
  
-  $scope.webVersionNum = '1.5.4';
-  $scope.androidVersionNum = '1.5.4';
-  $scope.iOSVersionNum = '1.5.4';
+  $scope.webVersionNum = '1.6.0';
+  $scope.androidVersionNum = '1.6.0';
+  $scope.iOSVersionNum = '1.6.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
@@ -376,8 +376,9 @@ angular.module('bekApp')
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
     $scope.canViewMarketing = AccessService.canViewMarketing();
-	  $scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
-	  $scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
+	$scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
+	$scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
     $scope.canRunReports = AccessService.canRunReports();
+	$scope.isSysAdmin = AccessService.isSysAdmin();
   }
 }]);

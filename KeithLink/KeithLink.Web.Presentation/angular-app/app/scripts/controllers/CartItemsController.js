@@ -8,8 +8,10 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
-    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants',
+   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService,
+     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists) {
 
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -68,6 +70,15 @@ angular.module('bekApp')
         $scope.resetSubmitDisableFlag(true);
       }
     });
+
+    OrderService.getRecentlyOrderedUNFIItems().then(function(recentlyOrdered){
+      if(recentlyOrdered){
+        $scope.recentlyOrderedUnfiItems = recentlyOrdered.items;
+      }
+      else{
+        $scope.recentlyOrderedUnfiItems = [];
+      }      
+    })
 
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
@@ -144,8 +155,9 @@ angular.module('bekApp')
     };
 
     $scope.validateShipDate = function(shipDate){
-      var cutoffDate = moment(shipDate.cutoffdatetime).format();
-      var now = moment().tz("America/Chicago").format();
+      var cutoffDate = DateService.momentObject(shipDate.cutoffdatetime,'').format();
+      var now = DateService.momentObject().tz("America/Chicago").format();
+
       $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
       if($scope.invalidSelectedDate){
         CartService.getShipDates().then(function(result){
@@ -244,6 +256,7 @@ angular.module('bekApp')
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
+            $scope.setRecentlyOrderedUNFIItems(cart);
             var orderNumber = -1;
             var index;
             for (index in data.ordersReturned) {
@@ -292,6 +305,24 @@ angular.module('bekApp')
       }
     };
 
+    $scope.setRecentlyOrderedUNFIItems = function(cart){
+      var itemsAdded = false;
+      if(cart.items && cart.items.length > 0){
+        var unfiItems = $filter('filter')(cart.items, {is_specialty_catalog: true});
+        if(unfiItems.length > 0){
+          unfiItems.forEach(function(unfiItem){
+            if($filter('filter')($scope.recentlyOrderedUnfiItems, {itemnumber: unfiItem.itemnumber}).length === 0){
+              $scope.recentlyOrderedUnfiItems.unshift(unfiItem);
+              itemsAdded = true;
+            }
+          })
+          if(itemsAdded){
+            OrderService.UpdateRecentlyOrderedUNFIItems($scope.recentlyOrderedUnfiItems);
+          }
+        }        
+      }
+    }
+
     $scope.renameCart = function (cartId, cartName) {
       var cart = angular.copy($scope.currentCart);
       cart.name = cartName;
@@ -317,7 +348,6 @@ angular.module('bekApp')
 
     $scope.deleteCart = function(cart) {
       CartService.deleteCart(cart.id).then(function() {
-        $scope.goToCart();
         $scope.displayMessage('success', 'Successfully deleted cart.');
         $state.go('menu.order');
       }, function() {
@@ -388,6 +418,7 @@ angular.module('bekApp')
         $scope.saveChangeOrder(order)
           .then(OrderService.resubmitOrder)
           .then(function(invoiceNumber) {
+            $scope.setRecentlyOrderedUNFIItems(order);
             $scope.displayMessage('success', 'Successfully submitted change order.');
             $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
           }, function(error) {
@@ -515,7 +546,7 @@ angular.module('bekApp')
       if($scope.currentCart && !$scope.currentCart.requestedshipdate){
           $scope.selectShipDate($scope.shipDates[0]);
       }else{
-          if(moment($scope.currentCart.requestedshipdate.slice(0,10)) < moment($scope.shipDates[0].shipdate)) {
+            if(DateService.momentObject($scope.currentCart.requestedshipdate.slice(0,10),'') < DateService.momentObject($scope.shipDates[0].shipdate,'')) {
             $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
           }
       }

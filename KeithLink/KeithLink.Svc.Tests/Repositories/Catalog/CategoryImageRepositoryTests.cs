@@ -1,7 +1,8 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KeithLink.Svc.Core;
+﻿using KeithLink.Common.Impl.Repository.Logging;
+
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Repositories.Catalog
 {
@@ -13,7 +14,7 @@ namespace KeithLink.Svc.Test.Repositories.Catalog
         {
             string categoryId = "ap000";
 
-            CategoryImageRepository repo = new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests"));
+            CategoryImageRepository repo = new CategoryImageRepository(new EventLogRepositoryImpl("KeithLink Tests"));
 
             Assert.IsTrue(repo.GetImageByCategory(categoryId).CategoryImage.FileName.Contains(categoryId));
         }

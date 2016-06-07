@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', '$q', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
-    function($http, $q, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
+  .factory('ProductService', ['$http', '$q', '$analytics', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
+    function($http, $q, $analytics, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
 
       var defaultPageSize = Constants.infiniteScrollPageSize,
         defaultStartingIndex = 0;
@@ -93,8 +93,15 @@ angular.module('bekApp')
           return url;
         },
 
-        searchCatalog: function(type, id, catalogType, params) {
-          
+        searchCatalog: function(type, id, catalogType, params, department) {
+          if(type === 'search'){
+
+            var dept = (params.dept === '') ? 'All' : params.dept;
+       
+            $analytics.eventTrack('Search Department', {  category: 'Search', label: department });
+            $analytics.eventTrack('Search Terms', {  category: 'Search', label: id });
+          }
+
           var url = Service.getSearchUrl(type, id, catalogType);
           
           var config = {
@@ -102,7 +109,7 @@ angular.module('bekApp')
           };
 
           return $http.get(url, config).then(function(response) {
-            var data = response.data;
+            var data = response.data.successResponse;
 
             // convert nonstock data structure to match other itemspecs
             if (data.facets.nonstock && data.facets.nonstock.length > 0) {
@@ -124,7 +131,12 @@ angular.module('bekApp')
           var returnProduct;
           if (!Service.selectedProduct.name) {
             returnProduct = $http.get('/catalog/' + catalogType + '/product/' + itemNumber).then(function(response) {
-              return response.data;
+              if(response.data.successResponse){
+                return response.data.successResponse;
+              }
+              else{
+                return null;
+              }             
             });
           } else {
             returnProduct = Service.selectedProduct;
@@ -136,7 +148,7 @@ angular.module('bekApp')
         scanProduct: function(itemNumber) {
           return $http.get('/catalog/product/scan/' + itemNumber).then(function(response) {
             if (response.data) {
-              return response.data; // item found, return item object
+              return response.data.successResponse; // item found, return item object
             } else {
               return;
             }
@@ -152,13 +164,17 @@ angular.module('bekApp')
             note: note,
             catalog_id: catalogid
           };
-          return ItemNotes.save(null, itemNote).$promise;
+          return ItemNotes.save(null, itemNote).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         deleteItemNote: function(itemNumber) {
           return ItemNotes.delete({
             itemNumber: itemNumber
-          }).$promise;
+          }).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         /****************
@@ -171,7 +187,13 @@ angular.module('bekApp')
         },
 
         getRecentlyViewedItems: function() {
-          return RecentlyViewedItem.query({}).$promise;
+          return RecentlyViewedItem.get({}).$promise.then(function(response){
+            return response.successResponse;
+          });
+        },
+
+        clearRecentlyViewedItems: function() {
+          return RecentlyViewedItem.delete({}).$promise;
         },
 
         /****************
@@ -179,7 +201,7 @@ angular.module('bekApp')
         ****************/
         getExportConfig: function() {
           return $http.get('/catalog/export').then(function(response) {
-            return response.data;
+            return response.data.successResponse;
           });
         },
 

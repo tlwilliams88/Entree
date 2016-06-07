@@ -1,63 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.EF;
+
 using AmazonSNS = Amazon.SimpleNotificationService;
 
+using System;
+using System.Collections.Generic;
 
-namespace KeithLink.Svc.Impl.Logic.Messaging
-{
-    public class AmazonPushNotificationMessageProvider : IPushNotificationMessageProvider
-    {
-        KeithLink.Common.Core.Logging.IEventLogRepository eventLog;
 
-        public AmazonPushNotificationMessageProvider(KeithLink.Common.Core.Logging.IEventLogRepository eventLog)
-        {
+namespace KeithLink.Svc.Impl.Logic.Messaging {
+    public class AmazonPushNotificationMessageProvider : IPushNotificationMessageProvider {
+        #region attributes
+        private readonly IEventLogRepository eventLog;
+        #endregion
+
+        #region ctor
+        public AmazonPushNotificationMessageProvider(IEventLogRepository eventLog) {
             this.eventLog = eventLog;
         }
+        #endregion
 
-		public void SendMessage(List<Recipient> recipients, Message message)
-        {
-			if (recipients == null)
-				return;
-
-            AmazonSNS.IAmazonSimpleNotificationService client =
-                Amazon.AWSClientFactory.CreateAmazonSimpleNotificationServiceClient(
-                    new Amazon.Runtime.BasicAWSCredentials(Configuration.AmazonSnsAccessKey, Configuration.AmazonSnsSecretKey), // TODO: Config
-                    Amazon.RegionEndpoint.USEast1);
-
-            foreach (var recipient in recipients)
-            {
-                try
-                {
-                    if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.iOS)
-                    {
-                        // format our message for apple
-                        client.Publish(new AmazonSNS.Model.PublishRequest() { TargetArn = recipient.ProviderEndpoint, Message = message.MessageSubject }
-                        );
-                    }
-                    else if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.Android)
-                    {
-						client.Publish(new AmazonSNS.Model.PublishRequest()
-						{
-							TargetArn = recipient.ProviderEndpoint,
-							MessageStructure = "json",
-							Message = string.Format("{{\n\"GCM\": \"{{ \\\"data\\\": {{ \\\"message\\\": \\\"{0}\\\" }} }}\"\n}}", message.MessageSubject)
-						});
-						
-                    }
-                }
-                catch (Exception ex)
-                {
-                    eventLog.WriteErrorLog("Error sending message to push recipient: " + recipient.ProviderEndpoint, ex);
-                }
-            }
-        }
-
+        #region methods
         public string RegisterRecipient(UserPushNotificationDevice userPushNotificationDevice)
         {
             AmazonSNS.IAmazonSimpleNotificationService client =
@@ -113,5 +78,44 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             }
             return currentArn;
         }
+
+        public void SendMessage(List<Recipient> recipients, Message message)
+        {
+			if (recipients == null)
+				return;
+
+            AmazonSNS.IAmazonSimpleNotificationService client =
+                Amazon.AWSClientFactory.CreateAmazonSimpleNotificationServiceClient(
+                    new Amazon.Runtime.BasicAWSCredentials(Configuration.AmazonSnsAccessKey, Configuration.AmazonSnsSecretKey), // TODO: Config
+                    Amazon.RegionEndpoint.USEast1);
+
+            foreach (var recipient in recipients)
+            {
+                try
+                {
+                    if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.iOS)
+                    {
+                        // format our message for apple
+                        client.Publish(new AmazonSNS.Model.PublishRequest() { TargetArn = recipient.ProviderEndpoint, Message = message.MessageSubject }
+                        );
+                    }
+                    else if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.Android)
+                    {
+						client.Publish(new AmazonSNS.Model.PublishRequest()
+						{
+							TargetArn = recipient.ProviderEndpoint,
+							MessageStructure = "json",
+							Message = string.Format("{{\n\"GCM\": \"{{ \\\"data\\\": {{ \\\"message\\\": \\\"{0}\\\" }} }}\"\n}}", message.MessageSubject)
+						});
+						
+                    }
+                }
+                catch (Exception ex)
+                {
+                    eventLog.WriteErrorLog("Error sending message to push recipient: " + recipient.ProviderEndpoint, ex);
+                }
+            }
+        }
+        #endregion
     }
 }

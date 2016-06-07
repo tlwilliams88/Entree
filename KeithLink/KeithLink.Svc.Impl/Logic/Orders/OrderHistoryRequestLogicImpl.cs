@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
@@ -31,7 +32,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #region methods
         public void ProcessRequests() {
 
-		    string rawRequest = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueOrderUpdateRequest);
+            string rawRequest = KeithLink.Svc.Impl.Helpers.Retry.Do<string>
+                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, 
+                Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueOrderUpdateRequest),
+                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
 
             while (!string.IsNullOrEmpty(rawRequest)) {
                 OrderHistoryRequest request = JsonConvert.DeserializeObject<OrderHistoryRequest>(rawRequest);

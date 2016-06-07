@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Impl.Repository.Logging;
 using KeithLink.Svc.Core.Models.Authentication;
 using KeithLink.Svc.Core.Enumerations.Authentication;
 using KeithLink.Svc.Impl;
@@ -7,7 +7,6 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {

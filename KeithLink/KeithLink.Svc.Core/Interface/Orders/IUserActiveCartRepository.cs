@@ -9,5 +9,6 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
 	public interface IUserActiveCartRepository : IBaseEFREpository<UserActiveCart>
 	{
+        UserActiveCart GetCurrentUserCart(Guid userId, string branchId, string customerNumber);
 	}
 }

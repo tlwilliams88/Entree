@@ -1,7 +1,7 @@
 ﻿// KeithLink
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Impl.Models;
 using System.IO;
 // Core
@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Impl.ETL
         /// </summary>
 		public void ProcessContractItems()
 		{
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
                 {
@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Impl.ETL
         /// </summary>
         /// <returns></returns>
         public void ProcessItemHistoryData(int numWeeks) {
-            using (SqlConnection c = new SqlConnection(Configuration.AppDataConnectionString))
+            using (SqlConnection c = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("[ETL].[ProcessItemHistoryData]", c))
                 {
@@ -76,7 +76,7 @@ namespace KeithLink.Svc.Impl.ETL
         private DataTable PopulateDataTable(string sql)
         {
             var dataTable = new DataTable();
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 conn.Open();
 
@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Impl.ETL
         private DataTable PopulateDataTable( string procedure, List<SqlParameter> parameters ) {
             DataTable dataTable = new DataTable();
 
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 using (var cmd = new SqlCommand(procedure, conn))
                 {
@@ -124,7 +124,7 @@ namespace KeithLink.Svc.Impl.ETL
         /// </summary>
 		public void ProcessInvoices()
 		{
-			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+			using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
 			{
 				using (var cmd = new SqlCommand("[ETL].[ProcessStagedInvoices]", conn))
 				{
@@ -143,7 +143,7 @@ namespace KeithLink.Svc.Impl.ETL
 		{
             try
             {
-                using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+                using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
                 {
                     using (var cmd = new SqlCommand("[ETL].[ProcessWorksheetList]", conn))
                     {
@@ -168,7 +168,7 @@ namespace KeithLink.Svc.Impl.ETL
 		{
             try
             {
-                using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+                using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
                 {
                     using (var cmd = new SqlCommand("[ETL].[LoadOrgsAndAddressesToCS]", conn))
                     {
@@ -215,7 +215,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var contractItems = new DataTable();
 
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 using (var cmd = new SqlCommand("[ETL].[ReadContractItems]", conn))
                 {
@@ -296,7 +296,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var gsData = new DataSet();
 
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 using (var cmd = new SqlCommand("[ETL].[ReadItemGS1Data]", conn))
                 {
@@ -319,7 +319,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var itemTable = new DataTable();
 
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 using (var cmd = new SqlCommand("[ETL].[ReadItemsByBranch]", conn))
                 {
@@ -342,7 +342,7 @@ namespace KeithLink.Svc.Impl.ETL
 		{
 			var itemTable = new DataTable();
 
-			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+			using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
 			{
 				using (var cmd = new SqlCommand("[ETL].[ReadUNFItemsByWarehouse]", conn))
 				{
@@ -417,7 +417,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var worksheetItems = new DataTable();
 
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
             {
                 using (var cmd = new SqlCommand("[ETL].[ReadWorksheetItems]", conn))
                 {
@@ -497,7 +497,7 @@ namespace KeithLink.Svc.Impl.ETL
 			var returnList = new List<string>();
 			try
 			{
-				using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+				using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
 				{
 					using (var cmd = new SqlCommand("[ETL].[ReadUNFIDistinctWarehouses]", conn))
 					{

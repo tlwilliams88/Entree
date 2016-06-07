@@ -8,6 +8,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface IProductImageRepository
     {
-        Models.SiteCatalog.ProductImageReturn GetImageList(string itemNumber);
+        Models.SiteCatalog.ProductImageReturn GetImageList(string itemNumber, bool isBekItem = true);
+        //Models.SiteCatalog.ProductImageReturn GetNonBEKImageList(string UPC);
     }
 }

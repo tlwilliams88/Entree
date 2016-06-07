@@ -1,7 +1,6 @@
 <div page-header-bar>
   <div header-message>
     {{pageTitle}}
-    <a target="_tab" ng-click="openExternalLink('/Assets/help/Glossary.pdf')" title="Glossary of Abbreviations" class="large-icon icon-book"></a> 
   </div>
 
   <div header-buttons></div>
@@ -11,7 +10,7 @@
   <!-- Recently Viewed Items -->
   <div class="row">
   	<div class="col-sm-12">
-  		<h2>Recently Viewed Items</h2>
+  		<h2>Recently Viewed Items <span><a class="clearRecent" ng-if="recentlyViewedItems.length > 0" ng-click="clearRecentlyViewedItems()"> Clear</a></span></h2>
       <div loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></div>
 
   		<div ng-show="!loadingRecentlyViewedItems && recentlyViewedItems.length > 0">

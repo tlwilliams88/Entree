@@ -1,26 +1,21 @@
-﻿using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Core.Email;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Impl.Email;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl;
 
 using Autofac;
 using Newtonsoft.Json;
 using System;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Collections.Generic;
-using KeithLink.Svc.Core.Models.Generated;
 
 namespace KeithLink.Svc.Windows.OrderService
 {
@@ -61,9 +56,9 @@ namespace KeithLink.Svc.Windows.OrderService
         #endregion
 
         #region ctor
-        public OrderService(IContainer container)
+        public OrderService()
         {
-            _diContainer = container;
+            _diContainer = Impl.Repository.SmartResolver.DependencyMapFactory.GetOrderServiceContainer().Build();
 
             InitializeComponent();
 
@@ -148,7 +143,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 msg.AppendLine();
 
                 _log.WriteErrorLog(msg.ToString());
-                KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, msg.ToString());
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, msg.ToString());
             }
 
             // wait for one minute before allowing the service to continue
@@ -205,7 +200,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 msg.AppendLine();
 
                 _log.WriteErrorLog(msg.ToString());
-                KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, msg.ToString());
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, msg.ToString());
             }
             else
             {
@@ -287,7 +282,7 @@ namespace KeithLink.Svc.Windows.OrderService
 
                 _log.WriteErrorLog(logMessage);
 
-                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage);
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, logMessage);
             }
         }
 
@@ -308,7 +303,7 @@ namespace KeithLink.Svc.Windows.OrderService
 
                 _log.WriteErrorLog(logMessage);
 
-                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage);
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, logMessage);
             }
         }
 
@@ -353,7 +348,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 catch (Exception ex)
                 {
                     _log.WriteErrorLog("Error processing order update requests", ex);
-                    KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
+                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex);
                 }
 
                 _historyRequestProcessing = false;
@@ -505,7 +500,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 catch (Exception ex)
                 {
                     _log.WriteErrorLog("Error processing orders", ex);
-                    KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
+                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex);
                 }
 
                 _orderQueueProcessing = false;

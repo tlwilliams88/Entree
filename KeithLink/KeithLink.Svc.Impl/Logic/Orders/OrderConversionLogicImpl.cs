@@ -1,6 +1,6 @@
 ﻿using CommerceServer.Core;
 using CommerceServer.Core.Runtime.Orders;
-using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
@@ -17,6 +17,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderConversionLogicImpl : IOrderConversionLogic {
@@ -24,13 +26,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IEventLogRepository _log;
         private readonly IOrderHistoryHeaderRepsitory _historyRepo;
         private readonly IUnitOfWork _uow;
+        private readonly ICatalogLogic _catalogLogic;
         #endregion
 
         #region ctor
-        public OrderConversionLogicImpl(IOrderHistoryHeaderRepsitory historyRepository, IUnitOfWork unitOfWork, IEventLogRepository logRepo) {
+        public OrderConversionLogicImpl(IOrderHistoryHeaderRepsitory historyRepository, IUnitOfWork unitOfWork, IEventLogRepository logRepo, ICatalogLogic catalogLogic) {
             _historyRepo = historyRepository;
             _uow = unitOfWork;
-
+            _catalogLogic = catalogLogic;
             _log = logRepo;
         }
         #endregion
@@ -76,37 +79,44 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 EF.OrderHistoryHeader header = _historyRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
 
                 // second attempt to find the order, look by confirmation number
-                if (header == null) {
+                if (header == null)
+                {
                     header = _historyRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber, currentFile.Header.OrderSystem.ToShortString()).FirstOrDefault();
 
-                    if (header != null) {
+                    if (header != null)
+                    {
                         header.InvoiceNumber = confFile.Header.InvoiceNumber;
                     }
                 }
 
                 // last ditch effort is to create a new header
-                if (header == null) {
+                if (header == null)
+                {
                     header = new EF.OrderHistoryHeader();
                     header.OrderDetails = new List<EF.OrderHistoryDetail>();
                 }
 
                 currentFile.Header.MergeWithEntity(ref header);
 
-                foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
+                foreach (OrderHistoryDetail currentDetail in currentFile.Details)
+                {
 
                     EF.OrderHistoryDetail detail = null;
 
-                    if (header.OrderDetails != null && header.OrderDetails.Count > 0) {
+                    if (header.OrderDetails != null && header.OrderDetails.Count > 0)
+                    {
                         detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
                     }
 
-                    if (detail == null) {
+                    if (detail == null)
+                    {
                         EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
                         tempDetail.BranchId = header.BranchId;
                         tempDetail.InvoiceNumber = header.InvoiceNumber;
 
                         header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
-                    } else {
+                    }
+                    else {
                         currentDetail.MergeWithEntityFrameworkModel(ref detail);
 
                         detail.BranchId = header.BranchId;
@@ -114,19 +124,71 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     }
                 }
 
-				//Mark missing items as deleted
-				foreach (var deletedItem in header.OrderDetails.Where(d => !currentFile.Details.Any(c => c.LineNumber.Equals(d.LineNumber))).ToList())
-				{
-					deletedItem.ItemDeleted = true;
-					deletedItem.OrderQuantity = 0;
-					deletedItem.ShippedQuantity = 0;
-				}
-				
+                GetSubtotal(header);
+
+                //Mark missing items as deleted
+                foreach (var deletedItem in header.OrderDetails.Where(d => !currentFile.Details.Any(c => c.LineNumber.Equals(d.LineNumber))).ToList())
+                {
+                    deletedItem.ItemDeleted = true;
+                    deletedItem.OrderQuantity = 0;
+                    deletedItem.ShippedQuantity = 0;
+                }
+
                 _historyRepo.CreateOrUpdate(header);
                 _uow.SaveChanges();
             }
         }
 
+        private void GetSubtotal(EF.OrderHistoryHeader header)
+        {
+            Order newOrder = header.ToOrder();
+            LookupProductDetails(header.BranchId, newOrder);
+            header.OrderSubtotal = (decimal)newOrder.Items.Sum(i => i.LineTotal);
+        }
+
+        private void LookupProductDetails(string branchId, Order order)
+        {
+            if (order.Items == null) { return; }
+
+            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber.Trim()).ToList());
+
+            var productDict = products.Products.ToDictionary(p => p.ItemNumber);
+
+            Parallel.ForEach(order.Items, item => {
+                var prod = productDict.ContainsKey(item.ItemNumber.Trim()) ? productDict[item.ItemNumber.Trim()] : null;
+                if (prod != null)
+                {
+                    item.IsValid = true;
+                    item.Name = prod.Name;
+                    item.Description = prod.Description;
+                    item.Pack = prod.Pack;
+                    item.Size = prod.Size;
+                    item.Brand = prod.Brand;
+                    item.BrandExtendedDescription = prod.BrandExtendedDescription;
+                    item.ReplacedItem = prod.ReplacedItem;
+                    item.ReplacementItem = prod.ReplacementItem;
+                    item.NonStock = prod.NonStock;
+                    item.ChildNutrition = prod.ChildNutrition;
+                    item.CatchWeight = prod.CatchWeight;
+                    item.TempZone = prod.TempZone;
+                    item.ItemClass = prod.ItemClass;
+                    item.CategoryId = prod.CategoryId;
+                    item.CategoryName = prod.CategoryName;
+                    item.UPC = prod.UPC;
+                    item.VendorItemNumber = prod.VendorItemNumber;
+                    item.Cases = prod.Cases;
+                    item.Kosher = prod.Kosher;
+                    item.ManufacturerName = prod.ManufacturerName;
+                    item.ManufacturerNumber = prod.ManufacturerNumber;
+                    item.AverageWeight = prod.AverageWeight;
+                }
+                //if (price != null) {
+                //    item.PackagePrice = price.PackagePrice.ToString();
+                //    item.CasePrice = price.CasePrice.ToString();
+                //}
+            });
+
+        }
         public void SaveOrderHistoryAsConfirmation(OrderHistoryFile histFile) {
             if (histFile.Header.OrderSystem == Core.Enumerations.Order.OrderSource.Entree) {
                 ConfirmationFile confirmation = histFile.ToConfirmationFile();

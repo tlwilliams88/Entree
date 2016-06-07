@@ -8,12 +8,14 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'blockUI',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
-      ProductService, CategoryService, Constants, PricingService, CartService // bek custom services
+      $filter,
+      ProductService, CategoryService, Constants, PricingService, CartService, // bek custom services
+      blockUI
     ) {
 
     // clear keyword search term at top of the page
@@ -55,6 +57,8 @@ angular.module('bekApp')
         }
     }
 
+	$scope.noFiltersSelected = true;
+
     $scope.products = [];
     $scope.facets = {
       categories: {
@@ -95,15 +99,15 @@ angular.module('bekApp')
       var displayText;
 
       if ($scope.paramType === 'category') {
-        CategoryService.getCategories($state.params.catalogType).then(function(data) {
-          angular.forEach(data.categories, function(item, index) {
+        CategoryService.getCategories($state.params.catalogType).then(function(categories) {
+          angular.forEach(categories, function(item, index) {
             if (item.search_name === $scope.paramId) { // for the bread crumb, we map from the search name back to the display name
               displayText = item.name;
             }
           });
 
           $scope.featuredBreadcrumb = {
-            click: clearFacets,
+            click: $scope.clearFacets,
             clickData: null,
             displayText: displayText
           };
@@ -113,13 +117,13 @@ angular.module('bekApp')
 
       if ($scope.paramType === 'brand') {
         data.facets.brands.forEach(function(brand) {
-          if (brand.brand_control_label.toUpperCase() === $scope.paramId.toUpperCase()) {
+          if (brand.brand_control_label && brand.brand_control_label.toUpperCase() === $scope.paramId.toUpperCase()) {
             displayText = brand.name;
           }
         });
 
         $scope.featuredBreadcrumb = {
-          click: clearFacets,
+          click: $scope.clearFacets,
           clickData: null,
           displayText: displayText
         };
@@ -206,15 +210,14 @@ angular.module('bekApp')
       // search term
       if ($scope.paramType === 'search') {
        $scope.featuredBreadcrumb = {
-          click: clearFacets,
+          click: $scope.clearFacets,
           clickData: null,
           displayText: $stateParams.deptName
         };
         breadcrumbs.unshift($scope.featuredBreadcrumb);
-        $analytics.eventTrack('Search Department', {  category: 'Department', label: $stateParams.deptName });
-
+        
         $scope.featuredBreadcrumb = {
-          click: clearFacets,
+          click: $scope.clearFacets,
           clickData: '',
           displayText: '"' + $scope.paramId + '"'
         };
@@ -266,13 +269,16 @@ angular.module('bekApp')
         $scope.sortField  = '';
       }
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params,$stateParams.deptName);
     }
 
+    //Load list of products and block UI with message
     function loadProducts(appendResults) {
       $scope.loadingResults = true;
 
-      return getData().then(function(data) {
+
+      return blockUI.start("Loading Products...").then(function(){
+        return getData().then(function(data) {
         $scope.totalItems = data.totalcount;
         if (data.catalogCounts != null) {
             $scope.bekItemCount = data.catalogCounts.bek;
@@ -288,13 +294,21 @@ angular.module('bekApp')
         // replace existing data (for sort, filter)
         } else {
           $scope.products = data.products;
+          updateFacetCount($scope.facets.brands, data.facets.brands);
+          updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
+          updateFacetCount($scope.facets.categories, data.facets.categories);
+          updateFacetCount($scope.facets.dietary, data.facets.dietary);
+          updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
         }
 
         setBreadcrumbs(data);
 
-        delete $scope.searchMessage;
+        blockUI.stop();
 
+        delete $scope.searchMessage;
+        
         return data.facets;
+        })
       }, function(error) {
         $scope.searchMessage = 'Error loading products.';
       }).finally(function() {
@@ -302,17 +316,27 @@ angular.module('bekApp')
       });
     }
 
+    function updateFacetCount(facets, data){
+      facets.available.forEach(function(facet){
+        var facetName = $filter('filter') (data, {name: facet.name})
+        facet.count = 0;
+        if(facetName.length > 0 && facet.name){
+          facet.count = facetName[0].count;
+        }
+      })
+    }
 
     /*************
     FACETS
     *************/
-    function clearFacets() {
+    $scope.clearFacets = function() {
       $scope.facets.categories.selected = [];
       $scope.facets.brands.selected = [];
       $scope.facets.mfrname.selected = [];
       $scope.facets.dietary.selected = [];
       $scope.facets.itemspecs.selected = [];
       loadProducts().then(refreshFacets);
+      $scope.noFiltersSelected = true;
     }
 
     function refreshFacets(facets) {
@@ -394,6 +418,11 @@ angular.module('bekApp')
     };
 
     $scope.infiniteScrollLoadMore = function() {
+      
+      if(document.activeElement){
+        document.activeElement.blur();
+      }
+
       if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
         return;
       }
@@ -407,6 +436,7 @@ angular.module('bekApp')
     };
 
     $scope.toggleSelection = function(facetList, selectedFacet) {
+      $scope.noFiltersSelected = false;
       $scope.itemsPerPage = 50;
       $scope.itemIndex = 0;
 
@@ -417,7 +447,7 @@ angular.module('bekApp')
         facetList.push(selectedFacet);
       }
 
-      loadProducts().then(refreshFacets);
+      loadProducts();
     };
 
     $scope.goToItemDetails = function(item) {
@@ -432,6 +462,9 @@ angular.module('bekApp')
         templateUrl: 'views/modals/exportmodal.html',
         controller: 'ExportModalController',
         resolve: {
+          location: function() {
+            return {category:'Search', action:'Export Search Results'}
+          },
           headerText: function () {
             return 'Product Catalog (limited to 500 items)';
           },
