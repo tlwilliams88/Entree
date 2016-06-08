@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             InvoiceItemModel retVal = new InvoiceItemModel();
 
             retVal.ItemNumber = value.ItemNumber;
-            retVal.ItemPrice = value.Each ? (decimal)value.PackagePriceNumeric : (decimal)value.CasePriceNumeric;
+            retVal.ItemPrice = (decimal)value.Price; // for an invoiceitem, we're not figuring a price we use the set price of the item.
             retVal.QuantityShipped = value.QantityShipped;
             retVal.QuantityOrdered = value.QuantityOrdered;
             retVal.LineNumber = value.LineNumber.ToString();
