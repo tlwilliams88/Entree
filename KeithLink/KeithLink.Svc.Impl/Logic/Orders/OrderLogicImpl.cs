@@ -396,7 +396,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     item.CatchWeight = prod.CatchWeight;
                     item.TempZone = prod.TempZone;
                     item.ItemClass = prod.ItemClass;
-                    item.CategoryId = prod.CategoryId;
+                    item.CategoryCode = prod.CategoryCode;
+                    item.SubCategoryCode = prod.SubCategoryCode;
                     item.CategoryName = prod.CategoryName;
                     item.UPC = prod.UPC;
                     item.VendorItemNumber = prod.VendorItemNumber;
@@ -453,7 +454,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     item.CatchWeight = prod.CatchWeight;
                     item.TempZone = prod.TempZone;
                     item.ItemClass = prod.ItemClass;
-                    item.CategoryId = prod.CategoryId;
+                    item.CategoryCode = prod.CategoryCode;
+                    item.SubCategoryCode = prod.SubCategoryCode;
                     item.CategoryName = prod.CategoryName;
                     item.UPC = prod.UPC;
                     item.VendorItemNumber = prod.VendorItemNumber;

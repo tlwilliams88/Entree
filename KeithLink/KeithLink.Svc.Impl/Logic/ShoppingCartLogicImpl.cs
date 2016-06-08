@@ -249,7 +249,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional == null ? "" : prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
-                    item.CategoryId = prod.CategoryId;
+                    item.CategoryCode = prod.CategoryCode;
+                    item.SubCategoryCode = prod.SubCategoryCode;
                     item.CategoryName = prod.CategoryName;
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;

@@ -150,9 +150,13 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "temp_zone")]
         public string TempZone { get; set; }
 
-        [DataMember(Name = "categoryId", EmitDefaultValue = false)]
-        [Description("Category")]
-        public string CategoryId { get; set; }
+        [DataMember(Name = "categorycode", EmitDefaultValue = false)]
+        [Description("CategoryCode")]
+        public string CategoryCode{ get; set; }
+
+        [DataMember(Name = "subcategorycode", EmitDefaultValue = false)]
+        [Description("SubCategoryCode")]
+        public string SubCategoryCode { get; set; }
 
         [DataMember(Name = "categoryname", EmitDefaultValue = false)]
         [Description("Category Desc")]

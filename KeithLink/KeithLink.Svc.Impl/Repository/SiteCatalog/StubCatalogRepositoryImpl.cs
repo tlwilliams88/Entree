@@ -12,11 +12,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
     {
         Product[] products = new Product[] 
         { 
-            new Product { ItemNumber = "1", Description = "Tomato Soup", CategoryId = "Groceries", CasePrice = "1.00", Size = "1lb" }, 
-            new Product { ItemNumber = "2", Description = "Yo-yo", CategoryId = "Toys", CasePrice = "3.75", Size = "2lb"  }, 
-            new Product { ItemNumber = "3", Description = "Hammer", CategoryId = "Hardware", CasePrice = "16.99", Size = "3lb"  },
-            new Product { ItemNumber = "4", Description = "Hammer Four", CategoryId = "Hardware", CasePrice = "16.94", Size = "4lb"  },
-            new Product { ItemNumber = "5", Description = "Hammer Five", CategoryId = "Hardware", CasePrice = "16.95", Size = "5lb"  } 
+            new Product { ItemNumber = "1", Description = "Tomato Soup", CategoryCode = "Groceries", CasePrice = "1.00", Size = "1lb" }, 
+            new Product { ItemNumber = "2", Description = "Yo-yo", CategoryCode = "Toys", CasePrice = "3.75", Size = "2lb"  }, 
+            new Product { ItemNumber = "3", Description = "Hammer", CategoryCode = "Hardware", CasePrice = "16.99", Size = "3lb"  },
+            new Product { ItemNumber = "4", Description = "Hammer Four", CategoryCode = "Hardware", CasePrice = "16.94", Size = "4lb"  },
+            new Product { ItemNumber = "5", Description = "Hammer Five", CategoryCode = "Hardware", CasePrice = "16.95", Size = "5lb"  } 
         };
 
         Category[] categories = new Category[]
@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
             else
             {
-                IEnumerable<Product> prods = products.Where(x => x.CategoryId == category);
+                IEnumerable<Product> prods = products.Where(x => x.CategoryCode == category);
                 return new ProductsReturn() { Products = prods.ToList() };
             }
         }
