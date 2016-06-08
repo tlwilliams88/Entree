@@ -7,6 +7,7 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class WebMessageProvider : IMessageProvider {
@@ -26,7 +27,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
         #region methods
         public void SendMessage(List<Recipient> recipients, Message message) {
-            if(recipients == null)
+            if(recipients == null || recipients.Count == 0)
                 return;
 
             if(message.MessageBody.IndexOf("|LOGO|") > -1) // If the logo will be in this email (most notifications) replace it with the standard BEK
@@ -34,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 message.MessageBody = message.MessageBody.Replace("|LOGO|", "<h2>BEK</h2>");
             }
 
-            foreach(var recipient in recipients) {
+            Parallel.ForEach(recipients, (recipient) => {
                 try {
                     userMessageRepository.Create(
                         new Core.Models.Messaging.EF.UserMessage() {
@@ -50,7 +51,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 } catch(Exception ex) {
                     eventLogRepository.WriteErrorLog("WebMessageProvider: Error Sending Message", ex);
                 }
-            }
+            });
             unitOfWork.SaveChanges();
         }
         #endregion

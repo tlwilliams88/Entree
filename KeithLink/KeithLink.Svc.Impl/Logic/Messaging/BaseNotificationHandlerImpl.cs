@@ -1,14 +1,19 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Enumerations.Messaging;
+
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
+
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
+using KeithLink.Svc.Core.Models.Profile;
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public abstract class BaseNotificationHandlerImpl {
@@ -83,29 +88,29 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             log.WriteInformationLog(String.Format("notification prefs: {0}, profiles count: {1}, userDefaultMessagingPreferences: {2}, customerMessagingPreferences: {3}",
                                                    prefs, users.UserProfiles.Count, userDefaultMessagingPreferences, customerMessagingPreferences));
 
-            List<Recipient> recipients = new List<Recipient>();
+            BlockingCollection<Recipient> recipients = new BlockingCollection<Recipient>();
 
-            foreach (Svc.Core.Models.Profile.UserProfile userProfile in users.UserProfiles) {
-                if (userDefaultMessagingPreferences != null) {
+            Parallel.ForEach(users.UserProfiles, (userProfile) => {
+                if(userDefaultMessagingPreferences != null) {
                     // first, check for customer specific prefs
-                    IEnumerable<UserMessagingPreference> prefsToUse = customerMessagingPreferences.Where(
+                    List<UserMessagingPreference> prefsToUse = customerMessagingPreferences.Where(
                         p => p.UserId == userProfile.UserId).ToList(); // check for customer specific prefs first
-                    if (prefsToUse == null || prefsToUse.Count() == 0) // then check for defaults
-                        prefsToUse = userDefaultMessagingPreferences.Where(p => p.UserId == userProfile.UserId);
+                    if(prefsToUse == null || prefsToUse.Count() == 0) // then check for defaults
+                        prefsToUse = userDefaultMessagingPreferences.Where(p => p.UserId == userProfile.UserId).ToList();
 
-                    foreach (var pref in prefsToUse) {
-                        if (pref.Channel == Channel.Email) {
+                    foreach(var pref in prefsToUse) {
+                        if(pref.Channel == Channel.Email) {
                             recipients.Add(new Recipient() { ProviderEndpoint = userProfile.EmailAddress, Channel = Channel.Email });
-                        } else if (pref.Channel == Channel.MobilePush) {
+                        } else if(pref.Channel == Channel.MobilePush) {
                             // lookup any and all mobile devices
-                            foreach (var device in userPushNotificationDeviceRepository.ReadUserDevices(userProfile.UserId))
+                            foreach(var device in userPushNotificationDeviceRepository.ReadUserDevices(userProfile.UserId))
                                 recipients.Add(new Recipient() { ProviderEndpoint = device.ProviderEndpointId, DeviceOS = device.DeviceOS, Channel = Channel.MobilePush });
-                        } else if (pref.Channel == Channel.Web) {
+                        } else if(pref.Channel == Channel.Web) {
                             recipients.Add(new Recipient() { UserId = userProfile.UserId, CustomerNumber = customer.CustomerNumber, Channel = Channel.Web });
                         }
                     }
                 }
-            }
+            });
 
             Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
             foreach (Recipient rec in recipients)
