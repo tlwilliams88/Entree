@@ -57,7 +57,7 @@
           <br> 
           <button 
             type="button" 
-            ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" 
+            ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
             ng-click="payInvoices()" 
             ng-if="hasPayableInvoices" 
             class="btn btn-primary btn-lg pay-btn" 
@@ -236,7 +236,7 @@
               ng-class="{'hidden-icon' : ((invoice.statusdescription === 'Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"               
               ng-if="invoice.userCanPayInvoice && !invoice.showDatePicker && !isInternalAccountAdminUser"
               ng-mouseenter="invoice.showDatePicker=true"
-              class="icon-calendar text-right">
+              class="icon-calendar text-right" ng-hide="!invoice.date">
             </a>
             <a
                 id="datePickerWithOptions"

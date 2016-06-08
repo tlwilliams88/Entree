@@ -6,6 +6,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Helpers;
 using System;
@@ -68,7 +69,10 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     if (item != null)
                         this.WriteItemRecord(sb, item, exportType);
                 }
-
+                if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+                {
+                    WriteTotalRecord(sb, exportType);
+                }
             }
             var ms = new MemoryStream();
             var sw = new StreamWriter(ms);
@@ -89,9 +93,9 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 {
                     Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
                     List<string> cust = new List<string>();
-                    cust.Add(customer.CustomerBranch);
-                    cust.Add(customer.CustomerNumber);
-                    cust.Add(customer.CustomerName);
+                    cust.Add("\"" + customer.CustomerBranch + "\"");
+                    cust.Add("\"" + customer.CustomerNumber + "\"");
+                    cust.Add("\"" + customer.CustomerName + "\"");
                     sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", cust));
                 }
             }
@@ -104,7 +108,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 if (gettitle.StartsWith(typeof(T).Name))
                 {
-                    sb.AppendLine(gettitle.Substring(gettitle.IndexOf(';') + 1));
+                    sb.AppendLine("\"" + gettitle.Substring(gettitle.IndexOf(';') + 1) + "\"");
                 }
             }
         }
@@ -190,6 +194,25 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         case "ItemCount":
                         case "OrderTotal":
                             width = 12;
+                            break;
+                    }
+                }
+                else if (modelName.Equals("ItemUsageReportItemModel"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Brand":
+                        case "Class":
+                        case "ManufacturerName":
+                        case "Name":
+                            width = 25;
+                            break;
+                        case "UPC":
+                            width = 15;
+                            break;
+                        case "AveragePrice":
+                        case "TotalCost":
+                            width = 10;
                             break;
                     }
                 }
@@ -344,6 +367,10 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         columnIndex++;
                     }
                 }
+            }
+            if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+            {
+                AddTotalRowExcel(rowIndex, excelColumnNames, sheetData);
             }
             return sheetData;
         }
@@ -720,6 +747,53 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
             if (itemRecord.Count > 0)
                 sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", itemRecord));
+        }
+
+        private void WriteTotalRecord(StringBuilder sb, string exportType)
+        {
+            sb.Append("\"Total:\"");
+            sb.Append(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t");
+            decimal total = 0;
+            foreach (var item in this.Model)
+            {
+                if (item != null)
+                {
+                    var properties = item.GetType().GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance);
+
+                    if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+                    {
+                        var property = properties.Where(p => p.Name.Equals("TotalCost", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                        total += decimal.Parse(this.GetFieldValue(item, property).Trim());
+                    }
+                }
+            }
+            sb.AppendLine("\"" + total.ToString() + "\"");
+        }
+
+        private uint AddTotalRowExcel(uint rowIndex, string[] excelColumnNames, SheetData sheetData)
+        {
+            rowIndex++;
+            var totalRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
+            OpenXmlSpreadsheetUtilities.AppendTextCell
+                (excelColumnNames[12] + rowIndex.ToString(), "Total:", totalRow, CellValues.String, OpenXmlSpreadsheetUtilities.BOLD_CELL);
+            decimal total = 0;
+            foreach (var item in this.Model)
+            {
+                if (item != null)
+                {
+                    var properties = item.GetType().GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance);
+
+                    if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+                    {
+                        var property = properties.Where(p => p.Name.Equals("TotalCost", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                        total += decimal.Parse(this.GetFieldValue(item, property).Trim());
+                    }
+                }
+            }
+            OpenXmlSpreadsheetUtilities.AppendTextCell
+                (excelColumnNames[13] + rowIndex.ToString(), total.ToString(), totalRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+            sheetData.Append(totalRow);
+            return rowIndex;
         }
 
         private string GetFieldValue(object item, PropertyInfo property)

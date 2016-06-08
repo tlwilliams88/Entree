@@ -57,13 +57,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
-        private string GetOffsetTimeString(string dateTimeString) {
+        private string IgnoreOffsetTimeString(string dateTimeString) {
             if (string.IsNullOrEmpty(dateTimeString)) {
                 return null;
             } else {
-                int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
-
-                return DateTime.Parse(dateTimeString).AddHours(timeZoneOffset * -1).ToLongDateFormatWithTime();
+                return DateTime.Parse(dateTimeString.Substring(0, dateTimeString.LastIndexOf('-'))).ToLongDateFormatWithTime();
             }
         }
 
@@ -129,14 +127,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 {
                     var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
 
-                    if (etaInfo != null)
-                    {
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : GetOffsetTimeString(etaInfo.ScheduledTime);
-                        //eventLogRepository.WriteInformationLog(string.Format(" ScheduledTime input {0}; saved {1}", etaInfo.ScheduledTime, GetOffsetTimeString(etaInfo.ScheduledTime)));
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : GetOffsetTimeString(etaInfo.EstimatedTime);
-                        //eventLogRepository.WriteInformationLog(string.Format(" EstimatedTime input {0}; saved {1}", etaInfo.EstimatedTime, GetOffsetTimeString(etaInfo.EstimatedTime)));
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : GetOffsetTimeString(etaInfo.ActualTime);
-                        //eventLogRepository.WriteInformationLog(string.Format(" ActualTime input {0}; saved {1}", etaInfo.ActualTime, GetOffsetTimeString(etaInfo.ActualTime)));
+                    if (etaInfo != null){
+                        //The information has a timezone offset that has already been accounted for, so we just need to ignore it
+                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : IgnoreOffsetTimeString(etaInfo.ScheduledTime);
+                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : IgnoreOffsetTimeString(etaInfo.EstimatedTime);
+                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : IgnoreOffsetTimeString(etaInfo.ActualTime);
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
