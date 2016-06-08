@@ -112,7 +112,7 @@ angular.module('bekApp')
         date = DateService.momentObject(invoice.duedate.substr(0,10)).add(1, 'year');
       }
       else{
-        date = DateService.momentObject(invoice.duedate.substr(0,10)).subtract(1, 'd')
+        date = DateService.momentObject(invoice.duedate.substr(0,10)).add(1, 'd');
       }
        invoice.maxPaymentDate = date.format(Constants.dateFormat.yearMonthDayDashes);
     });
@@ -442,7 +442,7 @@ angular.module('bekApp')
         }
 
         if(payment.date.length !== 10){
-          payment.date = DateService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format(Constants.dateFormat.yearMonthDayDashes);
+          payment.date = DateService.momentObject(payment.duedate.substr(0,10)).format(Constants.dateFormat.yearMonthDayDashes);
         }
 
       });
