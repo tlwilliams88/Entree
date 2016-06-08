@@ -26,9 +26,6 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "linenumber")]
         public int LineNumber { get; set; }
 
-        [DataMember(Name = "requestdsrcontact")]
-        public string RequestDSRContact { get; set; }
-
         [DataMember(Name = "linetotal")]
         public double LineTotal
         {
