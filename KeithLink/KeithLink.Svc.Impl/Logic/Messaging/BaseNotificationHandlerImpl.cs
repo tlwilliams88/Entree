@@ -88,9 +88,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             log.WriteInformationLog(String.Format("notification prefs: {0}, profiles count: {1}, userDefaultMessagingPreferences: {2}, customerMessagingPreferences: {3}",
                                                    prefs, users.UserProfiles.Count, userDefaultMessagingPreferences, customerMessagingPreferences));
 
-            BlockingCollection<Recipient> recipients = new BlockingCollection<Recipient>();
+            List<Recipient> recipients = new List<Recipient>();
 
-            Parallel.ForEach(users.UserProfiles, (userProfile) => {
+            foreach(UserProfile userProfile in users.UserProfiles) {
                 if(userDefaultMessagingPreferences != null) {
                     // first, check for customer specific prefs
                     List<UserMessagingPreference> prefsToUse = customerMessagingPreferences.Where(
@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                         }
                     }
                 }
-            });
+            }
 
             Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
             foreach (Recipient rec in recipients)
