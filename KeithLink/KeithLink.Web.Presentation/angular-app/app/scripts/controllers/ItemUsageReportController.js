@@ -50,6 +50,8 @@ angular.module('bekApp')
   }
 
   $scope.itemUsageForm.updateItems = function() {
+    $scope.itemusagequery.fromDate = DateService.momentObject($scope.itemusagequery.fromDate,Constants.dateFormat.yearMonthDayDashes)._i;
+    $scope.itemusagequery.toDate = DateService.momentObject($scope.itemusagequery.toDate,Constants.dateFormat.yearMonthDayDashes)._i;
     loadItemUsage();
   };
 
