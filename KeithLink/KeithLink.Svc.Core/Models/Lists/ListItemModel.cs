@@ -42,12 +42,6 @@ namespace KeithLink.Svc.Core.Models.Lists
         [Description("Pack/Size")]
         public string PackSize { get; set; }
 
-        [Description("Pack")]
-        public string Pack { get; set; }
-
-        [Description("Size")]
-        public string Size { get; set; }
-
         [DataMember(Name = "storagetemp", EmitDefaultValue = false)]
         public string StorageTemp { get; set; }
 
