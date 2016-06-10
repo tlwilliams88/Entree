@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Core.Interfaces.Logging;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
@@ -8,6 +9,7 @@ using AmazonSNS = Amazon.SimpleNotificationService;
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 
@@ -92,6 +94,18 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             Parallel.ForEach(recipients, (recipient) => {
                 try {
+                    StringBuilder sendMsg = new StringBuilder();
+                    sendMsg.AppendLine("Sending message to push recipient.");
+                    sendMsg.AppendLine("Error sending message to push recipient.");
+                    sendMsg.AppendLine("UserId: {UserId}");
+                    sendMsg.AppendLine("CustomerNumber: {CustomerNumber}");
+                    sendMsg.AppendLine("DeviceId: {DeviceId}");
+                    sendMsg.AppendLine("DeviceOS: {DeviceOS}");
+                    sendMsg.AppendLine("Channel: {Channel}");
+                    sendMsg.AppendLine("ProviderEndPoint: {ProviderEndpoint}");
+
+                    eventLog.WriteInformationLog(sendMsg.ToString().Inject(recipient));
+
                     if(recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.iOS) {
                         // format our message for apple
                         client.Publish(new AmazonSNS.Model.PublishRequest() { TargetArn = recipient.ProviderEndpoint, Message = message.MessageSubject }
@@ -105,7 +119,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
                     }
                 } catch(Exception ex) {
-                    eventLog.WriteErrorLog("Error sending message to push recipient: " + recipient.ProviderEndpoint, ex);
+                    StringBuilder msg = new StringBuilder();
+                    msg.AppendLine("Error sending message to push recipient.");
+                    msg.AppendLine("UserId: {UserId}");
+                    msg.AppendLine("CustomerNumber: {CustomerNumber}");
+                    msg.AppendLine("DeviceId: {DeviceId}");
+                    msg.AppendLine("DeviceOS: {DeviceOS}");
+                    msg.AppendLine("Channel: {Channel}");
+                    msg.AppendLine("ProviderEndPoint: {ProviderEndpoint}");
+
+                    eventLog.WriteErrorLog(msg.ToString().Inject(recipient), ex);
                 }
             });
         }
