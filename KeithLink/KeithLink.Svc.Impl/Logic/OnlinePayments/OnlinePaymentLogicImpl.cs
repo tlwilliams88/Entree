@@ -214,7 +214,13 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
             foreach(var invoice in pagedInvoices.Results) {
                 invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
 
-                if(invoice.Status == InvoiceStatus.Pending) {
+                var customer = _customerRepository.GetCustomerByCustomerNumber(invoice.CustomerNumber, invoice.BranchId);
+                invoice.CustomerStreetAddress = customer.Address.StreetAddress;
+                invoice.CustomerCity = customer.Address.City;
+                invoice.CustomerRegionCode = customer.Address.RegionCode;
+                invoice.CustomerPostalCode = customer.Address.PostalCode;
+
+                if (invoice.Status == InvoiceStatus.Pending) {
                     //Retrieve payment transaction record
                     var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
 
