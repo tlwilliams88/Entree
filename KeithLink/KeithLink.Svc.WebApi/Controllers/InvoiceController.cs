@@ -66,11 +66,19 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("banks")]
-        public OperationReturnModel<List<CustomerBank>> Get() {
+        public OperationReturnModel<List<CustomerBank>> Get(string customerId = null, string branchId = null) {
             OperationReturnModel<List<CustomerBank>> retVal = new OperationReturnModel<List<CustomerBank>>();
             try
             {
-                retVal.SuccessResponse = _invLogic.GetAllBankAccounts(SelectedUserContext);
+                if (customerId != null && branchId != null)
+                {
+                    retVal.SuccessResponse = _invLogic.GetAllBankAccounts
+                        (new Core.Models.SiteCatalog.UserSelectedContext() { CustomerId=customerId, BranchId=branchId });
+                }
+                else
+                {
+                    retVal.SuccessResponse = _invLogic.GetAllBankAccounts(SelectedUserContext);
+                }
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
