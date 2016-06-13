@@ -731,11 +731,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
                         if (oFacet.Key == "categories") {
                             facetValue.Add(new KeyValuePair<string, object>("categoryname",  oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
-                            facetValue.Add(new KeyValuePair<string, object>("categorycode", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                            facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
                         }
                         else if (oFacet.Key == "parentcategories")
                         {
-                            facetValue.Add(new KeyValuePair<string, object>("categorycode", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                            facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["parentcategory_code"]["buckets"][0]["key"].ToString()));
                         }
                         else if (oFacet.Key == "brands") {
                             if (oFacetValue["brand_meta"]["buckets"].Count > 0) {
