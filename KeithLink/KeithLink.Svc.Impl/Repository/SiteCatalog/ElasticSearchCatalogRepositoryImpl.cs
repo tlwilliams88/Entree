@@ -562,8 +562,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return Configuration.DefaultProductReturnSize;
             return size;
         }
-        
+        private string _catalog = null;
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
+            _catalog = catalogInfo.BranchId;
             int size = 0;
             if (searchModel.Size > 0)
             {
@@ -968,7 +969,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                                     aggregations = new
                                     {
                                         category_meta = new { terms = new { field = "categoryname_not_analyzed", size = 500 } },
-                                        category_code = new { terms = new { field = "categoryid", size = 500 } }
+                                        category_code = new { terms = new { field = 
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase))? "tcscode" : "categoryid"), size = 500 } }
                                     }
                                 });
                         }
@@ -980,7 +982,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                                     terms = new { field = aggregationParams[1], size = 500 },
                                     aggregations = new
                                     {
-                                        parentcategory_code = new { terms = new { field = "parentcategoryid", size = 500 } }
+                                        parentcategory_code = new { terms = new { field =
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "catalogdept" : "parentcategoryid"), size = 500 } }
                                     }
                                 });
                         }
