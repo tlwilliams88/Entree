@@ -106,7 +106,7 @@ angular.module('bekApp')
         $scope.startingPoint = 0;
         $scope.endPoint = 0;       
         var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-        blockUI.start("Loading List...").then(function(){
+        blockUI.start("Loading Items...").then(function(){
           if(visited.length > 0){
             $timeout(function() {
               $scope.isChangingPage = true;
@@ -151,8 +151,11 @@ angular.module('bekApp')
       $scope.setRange();
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        $scope.products = $scope.productResults.slice($scope.firstPageItem, $scope.endPoint);
-        appendProducts($scope.products)
+        var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
+        var params = ProductService.getSearchParams(null, $scope.startingPoint, $scope.sortField, sortDirection, $stateParams.dept);
+        ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
+          $scope.products = data.products;
+        })
         blockUI.stop();
         blockUI.stop();
       }else {
@@ -560,23 +563,23 @@ angular.module('bekApp')
       }
     };
 
-    $scope.infiniteScrollLoadMore = function() {
+    // $scope.infiniteScrollLoadMore = function() {
       
-      if(document.activeElement){
-        document.activeElement.blur();
-      }
+    //   if(document.activeElement){
+    //     document.activeElement.blur();
+    //   }
 
-      if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
-        return;
-      }
-      var sortfieldholder = $scope.sortField;
-      $scope.itemIndex += $scope.itemsPerPage;
-      loadProducts(true).then(function(){
-        if(sortfieldholder === 'itemnumber' && $state.params.catalogType != 'BEK'){
-          $scope.UNFISortByItemNumber(!$scope.itemNumberDesc);
-        }
-      });      
-    };
+    //   if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
+    //     return;
+    //   }
+    //   var sortfieldholder = $scope.sortField;
+    //   $scope.itemIndex += $scope.itemsPerPage;
+    //   loadProducts(true).then(function(){
+    //     if(sortfieldholder === 'itemnumber' && $state.params.catalogType != 'BEK'){
+    //       $scope.UNFISortByItemNumber(!$scope.itemNumberDesc);
+    //     }
+    //   });      
+    // };
 
     $scope.toggleSelection = function(facetList, selectedFacet) {
       $scope.noFiltersSelected = false;

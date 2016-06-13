@@ -66,7 +66,7 @@ angular.module('bekApp')
 
         getSearchParams: function(pageSize, index, sortField, sortDirection, facets, department) {
           var params = {
-            size: 100000,
+            size: 15,
             from: index || defaultStartingIndex,
             dept: department,
             facets: facets,

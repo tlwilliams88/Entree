@@ -279,19 +279,9 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     <div>
       <ul fast-repeat="item in products" ng-class="{ odd : $odd, even: $even }" style="border-bottom: 1px solid black; display:block;">
         <li style="display:block;">
-          <div>
+          <div >
             <div style="display:inline-block;">
-            <div style="display:inline-block;">
-              <div ng-show="item.productimages.length > 0" class="pull-left item-details__main-image">
-                <img ng-src="{{item.productimages[0].url}}" alt=""/>
-                <img 
-                ng-if="item.images.length === 0" 
-                class="product-placeholder-image" 
-                src="../images/bek-logo.png" 
-                alt="default product image"/>
-              </div>
-            </div>
-            <div style="display:inline-block;">
+            <div class="pull-left-xs" style="display:inline-block;">
               <div>
                 <div>
                   <a style="display:block;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
@@ -341,19 +331,26 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                   <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                 </h6>
               </div>
-              <p class="large-icon icon-col nowrap">
-<!--                   <div 
+            </div>
+<!--               <p class="large-icon icon-col nowrap">
+                  <div 
                   ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
                   context-menu-template
                   class="context-menu-template context-menu__in-list hidden-print">
                     <a class="icon-plus2"></a>
-                  </div> -->
+                  </div>
 
-<!--                 <a class="hidden-print" ng-click="showDetails = !showDetails;">
+              <a class="hidden-print" ng-click="showDetails = !showDetails;">
                   <span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span>
-                </a> -->
-              </p>
+                </a>
+              </p> -->
+              <div class="pull-right-sm pull-left-xs" style="padding: 10px 15px 10px">
+                <div ng-show="item.productimages.length > 0" class="pull-right item-details__main-image">
+                  <img ng-src="{{item.productimages[0].url}}" alt=""/>
+                </div>
+              </div>
             </div>
+
           </div>
         </li>
       </ul>
