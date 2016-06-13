@@ -731,7 +731,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
                         if (oFacet.Key == "categories") {
                             facetValue.Add(new KeyValuePair<string, object>("categoryname",  oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
-                        } else if (oFacet.Key == "brands") {
+                            facetValue.Add(new KeyValuePair<string, object>("categorycode", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                        }
+                        else if (oFacet.Key == "parentcategories")
+                        {
+                            facetValue.Add(new KeyValuePair<string, object>("categorycode", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                        }
+                        else if (oFacet.Key == "brands") {
                             if (oFacetValue["brand_meta"]["buckets"].Count > 0) {
                                 facetValue.Add(new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].ToString()));
                             } else {
@@ -945,8 +951,30 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                             throw new ApplicationException("Incorrect aggreation configuration");
 
                         if (aggregationParams[0] == "categories") {
-                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { category_meta = new { terms = new { field = "categoryname_not_analyzed", size = 500 } } } });
-                        } else if (aggregationParams[0] == "brands") {
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], 
+                                new
+                                {
+                                    terms = new { field = aggregationParams[1], size = 500 },
+                                    aggregations = new
+                                    {
+                                        category_meta = new { terms = new { field = "categoryname_not_analyzed", size = 500 } },
+                                        category_code = new { terms = new { field = "categoryid", size = 500 } }
+                                    }
+                                });
+                        }
+                        else if (aggregationParams[0] == "parentcategories")
+                        {
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0],
+                                new
+                                {
+                                    terms = new { field = aggregationParams[1], size = 500 },
+                                    aggregations = new
+                                    {
+                                        parentcategory_code = new { terms = new { field = "parentcategoryid", size = 500 } }
+                                    }
+                                });
+                        }
+                        else if (aggregationParams[0] == "brands") {
                             (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { brand_meta = new { terms = new { field = "brand_control_label", size = 500 } } } });
                         } else {
                             (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 } });
