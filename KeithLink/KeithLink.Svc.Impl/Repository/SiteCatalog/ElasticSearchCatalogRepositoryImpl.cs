@@ -731,11 +731,21 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
                         if (oFacet.Key == "categories") {
                             facetValue.Add(new KeyValuePair<string, object>("categoryname",  oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
-                            facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                            if(oFacetValue["category_code"] != null && 
+                               oFacetValue["category_code"]["buckets"] != null && 
+                               (oFacetValue["category_code"]["buckets"]).Count > 0)
+                            {
+                                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                            }
                         }
                         else if (oFacet.Key == "parentcategories")
                         {
-                            facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["parentcategory_code"]["buckets"][0]["key"].ToString()));
+                            if (oFacetValue["parentcategory_code"] != null &&
+                                oFacetValue["parentcategory_code"]["buckets"] != null &&
+                                (oFacetValue["parentcategory_code"]["buckets"]).Count > 0)
+                            {
+                                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["parentcategory_code"]["buckets"][0]["key"].ToString()));
+                            }
                         }
                         else if (oFacet.Key == "brands") {
                             if (oFacetValue["brand_meta"]["buckets"].Count > 0) {
