@@ -199,8 +199,16 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers) {
             var customers = new List<Core.Models.Profile.Customer>();
 
-            if(forAllCustomers)
+            if (forAllCustomers)
+            {
                 customers = _customerRepository.GetCustomersForUser(user.UserId);
+                if (customers.Count == 0) // in the case of internal users, the relation of customers to users is different, so the above doesn't work
+                                          // in that case we work with the selected customer
+                {
+                    customers = new List<Core.Models.Profile.Customer>()
+                        { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
+                }
+            }
             else
                 customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
 
