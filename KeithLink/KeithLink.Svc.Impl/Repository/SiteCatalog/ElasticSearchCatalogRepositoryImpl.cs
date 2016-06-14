@@ -670,6 +670,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
+            _catalog = searchModel.CatalogType;
             int size = GetProductPagingSize(searchModel.Size);
             //ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
@@ -720,7 +721,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         //private delegate TResult Func<in T, out TResult>();
 
-        private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
+        private ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 
             if (res.Response.Contains("aggregations")) {
@@ -757,15 +758,41 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         }
                         facet.Add(facetValue as ExpandoObject);
                     }
-
                     (facets as IDictionary<string, object>).Add(oFacet.Key, facet);
                 }
+
+                // corrolate parentcategories and categories
+                var parentcategories = (facets as IDictionary<string, object>)["parentcategories"];
+                var categories = (facets as IDictionary<string, object>)["categories"];
+                if(parentcategories != null && categories != null)
+                {
+                    var newparentlist = new List<ExpandoObject>();
+                    foreach (IDictionary<string, object> parent in (parentcategories as List<ExpandoObject>))
+                    {
+                        string pcode = parent["code"].ToString();
+                        List<ExpandoObject> cats = new List<ExpandoObject>();
+                        foreach (IDictionary<string, object> cat in (categories as List<ExpandoObject>))
+                        {
+                            string code = cat["code"].ToString();
+                            if (_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase) && code.StartsWith(pcode.Substring(0, 1)))
+                            {
+                                cats.Add((ExpandoObject)cat);
+                            }
+                            else if (code.StartsWith(pcode.Substring(0, 2)))
+                            {
+                                cats.Add((ExpandoObject)cat);
+                            }
+                        }
+                        parent.Add("categories", cats);
+                    }
+                }
+
             }
 
             return facets;
         }
         
-        private static Product LoadProductFromElasticSearchProduct(dynamic oProd) {
+        private Product LoadProductFromElasticSearchProduct(dynamic oProd) {
             Product p = new Product();
             p.ManufacturerName = oProd._source.mfrname;
             p.ItemNumber = oProd._id;
