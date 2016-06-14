@@ -270,136 +270,101 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 
 <!-- Search Results -->
 <div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-  <div class="row">
-    <h2 class="col-xs-7">Search Results</h2>
+  <div class="row" ng-show="products.length !== 0">
+    <h2 class="col-xs-7" >Search Results</h2>
     <span style="margin-top: 25px;" class="col-xs-5 text-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
   </div>
-  <div context-menu favorite-item-click-handlers >
+    <div context-menu favorite-item-click-handlers >
 
-    <div>
-      <ul fast-repeat="item in products" ng-class="{ odd : $odd, even: $even }" style="border-bottom: 1px solid black; display:block;">
-        <li style="display:block;">
-          <div >
-            <div style="display:inline-block;">
-              <div class="pull-left-xs" style="display:inline-block;">
-                <div>
+      <div>
+        <ul fast-repeat="item in products" class="searchResults" style="border-bottom: 1px solid black; margin:0;">
+          <li style="display:block;">
+            <div >
+              <div style="display:inline-block;">
+                <div class="pull-left-xs" style="display:inline-block;">
                   <div>
-                    <a style="display:block;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
-                  <h3 style="display:block">
-                    {{item.name}} 
-                    <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
-                    <span
-                      ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                      context-menu-template
-                      class="context-menu-template context-menu__in-list hidden-print hideIconName displayIconName">
-                        <a class="icon-plus2"></a>
-                      </span>
-                  </h3>
-                  <h5 style="display:block" > 
-                  <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a></span>
-                  <span ng-if="!item.brand_extended_description">{{item.brand_extended_description}}</span>
-                  <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
-                                    <span
-                      ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                      context-menu-template
-                      class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
-                        <a class="icon-plus2"></a>
-                      </span>
-                  </h5>
+                    <div>
+                      <a style="display:block; margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+                    <h3 style="display:block;">{{item.name}} 
+                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
+                      <span
+                        ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                        context-menu-template
+                        class="context-menu-template context-menu__in-list hidden-print hideIconName displayIconName">
+                          <a class="icon-plus2"></a>
+                        </span>
+                    </h3>
+                    <h5 style="display:block" > 
+                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a></span>
+                    <span ng-if="!item.brand_extended_description">{{item.brand_extended_description}}</span>
+                    <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
+                                      <span
+                        ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                        context-menu-template
+                        class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
+                          <a class="icon-plus2"></a>
+                        </span>
+                    </h5>
+                    </div>
+                    <h6>
+                      Manufacturer: {{item.manufacturer_name}}
+                    </h6>
+                    <h6>
+                      {{item.description}}
+                    </h6>
+                    <h6>
+                      {{item.packsize}}
+                    </h6>
+                    <h6 class="nowrap" item-icons></h6>
+                    <h6 class="input-col" ng-if="canSeePrices">
+                      <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
+                        Each: <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                        <label for="each"></label>
+                      </ng-form>
+                    </h6>
+                    <h6 ng-if="canSeePrices">
+                      <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
+                    </h6>
+                    <h6 ng-if="canSeePrices">
+                      <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
+                      <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                    </h6>
                   </div>
-                  <h6>
-                    Manufacturer: {{item.manufacturer_name}}
-                  </h6>
-                  <h6>
-                    {{item.description}}
-                  </h6>
-                  <h6>
-                    {{item.packsize}}
-                  </h6>
-                  <h6 class="nowrap" item-icons></h6>
-                  <h6 class="input-col" ng-if="canSeePrices">
-                    <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
-                      Each: <input type="checkbox" ng-model="item.each" id="each" name="each" />
-                      <label for="each"></label>
-                    </ng-form>
-                  </h6>
-                  <h6 ng-if="canSeePrices">
-                    <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
-                  </h6>
-                  <h6 ng-if="canSeePrices">
-                    <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
-                    <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
-                  </h6>
                 </div>
-              </div>
-              <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs" style="padding: 5px 10px 5px">
-                <div ng-show="item.productimages.length > 0" class="pull-right item-details__main-image">
-                  <img ng-src="{{item.productimages[0].url}}" alt=""/>
+                <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs" style="padding: 15px 10px 5px">
+                  <div ng-show="item.productimages.length > 0" class="pull-right item-details__main-image">
+                    <img ng-src="{{item.productimages[0].url}}" alt=""/>
+                  </div>
                 </div>
               </div>
             </div>
-
-          </div>
-        </li>
-      </ul>
-<!--     </div>
-  <div ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
-    <div colspan="5">
-      <div>
-        <colgroup>
-        <col width="25%" />
-        <col width="75%" />
-      </colgroup>
-      <div>
-        <div>
-          <p>Pack/Size</p>
-          <p>{{::item.pack | number}} / {{::item.size}}</p>
-        </div>
-        <div>
-          <p>Brand</p>
-          <p>{{::item.brand_extended_description}}</p>
-        </div>
-        <div>
-          <p colspan="2" item-icons></p>
-        </div>
-        <div ng-show="canSeePrices" ng-if="hasPrice(item.unitprice)">
-          <p>Portion Cost</p>
-          <p>{{item.unitprice | currency}}</p>
-        </div>
-        <div ng-if="hasPackagePrice(item)">
-          <div>Each</div>
-          <div>
-            <ng-form name="eachForm_mobile">
-              <input type="checkbox" ng-model="item.each" id="each" name="each" />
-            </ng-form>
-          </div>
-        </div>
+          </li>
+        </ul>
       </div>
     </div>
+    <div>
+      <pagination
+        ng-show="totalProducts > pagingPageSize"
+        total-items="totalProducts" 
+        ng-model="currentPage" 
+        items-per-page="pagingPageSize" 
+        max-size="10" 
+        boundary-links="true" 
+        rotate="false" 
+        ng-change="blockUIAndChangePage(this)" 
+        class="pagination">
+      </pagination> 
+    </div>
   </div>
-</div> -->
-<div>
-  <pagination
-    ng-show="totalProducts > pagingPageSize"
-    total-items="totalProducts" 
-    ng-model="currentPage" 
-    items-per-page="pagingPageSize" 
-    max-size="10" 
-    boundary-links="true" 
-    rotate="false" 
-    ng-change="blockUIAndChangePage(this)" 
-    class="pagination">
-  </pagination> 
-</div>
-<div>
-  <div ng-show="!searchMessage && products.length === 0 && !loadingResults">
-    <p colspan="9">No products found.</p>
+
+    <div>
+      <div ng-show="!searchMessage && products.length === 0 && !loadingResults">
+        <p colspan="9">No products found.</p>
+      </div>
+    </div>
+
+    <div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
+
+    <div class="text-center" loading-spinner="loadingResults"></div>
   </div>
-</div>
-</div>
-
-<div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
-
-<div class="text-center" loading-spinner="loadingResults"></div>
-</div>
 </div>
