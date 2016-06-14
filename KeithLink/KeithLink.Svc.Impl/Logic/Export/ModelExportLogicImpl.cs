@@ -764,27 +764,30 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
         private uint AddTotalRowExcel(uint rowIndex, string[] excelColumnNames, SheetData sheetData)
         {
-            rowIndex++;
-            var totalRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
-            OpenXmlSpreadsheetUtilities.AppendTextCell
-                (excelColumnNames[12] + rowIndex.ToString(), "Total:", totalRow, CellValues.String, OpenXmlSpreadsheetUtilities.BOLD_CELL);
-            decimal total = 0;
-            foreach (var item in this.Model)
+            if(this.exportConfig.Where(e => e.Field == "TotalCost").Count() > 0 && this.exportConfig.Count > 1)
             {
-                if (item != null)
+                rowIndex++;
+                var totalRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
+                OpenXmlSpreadsheetUtilities.AppendTextCell
+                    (excelColumnNames[this.exportConfig.Count - 2] + rowIndex.ToString(), "Sum Total Cost:", totalRow, CellValues.String, OpenXmlSpreadsheetUtilities.BOLD_CELL);
+                decimal total = 0;
+                foreach (var item in this.Model)
                 {
-                    var properties = item.GetType().GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance);
-
-                    if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+                    if (item != null)
                     {
-                        var property = properties.Where(p => p.Name.Equals("TotalCost", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                        total += decimal.Parse(this.GetFieldValue(item, property).Trim());
+                        var properties = item.GetType().GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance);
+
+                        if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+                        {
+                            var property = properties.Where(p => p.Name.Equals("TotalCost", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                            total += decimal.Parse(this.GetFieldValue(item, property).Trim());
+                        }
                     }
                 }
+                OpenXmlSpreadsheetUtilities.AppendTextCell
+                    (excelColumnNames[this.exportConfig.Count - 1] + rowIndex.ToString(), total.ToString(), totalRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                sheetData.Append(totalRow);
             }
-            OpenXmlSpreadsheetUtilities.AppendTextCell
-                (excelColumnNames[13] + rowIndex.ToString(), total.ToString(), totalRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
-            sheetData.Append(totalRow);
             return rowIndex;
         }
 
