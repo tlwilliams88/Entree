@@ -296,14 +296,14 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                     </h3>
                     <h5 style="display:block" > 
                     <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a></span>
-                    <span ng-if="!item.brand_extended_description">{{item.brand_extended_description}}</span>
+                    <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
                     <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
-                                      <span
-                        ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                        context-menu-template
-                        class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
-                          <a class="icon-plus2"></a>
-                        </span>
+                    <span
+                      ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                      context-menu-template
+                      class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
+                        <a class="icon-plus2"></a>
+                    </span>
                     </h5>
                     </div>
                     <h6>
@@ -313,7 +313,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                       {{item.description}}
                     </h6>
                     <h6>
-                      {{item.packsize}}
+                      Pack/Size: {{item.packsize}}
                     </h6>
                     <h6 class="nowrap" item-icons></h6>
                     <h6 class="input-col" ng-if="canSeePrices">
@@ -323,19 +323,17 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                       </ng-form>
                     </h6>
                     <h6 ng-if="canSeePrices">
-                      <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
+                      <span ng-if="hasPrice(item.unitprice)">Portion Cost: {{item.unitprice | currency}}</span>
                     </h6>
                     <h6 ng-if="canSeePrices">
-                      <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
+                      <span ng-if="hasCasePrice(item)">Price: {{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
                       <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                     </h6>
                   </div>
                 </div>
-                <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs" style="padding: 15px 10px 5px">
-                  <div ng-show="item.productimages.length > 0" class="pull-right item-details__main-image">
-                    <img ng-src="{{item.productimages[0].url}}" alt=""/>
-                  </div>
-                </div>
+              </div>
+              <div class="pull-right-lg pull-right-md pull-right-sm pull-right-xs item-details__main-image" style="padding: 15px 5px" ng-show="item.productimages.length > 0">
+                <img ng-src="{{item.productimages[0].url}}" alt=""/>
               </div>
             </div>
           </li>
