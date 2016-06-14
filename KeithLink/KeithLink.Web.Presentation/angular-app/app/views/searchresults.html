@@ -281,70 +281,58 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         <li style="display:block;">
           <div >
             <div style="display:inline-block;">
-            <div class="pull-left-xs" style="display:inline-block;">
-              <div>
+              <div class="pull-left-xs" style="display:inline-block;">
                 <div>
-                  <a style="display:block;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
-                <h3 style="display:block">
-                  {{item.name}} 
-                  <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
-                  <span
-                    ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                    context-menu-template
-                    class="context-menu-template context-menu__in-list hidden-print hideIconName displayIconName">
-                      <a class="icon-plus2"></a>
-                    </span>
-                </h3>
-                <h5 style="display:block" > 
-                <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a></span>
-                <span ng-if="!item.brand_extended_description">{{item.brand_extended_description}}</span>
-                <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
-                                  <span
-                    ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                    context-menu-template
-                    class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
-                      <a class="icon-plus2"></a>
-                    </span>
-                </h5>
-                </div>
-                <h6>
-                  Manufacturer: {{item.manufacturer_name}}
-                </h6>
-                <h6>
-                  {{item.description}}
-                </h6>
-                <h6>
-                  {{item.packsize}}
-                </h6>
-                <h6 class="nowrap" item-icons></h6>
-                <h6 class="input-col" ng-if="canSeePrices">
-                  <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
-                    Each: <input type="checkbox" ng-model="item.each" id="each" name="each" />
-                    <label for="each"></label>
-                  </ng-form>
-                </h6>
-                <h6 ng-if="canSeePrices">
-                  <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
-                </h6>
-                <h6 ng-if="canSeePrices">
-                  <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
-                  <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
-                </h6>
-              </div>
-            </div>
-<!--               <p class="large-icon icon-col nowrap">
-                  <div 
-                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                  context-menu-template
-                  class="context-menu-template context-menu__in-list hidden-print">
-                    <a class="icon-plus2"></a>
+                  <div>
+                    <a style="display:block;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+                  <h3 style="display:block">
+                    {{item.name}} 
+                    <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
+                    <span
+                      ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                      context-menu-template
+                      class="context-menu-template context-menu__in-list hidden-print hideIconName displayIconName">
+                        <a class="icon-plus2"></a>
+                      </span>
+                  </h3>
+                  <h5 style="display:block" > 
+                  <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a></span>
+                  <span ng-if="!item.brand_extended_description">{{item.brand_extended_description}}</span>
+                  <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
+                                    <span
+                      ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                      context-menu-template
+                      class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
+                        <a class="icon-plus2"></a>
+                      </span>
+                  </h5>
                   </div>
-
-              <a class="hidden-print" ng-click="showDetails = !showDetails;">
-                  <span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span>
-                </a>
-              </p> -->
-              <div class="pull-right-sm pull-left-xs" style="padding: 10px 15px 10px">
+                  <h6>
+                    Manufacturer: {{item.manufacturer_name}}
+                  </h6>
+                  <h6>
+                    {{item.description}}
+                  </h6>
+                  <h6>
+                    {{item.packsize}}
+                  </h6>
+                  <h6 class="nowrap" item-icons></h6>
+                  <h6 class="input-col" ng-if="canSeePrices">
+                    <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
+                      Each: <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                      <label for="each"></label>
+                    </ng-form>
+                  </h6>
+                  <h6 ng-if="canSeePrices">
+                    <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
+                  </h6>
+                  <h6 ng-if="canSeePrices">
+                    <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
+                    <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                  </h6>
+                </div>
+              </div>
+              <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs" style="padding: 5px 10px 5px">
                 <div ng-show="item.productimages.length > 0" class="pull-right item-details__main-image">
                   <img ng-src="{{item.productimages[0].url}}" alt=""/>
                 </div>
