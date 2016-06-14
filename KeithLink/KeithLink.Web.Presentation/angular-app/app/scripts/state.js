@@ -419,11 +419,11 @@ angular.module('bekApp')
       data: {
         authorize: 'canPayInvoices'
       },
-      resolve: {
-        accounts: ['BankAccountService', function(BankAccountService) {
-          return BankAccountService.getAllBankAccounts();
-        }]
-      }
+      // resolve: {
+      //   accounts: ['BankAccountService', function(BankAccountService) {
+      //     return BankAccountService.getAllBankAccounts();
+      //   }]
+      // }
     })
     .state('menu.invoiceitems', {
       url: '/invoice/:invoiceNumber/',

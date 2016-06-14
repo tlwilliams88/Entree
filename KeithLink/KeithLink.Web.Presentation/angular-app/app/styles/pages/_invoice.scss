@@ -126,3 +126,16 @@ margin-top:20px;
   float:left; 
   padding-top:10px;
 }
+
+.panel-body:nth-of-type(odd){
+  background-color: $color-white !important;
+}
+
+.panel-body:nth-of-type(even){
+  background-color: $background;
+}
+
+.paymentmodal {
+    max-height: 420px;
+    overflow-y: auto;
+}
