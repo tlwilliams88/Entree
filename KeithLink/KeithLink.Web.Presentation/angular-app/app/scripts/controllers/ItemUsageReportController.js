@@ -129,8 +129,8 @@ angular.module('bekApp')
         },
         exportParams: function() {
           var params = {
-            fromdate: $scope.itemusagequery.fromDate,
-            todate: $scope.itemusagequery.toDate,
+            fromdate: DateService.momentObject($scope.itemusagequery.fromDate,Constants.dateFormat.yearMonthDayDashes)._i,
+            todate: DateService.momentObject($scope.itemusagequery.toDate,Constants.dateFormat.yearMonthDayDashes)._i,
             sortfield: $scope.sortField,
             sortdir: $scope.sortReverse === true ? 'desc' : 'asc'
           };

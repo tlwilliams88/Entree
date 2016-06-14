@@ -88,9 +88,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             log.WriteInformationLog(String.Format("notification prefs: {0}, profiles count: {1}, userDefaultMessagingPreferences: {2}, customerMessagingPreferences: {3}",
                                                    prefs, users.UserProfiles.Count, userDefaultMessagingPreferences, customerMessagingPreferences));
 
-            BlockingCollection<Recipient> recipients = new BlockingCollection<Recipient>();
+            List<Recipient> recipients = new List<Recipient>();
 
-            Parallel.ForEach(users.UserProfiles, (userProfile) => {
+            foreach(UserProfile userProfile in users.UserProfiles) {
                 if(userDefaultMessagingPreferences != null) {
                     // first, check for customer specific prefs
                     List<UserMessagingPreference> prefsToUse = customerMessagingPreferences.Where(
@@ -100,17 +100,30 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
                     foreach(var pref in prefsToUse) {
                         if(pref.Channel == Channel.Email) {
-                            recipients.Add(new Recipient() { ProviderEndpoint = userProfile.EmailAddress, Channel = Channel.Email });
+                            recipients.Add(new Recipient() { ProviderEndpoint = userProfile.EmailAddress,
+                                                             Channel = Channel.Email,
+                                                             UserId = userProfile.UserId,
+                                                             UserEmail = userProfile.EmailAddress,
+                                                             CustomerNumber = customer.CustomerNumber});
                         } else if(pref.Channel == Channel.MobilePush) {
                             // lookup any and all mobile devices
                             foreach(var device in userPushNotificationDeviceRepository.ReadUserDevices(userProfile.UserId))
-                                recipients.Add(new Recipient() { ProviderEndpoint = device.ProviderEndpointId, DeviceOS = device.DeviceOS, Channel = Channel.MobilePush });
+                                recipients.Add(new Recipient() { ProviderEndpoint = device.ProviderEndpointId,
+                                                                 DeviceOS = device.DeviceOS,
+                                                                 Channel = Channel.MobilePush,
+                                                                 UserId = userProfile.UserId,
+                                                                 UserEmail = userProfile.EmailAddress,
+                                                                 DeviceId = device.DeviceId,
+                                                                 CustomerNumber = customer.CustomerNumber});
                         } else if(pref.Channel == Channel.Web) {
-                            recipients.Add(new Recipient() { UserId = userProfile.UserId, CustomerNumber = customer.CustomerNumber, Channel = Channel.Web });
+                            recipients.Add(new Recipient() { UserId = userProfile.UserId,
+                                                             CustomerNumber = customer.CustomerNumber,
+                                                             Channel = Channel.Web,
+                                                             UserEmail = userProfile.EmailAddress});
                         }
                     }
                 }
-            });
+            }
 
             Dictionary<string, Recipient> dict = new Dictionary<string, Recipient>();
             foreach (Recipient rec in recipients)

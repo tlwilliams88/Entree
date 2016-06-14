@@ -627,6 +627,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 {
                     listItem.IsValid = true;
                     listItem.Name = prod.Name;
+                    listItem.Pack = prod.Pack;
+                    listItem.Size = prod.Size;
                     listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
                 }
 
@@ -707,6 +709,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     listItem.IsValid = true;
                     listItem.Name = prod.Name;
                     listItem.Pack = prod.Pack;
+                    listItem.Size = prod.Size;
                     listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
                     listItem.Size = prod.Size;
                     listItem.BrandExtendedDescription = prod.BrandExtendedDescription;

@@ -11,7 +11,9 @@ namespace KeithLink.Svc.Core.Models.Messaging.Provider
     {
         public string ProviderEndpoint { get; set; }
         public Guid UserId { get; set; }
+        public string UserEmail { get; set; }
         public string CustomerNumber { get; set; }
+        public string DeviceId { get; set; }
         public DeviceOS? DeviceOS { get; set; }
         public Channel Channel { get; set; }
     }
