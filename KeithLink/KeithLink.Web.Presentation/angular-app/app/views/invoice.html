@@ -61,10 +61,10 @@
   <div class="row topPadded">
     <div class="col-sm-12 col-xs-8">
       <div class="pull-left credit-memo-toggle"><input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)" > Invoices with Credit Memos</div> 
-      <div ng-if="!noInvoices" class="pull-left credit-memo-toggle" style="margin-left:15px;">
+      <div ng-if="!noInvoices && !isInternalUser" class="pull-left credit-memo-toggle" style="margin-left:15px;">
         <input type="checkbox" class="invoiceSelectAll" ng-model="invoiceCustomers.allSelected" ng-click="selectAll(areAllSelected = !areAllSelected, 'selectAllInvoices')"> Select All Invoices
       </div>
-      <div ng-if="!noInvoices" class="pull-right">
+      <div ng-if="!noInvoices && !isInternalUser" class="pull-right">
         <a style="margin-right:10px;" class="expandcollapsecustomers">Expand/Collapse All Customers</a>
         <span class="total-amt total-line text-green currency-value">Total: {{totalPaymentAmount() | currency}}</span>
       </div>
