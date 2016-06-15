@@ -18,6 +18,9 @@
                 <span># </span>
               </th>
               <th>
+                Scheduled Date
+              </th>
+              <th>
                 Invoice Amount
               </th>
               <th>Payment Amt</th>
@@ -31,6 +34,9 @@
             </td>
             <td>
               <a format="telephone=no" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)">{{::payment.invoicenumber}}</a>
+            </td>
+            <td>
+              {{payment.date | formatDate: 'MMM D, YYYY'}}
             </td>
             <td >
               <div style="display:inline-block; white-space:nowrap;">

@@ -121,6 +121,7 @@ angular.module('bekApp')
   }
 
   function setInvoices(data) {
+    $scope.noInvoices = false;
     $scope.invoices = data.pagedresults.results;
     var invoiceCustomers = [];
     if($scope.invoices.length > 0){
@@ -214,17 +215,27 @@ angular.module('bekApp')
       });
     };
 
-  $scope.filterInvoices = function(filterFields) {
-    InvoiceService.setFilters($scope.selectedFilterView , filterFields);
-    getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
-    invoicePagingModel.loadData();
+  $scope.filterInvoices = function(filter) {
+    if(filter){
+      $scope.invoiceCustomers.forEach(function(customer){
+        customer.invoices = $filter('filter')(customer.invoices, {hascreditmemos: true});
+        if(customer.invoices.length < 1){
+          $scope.noInvoices = true;
+        }
+      })
+    } else {
+      invoicePagingModel.loadData();
+    }
+    console.log($scope.noInvoices);
   };
+
   $scope.clearFilters = function() {
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
     getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
     invoicePagingModel.loadData();
     $scope.showFilter = false;
   };
+
   $scope.selectFilterView = function (filterView) {
     $scope.errorMessage = '';
     InvoiceService.setFilters(filterView, $scope.filterRowFields);
@@ -427,6 +438,7 @@ angular.module('bekApp')
     if(fromLocation == 'selectAllInvoices'){
       $scope.selectAllPayable = areAllSelected;
       angular.forEach($scope.invoiceCustomers, function (customer, index) {
+        customer.selected = angular.element('.invoiceSelectAll')[0].checked;
         angular.forEach(customer.invoices, function(invoice, index){
           invoice.isSelected = areAllSelected;
           if (invoice.userCanPayInvoice) {
@@ -436,9 +448,10 @@ angular.module('bekApp')
       })
     }else{
       $event.stopPropagation();
+      customer.selected = !customer.selected;
       customer.invoices.forEach(function(invoice){
         invoice.isSelected = !invoice.isSelected;
-        customer.selected = !customer.selected;
+        
         if (invoice.userCanPayInvoice) {
           $scope.selectInvoice(invoice, invoice.isSelected);
         }
@@ -470,13 +483,17 @@ angular.module('bekApp')
       $(this).html('Click to disable accordion behavior');
     } else {
       $active = false;
-      if($('.panel-collapse.in').length){
-        transition = true;
-        $('.panel-collapse.in').collapse('hide');       
-      }
-      else{
+      // if($('.panel-collapse.in').length){
+      //   transition = true;
+      //   $('.panel-collapse.in').collapse('show');       
+      // }
+      // else{
         $('.panel-collapse').collapse('show');
-      }
+        if($('.panel-collapse.in').length){
+          $('.panel-collapse.in').collapse('show');
+          $('.panel-collapse.in').removeClass('in');
+        }
+      // }
       $('.panel-title > div').attr('data-toggle','');
       $(this).html('Expand/Collapse All Customers');
     }

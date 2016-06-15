@@ -60,23 +60,23 @@
 <div style="max-width:100%; padding:0 50px 0 50px">
   <div class="row topPadded">
     <div class="col-sm-12 col-xs-8">
-      <div class="pull-left credit-memo-toggle"><input type="checkbox" ng-click="invoiceFilter = !invoiceFilter" > Invoice with Credit Memos</div> 
-      <div class="pull-left credit-memo-toggle" style="margin-left:15px;">
-        <input type="checkbox" ng-model="invoiceCustomers.allSelected" ng-click="selectAll(areAllSelected = !areAllSelected, 'selectAllInvoices')"> Select All Invoices
+      <div class="pull-left credit-memo-toggle"><input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)" > Invoices with Credit Memos</div> 
+      <div ng-if="!noInvoices" class="pull-left credit-memo-toggle" style="margin-left:15px;">
+        <input type="checkbox" class="invoiceSelectAll" ng-model="invoiceCustomers.allSelected" ng-click="selectAll(areAllSelected = !areAllSelected, 'selectAllInvoices')"> Select All Invoices
       </div>
-      <div class="pull-right">
+      <div ng-if="!noInvoices" class="pull-right">
         <a style="margin-right:10px;" class="expandcollapsecustomers">Expand/Collapse All Customers</a>
         <span class="total-amt total-line text-green currency-value">Total: {{totalPaymentAmount() | currency}}</span>
       </div>
     </div>
   </div>
 
-  <div ng-if="invoices.length > 0" class="row topPadded">
+  <div ng-if="!noInvoices" class="row topPadded">
     <div class="col-sm-12">
       <accordion close-others="oneAtATime">
         <accordion-group is-open="status.openCategories" class="panel-title" ng-show="true" ng-repeat="customer in invoiceCustomers | filter: {invoices: '!!'} | orderBy:'name'">
           <accordion-heading>
-            <input type="checkbox" ng-if="!isInternalAccountAdminUser && customer.ispayable && selectedFilterView.name !== 'Paid Invoices'" ng-click="selectAll(areAllSelected = !areAllSelected, selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" ng-model="areAllSelected" class="pull-left"/>
+            <input type="checkbox" ng-if="!isInternalAccountAdminUser && customer.ispayable && selectedFilterView.name !== 'Paid Invoices'" ng-click="selectAll(areAllSelected = !areAllSelected, selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" class="pull-left"/>
             <div class="white-space: normal;">
               <span style="padding-left:10px;"> {{customer.number}} - {{customer.name}} ({{customer.invoices.length}})</span>
               <span style="margin-left:20px;"> {{customer.street}} {{customer.city}}, {{customer.state}} {{customer.zipcode}}</span>
@@ -432,6 +432,10 @@
       </div> -->
 
       <div class="text-center" loading-spinner="loadingResults"></div>
+
+      <div ng-show="noInvoices" class="col-sm-12">
+        <p>There are no invoices to display.</p>
+      </div>
    
     <div class="clearfix"></div>
   </form>
