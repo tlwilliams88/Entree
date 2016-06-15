@@ -762,30 +762,30 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 }
 
                 // corrolate parentcategories and categories
-                var parentcategories = (facets as IDictionary<string, object>)["parentcategories"];
-                var categories = (facets as IDictionary<string, object>)["categories"];
-                if(parentcategories != null && categories != null)
-                {
-                    var newparentlist = new List<ExpandoObject>();
-                    foreach (IDictionary<string, object> parent in (parentcategories as List<ExpandoObject>))
-                    {
-                        string pcode = parent["code"].ToString();
-                        List<ExpandoObject> cats = new List<ExpandoObject>();
-                        foreach (IDictionary<string, object> cat in (categories as List<ExpandoObject>))
-                        {
-                            string code = cat["code"].ToString();
-                            if (_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase) && code.StartsWith(pcode.Substring(0, 1)))
-                            {
-                                cats.Add((ExpandoObject)cat);
-                            }
-                            else if (code.StartsWith(pcode.Substring(0, 2)))
-                            {
-                                cats.Add((ExpandoObject)cat);
-                            }
-                        }
-                        parent.Add("categories", cats);
-                    }
-                }
+                //var parentcategories = (facets as IDictionary<string, object>)["parentcategories"];
+                //var categories = (facets as IDictionary<string, object>)["categories"];
+                //if (parentcategories != null && categories != null)
+                //{
+                //    var newparentlist = new List<ExpandoObject>();
+                //    foreach (IDictionary<string, object> parent in (parentcategories as List<ExpandoObject>))
+                //    {
+                //        string pcode = parent["code"].ToString();
+                //        List<ExpandoObject> cats = new List<ExpandoObject>();
+                //        foreach (IDictionary<string, object> cat in (categories as List<ExpandoObject>))
+                //        {
+                //            string code = cat["code"].ToString();
+                //            if (_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase) && code.StartsWith(pcode.Substring(0, 1)))
+                //            {
+                //                cats.Add((ExpandoObject)cat);
+                //            }
+                //            else if (code.StartsWith(pcode.Substring(0, 2)))
+                //            {
+                //                cats.Add((ExpandoObject)cat);
+                //            }
+                //        }
+                //        //parent.Add("categories", cats);
+                //    }
+                //}
 
             }
 
