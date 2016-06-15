@@ -800,7 +800,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.Brand = oProd._source.brand;
             p.BrandExtendedDescription = oProd._source.brand_description;
             p.Description = oProd._source.description;
-            p.CategoryCode = oProd._source.parentcategoryid;
+            p.CategoryCode = oProd._source.categoryid;
             p.UPC = oProd._source.upc;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;

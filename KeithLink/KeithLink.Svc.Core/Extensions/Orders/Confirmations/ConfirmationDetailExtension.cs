@@ -66,6 +66,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
         public const int CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_INDEX = 141;
         public const int CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_LENGTH = 40;
 
+        public const int CONFIRMATION_DETAIL_ITEM_STATUS_INDEX = 181;
+        public const int CONFIRMATION_DETAIL_ITEM_STATUS_LENGTH = 1;
+
         #endregion
 
         #region methods 
@@ -147,6 +150,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
             value.ConfirmationMessage = StringHelpers.GetField(
                 CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_INDEX, 
                 CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_LENGTH, 
+                Line);
+
+            value.ItemStatus = StringHelpers.GetField(
+                CONFIRMATION_DETAIL_ITEM_STATUS_INDEX,
+                CONFIRMATION_DETAIL_ITEM_STATUS_LENGTH,
                 Line);
         }
 

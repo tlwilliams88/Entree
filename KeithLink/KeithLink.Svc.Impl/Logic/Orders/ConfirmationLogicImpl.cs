@@ -310,6 +310,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                 PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
             } catch (Exception e) {
+                _log.WriteErrorLog(string.Format("ProcessFileData -\r\n{0}", string.Join("\r\n", file)), e);
                 throw e;
             }
         }
