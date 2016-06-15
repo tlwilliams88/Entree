@@ -262,10 +262,6 @@
   }
 }
 
-.searchResults:nth-of-type(odd){
-  background-color: $color-white !important;
-}
-
-.searchResults:nth-of-type(even){
-  background-color: $background;
+.searchResults{
+  background-color: $color-white;
 }

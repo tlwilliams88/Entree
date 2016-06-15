@@ -254,32 +254,30 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 </div>
 
-<div >
-  <pagination
-    ng-show="totalProducts > pagingPageSize"
-    total-items="totalProducts" 
-    ng-model="currentPage" 
-    items-per-page="pagingPageSize" 
-    max-size="10" 
-    boundary-links="true" 
-    rotate="false" 
-    ng-change="blockUIAndChangePage(this); blur();" 
-    class="pagination">
-  </pagination> 
-</div>
-
 <!-- Search Results -->
-<div class="col-xs-12 col-sm-12 col-md-8 col-lg-6">
-  <div class="row" ng-show="products.length !== 0">
-    <h2 class="col-xs-7" >Search Results</h2>
-    <span style="margin-top: 25px;" class="col-xs-5 text-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
-  </div>
+  <div class="col-xs-12 col-sm-10 col-md-9 col-lg-9">
+    <div >
+      <pagination
+        ng-show="totalProducts > pagingPageSize"
+        total-items="totalProducts" 
+        ng-model="currentPage" 
+        items-per-page="pagingPageSize" 
+        max-size="10" 
+        boundary-links="true" 
+        rotate="false" 
+        ng-change="blockUIAndChangePage(this); blur();" 
+        class="pagination">
+      </pagination> 
+    </div>
+    <div class="row" ng-show="products.length !== 0">
+      <h2 class="col-xs-6" >Search Results</h2>
+      <span style="margin-top: 25px;" class="col-xs-6 text-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
+    </div>
     <div context-menu favorite-item-click-handlers >
-
       <div>
-        <ul fast-repeat="item in products" class="searchResults" style="border-bottom: 1px solid black; margin:0;">
+        <ul fast-repeat="item in products" class="searchResults" style="border-bottom: 1px solid #c3bc9c;; margin:0;">
           <li style="display:block;">
-            <div >
+            <div style="padding: 15px 0 20px 0" >
               <div style="display:inline-block;">
                 <div class="pull-left-xs" style="display:inline-block;">
                   <div>
@@ -332,7 +330,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                   </div>
                 </div>
               </div>
-              <div class="pull-right-lg pull-right-md pull-right-sm pull-right-xs item-details__main-image" style="padding: 15px 5px" ng-show="item.productimages.length > 0">
+              <div class="pull-right-lg pull-right-md pull-right-sm pull-right-xs item-details__main-image" style="margin: 10px; padding-top:15px;" ng-show="item.productimages.length > 0">
                 <img ng-src="{{item.productimages[0].url}}" alt=""/>
               </div>
             </div>
