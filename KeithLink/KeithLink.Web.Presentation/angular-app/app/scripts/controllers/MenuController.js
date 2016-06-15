@@ -167,7 +167,7 @@ angular.module('bekApp')
 
     // if users is viewing all customers
     // change selected user context back to the one stored in LocalStorage here
-    if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && !$scope.selectedUserContext.id) {
+    if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && $scope.selectedUserContext && !$scope.selectedUserContext.id) {
       $scope.setSelectedUserContext(LocalStorage.getCurrentCustomer());
     }
   });

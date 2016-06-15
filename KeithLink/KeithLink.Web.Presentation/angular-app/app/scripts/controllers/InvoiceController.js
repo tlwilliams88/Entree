@@ -300,13 +300,18 @@ angular.module('bekApp')
   ************/
 
   function setTempContextForViewingAllCustomers() {
+    var tempContext;
     //store current user context temporarily
     currentUserSelectedContext = $scope.selectedUserContext;
     //wipe user context and replace text with all customers
-    var tempContext = {
-      text: 'All Customers'
+    if(!$scope.isInternalUser){
+      var tempContext = {
+        text: 'All Customers'
+      };
+      $scope.setSelectedUserContext(tempContext);
+    } else {
+      $scope.setSelectedUserContext(currentUserSelectedContext)
     };
-    $scope.setSelectedUserContext(tempContext);
   }
 
   //toggles state between all customer invoices and single customer invoices
