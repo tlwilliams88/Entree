@@ -436,7 +436,6 @@ angular.module('bekApp')
       $scope.errorMessage = '';
     }
     if(fromLocation == 'selectAllInvoices'){
-      $scope.selectAllPayable = areAllSelected;
       angular.forEach($scope.invoiceCustomers, function (customer, index) {
         customer.selected = angular.element('.invoiceSelectAll')[0].checked;
         angular.forEach(customer.invoices, function(invoice, index){
