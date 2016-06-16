@@ -63,41 +63,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-        /// <summary>
-        /// change the value of the application setting
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [HttpPut]
-        [ApiKeyedRoute("appsettings")]
-        public OperationReturnModel<bool> UpdateSetting(Setting model) {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
-
-            try {
-                SettingUpdate results = _appSettings.SaveSetting(model.Key, model.Value);
-
-                LogSettingsChange(results, this.AuthenticatedUser.UserId);
-
-                retVal.SuccessResponse = true;
-                retVal.IsSuccess = true;
-            } catch(Exception ex) {
-                retVal.SuccessResponse = false;
-                retVal.IsSuccess = false;
-                retVal.ErrorMessage = ex.Message;
-
-                _log.WriteErrorLog("Exception encountered while updating settings", ex);
-            }
-
-            return retVal;
-        }
-
+        
         /// <summary>
         /// Update a list of settings
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
         [HttpPut]
-        [ApiKeyedRoute("appsettings/bulk")]
+        [ApiKeyedRoute("appsettings")]
         public OperationReturnModel<bool> UpdateSettings(List<Setting> settings)
         {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
