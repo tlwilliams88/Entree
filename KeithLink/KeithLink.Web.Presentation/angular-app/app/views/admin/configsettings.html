@@ -6,17 +6,13 @@
     <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" ng-click="verifySettings = !verifySettings" ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine"  ng-show="!verifySettings">Verify</button>
   </div>
   <div header-buttons>
-    <label ng-if="verifySettings" class="text-red pull-right-sm" style="padding:10px 20px 0 0;">
+    <label ng-if="configSettingsForm.$dirty" class="text-red pull-right-sm" 
+      style="padding:10px 20px 0 0;">
       Please verify your changes below by checking the checkbox
     </label>
-    <button class="btn-lg btn btn-danger pull-right-sm hidden-print" 
-      ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine" 
-      ng-click="verifySettings = !verifySettings" type="button" ng-show="!verifySettings">
-      Verify
-    </button>
     <button class="btn-lg btn btn-primary pull-right-sm hidden-print"
-      ng-disabled="!isverified"
-      ng-click="saveConfig(configSettings)" type="button" ng-show="verifySettings">
+      ng-disabled="!isverified && configSettingsForm.$pristine"
+      ng-click="saveConfig(configSettings);" type="button">
       Save
     </button>
   </div>

@@ -4,8 +4,6 @@ angular.module('bekApp')
   .controller('ConfigSettingsController', ['$scope', 'ConfigSettingsService',
     function($scope, ConfigSettingsService) {
 
-        $scope.settingsVerified = false;
-
         ConfigSettingsService.getAppSettings().then(function(resp){
             $scope.configSettings = resp;
         });
@@ -20,25 +18,26 @@ angular.module('bekApp')
         $scope.saveConfig = function(settings){
             if($scope.configSettingsForm.$dirty){
                 var settingValues = [];
-                settings.forEach(function(setting){
-                    if(setting.newvalue && setting.isverified){
-                        setting.value = setting.newvalue;
-                        settingValues.push(setting);
-                    }
-                })
                 ConfigSettingsService.saveAppSettings(settingValues).then(function(resp){
-                    $scope.configSettings = resp;
-                    $scope.configSettings.forEach(function(setting){
-                        if(setting.newvalue){
+                    settings.forEach(function(setting){
+                        if(setting.newvalue && setting.isverified && resp){
+                            setting.isverified = !setting.isverified;
+                            setting.value = setting.newvalue;
                             setting.newvalue = '';
+                            settingValues.push(setting);
                         }
                     })
-                    $scope.configSettingsForm.$setPristine();
-                    $scope.displayMessage('success', 'Successfully saved config settings');
+                    if(resp && settingValues.length){
+                        $scope.displayMessage('success', 'Successfully saved config settings');
+                        $scope.configSettingsForm.$setPristine();
+                        $scope.verifySettings = false;
+                    } else if(!resp) {
+                        $scope.displayMessage('error', 'Error saving config settings');
+                    } else {
+                        return;
+                    }
                 });
-                $scope.verifySettings = false;
             } else {
-                $scope.verifySettings = false;
                 return;
             }
 
