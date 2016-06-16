@@ -3,13 +3,13 @@
     <div ng-if="!selectedList.isRenaming">
       <div class="list-name">{{selectedList.name}}</div>
 
-      <div class="block-display">
+      <div class="inline-block-display">
         <span ng-if="selectedList.issharing" class="large-icon icon-user-add" tooltip="You are sharing this list."></span>
         <span ng-if="selectedList.isshared" class="large-icon icon-users" tooltip="This list is shared with you."></span>
       </div>
 
       <div 
-        class="block-display"
+        class="inline-block-display"
         ng-if="selectedList" 
         ng-if="selectedList.permissions.canDeleteList || selectedList.permissions.canRenameList">
         
