@@ -656,7 +656,7 @@ angular.module('bekApp')
   $stateProvider
     .state('menu.configsettings', {
       url: '/configsettings/',
-      templateUrl: 'views/configsettings.html',
+      templateUrl: 'views/admin/configsettings.html',
       controller: 'ConfigSettingsController',
       resolve: {
         security: ['UserProfileService', '$q', function(UserProfileService, $q) {
