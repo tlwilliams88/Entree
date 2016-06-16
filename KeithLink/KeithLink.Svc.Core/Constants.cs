@@ -194,6 +194,12 @@ namespace KeithLink.Svc.Core
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_CODE = "S";
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS = "Item Subbed";
         public const string ITEM_DELETED_STATUS = "Deleted";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_INVALID = "I";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_INVALID_DESCRIPTION = "Invalid";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_DELETE = "D";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_DELETE_DESCRIPTION = "Deleted";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND = "N";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND_DESCRIPTION = "Not Found";
 
         public const string CONFIRMATION_HEADER_IN_PROCESS_CODE = "P";
         public const string CONFIRMATION_HEADER_IN_PROCESS_STATUS = "In Process";
