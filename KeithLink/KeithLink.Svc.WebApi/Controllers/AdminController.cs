@@ -76,15 +76,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 SettingUpdate results = _appSettings.SaveSetting(model.Key, model.Value);
 
-                string message = "App Setting updated by {UserName}. Key = {Key}, Original Value = {OrgValue}, Updated Value = {NewValue}";
-                object stringValues = new {
-                    UserName = this.AuthenticatedUser.UserId,
-                    Key = results.Key,
-                    OrgValue = results.OriginalValue,
-                    NewValue = results.UpdatedValue
-                };
-
-                _log.WriteInformationLog(message.Inject(stringValues));
+                LogSettingsChange(results, this.AuthenticatedUser.UserId);
 
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = true;
@@ -97,6 +89,54 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
 
             return retVal;
+        }
+
+        /// <summary>
+        /// Update a list of settings
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [ApiKeyedRoute("appsettings/bulk")]
+        public OperationReturnModel<bool> UpdateSettings(List<Setting> settings)
+        {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+
+            try
+            {
+                List<SettingUpdate> results = _appSettings.SaveSettings(settings);
+
+                foreach (SettingUpdate update in results)
+                {
+                    LogSettingsChange(update, this.AuthenticatedUser.UserId); 
+                }
+
+                returnValue.SuccessResponse = true;
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.SuccessResponse = false;
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+
+                _log.WriteErrorLog("AdminController Exception while updating settings", ex);
+            }
+
+            return returnValue;
+        }
+
+        private void LogSettingsChange(SettingUpdate settings, Guid userId) {
+            string message = "App Setting updated by {UserName}. Key = {Key}, Original Value = {OrgValue}, Updated Value = {NewValue}";
+            object stringValues = new
+            {
+                UserName = this.AuthenticatedUser.UserId,
+                Key = settings.Key,
+                OrgValue = settings.OriginalValue,
+                NewValue = settings.UpdatedValue
+            };
+
+            _log.WriteInformationLog(message.Inject(stringValues));
         }
         #endregion
     }
