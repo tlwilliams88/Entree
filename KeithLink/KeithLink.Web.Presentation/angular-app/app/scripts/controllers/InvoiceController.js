@@ -123,7 +123,7 @@ angular.module('bekApp')
   function setInvoices(data) {
     $scope.noInvoices = false;
     $scope.invoices = data.pagedresults.results;
-    var invoiceCustomers = [];
+    $scope.invoiceCustomers = [];
     if($scope.invoices.length > 0){
       $scope.invoices.forEach(function(invoice){
         var existingCustomer = $filter('filter')(customers, {name: invoice.customername})
@@ -226,8 +226,7 @@ angular.module('bekApp')
     } else {
       invoicePagingModel.loadData();
     }
-    console.log($scope.noInvoices);
-  };
+};
 
   $scope.clearFilters = function() {
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
