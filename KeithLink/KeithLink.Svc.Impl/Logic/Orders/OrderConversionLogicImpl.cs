@@ -258,15 +258,31 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 if (orderFormLineItem != null)
                 {
-                    SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem));
+                    SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem), 
+                        detail.ItemStatus);
                 }
                 else { }
             }
         }
 
-        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber) {
+        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber, string itemStatus) {
             orderFormLineItem["QuantityOrdered"] = quantityOrdered;
             orderFormLineItem["QuantityShipped"] = quantityShipped;
+            if (itemStatus.Length > 0)
+            {
+                switch (itemStatus)
+                {
+                    case Constants.CONFIRMATION_DETAIL_ITEM_STATUS_INVALID:
+                        displayStatus = Constants.CONFIRMATION_DETAIL_ITEM_STATUS_INVALID_DESCRIPTION;
+                        break;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_STATUS_DELETE:
+                        displayStatus = Constants.CONFIRMATION_DETAIL_ITEM_STATUS_DELETE_DESCRIPTION;
+                        break;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND:
+                        displayStatus = Constants.CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND_DESCRIPTION;
+                        break;
+                }
+            }
             orderFormLineItem["MainFrameStatus"] = displayStatus;
             orderFormLineItem["SubstitutedItemNumber"] = substitutedItemNumber;
             orderFormLineItem.ProductId = currentItemNumber;
