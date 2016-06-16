@@ -6,12 +6,12 @@
     <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" ng-click="verifySettings = !verifySettings" ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine"  ng-show="!verifySettings">Verify</button>
   </div>
   <div header-buttons>
-    <label ng-if="configSettingsForm.$dirty" class="text-red pull-right-sm" 
+    <label ng-if="configSettingsForm.$dirty && !configSettingsForm.$invalid" class="text-red pull-right-sm" 
       style="padding:10px 20px 0 0;">
       Please verify your changes below by checking the checkbox
     </label>
     <button class="btn-lg btn btn-primary pull-right-sm hidden-print"
-      ng-disabled="!isverified && configSettingsForm.$pristine"
+      ng-disabled="!isverified && configSettingsForm.$pristine || configSettingsForm.$invalid"
       ng-click="saveConfig(configSettings);" type="button">
       Save
     </button>
@@ -25,7 +25,7 @@
       <thead>
         <tr>
           <th class="col-sm-1 col-md-2">Key</th>
-          <th class="col-sm-1 col-md-2">Old Value</th>
+          <th class="col-sm-1 col-md-3">Old Value</th>
           <th class="col-sm-1 col-md-3">New Value</th>
           <th class="col-sm-1 col-md-1">Comment</th>
         </tr>
@@ -34,7 +34,7 @@
         <tr ng-repeat="setting in configSettings" ng-class="{ odd: $odd, even: $even }">
           <td>{{setting.key}}</td>
           <td>
-            <label style="max-width: 200px; word-wrap: break-word">
+            <label style="max-width: 600px; word-wrap: break-word">
               {{setting.value}}
             </label>
           </td>
