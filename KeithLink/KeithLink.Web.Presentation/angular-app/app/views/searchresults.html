@@ -35,7 +35,6 @@
 <div class="row" ng-hide="hideMobileFilters">
   <div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
     <div class="row">
-
       <accordion close-others="oneAtATime">
         <accordion-group is-open="status.openCategories" ng-show="facets.categories.available.length > 0">
         <accordion-heading>
@@ -146,15 +145,15 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 </div>
 </div>
 
-<div class="row" style="margin-top:15px;">
+<div class="row top-offset">
 
   <!-- Filters -->
   
   <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
-    <div class="row">
+    <div class="row" ng-show="facets.categories.available.length > 0">
       <div class="col-sm-12">
         <h3>Categories<span style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
-          <ul class="nav search-results__category" ng-show="facets.categories.available.length > 0">
+          <ul class="nav search-results__category">
             <li ng-repeat="category in facets.categories.available | orderBy: '-count'">
               <a
               ng-click="toggleSelection(facets.categories.selected, category.name)" 
@@ -187,7 +186,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     </div>
   </div>
   <div class="row" ng-show="facets.dietary.available.length > 0">
-    <div class="col-sm-11">
+    <div class="col-sm-12">
       <h3>Manufacturers</h3>
         <ul class="nav search-results__facets">
           <li class="facet-checkbox" ng-repeat="manufacturer in facets.mfrname.available | orderBy: '-count'">
@@ -205,7 +204,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     </div>
   </div>
   <div class="row" ng-show="facets.dietary.available.length > 0">
-    <div class="col-sm-11">
+    <div class="col-sm-12">
       <h3>Dietary</h3>
         <ul class="nav search-results__facets">
           <li class="facet-checkbox" ng-repeat="diet in facets.dietary.available | orderBy: '-count'">
@@ -222,7 +221,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     </div>
   </div>
   <div class="row" ng-show="facets.itemspecs.available.length > 0">
-    <div class="col-sm-11">
+    <div class="col-sm-12">
       <h3>Item Specifications</h3>
         <ul class="nav search-results__facets">
           <li ng-repeat="spec in facets.itemspecs.available | orderBy: '-count'">
@@ -243,12 +242,6 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         <h3>Catalogs</h3>
           <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>
           <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
-<!--           <input
-             type="checkbox"
-             id="unfi-checkbox"
-             ng-click="unfiCheckboxClick()">
-             <label for="unfi-checkbox">Natural and Organic (100)</label>
-      </div> -->
       </div>
     </div>
   </div>
@@ -275,15 +268,15 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     </div>
     <div context-menu favorite-item-click-handlers >
       <div>
-        <ul fast-repeat="item in products" class="searchResults" style="border-bottom: 1px solid #c3bc9c;; margin:0;">
-          <li style="display:block;">
+        <ul fast-repeat="item in products" class="searchResults">
+          <li class="block-display">
             <div style="padding: 15px 0 20px 0" >
-              <div style="display:inline-block;">
-                <div class="pull-left-xs" style="display:inline-block;">
+              <div class="inline-block-display">
+                <div class="pull-left-xs inline-block-display">
                   <div>
                     <div>
-                      <a style="display:block; margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
-                    <h3 style="display:block;">{{item.name}} 
+                      <a class="block-display" style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+                    <h3 class="block-display">{{item.name}} 
                       <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
                       <span
                         ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
@@ -292,7 +285,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                           <a class="icon-plus2"></a>
                         </span>
                     </h3>
-                    <h5 style="display:block" > 
+                    <h5 class="block-display"> 
                     <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a></span>
                     <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
                     <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
@@ -330,7 +323,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                   </div>
                 </div>
               </div>
-              <div class="pull-right-lg pull-right-md pull-right-sm pull-right-xs item-details__main-image" style="margin: 10px; padding-top:15px;" ng-show="item.productimages.length > 0">
+              <div class="pull-right-lg pull-right-md pull-right-sm pull-right-xs item-details__main-image search-result-images" ng-show="item.productimages.length > 0">
                 <img ng-src="{{item.productimages[0].url}}" alt=""/>
               </div>
             </div>
@@ -354,8 +347,8 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 
     <div>
-      <div ng-show="!searchMessage && products.length === 0 && !loadingResults">
-        <p colspan="9">No products found.</p>
+      <div class="col-sm-5 no-products" ng-show="!searchMessage && products.length === 0 && !loadingResults">
+        <p colspan="9">No products found. Please try another search.</p>
       </div>
     </div>
 
