@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('ConfigSettings', [ '$resource', 
-  function ($resource) {
+  .factory('ConfigSettings', [ '$resource', function ($resource) {
     return $resource('/appsettings/', { }, {
 
     	update: {
@@ -10,6 +9,6 @@ angular.module('bekApp')
         method: 'PUT'
       },
 
-    	});
+    });
 
-  }]);
+}]);

@@ -27,7 +27,7 @@ angular.module('bekApp')
                     }
                 })
                 ConfigSettingsService.saveAppSettings(settingValues).then(function(resp){
-                    // $scope.configSettings = resp;
+                    $scope.configSettings = resp;
                     $scope.configSettings.forEach(function(setting){
                         if(setting.newvalue){
                             setting.newvalue = '';
