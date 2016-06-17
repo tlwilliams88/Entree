@@ -18,7 +18,7 @@
       type="button" 
       ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
       ng-click="payInvoices()" 
-      ng-if="hasPayableInvoices" 
+      ng-if="hasPayableInvoices && !isInternalUser" 
       class="btn btn-primary btn-lg pay-btn" 
       analytics-on 
       analytics-category="Invoices" 
