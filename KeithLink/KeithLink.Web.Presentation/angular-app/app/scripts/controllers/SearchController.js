@@ -106,7 +106,7 @@ angular.module('bekApp')
         $scope.startingPoint = 0;
         $scope.endPoint = 0;       
         var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-        blockUI.start("Loading Items...").then(function(){
+        return blockUI.start("Loading Products...").then(function(){
           if(visited.length > 0){
             $timeout(function() {
               $scope.isChangingPage = true;
@@ -119,7 +119,7 @@ angular.module('bekApp')
         })
     }
 
-    $scope.pagingPageSize = 15;
+    $scope.pagingPageSize = 25;
 
      $scope.setStartAndEndPoints = function(page){
       var foundStartPoint = false;
@@ -187,7 +187,7 @@ angular.module('bekApp')
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
 
-      if(initialPageLoad){      
+      if(initialPageLoad){   
         $scope.currentPage = 1;
         $scope.firstPageItem = ($scope.currentPage * $scope.pagingPageSize) - ($scope.pagingPageSize);
         $scope.products = $scope.productResults.slice($scope.firstPageItem, ($scope.currentPage * $scope.pagingPageSize));
