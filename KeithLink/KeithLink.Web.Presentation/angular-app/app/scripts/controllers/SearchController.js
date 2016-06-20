@@ -190,7 +190,7 @@ angular.module('bekApp')
       if(initialPageLoad){   
         $scope.currentPage = 1;
         $scope.firstPageItem = ($scope.currentPage * $scope.pagingPageSize) - ($scope.pagingPageSize);
-        $scope.products = $scope.productResults.slice($scope.firstPageItem, ($scope.currentPage * $scope.pagingPageSize));
+        $scope.products = $scope.products.slice($scope.firstPageItem, ($scope.currentPage * $scope.pagingPageSize));
         $scope.setStartAndEndPoints($scope.products);
         $scope.visitedPages.push({page: 1, items: $scope.products, deletedCount: 0});
       }
@@ -397,13 +397,20 @@ angular.module('bekApp')
     LOAD PRODUCT DATA
     *************/
     function getData() {
-      var facets = ProductService.getFacets(
-        $scope.facets.categories.selected,
-        $scope.facets.brands.selected,
-        $scope.facets.mfrname.selected,
-        $scope.facets.dietary.selected,
-        $scope.facets.itemspecs.selected
-      );
+      var facets;
+      $scope.aggregateCount;
+      
+      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.categories.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length)
+
+      if($scope.aggregateCount !== 0){
+        facets = ProductService.getFacets(
+          $scope.facets.categories.selected,
+          $scope.facets.brands.selected,
+          $scope.facets.mfrname.selected,
+          $scope.facets.dietary.selected,
+          $scope.facets.itemspecs.selected
+        )
+      }
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
       if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
@@ -418,7 +425,7 @@ angular.module('bekApp')
       return blockUI.start("Loading Products...").then(function(){
         return getData().then(function(data) {
         var page = 1;
-        $scope.productResults = data.products;
+        $scope.products = data.products;
         $scope.totalProducts = data.totalcount;
         resetPage(data.products, true);
         $scope.totalItems = data.totalcount;
@@ -429,15 +436,14 @@ angular.module('bekApp')
             $scope.bekItemCount = 0;
             $scope.unfiItemCount = 0;
         }
-
         // append results to existing data (for infinite scroll)
         if (appendResults) {
           $scope.products.push.apply($scope.products, data.products);
         // replace existing data (for sort, filter)
         } else {
-          $scope.allProducts = data.products;
           $scope.setStartAndEndPoints($scope.products);
-          $scope.products = $scope.allProducts.slice($scope.startingPoint, $scope.endPoint);
+        }
+        if($scope.aggregateCount !==0){
           updateFacetCount($scope.facets.brands, data.facets.brands);
           updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
           updateFacetCount($scope.facets.categories, data.facets.categories);
@@ -487,11 +493,13 @@ angular.module('bekApp')
 
     function refreshFacets(facets) {
       // set the $scope.facets object using the response data
-      $scope.facets.categories.available = facets.categories;
-      $scope.facets.brands.available = facets.brands;
-      $scope.facets.mfrname.available = facets.mfrname;
-      $scope.facets.dietary.available = facets.dietary;
-      $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
+      if(facets){
+        $scope.facets.categories.available = facets.categories;
+        $scope.facets.brands.available = facets.brands;
+        $scope.facets.mfrname.available = facets.mfrname;
+        $scope.facets.dietary.available = facets.dietary;
+        $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
+      }
     }
 
     /*************
