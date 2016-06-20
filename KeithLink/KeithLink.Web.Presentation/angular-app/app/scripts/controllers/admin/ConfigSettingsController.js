@@ -18,13 +18,18 @@ angular.module('bekApp')
         $scope.saveConfig = function(settings){
             if($scope.configSettingsForm.$dirty){
                 var settingValues = [];
+                settings.forEach(function(setting){
+                    if(setting.newvalue && setting.isverified){
+                        setting.isverified = !setting.isverified;
+                        setting.value = setting.newvalue;
+                        settingValues.push(setting);
+                    }
+                })
+
                 ConfigSettingsService.saveAppSettings(settingValues).then(function(resp){
                     settings.forEach(function(setting){
-                        if(setting.newvalue && setting.isverified && resp){
-                            setting.isverified = !setting.isverified;
-                            setting.value = setting.newvalue;
+                        if(setting.newvalue && resp){
                             setting.newvalue = '';
-                            settingValues.push(setting);
                         }
                     })
                     if(resp && settingValues.length){
