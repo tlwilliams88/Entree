@@ -28,5 +28,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
 
         [Required]
         public DeviceOS DeviceOS { get; set; }
+
+        public bool? Enabled { get; set; }
     }
 }

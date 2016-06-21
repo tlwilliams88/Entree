@@ -351,6 +351,11 @@
     <Compile Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.Designer.cs">
       <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201606201910103_Add Enable to UserPushNotificationDevices.cs" />
+    <Compile Include="Repository\EF\Migrations\201606201910103_Add Enable to UserPushNotificationDevices.Designer.cs">
+      <DependentUpon>201606201910103_Add Enable to UserPushNotificationDevices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -833,6 +838,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201604141956217_Add OrderSubtotal to OrderHistoryHeader.resx">
       <DependentUpon>201604141956217_Add OrderSubtotal to OrderHistoryHeader.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201606201910103_Add Enable to UserPushNotificationDevices.resx">
+      <DependentUpon>201606201910103_Add Enable to UserPushNotificationDevices.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
