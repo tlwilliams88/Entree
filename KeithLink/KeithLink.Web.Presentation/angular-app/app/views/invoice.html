@@ -158,18 +158,18 @@
                     </label>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
-                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" > Reference#:</span> {{invoice.invoicenumber}}</a></strong>
-                    <h5 >Type: {{invoice.typedescription}}</h5>
+                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" > Reference#:</span> {{::invoice.invoicenumber}}</a></strong>
+                    <h5 >Type: {{::invoice.typedescription}}</h5>
                     <h5 class="highlight-text" >Status: {{invoice.statusdescription}}</h5>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
-                    <h5 >PONumber: {{invoice.ponumber}}</h5>
-                    <h5 >Invoice Date: {{invoice.invoicedate |formatDate}}</h5>
-                    <h5 >Due Date: {{invoice.duedate | formatDate}}</h5>
+                    <h5 >PONumber: {{::invoice.ponumber}}</h5>
+                    <h5 >Invoice Date: {{::invoice.invoicedate |formatDate}}</h5>
+                    <h5 >Due Date: {{::invoice.duedate | formatDate}}</h5>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
-                    <h5 >Invoice Amount: {{invoice.invoiceamount | currency}}</h5>
-                    <h5>Amount Due: {{invoice.amount | currency}}<span><a class="icon-plus3 large-icon margin-left-5" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></span></h5>
+                    <h5 >Invoice Amount: {{::invoice.invoiceamount | currency}}</h5>
+                    <h5>Amount Due: {{::invoice.amount | currency}}<span><a class="icon-plus3 large-icon margin-left-5" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></span></h5>
                     <h5>Invoice Image: <span><a ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" target="_blank" class="icon-camera large-icon" analytics-on analytics-category="Invoices" analytics-event="View Invoice Image"></a></span></h5>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
@@ -199,7 +199,8 @@
                     <span class="date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !== 'Past Due' && invoice.statusdescription !== 'Payment Pending' && invoice.date">{{invoice.date | formatDate}}</span>
                     <span class="date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due'">{{invoice.date || tomorrow | formatDate}}</span>
                     <span class="date-picker-field" ng-if="invoice.statusdescription === 'Payment Pending'">{{invoice.date || invoice.pendingtransaction.date | formatDate}}</span>
-                    <h5>Payment Amount: {{invoice.pendingtransaction.amount}} <span class="input-col">
+                    <h5>Payment Amount: <span ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</span>
+                    <span>
                       <input
                       remove-positive-numbers
                       ng-disabled="isInternalAccountAdminUser"
