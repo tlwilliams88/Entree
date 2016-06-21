@@ -107,14 +107,20 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                                                              CustomerNumber = customer.CustomerNumber});
                         } else if(pref.Channel == Channel.MobilePush) {
                             // lookup any and all mobile devices
-                            foreach(var device in userPushNotificationDeviceRepository.ReadUserDevices(userProfile.UserId))
-                                recipients.Add(new Recipient() { ProviderEndpoint = device.ProviderEndpointId,
-                                                                 DeviceOS = device.DeviceOS,
-                                                                 Channel = Channel.MobilePush,
-                                                                 UserId = userProfile.UserId,
-                                                                 UserEmail = userProfile.EmailAddress,
-                                                                 DeviceId = device.DeviceId,
-                                                                 CustomerNumber = customer.CustomerNumber});
+                            foreach (var device in userPushNotificationDeviceRepository.ReadUserDevices(userProfile.UserId))
+                                if (device.Enabled != false)
+                                {
+                                    recipients.Add(new Recipient()
+                                    {
+                                        ProviderEndpoint = device.ProviderEndpointId,
+                                        DeviceOS = device.DeviceOS,
+                                        Channel = Channel.MobilePush,
+                                        UserId = userProfile.UserId,
+                                        UserEmail = userProfile.EmailAddress,
+                                        DeviceId = device.DeviceId,
+                                        CustomerNumber = customer.CustomerNumber
+                                    });
+                                }
                         } else if(pref.Channel == Channel.Web) {
                             recipients.Add(new Recipient() { UserId = userProfile.UserId,
                                                              CustomerNumber = customer.CustomerNumber,

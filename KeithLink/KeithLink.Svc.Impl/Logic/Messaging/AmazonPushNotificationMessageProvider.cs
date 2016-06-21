@@ -4,24 +4,29 @@ using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using AmazonSNS = Amazon.SimpleNotificationService;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class AmazonPushNotificationMessageProvider : IPushNotificationMessageProvider {
         #region attributes
-        private readonly IEventLogRepository eventLog;
+        private readonly IEventLogRepository _eventLog;
+        private IUserPushNotificationDeviceRepository _userPushNotificationDeviceRepository;
+        private IUnitOfWork _unitOfWork;
         #endregion
 
         #region ctor
-        public AmazonPushNotificationMessageProvider(IEventLogRepository eventLog) {
-            this.eventLog = eventLog;
+        public AmazonPushNotificationMessageProvider(IEventLogRepository eventLog, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, IUnitOfWork unitOfWork) {
+            this._eventLog = eventLog;
+            _userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
+            _unitOfWork = unitOfWork;
         }
         #endregion
 
@@ -104,7 +109,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     sendMsg.AppendLine("Channel: {Channel}");
                     sendMsg.AppendLine("ProviderEndPoint: {ProviderEndpoint}");
 
-                    eventLog.WriteInformationLog(sendMsg.ToString().Inject(recipient));
+                    _eventLog.WriteInformationLog(sendMsg.ToString().Inject(recipient));
 
                     if(recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.iOS) {
                         // format our message for apple
@@ -129,7 +134,22 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     msg.AppendLine("Channel: {Channel}");
                     msg.AppendLine("ProviderEndPoint: {ProviderEndpoint}");
 
-                    eventLog.WriteErrorLog(msg.ToString().Inject(recipient), ex);
+                    _eventLog.WriteErrorLog(msg.ToString().Inject(recipient), ex);
+
+                    //if any of the strings we watch for is contained in the exception message, disable the device
+                    if (Configuration.AmazonSnsMessagesToDisableOn.Any(ex.Message.Contains))
+                    {
+                        var device = _userPushNotificationDeviceRepository.ReadUserDevice(recipient.UserId, recipient.DeviceId, recipient.DeviceOS.Value);
+                        device.Enabled = false;
+                        device.ModifiedUtc = DateTime.Now.ToUniversalTime();
+                        _unitOfWork.SaveChanges();
+                        msg.Clear();
+                        msg.AppendLine("Disabling device.");
+                        msg.AppendLine("DeviceId: {DeviceId}");
+                        msg.AppendLine("DeviceOS: {DeviceOS}");
+                        msg.AppendLine("ProviderEndPoint: {ProviderEndpoint}");
+                        _eventLog.WriteInformationLog(msg.ToString().Inject(recipient));
+                    }
                 }
             });
         }

@@ -132,6 +132,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AMAZON_SNS_SECRET_KEY = "AmazonSnsSecretKey";
         private const string KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS = "AmazonSnsMobilePlatformAppArnIOS";
         private const string KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID = "AmazonSnsMobilePlatformAppArnAndroid";
+        private const string KEY_AMAZON_SNS_MESSAGES_TO_DISABLE_ON_KEY = "AmazonSnsMessageToDisableOn";
 
         // Misc
         private const string KEY_APP_NAME = "AppName";
@@ -472,6 +473,15 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_SECRET_KEY, string.Empty);
+            }
+        }
+
+        public static List<string> AmazonSnsMessagesToDisableOn
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_MESSAGES_TO_DISABLE_ON_KEY, string.Empty);
+                return GetCommaSeparatedValues(val);
             }
         }
 
