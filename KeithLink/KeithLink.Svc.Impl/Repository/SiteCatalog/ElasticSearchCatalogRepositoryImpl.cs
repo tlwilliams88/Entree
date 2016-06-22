@@ -19,6 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
         private ElasticsearchClient _client;
+        private string _catalog = null;
         #endregion
 
         #region constructor
@@ -562,7 +563,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return Configuration.DefaultProductReturnSize;
             return size;
         }
-        private string _catalog = null;
+
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
             _catalog = catalogInfo.BranchId;
             int size = 0;
