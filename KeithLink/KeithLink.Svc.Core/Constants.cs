@@ -262,6 +262,12 @@ namespace KeithLink.Svc.Core
         public const string CS_PURCHASE_ORDER_MASTER_NUMBER = "MasterNumber";
         public const string CS_LINE_ITEM_MAIN_FRAME_STATUS = "MainFrameStatus";
 
+        public const string TEMP_ZONE_FROZEN_CODE = "F";
+        public const string TEMP_ZONE_FROZEN_DESCRIPTION = "Frozen";
+        public const string TEMP_ZONE_REFRIGERATED_CODE = "C";
+        public const string TEMP_ZONE_REFRIGERATED_DESCRIPTION = "Refrigerated";
+        public const string TEMP_ZONE_DRY_CODE = "D";
+        public const string TEMP_ZONE_DRY_DESCRIPTION = "Dry";
 
         // ImageNow - Integration Services
         public const string IMAGING_HEADER_USERNAME = "X-IntegrationServer-Username";

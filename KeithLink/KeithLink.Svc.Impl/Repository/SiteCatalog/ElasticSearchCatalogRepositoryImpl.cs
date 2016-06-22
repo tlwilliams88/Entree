@@ -562,6 +562,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return Configuration.DefaultProductReturnSize;
             return size;
         }
+        private string GetTemperatureZoneDescription(string code)
+        {
+            if (code.Equals(Constants.TEMP_ZONE_DRY_CODE, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return Constants.TEMP_ZONE_DRY_DESCRIPTION;
+            }
+            else if (code.Equals(Constants.TEMP_ZONE_FROZEN_CODE, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return Constants.TEMP_ZONE_FROZEN_DESCRIPTION;
+            }
+            else if (code.Equals(Constants.TEMP_ZONE_REFRIGERATED_CODE, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return Constants.TEMP_ZONE_REFRIGERATED_DESCRIPTION;
+            }
+            return "?";
+        }
         private string _catalog = null;
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
             _catalog = catalogInfo.BranchId;
@@ -755,6 +771,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                             } else {
                                 facetValue.Add(new KeyValuePair<string, object>("brand_control_label", null));
                             }
+                        }
+                        else if (oFacet.Key == "temp_zone")
+                        {
+                            facetValue.Add(new KeyValuePair<string, object>("description", GetTemperatureZoneDescription(oFacetValue["key"])));
                         }
                         facet.Add(facetValue as ExpandoObject);
                     }
@@ -1056,7 +1076,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         }
                         else if (aggregationParams[0] == "brands") {
                             (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { brand_meta = new { terms = new { field = "brand_control_label", size = 500 } } } });
-                        } else {
+                        }
+                        else {
                             (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 } });
                         }
                     }
