@@ -19,6 +19,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
         private ElasticsearchClient _client;
+        // In the request to ElasticSearch, there are different fields that are search for category/subcategory codes for BEK vs nonBEK 
+        // products
+        private string _catalog = null;
         #endregion
 
         #region constructor
@@ -562,6 +565,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return Configuration.DefaultProductReturnSize;
             return size;
         }
+
         private string GetTemperatureZoneDescription(string code)
         {
             if (code.Equals(Constants.TEMP_ZONE_DRY_CODE, StringComparison.CurrentCultureIgnoreCase))
@@ -578,7 +582,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             }
             return "?";
         }
-        private string _catalog = null;
+
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
             _catalog = catalogInfo.BranchId;
             int size = 0;

@@ -82,3 +82,9 @@
     left: -100%;  
   }
 }
+
+.context-menu-dropdown{
+  height:auto;
+  max-height:200px;
+  overflow-y: auto;
+}
