@@ -113,8 +113,6 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 searchModel.CatalogType = catalogType;
 
                 ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
-                string x = Newtonsoft.Json.JsonConvert.SerializeObject(prods);
-                int y = x.Count();
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
             }
