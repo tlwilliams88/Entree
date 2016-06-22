@@ -19,6 +19,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
         private ElasticsearchClient _client;
+        // In the request to ElasticSearch, there are different fields that are search for category/subcategory codes for BEK vs nonBEK 
+        // products
         private string _catalog = null;
         #endregion
 
