@@ -14,6 +14,34 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
 {
     public class IxOneReturn
     {
+        private int index;
+        private IEventLogRepository _log;
+        private readonly string FILETYPE_STANDARDRES = "A";
+        private readonly string FILETYPE_HIGHRES = "C";
+        private readonly string FACING_FRONT = "1";
+        private readonly string FACING_LEFT = "2";
+        private readonly string FACING_TOP = "3";
+        private readonly string FACING_BACK = "7";
+        private readonly string FACING_RIGHT = "8";
+        private readonly string FACING_DISPLAY = "D";
+        private readonly string FACING_NUTRITION = "N";
+        private readonly string FACING_INGREDIENTS = "I";
+        private readonly string ANGLE_CENTER = "C";
+        private readonly string ANGLE_LEFT = "L";
+        private readonly string ANGLE_RIGHT = "R";
+        private readonly string ANGLE_NOPLUNGE = "N";
+        private readonly string PACK_IN = "1";
+        private readonly string PACK_OUT = "0";
+        private readonly string PACK_CASE = "A";
+        private readonly string PACK_INNER = "B";
+        private readonly string PACK_PREPARED = "D";
+        private readonly string IX_ONE_PRODUCTINFO_GET_URL =
+            "https://exchange.ix-one.net/services/Products/filtered";
+        private readonly string IX_ONE_PRODUCTIMAGE_GET_URL =
+            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
+
+        private IxOneReturn() { }
+
         /// <summary>
         /// Give a list of UPCs, get the products from Ix-One that they have on file.
         /// </summary>
@@ -51,6 +79,15 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
                     string best = ChooseBestFilename(product);
                     foreach (string filename in product.Filenames)
                     {
+                        bool isdownloaded = false;
+                        if(filename.IndexOf('_') > -1 && filename.Length > filename.IndexOf('_') + 5)
+                        {
+                            if(Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake.Any(s => s == filename.Substring(filename.IndexOf('_') + 1, 4) ))
+                            {
+                                isdownloaded = true;
+                            }
+                        }
+
                         string thisName = null;
                         // Set the best image to be the first alphabetically
                         if (filename.Equals(best, StringComparison.CurrentCultureIgnoreCase))
@@ -62,7 +99,10 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
                         {
                             thisName = filename.Replace(".TIF", ".JPG");
                         }
-                        ProcessItem(thisName, filename);
+                        if (isdownloaded)
+                        {
+                            ProcessItem(thisName, filename);
+                        }
                     }
                 }
                 if (index % 100 == 0)
@@ -72,7 +112,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
             });
         }
 
-        private IxOneReturn() { }
         private void Define(string json)
         {
             JObject obj = JObject.Parse(json);
@@ -92,31 +131,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
             }
         }
 
-        private int index;
-        private IEventLogRepository _log;
-        private readonly string FILETYPE_STANDARDRES = "A";
-        private readonly string FILETYPE_HIGHRES = "C";
-        private readonly string FACING_FRONT = "1";
-        private readonly string FACING_LEFT = "2";
-        private readonly string FACING_TOP = "3";
-        private readonly string FACING_BACK = "7";
-        private readonly string FACING_RIGHT = "8";
-        private readonly string FACING_DISPLAY = "D";
-        private readonly string FACING_NUTRITION = "N";
-        private readonly string FACING_INGREDIENTS = "I";
-        private readonly string ANGLE_CENTER = "C";
-        private readonly string ANGLE_LEFT = "L";
-        private readonly string ANGLE_RIGHT = "R";
-        private readonly string ANGLE_NOPLUNGE = "N";
-        private readonly string PACK_IN = "1";
-        private readonly string PACK_OUT = "0";
-        private readonly string PACK_CASE = "A";
-        private readonly string PACK_INNER = "B";
-        private readonly string PACK_PREPARED = "D";
-        private readonly string IX_ONE_PRODUCTINFO_GET_URL =
-            "https://exchange.ix-one.net/services/Products/filtered";
-        private readonly string IX_ONE_PRODUCTIMAGE_GET_URL =
-            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
         private List<IxOneProduct> Products { get; set; }
 
         private int CountTotalImages()
@@ -157,23 +171,19 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
 
         private string ChooseBestFilename(IxOneProduct product)
         { // priority is from bottom up
-            string filename = product.Filenames[0];
-            if (product.Filenames.Where(f => f.EndsWith(ANGLE_NOPLUNGE + PACK_IN + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(ANGLE_NOPLUNGE + PACK_IN + ".TIF")).First();
-            if (product.Filenames.Where(f => f.EndsWith(ANGLE_NOPLUNGE + PACK_PREPARED + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(ANGLE_NOPLUNGE + PACK_PREPARED + ".TIF")).First();
-            if (product.Filenames.Where(f => f.EndsWith(ANGLE_CENTER + PACK_IN + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(ANGLE_CENTER + PACK_IN + ".TIF")).First();
-            if (product.Filenames.Where(f => f.EndsWith(ANGLE_CENTER + PACK_PREPARED + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(ANGLE_CENTER + PACK_PREPARED + ".TIF")).First();
-            if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_OUT + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_OUT + ".TIF")).First();
-            if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_IN + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_IN + ".TIF")).First();
-            if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_INNER + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_INNER + ".TIF")).First();
-            if (product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_PREPARED + ".TIF")).Count() > 0)
-                filename = product.Filenames.Where(f => f.EndsWith(FACING_FRONT + ANGLE_CENTER + PACK_PREPARED + ".TIF")).First();
+            string filename = "";
+            foreach(string ext in Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake)
+            {
+                foreach (string filen in product.Filenames)
+                {
+                    if (filen.IndexOf(ext) > -1)
+                    {
+                        filename = filen;
+                        break;
+                    }
+                }
+                if (filename.Length > 0) { break; }
+            }
             return filename;
         }
 
