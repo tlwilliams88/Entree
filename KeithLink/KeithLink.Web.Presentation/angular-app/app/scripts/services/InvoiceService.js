@@ -42,6 +42,7 @@ angular.module('bekApp')
 
       // for all customers
       getAllOpenInvoices: function(params){
+        params.size = '';
         return Invoice.getAllOpen(params).$promise.then(function(resp){
           return resp.successResponse;
         });

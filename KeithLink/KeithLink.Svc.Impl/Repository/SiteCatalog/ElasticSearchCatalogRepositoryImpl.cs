@@ -802,7 +802,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                             {
                                 cats.Add((ExpandoObject)cat);
                             }
-                            else if (code.StartsWith(pcode.Substring(0, 2)))
+                            else if (_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase) == false && code.StartsWith(pcode.Substring(0, 2)))
                             {
                                 cats.Add((ExpandoObject)cat);
                             }

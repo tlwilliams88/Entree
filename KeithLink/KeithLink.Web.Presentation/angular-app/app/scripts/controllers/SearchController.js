@@ -422,6 +422,7 @@ angular.module('bekApp')
 
     //Load list of products and block UI with message
     function loadProducts(appendResults) {
+      startLoading();
       return blockUI.start("Loading Products...").then(function(){
         return getData().then(function(data) {
         var page = 1;
@@ -452,6 +453,7 @@ angular.module('bekApp')
         }
 
         setBreadcrumbs(data);
+        stopLoading();
 
         blockUI.stop();
 
