@@ -34,24 +34,26 @@
       class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print">
       Update Payment(s)
     </button> 
-    <span ng-if="!isMobile">Filter By: </span>
-    <div ng-if="!isMobile" class="btn-group hidden-print hidden-sm">
-      <form name="invoiceFilterForm" class="form-inline">
-           <div dropdown is-open="openScope" style="float:left;">
-              <button type="button" class="btn btn-lg btn-default dropdown-toggle">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
-              <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="invoiceFilter in invoiceFilters" >
-                <a ng-click="selectInvoiceFilter(invoiceFilter.name)">
-                {{invoiceFilter.name}}</a></li>
-              </ul>
-              <input type="text" id="invoiceFilterInput" ng-model="invoiceFilter.input" class="form-control input-lg" style="width:52% !important;" placeholder="Search by {{selectedInvoiceFilter}}">
-            </div>
-          <span class="btn-group">
-            <button class="btn-default btn btn-lg" type="submit" ng-disabled="!invoiceFilter.input" ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)"><span class="icon-search large-icon hand"></span></button>
-            <button class="btn-default btn btn-lg" type="button" ng-disabled="!invoiceFilter.input" ng-click="clearFilters(invoiceFilter.input);"><span class="icon-cross large-icon hand text-red"></span></button>
-          </span>
-      </form>
-    </div>
+   <span ng-if="!isMobile">Filter By: </span>
+  
+  <div ng-if="!isMobile" class="btn-group hidden-print hidden-sm">
+    <form name="invoiceFilterForm" class="form-inline">
+      <div dropdown is-open="openScope" style="float:left;">
+        <button type="button" class="btn btn-lg btn-default dropdown-toggle">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <li ng-repeat="invoiceFilter in invoiceFilters" >
+            <a ng-click="selectInvoiceFilter(invoiceFilter.name)">
+            {{invoiceFilter.name}}</a>
+          </li>
+        </ul>
+        <input type="text" id="invoiceFilterInput" ng-model="invoiceFilter.input" class="form-control input-lg webFilterInput" placeholder="Search by {{selectedInvoiceFilter}}">
+      </div>
+      <span class="btn-group">
+        <button class="btn-default btn btn-lg" type="submit" ng-disabled="!invoiceFilter.input" ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)"><span class="icon-search large-icon hand"></span></button>
+        <button class="btn-default btn btn-lg" type="button" ng-disabled="!invoiceFilter.input" ng-click="clearFilters(invoiceFilter.input);"><span class="icon-cross large-icon hand text-red"></span></button>
+      </span> 
+    </form>
+   </div>
   </div>
   <div header-buttons>
     <button 
@@ -103,7 +105,7 @@
     <div class="invoiceoptions">
       <div class="row">
         <div class="col-sm-12 col-xs-8">
-          <div class="hidden-xs hidden-print" ng-if="isMobile"> 
+          <div class="hidden-print" ng-if="isMobile"> 
             <p>Filter By: </p>
             <div class="btn-group hidden-xs hidden-print" style="max-width:500px;">
               <form name="invoiceFilterForm">
@@ -158,12 +160,12 @@
                     </label>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
-                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" > Reference#:</span> {{::invoice.invoicenumber}}</a></strong>
-                    <h5 >Type: {{::invoice.typedescription}}</h5>
+                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
+                    <h5 >{{::invoice.typedescription}}</h5>
                     <h5 class="highlight-text" >Status: {{invoice.statusdescription}}</h5>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
-                    <h5 >PONumber: {{::invoice.ponumber}}</h5>
+                    <h5 >PO Number: {{::invoice.ponumber}}</h5>
                     <h5 >Invoice Date: {{::invoice.invoicedate |formatDate}}</h5>
                     <h5 >Due Date: {{::invoice.duedate | formatDate}}</h5>
                   </div>
@@ -251,7 +253,7 @@
     </div>
   </div>
 
-  <div ng-show="!invoiceCustomers.length" class="col-sm-7 no-results">
+  <div ng-show="!invoiceCustomers.length && !loadingResults" class="col-sm-7 no-results">
     <p>There are no invoices to display. Please try selecting another option in the dropdown.</p>
   </div>
 

@@ -32,9 +32,10 @@
 
 <!-- Mobile Filters -->
 
-<!-- <div class="row" ng-hide="hideMobileFilters">
+<div class="row" ng-hide="hideMobileFilters">
   <div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
     <div class="row">
+
       <accordion close-others="oneAtATime">
         <accordion-group is-open="status.openCategories" ng-show="facets.categories.available.length > 0">
         <accordion-heading>
@@ -42,15 +43,8 @@
       </accordion-heading>
       <div ng-repeat="category in facets.categories.available" class="panel panel-default">
         <div class="panel-body">
-          <ul class="nav search-results__category" ng-show="facets.categories.available.length > 0">
-              <li ng-repeat="category in facets.categories.available | orderBy: '-count'">
-                <a 
-                ng-click="toggleSelection(facets.categories.selected, category.name)" 
-                ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
-                {{::category.categoryname}} <span ng-show="category.count > 0">({{::category.count}})</span>
-              </a>
-            </li>
-          </ul>
+          <a ng-click="toggleSelection(facets.categories.selected, category.name)" ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">{{category.categoryname}} 
+          <span ng-show="category.count > 0">({{category.count}})</span></a>
         </div>
       </div>
     </accordion-group>
@@ -60,18 +54,13 @@
   </accordion-heading>
   <div ng-repeat="brand in facets.brands.available" class="panel panel-default">
     <div class="panel-body">
-        <ul class="nav search-results__facets">
-          <li class="facet-checkbox" ng-repeat="brand in facets.brands.available | orderBy: '-count'">
-            <input 
-              type="checkbox"
-              value="brandValue_{{brand.name}}"
-              id="brandId_{{brand.name}}"
-              ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
-              ng-disabled="brand.name === featuredBreadcrumb.displayText"
-              ng-click="toggleSelection(facets.brands.selected, brand.name)">
-            <label for="brandId_{{brand.name}}">{{::brand.name}} <span ng-show="brand.count > 0">({{::brand.count}})</span></label>
-          </li>
-        </ul>
+      <input type="checkbox"
+      value="brandValue_{{brand.name}}"
+      id="brandId_{{brand.name}}"
+      ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
+      ng-disabled="brand.name === featuredBreadcrumb.displayText"
+      ng-click="toggleSelection(facets.brands.selected, brand.name)">
+      <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
     </div>
   </div>
 </accordion-group>
@@ -82,18 +71,13 @@ Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManuf
 </accordion-heading>
 <div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
   <div class="panel-body">
-        <ul class="nav search-results__facets">
-          <li class="facet-checkbox" ng-repeat="manufacturer in facets.mfrname.available | orderBy: '-count'">
-            <input 
-              type="checkbox"
-              value="manufacturerValue_{{manufacturer.name}}"
-              id="manufacturerId_{{manufacturer.name}}"
-              ng-checked="facets.mfrname.selected.indexOf(manufacturer.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
-              ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
-              ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
-            <label for="manufacturerId_{{manufacturer.name}}">{{::manufacturer.name}} <span ng-show="manufacturer.count > 0">({{::manufacturer.count}})</label>
-          </li>
-        </ul>
+    <input type="checkbox"
+    value="manufacturerValue_{{manufacturer.name}}"
+    id="manufacturerId_{{manufacturer.name}}"
+    ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
+    ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
+    ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
+    <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
   </div>
 </div>
 </accordion-group>
@@ -104,17 +88,12 @@ Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'i
 </accordion-heading>
 <div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
   <div class="panel-body">
-        <ul class="nav search-results__facets">
-          <li class="facet-checkbox" ng-repeat="diet in facets.dietary.available | orderBy: '-count'" class="panel panel-default">
-            <input 
-              type="checkbox"
-              value="dietValue_{{diet.name}}"
-              id="dietId_{{diet.name}}"
-              ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
-              ng-click="toggleSelection(facets.dietary.selected, diet.name)">
-            <label class="text-capitalize" for="dietId_{{diet.name}}">{{::diet.name}} <span ng-show="diet.count > 0">({{::diet.count}})</label>
-          </li>
-        </ul>
+    <input type="checkbox"
+    value="dietValue_{{diet.name}}"
+    id="dietId_{{diet.name}}"
+    ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
+    ng-click="toggleSelection(facets.dietary.selected, diet.name)">
+    <label for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
   </div>
 </div>
 </accordion-group>
@@ -124,17 +103,12 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 </accordion-heading>
 <div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
   <div class="panel-body">
-          <ul class="nav search-results__facets">
-            <li class="facet-checkbox" ng-repeat="spec in facets.itemspecs.available | orderBy: '-count'">
-              <input 
-                type="checkbox"
-                value="specValue_{{spec.name}}"
-                id="dietId_{{diet.name}}"
-                ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
-                ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
-              <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{::spec.displayname}} <span ng-show="spec.count > 0">({{::spec.count}})</span></label>
-            </li>
-          </ul>
+    <input type="checkbox"
+    value="specValue_{{spec.name}}"
+    id="specId_{{spec.name}}"
+    ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
+    ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
+    <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</label>
   </div>
 </div>
 </accordion-group>
@@ -143,7 +117,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 
 </div>
 </div>
-</div> -->
+</div>
 
 <div class="row top-offset">
 

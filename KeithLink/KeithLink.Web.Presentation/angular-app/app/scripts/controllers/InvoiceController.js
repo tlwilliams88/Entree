@@ -12,7 +12,7 @@ angular.module('bekApp')
   var customers = [];
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
-  $scope.selectedInvoiceFilter = 'Reference #';
+  $scope.selectedInvoiceFilter = 'Invoice #';
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -83,7 +83,7 @@ angular.module('bekApp')
   }];
 
   $scope.invoiceFilters = [{
-    name: 'Reference #',
+    name: 'Invoice #',
     filterFields: [{
       field: 'invoicenumber',
       value: 'invoicenumber'
@@ -246,7 +246,7 @@ angular.module('bekApp')
           $scope.noInvoices = true;
         }
       })
-    } else if(input && filter === 'Reference #'){
+    } else if(input && filter === 'Invoice Number'){
       $scope.invoiceCustomers.forEach(function(customer){
         customer.invoices = $filter('filter')(customer.invoices, {invoicenumber: input});
       })
