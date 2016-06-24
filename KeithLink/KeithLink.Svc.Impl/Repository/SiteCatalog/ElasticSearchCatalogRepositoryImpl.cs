@@ -819,6 +819,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.SellSheet = oProd._source.sellsheet;
             p.ChildNutrition = oProd._source.childnutrition;
             p.NonStock = oProd._source.nonstock;
+            if (oProd._source.nutritional != null)
+            {
+                Nutritional nutritional = new Nutritional();
+                nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
+                p.Nutritional = nutritional;
+            }
             p.CatalogId = oProd._index;
             if (p.CatalogId.ToLower().StartsWith("unfi"))
             {
