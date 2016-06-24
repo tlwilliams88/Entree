@@ -272,7 +272,14 @@
   display:block;
 }
 
-.search-result-images {
-  margin: 10px; 
+.search-result-image-container { 
   padding-top:15px;
+  width:50%;
+  text-align:center;
+}
+
+.search-result-images {
+  max-width:60%; 
+  max-height:150px; 
+  margin:15px 0 15px 0;
 }

@@ -45,9 +45,9 @@ namespace KeithLink.Svc.Test.Repositories.Invoices {
 
             List<string> images = new List<string>();
 
-            foreach (string docId in docIds) {
-               images.AddRange(_imgRepo.GetImages(token, docId));
-            }
+            //foreach (string docId in docIds) {
+            //   images.AddRange(_imgRepo.GetImages(token, docId));
+            //}
 
             Assert.IsTrue(images.Count > 0);
         }

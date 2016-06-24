@@ -837,18 +837,16 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CasePrice = p.CasePriceNumeric.ToString();
             p.PackagePriceNumeric = oProd._source.packageprice != null ? oProd._source.packageprice : 0.00;
             p.PackagePrice = p.PackagePriceNumeric.ToString();
-            p.Cases = oProd._source.cases;
+            p.SellSheet = oProd._source.sellsheet;
+            p.ChildNutrition = oProd._source.childnutrition;
             p.NonStock = oProd._source.nonstock;
-            p.CatchWeight = oProd._source.catchweight;
-            p.IsProprietary = oProd._source.isproprietary;
-            p.AverageWeight = oProd._source.averageweight;
             if (oProd._source.nutritional != null)
             {
                 Nutritional nutritional = new Nutritional();
                 nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
                 p.Nutritional = nutritional;
             }
-        p.CatalogId = oProd._index;
+            p.CatalogId = oProd._index;
             if (p.CatalogId.ToLower().StartsWith("unfi"))
             {
                 //make vendor into description
@@ -881,8 +879,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.SubCategoryCode = oProd._source.categoryid;
                 p.ReplacedItem = oProd._source.replaceditem;
                 p.ReplacementItem = oProd._source.replacementitem;
-                p.ChildNutrition = oProd._source.childnutrition;
-                p.SellSheet = oProd._source.sellsheet;
                 p.VendorItemNumber = oProd._source.vendor1;
                 try
                 {
@@ -892,6 +888,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 {
                     p.CaseCube = "";
                 }
+                p.CatchWeight = oProd._source.catchweight;
+                p.IsProprietary = oProd._source.isproprietary;
+                p.AverageWeight = oProd._source.averageweight;
                 if (p.CatalogId.ToLower().StartsWith("unfi"))
                 {
                     //make vendor into description
