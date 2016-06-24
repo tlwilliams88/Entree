@@ -103,20 +103,24 @@ angular.module('bekApp')
     *************/
 
     $scope.blockUIAndChangePage = function(page){
-        $scope.startingPoint = 0;
-        $scope.endPoint = 0;       
-        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-        return blockUI.start("Loading Products...").then(function(){
-          if(visited.length > 0){
-            $timeout(function() {
-              $scope.isChangingPage = true;
-              $scope.pageChanged(page, visited);
-            }, 100);
-          }
-          else{
+      $(document).ready(function(){
+        $("html, body").animate({ scrollTop: 0 }, 500);
+      })
+      
+      $scope.startingPoint = 0;
+      $scope.endPoint = 0;       
+      var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+      return blockUI.start("Loading Products...").then(function(){
+        if(visited.length > 0){
+          $timeout(function() {
+            $scope.isChangingPage = true;
             $scope.pageChanged(page, visited);
-          }
-        })
+          }, 100);
+        }
+        else{
+          $scope.pageChanged(page, visited);
+        }
+      })
     }
 
     $scope.pagingPageSize = 25;

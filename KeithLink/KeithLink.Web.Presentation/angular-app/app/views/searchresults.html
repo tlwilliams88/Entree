@@ -66,51 +66,60 @@
 </accordion-group>
 
 <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
-<accordion-heading>
-Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
-</accordion-heading>
-<div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
-  <div class="panel-body">
-    <input type="checkbox"
-    value="manufacturerValue_{{manufacturer.name}}"
-    id="manufacturerId_{{manufacturer.name}}"
-    ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
-    ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
-    ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
-    <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
+  <accordion-heading>
+  Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
+  </accordion-heading>
+  <div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
+    <div class="panel-body">
+      <input type="checkbox"
+      value="manufacturerValue_{{manufacturer.name}}"
+      id="manufacturerId_{{manufacturer.name}}"
+      ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
+      ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
+      ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
+      <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
+    </div>
   </div>
-</div>
 </accordion-group>
 
 <accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
-<accordion-heading>
-Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
-</accordion-heading>
-<div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
-  <div class="panel-body">
-    <input type="checkbox"
-    value="dietValue_{{diet.name}}"
-    id="dietId_{{diet.name}}"
-    ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
-    ng-click="toggleSelection(facets.dietary.selected, diet.name)">
-    <label for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
+  <accordion-heading>
+  Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
+  </accordion-heading>
+  <div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
+    <div class="panel-body">
+      <input type="checkbox"
+      value="dietValue_{{diet.name}}"
+      id="dietId_{{diet.name}}"
+      ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
+      ng-click="toggleSelection(facets.dietary.selected, diet.name)">
+      <label for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
+    </div>
   </div>
-</div>
 </accordion-group>
 <accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0">
-<accordion-heading>
-Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
-</accordion-heading>
-<div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
-  <div class="panel-body">
-    <input type="checkbox"
-    value="specValue_{{spec.name}}"
-    id="specId_{{spec.name}}"
-    ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
-    ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
-    <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</label>
+  <accordion-heading>
+  Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
+  </accordion-heading>
+  <div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
+    <div class="panel-body">
+      <input type="checkbox"
+      value="specValue_{{spec.name}}"
+      id="specId_{{spec.name}}"
+      ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
+      ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
+      <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</label>
+    </div>
   </div>
-</div>
+</accordion-group>
+<accordion-group is-open="status.openCatalogs" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0">
+  <accordion-heading>Catalogs<i class="pull-right" ng-class="{'icon-arrow-up6': status.openCatalogs, 'icon-arrow-down7': !status.openCatalogs}"></i></accordion-heading>
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>
+          <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
+      </div>
+    </div>
 </accordion-group>
           
 </accordion>
@@ -222,7 +231,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 </div>
 
 <!-- Search Results -->
-  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
     <div >
       <pagination
         ng-show="totalProducts > pagingPageSize"
@@ -245,22 +254,22 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         <ul fast-repeat="item in products" class="searchResults">
           <li class="block-display" style="list-style:none;">
             <div style="padding: 15px 0 20px 0" >
-              <div class="inline-block-display">
+              <div class="inline-block-display" style="width:100%;">
                 <div class="pull-left-xs inline-block-display">
                   <div>
                     <div>
                       <a class="block-display" style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
-                    <h3 class="block-display">{{item.name}} 
-                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
+                    <h3 class="block-display">
+                      <a ng-click="goToItemDetails(item)">{{item.name}} </a>
+                    </h3>
+                    <h5 class="block-display"> 
+                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a>                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
                       <span
                         ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
                         context-menu-template
                         class="context-menu-template context-menu__in-list hidden-print hideIconName displayIconName">
                           <a class="icon-plus2"></a>
-                        </span>
-                    </h3>
-                    <h5 class="block-display"> 
-                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a></span>
+                        </span></span>
                     <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
                     <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
                     <span
@@ -296,9 +305,9 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
                     </h6>
                   </div>
                 </div>
-              </div>
-              <div class="pull-right-lg pull-right-md pull-right-sm pull-right-xs item-details__main-image search-result-images" ng-show="item.productimages.length > 0">
-                <img ng-src="{{item.productimages[0].url}}" alt=""/>
+                <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs search-result-image-container" ng-show="item.productimages.length > 0">
+                  <img class="search-result-images" ng-src="{{item.productimages[0].url}}" alt=""/>
+                </div>
               </div>
             </div>
           </li>
@@ -320,10 +329,8 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     </div>
   </div>
 
-    <div>
-      <div class="col-sm-5 no-results" ng-show="!searchMessage && products.length === 0 && !loadingResults">
-        <p colspan="9">No products found. Please try another search.</p>
-      </div>
+    <div class="col-sm-5 no-results" ng-if="!searchMessage && products.length === 0 && !loadingResults">
+      <p colspan="9">No products found. Please try another search.</p>
     </div>
 
     <div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
