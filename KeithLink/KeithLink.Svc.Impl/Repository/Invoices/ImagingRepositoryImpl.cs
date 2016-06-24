@@ -136,7 +136,7 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// <remarks>
         /// jwames - 3/31/2015 - original code
         /// </remarks>
-        public List<string> GetImages(string sessionToken, string documentId) {
+        public List<Base64Image> GetImages(string sessionToken, string documentId) {
             if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
             if (documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
 
@@ -153,11 +153,23 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                         string rawJson = response.Content.ReadAsStringAsync().Result;
                         ImageNowPageReturnModel jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ImageNowPageReturnModel>(rawJson);
 
-						List<Tuple<int, string>> processedImages = new List<Tuple<int, string>>();
+						List<Tuple<int, Base64Image>> processedImages = new List<Tuple<int, Base64Image>>();
 
-						Parallel.ForEach(jsonResponse.pages, page => {
-							processedImages.Add(new Tuple<int, string>(page.pageNumber, GetImageString(sessionToken, documentId, page.id)));
-						});
+                        Parallel.ForEach(jsonResponse.pages, page => {
+                            Base64Image myImage = new Base64Image();
+
+                            if(page.extension.Equals("pdf", StringComparison.InvariantCultureIgnoreCase)) {
+                                myImage.MimeType = Constants.MIMETYPE_PDF;
+                                myImage.ImageString = GetPdfAsBase64String(sessionToken, documentId, page.id);
+
+                            } else {
+                                myImage.MimeType = Constants.MIMETYPE_JPG;
+                                myImage.ImageString = GetImageString(sessionToken, documentId, page.id);
+                            }
+
+                            processedImages.Add(new Tuple<int, Base64Image>(page.pageNumber, myImage));
+
+                        });
 
 						return processedImages.OrderBy(p => p.Item1).Select(t => t.Item2).ToList();
 
@@ -218,21 +230,31 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
             }
         }
 
-        /// <summary>
-        /// resizes the image to specified width and height
-        /// </summary>
-        /// <param name="imgToResize">the raw image as a bitmap object </param>
-        /// <param name="size">the width and height of the image</param>
-        /// <returns>the resized image</returns>
-        private Bitmap ResizeImage(Bitmap imgToResize, Size size) {
-            Bitmap b = new Bitmap(size.Width, size.Height);
+        private string GetPdfAsBase64String(string sessionToken, string documentId, string pageId) {
+            if(sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
+            if(documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
+            if(pageId.Length == 0) { throw new ArgumentException("PageId cannot be blank."); }
 
-            using (Graphics g = Graphics.FromImage((Image)b)) {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);
+            using(HttpClient client = new HttpClient()) {
+                client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
+
+                try {
+                    string endPoint = string.Format("{0}{1}/{2}/page/{3}/preview", Configuration.ImagingServerUrl, API_ENDPOINT_DOCUMENT, documentId, pageId);
+
+                    HttpResponseMessage response = client.GetAsync(endPoint).Result;
+
+                    if(response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
+                        byte[] fileBytes = response.Content.ReadAsByteArrayAsync().Result;
+
+                        return Convert.ToBase64String(fileBytes);
+                    } else {
+                        throw new ApplicationException("Page preview not found");
+                    }
+                } catch(Exception ex) {
+                    _log.WriteErrorLog("Error connecting to the Imaging Server", ex);
+                    throw;
+                }
             }
-            
-            return b;
         }
 
         /// <summary>
@@ -255,6 +277,22 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
             return new Rectangle(0, 0, newWidth, newHeight);
         }
 
+        /// <summary>
+        /// resizes the image to specified width and height
+        /// </summary>
+        /// <param name="imgToResize">the raw image as a bitmap object </param>
+        /// <param name="size">the width and height of the image</param>
+        /// <returns>the resized image</returns>
+        private Bitmap ResizeImage(Bitmap imgToResize, Size size) {
+            Bitmap b = new Bitmap(size.Width, size.Height);
+
+            using (Graphics g = Graphics.FromImage((Image)b)) {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);
+            }
+            
+            return b;
+        }
         #endregion
     }
 }

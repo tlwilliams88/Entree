@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Profile;
 
 using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.Invoices.Imaging.Document;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
@@ -196,8 +197,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/image/{invoiceNumber}")]
-        public OperationReturnModel<List<string>> GetInvoiceImages(string invoiceNumber) {
-            OperationReturnModel<List<string>> retVal = new OperationReturnModel<List<string>>();
+        public OperationReturnModel<List<Base64Image>> GetInvoiceImages(string invoiceNumber) {
+            OperationReturnModel<List<Base64Image>> retVal = new OperationReturnModel<List<Base64Image>>();
             try {
                 retVal.SuccessResponse = _imgLogic.GetInvoiceImages(this.SelectedUserContext, invoiceNumber);
                 retVal.IsSuccess = true;

@@ -178,6 +178,10 @@ namespace KeithLink.Svc.Core
         public const string MAINFRAME_RECEIVE_STATUS_GOOD_RETURN = "YY";
         public const string MAINFRAME_RECEIVE_STATUS_WAITING = "WW";
 
+        // MIME TYPES
+        public const string MIMETYPE_JPG = "image/jpeg";
+        public const string MIMETYPE_PDF = "application/pdf";
+
         // Confirmation translations
         public const string CONFIRMATION_DETAIL_FILLED_CODE = "";
         public const string CONFIRMATION_DETAIL_FILLED_STATUS = "Filled";

@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.SiteCatalog;
+﻿using KeithLink.Svc.Core.Models.Invoices.Imaging.Document;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 
@@ -8,6 +9,6 @@ namespace KeithLink.Svc.Core.Interface.Invoices {
 
         List<string> GetDocumentIds(string sessionToken, UserSelectedContext customerInfo, string invoiceNumber);
 
-        List<string> GetImages(string sessionToken, string documentId);
+        List<Base64Image> GetImages(string sessionToken, string documentId);
     }
 }
