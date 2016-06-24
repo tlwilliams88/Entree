@@ -314,6 +314,7 @@
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
+    <Compile Include="Models\Orders\PowerMenu\PowerMenuOrder.cs" />
     <Compile Include="Models\Orders\SaveOrderReturn.cs" />
     <Compile Include="Models\Orders\OrderTotalByMonth.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
