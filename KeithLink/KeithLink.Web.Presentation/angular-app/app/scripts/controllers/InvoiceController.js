@@ -12,6 +12,7 @@ angular.module('bekApp')
   var customers = [];
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
+  $scope.selectedInvoiceFilter = 'Invoice #';
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -81,6 +82,29 @@ angular.module('bekApp')
     }]
   }];
 
+  $scope.invoiceFilters = [{
+    name: 'Invoice #',
+    filterFields: [{
+      field: 'invoicenumber',
+      value: 'invoicenumber'
+    }]
+  }, {
+    name: 'PO Number',
+    filterFields: [{
+      field: 'ponumber',
+      value: 'ponumber'
+    }]
+  }, {
+    name: 'Invoice Type',
+    filterFields: [{
+      field: 'typedescription',
+      value: 'typedescription'
+    }]
+  }];
+
+  $scope.selectInvoiceFilter = function(filter){
+    $scope.selectedInvoiceFilter = filter;
+  }
 
   var invoicePagingModel = new PagingModel( 
     InvoiceService.getAllOpenInvoices,
@@ -90,9 +114,9 @@ angular.module('bekApp')
     stopLoading
   );
 
-    if(!InvoiceService.selectedFilterView){
-  $scope.selectedFilterView = InvoiceService.selectedFilterView = $scope.filterViews[1];
-}
+  if(!InvoiceService.selectedFilterView){
+    $scope.selectedFilterView = InvoiceService.selectedFilterView = $scope.filterViews[1];
+  }
   retrieveFilter();
 
   function calculateInvoiceFields(invoices) {
@@ -133,7 +157,6 @@ angular.module('bekApp')
         }
       })
       $scope.invoiceCustomers = uniqueCustomerInvoices(customers, $scope.invoices);
-      console.log($scope.invoiceCustomers[0])
     }
     if($scope.invoices.length){
       $scope.invoices.forEach(function(invoice){
@@ -215,20 +238,35 @@ angular.module('bekApp')
       });
     };
 
-  $scope.filterInvoices = function(filter) {
-    if(filter){
+  $scope.filterInvoices = function(filter, input) {
+    if(!input){
       $scope.invoiceCustomers.forEach(function(customer){
         customer.invoices = $filter('filter')(customer.invoices, {hascreditmemos: true});
         if(customer.invoices.length < 1){
           $scope.noInvoices = true;
         }
       })
+    } else if(input && filter === 'Invoice Number'){
+      $scope.invoiceCustomers.forEach(function(customer){
+        customer.invoices = $filter('filter')(customer.invoices, {invoicenumber: input});
+      })
+    } else if(filter === 'PO Number'){
+      $scope.invoiceCustomers.forEach(function(customer){
+        customer.invoices = $filter('filter')(customer.invoices, {ponumber: input});
+      })
+    } else if(filter === 'Invoice Type'){
+      $scope.invoiceCustomers.forEach(function(customer){
+        customer.invoices = $filter('filter')(customer.invoices, {typedescription: input});
+      })
     } else {
       invoicePagingModel.loadData();
     }
-};
+  };
 
-  $scope.clearFilters = function() {
+  $scope.clearFilters = function(filter) {
+    if(filter){
+      $('#invoiceFilterInput').val('');
+    }
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
     getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
     invoicePagingModel.loadData();
@@ -453,7 +491,7 @@ angular.module('bekApp')
       $event.stopPropagation();
       customer.selected = !customer.selected;
       customer.invoices.forEach(function(invoice){
-        invoice.isSelected = !invoice.isSelected;
+        invoice.isSelected = areAllSelected;
         
         if (invoice.userCanPayInvoice) {
           $scope.selectInvoice(invoice, invoice.isSelected);

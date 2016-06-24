@@ -19,14 +19,14 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public string ItemNumber { get; set; }
 
         [DataMember(Name = "isvalid")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool IsValid { get; set; }
 
         [DataMember(Name = "description", EmitDefaultValue = false)]
         public string Description { get; set; }
 
         [DataMember(Name = "nonstock", EmitDefaultValue = false)]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string NonStock { get; set; }
 
         [DataMember(Name = "caseprice", EmitDefaultValue = false)]
@@ -53,7 +53,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public bool CaseOnly { get; set; }
 
         [DataMember(Name = "unitprice")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public decimal UnitCost
         {
             get
@@ -83,7 +83,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         }
 
         [DataMember(Name = "packageprice", EmitDefaultValue = false)]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string PackagePrice
         {
             get
@@ -140,7 +140,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "notes")]
         [Description("Note")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string Notes { get; set; }
 
         [DataMember(Name = "catchweight", EmitDefaultValue = false)]
@@ -225,11 +225,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "is_specialty_catalog")]
         [Description("Is Specialty Catalog bool")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool IsSpecialtyCatalog { get; set; }
 
         [DataMember(Name = "specialtyitemcost")]
-        [JsonProperty(NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public decimal SpecialtyItemCost { get; set; }
     }
 }

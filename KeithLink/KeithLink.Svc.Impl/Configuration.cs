@@ -132,6 +132,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AMAZON_SNS_SECRET_KEY = "AmazonSnsSecretKey";
         private const string KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS = "AmazonSnsMobilePlatformAppArnIOS";
         private const string KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID = "AmazonSnsMobilePlatformAppArnAndroid";
+        private const string KEY_AMAZON_SNS_MESSAGES_TO_DISABLE_ON_KEY = "AmazonSnsMessageToDisableOn";
 
         // Misc
         private const string KEY_APP_NAME = "AppName";
@@ -197,6 +198,7 @@ namespace KeithLink.Svc.Impl
         // Catalog Service Functions
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_PROCESSTIME = "CatalogServiceUnfiImagesProcessTime";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_REPOSITORY = "CatalogServiceUnfiImagesRepo";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_IXONEIMAGESWETAKE = "CatalogServiceUnfiImagesIxOneImagesWeTake";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIR = "CatalogServiceUnfiImagesNewOnlyDir";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_MAKETHUMBNAILS = "CatalogServiceUnfiImagesMakeThumbnails";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIRTHUMBS = "CatalogServiceUnfiImagesNewOnlyDirThumbs";
@@ -472,6 +474,15 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_SECRET_KEY, string.Empty);
+            }
+        }
+
+        public static List<string> AmazonSnsMessagesToDisableOn
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_MESSAGES_TO_DISABLE_ON_KEY, string.Empty);
+                return GetCommaSeparatedValues(val);
             }
         }
 
@@ -1457,6 +1468,16 @@ namespace KeithLink.Svc.Impl
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_SCALEY, "200");
             }
         }
+
+        public static List<string> CatalogServiceUnfiImagesIxOneImagesWeTake
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_IXONEIMAGESWETAKE, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
         #endregion
     }
 }

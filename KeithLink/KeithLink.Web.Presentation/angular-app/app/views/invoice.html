@@ -1,31 +1,82 @@
 <div page-header-bar>
   <div header-message>
-    Showing
-    <div class="btn-group hidden-print" dropdown is-open="status.isopen1">
-      <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedFilterView.name}} <span class="caret text-dark"></span></button>
-
-      <ul class="dropdown-menu">
-        <li><a
-          ng-repeat="filterView in filterViews"
-          ng-click="selectFilterView(filterView)"
-          ng-if="selectedFilterView.name !== filterView.name">
-        {{filterView.name}}</a></li>
-      </ul>
-    </div>
-  </div>
-  <div header-buttons>
+    Showing:
+      <div class="btn-group hidden-print" dropdown is-open="status.isopen1">
+        <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedFilterView.name}} <span class="caret text-dark"></span></button>
+        <ul class="dropdown-menu">
+          <li><a
+            ng-repeat="filterView in filterViews"
+            ng-click="selectFilterView(filterView)"
+            ng-if="selectedFilterView.name !== filterView.name">
+          {{filterView.name}}</a></li>
+        </ul>
+      </div>
+          <!-- Mobile Pay and Update buttons -->
     <button 
-      type="button" 
+      type="button"
+      ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" 
       ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
       ng-click="payInvoices()" 
       ng-if="hasPayableInvoices && !isInternalUser" 
-      class="btn btn-primary btn-lg pay-btn" 
+      class="btn-lg btn btn-primary pull-right-lg pull-right-md pull-right-sm pull-right-xs hidden-md hidden-lg hidden-print" 
       analytics-on 
       analytics-category="Invoices" 
       analytics-event="Pay Invoice"
       ng-show="hasPayableInvoices">
-      <span ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" >Pay Now</span>
-      <span ng-if="selectedFilterView.name === 'Invoices Pending Payment'" >Update Payment(s)</span>
+      Pay Now
+    </button>
+    <button       
+      type="button"
+      ng-if="selectedFilterView.name === 'Invoices Pending Payment'" 
+      ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
+      ng-click="payInvoices()" 
+      ng-if="hasPayableInvoices && !isInternalUser" 
+      class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print">
+      Update Payment(s)
+    </button> 
+   <span ng-if="!isMobile">Filter By: </span>
+  
+  <div ng-if="!isMobile" class="btn-group hidden-print hidden-sm">
+    <form name="invoiceFilterForm" class="form-inline">
+      <div dropdown is-open="openScope" style="float:left;">
+        <button type="button" class="btn btn-lg btn-default dropdown-toggle">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
+        <ul class="dropdown-menu" role="menu">
+          <li ng-repeat="invoiceFilter in invoiceFilters" >
+            <a ng-click="selectInvoiceFilter(invoiceFilter.name)">
+            {{invoiceFilter.name}}</a>
+          </li>
+        </ul>
+        <input type="text" id="invoiceFilterInput" ng-model="invoiceFilter.input" class="form-control input-lg webFilterInput" placeholder="Search by {{selectedInvoiceFilter}}">
+      </div>
+      <span class="btn-group">
+        <button class="btn-default btn btn-lg" type="submit" ng-disabled="!invoiceFilter.input" ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)"><span class="icon-search large-icon hand"></span></button>
+        <button class="btn-default btn btn-lg" type="button" ng-disabled="!invoiceFilter.input" ng-click="clearFilters(invoiceFilter.input);"><span class="icon-cross large-icon hand text-red"></span></button>
+      </span> 
+    </form>
+   </div>
+  </div>
+  <div header-buttons>
+    <button 
+      type="button"
+      ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" 
+      ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
+      ng-click="payInvoices()" 
+      ng-if="hasPayableInvoices && !isInternalUser" 
+      class="btn-lg btn btn-primary pull-right-sm hidden-print" 
+      analytics-on 
+      analytics-category="Invoices" 
+      analytics-event="Pay Invoice"
+      ng-show="hasPayableInvoices">
+      Pay Now
+    </button>
+    <button       
+      type="button"
+      ng-if="selectedFilterView.name === 'Invoices Pending Payment'" 
+      ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
+      ng-click="payInvoices()" 
+      ng-if="hasPayableInvoices && !isInternalUser" 
+      class="btn-lg btn btn-primary pull-right-sm hidden-print">
+      Update Payment(s)
     </button>
     <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
     <a class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></a>
@@ -36,13 +87,13 @@
       unsaved-warning-form 
       class="style-validation-errors" 
       novalidate>
-  <div class="row page-content" style="margin-top:5px;">
-    <div  class = "billing" ng-if="(!isInternalAccountAdminUser || isDemo)">
+  <div class="row">
+    <div ng-if="(!isInternalAccountAdminUser || isDemo)">
       <div class="no-open-invoices" style="margin-left:15px;" ng-if="!hasPayableInvoices && !loadingResults">
         <p>You have no payable invoices at this time.</p>
         <p>Contact your DSR to pay invoices online.</p>
       </div>
-      <div style=" width:100%; display:inline-block;">
+      <div style="width:100%;" class="inline-block-display">
         <div class="pull-left billing-info" ng-if="hasPayableInvoices"></div>
       </div> 
     </div>
@@ -51,16 +102,40 @@
       <div class="text-red invoice-error">{{errorMessage}}</div>
     </div>
 
-    <div style="max-width:100%; padding:0 50px 0 50px">
+    <div class="invoiceoptions">
       <div class="row">
         <div class="col-sm-12 col-xs-8">
-          <div ng-if="invoiceCustomers.length" class="pull-left credit-memo-toggle"><input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)" > Invoices with Credit Memos</div> 
-          <div ng-if="!noInvoices && !isInternalUser" class="pull-left credit-memo-toggle" style="margin-left:15px;">
-            <input type="checkbox" class="invoiceSelectAll" ng-model="invoiceCustomers.allSelected" ng-click="selectAll(areAllSelected = !areAllSelected, 'selectAllInvoices')"> Select All Invoices
+          <div class="hidden-print" ng-if="isMobile"> 
+            <p>Filter By: </p>
+            <div class="btn-group hidden-xs hidden-print" style="max-width:500px;">
+              <form name="invoiceFilterForm">
+                <div dropdown is-open="openScope" class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="invoiceFilter in invoiceFilters" >
+                    <a ng-click="selectInvoiceFilter(invoiceFilter.name)">
+                    {{invoiceFilter.name}}</a></li>
+                  </ul>
+                </div>
+                <input type="text" id="invoiceFilterInput" ng-model="invoiceFilter.input" class="form-control" placeholder="Search by {{selectedInvoiceFilter}}">
+                <span class="btn-group">
+                  <button class="btn-default btn" type="submit" ng-disabled="!invoiceFilter.input" ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)"><span class="icon-search large-icon hand"></span></button>
+                  <button class="btn-default btn" type="button" ng-disabled="!invoiceFilter.input" ng-click="clearFilters(invoiceFilter.input);"><span class="icon-cross large-icon hand text-red"></span></button>
+                </span>
+              </form>
+            </div>
           </div>
-          <div ng-if="!noInvoices && !isInternalUser" class="pull-right">
-            <a style="margin-right:10px;" class="expandcollapsecustomers">Expand/Collapse All Customers</a>
-            <span class="total-amt total-line text-green currency-value">Total: {{totalPaymentAmount() | currency}}</span>
+          <div>
+            <span ng-if="invoiceCustomers.length" class="pull-left credit-memo-toggle">
+              <input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)"> Invoices with Credit Memos
+            </span>
+            <span ng-if="!noInvoices && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle">
+              <input type="checkbox" class="invoiceSelectAll" ng-model="invoiceCustomers.allSelected" ng-click="selectAll(areAllSelected = !areAllSelected, 'selectAllInvoices')"> Select All Invoices
+            </span>
+            <span ng-if="!noInvoices && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
+            <span ng-if="!noInvoices && !isInternalUser">
+              <a class="expandcollapsecustomers pull-right-lg pull-right-md pull-right-sm pull-left-xs">Expand/Collapse All Customers</a>
+            </span>
           </div>
         </div>
       </div>
@@ -73,7 +148,7 @@
                 <input type="checkbox" ng-if="!isInternalAccountAdminUser && customer.ispayable && selectedFilterView.name !== 'Paid Invoices'" ng-click="selectAll(areAllSelected = !areAllSelected, selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" class="pull-left"/>
                 <div class="white-space: normal;">
                   <span style="padding-left:10px;"> {{customer.number}} - {{customer.name}} ({{customer.invoices.length}})</span>
-                  <span style="margin-left:20px;"> {{customer.street}} {{customer.city}}, {{customer.state}} {{customer.zipcode}}</span>
+                  <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.street}} {{customer.city}}, {{customer.state}} {{customer.zipcode}}</span>
                   <i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
                 </div>
               </accordion-heading>
@@ -84,22 +159,22 @@
                       <input type="checkbox" style="margin-left:10px;" no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
                     </label>
                   </div>
-                  <div style="display:inline-block;" class="col-md-3 col-xs-6 row-fluid">
-                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" > Reference#:</span> {{invoice.invoicenumber}}</a></strong>
-                    <h5 >Type: {{invoice.typedescription}}</h5>
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
+                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
+                    <h5 >{{::invoice.typedescription}}</h5>
                     <h5 class="highlight-text" >Status: {{invoice.statusdescription}}</h5>
                   </div>
-                  <div style="display:inline-block;" class="col-md-3 col-xs-6 row-fluid">
-                    <h5 >PONumber: {{invoice.ponumber}}</h5>
-                    <h5 >Invoice Date: {{invoice.invoicedate |formatDate}}</h5>
-                    <h5 >Due Date: {{invoice.duedate | formatDate}}</h5>
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
+                    <h5 >PO Number: {{::invoice.ponumber}}</h5>
+                    <h5 >Invoice Date: {{::invoice.invoicedate |formatDate}}</h5>
+                    <h5 >Due Date: {{::invoice.duedate | formatDate}}</h5>
                   </div>
-                  <div style="display:inline-block;" class="col-md-3 col-xs-6 row-fluid">
-                    <h5 >Invoice Amount: {{invoice.invoiceamount | currency}}</h5>
-                    <h5>Amount Due: {{invoice.amount | currency}}<span><a class="icon-plus3 large-icon" style="margin-left:5px;" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></span></h5>
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
+                    <h5 >Invoice Amount: {{::invoice.invoiceamount | currency}}</h5>
+                    <h5>Amount Due: {{::invoice.amount | currency}}<span><a class="icon-plus3 large-icon margin-left-5" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></span></h5>
                     <h5>Invoice Image: <span><a ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" target="_blank" class="icon-camera large-icon" analytics-on analytics-category="Invoices" analytics-event="View Invoice Image"></a></span></h5>
                   </div>
-                  <div style="display:inline-block;" class="col-md-3 col-xs-6 row-fluid">
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     Scheduled Date: 
                     <a 
                       ng-class="{'hidden-icon' : ((invoice.statusdescription === 'Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)))}" 
@@ -126,7 +201,8 @@
                     <span class="date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !== 'Past Due' && invoice.statusdescription !== 'Payment Pending' && invoice.date">{{invoice.date | formatDate}}</span>
                     <span class="date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due'">{{invoice.date || tomorrow | formatDate}}</span>
                     <span class="date-picker-field" ng-if="invoice.statusdescription === 'Payment Pending'">{{invoice.date || invoice.pendingtransaction.date | formatDate}}</span>
-                    <h5>Payment Amount: {{invoice.pendingtransaction.amount}} <span class="input-col">
+                    <h5>Payment Amount: <span ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</span>
+                    <span>
                       <input
                       remove-positive-numbers
                       ng-disabled="isInternalAccountAdminUser"
@@ -177,7 +253,7 @@
     </div>
   </div>
 
-  <div ng-show="!invoiceCustomers.length" class="col-sm-7 no-results">
+  <div ng-show="!invoices.length && !loadingResults" class="col-sm-7 no-results">
     <p>There are no invoices to display. Please try selecting another option in the dropdown.</p>
   </div>
 
