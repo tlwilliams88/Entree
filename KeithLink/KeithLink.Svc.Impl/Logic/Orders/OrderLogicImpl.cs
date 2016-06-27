@@ -700,8 +700,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private OrderLine ToOrderLine(CS.LineItem lineItem) {
             return new OrderLine() {
                 ItemNumber = lineItem.ProductId,
-                Quantity = (short)lineItem.Quantity,
-                Price = (double)lineItem.PlacedPrice,
+                Quantity = lineItem.Quantity == null ? 0 : (short)lineItem.Quantity,
+                Price = lineItem.PlacedPrice == null ? 0 : (double)lineItem.PlacedPrice,
                 QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
                 ChangeOrderStatus = lineItem.Status,
