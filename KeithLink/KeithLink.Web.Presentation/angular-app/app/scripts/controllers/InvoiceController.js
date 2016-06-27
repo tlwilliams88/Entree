@@ -569,7 +569,7 @@ angular.module('bekApp')
         }
 
         if(payment.date.length !== 10){
-          payment.date = DateService.momentObject(payment.duedate.substr(0,10)).format(Constants.dateFormat.yearMonthDayDashes);
+          payment.date = DateService.momentObject(payment.date,Constants.dateFormat.yearMonthDayDashes)._i;
         }
 
       });
