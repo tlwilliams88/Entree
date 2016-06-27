@@ -208,13 +208,13 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items == null)
 				return;
 
-            var catalogList = cart.Items.Select(i => i.CatalogId).Distinct().ToList();
+            var catalogList = cart.Items.GroupBy(p => p.CatalogId.ToLower());
             var products = new ProductsReturn() { Products = new List<Product>() };
             var pricing = new PriceReturn() { Prices = new List<Price>() };
 
-            foreach (var catalogId in catalogList) {
-                var tempProducts = catalogLogic.GetProductsByIds(catalogId, 
-                                                                 cart.Items.Where(i => i.CatalogId.Equals(catalogId))
+            foreach (var catalogItems in catalogList) {
+                var tempProducts = catalogLogic.GetProductsByIds(catalogItems.Key, 
+                                                                 cart.Items.Where(i => i.CatalogId.Equals(catalogItems.Key, StringComparison.CurrentCultureIgnoreCase))
                                                                            .Select(i => i.ItemNumber)
                                                                            .Distinct()
                                                                            .ToList()
