@@ -215,9 +215,15 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
             FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
             FilterInfo customerFilter = BuildCustomerFilter(customers);
 
-            var kpayInvoices = _invoiceRepo.ReadAllHeaders().AsQueryable().Filter(customerFilter, null).Filter(statusFilter, null).ToList();
+            var kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                           .AsQueryable()
+                                           .Filter(customerFilter, null)
+                                           .Filter(statusFilter, null)
+                                           .ToList();
 
-            var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+            var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
+                                            .AsQueryable<InvoiceModel>()
+                                            .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
             foreach(var invoice in pagedInvoices.Results) {
                 invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
@@ -230,23 +236,27 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
 
                 if (invoice.Status == InvoiceStatus.Pending) {
                     //Retrieve payment transaction record
-                    var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
-
+                    var payment = _paymentTransactionRepository.ReadAll()
+                                                               .Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && 
+                                                                           p.CustomerNumber.Equals(invoice.CustomerNumber) && 
+                                                                           p.InvoiceNumber.Equals(invoice.InvoiceNumber))
+                                                               .FirstOrDefault();
                     if(payment != null) {
-                        invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault(),
-                                                                                                                            Configuration.BillPayCutOffTime);
+                        invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber) && 
+                                                                                                            c.CustomerBranch.Equals(invoice.BranchId, StringComparison.InvariantCultureIgnoreCase))
+                                                                                                .FirstOrDefault(),
+                                                                                       Configuration.BillPayCutOffTime);
                     }
                 }
 
                 //Get transactions
-                var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoice.InvoiceNumber);
-                invoice.InvoiceAmount = transactions
-                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
-                    .Select(x => x.AmountDue).FirstOrDefault();
+                var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId), invoice.CustomerNumber, invoice.InvoiceNumber);
+                invoice.InvoiceAmount = transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
+                                                    .Select(x => x.AmountDue)
+                                                    .FirstOrDefault();
 
-                if(transactions
-                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
-                    .Count() > 0) {
+                if(transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
+                               .Count() > 0) {
                     invoice.HasCreditMemos = true;
                 } else {
                     invoice.HasCreditMemos = false;
