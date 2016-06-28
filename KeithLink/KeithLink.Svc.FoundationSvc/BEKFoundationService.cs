@@ -227,6 +227,7 @@ namespace KeithLink.Svc.FoundationSvc
                         li["Notes"] = string.Empty;
                         li.ProductCatalog = i.Catalog;
                         li.Status = "added";
+                        li["LinePosition"] = po.OrderForms[0].LineItems.Count + 1;
                         po.OrderForms[0].LineItems.Add(li);
                     }
                     if (i.Status == "added" && lineItem != null)

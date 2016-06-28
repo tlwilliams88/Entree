@@ -258,7 +258,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             List<OrderLine> hideItems = new List<OrderLine>();
             foreach (var item in returnOrder.Items)
             {
-                if (item.Status.Equals("Deleted", StringComparison.CurrentCultureIgnoreCase))
+                if (item.Status.Equals("Deleted", StringComparison.CurrentCultureIgnoreCase) | item.Status.Equals("D", StringComparison.CurrentCultureIgnoreCase))
                 {
                     hideItems.Add(item);
                 }
@@ -655,7 +655,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
             _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder, null);
-
+            
             client.CleanUpChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
@@ -706,7 +706,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
                 ChangeOrderStatus = lineItem.Status,
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
-                LineNumber = int.Parse(lineItem.Properties["LinePosition"].ToString()),
+                LineNumber = lineItem.Properties["LinePosition"] == null ? 1 : int.Parse(lineItem.Properties["LinePosition"].ToString()),
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"]
             };
@@ -741,7 +741,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                         }
                     }
                 } else { // new line
-                    existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, Each = newLine.Each, ChangeOrderStatus = "added" });
+                    existingOrder.Items.Add(new OrderLine() {
+                        ItemNumber = newLine.ItemNumber,
+                        Quantity = newLine.Quantity,
+                        Each = newLine.Each,
+                        ChangeOrderStatus = "added",
+                        LineNumber = existingOrder.Items.Select(li => li.LineNumber).Max()+1
+                    });
                 }
             }
             // handle deletes
@@ -775,7 +781,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             foreach (OrderLine line in existingOrder.Items) {
                 //itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.ChangeOrderStatus, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() {
+                    ItemNumber = line.ItemNumber,
+                    Quantity = line.Quantity,
+                    Status = line.ChangeOrderStatus,
+                    Catalog = catalogInfo.BranchId,
+                    Each = line.Each,
+                    CatchWeight = line.CatchWeight });
             }
             var orderNumber = client.UpdatePurchaseOrder(customer.CustomerId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
