@@ -145,7 +145,6 @@ angular.module('bekApp')
   }
 
   function setInvoices(data) {
-    $scope.noInvoices = false;
     $scope.invoices = data.pagedresults.results;
     $scope.invoiceCustomers = [];
     if($scope.invoices.length > 0){
@@ -242,9 +241,6 @@ angular.module('bekApp')
     if(!input && filter){
       $scope.invoiceCustomers.forEach(function(customer){
         customer.invoices = $filter('filter')(customer.invoices, {hascreditmemos: true});
-        // if(customer.invoices.length < 1){
-        //   $scope.noInvoices = true;
-        // }
       })
     } else if(input && filter === 'Invoice Number'){
       $scope.invoiceCustomers.forEach(function(customer){
