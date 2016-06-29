@@ -197,6 +197,7 @@ namespace KeithLink.Svc.Impl
         // Catalog Service Functions
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_PROCESSTIME = "CatalogServiceUnfiImagesProcessTime";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_REPOSITORY = "CatalogServiceUnfiImagesRepo";
+        private const string KEY_CATALOG_SERVICE_UNFIIMAGES_IXONEIMAGESWETAKE = "CatalogServiceUnfiImagesIxOneImagesWeTake";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIR = "CatalogServiceUnfiImagesNewOnlyDir";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_MAKETHUMBNAILS = "CatalogServiceUnfiImagesMakeThumbnails";
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_NEWONLYDIRTHUMBS = "CatalogServiceUnfiImagesNewOnlyDirThumbs";
@@ -1457,6 +1458,16 @@ namespace KeithLink.Svc.Impl
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_SCALEY, "200");
             }
         }
+
+        public static List<string> CatalogServiceUnfiImagesIxOneImagesWeTake
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_CATALOG_SERVICE_UNFIIMAGES_IXONEIMAGESWETAKE, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        
         #endregion
     }
 }
