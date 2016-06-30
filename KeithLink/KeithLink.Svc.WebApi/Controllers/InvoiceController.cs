@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.WebApi.Models;
 
@@ -247,14 +248,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// Invoice transaction details
         /// </summary>
         /// <param name="invoiceNumber"></param>
+        /// <param name="branchId"></param>
+        /// <param name="customerNumber"></param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("invoice/transactions/{invoiceNumber}")]
-        public Models.OperationReturnModel<List<InvoiceTransactionModel>> InvoiceTransactions(string invoiceNumber) {
+        [ApiKeyedRoute("invoice/transactions/{branchId}/{customerNumber}/{invoiceNumber}")]
+        public Models.OperationReturnModel<List<InvoiceTransactionModel>> InvoiceTransactions(string branchId, string customerNumber, string invoiceNumber) {
             Models.OperationReturnModel<List<InvoiceTransactionModel>> retVal = new Models.OperationReturnModel<List<InvoiceTransactionModel>>();
             try
             {
-                List<InvoiceTransactionModel> transactions = _invLogic.GetInvoiceTransactions(this.SelectedUserContext, invoiceNumber);
+                UserSelectedContext customerContext = new UserSelectedContext() {
+                    BranchId = branchId,
+                    CustomerId = customerNumber
+                };
+                List<InvoiceTransactionModel> transactions = _invLogic.GetInvoiceTransactions(customerContext, invoiceNumber);
 
                 retVal.SuccessResponse = transactions;
                 retVal.IsSuccess = true;
