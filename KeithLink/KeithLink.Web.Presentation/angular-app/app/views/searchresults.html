@@ -97,6 +97,21 @@
     </div>
   </div>
 </accordion-group>
+<accordion-group is-open="status.temp_zone" ng-show="facets.temp_zone.available.length > 0">
+  <accordion-heading>
+  Temp Zone<i class="pull-right" ng-class="{'icon-arrow-up6': status.temp_zone, 'icon-arrow-down7': !status.temp_zone}"></i>
+  </accordion-heading>
+  <div ng-repeat="temp_zone in facets.temp_zone.available" class="panel panel-default">
+    <div class="panel-body">
+      <input type="checkbox"
+      value="specValue_{{temp_zone.name}}"
+      id="specId_{{temp_zone.name}}"
+      ng-checked="facets.temp_zone.selected.indexOf(temp_zone.name) > -1"
+      ng-click="toggleSelection(facets.temp_zone.selected, temp_zone.name)">
+      <label for="specId_{{temp_zone.name}}"><span class="{{temp_zone.iconclass}}"></span>{{temp_zone.displayname}} <span ng-show="temp_zone.count > 0">({{temp_zone.count}})</label>
+    </div>
+  </div>
+</accordion-group>
 <accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0">
   <accordion-heading>
   Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
@@ -142,7 +157,7 @@
               ng-click="toggleSelection(facets.categories.selected, category.name)" 
               ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
               {{::category.categoryname}} 
-              <span ng-show="category.count > 0">({{::category.count}})</span>
+              <span ng-show="category.count > 0">({{category.count}})</span>
             </a>
           </li>
         </ul>
@@ -163,7 +178,7 @@
             ng-disabled="brand.name === featuredBreadcrumb.displayText"
             ng-click="toggleSelection(facets.brands.selected, brand.name)"
             class="input-margin-5px">
-          <label for="brandId_{{brand.name}}">{{::brand.name}} <span ng-show="brand.count > 0">({{::brand.count}})</span></label>
+          <label for="brandId_{{brand.name}}">{{::brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
         </li>
       </ul>
     </div>
@@ -181,7 +196,7 @@
               ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
               ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)"
               class="input-margin-5px">
-            <label for="manufacturerId_{{manufacturer.name}}">{{::manufacturer.name}} <span ng-show="manufacturer.count > 0">({{::manufacturer.count}})</span></label>
+            <label for="manufacturerId_{{manufacturer.name}}">{{::manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -198,7 +213,24 @@
               ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
               ng-click="toggleSelection(facets.dietary.selected, diet.name)"
               class="input-margin-5px">
-            <label class="text-capitalize" for="dietId_{{diet.name}}">{{::diet.name}} <span ng-show="diet.count > 0">({{::diet.count}})</span></label>
+            <label class="text-capitalize" for="dietId_{{diet.name}}">{{::diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</span></label>
+          </li>
+        </ul>
+    </div>
+  </div>
+  <div class="row" ng-show="facets.temp_zone.available.length > 0">
+    <div class="col-sm-12">
+      <h3>Temp Zone</h3>
+        <ul class="nav search-results__facets">
+          <li class="facet-checkbox" ng-repeat="temp_zone in facets.temp_zone.available | orderBy: '-count'">
+            <input 
+              type="checkbox"
+              value="temp_zoneValue_{{temp_zone.name}}"
+              id="dietId_{{temp_zone.name}}"
+              ng-checked="facets.temp_zone.selected.indexOf(temp_zone.name) > -1"
+              ng-click="toggleSelection(facets.temp_zone.selected, temp_zone.name)"
+              class="input-margin-5px">
+            <label class="text-capitalize" for="dietId_{{temp_zone.name}}">{{::temp_zone.description}} <span ng-show="temp_zone.count > 0">({{temp_zone.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -215,7 +247,7 @@
               ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
               ng-click="toggleSelection(facets.itemspecs.selected, spec.name)"
               class="input-margin-5px">
-            <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{::spec.displayname}} <span ng-show="spec.count > 0">({{::spec.count}})</span></label>
+            <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{::spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</span></label>
           </li>
         </ul>
     </div>

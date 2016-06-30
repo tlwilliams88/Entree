@@ -86,6 +86,11 @@ angular.module('bekApp')
         available: [],
         selected: [],
         showMore: true
+      },
+      temp_zone: {
+        available: [],
+        selected: [],
+        showMore: true
       }
     };
 
@@ -352,6 +357,19 @@ angular.module('bekApp')
         filterCount += $scope.facets.itemspecs.selected.length;
       }
 
+      // temp zones
+      if ($scope.facets.temp_zone.selected.length > 0) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.temp_zone.selected = data;
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.temp_zone.selected,
+          displayText: 'Temp Zone: ' + $scope.facets.temp_zone.selected.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.temp_zone.selected.length;
+      }
+
       // search term
       if ($scope.paramType === 'search') {
        $scope.featuredBreadcrumb = {
@@ -404,7 +422,7 @@ angular.module('bekApp')
       var facets;
       $scope.aggregateCount;
       
-      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.categories.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length)
+      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.categories.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length)
 
       if($scope.aggregateCount !== 0){
         facets = ProductService.getFacets(
@@ -412,7 +430,8 @@ angular.module('bekApp')
           $scope.facets.brands.selected,
           $scope.facets.mfrname.selected,
           $scope.facets.dietary.selected,
-          $scope.facets.itemspecs.selected
+          $scope.facets.itemspecs.selected,
+          $scope.facets.temp_zone.selected
         )
       }
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
@@ -454,6 +473,7 @@ angular.module('bekApp')
           updateFacetCount($scope.facets.categories, data.facets.categories);
           updateFacetCount($scope.facets.dietary, data.facets.dietary);
           updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
+          updateFacetCount($scope.facets.temp_zone, data.facets.temp_zone);
         }
 
         setBreadcrumbs(data);
@@ -493,6 +513,7 @@ angular.module('bekApp')
       $scope.facets.mfrname.selected = [];
       $scope.facets.dietary.selected = [];
       $scope.facets.itemspecs.selected = [];
+      $scope.facets.temp_zone.selected = [];
       loadProducts().then(refreshFacets);
       $scope.noFiltersSelected = true;
     }
@@ -505,6 +526,7 @@ angular.module('bekApp')
         $scope.facets.mfrname.available = facets.mfrname;
         $scope.facets.dietary.available = facets.dietary;
         $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
+        $scope.facets.temp_zone.available = facets.temp_zone;
       }
     }
 
@@ -642,7 +664,8 @@ angular.module('bekApp')
               $scope.facets.brands.selected,
               $scope.facets.mfrname.selected,
               $scope.facets.dietary.selected,
-              $scope.facets.itemspecs.selected
+              $scope.facets.itemspecs.selected,
+              $scope.facets.temp_zone.selected
             );
 
             var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);

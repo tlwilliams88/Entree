@@ -27,7 +27,7 @@ angular.module('bekApp')
       var Service = {
         selectedProduct: {}, 
 
-        getFacets: function(categories, brands, manufacturers, dietary, itemspecs) {
+        getFacets: function(categories, brands, manufacturers, dietary, itemspecs, temp_zone) {
           var facets = [];
 
           // handle nonstock special case
@@ -51,6 +51,9 @@ angular.module('bekApp')
           }
           if (cleanItemspecs && cleanItemspecs.length > 0) {
             facets.push('itemspecs:' + cleanItemspecs.join('|'));
+          }
+          if (temp_zone && temp_zone.length > 0){
+            facets.push('temp_zone:' + temp_zone.join('|'));
           }
           if (nonstockIndex > -1) {
             facets.push('nonstock:y');
