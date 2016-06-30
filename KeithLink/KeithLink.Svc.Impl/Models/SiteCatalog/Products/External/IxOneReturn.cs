@@ -1,4 +1,5 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -16,29 +17,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
     {
         private int index;
         private IEventLogRepository _log;
-        private readonly string FILETYPE_STANDARDRES = "A";
-        private readonly string FILETYPE_HIGHRES = "C";
-        private readonly string FACING_FRONT = "1";
-        private readonly string FACING_LEFT = "2";
-        private readonly string FACING_TOP = "3";
-        private readonly string FACING_BACK = "7";
-        private readonly string FACING_RIGHT = "8";
-        private readonly string FACING_DISPLAY = "D";
-        private readonly string FACING_NUTRITION = "N";
-        private readonly string FACING_INGREDIENTS = "I";
-        private readonly string ANGLE_CENTER = "C";
-        private readonly string ANGLE_LEFT = "L";
-        private readonly string ANGLE_RIGHT = "R";
-        private readonly string ANGLE_NOPLUNGE = "N";
-        private readonly string PACK_IN = "1";
-        private readonly string PACK_OUT = "0";
-        private readonly string PACK_CASE = "A";
-        private readonly string PACK_INNER = "B";
-        private readonly string PACK_PREPARED = "D";
-        private readonly string IX_ONE_PRODUCTINFO_GET_URL =
-            "https://exchange.ix-one.net/services/Products/filtered";
-        private readonly string IX_ONE_PRODUCTIMAGE_GET_URL =
-            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
 
         private IxOneReturn() { }
 
@@ -80,9 +58,9 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
                     foreach (string filename in product.Filenames)
                     {
                         bool isdownloaded = false;
-                        if(filename.IndexOf('_') > -1 && filename.Length > filename.IndexOf('_') + 5)
+                        if (filename.IndexOf('_') > -1 && filename.Length > filename.IndexOf('_') + 5)
                         {
-                            if(Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake.Any(s => s == filename.Substring(filename.IndexOf('_') + 1, 4) ))
+                            if (Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake.Any(s => s == filename.Substring(filename.IndexOf('_') + 1, 4)))
                             {
                                 isdownloaded = true;
                             }
@@ -136,7 +114,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
         private int CountTotalImages()
         {
             int count = 0;
-            foreach(var product in Products)
+            foreach (var product in Products)
             {
                 count += product.Filenames.Count;
             }
@@ -172,7 +150,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
         private string ChooseBestFilename(IxOneProduct product)
         { // priority is from bottom up
             string filename = "";
-            foreach(string ext in Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake)
+            foreach (string ext in Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake)
             {
                 foreach (string filen in product.Filenames)
                 {
@@ -197,7 +175,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
                 items = items.Take(1000).ToList();
             }
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(IX_ONE_PRODUCTINFO_GET_URL);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Constants.IXONE_PRODUCTINFO_GET_URL);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
             httpWebRequest.Headers[HttpRequestHeader.Authorization] = "Bearer " +
@@ -263,7 +241,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
             string url = null;
             try
             {
-                url = string.Format(IX_ONE_PRODUCTIMAGE_GET_URL, filename);
+                url = string.Format(Constants.IXONE_PRODUCTIMAGE_GET_URL, filename);
                 //_log.WriteInformationLog(" Url is " + url);
                 WebClient client = new WebClient();
                 client.Headers[HttpRequestHeader.Authorization] = "Bearer " +

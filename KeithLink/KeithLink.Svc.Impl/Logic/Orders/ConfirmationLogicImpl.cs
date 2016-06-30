@@ -356,6 +356,19 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     SetCsLineInfo(currLineItems, confirmation);
                 }
 
+            //List<OrderLine> hideItems = new List<OrderLine>();
+            //foreach (var item in returnOrder.Items)
+            //{
+            //    if (item.Status.Equals("Deleted", StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        hideItems.Add(item);
+            //    }
+            //}
+            //foreach (var item in hideItems)
+            //{
+            //    returnOrder.Items.Remove(item);
+            //}
+
                 SetCsHeaderInfo(confirmation, po, currLineItems);
 
                 po.Save();
@@ -512,6 +525,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             orderFormLineItem["SubstitutedItemNumber"] = substitutedItemNumber;
 			orderFormLineItem.PlacedPrice = (decimal)placedPrice;
             orderFormLineItem.ProductId = currentItemNumber;
+            orderFormLineItem["LinePosition"] = lineNumber;
         }
 
         private static void SetCsPoStatusFromLineItems(PurchaseOrder po, LineItem[] lineItems, bool isChangeOrder) {

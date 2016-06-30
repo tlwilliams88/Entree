@@ -107,7 +107,7 @@
         <div class="col-sm-12 col-xs-8">
           <div class="hidden-print" ng-if="isMobile"> 
             <p>Filter By: </p>
-            <div class="btn-group hidden-xs hidden-print" style="max-width:500px;">
+            <div class="btn-group hidden-print" style="max-width:500px;">
               <form name="invoiceFilterForm">
                 <div dropdown is-open="openScope" class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
@@ -126,21 +126,21 @@
             </div>
           </div>
           <div>
-            <span ng-if="invoiceCustomers.length" class="pull-left credit-memo-toggle">
+            <span ng-if="invoices.length" class="pull-left credit-memo-toggle">
               <input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)"> Invoices with Credit Memos
             </span>
-            <span ng-if="!noInvoices && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle">
+            <span ng-if="invoices.length && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle">
               <input type="checkbox" class="invoiceSelectAll" ng-model="invoiceCustomers.allSelected" ng-click="selectAll(areAllSelected = !areAllSelected, 'selectAllInvoices')"> Select All Invoices
             </span>
-            <span ng-if="!noInvoices && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
-            <span ng-if="!noInvoices && !isInternalUser">
+            <span ng-if="invoices.length && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
+            <span ng-if="invoices.length && !isInternalUser">
               <a class="expandcollapsecustomers pull-right-lg pull-right-md pull-right-sm pull-left-xs">Expand/Collapse All Customers</a>
             </span>
           </div>
         </div>
       </div>
 
-      <div ng-if="!noInvoices" class="row topPadded">
+      <div ng-if="invoices.length" class="row topPadded">
         <div class="col-sm-12">
           <accordion close-others="oneAtATime">
             <accordion-group is-open="status.openCategories" class="panel-title" ng-show="true" ng-repeat="customer in invoiceCustomers | filter: {invoices: '!!'} | orderBy:'name'">

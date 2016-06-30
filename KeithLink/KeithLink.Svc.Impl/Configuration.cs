@@ -1477,7 +1477,6 @@ namespace KeithLink.Svc.Impl
                 return GetCommaSeparatedValues(val);
             }
         }
-
         #endregion
     }
 }

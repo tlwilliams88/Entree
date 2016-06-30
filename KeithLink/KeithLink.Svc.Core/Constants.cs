@@ -326,5 +326,29 @@ namespace KeithLink.Svc.Core
         // queue action retries
         public const int QUEUE_REPO_RETRY_COUNT = 5;
         public const int QUEUE_CHECKLOSTORDERS_RETRY_COUNT = 5;
+
+        public const string IXONE_IMAGE_FILETYPE_STANDARDRES = "A";
+        public const string IXONE_IMAGE_FILETYPE_HIGHRES = "C";
+        public const string IXONE_IMAGE_FACING_FRONT = "1";
+        public const string IXONE_IMAGE_FACING_LEFT = "2";
+        public const string IXONE_IMAGE_FACING_TOP = "3";
+        public const string IXONE_IMAGE_FACING_BACK = "7";
+        public const string IXONE_IMAGE_FACING_RIGHT = "8";
+        public const string IXONE_IMAGE_FACING_DISPLAY = "D";
+        public const string IXONE_IMAGE_FACING_NUTRITION = "N";
+        public const string IXONE_IMAGE_FACING_INGREDIENTS = "I";
+        public const string IXONE_IMAGE_ANGLE_CENTER = "C";
+        public const string IXONE_IMAGE_ANGLE_LEFT = "L";
+        public const string IXONE_IMAGE_ANGLE_RIGHT = "R";
+        public const string IXONE_IMAGE_ANGLE_NOPLUNGE = "N";
+        public const string IXONE_IMAGE_PACK_IN = "1";
+        public const string IXONE_IMAGE_PACK_OUT = "0";
+        public const string IXONE_IMAGE_PACK_CASE = "A";
+        public const string IXONE_IMAGE_PACK_INNER = "B";
+        public const string IXONE_IMAGE_PACK_PREPARED = "D";
+        public const string IXONE_PRODUCTINFO_GET_URL =
+            "https://exchange.ix-one.net/services/Products/filtered";
+        public const string IXONE_PRODUCTIMAGE_GET_URL =
+            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
     }
 }

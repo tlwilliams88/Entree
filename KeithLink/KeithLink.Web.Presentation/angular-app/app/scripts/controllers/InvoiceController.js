@@ -145,7 +145,6 @@ angular.module('bekApp')
   }
 
   function setInvoices(data) {
-    $scope.noInvoices = false;
     $scope.invoices = data.pagedresults.results;
     $scope.invoiceCustomers = [];
     if($scope.invoices.length > 0){
@@ -233,18 +232,21 @@ angular.module('bekApp')
         resolve: {
           invoiceNumber: function() {
             return invoice.invoicenumber;
+          },
+          customerNumber: function() {
+            return invoice.customernumber;
+          },
+          branchId: function() {
+            return invoice.branchid;
           }
         }
       });
     };
 
   $scope.filterInvoices = function(filter, input) {
-    if(!input){
+    if(!input && filter){
       $scope.invoiceCustomers.forEach(function(customer){
         customer.invoices = $filter('filter')(customer.invoices, {hascreditmemos: true});
-        if(customer.invoices.length < 1){
-          $scope.noInvoices = true;
-        }
       })
     } else if(input && filter === 'Invoice Number'){
       $scope.invoiceCustomers.forEach(function(customer){
@@ -569,7 +571,7 @@ angular.module('bekApp')
         }
 
         if(payment.date.length !== 10){
-          payment.date = DateService.momentObject(payment.duedate.substr(0,10)).format(Constants.dateFormat.yearMonthDayDashes);
+          payment.date = DateService.momentObject(payment.date,Constants.dateFormat.yearMonthDayDashes)._i;
         }
 
       });

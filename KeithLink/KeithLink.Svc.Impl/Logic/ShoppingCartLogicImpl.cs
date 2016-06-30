@@ -101,6 +101,7 @@ namespace KeithLink.Svc.Impl.Logic
 				basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, existingItem.First());
 				return existingItem.First().Id.ToGuid();
 			}
+            newItem.Position = basket.LineItems.Count;
 						
 			return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
 		}
@@ -127,7 +128,12 @@ namespace KeithLink.Svc.Impl.Logic
             var cartBranchId = catalogInfo.BranchId;
             if (catalogId != null)
                 cartBranchId = catalogId;
-            
+
+            int startpos = 1;
+            foreach (var item in cart.Items)
+            {
+                item.Position = startpos++;
+            }
 
 			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, cartBranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
 		}
@@ -208,13 +214,13 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items == null)
 				return;
 
-            var catalogList = cart.Items.Select(i => i.CatalogId).Distinct().ToList();
+            var catalogList = cart.Items.GroupBy(p => p.CatalogId.ToLower());
             var products = new ProductsReturn() { Products = new List<Product>() };
             var pricing = new PriceReturn() { Prices = new List<Price>() };
 
-            foreach (var catalogId in catalogList) {
-                var tempProducts = catalogLogic.GetProductsByIds(catalogId, 
-                                                                 cart.Items.Where(i => i.CatalogId.Equals(catalogId))
+            foreach (var catalogItems in catalogList) {
+                var tempProducts = catalogLogic.GetProductsByIds(catalogItems.Key, 
+                                                                 cart.Items.Where(i => i.CatalogId.Equals(catalogItems.Key, StringComparison.CurrentCultureIgnoreCase))
                                                                            .Select(i => i.ItemNumber)
                                                                            .Distinct()
                                                                            .ToList()
@@ -631,12 +637,16 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items != null)
 			{
 				itemsToRemove = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToCommerceServerFormat().Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
-				foreach (var item in cart.Items)
+                foreach (var item in cart.Items)
 				{
-					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
+                    if(item.CartItemId==new Guid() && item.Position == 1)
+                    {
+                        item.Position = cart.ItemCount;
+                    }
 
+					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
                     // Commenting on this mystery, I believe it is for quick add items
-					if (existingItem.Any() && item.CartItemId == Guid.Empty)
+                    if (existingItem.Any() && item.CartItemId == Guid.Empty)
 					{
 						existingItem.First().Quantity += item.Quantity;
 						lineItems.Add(existingItem.First());

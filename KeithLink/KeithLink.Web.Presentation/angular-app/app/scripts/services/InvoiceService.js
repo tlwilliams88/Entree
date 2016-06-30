@@ -27,8 +27,10 @@ angular.module('bekApp')
         });
       },
 
-      getInvoiceTransactions: function(invoiceNumber){
+      getInvoiceTransactions: function(branchId, customerNumber, invoiceNumber){
         return Invoice.getInvoiceTransactions({
+          branchId: branchId,
+          customerNumber: customerNumber,
           invoiceNumber: invoiceNumber
         }).$promise.then(function(resp){
           return resp.successResponse;
