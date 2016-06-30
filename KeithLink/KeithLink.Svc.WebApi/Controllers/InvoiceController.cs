@@ -252,7 +252,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="customerNumber"></param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("invoice/transactions/{branchId}/{customerNumber}{invoiceNumber}")]
+        [ApiKeyedRoute("invoice/transactions/{branchId}/{customerNumber}/{invoiceNumber}")]
         public Models.OperationReturnModel<List<InvoiceTransactionModel>> InvoiceTransactions(string branchId, string customerNumber, string invoiceNumber) {
             Models.OperationReturnModel<List<InvoiceTransactionModel>> retVal = new Models.OperationReturnModel<List<InvoiceTransactionModel>>();
             try
