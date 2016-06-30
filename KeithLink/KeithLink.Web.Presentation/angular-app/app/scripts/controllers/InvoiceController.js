@@ -232,6 +232,12 @@ angular.module('bekApp')
         resolve: {
           invoiceNumber: function() {
             return invoice.invoicenumber;
+          },
+          customerNumber: function() {
+            return invoice.customernumber;
+          },
+          branchId: function() {
+            return invoice.branchid;
           }
         }
       });
