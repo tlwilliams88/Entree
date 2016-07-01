@@ -248,7 +248,7 @@ angular.module('bekApp')
       $scope.invoiceCustomers.forEach(function(customer){
         customer.invoices = $filter('filter')(customer.invoices, {hascreditmemos: true});
       })
-    } else if(input && filter === 'Invoice Number'){
+    } else if(input && filter === 'Invoice #'){
       $scope.invoiceCustomers.forEach(function(customer){
         customer.invoices = $filter('filter')(customer.invoices, {invoicenumber: input});
       })

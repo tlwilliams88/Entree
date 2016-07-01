@@ -486,7 +486,7 @@ angular.module('bekApp')
         } else {
           $scope.setStartAndEndPoints($scope.products);
         }
-        if($scope.aggregateCount !==0){
+        if($scope.aggregateCount !==0 || $scope.noFiltersSelected){
           updateFacetCount($scope.facets.brands, data.facets.brands);
           updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
           updateFacetCount($scope.facets.categories, data.facets.categories);
@@ -517,13 +517,16 @@ angular.module('bekApp')
     *************/
 
     function updateFacetCount(facets, data){
-      facets.available.forEach(function(facet){
+      if(facets && facets.available){
+              facets.available.forEach(function(facet){
         var facetName = $filter('filter') (data, {name: facet.name})
         facet.count = 0;
         if(facetName.length > 0 && facet.name){
           facet.count = facetName[0].count;
         }
       })
+      }
+      $scope.noFiltersSelected = false;
     }
 
     $scope.clearFacets = function() {
@@ -631,7 +634,7 @@ angular.module('bekApp')
     }
 
     $scope.toggleSelection = function(facetList, selectedFacet) {
-      $scope.noFiltersSelected = false;
+      $scope.noFiltersSelected = !$scope.noFiltersSelected;
       $scope.itemsPerPage = 50;
       $scope.itemIndex = 0;
 

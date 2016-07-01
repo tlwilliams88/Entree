@@ -1,21 +1,11 @@
 
-.invoice-table {
-  > tbody > tr.invoice__late > td {
-    &:first-child {
-      border-left: 3px solid $color-red;
-    }
-    &.highlight-text {
+.highlight-text-late {
       color: $color-red;
-    }
-  }
-  > tbody > tr.invoice__paid > td {
-    &:first-child {
-      border-left: 3px solid $color-green;
-    }
-    &.highlight-text {
+
+}
+
+.highlight-text-paid {
       color: $color-green;
-    }
-  }
 }
 
 .invoice-modal-body{

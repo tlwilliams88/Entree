@@ -85,6 +85,7 @@
 
 .context-menu-dropdown{
   height:auto;
-  max-height:200px;
+  max-height: 180px;
   overflow-y: auto;
+  overflow-x:hidden;
 }

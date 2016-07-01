@@ -43,7 +43,7 @@
       </accordion-heading>
       <div ng-repeat="category in facets.categories.available" class="panel panel-default">
         <div class="panel-body">
-          <a ng-click="toggleSelection(facets.categories.selected, category.name)" ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">{{category.categoryname}} 
+          <a ng-click="toggleSelection(facets.categories.selected, category.name)" ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">{{::category.categoryname}} 
           <span ng-show="category.count > 0">({{category.count}})</span></a>
         </div>
       </div>
@@ -60,7 +60,7 @@
       ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
       ng-disabled="brand.name === featuredBreadcrumb.displayText"
       ng-click="toggleSelection(facets.brands.selected, brand.name)">
-      <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
+      <label for="brandId_{{brand.name}}">{{::brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
     </div>
   </div>
 </accordion-group>
@@ -77,7 +77,7 @@
       ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
       ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
       ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
-      <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
+      <label for="manufacturerId_{{manufacturer.name}}">{{::manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
     </div>
   </div>
 </accordion-group>
@@ -93,7 +93,7 @@
       id="dietId_{{diet.name}}"
       ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
       ng-click="toggleSelection(facets.dietary.selected, diet.name)">
-      <label for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
+      <label for="dietId_{{diet.name}}">{{::diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
     </div>
   </div>
 </accordion-group>
@@ -123,7 +123,7 @@
       id="specId_{{spec.name}}"
       ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
       ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
-      <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</label>
+      <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{::spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</label>
     </div>
   </div>
 </accordion-group>
