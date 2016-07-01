@@ -319,7 +319,6 @@ namespace KeithLink.Svc.Impl.Logic {
 				}
 			}
 
-
             var rows = file.Contents.Split( new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None );
             //returnValue = rows
             //            .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
@@ -333,9 +332,10 @@ namespace KeithLink.Svc.Impl.Logic {
             //                CatalogId = catalogInfo.BranchId
             //                } )
             //            .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
+            int rownum = 0;
             foreach (var row in rows)
             {
-                if (row.Length > 0)
+                if (row.Length > 0 && (++rownum > 1 && file.Options.IgnoreFirstLine)) // skip the first row
                 {
                     string[] vals = row.Split(Delimiter);
                     string itmNum = DetermineItemNumber(vals[itemNumberColumn].PadLeft(6, '0'), file.Options, user, catalogInfo);
