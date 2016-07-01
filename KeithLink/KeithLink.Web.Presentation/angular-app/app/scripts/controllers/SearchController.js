@@ -508,7 +508,6 @@ angular.module('bekApp')
         $scope.facets.mfrname.available = facets.mfrname;
         $scope.facets.dietary.available = facets.dietary;
         $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
-        updateFacetCount()
       }
     }
 
