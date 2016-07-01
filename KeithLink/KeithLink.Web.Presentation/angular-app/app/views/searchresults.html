@@ -278,8 +278,19 @@
       </pagination> 
     </div>
     <div class="row" ng-show="products.length !== 0">
-      <h2 class="col-xs-6" >Search Results</h2>
-      <span style="margin-top: 25px;" class="col-xs-6 text-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
+      <div class="col-sm-12 col-xs-12">
+        <h2 class="pull-left" >Search Results</h2>
+        <span style="margin-top:25px;" class="pull-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
+        <span style="margin-top:15px; margin-right:10px;" class="pull-right" dropdown is-open="openScope">
+          <button type="button" class="btn btn-default dropdown-toggle">{{selectedSortParameter}}<span class="caret margin-left-5" ></span></button>
+          <ul class="dropdown-menu" role="menu">
+            <li ng-repeat="sortParameter in sortParameters" >
+              <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+            </li>
+          </ul>
+          <a style="margin-top:25px;" ng-click="sortResults('asc', sortParametervalue)">Asc </a><span>/</span><a ng-click="sortResults('desc', sortParametervalue)"> Desc</a>
+        </span>
+      </div>
     </div>
     <div context-menu favorite-item-click-handlers >
       <div>
@@ -295,7 +306,7 @@
                       <a ng-click="goToItemDetails(item)">{{item.name}} </a>
                     </h3>
                     <h5 class="block-display"> 
-                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a>                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
+                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a><span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
                       <span
                         ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
                         context-menu-template

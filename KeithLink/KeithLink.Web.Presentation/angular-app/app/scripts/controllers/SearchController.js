@@ -39,7 +39,8 @@ angular.module('bekApp')
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
 
-    $scope.sortField = null;
+    $scope.selectedSortParameter = 'Item #';
+    $scope.sortParametervalue = 'itemnumber';
     $scope.sortReverse = false;
 
     $scope.itemsPerPage = Constants.infiniteScrollPageSize;
@@ -47,6 +48,8 @@ angular.module('bekApp')
 
     $scope.numberFacetsToShow = 4;  // determines when to show the 'Show More' link for each facet
     $scope.maxSortCount = 200;      // max number of items that can be sorted by price
+
+
 
     $scope.hideMobileFilters = true;
     if ($state.params.catalogType == "BEK") {
@@ -93,6 +96,22 @@ angular.module('bekApp')
         showMore: true
       }
     };
+
+    $scope.selectSortParameter = function(parametername, parametervalue){
+      $scope.selectedSortParameter = parametername;
+      $scope.sortParametervalue = parametervalue;
+    }
+
+    $scope.sortParameters = [{
+      name: 'Item #',
+      value: 'itemnumber'
+    }, {
+      name: 'Name',
+      value: 'name'
+    }, {
+      name: 'Brand',
+      value: 'brand_extended_description'
+    }];
 
     $scope.initPagingValues = function(){
       $scope.visitedPages = [];
@@ -599,23 +618,17 @@ angular.module('bekApp')
       }
     };
 
-    // $scope.infiniteScrollLoadMore = function() {
-      
-    //   if(document.activeElement){
-    //     document.activeElement.blur();
-    //   }
-
-    //   if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
-    //     return;
-    //   }
-    //   var sortfieldholder = $scope.sortField;
-    //   $scope.itemIndex += $scope.itemsPerPage;
-    //   loadProducts(true).then(function(){
-    //     if(sortfieldholder === 'itemnumber' && $state.params.catalogType != 'BEK'){
-    //       $scope.UNFISortByItemNumber(!$scope.itemNumberDesc);
-    //     }
-    //   });      
-    // };
+    $scope.sortResults = function(sortdirection, sortfield){
+      startLoading();
+      return blockUI.start("Loading Products...").then(function(){
+        var params = ProductService.getSearchParams(null, $scope.startingPoint, sortfield, sortdirection, $stateParams.dept);
+        ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName).then(function(data){
+          $scope.products = data.products;
+        })
+      stopLoading();
+      blockUI.stop();
+      })
+    }
 
     $scope.toggleSelection = function(facetList, selectedFacet) {
       $scope.noFiltersSelected = false;
