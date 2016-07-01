@@ -426,6 +426,8 @@ namespace KeithLink.Svc.Impl.Logic {
         private string DetermineItemNumber( string itemNumber, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
             string returnValue = null;
 
+            itemNumber = itemNumber.Replace("\"", "");
+
             if (itemNumber.ToInt().Equals( null ) && itemNumber.ToLong().Equals( null )) {
                 Warning( String.Format("There were problems importing the file. Item: {0} is not a valid item or UPC.", itemNumber ));
             } else {
