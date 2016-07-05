@@ -111,6 +111,9 @@ angular.module('bekApp')
     }, {
       name: 'Brand',
       value: 'brand_not_analyzed'
+    }, {
+      name: 'Each',
+      value: 'caseonly'
     }];
 
     $scope.initPagingValues = function(){
