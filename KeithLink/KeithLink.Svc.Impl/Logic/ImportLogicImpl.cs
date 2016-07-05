@@ -335,8 +335,12 @@ namespace KeithLink.Svc.Impl.Logic {
             int rownum = 0;
             foreach (var row in rows)
             {
-                if (row.Length > 0 && (++rownum > 1 && file.Options.IgnoreFirstLine)) // skip the first row
+                if (row.Length > 0)
                 {
+                    if (++rownum == 1 && file.Options.IgnoreFirstLine) // skip the first row
+                    {
+                        continue;
+                    }
                     string[] vals = row.Split(Delimiter);
                     string itmNum = DetermineItemNumber(vals[itemNumberColumn].PadLeft(6, '0'), file.Options, user, catalogInfo);
                     decimal qty = 1;
