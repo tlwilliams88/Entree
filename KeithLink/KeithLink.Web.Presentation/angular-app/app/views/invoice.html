@@ -161,8 +161,8 @@
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
-                    <h5 >{{::invoice.typedescription}}</h5>
-                    <h5 class="highlight-text" >Status: {{invoice.statusdescription}}</h5>
+                    <h5>{{::invoice.typedescription}}</h5>
+                    <h5>Status: <span ng-class="{'highlight-text-late': (invoice.statusdescription == 'Past Due'), 'highlight-text-paid': (invoice.statusdescription == 'Paid') }" >{{::invoice.statusdescription}}</span></h5>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <h5 >PO Number: {{::invoice.ponumber}}</h5>

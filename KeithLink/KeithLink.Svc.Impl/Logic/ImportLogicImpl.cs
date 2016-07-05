@@ -319,7 +319,6 @@ namespace KeithLink.Svc.Impl.Logic {
 				}
 			}
 
-
             var rows = file.Contents.Split( new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None );
             //returnValue = rows
             //            .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
@@ -333,10 +332,15 @@ namespace KeithLink.Svc.Impl.Logic {
             //                CatalogId = catalogInfo.BranchId
             //                } )
             //            .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
+            int rownum = 0;
             foreach (var row in rows)
             {
                 if (row.Length > 0)
                 {
+                    if (++rownum == 1 && file.Options.IgnoreFirstLine) // skip the first row
+                    {
+                        continue;
+                    }
                     string[] vals = row.Split(Delimiter);
                     string itmNum = DetermineItemNumber(vals[itemNumberColumn].PadLeft(6, '0'), file.Options, user, catalogInfo);
                     decimal qty = 1;
@@ -425,6 +429,8 @@ namespace KeithLink.Svc.Impl.Logic {
 
         private string DetermineItemNumber( string itemNumber, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
             string returnValue = null;
+
+            itemNumber = itemNumber.Replace("\"", "");
 
             if (itemNumber.ToInt().Equals( null ) && itemNumber.ToLong().Equals( null )) {
                 Warning( String.Format("There were problems importing the file. Item: {0} is not a valid item or UPC.", itemNumber ));

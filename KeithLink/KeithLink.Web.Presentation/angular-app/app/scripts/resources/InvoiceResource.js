@@ -23,7 +23,7 @@ angular.module('bekApp')
       },
 
       getInvoiceTransactions: {
-        url: '/invoice/transactions/:invoiceNumber',
+        url: '/invoice/transactions/:branchId/:customerNumber/:invoiceNumber',
         method: 'GET'
       },
 
