@@ -107,10 +107,10 @@ angular.module('bekApp')
       value: 'itemnumber'
     }, {
       name: 'Name',
-      value: 'name'
+      value: 'name_not_analyzed'
     }, {
       name: 'Brand',
-      value: 'brand_extended_description'
+      value: 'brand_not_analyzed'
     }];
 
     $scope.initPagingValues = function(){
