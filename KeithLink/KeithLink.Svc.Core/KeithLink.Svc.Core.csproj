@@ -283,6 +283,7 @@
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExternalCatalog.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
+    <Compile Include="Models\ContentManagement\ContentItemClickedModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\AdditionalData.cs" />

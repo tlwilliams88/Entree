@@ -51,6 +51,31 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
             return retVal;
         }
+
+        /// <summary>
+        /// Log a click of marketing campaign link
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        [ApiKeyedRoute("cms/promoitems")]
+        public Models.OperationReturnModel<bool> LogMarketingContentHit(ContentItemClickedModel clicked)
+        {
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                retVal.SuccessResponse = _logic.LogHit(this.AuthenticatedUser, this.SelectedUserContext, clicked);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("LogMarketingContentHit", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
         #endregion
-    } 
+    }
 }

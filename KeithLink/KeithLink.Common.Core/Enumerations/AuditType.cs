@@ -44,7 +44,9 @@ namespace KeithLink.Common.Core.Enumerations
         [Description("User Deleted")]
         UserDeleted,
         [Description("Payment submitted")]
-        PaymentSubmitted
-	}
+        PaymentSubmitted,
+        [Description("Marketing Campaign Clicked")]
+        MarketingCampaignClicked
+    }
 
 }

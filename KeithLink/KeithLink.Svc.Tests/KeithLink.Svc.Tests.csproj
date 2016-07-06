@@ -161,7 +161,10 @@
     <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
     <Compile Include="Logic\Dsr\DsrLogicTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
+    <Compile Include="Repositories\Mock\AuditLogEntry.cs" />
+    <Compile Include="Repositories\Mock\AuditLogRepositoryMock.cs" />
     <Compile Include="Repositories\Mock\BasketRepositoryMock.cs" />
+    <Compile Include="Repositories\Mock\EventLogRepositoryMock.cs" />
     <Compile Include="Repositories\Mock\UnitOfWorkMock.cs" />
     <Compile Include="PowerMenu\PowerMenuRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

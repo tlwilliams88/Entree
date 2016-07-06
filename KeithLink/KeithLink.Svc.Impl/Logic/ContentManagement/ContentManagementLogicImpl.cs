@@ -10,17 +10,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic.ContentManagement {
     public class ContentManagementLogicImpl : IContentManagementLogic {
         #region attributes
         private readonly IEventLogRepository _log;
         private readonly IContentManagementExternalRepository _repo;
+        private readonly IAuditLogRepository _audit;
         #endregion
 
         #region ctor
-        public ContentManagementLogicImpl(IEventLogRepository logRepo, IContentManagementExternalRepository contentRepo) {
+        public ContentManagementLogicImpl(IEventLogRepository logRepo, IContentManagementExternalRepository contentRepo, IAuditLogRepository audit) {
             _log = logRepo;
+            _audit = audit;
             _repo = contentRepo;
         }
         #endregion
@@ -35,6 +39,16 @@ namespace KeithLink.Svc.Impl.Logic.ContentManagement {
             retVal.AddRange(GetGlobalItems(ref rawItems, retVal.Count));
 
             return retVal;
+        }
+
+        public bool LogHit(UserProfile user, UserSelectedContext context, ContentItemClickedModel clicked)
+        {
+            _audit.WriteToAuditLog(
+                Common.Core.Enumerations.AuditType.MarketingCampaignClicked, 
+                user.UserName,
+                string.Format("{0}|{1},{2}", context.CustomerId, clicked.CampaignId, clicked.TagLine)
+                );
+            return true;
         }
 
         private List<ContentItemViewModel> GetBranchItems(ref List<EE.ContentItem> items, string branchId) {
