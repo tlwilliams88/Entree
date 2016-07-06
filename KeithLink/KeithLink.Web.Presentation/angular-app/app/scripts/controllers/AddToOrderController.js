@@ -36,7 +36,7 @@ angular.module('bekApp')
     if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {  
       $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid, pageLoaded: true}, {location:'replace', inherit:false, notify: false});
     }
-    $scope.confirmQuantity = ListService.confirmQuantity;
+
     $scope.basketId = basketId;   
     $scope.indexOfSDestroyedRow = '';
     $scope.destroyedOnField = '';
@@ -525,16 +525,8 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
     $scope.confirmQuantity = function(type, item, value) {
 
-      if((value === 0 || value === undefined || item.quantity === '') && !(item.onhand > 0) && type === 'onhand'){
-        item.onhand = '0';    
-        $scope.onItemOnHandAmountChanged(item);
-        item.onhand = ''
-      }
-      if((!value || value === undefined) && type === 'quantity'){
-        removeQuantity(item);
-      }
       var pattern = /^([0-9])\1+$/; // repeating digits pattern
-      if (value > 50 || (value > 0 && pattern.test(value))) {
+      if (value > 50 || pattern.test(value)) {
         var isConfirmed = window.confirm('Do you want to continue with entered quantity of ' + value + '?');
         if (!isConfirmed) {
           // clear input
@@ -917,21 +909,18 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
     // update quantity from on hand amount and par level
     $scope.onItemOnHandAmountChanged = function(item) {
-      var offset = item.onhand;
-      if(item.onhand && item.onhand.toString() === 'true'){
-        offset= 0;
-      }
+
       if (!isNaN(item.onhand)) {
         if(item.onhand < 0){
-          item.onhand = offset = 0;
+          item.onhand = 0;
         }
-        var quantity = Math.ceil(item.parlevel - offset);
+        var quantity = Math.ceil(item.parlevel - item.onhand);
         if (quantity > 0) {
           item.quantity = quantity;
         } else if(item.quantity > 0 && (item.onhand.toString() === '0' || item.onhand === '')) {
           return;
         } else{
-          removeQuantity(item);
+          item.quantity = 0;
         }
       }
     };
