@@ -17,5 +17,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public decimal? TotalAmmountDue { get; set; }
 		[DataMember(Name = "pagedresults")]
 		public PagedResults<InvoiceModel> PagedResults { get; set; }
-	}
+        [DataMember(Name = "customerswithinvoices")]
+        public PagedResults<CustomersWithInvoices> CustomersWithInvoices { get; set; }
+    }
 }

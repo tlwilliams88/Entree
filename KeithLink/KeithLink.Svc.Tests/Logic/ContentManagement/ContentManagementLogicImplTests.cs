@@ -32,7 +32,7 @@ namespace KeithLink.Svc.Test.Logic.ContentManagement {
             List<ContentItemViewModel> items = _logic.ReadContentForBranch("FDF");
         }
         [TestMethod]
-        public void ContentManagementLogicImplTests_LogHit()
+        public void LogHit()
         {
             // Arrange
             var mockAuditLog = new AuditLogRepositoryMock();

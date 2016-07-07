@@ -41,11 +41,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.Customers;
 
 namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
     public class OnlinePaymentLogicImpl : IOnlinePaymentsLogic {
         #region attributes
         private readonly IAuditLogRepository _auditLog;
+        private readonly IInternalUserAccessRepository _internalUserAccessRepo;
         private readonly ICustomerBankRepository _bankRepo;
         //private readonly ICatalogLogic _catalogLogic;
         private readonly ICustomerRepository _customerRepository;
@@ -59,10 +61,11 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
         #region ctor
         public OnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
                                       ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, IKPayPaymentTransactionRepository paymentTransactionRepository, 
-                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo) {
+                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo, IInternalUserAccessRepository internalUserAccessRepo) {
             _invoiceRepo = invoiceRepo;
             _bankRepo = bankRepo;
             _orderHistoryRepo = orderHistoryrepo;
+            _internalUserAccessRepo = internalUserAccessRepo;
             //_catalogLogic = catalogLogic;
             _customerRepository = customerRepository;
             _queue = queueRepo;
@@ -199,92 +202,210 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers) {
             var customers = new List<Core.Models.Profile.Customer>();
 
+            FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
+
+            InvoiceHeaderReturnModel retInvoiceHeaders = new InvoiceHeaderReturnModel();
             if (forAllCustomers)
             {
                 customers = _customerRepository.GetCustomersForUser(user.UserId);
                 if (customers.Count == 0) // in the case of internal users, the relation of customers to users is different, so the above doesn't work
                                           // in that case we work with the selected customer
                 {
+                    //customers = new List<Core.Models.Profile.Customer>();
+                    //var internalAccesses = _internalUserAccessRepo.GetAllCustomersForUser(user.EmailAddress);
+                    //foreach(var internalAccess in internalAccesses)
+                    //{
+                    //    customers.Add(_customerRepository.GetCustomerByCustomerNumber(internalAccess.CustomerNumber, internalAccess.BranchId));
+                    //}
                     customers = new List<Core.Models.Profile.Customer>()
-                        { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
+                                            { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
+                }
+                retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomersWithInvoices>();
+                retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomersWithInvoices>();
+
+                foreach (var customer in customers)
+                {
+                    if(customer != null)
+                    {
+                        CustomersWithInvoices ci = customer.ToCustomerWithInvoices();
+
+                        try
+                        {
+                            FilterInfo customerFilter = BuildCustomerFilter(new List<Core.Models.Profile.Customer>() { customer });
+
+                            var kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                                           .AsQueryable()
+                                                           .Filter(customerFilter, null)
+                                                           .Filter(statusFilter, null)
+                                                           .ToList();
+
+                            var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
+                                                            .AsQueryable<InvoiceModel>()
+                                                            .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
+                            foreach (var invoice in pagedInvoices.Results)
+                            {
+                                invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
+
+                                //var customer = _customerRepository.GetCustomerByCustomerNumber(invoice.CustomerNumber, invoice.BranchId);
+                                //invoice.CustomerStreetAddress = customer.Address.StreetAddress;
+                                //invoice.CustomerCity = customer.Address.City;
+                                //invoice.CustomerRegionCode = customer.Address.RegionCode;
+                                //invoice.CustomerPostalCode = customer.Address.PostalCode;
+
+                                if (invoice.Status == InvoiceStatus.Pending)
+                                {
+                                    //Retrieve payment transaction record
+                                    var payment = _paymentTransactionRepository.ReadAll()
+                                                                               .Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) &&
+                                                                                           p.CustomerNumber.Equals(invoice.CustomerNumber) &&
+                                                                                           p.InvoiceNumber.Equals(invoice.InvoiceNumber))
+                                                                               .FirstOrDefault();
+                                    if (payment != null)
+                                    {
+                                        invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber) &&
+                                                                                                                            c.CustomerBranch.Equals(invoice.BranchId, StringComparison.InvariantCultureIgnoreCase))
+                                                                                                                .FirstOrDefault(),
+                                                                                                       Configuration.BillPayCutOffTime);
+                                    }
+                                }
+
+                                //Get transactions
+                                var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId), invoice.CustomerNumber, invoice.InvoiceNumber);
+                                invoice.InvoiceAmount = transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
+                                                                    .Select(x => x.AmountDue)
+                                                                    .FirstOrDefault();
+
+                                if (transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
+                                               .Count() > 0)
+                                {
+                                    invoice.HasCreditMemos = true;
+                                }
+                                else
+                                {
+                                    invoice.HasCreditMemos = false;
+                                }
+
+                                var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
+                                if (orderHistory != null)
+                                {
+                                    invoice.PONumber = orderHistory.PONumber;
+                                }
+                            }
+
+                            if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
+                                && (paging.Filter.Filters.Count > 0)
+                                && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
+                            {
+                                var filter = paging.Filter.Filters
+                                    .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).FirstOrDefault();
+                                if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos).ToList();
+                                }
+                                else if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM, StringComparison.CurrentCultureIgnoreCase))
+                                {
+                                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
+                                }
+
+                                //retInvoiceHeaders.HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0;
+                            }
+                            ci.PagedResults = pagedInvoices;
+                        }
+                        catch { }
+
+                        retInvoiceHeaders.CustomersWithInvoices.Results.Add(ci);
+                    }
+                    retInvoiceHeaders.CustomersWithInvoices.TotalResults = retInvoiceHeaders.CustomersWithInvoices.Results.Count;
                 }
             }
             else
+            {
                 customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
 
-            FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
-            FilterInfo customerFilter = BuildCustomerFilter(customers);
+                FilterInfo customerFilter = BuildCustomerFilter(customers);
 
-            var kpayInvoices = _invoiceRepo.ReadAllHeaders()
-                                           .AsQueryable()
-                                           .Filter(customerFilter, null)
-                                           .Filter(statusFilter, null)
-                                           .ToList();
+                var kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                               .AsQueryable()
+                                               .Filter(customerFilter, null)
+                                               .Filter(statusFilter, null)
+                                               .ToList();
 
-            var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
-                                            .AsQueryable<InvoiceModel>()
-                                            .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+                var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
+                                                .AsQueryable<InvoiceModel>()
+                                                .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
-            foreach(var invoice in pagedInvoices.Results) {
-                invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
+                foreach (var invoice in pagedInvoices.Results)
+                {
+                    invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
 
-                var customer = _customerRepository.GetCustomerByCustomerNumber(invoice.CustomerNumber, invoice.BranchId);
-                invoice.CustomerStreetAddress = customer.Address.StreetAddress;
-                invoice.CustomerCity = customer.Address.City;
-                invoice.CustomerRegionCode = customer.Address.RegionCode;
-                invoice.CustomerPostalCode = customer.Address.PostalCode;
+                    var customer = _customerRepository.GetCustomerByCustomerNumber(invoice.CustomerNumber, invoice.BranchId);
+                    invoice.CustomerStreetAddress = customer.Address.StreetAddress;
+                    invoice.CustomerCity = customer.Address.City;
+                    invoice.CustomerRegionCode = customer.Address.RegionCode;
+                    invoice.CustomerPostalCode = customer.Address.PostalCode;
 
-                if (invoice.Status == InvoiceStatus.Pending) {
-                    //Retrieve payment transaction record
-                    var payment = _paymentTransactionRepository.ReadAll()
-                                                               .Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && 
-                                                                           p.CustomerNumber.Equals(invoice.CustomerNumber) && 
-                                                                           p.InvoiceNumber.Equals(invoice.InvoiceNumber))
-                                                               .FirstOrDefault();
-                    if(payment != null) {
-                        invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber) && 
-                                                                                                            c.CustomerBranch.Equals(invoice.BranchId, StringComparison.InvariantCultureIgnoreCase))
-                                                                                                .FirstOrDefault(),
-                                                                                       Configuration.BillPayCutOffTime);
+                    if (invoice.Status == InvoiceStatus.Pending)
+                    {
+                        //Retrieve payment transaction record
+                        var payment = _paymentTransactionRepository.ReadAll()
+                                                                   .Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) &&
+                                                                               p.CustomerNumber.Equals(invoice.CustomerNumber) &&
+                                                                               p.InvoiceNumber.Equals(invoice.InvoiceNumber))
+                                                                   .FirstOrDefault();
+                        if (payment != null)
+                        {
+                            invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber) &&
+                                                                                                                c.CustomerBranch.Equals(invoice.BranchId, StringComparison.InvariantCultureIgnoreCase))
+                                                                                                    .FirstOrDefault(),
+                                                                                           Configuration.BillPayCutOffTime);
+                        }
+                    }
+
+                    //Get transactions
+                    var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId), invoice.CustomerNumber, invoice.InvoiceNumber);
+                    invoice.InvoiceAmount = transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
+                                                        .Select(x => x.AmountDue)
+                                                        .FirstOrDefault();
+
+                    if (transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
+                                   .Count() > 0)
+                    {
+                        invoice.HasCreditMemos = true;
+                    }
+                    else
+                    {
+                        invoice.HasCreditMemos = false;
+                    }
+
+                    var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
+                    if (orderHistory != null)
+                    {
+                        invoice.PONumber = orderHistory.PONumber;
                     }
                 }
 
-                //Get transactions
-                var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId), invoice.CustomerNumber, invoice.InvoiceNumber);
-                invoice.InvoiceAmount = transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
-                                                    .Select(x => x.AmountDue)
-                                                    .FirstOrDefault();
-
-                if(transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
-                               .Count() > 0) {
-                    invoice.HasCreditMemos = true;
-                } else {
-                    invoice.HasCreditMemos = false;
+                if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
+                    && (paging.Filter.Filters.Count > 0)
+                    && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
+                {
+                    var filter = paging.Filter.Filters
+                        .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).FirstOrDefault();
+                    if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos).ToList();
+                    }
+                    else if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
+                    }
                 }
 
-                var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
-                if(orderHistory != null) {
-                    invoice.PONumber = orderHistory.PONumber;
-                }
+                retInvoiceHeaders.HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0;
+                retInvoiceHeaders.PagedResults = pagedInvoices;
+                retInvoiceHeaders.TotalAmmountDue = kpayInvoices.Sum(i => i.AmountDue);
             }
-
-            if((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
-                && (paging.Filter.Filters.Count > 0)
-                && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0)) {
-                var filter = paging.Filter.Filters
-                    .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).FirstOrDefault();
-                if(filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase)) {
-                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos).ToList();
-                } else if(filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM, StringComparison.CurrentCultureIgnoreCase)) {
-                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
-                }
-            }
-
-            return new InvoiceHeaderReturnModel() {
-                HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
-                PagedResults = pagedInvoices,
-                TotalAmmountDue = kpayInvoices.Sum(i => i.AmountDue)
-            };
+            return retInvoiceHeaders;
         }
 
         //private void LookupProductDetails(InvoiceModel invoiceItem, UserSelectedContext catalogInfo) {
