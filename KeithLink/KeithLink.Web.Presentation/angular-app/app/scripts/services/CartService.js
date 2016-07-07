@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'SessionService', 'Constants', 'UtilityService', 'DateService', 'PricingService', 'ExportService', 'Cart',
-    function ($http, $q, $upload, ENV, toaster, SessionService, Constants, UtilityService, DateService, PricingService, ExportService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants',
+    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants) {
  
     var Service = {
       
@@ -227,6 +227,7 @@ angular.module('bekApp')
       updateCart: function(cart, params) {
         cart.message = 'Saving cart...';
         return Cart.update(params, cart).$promise.then(function(response) {
+          cart = response.successResponse;
 
           // update cache
           Service.cartHeaders.forEach(function(cartHeader, index) {
@@ -237,8 +238,26 @@ angular.module('bekApp')
               cartHeaderToUpdate.name = cart.name;
             }
           });
-          var cartId = response.successResponse.id || null;
-          return Service.getCart(cartId);
+
+          return Service.getCart(cart.id);
+        });
+      },
+
+      updateCartFromQuickAdd: function(cart) {
+        cart.message = 'Saving cart...';
+        return Cart.updateFromQuickAdd(cart).$promise.then(function(response) {
+
+          // update cache
+          Service.cartHeaders.forEach(function(cartHeader, index) {
+            if (cartHeader.id === cart.id) {
+              var cartHeaderToUpdate = Service.cartHeaders[index];
+              cartHeaderToUpdate.requestedshipdate = cart.requestedshipdate;
+              cartHeaderToUpdate.subtotal = cart.subtotal;
+              cartHeaderToUpdate.name = cart.name;
+            }
+          });
+
+          return Service.getCart(response.id);
         });
       },
  
