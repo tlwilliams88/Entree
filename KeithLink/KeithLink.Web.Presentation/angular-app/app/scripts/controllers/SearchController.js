@@ -111,9 +111,6 @@ angular.module('bekApp')
     }, {
       name: 'Brand',
       value: 'brand_not_analyzed'
-    }, {
-      name: 'Each',
-      value: 'caseonly'
     }];
 
     $scope.initPagingValues = function(){
@@ -182,8 +179,7 @@ angular.module('bekApp')
       $scope.setRange();
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
-        var params = ProductService.getSearchParams(null, $scope.startingPoint, $scope.sortField, sortDirection, $stateParams.dept);
+        var params = ProductService.getSearchParams(null, $scope.startingPoint, $scope.sortField, $scope.sortDirection, $stateParams.dept);
         ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
           $scope.products = data.products;
         })
@@ -412,30 +408,6 @@ angular.module('bekApp')
       $scope.breadcrumbs = breadcrumbs;
       $scope.filterCount = filterCount;
     }
-      
-    $scope.itemNumberDesc = false;
-    $scope.UNFISortByItemNumber= function(ascendingDate) {
-      $scope.sortField = 'itemnumber'
-      
-      if($state.params.catalogType != 'BEK'){
-        $scope.products = $scope.products.sort(function(obj1, obj2){
-          var sorterval1 = parseInt(obj1.itemnumber);
-          var sorterval2 = parseInt(obj2.itemnumber);
-
-          $scope.itemNumberDesc = !ascendingDate;  
-
-          if(ascendingDate){      
-            return sorterval1 - sorterval2;
-          }
-          else{
-            return sorterval2 - sorterval1;
-          }   
-        });
-      }
-      else{
-        $scope.sortTable('itemnumber');
-      }
-    };
 
     /*************
     LOAD PRODUCT DATA
@@ -456,12 +428,11 @@ angular.module('bekApp')
           $scope.facets.temp_zone.selected
         )
       }
-      var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
       if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
         $scope.sortField  = '';
       }
-      var params = ProductService.getSearchParams(null, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
+      var params = ProductService.getSearchParams(null, $scope.itemIndex, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName);
     }
 
@@ -609,27 +580,17 @@ angular.module('bekApp')
     /*************
     CLICK EVENTS
     *************/
-    $scope.sortTable = function(field) {
-      $scope.itemsPerPage = 50;
-      $scope.itemIndex = 0;
-
-      if (field !== 'caseprice' || $scope.totalItems <= $scope.maxSortCount) {
-        if ($scope.sortField !== field) { // different field
-          $scope.sortField = field;
-          $scope.sortReverse = false;
-        } else { // same field
-          $scope.sortReverse = !$scope.sortReverse;
-        }
-        loadProducts();
-      }
-    };
 
     $scope.sortResults = function(sortdirection, sortfield){
       startLoading();
+      $scope.sortField = sortfield; 
+      $scope.sortDirection = sortdirection;
       return blockUI.start("Loading Products...").then(function(){
         var params = ProductService.getSearchParams(null, $scope.startingPoint, sortfield, sortdirection, $stateParams.dept);
         ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName).then(function(data){
           $scope.products = data.products;
+        }).then(function(){
+          resetPage($scope.products, false);
         })
       stopLoading();
       blockUI.stop();
