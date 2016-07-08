@@ -9,6 +9,16 @@
 #
 # Optionally you can set the defaults for these values
 #
+# Example:
+# powerhsell.exe
+# ^ Task to run in scheduler
+#
+# -File "c:\path\to\script\EntreeKeepAliveScript.ps1" -InternalService http://internalserviceurl:port/ETLService.svc -WebApi http://webapiurl:port/profile -Foundation http://foundationserviceurl:port/Foundation/FoundationService.svc
+# ^ Parameter/Argument examples to use in scheduler
+#
+# powershell.exe -File "c:\path\to\script\EntreeKeepAliveScript.ps1" -InternalService http://internalserviceurl:port/ETLService.svc -WebApi http://webapiurl:port/profile -Foundation http://foundationserviceurl:port/Foundation/FoundationService.svc
+# ^ full example of executed command
+#
 
 
 # Accept the parameters passed in
