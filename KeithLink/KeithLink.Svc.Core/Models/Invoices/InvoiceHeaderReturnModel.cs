@@ -18,6 +18,6 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "pagedresults")]
 		public PagedResults<InvoiceModel> PagedResults { get; set; }
         [DataMember(Name = "customerswithinvoices")]
-        public PagedResults<CustomersWithInvoices> CustomersWithInvoices { get; set; }
+        public PagedResults<CustomerWithInvoices> CustomersWithInvoices { get; set; }
     }
 }

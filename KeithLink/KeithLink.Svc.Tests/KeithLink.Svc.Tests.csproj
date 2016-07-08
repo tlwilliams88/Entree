@@ -138,7 +138,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -146,6 +148,7 @@
     <Compile Include="AutoFac\DependencyMap.cs" />
     <Compile Include="Email\EmailTemplateTest.cs" />
     <Compile Include="Extensions\ToStringExtensionsTest.cs" />
+    <Compile Include="Extensions\InvoiceExtensionsTest.cs" />
     <Compile Include="Helpers\PricingHelperTests.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />

@@ -220,14 +220,14 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments {
                     customers = new List<Core.Models.Profile.Customer>()
                                             { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
                 }
-                retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomersWithInvoices>();
-                retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomersWithInvoices>();
+                retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomerWithInvoices>();
+                retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomerWithInvoices>();
 
                 foreach (var customer in customers)
                 {
                     if(customer != null)
                     {
-                        CustomersWithInvoices ci = customer.ToCustomerWithInvoices();
+                        CustomerWithInvoices ci = customer.ToCustomerWithInvoices();
 
                         try
                         {

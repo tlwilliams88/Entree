@@ -123,9 +123,9 @@ namespace KeithLink.Svc.Core.Extensions {
             }
         }
 
-        public static CustomersWithInvoices ToCustomerWithInvoices(this Models.Profile.Customer customer)
+        public static CustomerWithInvoices ToCustomerWithInvoices(this Models.Profile.Customer customer)
         {
-            return new CustomersWithInvoices()
+            return new CustomerWithInvoices()
             {
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName,

@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
 {
     [DataContract(Name = "customer")]
     [Serializable]
-    public class CustomersWithInvoices
+    public class CustomerWithInvoices
     {
         [DataMember(Name = "customerNumber")]
         public string CustomerNumber { get; set; }
