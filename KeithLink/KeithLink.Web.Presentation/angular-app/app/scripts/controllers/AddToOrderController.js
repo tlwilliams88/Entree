@@ -121,7 +121,7 @@ angular.module('bekApp')
       var newCartItems = [];
       
       angular.forEach(items, function(item, index) {
-        var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber);
+        var duplicateItem = UtilityService.findObjectByFieldATO(newCartItems, 'itemnumber', 'each', item.itemnumber, item.each);
         item.quantity = parseInt(item.quantity, 10);
         if (duplicateItem) {
           if(item.quantity){
@@ -879,7 +879,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           return r;   
       } 
       else { 
-        if($scope.selectedCart.id === 'New' && $scope.tempCartName === ''){
+        if($scope.selectedCart && $scope.selectedCart.id === 'New' && $scope.tempCartName === ''){
           $scope.createFromSearch = true;
         } 
         else if($scope.tempCartName){

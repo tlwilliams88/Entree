@@ -436,7 +436,7 @@ angular.module('bekApp')
         processingCancelOrder = true;
 
         OrderService.cancelOrder(changeOrder.commerceid).then(function() {
-          var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceid', changeOrder.commerceid);
+          var changeOrderFound = UtilityService.findObjectByField('CartItemsController', $scope.changeOrders, 'commerceid', '', changeOrder.commerceid, '');
           var idx = $scope.changeOrders.indexOf(changeOrderFound);
           $scope.changeOrders.splice(idx, 1);
           $scope.goToCart();
