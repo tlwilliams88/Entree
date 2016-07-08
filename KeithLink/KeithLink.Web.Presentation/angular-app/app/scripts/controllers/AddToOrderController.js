@@ -1002,7 +1002,8 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
             selectedCartItem[0].quantity = newitem.quantity + selectedCartItem[0].quantity;
           } else if(i < 1 && !selectedCartItem.length || (i < 1 && selectedCartItem.length && selectedCartItem[0].each !== newitem.each)) {
             i++;
-            $scope.selectedCart.items.push(newitem);
+            CartService.addItemToCart($scope.selectedCart.id, newitem);
+            // $scope.selectedCart.items.push(newitem);
           } else {
             return false;
           }
