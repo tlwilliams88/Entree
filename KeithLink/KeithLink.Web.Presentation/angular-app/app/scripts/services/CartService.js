@@ -239,8 +239,7 @@ angular.module('bekApp')
             }
           });
 
-          return cart;
-          Service.getCart(cart.id);
+          return Service.getCart(cart.id);
         });
       },
 

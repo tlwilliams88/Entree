@@ -10,12 +10,7 @@ angular.module('bekApp')
       $scope.cartHeaders = cartHeaders;
     });
 
-    // window.onbeforeunload = function(e){
-    //   $scope.saveAndRetainQuantity();
-    // }
-
-
-    $rootScope.$on('$stateChangeStart', 
+    $scope.$on('$stateChangeStart', 
       function(event, toState, toParams, fromState, fromParams){
       if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items')){
         $scope.saveAndRetainQuantity();
@@ -121,8 +116,7 @@ angular.module('bekApp')
       var newCartItems = [];
       
       angular.forEach(items, function(item, index) {
-        var duplicateItem = UtilityService.findObjectByFieldATO(newCartItems, 'itemnumber', 'each', item.itemnumber, item.each);
-        item.quantity = parseInt(item.quantity, 10);
+        var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber);        item.quantity = parseInt(item.quantity, 10);
         if (duplicateItem) {
           if(item.quantity){
             duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
