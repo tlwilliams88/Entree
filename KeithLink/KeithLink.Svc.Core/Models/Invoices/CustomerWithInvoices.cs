@@ -13,6 +13,12 @@ namespace KeithLink.Svc.Core.Models.Invoices
     [Serializable]
     public class CustomerWithInvoices
     {
+        [DataMember(Name = "haspayableinvoices")]
+        public bool HasPayableInvoices { get; set; }
+
+        [DataMember(Name = "totaldue")]
+        public decimal? TotalAmountDue { get; set; }
+
         [DataMember(Name = "customerNumber")]
         public string CustomerNumber { get; set; }
 
