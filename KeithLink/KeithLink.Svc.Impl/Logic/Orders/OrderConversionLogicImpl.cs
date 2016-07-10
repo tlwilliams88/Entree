@@ -268,7 +268,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber, string itemStatus) {
             orderFormLineItem["QuantityOrdered"] = quantityOrdered;
             orderFormLineItem["QuantityShipped"] = quantityShipped;
-            if (itemStatus.Length > 0)
+            if (itemStatus != null && itemStatus.Length > 0)
             {
                 switch (itemStatus)
                 {
