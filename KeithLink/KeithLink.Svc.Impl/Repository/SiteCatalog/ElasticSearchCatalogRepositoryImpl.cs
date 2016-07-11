@@ -28,6 +28,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         public ElasticSearchCatalogRepositoryImpl() {
             _eshelper = new Helpers.ElasticSearch();
             _client = GetElasticsearchClient(Configuration.ElasticSearchURL);
+            _catalog = "bek";
         }
         #endregion
 
@@ -584,7 +585,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         }
 
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
-            _catalog = catalogInfo.BranchId;
+            SetWorkingCatalog(catalogInfo.BranchId);
+
             int size = 0;
             if (searchModel.Size > 0)
             {
@@ -690,7 +692,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
-            _catalog = searchModel.CatalogType;
+            SetWorkingCatalog(searchModel.CatalogType);
+
             int size = GetProductPagingSize(searchModel.Size);
             //ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
@@ -1043,6 +1046,18 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             }
 
             return p;
+        }
+
+        private void SetWorkingCatalog(string catalogId)
+        {
+            if (catalogId != null)
+            {
+                _catalog = catalogId;
+            }
+            else
+            {
+                _catalog = "bek";
+            }
         }
         #endregion
 

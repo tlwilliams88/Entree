@@ -20,7 +20,13 @@ angular.module('bekApp')
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/cartquickaddmodal.html',
           controller: 'CartQuickAddModalController',
-          backdrop:'static'
+          backdrop:'static',
+
+          resolve: {
+            cart: function() {
+              return;
+            }
+          }
         });
    
         modalInstance.result.then(function(cartId) {

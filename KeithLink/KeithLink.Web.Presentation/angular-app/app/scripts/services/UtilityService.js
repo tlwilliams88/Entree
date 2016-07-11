@@ -80,6 +80,23 @@ angular.module('bekApp')
         return obj;
       },
 
+      /**
+      * finds one object in collection array where the given fieldName matches the matcher (findListById for example)
+      * @param  {Array}  collection  array of objects to search through (Array of Lists for example)
+      * @param  {String} fieldName  property name to do a comparison on ('id' for example)
+      * @param  {String/Number/Boolean} matcher    String/Number/Boolean that the given field must match to (12345 for example)
+      * @return {Object}            Object found that matches or null if no match was found
+      */
+      findObjectByFieldATO: function(collection, fieldName, secondaryfieldName, firstMatcher, secondaryMatcher) {
+        var obj;
+        angular.forEach(collection, function(item, index) {
+          if ((firstMatcher && item[fieldName] === firstMatcher) && (secondaryMatcher && item[secondaryfieldName] === secondaryMatcher)) {
+            obj = item;
+          }
+        });
+        return obj;
+      },
+
       // accepts collection of objects and the fieldName (array of strings) to be deleted
       
       /**

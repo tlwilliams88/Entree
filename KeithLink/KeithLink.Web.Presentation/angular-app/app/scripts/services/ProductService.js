@@ -112,8 +112,10 @@ angular.module('bekApp')
           };
 
           return $http.get(url, config).then(function(response) {
-            var dataTotalCount = response.data.successResponse.totalcount;
-            config.params.size = dataTotalCount;
+            if(response.data.successResponse){
+                var dataTotalCount = response.data.successResponse.totalcount;
+                config.params.size = dataTotalCount;    
+            }
 
             // return $http.get(url, config).then(function(response){
               var data = response.data.successResponse;

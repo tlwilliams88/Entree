@@ -12,6 +12,11 @@ angular.module('bekApp')
         method: 'PUT'
       },
 
+      updateFromQuickAdd: {
+        url: '/cart/quickadd',
+        method: 'PUT'
+      },
+
       delete: {
         url: '/cart/:cartId',
         method: 'DELETE'
