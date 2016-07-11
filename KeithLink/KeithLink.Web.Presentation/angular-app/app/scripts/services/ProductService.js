@@ -66,7 +66,7 @@ angular.module('bekApp')
 
         getSearchParams: function(pageSize, index, sortField, sortDirection, facets, department) {
           var params = {
-            size: pageSize  || defaultPageSize,
+            size: 25,
             from: index || defaultStartingIndex,
             dept: department,
             facets: facets,
@@ -109,21 +109,26 @@ angular.module('bekApp')
           };
 
           return $http.get(url, config).then(function(response) {
-            var data = response.data.successResponse;
+            var dataTotalCount = response.data.successResponse.totalcount;
+            config.params.size = dataTotalCount;
 
-            // convert nonstock data structure to match other itemspecs
-            if (data.facets.nonstock && data.facets.nonstock.length > 0) {
-              data.facets.nonstock.forEach(function(nonstockItem) {
-                if (nonstockItem.name === 'y') {
-                  data.facets.itemspecs.push({
-                    name: 'nonstock',
-                    count: nonstockItem.count // yes
-                  });
-                }
-              });
-            }
+            // return $http.get(url, config).then(function(response){
+              var data = response.data.successResponse;
 
-            return data;
+              // convert nonstock data structure to match other itemspecs
+              if (data.facets.nonstock && data.facets.nonstock.length > 0) {
+                data.facets.nonstock.forEach(function(nonstockItem) {
+                  if (nonstockItem.name === 'y') {
+                    data.facets.itemspecs.push({
+                      name: 'nonstock',
+                      count: nonstockItem.count // yes
+                    });
+                  }
+                });
+              }
+
+              return data;
+            // });
           });
         },
 

@@ -1,0 +1,58 @@
+<div page-header-bar>
+  <div header-message>
+    Configuration Settings
+    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="saveConfig(configSettings)" ng-disabled="!isverified" ng-show="verifySettings">
+    Save</button>
+    <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" ng-click="verifySettings = !verifySettings" ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine"  ng-show="!verifySettings">Verify</button>
+  </div>
+  <div header-buttons>
+    <label ng-if="configSettingsForm.$dirty && !configSettingsForm.$invalid" class="text-red pull-right-sm" 
+      style="padding:10px 20px 0 0;">
+      Please verify your changes below by checking the checkbox
+    </label>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print"
+      ng-disabled="!isverified && configSettingsForm.$pristine || configSettingsForm.$invalid"
+      ng-click="saveConfig(configSettings);" type="button">
+      Save
+    </button>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="col-md-12">
+  <form name="configSettingsForm" unsaved-warning-form autocomplete="off">
+    <table class="table table-striped-rows table-border">
+      <thead>
+        <tr>
+          <th class="col-sm-1 col-md-2">Key</th>
+          <th class="col-sm-1 col-md-3">Old Value</th>
+          <th class="col-sm-1 col-md-3">New Value</th>
+          <th class="col-sm-1 col-md-1">Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="setting in configSettings" ng-class="{ odd: $odd, even: $even }">
+          <td>{{setting.key}}</td>
+          <td>
+            <label style="max-width: 600px; word-wrap: break-word">
+              {{setting.value}}
+            </label>
+          </td>
+          <td>
+            <input
+            style="width:70%; float:left;"     
+            name="settingValueInput"                    
+            type="text"     
+            ng-model="setting.newvalue"    
+            onfocus="this.select()"
+            placeholder="Enter New Value"
+            />
+            <input type="checkbox" style="display:inline-block; float:left; margin-left:10px;" ng-if="setting.newvalue" ng-click="setSettingsVerified(setting)" />
+          </td>
+          <td>{{setting.comment}}</td>
+        </tr>
+      </tbody>
+    </table>
+    </form>
+  </div>
+</div>

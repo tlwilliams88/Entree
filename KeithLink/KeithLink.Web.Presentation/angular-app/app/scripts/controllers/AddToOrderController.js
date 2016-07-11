@@ -171,6 +171,8 @@ angular.module('bekApp')
                 }
               })
               lastInstanceInAppendedItems.quantity = alreadyAccountedFor ? '' : cartItem.quantity;
+              lastInstanceInAppendedItems.each = alreadyAccountedFor ? '' : cartItem.each;
+
             }
           }
           else{

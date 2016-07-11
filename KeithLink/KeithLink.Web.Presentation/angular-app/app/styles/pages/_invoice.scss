@@ -1,21 +1,11 @@
 
-.invoice-table {
-  > tbody > tr.invoice__late > td {
-    &:first-child {
-      border-left: 3px solid $color-red;
-    }
-    &.highlight-text {
+.highlight-text-late {
       color: $color-red;
-    }
-  }
-  > tbody > tr.invoice__paid > td {
-    &:first-child {
-      border-left: 3px solid $color-green;
-    }
-    &.highlight-text {
+
+}
+
+.highlight-text-paid {
       color: $color-green;
-    }
-  }
 }
 
 .invoice-modal-body{
@@ -125,4 +115,38 @@ margin-top:20px;
 .credit-memo-toggle{
   float:left; 
   padding-top:10px;
+}
+
+.panel-body:nth-of-type(odd){
+  background-color: $color-white !important;
+}
+
+.panel-body:nth-of-type(even){
+  background-color: $background;
+}
+
+.paymentmodal {
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+.selectallinvoices {
+  @media (min-width: 525px) {
+    margin-left: 15px;
+  }
+}
+
+.expandcollapsecustomers {
+  margin-top:15px; 
+  margin-right:15px;
+}
+
+.invoiceoptions {
+  max-width:100%; 
+  padding:0 50px 0 50px;
+}
+
+.webFilterInput {
+  width:auto !important; 
+  margin-right:7px;
 }

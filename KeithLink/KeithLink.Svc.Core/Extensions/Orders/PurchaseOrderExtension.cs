@@ -49,10 +49,12 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
 			retVal.ItemCount = retVal.Items == null ? 0 : retVal.Items.Count;
 
 			return retVal;
-		} 
+		}
 
-        private static OrderLine ToOrderLine(this CS.LineItem lineItem) {
-            return new OrderLine() {
+        private static OrderLine ToOrderLine(this CS.LineItem lineItem)
+        {
+            OrderLine ol = new OrderLine()
+            {
                 ItemNumber = lineItem.ProductId,
                 Quantity = (short)lineItem.Quantity,
                 Price = (double)lineItem.PlacedPrice,
@@ -61,8 +63,12 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"],
-                ChangeOrderStatus = (lineItem.Status != null && (lineItem.Status.Equals("deleted", StringComparison.InvariantCultureIgnoreCase))) ? "deleted":"",
+                ChangeOrderStatus = (lineItem.Status != null && (lineItem.Status.Equals("deleted", StringComparison.InvariantCultureIgnoreCase))) ? "deleted" : "",
             };
+            int ln;
+            int.TryParse(lineItem.LinePosition, out ln);
+            if (ln > 0) ol.LineNumber = ln;
+            return ol;
         }
     }
 }

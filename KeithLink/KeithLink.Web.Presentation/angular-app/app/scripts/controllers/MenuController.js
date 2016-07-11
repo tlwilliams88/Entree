@@ -42,9 +42,9 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
  
-  $scope.webVersionNum = '1.6.0';
-  $scope.androidVersionNum = '1.6.0';
-  $scope.iOSVersionNum = '1.6.0';
+  $scope.webVersionNum = '1.7.0';
+  $scope.androidVersionNum = '1.7.0';
+  $scope.iOSVersionNum = '1.7.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
@@ -167,7 +167,7 @@ angular.module('bekApp')
 
     // if users is viewing all customers
     // change selected user context back to the one stored in LocalStorage here
-    if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && !$scope.selectedUserContext.id) {
+    if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && $scope.selectedUserContext && !$scope.selectedUserContext.id) {
       $scope.setSelectedUserContext(LocalStorage.getCurrentCustomer());
     }
   });

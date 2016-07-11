@@ -117,10 +117,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             // load up recipients, customer and message
             eventLogRepository.WriteInformationLog("Received ETA Message with " + eta.Orders.Count + " orders");
             List<string> invoiceNumbers = eta.Orders.Select(x => x.OrderId).ToList();
-            var orders = orderHistoryRepository.Read(x => invoiceNumbers.Contains(x.InvoiceNumber)).ToList(); // get all orders for order ETAs
-            
-            foreach(OrderHistoryHeader order in orders) {
-                try {
+            string etaBranch = eta.Orders[0].BranchId;
+            var orders = orderHistoryRepository.Read(x => x.BranchId == etaBranch && 
+                invoiceNumbers.Contains(x.InvoiceNumber)).ToList(); // get all orders for order ETAs
+
+            foreach (OrderHistoryHeader order in orders)
+            {
+                try
+                {
                     var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
 
                     if (etaInfo != null){
@@ -132,17 +136,24 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
                     }
-                } catch(Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     eventLogRepository.WriteErrorLog("Error processing ETA notification for : " + order.InvoiceNumber + ".  " + ex.Message + ".  " + ex.StackTrace);
                 }
             }
-                
-            foreach (var order in orders){
-                try{
+
+            foreach (var order in orders)
+            {
+                try
+                {
                     orderHistoryRepository.Update(order);
-                } catch (Exception ex) {
+                    System.Threading.Thread.Sleep(200);
+                }
+                catch (Exception ex)
+                {
                     eventLogRepository.WriteErrorLog("Error saving ETA notification for : " + order.InvoiceNumber + ".  " + ex.Message + ".  " + ex.StackTrace);
-                } 
+                }
             }
 
             unitOfWork.SaveChanges();

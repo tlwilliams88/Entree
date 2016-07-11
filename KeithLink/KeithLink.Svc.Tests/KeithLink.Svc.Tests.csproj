@@ -151,8 +151,6 @@
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />
     <Compile Include="Logic\InternalSrv\InternalMarketingPreferenceLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalOnlinePaymentLogicTests.cs" />
-    <Compile Include="Logic\InternalSrv\InternalSvc_InternalListLogic_ReadPagedList_Tests.cs" />
-    <Compile Include="Logic\InternalSrv\ReadPagedList_UnitOfWorkMock.cs" />
     <Compile Include="Logic\NoCacheRepositoryImpl.cs" />
     <Compile Include="Logic\Order\InternalOrderHistoryLogicTests.cs" />
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />

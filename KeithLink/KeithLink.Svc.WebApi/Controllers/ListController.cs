@@ -659,9 +659,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             catch (Exception ex)
             {
-                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                ret.ReasonPhrase = ex.Message;
                 _elRepo.WriteErrorLog("Barcode", ex);
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             return ret;
         }
@@ -692,9 +691,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             catch (Exception ex)
             {
-                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                ret.ReasonPhrase = ex.Message;
                 _elRepo.WriteErrorLog("Print", ex);
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             return ret;
         }

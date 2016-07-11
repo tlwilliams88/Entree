@@ -23,8 +23,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist);
 
-        Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext, UserProfile userProfile);
-
         List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
 
         long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);

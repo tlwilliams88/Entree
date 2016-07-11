@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 
         public void CreateEmptyIndex(string branchId) {
             dynamic filters = new {
-                my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" },
+                my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt", ignore_case = "true" },
                 ngram_filter = new { type = "ngram", min_gram = 2, max_gram = 20, token_chars = new[] { "letter", "digit" } }
             };
 
@@ -46,16 +46,16 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             (dynamicAnalyzer as IDictionary<string, object>).Add("default", new {
                                                                                 type = "custom",
                                                                                 filter = new List<string>() {
-                                                                                        "my_synonym_filter", 
                                                                                         "standard", 
-                                                                                        "lowercase"
+                                                                                        "lowercase",
+                                                                                        "my_synonym_filter", 
                                                                                     },
                                                                                     tokenizer = "whitespace"
                                                                                 }
                                                                             );
             (dynamicAnalyzer as IDictionary<string, object>).Add("whitespace_analyzer", new {
                                                                                     type = "custom",
-                                                                                    filter = "lowercase",
+                                                                                    filter = new List<string>() { "lowercase", "my_synonym_filter" },
                                                                                     tokenizer = "whitespace"
                                                                                 }
                                                                             );
@@ -63,7 +63,8 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
                                                                                     type = "custom",
                                                                                     filter = new List<string>() {
                                                                                         "lowercase",
-                                                                                        "ngram_filter"
+                                                                                        "ngram_filter",
+                                                                                        "my_synonym_filter"
                                                                                     },
                                                                                     tokenizer = "whitespace"
                                                                                 }

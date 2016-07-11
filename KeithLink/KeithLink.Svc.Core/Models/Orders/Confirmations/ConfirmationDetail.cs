@@ -67,5 +67,8 @@ namespace KeithLink.Svc.Core.Models.Orders.Confirmations
 
         [DataMember(Name = "ConfirmationMessage")]
         public string ConfirmationMessage { get; set; }
+
+        [DataMember(Name = "ItemStatus")]
+        public string ItemStatus { get; set; }
     }
 }

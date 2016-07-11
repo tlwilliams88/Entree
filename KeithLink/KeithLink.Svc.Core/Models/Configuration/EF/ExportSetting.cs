@@ -15,13 +15,14 @@ namespace KeithLink.Svc.Core.Models.Configuration.EF
 		Order,
 		Products,
 		OrderDetail,
-		InvoiceDetail,
+        InvoiceDetail,
 		ItemUsage,
 		PendingTransactions,
-		MarketingPreferences
-	}
+		MarketingPreferences,
+        CartDetail 
+    }
 
-	public class ExportSetting: BaseEFModel
+    public class ExportSetting: BaseEFModel
 	{
 		public Guid UserId { get; set; }
 		public ExportType Type { get; set; }

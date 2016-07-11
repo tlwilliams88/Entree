@@ -131,7 +131,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             returnOrder.RelatedInvoiceNumbers = sbRelatedInvoices.ToString();
         }
 
-        public Order GetOrder(string branchId, string invoiceNumber) {
+        public Order GetOrder(string branchId, string invoiceNumber)
+        {
             EF.OrderHistoryHeader myOrder = _historyHeaderRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                         (h.InvoiceNumber.Equals(invoiceNumber) || h.ControlNumber.Equals(invoiceNumber)),
                                                                     d => d.OrderDetails).FirstOrDefault();
@@ -139,36 +140,48 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             Order returnOrder = null;
 
-            if(myOrder == null) {
+            if (myOrder == null)
+            {
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
-                
-                if(po == null) {
+
+                if (po == null)
+                {
                     //throw new Exception("An order with invoice #" + invoiceNumber + " is not able to be selected in this data.");
                     // No Order exists, return null
                     return null;
-                } else {
+                }
+                else
+                {
                     returnOrder = po.ToOrder();
                     PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
                 }
-            } else {
+            }
+            else
+            {
                 returnOrder = myOrder.ToOrder();
 
-                if(myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0) {
+                if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0)
+                {
                     po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
-                    if(po != null) {
+                    if (po != null)
+                    {
                         returnOrder.Status = po.Status;
                         returnOrder.CommerceId = Guid.Parse(po.Id);
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
-                        if(po.Status == "Confirmed with un-submitted changes") {
+                        if (po.Status == "Confirmed with un-submitted changes")
+                        {
                             returnOrder = po.ToOrder();
                         }
 
 
                         // needed to reconnect parent orders to special orders
-                        if(myOrder.RelatedControlNumber == null) {
+                        if (myOrder.RelatedControlNumber == null)
+                        {
                             FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
-                        } else {
+                        }
+                        else
+                        {
                             returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
                         }
                     }
@@ -177,38 +190,57 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // Set the status to delivered if the Actual Delivery Time is populated
             //if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
-            if(!string.IsNullOrEmpty(returnOrder.ActualDeliveryTime)) {
+            if (!string.IsNullOrEmpty(returnOrder.ActualDeliveryTime))
+            {
                 returnOrder.Status = "Delivered";
             }
 
-            if(myOrder != null) {
-                try {
+            if (myOrder != null)
+            {
+                try
+                {
                     var invoice = _invoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
-                    if(invoice != null) {
+                    if (invoice != null)
+                    {
                         returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
                     }
-                } catch(Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     _log.WriteErrorLog("Error looking up invoice when trying to get order:  " + ex.Message + ex.StackTrace);
 
                 }
             }
 
-            if(returnOrder.CatalogId == null) {
+            if (returnOrder.CatalogId == null)
+            {
                 returnOrder.CatalogId = branchId;
             }
 
             LookupProductDetails(returnOrder.CatalogId, returnOrder);
 
-            if(po != null) {
+            if (po != null)
+            {
                 returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
             }
 
-            if(returnOrder.Status == "Submitted" && returnOrder.Items != null) {
+            if (returnOrder.Status == "Submitted" && returnOrder.Items != null)
+            {
                 //Set all item status' to Pending. This is kind of a hack, but the correct fix will require more effort than available at the moment. The Status/Mainframe status changes are what's causing this issue
-                foreach(var item in returnOrder.Items)
+                foreach (var item in returnOrder.Items)
                     item.MainFrameStatus = "Pending";
             }
 
+            GiveLinkForSimilarItems(returnOrder);
+            HideDeletedItems(returnOrder);
+
+            returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+
+            return returnOrder;
+        }
+
+        private void GiveLinkForSimilarItems(Order returnOrder)
+        {
             foreach (var item in returnOrder.Items)
             {
                 //item.RequestDSRContact = "/messaging/RequestDSRContact?itemnumber=" + item.ItemNumber;
@@ -218,12 +250,23 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 sbSimilarItem.Replace(" ", "%20");
                 sbSimilar.Append("/catalog/search/" + sbSimilarItem.ToString() + "/products?dept=&from=0&sdir=asc&size=50");
                 item.GetSimilarItems = sbSimilar.ToString();
-                item.RequestDSRContact = "messaging/RequestDSRContact?itemnumber=" + item.ItemNumber;
             }
+        }
 
-            returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
-
-            return returnOrder;
+        private void HideDeletedItems(Order returnOrder)
+        {
+            List<OrderLine> hideItems = new List<OrderLine>();
+            foreach (var item in returnOrder.Items)
+            {
+                if (item.Status.Equals("Deleted", StringComparison.CurrentCultureIgnoreCase) | item.Status.Equals("D", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    hideItems.Add(item);
+                }
+            }
+            foreach (var item in hideItems)
+            {
+                returnOrder.Items.Remove(item);
+            }
         }
 
         public List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
@@ -254,7 +297,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
-            return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+            return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).OrderByDescending(o => o.CreatedDate).ToList<Order>();
         }
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
@@ -396,7 +439,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     item.CatchWeight = prod.CatchWeight;
                     item.TempZone = prod.TempZone;
                     item.ItemClass = prod.ItemClass;
-                    item.CategoryId = prod.CategoryId;
+                    item.CategoryCode = prod.CategoryCode;
+                    item.SubCategoryCode = prod.SubCategoryCode;
                     item.CategoryName = prod.CategoryName;
                     item.UPC = prod.UPC;
                     item.VendorItemNumber = prod.VendorItemNumber;
@@ -453,7 +497,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     item.CatchWeight = prod.CatchWeight;
                     item.TempZone = prod.TempZone;
                     item.ItemClass = prod.ItemClass;
-                    item.CategoryId = prod.CategoryId;
+                    item.CategoryCode = prod.CategoryCode;
+                    item.SubCategoryCode = prod.SubCategoryCode;
                     item.CategoryName = prod.CategoryName;
                     item.UPC = prod.UPC;
                     item.VendorItemNumber = prod.VendorItemNumber;
@@ -610,7 +655,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
             _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder, null);
-
+            
             client.CleanUpChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
@@ -655,12 +700,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private OrderLine ToOrderLine(CS.LineItem lineItem) {
             return new OrderLine() {
                 ItemNumber = lineItem.ProductId,
-                Quantity = (short)lineItem.Quantity,
-                Price = (double)lineItem.PlacedPrice,
+                Quantity = lineItem.Quantity == null ? 0 : (short)lineItem.Quantity,
+                Price = lineItem.PlacedPrice == null ? 0 : (double)lineItem.PlacedPrice,
                 QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
                 ChangeOrderStatus = lineItem.Status,
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
+                LineNumber = lineItem.Properties["LinePosition"] == null ? 1 : int.Parse(lineItem.Properties["LinePosition"].ToString()),
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"]
             };
@@ -695,7 +741,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                         }
                     }
                 } else { // new line
-                    existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, Each = newLine.Each, ChangeOrderStatus = "added" });
+                    existingOrder.Items.Add(new OrderLine() {
+                        ItemNumber = newLine.ItemNumber,
+                        Quantity = newLine.Quantity,
+                        Each = newLine.Each,
+                        ChangeOrderStatus = "added",
+                        LineNumber = existingOrder.Items.Select(li => li.LineNumber).Max()+1
+                    });
                 }
             }
             // handle deletes
@@ -729,7 +781,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             foreach (OrderLine line in existingOrder.Items) {
                 //itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.ChangeOrderStatus, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() {
+                    ItemNumber = line.ItemNumber,
+                    Quantity = line.Quantity,
+                    Status = line.ChangeOrderStatus,
+                    Catalog = catalogInfo.BranchId,
+                    Each = line.Each,
+                    CatchWeight = line.CatchWeight });
             }
             var orderNumber = client.UpdatePurchaseOrder(customer.CustomerId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 

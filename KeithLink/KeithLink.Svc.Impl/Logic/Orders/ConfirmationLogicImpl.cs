@@ -32,6 +32,8 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.Threading;
+using KeithLink.Svc.Impl.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -237,7 +239,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public void ListenForQueueMessages() {
-            this.queueListenerTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
+            this.queueListenerTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask(),
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach, 
+                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_CONFIRMATIONS));
         }
 
         private void ListenForQueueMessagesInTask() {
@@ -306,6 +310,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                 PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
             } catch (Exception e) {
+                _log.WriteErrorLog(string.Format("ProcessFileData -\r\n{0}", string.Join("\r\n", file)), e);
                 throw e;
             }
         }
@@ -350,6 +355,19 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 } else {
                     SetCsLineInfo(currLineItems, confirmation);
                 }
+
+            //List<OrderLine> hideItems = new List<OrderLine>();
+            //foreach (var item in returnOrder.Items)
+            //{
+            //    if (item.Status.Equals("Deleted", StringComparison.CurrentCultureIgnoreCase))
+            //    {
+            //        hideItems.Add(item);
+            //    }
+            //}
+            //foreach (var item in hideItems)
+            //{
+            //    returnOrder.Items.Remove(item);
+            //}
 
                 SetCsHeaderInfo(confirmation, po, currLineItems);
 

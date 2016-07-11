@@ -38,11 +38,7 @@ namespace KeithLink.Common.Impl.Logic.Settings {
 
             _repo.Update(key, value, originalSetting.Comment, originalSetting.Disabled);
 
-            // generate a random number to use for the update flag's value
-            Random randGen = new Random(DateTime.Now.Millisecond);
-            double randomNumber = randGen.NextDouble();
-
-            _repo.Update(KEY_UPDATEFLAG, randomNumber.ToString(), COMMENT_UPDATEFLAG, false);
+            _repo.Update(KEY_UPDATEFLAG, getRandomNumber().ToString(), COMMENT_UPDATEFLAG, false);
 
             // build the return value
             SettingUpdate retVal = new SettingUpdate();
@@ -51,6 +47,25 @@ namespace KeithLink.Common.Impl.Logic.Settings {
             retVal.OriginalValue = originalSetting.Value;
 
             return retVal;
+        }
+
+        public List<SettingUpdate> SaveSettings(List<Setting> settingsToUpdate)
+        {
+            List<SettingUpdate> returnValue = new List<SettingUpdate>();
+
+            foreach (Setting s in settingsToUpdate)
+            {
+                returnValue.Add(SaveSetting(s.Key, s.Value));
+            }
+
+            return returnValue;
+        }
+
+
+        private double getRandomNumber()
+        {
+            Random randGen = new Random(DateTime.Now.Millisecond);
+            return randGen.NextDouble();
         }
 
         #endregion

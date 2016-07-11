@@ -101,6 +101,7 @@ namespace KeithLink.Svc.Impl.Logic
 				basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, existingItem.First());
 				return existingItem.First().Id.ToGuid();
 			}
+            newItem.Position = basket.LineItems.Count;
 						
 			return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
 		}
@@ -127,7 +128,12 @@ namespace KeithLink.Svc.Impl.Logic
             var cartBranchId = catalogInfo.BranchId;
             if (catalogId != null)
                 cartBranchId = catalogId;
-            
+
+            int startpos = 1;
+            foreach (var item in cart.Items)
+            {
+                item.Position = startpos++;
+            }
 
 			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, cartBranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
 		}
@@ -208,13 +214,13 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items == null)
 				return;
 
-            var catalogList = cart.Items.Select(i => i.CatalogId).Distinct().ToList();
+            var catalogList = cart.Items.GroupBy(p => p.CatalogId.ToLower());
             var products = new ProductsReturn() { Products = new List<Product>() };
             var pricing = new PriceReturn() { Prices = new List<Price>() };
 
-            foreach (var catalogId in catalogList) {
-                var tempProducts = catalogLogic.GetProductsByIds(catalogId, 
-                                                                 cart.Items.Where(i => i.CatalogId.Equals(catalogId))
+            foreach (var catalogItems in catalogList) {
+                var tempProducts = catalogLogic.GetProductsByIds(catalogItems.Key, 
+                                                                 cart.Items.Where(i => i.CatalogId.Equals(catalogItems.Key, StringComparison.CurrentCultureIgnoreCase))
                                                                            .Select(i => i.ItemNumber)
                                                                            .Distinct()
                                                                            .ToList()
@@ -249,7 +255,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional == null ? "" : prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
-                    item.CategoryId = prod.CategoryId;
+                    item.CategoryCode = prod.CategoryCode;
+                    item.SubCategoryCode = prod.SubCategoryCode;
                     item.CategoryName = prod.CategoryName;
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
@@ -339,6 +346,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return null;
 			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
+            cart.Items = cart.Items.OrderBy(i => i.Position).ToList();
 			var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
@@ -350,6 +358,10 @@ namespace KeithLink.Svc.Impl.Logic
                 int qty = (int)item.Quantity;
                 int pack;
                 if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
+                if (item.PackSize != null && item.PackSize.IndexOf("/") > -1)
+                { // added to aid exporting separate pack and size on cart export
+                    item.Size = item.PackSize.Substring(item.PackSize.IndexOf("/") + 1);
+                }
 
                 cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
             }
@@ -426,8 +438,10 @@ namespace KeithLink.Svc.Impl.Logic
                     CreatedDate = new DateTime(),
                     Items = basket.LineItems
                                   .Where(l => string.Equals(l.CatalogName, catalogId, StringComparison.CurrentCultureIgnoreCase))
+                                  .OrderBy(l => int.Parse(l.Properties["LinePosition"].ToString()))
                                   .Select(l => new ShoppingCartItem() {
                                         ItemNumber = l.ProductId,
+                                        Position = int.Parse(l.Properties["LinePosition"].ToString()),
                                         Notes = l.Notes,
                                         Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
                                         Each = l.Each.HasValue ? l.Each.Value : false,
@@ -568,32 +582,41 @@ namespace KeithLink.Svc.Impl.Logic
             //cart.Active = true;
             //basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
         }
-        
-		private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
-		{
-			return new ShoppingCart()
-			{
-				CartId = basket.Id.ToGuid(),
-				Name = basket.DisplayName,
-				BranchId = basket.BranchId,
-				RequestedShipDate = basket.RequestedShipDate, 
-                Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
-				PONumber = basket.PONumber,
-				CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
-				Items = basket.LineItems.Select(l => new ShoppingCartItem()
-				{
-					ItemNumber = l.ProductId,
-					CartItemId = l.Id.ToGuid(),
-					Notes = l.Notes,
-					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-					Each = l.Each.HasValue ? l.Each.Value : false,
-                    Label = l.Label,
-					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    CatalogId = l.CatalogName
-				}).ToList()
-			};
 
-		}
+        private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
+        {
+            ShoppingCart sc = new ShoppingCart()
+            {
+                CartId = basket.Id.ToGuid(),
+                Name = basket.DisplayName,
+                BranchId = basket.BranchId,
+                RequestedShipDate = basket.RequestedShipDate,
+                Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
+                PONumber = basket.PONumber,
+                CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
+                Items = basket.LineItems
+                    .Select(l => new ShoppingCartItem()
+                {
+                    ItemNumber = l.ProductId,
+                    CartItemId = l.Id.ToGuid(),
+                    strPosition = l.LinePosition,
+                    Notes = l.Notes,
+                    Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                    Each = l.Each.HasValue ? l.Each.Value : false,
+                    Label = l.Label,
+                    CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    CatalogId = l.CatalogName
+                }).ToList()
+            };
+            foreach (ShoppingCartItem item in sc.Items)
+            {
+                int pos;
+                int.TryParse(item.strPosition, out pos);
+                if (pos > 0) item.Position = pos;
+            }
+            return sc;
+        }
+
 
         public void UpdateCart(UserSelectedContext catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
@@ -614,12 +637,16 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items != null)
 			{
 				itemsToRemove = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToCommerceServerFormat().Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
-				foreach (var item in cart.Items)
+                foreach (var item in cart.Items)
 				{
-					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
+                    if(item.CartItemId==new Guid() && item.Position == 1)
+                    {
+                        item.Position = cart.ItemCount;
+                    }
 
+					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
                     // Commenting on this mystery, I believe it is for quick add items
-					if (existingItem.Any() && item.CartItemId == Guid.Empty)
+                    if (existingItem.Any() && item.CartItemId == Guid.Empty)
 					{
 						existingItem.First().Quantity += item.Quantity;
 						lineItems.Add(existingItem.First());

@@ -347,7 +347,7 @@
           <form name="universalSearchForm" novalidate ng-if="::canBrowseCatalog">
             <div class="input-group input-group-lg">
                <div dropdown is-open="openScope" class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle">{{department[0].text}}<span style="margin-left:5px;" class="caret" ></span></button>
+                  <button type="button" class="btn btn-default dropdown-toggle">{{department[0].text}}<span class="caret margin-left-5" ></span></button>
                   <ul class="dropdown-menu" role="menu">
                     <li ng-repeat="department in departments" ><a ng-click="selectDepartment(department.value)">{{department.text}}</a></li>
                   </ul>

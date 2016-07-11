@@ -172,7 +172,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     item.CatchWeight = prod.CatchWeight;
                     item.TempZone = prod.TempZone;
                     item.ItemClass = prod.ItemClass;
-                    item.CategoryId = prod.CategoryId;
+                    item.CategoryCode = prod.CategoryCode;
+                    item.SubCategoryCode = prod.SubCategoryCode;
                     item.CategoryName = prod.CategoryName;
                     item.UPC = prod.UPC;
                     item.VendorItemNumber = prod.VendorItemNumber;
@@ -253,16 +254,35 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 int linePosition = Convert.ToInt32(detail.RecordNumber);
 
                 LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (linePosition)).FirstOrDefault();
+                //LineItem orderFormLineItem = lineItems.Where(x => x.ProductId == detail.ItemNumber).FirstOrDefault();
 
-                if (orderFormLineItem != null) {
-                    SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem));
-                } else { }
+                if (orderFormLineItem != null)
+                {
+                    SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem), 
+                        detail.ItemStatus);
+                }
+                else { }
             }
         }
 
-        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber) {
+        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber, string itemStatus) {
             orderFormLineItem["QuantityOrdered"] = quantityOrdered;
             orderFormLineItem["QuantityShipped"] = quantityShipped;
+            if (itemStatus != null && itemStatus.Length > 0)
+            {
+                switch (itemStatus)
+                {
+                    case Constants.CONFIRMATION_DETAIL_ITEM_STATUS_INVALID:
+                        displayStatus = Constants.CONFIRMATION_DETAIL_ITEM_STATUS_INVALID_DESCRIPTION;
+                        break;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_STATUS_DELETE:
+                        displayStatus = Constants.CONFIRMATION_DETAIL_ITEM_STATUS_DELETE_DESCRIPTION;
+                        break;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND:
+                        displayStatus = Constants.CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND_DESCRIPTION;
+                        break;
+                }
+            }
             orderFormLineItem["MainFrameStatus"] = displayStatus;
             orderFormLineItem["SubstitutedItemNumber"] = substitutedItemNumber;
             orderFormLineItem.ProductId = currentItemNumber;

@@ -1137,9 +1137,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                ret.ReasonPhrase = ex.Message;
                 _log.WriteErrorLog("ExportMarketingPrefs", ex);
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             return ret;
         }

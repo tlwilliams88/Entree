@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.WebApi.Models;
 
@@ -66,11 +67,19 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("banks")]
-        public OperationReturnModel<List<CustomerBank>> Get() {
+        public OperationReturnModel<List<CustomerBank>> Get(string customerId = null, string branchId = null) {
             OperationReturnModel<List<CustomerBank>> retVal = new OperationReturnModel<List<CustomerBank>>();
             try
             {
-                retVal.SuccessResponse = _invLogic.GetAllBankAccounts(SelectedUserContext);
+                if (customerId != null && branchId != null)
+                {
+                    retVal.SuccessResponse = _invLogic.GetAllBankAccounts
+                        (new Core.Models.SiteCatalog.UserSelectedContext() { CustomerId=customerId, BranchId=branchId });
+                }
+                else
+                {
+                    retVal.SuccessResponse = _invLogic.GetAllBankAccounts(SelectedUserContext);
+                }
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -152,9 +161,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             catch (Exception ex)
             {
-                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                ret.ReasonPhrase = ex.Message;
                 _log.WriteErrorLog("ExportInvoices", ex);
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             return ret;
         }
@@ -240,14 +248,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// Invoice transaction details
         /// </summary>
         /// <param name="invoiceNumber"></param>
+        /// <param name="branchId"></param>
+        /// <param name="customerNumber"></param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("invoice/transactions/{invoiceNumber}")]
-        public Models.OperationReturnModel<List<InvoiceTransactionModel>> InvoiceTransactions(string invoiceNumber) {
+        [ApiKeyedRoute("invoice/transactions/{branchId}/{customerNumber}/{invoiceNumber}")]
+        public Models.OperationReturnModel<List<InvoiceTransactionModel>> InvoiceTransactions(string branchId, string customerNumber, string invoiceNumber) {
             Models.OperationReturnModel<List<InvoiceTransactionModel>> retVal = new Models.OperationReturnModel<List<InvoiceTransactionModel>>();
             try
             {
-                List<InvoiceTransactionModel> transactions = _invLogic.GetInvoiceTransactions(this.SelectedUserContext, invoiceNumber);
+                UserSelectedContext customerContext = new UserSelectedContext() {
+                    BranchId = branchId,
+                    CustomerId = customerNumber
+                };
+                List<InvoiceTransactionModel> transactions = _invLogic.GetInvoiceTransactions(customerContext, invoiceNumber);
 
                 retVal.SuccessResponse = transactions;
                 retVal.IsSuccess = true;
@@ -284,9 +298,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             catch (Exception ex)
             {
-                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                ret.ReasonPhrase = ex.Message;
                 _log.WriteErrorLog("ExportInvoiceDetail", ex);
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             return ret;
         }
@@ -457,9 +470,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             catch (Exception ex)
             {
-                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
-                ret.ReasonPhrase = ex.Message;
                 _log.WriteErrorLog("ExportOrders", ex);
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
             }
             return ret;
         }

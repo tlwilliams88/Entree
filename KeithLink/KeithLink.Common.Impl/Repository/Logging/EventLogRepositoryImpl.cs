@@ -39,7 +39,22 @@ namespace KeithLink.Common.Impl.Repository.Logging
 				msg.AppendLine();
 			}
 
-			msg.AppendLine(ex.Message);
+            if(System.Web.HttpContext.Current != null)
+            {
+                msg.AppendLine("This is a web request.");
+                msg.AppendLine(string.Format("Request is: \"{0}\"", System.Web.HttpContext.Current.Request.RawUrl));
+                msg.AppendLine(string.Format("Request type is: \"{0}\"", System.Web.HttpContext.Current.Request.RequestType));
+                msg.AppendLine(string.Format("User Selected Context is: \"{0}\"", System.Web.HttpContext.Current.Request.Headers["userSelectedContext"]));
+                msg.AppendLine();
+            }
+
+            if (ex.TargetSite != null)
+            {
+                msg.AppendLine(string.Format("Target Error Routine is: \"{0}\"", ex.TargetSite.Name));
+                msg.AppendLine();
+            }
+
+            msg.AppendLine(ex.Message);
             msg.AppendLine();
             msg.AppendLine("Exception Stack:");
             msg.AppendLine("  Outer Stack:");

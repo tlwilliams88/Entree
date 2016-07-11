@@ -19,12 +19,16 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
         private ElasticsearchClient _client;
+        // In the request to ElasticSearch, there are different fields that are search for category/subcategory codes for BEK vs nonBEK 
+        // products
+        private string _catalog = null;
         #endregion
 
         #region constructor
         public ElasticSearchCatalogRepositoryImpl() {
             _eshelper = new Helpers.ElasticSearch();
             _client = GetElasticsearchClient(Configuration.ElasticSearchURL);
+            _catalog = "bek";
         }
         #endregion
 
@@ -543,7 +547,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             dynamic categorySearchExpression = BuildBoolMultiMatchQuery(searchModel, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
 
-            return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", categorySearchExpression);
+            return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), true, "", categorySearchExpression);
         }
 
         public Product GetProductById(string branch, string id) {
@@ -554,7 +558,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 			if (res.Response == null)
 				return null;
 
-            return LoadProductFromElasticSearchProduct(res.Response);
+            return LoadProductFromElasticSearchProduct(false, res.Response);
         }
         
         private int GetProductPagingSize(int size) {
@@ -562,9 +566,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return Configuration.DefaultProductReturnSize;
             return size;
         }
-        
+
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
-            int size = GetProductPagingSize(searchModel.Size);
+            SetWorkingCatalog(catalogInfo.BranchId);
+
+            int size = 0;
+            if (searchModel.Size > 0)
+            {
+                size = GetProductPagingSize(searchModel.Size);
+            }
 
             //List<string> childCategories = 
             //    GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
@@ -573,12 +583,26 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             //string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
-            dynamic categorySearchExpression = BuildBoolFunctionScoreQuery( searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
+            dynamic categorySearchExpression = BuildBoolFunctionScoreQuery( searchModel.From, size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
             var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
 
-            return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
+            ProductsReturn ret = GetProductsFromElasticSearch(catalogInfo.BranchId, true, "", categorySearchExpression);
+
+            if (searchModel.Size == 0)
+            {
+                size = ret.TotalCount;
+
+                categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir,
+                    filterTerms);
+
+                query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+
+                ret = GetProductsFromElasticSearch(catalogInfo.BranchId, true, "", categorySearchExpression);
+            }
+
+            return ret;
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
@@ -594,7 +618,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 						}}";
 
 
-			return GetProductsFromElasticSearch(branch, query);
+			return GetProductsFromElasticSearch(branch, false, query);
         }
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
@@ -620,10 +644,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             string branch = catalogInfo.BranchId.ToLower();
              
-            return GetProductsFromElasticSearch(branch, "", termSearchExpression);
+            return GetProductsFromElasticSearch(branch, true, "", termSearchExpression);
         }
         
-        private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody, object searchBodyD = null) {
+        private ProductsReturn GetProductsFromElasticSearch(string branch, bool listonly, string searchBody, object searchBodyD = null) {
             string requestToJSON = "";
             if (searchBodyD == null) {
                 requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBody);
@@ -640,7 +664,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             List<Product> products = new List<Product>();
             foreach (var oProd in res.Response["hits"]["hits"]) {
-                Product p = LoadProductFromElasticSearchProduct(oProd);
+                Product p = LoadProductFromElasticSearchProduct(listonly, oProd);
                 products.Add(p);
             }
             ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
@@ -651,6 +675,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
+            SetWorkingCatalog(searchModel.CatalogType);
+
             int size = GetProductPagingSize(searchModel.Size);
             //ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
@@ -701,7 +727,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         //private delegate TResult Func<in T, out TResult>();
 
-        private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
+        private ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 
             if (res.Response.Contains("aggregations")) {
@@ -713,7 +739,23 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
                         if (oFacet.Key == "categories") {
                             facetValue.Add(new KeyValuePair<string, object>("categoryname",  oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
-                        } else if (oFacet.Key == "brands") {
+                            if(oFacetValue["category_code"] != null && 
+                               oFacetValue["category_code"]["buckets"] != null && 
+                               (oFacetValue["category_code"]["buckets"]).Count > 0)
+                            {
+                                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                            }
+                        }
+                        else if (oFacet.Key == "parentcategories")
+                        {
+                            if (oFacetValue["parentcategory_code"] != null &&
+                                oFacetValue["parentcategory_code"]["buckets"] != null &&
+                                (oFacetValue["parentcategory_code"]["buckets"]).Count > 0)
+                            {
+                                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["parentcategory_code"]["buckets"][0]["key"].ToString()));
+                            }
+                        }
+                        else if (oFacet.Key == "brands") {
                             if (oFacetValue["brand_meta"]["buckets"].Count > 0) {
                                 facetValue.Add(new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].ToString()));
                             } else {
@@ -722,53 +764,70 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         }
                         facet.Add(facetValue as ExpandoObject);
                     }
-
                     (facets as IDictionary<string, object>).Add(oFacet.Key, facet);
                 }
+
+                // corrolate parentcategories and categories
+                var parentcategories = (facets as IDictionary<string, object>)["parentcategories"];
+                var categories = (facets as IDictionary<string, object>)["categories"];
+                if (parentcategories != null && categories != null)
+                {
+                    var newparentlist = new List<ExpandoObject>();
+                    foreach (IDictionary<string, object> parent in (parentcategories as List<ExpandoObject>))
+                    {
+                        string pcode = parent["code"].ToString();
+                        List<ExpandoObject> cats = new List<ExpandoObject>();
+                        foreach (IDictionary<string, object> cat in (categories as List<ExpandoObject>))
+                        {
+                            string code = cat["code"].ToString();
+                            if (_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase) && code.StartsWith(pcode.Substring(0, 1)))
+                            {
+                                cats.Add((ExpandoObject)cat);
+                            }
+                            else if (_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase) == false && code.StartsWith(pcode.Substring(0, 2)))
+                            {
+                                cats.Add((ExpandoObject)cat);
+                            }
+                        }
+                        parent.Add("categories", cats);
+                    }
+                }
+
             }
 
             return facets;
         }
         
-        private static Product LoadProductFromElasticSearchProduct(dynamic oProd) {
+        private Product LoadProductFromElasticSearchProduct(bool listonly, dynamic oProd) {
             Product p = new Product();
             p.ManufacturerName = oProd._source.mfrname;
             p.ItemNumber = oProd._id;
             p.Kosher = string.IsNullOrEmpty(oProd._source.kosher) ? "Unknown" : oProd._source.kosher;
-            p.ManufacturerNumber = oProd._source.mfrnumber;
-            p.Size = oProd._source.size;
             p.Brand = oProd._source.brand;
             p.BrandExtendedDescription = oProd._source.brand_description;
-            p.BrandControlLabel = oProd._source.brand_control_label;
-            p.UPC = oProd._source.upc;
             p.Description = oProd._source.description;
-            p.Cases = oProd._source.cases;
-            p.ExtendedDescription = string.Empty;
-            p.CategoryId = oProd._source.categoryid;
-            p.ReplacedItem = oProd._source.replaceditem;
-            p.ReplacementItem = oProd._source.replacementitem;
-            p.ChildNutrition = oProd._source.childnutrition;
-            p.SellSheet = oProd._source.sellsheet;
+            p.CategoryCode = oProd._source.categoryid;
+            p.UPC = oProd._source.upc;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
-            p.VendorItemNumber = oProd._source.vendor1;
-			p.ItemClass = oProd._source.parentcategoryname;
-            try {
-                p.CaseCube = oProd._source.icube;
-            } catch (Exception e) {
-                p.CaseCube = "";
-            }
-			p.NonStock = oProd._source.nonstock;
-			p.Pack = oProd._source.pack;
+            p.ItemClass = oProd._source.parentcategoryname;
+            p.Pack = oProd._source.pack;
+            p.Size = oProd._source.size;
+            p.CaseOnly = oProd._source.caseonly == "Y";
             p.TempZone = oProd._source.temp_zone;
-			p.CaseOnly = oProd._source.caseonly == "Y";
-            p.CatchWeight = oProd._source.catchweight;
-			p.IsProprietary = oProd._source.isproprietary;
-            p.AverageWeight = oProd._source.averageweight;
             p.CasePriceNumeric = oProd._source.caseprice != null ? oProd._source.caseprice : 0.00;
             p.CasePrice = p.CasePriceNumeric.ToString();
             p.PackagePriceNumeric = oProd._source.packageprice != null ? oProd._source.packageprice : 0.00;
             p.PackagePrice = p.PackagePriceNumeric.ToString();
+            p.SellSheet = oProd._source.sellsheet;
+            p.ChildNutrition = oProd._source.childnutrition;
+            p.NonStock = oProd._source.nonstock;
+            if (oProd._source.nutritional != null)
+            {
+                Nutritional nutritional = new Nutritional();
+                nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
+                p.Nutritional = nutritional;
+            }
             p.CatalogId = oProd._index;
             if (p.CatalogId.ToLower().StartsWith("unfi"))
             {
@@ -777,140 +836,208 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.Pack = oProd._source.casequantity.ToString();
                 p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
                 p.IsSpecialtyCatalog = true;
-                p.Cases = oProd._source.onhandqty.ToString();
-                p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
                 p.CasePrice = oProd._source.caseprice.ToString();
-
+                if (oProd._source.tcscode != null)
+                    p.SubCategoryCode = oProd._source.tcscode.ToString();
+                if (oProd._source.packageprice != null)
+                    p.PackagePrice = oProd._source.packageprice.ToString();
+                if (oProd._source.caseprice != null)
+                    p.CasePrice = oProd._source.caseprice.ToString();
                 UNFI unfi = new UNFI();
 
                 if (oProd._source.cheight != null)
                     unfi.CaseHeight = oProd._source.cheight.ToString();
-                if (oProd._source.clength != null)
-                    unfi.CaseLength = oProd._source.clength.ToString();
-                if (oProd._source.clength != null)
-                    unfi.CaseWidth = oProd._source.cwidth.ToString();
-                if (oProd._source.averageweight != null)
-                    unfi.Weight = oProd._source.averageweight.ToString();
-                if (oProd._source.unitofsale != null)
-                    unfi.UnitOfSale = oProd._source.unitofsale.ToString();
-                if (oProd._source.shipminexpire != null)
-                    unfi.CatalogDept = oProd._source.catalogdept.ToString();
-                if (oProd._source.clength != null)
-                    unfi.ShipMinExpire = oProd._source.shipminexpire.ToString();
-                if (oProd._source.minorder != null)
-                    unfi.MinOrder = oProd._source.minorder.ToString();
-                if (oProd._source.casequantity != null)
-                    unfi.CaseQuantity = oProd._source.casequantity.ToString();
-                if (oProd._source.putup != null)
-                    unfi.PutUp = oProd._source.putup.ToString();
-                if (oProd._source.contunit != null)
-                    unfi.ContUnit = oProd._source.contunit.ToString();
-                if (oProd._source.tcscode != null)
-                    unfi.TCSCode = oProd._source.tcscode.ToString();
-                if (oProd._source.caseupc != null)
-                    unfi.CaseUPC = oProd._source.caseupc.ToString();
-                if (oProd._source.plength != null)
-                    unfi.PackageLength = oProd._source.plength.ToString();
-                if (oProd._source.pheight != null)
-                    unfi.PackageHeight = oProd._source.pheight.ToString();
-                if (oProd._source.pwidth != null)
-                    unfi.PackageWidth = oProd._source.pwidth.ToString();
-                if (oProd._source.status != null)
-                    unfi.Status = oProd._source.status.ToString();
                 if (oProd._source.packageprice != null)
                     unfi.PackagePrice = oProd._source.packageprice.ToString();
                 if (oProd._source.caseprice != null)
                     unfi.CasePrice = oProd._source.caseprice.ToString();
-                if (oProd._source.flag1 != null)
-                    unfi.Flag1 = oProd._source.flag1.ToString();
-                if (oProd._source.flag2 != null)
-                    unfi.Flag2 = oProd._source.flag2.ToString();
-                if (oProd._source.flag3 != null)
-                    unfi.Flag3 = oProd._source.flag3.ToString();
-                if (oProd._source.flag4 != null)
-                    unfi.Flag4 = oProd._source.flag4.ToString();
-                if (oProd._source.onhandqty != null)
-                    unfi.OnHandQty = oProd._source.onhandqty.ToString();
-                if (oProd._source.vendor1 != null)
-                    unfi.Vendor = oProd._source.vendor1.ToString();
-                if (oProd._source.stockedinbranches != null)
-                    unfi.StockedInBranches = oProd._source.stockedinbranches.ToString();
-
                 p.Unfi = unfi;
             }
-          
-            if (oProd._source.nutritional != null) {
-                Nutritional nutritional = new Nutritional();
-                nutritional.BrandOwner = oProd._source.nutritional.brandowner;
-                nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
-                nutritional.GrossWeight = oProd._source.nutritional.grossweight;
-                nutritional.HandlingInstructions = oProd._source.nutritional.handlinginstruction;
-                nutritional.Ingredients = oProd._source.nutritional.ingredients;
-                nutritional.MarketingMessage = oProd._source.nutritional.marketingmessage;
-                nutritional.MoreInformation = oProd._source.nutritional.moreinformation;
-                nutritional.ServingSize = oProd._source.nutritional.servingsize;
-                nutritional.ServingSizeUOM = oProd._source.nutritional.servingsizeuom;
-                nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
-                nutritional.ServingSugestion = oProd._source.nutritional.servingsuggestions;
-                nutritional.Shelf = oProd._source.nutritional.shelf;
-                nutritional.StorageTemp = oProd._source.nutritional.storagetemp;
-                nutritional.UnitMeasure = oProd._source.nutritional.unitmeasure;
-                nutritional.UnitsPerCase = oProd._source.nutritional.unitspercase;
-                nutritional.Volume = oProd._source.nutritional.volume;
-                nutritional.Height = oProd._source.nutritional.height;
-                nutritional.Length = oProd._source.nutritional.length;
-                nutritional.Width = oProd._source.nutritional.width;
-                nutritional.Allergens = new Allergen();
-                nutritional.NutritionInfo = new List<Nutrition>();
-                nutritional.DietInfo = new List<Diet>();
-                if (oProd._source.nutritional.allergen != null) {
-                    if (oProd._source.nutritional.allergen.freefrom != null) {
-                        nutritional.Allergens.freefrom = new List<string>();
-                        foreach (var ff in oProd._source.nutritional.allergen.freefrom)
-                            nutritional.Allergens.freefrom.Add(ff);
-					}
-
-					if (oProd._source.nutritional.allergen.contains != null) {
-                        nutritional.Allergens.contains = new List<string>();
-                        foreach (var ff in oProd._source.nutritional.allergen.contains)
-                            nutritional.Allergens.contains.Add(ff);
-					}
-
-                    if (oProd._source.nutritional.allergen.maycontain != null) {
-                        nutritional.Allergens.maycontain = new List<string>();
-                        foreach (var ff in oProd._source.nutritional.allergen.maycontain)
-                            nutritional.Allergens.maycontain.Add(ff);
-					}
-
-					//foreach (var allergen in oProd._source.gs1.allergen)
-					//{
-					//	Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
-					//	gs1.Allergens.Add(a);
-					//}
-				}
-
-                if (oProd._source.nutritional.nutrition != null) {
-                    foreach (var nutrition in oProd._source.nutritional.nutrition) {
-                        Nutrition n = new Nutrition() {
-                            DailyValue = nutrition.dailyvalue,
-                            MeasurementTypeId = nutrition.measurementtypeid,
-                            MeasurementValue = nutrition.measurementvalue,
-                            NutrientType = nutrition.nutrienttype,
-                            NutrientTypeCode = nutrition.nutrienttypecode
-                        };
-                        nutritional.NutritionInfo.Add(n);
-                    }
+            if (listonly == false)
+            {
+                p.ManufacturerNumber = oProd._source.mfrnumber;
+                p.BrandControlLabel = oProd._source.brand_control_label;
+                p.Cases = oProd._source.cases;
+                p.ExtendedDescription = string.Empty;
+                p.SubCategoryCode = oProd._source.categoryid;
+                p.ReplacedItem = oProd._source.replaceditem;
+                p.ReplacementItem = oProd._source.replacementitem;
+                p.VendorItemNumber = oProd._source.vendor1;
+                try
+                {
+                    p.CaseCube = oProd._source.icube;
                 }
-                if (oProd._source.nutritional.diet != null) {
-                    foreach (var diet in oProd._source.nutritional.diet) {
-                        Diet d = new Diet() { DietType = diet.diettype, Value = diet.value };
-                        nutritional.DietInfo.Add(d);
-                    }
+                catch (Exception e)
+                {
+                    p.CaseCube = "";
                 }
-                p.Nutritional = nutritional;
+                p.CatchWeight = oProd._source.catchweight;
+                p.IsProprietary = oProd._source.isproprietary;
+                p.AverageWeight = oProd._source.averageweight;
+                if (p.CatalogId.ToLower().StartsWith("unfi"))
+                {
+                    //make vendor into description
+                    p.Description = oProd._source.vendor1;
+                    p.Pack = oProd._source.casequantity.ToString();
+                    p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
+                    p.IsSpecialtyCatalog = true;
+                    p.Cases = oProd._source.onhandqty.ToString();
+                    p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
+                    p.CasePrice = oProd._source.caseprice.ToString();
+
+                    UNFI unfi = new UNFI();
+
+                    if (oProd._source.cheight != null)
+                        unfi.CaseHeight = oProd._source.cheight.ToString();
+                    if (oProd._source.clength != null)
+                        unfi.CaseLength = oProd._source.clength.ToString();
+                    if (oProd._source.clength != null)
+                        unfi.CaseWidth = oProd._source.cwidth.ToString();
+                    if (oProd._source.averageweight != null)
+                        unfi.Weight = oProd._source.averageweight.ToString();
+                    if (oProd._source.unitofsale != null)
+                        unfi.UnitOfSale = oProd._source.unitofsale.ToString();
+                    if (oProd._source.shipminexpire != null)
+                        unfi.CatalogDept = oProd._source.catalogdept.ToString();
+                    if (oProd._source.clength != null)
+                        unfi.ShipMinExpire = oProd._source.shipminexpire.ToString();
+                    if (oProd._source.minorder != null)
+                        unfi.MinOrder = oProd._source.minorder.ToString();
+                    if (oProd._source.casequantity != null)
+                        unfi.CaseQuantity = oProd._source.casequantity.ToString();
+                    if (oProd._source.putup != null)
+                        unfi.PutUp = oProd._source.putup.ToString();
+                    if (oProd._source.contunit != null)
+                        unfi.ContUnit = oProd._source.contunit.ToString();
+                    if (oProd._source.tcscode != null)
+                        unfi.TCSCode = oProd._source.tcscode.ToString();
+                    if (oProd._source.caseupc != null)
+                        unfi.CaseUPC = oProd._source.caseupc.ToString();
+                    if (oProd._source.plength != null)
+                        unfi.PackageLength = oProd._source.plength.ToString();
+                    if (oProd._source.pheight != null)
+                        unfi.PackageHeight = oProd._source.pheight.ToString();
+                    if (oProd._source.pwidth != null)
+                        unfi.PackageWidth = oProd._source.pwidth.ToString();
+                    if (oProd._source.status != null)
+                        unfi.Status = oProd._source.status.ToString();
+                    if (oProd._source.packageprice != null)
+                        unfi.PackagePrice = oProd._source.packageprice.ToString();
+                    if (oProd._source.caseprice != null)
+                        unfi.CasePrice = oProd._source.caseprice.ToString();
+                    if (oProd._source.flag1 != null)
+                        unfi.Flag1 = oProd._source.flag1.ToString();
+                    if (oProd._source.flag2 != null)
+                        unfi.Flag2 = oProd._source.flag2.ToString();
+                    if (oProd._source.flag3 != null)
+                        unfi.Flag3 = oProd._source.flag3.ToString();
+                    if (oProd._source.flag4 != null)
+                        unfi.Flag4 = oProd._source.flag4.ToString();
+                    if (oProd._source.onhandqty != null)
+                        unfi.OnHandQty = oProd._source.onhandqty.ToString();
+                    if (oProd._source.vendor1 != null)
+                        unfi.Vendor = oProd._source.vendor1.ToString();
+                    if (oProd._source.stockedinbranches != null)
+                        unfi.StockedInBranches = oProd._source.stockedinbranches.ToString();
+
+                    p.Unfi = unfi;
+                }
+
+                if (oProd._source.nutritional != null)
+                {
+                    Nutritional nutritional = new Nutritional();
+                    nutritional.BrandOwner = oProd._source.nutritional.brandowner;
+                    nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
+                    nutritional.GrossWeight = oProd._source.nutritional.grossweight;
+                    nutritional.HandlingInstructions = oProd._source.nutritional.handlinginstruction;
+                    nutritional.Ingredients = oProd._source.nutritional.ingredients;
+                    nutritional.MarketingMessage = oProd._source.nutritional.marketingmessage;
+                    nutritional.MoreInformation = oProd._source.nutritional.moreinformation;
+                    nutritional.ServingSize = oProd._source.nutritional.servingsize;
+                    nutritional.ServingSizeUOM = oProd._source.nutritional.servingsizeuom;
+                    nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
+                    nutritional.ServingSugestion = oProd._source.nutritional.servingsuggestions;
+                    nutritional.Shelf = oProd._source.nutritional.shelf;
+                    nutritional.StorageTemp = oProd._source.nutritional.storagetemp;
+                    nutritional.UnitMeasure = oProd._source.nutritional.unitmeasure;
+                    nutritional.UnitsPerCase = oProd._source.nutritional.unitspercase;
+                    nutritional.Volume = oProd._source.nutritional.volume;
+                    nutritional.Height = oProd._source.nutritional.height;
+                    nutritional.Length = oProd._source.nutritional.length;
+                    nutritional.Width = oProd._source.nutritional.width;
+                    nutritional.Allergens = new Allergen();
+                    nutritional.NutritionInfo = new List<Nutrition>();
+                    nutritional.DietInfo = new List<Diet>();
+                    if (oProd._source.nutritional.allergen != null)
+                    {
+                        if (oProd._source.nutritional.allergen.freefrom != null)
+                        {
+                            nutritional.Allergens.freefrom = new List<string>();
+                            foreach (var ff in oProd._source.nutritional.allergen.freefrom)
+                                nutritional.Allergens.freefrom.Add(ff);
+                        }
+
+                        if (oProd._source.nutritional.allergen.contains != null)
+                        {
+                            nutritional.Allergens.contains = new List<string>();
+                            foreach (var ff in oProd._source.nutritional.allergen.contains)
+                                nutritional.Allergens.contains.Add(ff);
+                        }
+
+                        if (oProd._source.nutritional.allergen.maycontain != null)
+                        {
+                            nutritional.Allergens.maycontain = new List<string>();
+                            foreach (var ff in oProd._source.nutritional.allergen.maycontain)
+                                nutritional.Allergens.maycontain.Add(ff);
+                        }
+
+                        //foreach (var allergen in oProd._source.gs1.allergen)
+                        //{
+                        //	Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
+                        //	gs1.Allergens.Add(a);
+                        //}
+                    }
+
+                    if (oProd._source.nutritional.nutrition != null)
+                    {
+                        foreach (var nutrition in oProd._source.nutritional.nutrition)
+                        {
+                            Nutrition n = new Nutrition()
+                            {
+                                DailyValue = nutrition.dailyvalue,
+                                MeasurementTypeId = nutrition.measurementtypeid,
+                                MeasurementValue = nutrition.measurementvalue,
+                                NutrientType = nutrition.nutrienttype,
+                                NutrientTypeCode = nutrition.nutrienttypecode
+                            };
+                            nutritional.NutritionInfo.Add(n);
+                        }
+                    }
+                    if (oProd._source.nutritional.diet != null)
+                    {
+                        foreach (var diet in oProd._source.nutritional.diet)
+                        {
+                            Diet d = new Diet() { DietType = diet.diettype, Value = diet.value };
+                            nutritional.DietInfo.Add(d);
+                        }
+                    }
+                    p.Nutritional = nutritional;
+                }
             }
-            
+
             return p;
+        }
+
+        private void SetWorkingCatalog(string catalogId)
+        {
+            if (catalogId != null)
+            {
+                _catalog = catalogId;
+            }
+            else
+            {
+                _catalog = "bek";
+            }
         }
         #endregion
 
@@ -926,8 +1053,32 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                             throw new ApplicationException("Incorrect aggreation configuration");
 
                         if (aggregationParams[0] == "categories") {
-                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { category_meta = new { terms = new { field = "categoryname_not_analyzed", size = 500 } } } });
-                        } else if (aggregationParams[0] == "brands") {
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], 
+                                new
+                                {
+                                    terms = new { field = aggregationParams[1], size = 500 },
+                                    aggregations = new
+                                    {
+                                        category_meta = new { terms = new { field = "categoryname_not_analyzed", size = 500 } },
+                                        category_code = new { terms = new { field = 
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase))? "tcscode" : "categoryid"), size = 500 } }
+                                    }
+                                });
+                        }
+                        else if (aggregationParams[0] == "parentcategories")
+                        {
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0],
+                                new
+                                {
+                                    terms = new { field = aggregationParams[1], size = 500 },
+                                    aggregations = new
+                                    {
+                                        parentcategory_code = new { terms = new { field =
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "catalogdept" : "parentcategoryid"), size = 500 } }
+                                    }
+                                });
+                        }
+                        else if (aggregationParams[0] == "brands") {
                             (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { brand_meta = new { terms = new { field = "brand_control_label", size = 500 } } } });
                         } else {
                             (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 } });

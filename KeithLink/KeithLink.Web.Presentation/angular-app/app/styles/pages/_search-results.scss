@@ -87,7 +87,7 @@
 .mobile-filter {
   @include arrow('top','right', 10px, $color-brown, $color-brown, 2px);
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   background-color: $color-white;
 
   &:before {
@@ -96,6 +96,28 @@
   }
   &:after {
     right: 30px;
+  }
+}
+
+.facet-checkbox{
+  margin-bottom: 0;
+  padding-left: 5px; // Override default ul/ol
+  list-style: none;
+  @include clearfix;
+
+  > li {
+    position: relative;
+    display: block;
+  }
+
+  // Open dropdowns
+  .open > a {
+    &,
+    &:hover,
+    &:focus {
+      background-color: $nav-link-hover-bg;
+      border-color: $link-color;
+    }
   }
 }
 
@@ -214,4 +236,50 @@
 
 .tooltip-inner{
   max-width:350px;
+}
+
+@media (max-width:529px){
+  .hideIconName{
+    display:none;
+  }
+}
+
+@media (min-width:530px){
+  .displayIconName{
+    display:inline-block;
+  }
+}
+
+@media (min-width:530px){
+  .hideIconBrand{
+    display:none;
+  }
+}
+
+@media (max-width:529px){
+  .displayIconBrand{
+    display:inline-block;
+  }
+}
+
+.searchResults{
+  background-color: $color-white;
+  border-bottom: 1px solid #c3bc9c; 
+  margin:0;
+}
+
+.block-display {
+  display:block;
+}
+
+.search-result-image-container { 
+  padding-top:15px;
+  width:50%;
+  text-align:center;
+}
+
+.search-result-images {
+  max-width:60%; 
+  max-height:150px; 
+  margin:15px 0 15px 0;
 }

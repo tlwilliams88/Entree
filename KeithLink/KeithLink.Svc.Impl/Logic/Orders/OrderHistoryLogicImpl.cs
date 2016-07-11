@@ -40,6 +40,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Concurrent;
 using KeithLink.Svc.Core;
+using System.Threading;
+using KeithLink.Svc.Impl.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -428,11 +430,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void ListenForQueueMessages() {
-            _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
+            _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask(),
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach,
+                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_ORDERUPDATES));
         }
 
         private void ListenForQueueMessagesInTask() {
-            while(_keepListening) {
+            while (_keepListening) {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
                 try {

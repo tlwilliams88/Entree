@@ -79,7 +79,8 @@ namespace KeithLink.Svc.Impl.Logic.Reports {
                 Name = g.Select(a => a.Name).FirstOrDefault(),
                 Each = g.Key.Each ? "Y" : "N",
                 Class = g.Select(a => a.ItemClass).FirstOrDefault(),
-                CategoryId = g.Select(a => a.CategoryId).FirstOrDefault(),
+                CategoryCode = g.Select(a => a.CategoryCode).FirstOrDefault(),
+                SubCategoryCode = g.Select(a => a.SubCategoryCode).FirstOrDefault(),
                 CategoryName = g.Select(a => a.CategoryName).FirstOrDefault(),
                 PackSize = g.Select(a => a.PackSize).FirstOrDefault(),
                 Brand = g.Select(a => a.Brand).FirstOrDefault(),
@@ -159,7 +160,8 @@ namespace KeithLink.Svc.Impl.Logic.Reports {
                     orderLine.IsValid = true;
                     orderLine.Name = prod.Name;
                     orderLine.ItemClass = prod.ItemClass;
-                    orderLine.CategoryId = prod.CategoryId;
+                    orderLine.CategoryCode = prod.CategoryCode;
+                    orderLine.SubCategoryCode = prod.SubCategoryCode;
                     orderLine.CategoryName = prod.CategoryName;
                     orderLine.Pack = prod.Pack;
                     orderLine.Size = prod.Size;

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Dynamic;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
@@ -23,6 +24,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public ExpandoObject Facets { get; set; }
 
         [DataMember(Name = "catalogCounts")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string,int> CatalogCounts { get; set; }
 
         public ProductsReturn AddRange(ProductsReturn products) {

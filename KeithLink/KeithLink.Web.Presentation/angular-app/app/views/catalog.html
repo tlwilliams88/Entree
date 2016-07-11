@@ -29,8 +29,8 @@
                 src="images/bek-logo.png" 
                 alt="default product image">
               <span class="featured-item__detail">
-                {{item.name}}
-                <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{item.itemnumber}}</a>
+                {{::item.name}}
+                <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{::item.itemnumber}}</a>
               </span>
             </div>
           </li>
@@ -65,8 +65,8 @@
                 src="images/bek-logo.png" 
                 alt="default product image">
               <span class="featured-item__detail">
-                {{item.name}}
-                <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{item.itemnumber}}</a>
+                {{::item.name}}
+                <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{::item.itemnumber}}</a>
               </span>
             </div>
           </li>
@@ -91,7 +91,7 @@
     				<div class="featured-item text-center">
     					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" ng-src="{{category.category_image.url}}" alt="image">
     					<div class="featured-item__detail">
-    						{{category.name}}
+    						{{::category.name}}
     						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" class="text-uppercase">view category</a>
     					</div>
     				</div>
@@ -115,7 +115,7 @@
     				<div class="featured-item text-center">
     					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.brand_control_label })" ng-src="{{brand.imageurl}}" alt="image">
     					<div class="featured-item__detail">
-    						{{brand.extended_description}}
+    						{{::brand.extended_description}}
     						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.brand_control_label })" class="text-uppercase">view brand</a>
     					</div>
     				</div>

@@ -8,6 +8,10 @@ namespace KeithLink.Svc.Core
 {
     public class Constants
     {
+        public const int LIMITEDCONCURRENCYTASK_ORDERUPDATES = 4;
+        public const int LIMITEDCONCURRENCYTASK_SPECIALORDERUPDATES = 2;
+        public const int LIMITEDCONCURRENCYTASK_CONFIRMATIONS = 4;
+        public const int LIMITEDCONCURRENCYTASK_NOTIFICATIONS = 6;
         public static string ReturnSizeQueryStringParam { get { return "size"; } }
         public static string ReturnFromQueryStringParam { get { return "from"; } }
 
@@ -190,6 +194,12 @@ namespace KeithLink.Svc.Core
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_CODE = "S";
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS = "Item Subbed";
         public const string ITEM_DELETED_STATUS = "Deleted";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_INVALID = "I";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_INVALID_DESCRIPTION = "Invalid";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_DELETE = "D";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_DELETE_DESCRIPTION = "Deleted";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND = "N";
+        public const string CONFIRMATION_DETAIL_ITEM_STATUS_NOT_FOUND_DESCRIPTION = "Not Found";
 
         public const string CONFIRMATION_HEADER_IN_PROCESS_CODE = "P";
         public const string CONFIRMATION_HEADER_IN_PROCESS_STATUS = "In Process";
@@ -306,5 +316,29 @@ namespace KeithLink.Svc.Core
         // queue action retries
         public const int QUEUE_REPO_RETRY_COUNT = 5;
         public const int QUEUE_CHECKLOSTORDERS_RETRY_COUNT = 5;
+
+        public const string IXONE_IMAGE_FILETYPE_STANDARDRES = "A";
+        public const string IXONE_IMAGE_FILETYPE_HIGHRES = "C";
+        public const string IXONE_IMAGE_FACING_FRONT = "1";
+        public const string IXONE_IMAGE_FACING_LEFT = "2";
+        public const string IXONE_IMAGE_FACING_TOP = "3";
+        public const string IXONE_IMAGE_FACING_BACK = "7";
+        public const string IXONE_IMAGE_FACING_RIGHT = "8";
+        public const string IXONE_IMAGE_FACING_DISPLAY = "D";
+        public const string IXONE_IMAGE_FACING_NUTRITION = "N";
+        public const string IXONE_IMAGE_FACING_INGREDIENTS = "I";
+        public const string IXONE_IMAGE_ANGLE_CENTER = "C";
+        public const string IXONE_IMAGE_ANGLE_LEFT = "L";
+        public const string IXONE_IMAGE_ANGLE_RIGHT = "R";
+        public const string IXONE_IMAGE_ANGLE_NOPLUNGE = "N";
+        public const string IXONE_IMAGE_PACK_IN = "1";
+        public const string IXONE_IMAGE_PACK_OUT = "0";
+        public const string IXONE_IMAGE_PACK_CASE = "A";
+        public const string IXONE_IMAGE_PACK_INNER = "B";
+        public const string IXONE_IMAGE_PACK_PREPARED = "D";
+        public const string IXONE_PRODUCTINFO_GET_URL =
+            "https://exchange.ix-one.net/services/Products/filtered";
+        public const string IXONE_PRODUCTIMAGE_GET_URL =
+            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
     }
 }

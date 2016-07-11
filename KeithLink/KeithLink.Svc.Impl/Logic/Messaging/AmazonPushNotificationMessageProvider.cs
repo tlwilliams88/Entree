@@ -96,8 +96,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 try {
                     StringBuilder sendMsg = new StringBuilder();
                     sendMsg.AppendLine("Sending message to push recipient.");
-                    sendMsg.AppendLine("Error sending message to push recipient.");
                     sendMsg.AppendLine("UserId: {UserId}");
+                    sendMsg.AppendLine("UserEmail: {UserEmail}");
                     sendMsg.AppendLine("CustomerNumber: {CustomerNumber}");
                     sendMsg.AppendLine("DeviceId: {DeviceId}");
                     sendMsg.AppendLine("DeviceOS: {DeviceOS}");
@@ -122,6 +122,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     StringBuilder msg = new StringBuilder();
                     msg.AppendLine("Error sending message to push recipient.");
                     msg.AppendLine("UserId: {UserId}");
+                    msg.AppendLine("UserEmail: {UserEmail}");
                     msg.AppendLine("CustomerNumber: {CustomerNumber}");
                     msg.AppendLine("DeviceId: {DeviceId}");
                     msg.AppendLine("DeviceOS: {DeviceOS}");

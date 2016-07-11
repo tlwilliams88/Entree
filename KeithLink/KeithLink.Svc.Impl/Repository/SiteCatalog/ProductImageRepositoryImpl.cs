@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
@@ -20,9 +20,19 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             using (HttpClient client = new HttpClient()) {
                 StringBuilder queryString = new StringBuilder("ItemImage/GetList/");
-                queryString.Append(itemNumber);
 
-                if(!isBekItem) { queryString.Append("?BEKItem=false"); }
+                if(!isBekItem)
+                { // the UPC we have on file is a gtin12; the format the image provider saved the images as is gtin14
+                    // so we prepend 00 on the front of the number
+                    queryString.Append("00");
+                    queryString.Append(itemNumber);
+                    queryString.Append("?BEKItem=false");
+                }
+                else
+                {
+                    queryString.Append(itemNumber);
+
+                }
 
                 Uri multiDocsUri = new Uri(Configuration.MultiDocsUrl);
                 Uri endPoint = new Uri (multiDocsUri, queryString.ToString());
@@ -44,6 +54,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             return retVal;
         }
+
         #endregion
     }
 }

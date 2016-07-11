@@ -43,7 +43,7 @@
       </accordion-heading>
       <div ng-repeat="category in facets.categories.available" class="panel panel-default">
         <div class="panel-body">
-          <a ng-click="toggleSelection(facets.categories.selected, category.name)" ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">{{category.categoryname}} 
+          <a ng-click="toggleSelection(facets.categories.selected, category.name)" ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">{{::category.categoryname}} 
           <span ng-show="category.count > 0">({{category.count}})</span></a>
         </div>
       </div>
@@ -60,57 +60,66 @@
       ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
       ng-disabled="brand.name === featuredBreadcrumb.displayText"
       ng-click="toggleSelection(facets.brands.selected, brand.name)">
-      <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
+      <label for="brandId_{{brand.name}}">{{::brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
     </div>
   </div>
 </accordion-group>
 
 <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
-<accordion-heading>
-Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
-</accordion-heading>
-<div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
-  <div class="panel-body">
-    <input type="checkbox"
-    value="manufacturerValue_{{manufacturer.name}}"
-    id="manufacturerId_{{manufacturer.name}}"
-    ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
-    ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
-    ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
-    <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
+  <accordion-heading>
+  Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
+  </accordion-heading>
+  <div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
+    <div class="panel-body">
+      <input type="checkbox"
+      value="manufacturerValue_{{manufacturer.name}}"
+      id="manufacturerId_{{manufacturer.name}}"
+      ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
+      ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
+      ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
+      <label for="manufacturerId_{{manufacturer.name}}">{{::manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</label>
+    </div>
   </div>
-</div>
 </accordion-group>
 
 <accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
-<accordion-heading>
-Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
-</accordion-heading>
-<div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
-  <div class="panel-body">
-    <input type="checkbox"
-    value="dietValue_{{diet.name}}"
-    id="dietId_{{diet.name}}"
-    ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
-    ng-click="toggleSelection(facets.dietary.selected, diet.name)">
-    <label for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
+  <accordion-heading>
+  Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
+  </accordion-heading>
+  <div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
+    <div class="panel-body">
+      <input type="checkbox"
+      value="dietValue_{{diet.name}}"
+      id="dietId_{{diet.name}}"
+      ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
+      ng-click="toggleSelection(facets.dietary.selected, diet.name)">
+      <label for="dietId_{{diet.name}}">{{::diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</label>
+    </div>
   </div>
-</div>
 </accordion-group>
 <accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0">
-<accordion-heading>
-Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
-</accordion-heading>
-<div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
-  <div class="panel-body">
-    <input type="checkbox"
-    value="specValue_{{spec.name}}"
-    id="specId_{{spec.name}}"
-    ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
-    ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
-    <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</label>
+  <accordion-heading>
+  Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
+  </accordion-heading>
+  <div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
+    <div class="panel-body">
+      <input type="checkbox"
+      value="specValue_{{spec.name}}"
+      id="specId_{{spec.name}}"
+      ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
+      ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
+      <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{::spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</label>
+    </div>
   </div>
-</div>
+</accordion-group>
+<accordion-group is-open="status.openCatalogs" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0">
+  <accordion-heading>Catalogs<i class="pull-right" ng-class="{'icon-arrow-up6': status.openCatalogs, 'icon-arrow-down7': !status.openCatalogs}"></i></accordion-heading>
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>
+          <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
+      </div>
+    </div>
 </accordion-group>
           
 </accordion>
@@ -119,20 +128,20 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 </div>
 </div>
 
-<div class="row" style="margin-top:15px;">
+<div class="row top-offset">
 
   <!-- Filters -->
   
   <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
-    <div class="row">
+    <div class="row" ng-show="facets.categories.available.length > 0">
       <div class="col-sm-12">
         <h3>Categories<span style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
-          <ul class="nav search-results__category" ng-show="facets.categories.available.length > 0">
+          <ul class="nav search-results__category">
             <li ng-repeat="category in facets.categories.available | orderBy: '-count'">
               <a
               ng-click="toggleSelection(facets.categories.selected, category.name)" 
               ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
-              {{category.categoryname}} 
+              {{::category.categoryname}} 
               <span ng-show="category.count > 0">({{category.count}})</span>
             </a>
           </li>
@@ -154,7 +163,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
             ng-disabled="brand.name === featuredBreadcrumb.displayText"
             ng-click="toggleSelection(facets.brands.selected, brand.name)"
             class="input-margin-5px">
-          <label for="brandId_{{brand.name}}">{{brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
+          <label for="brandId_{{brand.name}}">{{::brand.name}} <span ng-show="brand.count > 0">({{brand.count}})</span></label>
         </li>
       </ul>
     </div>
@@ -163,7 +172,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     <div class="col-sm-12">
       <h3>Manufacturers</h3>
         <ul class="nav search-results__facets">
-          <li ng-repeat="manufacturer in facets.mfrname.available | orderBy: '-count'">
+          <li class="facet-checkbox" ng-repeat="manufacturer in facets.mfrname.available | orderBy: '-count'">
             <input 
               type="checkbox"
               value="manufacturerValue_{{manufacturer.name}}"
@@ -172,7 +181,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
               ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
               ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)"
               class="input-margin-5px">
-            <label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</span></label>
+            <label for="manufacturerId_{{manufacturer.name}}">{{::manufacturer.name}} <span ng-show="manufacturer.count > 0">({{manufacturer.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -181,7 +190,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     <div class="col-sm-12">
       <h3>Dietary</h3>
         <ul class="nav search-results__facets">
-          <li ng-repeat="diet in facets.dietary.available | orderBy: '-count'">
+          <li class="facet-checkbox" ng-repeat="diet in facets.dietary.available | orderBy: '-count'">
             <input 
               type="checkbox"
               value="dietValue_{{diet.name}}"
@@ -189,7 +198,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
               ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
               ng-click="toggleSelection(facets.dietary.selected, diet.name)"
               class="input-margin-5px">
-            <label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</span></label>
+            <label class="text-capitalize" for="dietId_{{diet.name}}">{{::diet.name}} <span ng-show="diet.count > 0">({{diet.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -206,7 +215,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
               ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
               ng-click="toggleSelection(facets.itemspecs.selected, spec.name)"
               class="input-margin-5px">
-            <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</span></label>
+            <label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span>{{::spec.displayname}} <span ng-show="spec.count > 0">({{spec.count}})</span></label>
           </li>
         </ul>
     </div>
@@ -216,142 +225,116 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         <h3>Catalogs</h3>
           <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>
           <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0 && selectedUserContext.customer.canViewUNFI">Natural and Organic ({{unfiItemCount}})</a>
-<!--           <input
-             type="checkbox"
-             id="unfi-checkbox"
-             ng-click="unfiCheckboxClick()">
-             <label for="unfi-checkbox">Natural and Organic (100)</label>
-      </div> -->
       </div>
     </div>
   </div>
 </div>
 
 <!-- Search Results -->
-<div class="col-md-9 col-xs-12">
-  <div class="row">
-    <h2 class="col-xs-7">Search Results</h2>
-    <span style="margin-top: 25px;" class="col-xs-5 text-right">{{totalItems}} results</span>
-  </div>
-  <table class="table table-striped-rows table-border table-products" infinite-scroll="infiniteScrollLoadMore()" context-menu favorite-item-click-handlers >
-    <thead>
-      <tr fsm-sticky-header scroll-body="'.table-products'" scroll-stop="0" scroll-offset="184">
-        <th ng-if="isOrderEntryCustomer"></th>
-        <th class="sort-col-header" ng-click="$scope.itemNumberDesc = !$scope.itemNumberDesc; UNFISortByItemNumber(itemNumberDesc)" style="min-width:60px;">
-          Item 
-          <span># <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span></span>
-        </th>
-        <th class="sort-col-header" ng-click="sortTable('name_not_analyzed')">
-          <span>Name <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
-        </th>
-        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('brand_description_not_analyzed')">
-          <span>Brand <span sort-icons field="'brand_description_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print">
-          Pack/Size
-        </th>
-        <th class="hidden-mobile-visible-print"></th>
-        <th class="sort-col-header hidden-mobile-visible-print" ng-if="canSeePrices" ng-click="sortBy='each';sortOrder=!sortOrder;">
-          <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('unitprice')">
-          <span>Portion Cost <span ng-show="totalItems <= maxSortCount" sort-icons field="'unitprice'" sortorder="sortReverse" sortby="sortField"></span></span>
-        </th>
-        <th ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
-          <span>Price <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span></span>
-        </th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat-start="item in products" ng-class="{ odd : $odd, even: $even }">
-        <td ng-if="isOrderEntryCustomer" class="large-icon icon-col">
-          <span favorite-icons></span>
-        </td>
-        <td>
-          <a ng-click="goToItemDetails(item)">{{::item.itemnumber}}</a>
-        </td>
-        <td>
-          {{::item.name}}
-        </td>
-        <td class="hidden-mobile-visible-print">
-          {{::item.brand_extended_description}}
-        </td>
-        <td class="hidden-mobile-visible-print">
-          {{::item.packsize}}
-        </td>
-        <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
-        </td>
-        <td class="input-col hidden-mobile-visible-print" ng-if="canSeePrices">
-          <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
-            <input type="checkbox" ng-model="item.each" id="each" name="each" />
-            <label for="each"></label>
-          </ng-form>
-        </td>
-      <td class="hidden-mobile-visible-print" ng-if="canSeePrices">
-        <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
-      </td>
-      <td ng-if="canSeePrices">
-        <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
-        <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
-      </td>
-      <td class="large-icon icon-col nowrap">
-        <div 
-        ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-        context-menu-template
-        class="context-menu-template context-menu__in-list hidden-print"
-        >
-        <a class="icon-plus2"></a>
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
+    <div >
+      <pagination
+        ng-show="totalProducts > pagingPageSize"
+        total-items="totalProducts" 
+        ng-model="currentPage" 
+        items-per-page="pagingPageSize" 
+        max-size="10" 
+        boundary-links="true" 
+        rotate="false" 
+        ng-change="blockUIAndChangePage(this); blur();" 
+        class="pagination">
+      </pagination> 
+    </div>
+    <div class="row" ng-show="products.length !== 0">
+      <h2 class="col-xs-6" >Search Results</h2>
+      <span style="margin-top: 25px;" class="col-xs-6 text-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
+    </div>
+    <div context-menu favorite-item-click-handlers >
+      <div>
+        <ul fast-repeat="item in products" class="searchResults">
+          <li class="block-display" style="list-style:none;">
+            <div style="padding: 15px 0 20px 0" >
+              <div class="inline-block-display" style="width:100%;">
+                <div class="pull-left-xs inline-block-display">
+                  <div>
+                    <div>
+                      <a class="block-display" style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+                    <h3 class="block-display">
+                      <a ng-click="goToItemDetails(item)">{{item.name}} </a>
+                    </h3>
+                    <h5 class="block-display"> 
+                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a>                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
+                      <span
+                        ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                        context-menu-template
+                        class="context-menu-template context-menu__in-list hidden-print hideIconName displayIconName">
+                          <a class="icon-plus2"></a>
+                        </span></span>
+                    <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
+                    <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
+                    <span
+                      ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                      context-menu-template
+                      class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
+                        <a class="icon-plus2"></a>
+                    </span>
+                    </h5>
+                    </div>
+                    <h6>
+                      Manufacturer: {{item.manufacturer_name}}
+                    </h6>
+                    <h6>
+                      {{item.description}}
+                    </h6>
+                    <h6>
+                      Pack/Size: {{item.packsize}}
+                    </h6>
+                    <h6 class="nowrap" item-icons></h6>
+                    <h6 class="input-col" ng-if="canSeePrices">
+                      <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
+                        Each: <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                        <label for="each"></label>
+                      </ng-form>
+                    </h6>
+                    <h6 ng-if="canSeePrices">
+                      <span ng-if="hasPrice(item.unitprice)">Portion Cost: {{item.unitprice | currency}}</span>
+                    </h6>
+                    <h6 ng-if="canSeePrices">
+                      <span ng-if="hasCasePrice(item)">Price: {{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
+                      <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                    </h6>
+                  </div>
+                </div>
+                <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs search-result-image-container" ng-show="item.productimages.length > 0">
+                  <img class="search-result-images" ng-src="{{item.productimages[0].url}}" alt=""/>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
+    </div>
+    <div>
+      <pagination
+        ng-show="totalProducts > pagingPageSize"
+        total-items="totalProducts" 
+        ng-model="currentPage" 
+        items-per-page="pagingPageSize" 
+        max-size="10" 
+        boundary-links="true" 
+        rotate="false" 
+        ng-change="blockUIAndChangePage(this)" 
+        class="pagination">
+      </pagination> 
+    </div>
+  </div>
 
-      <a class="hidden-print" ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
-    </td>
-  </tr>
-  <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
-    <td colspan="5">
-      <table>
-        <colgroup>
-        <col width="25%" />
-        <col width="75%" />
-      </colgroup>
-      <tbody>
-        <tr>
-          <td>Pack/Size</td>
-          <td>{{::item.pack | number}} / {{::item.size}}</td>
-        </tr>
-        <tr>
-          <td>Brand</td>
-          <td>{{::item.brand_extended_description}}</td>
-        </tr>
-        <tr>
-          <td colspan="2" item-icons></td>
-        </tr>
-        <tr ng-show="canSeePrices" ng-if="hasPrice(item.unitprice)">
-          <td>Portion Cost</td>
-          <td>{{item.unitprice | currency}}</td>
-        </tr>
-        <tr ng-if="hasPackagePrice(item)">
-          <td>Each</td>
-          <td>
-            <ng-form name="eachForm_mobile">
-            <input type="checkbox" ng-model="item.each" id="each" name="each" />
-          </ng-form>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</td>
-</tr>
-</tbody>
-<tfoot>
-  <tr ng-show="!searchMessage && products.length === 0 && !loadingResults">
-    <td colspan="9">No products found.</td>
-  </tr>
-</tfoot>
-</table>
+    <div class="col-sm-5 no-results" ng-if="!searchMessage && products.length === 0 && !loadingResults">
+      <p colspan="9">No products found. Please try another search.</p>
+    </div>
 
-<div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
+    <div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
 
-<div class="text-center" loading-spinner="loadingResults"></div>
-</div>
+    <div class="text-center" loading-spinner="loadingResults"></div>
+  </div>
 </div>

@@ -717,8 +717,16 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 var propertyName = config.Field.Split('.');
 
                 if (propertyName.Length == 1)
-                {
-                    var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                { // fix in general for exports; this adds correction in pricing to both text-based and excel-based exports
+                    ExportModelConfiguration thisConfig = new ExportModelConfiguration()
+                    { // just a shallow copy
+                        Field = config.Field,
+                        Label = config.Label,
+                        Order = config.Order,
+                        Selected = config.Selected
+                    };
+                    SetPriceConfig(properties, item, thisConfig);
+                    var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
                     if (property != null)
                     {
                         itemRecord.Add(string.Format("\"{0}\"", this.GetFieldValue(item, property).Trim()));

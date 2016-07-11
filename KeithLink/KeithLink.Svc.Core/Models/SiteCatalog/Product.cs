@@ -59,21 +59,27 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         #region properties
         [DataMember(Name = "ext_description")]
+        [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
         public string ExtendedDescription { get; set; }
 
         [DataMember(Name = "cube")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string CaseCube { get; set; }
 
         [DataMember(Name = "productimages")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<ProductImage> ProductImages { get; set; }
 
         [DataMember(Name = "isproprietary")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool IsProprietary { get; set; }
 
         [DataMember(Name = "orderhistory")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, int> OrderHistory { get; set; }
 
         [DataMember(Name = "inhistory")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool InHistory { get; set; }
         #endregion
     }

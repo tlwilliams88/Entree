@@ -419,11 +419,11 @@ angular.module('bekApp')
       data: {
         authorize: 'canPayInvoices'
       },
-      resolve: {
-        accounts: ['BankAccountService', function(BankAccountService) {
-          return BankAccountService.getAllBankAccounts();
-        }]
-      }
+      // resolve: {
+      //   accounts: ['BankAccountService', function(BankAccountService) {
+      //     return BankAccountService.getAllBankAccounts();
+      //   }]
+      // }
     })
     .state('menu.invoiceitems', {
       url: '/invoice/:invoiceNumber/',
@@ -656,7 +656,7 @@ angular.module('bekApp')
   $stateProvider
     .state('menu.configsettings', {
       url: '/configsettings/',
-      templateUrl: 'views/configsettings.html',
+      templateUrl: 'views/admin/configsettings.html',
       controller: 'ConfigSettingsController',
       resolve: {
         security: ['UserProfileService', '$q', function(UserProfileService, $q) {

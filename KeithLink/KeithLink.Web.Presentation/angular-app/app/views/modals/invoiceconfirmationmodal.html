@@ -4,9 +4,9 @@
 
   <form name="invoiceForm">
 
-        <div class="modal-body" style="margin-top:15px;">
+        <div class="modal-body paymentmodal" style="margin-top:15px;">
           
-        <table style=""class="table table-border table-striped-rows" navigate-table="mobile">
+        <table class="table table-border table-striped-rows" navigate-table="mobile">
           <thead>
             <tr>
               <th>
@@ -18,6 +18,9 @@
                 <span># </span>
               </th>
               <th>
+                Scheduled Date
+              </th>
+              <th>
                 Invoice Amount
               </th>
               <th>Payment Amt</th>
@@ -25,24 +28,27 @@
             </tr>
           </thead>
 
-          <tr ng-repeat="payment in payments" ng-class="{ odd: $odd, even: $even}">
+          <tr ng-repeat-start="payment in payments | orderBy:'customername'" ng-class="{ odd: $odd, even: $even}">
             <td>
               {{::payment.customername}}
             </td>
             <td>
               <a format="telephone=no" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)">{{::payment.invoicenumber}}</a>
             </td>
+            <td>
+              {{payment.date | formatDate: 'MMM D, YYYY'}}
+            </td>
             <td >
-              <div style="display:inline-block; white-space:nowrap;">
+              <div class="inline-block-display nowrap">
               <span class="pull-left" >{{::payment.invoiceamount | currency}}</span>
              </div>
             </td>
             <td >
-              <div style="display:inline-block; white-space:nowrap;">
+              <div class="inline-block-display nowrap">
               <span class="pull-left" >{{::payment.amount | currency}}</span>
              </div>
             </td>
-            <td class="display:inline-block; white-space:nowrap;" >
+            <td>
               <div>                  
                 {{payment.account}}
               </div>
