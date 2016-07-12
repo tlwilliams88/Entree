@@ -76,17 +76,26 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
             foreach (var payment in notification.Payments)
             {
-                var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, payment.InvoiceNumber);
-                var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
-                orderDetails.Append(detailTemplate.Body.Inject(new
+                try
                 {
-                    InvoiceType = invoiceTyped,
-                    InvoiceNumber = payment.InvoiceNumber,
-                    InvoiceDate = invoice.InvoiceDate,
-                    DueDate = invoice.DueDate,
-                    ScheduledDate = payment.PaymentDate,
-                    PaymentAmount = payment.PaymentAmount
-                }));
+                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, payment.InvoiceNumber);
+                    var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
+                    orderDetails.Append(detailTemplate.Body.Inject(new
+                    {
+                        InvoiceType = invoiceTyped,
+                        InvoiceNumber = payment.InvoiceNumber,
+                        InvoiceDate = invoice.InvoiceDate,
+                        DueDate = invoice.DueDate,
+                        ScheduledDate = payment.PaymentDate,
+                        PaymentAmount = payment.PaymentAmount
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    _log.WriteErrorLog(string.Format("Failure in GetEmailMessageForNotification, notification.branchid={0} notification.CustomerNumber={1} payment.InvoiceNumber={2} notification.payments.count={3}", 
+                        notification.BranchId, notification.CustomerNumber, payment.InvoiceNumber, notification.Payments.Count), ex);
+                    throw ex;
+                }
             }
 
             var bank = _bankRepo.GetBankAccount(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, notification.Payments[0].AccountNumber);
