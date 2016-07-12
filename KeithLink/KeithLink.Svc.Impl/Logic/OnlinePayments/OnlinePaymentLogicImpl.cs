@@ -257,6 +257,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                             retInvoiceHeaders.HasPayableInvoices = ci.HasPayableInvoices;
                         }
                         retInvoiceHeaders.CustomersWithInvoices.Results.Add(ci);
+                        retInvoiceHeaders.CustomersWithInvoices.TotalInvoices += ci.PagedResults.TotalInvoices;
                     }
                     retInvoiceHeaders.CustomersWithInvoices.TotalResults = retInvoiceHeaders.CustomersWithInvoices.Results.Count;
                 }
@@ -338,6 +339,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             {
                 ApplyCreditMemoFilter(paging, pagedInvoices);
             }
+
+            pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
 
             return pagedInvoices;
         }
