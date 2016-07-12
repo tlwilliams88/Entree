@@ -294,6 +294,7 @@
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\Invoices\CustomerWithInvoices.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowPageReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\Info.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\Keys.cs" />
