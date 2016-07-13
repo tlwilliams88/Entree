@@ -67,18 +67,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
-        private Message GetEmailMessageForNotification(PaymentConfirmationNotification notification, Core.Models.Profile.Customer customer)
+        private Message GetEmailMessageForNotification(PaymentTransactionModel payment, Core.Models.Profile.Customer customer)
         {
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
             MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTDETAIL);
 
             StringBuilder orderDetails = new StringBuilder();
 
-            foreach (var payment in notification.Payments)
-            {
                 try
                 {
-                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, payment.InvoiceNumber);
+                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
                     var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
                     orderDetails.Append(detailTemplate.Body.Inject(new
                     {
@@ -92,14 +90,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 }
                 catch (Exception ex)
                 {
-                    _log.WriteErrorLog(string.Format("Failure in GetEmailMessageForNotification, notification.branchid={0} notification.CustomerNumber={1} payment.InvoiceNumber={2} notification.payments.count={3}", 
-                        notification.BranchId, notification.CustomerNumber, payment.InvoiceNumber, notification.Payments.Count), ex);
+                    _log.WriteErrorLog(string.Format("Failure in GetEmailMessageForNotification, payment.branchid={0} payment.CustomerNumber={1} payment.InvoiceNumber={2} ",
+                        payment.BranchId, payment.CustomerNumber, payment.InvoiceNumber), ex);
                     throw ex;
                 }
-            }
 
-            var bank = _bankRepo.GetBankAccount(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, notification.Payments[0].AccountNumber);
-            var confirmationId = notification.Payments.FirstOrDefault().ConfirmationId;
+            var bank = _bankRepo.GetBankAccount(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.AccountNumber);
+            var confirmationId = payment.ConfirmationId;
 
             Message message = new Message();
             message.BodyIsHtml = template.IsBodyHtml;
@@ -111,7 +108,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 ConfirmationId = confirmationId,
                 BankAccount = bank.AccountNumber + " - " + bank.Name,
                 PaymentDetailLines = orderDetails.ToString(),
-                TotalPayments = notification.Payments.Sum(p => p.PaymentAmount)
+                TotalPayments = payment.PaymentAmount
             });
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerName = customer.CustomerName;
@@ -128,28 +125,32 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
             PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
 
-            // load up recipients, customer and message
-            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
-
-            if (customer == null)
+            foreach (var payment in confirmation.Payments)
             {
-                StringBuilder warningMessage = new StringBuilder();
-                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
-                warningMessage.AppendLine();
-                warningMessage.AppendLine();
-                warningMessage.AppendLine("Notification:");
-                warningMessage.AppendLine(notification.ToJson());
+                // load up recipients, customer and message
+                Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(payment.CustomerNumber, payment.BranchId);
 
-                _log.WriteWarningLog(warningMessage.ToString());
-            }
-            else {
-                List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
-                Message message = GetEmailMessageForNotification(confirmation, customer);
-
-                // send messages to providers...
-                if (recipients != null && recipients.Count > 0)
+                if (customer == null)
                 {
-                    SendMessage(recipients, message);
+                    StringBuilder warningMessage = new StringBuilder();
+                    warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                    warningMessage.AppendLine();
+                    warningMessage.AppendLine();
+                    warningMessage.AppendLine("Notification:");
+                    warningMessage.AppendLine(notification.ToJson());
+
+                    _log.WriteWarningLog(warningMessage.ToString());
+                }
+                else
+                {
+                    List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
+                    Message message = GetEmailMessageForNotification(payment, customer);
+
+                    // send messages to providers...
+                    if (recipients != null && recipients.Count > 0)
+                    {
+                        SendMessage(recipients, message);
+                    }
                 }
             }
         }

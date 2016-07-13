@@ -1,18 +1,23 @@
   'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService',
-    function ($scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService) {
+  .controller('InvoiceController', ['$q', '$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService', 'blockUI',
+    function ($q, $scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService, blockUI) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
-    });
+  });
+
+  $scope.loadingResults = true;
 
   var currentUserSelectedContext = {};
   var customers = [];
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
   $scope.selectedInvoiceFilter = 'Invoice #';
+  $scope.areAllSelected = false;
+  $scope.selectedSortParameter = 'Invoice Date';
+  $scope.sortParametervalue = 'invoicedate';
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -106,12 +111,36 @@ angular.module('bekApp')
     $scope.selectedInvoiceFilter = filter;
   }
 
+  $scope.selectSortParameter = function(parametername, parametervalue){
+    $scope.selectedSortParameter = parametername;
+    $scope.sortParametervalue = parametervalue;
+  }
+
+  $scope.sortParameters = [{
+    name: 'Invoice Date',
+    value: 'invoicedate'
+  }, {
+    name: 'Due Date',
+    value: 'duedate'
+  }, {
+    name: 'Status',
+    value: 'statusdescription'
+  }, {
+    name: 'PO Number',
+    value: 'ponumber'
+  }, {
+    name: 'Invoice Amount',
+    value: 'invoiceamount'
+  }, {
+    name: 'Amount Due',
+    value: 'amount'
+  }];
+
   var invoicePagingModel = new PagingModel( 
     InvoiceService.getAllOpenInvoices,
     setInvoices,
-    appendInvoices,
-    startLoading,
-    stopLoading
+    stopLoading,
+    startLoading
   );
 
   if(!InvoiceService.selectedFilterView){
@@ -119,8 +148,9 @@ angular.module('bekApp')
   }
   retrieveFilter();
 
-  function calculateInvoiceFields(invoices) {
-    invoices.forEach(function(invoice) {
+  function calculateInvoiceFields(customers) {
+    customers.forEach(function(customer) {
+      customer.invoices.results.forEach(function(invoice){
       // determine which invoices are payable
       if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
           $scope.canpayinvoice = true;  
@@ -133,7 +163,7 @@ angular.module('bekApp')
       }
 
       // calculate max payment date
-    var date = {};
+      var date = {};
       if(invoice.amount < 0){
         date = DateService.momentObject(invoice.duedate.substr(0,10)).add(1, 'year');
       }
@@ -141,46 +171,74 @@ angular.module('bekApp')
         date = DateService.momentObject(invoice.duedate.substr(0,10)).add(1, 'd');
       }
        invoice.maxPaymentDate = date.format(Constants.dateFormat.yearMonthDayDashes);
+      })
     });
   }
 
   function setInvoices(data) {
-    $scope.invoices = data.pagedresults.results;
-    $scope.invoiceCustomers = [];
-    if($scope.invoices.length > 0){
-      $scope.invoices.forEach(function(invoice){
-        var existingCustomer = $filter('filter')(customers, {name: invoice.customername})
-        if(existingCustomer.length === 0){
-          invoice.customerpostalcode = invoice.customerpostalcode.slice(0, -5);
-          customers.push({name:invoice.customername, number:invoice.customernumber, branch:invoice.branchid, ispayable:invoice.ispayable, street:invoice.customerstreetaddress, city:invoice.customercity, zipcode:invoice.customerpostalcode, state:invoice.customerregioncode});
+    // return blockUI.start("Loading Invoices...").then(function(){
+      // customerBanks(data.customerswithinvoices.results, function(customersWithInvoices) {
+        $scope.totalInvoices = data.customerswithinvoices.totalinvoices;
+        $scope.hasPayableInvoices = true;
+        $scope.totalAmountDue = data.totaldue;
+
+        data.customerswithinvoices.results.forEach(function(customer){
+          customer.invoices.results.forEach(function(invoice){
+            defaultAccount(invoice);
+          })
+        })
+
+        calculateInvoiceFields(data.customerswithinvoices.results);
+        $scope.loadingResults = false;
+        $scope.invoices = data.customerswithinvoices.results;
+        if($scope.invoices.length){
+          $scope.invoices.forEach(function(invoice){
+            invoice.failedBatchValidation = false;       
+          });
         }
-      })
-      $scope.invoiceCustomers = uniqueCustomerInvoices(customers, $scope.invoices);
-    }
-    if($scope.invoices.length){
-      $scope.invoices.forEach(function(invoice){
-        invoice.failedBatchValidation = false;       
-      });
-    }
-    $scope.totalInvoices = data.pagedresults.totalResults;
-    $scope.hasPayableInvoices = data.haspayableinvoices;
-    $scope.totalAmountDue = data.totaldue;
-
-    calculateInvoiceFields(data.pagedresults.results);
+      // })
+      // blockUI.stop();
+    // })
   }
 
-  function uniqueCustomerInvoices(customers,invoices){
-    var results = [];
-    $scope.bankAccountsAssociated = [];
+  //Combines bank account information with customers and invoices received from api
+  function customerBanks(customers, callback){
+    $scope.customersWithInvoices = [];
+    var deferredPromises = [];
     customers.forEach(function(customer, index){
-      BankAccountService.getAllBankAccounts(customer.number, customer.branch).then(function(banks){
-        var invoicesAssociated = $filter('filter')(invoices, {customername: customer.name});
-        results[index] = {name:customer.name, number:customer.number, ispayable:customer.ispayable, street:customer.street, city:customer.city, zipcode:customer.zipcode, state:customer.state, invoices: invoicesAssociated, banks: banks}
-        defaultAccount(results[index]);
+      customer.invoices.results.forEach(function(invoice){
+        var deferred = $q.defer();
+        BankAccountService.getAllBankAccounts(invoice.customernumber, invoice.branchid).then(function(banks){
+          invoice.banks = banks;
+          defaultAccount(invoice);
+          deferred.resolve(invoice);
+        })
+        deferredPromises.push(deferred.promise);
       })
+      $scope.customersWithInvoices.push(customer);
     })
-    return results;
+    $q.all(deferredPromises).then(function(){
+      return callback($scope.customersWithInvoices);
+    })
   }
+
+  // $scope.sortResults = function(sortdirection, sortfield){
+  //   startLoading();
+  //   return blockUI.start("Loading Invoices...").then(function(){
+  //     var params = [{
+  //       sortField: sortField
+  //     }, {
+  //       sortDirection: sortDirection
+  //     }]
+  //     ProductService.getAllOpenInvoices('', ).then(function(data){
+  //       $scope.products = data.products;
+  //     }).then(function(){
+  //       resetPage($scope.products, false);
+  //     })
+  //   stopLoading();
+  //   blockUI.stop();
+  //   })
+  // }
 
   function retrieveFilter() {
     if(InvoiceService && InvoiceService.filterRowFields){
@@ -201,9 +259,11 @@ angular.module('bekApp')
     $scope.invoices = $scope.invoices.concat(data.pagedresults.results);
     calculateInvoiceFields(data.pagedresults.results);
   }
+
   function startLoading() {
     $scope.loadingResults = true;
   }
+
   function stopLoading() {
     $scope.loadingResults = false;
   }
@@ -223,42 +283,42 @@ angular.module('bekApp')
     return filter;
   }
   
-    $scope.openTransactionSummaryModal = function(invoice) {
-        var modalInstance = $modal.open({
-        templateUrl: 'views/modals/invoicetransactionsummarymodal.html',
-        controller: 'InvoiceTransactionSummaryModalController',
-        windowClass: 'color-background-modal',
-        scope: $scope,
-        resolve: {
-          invoiceNumber: function() {
-            return invoice.invoicenumber;
-          },
-          customerNumber: function() {
-            return invoice.customernumber;
-          },
-          branchId: function() {
-            return invoice.branchid;
-          }
+  $scope.openTransactionSummaryModal = function(invoice) {
+      var modalInstance = $modal.open({
+      templateUrl: 'views/modals/invoicetransactionsummarymodal.html',
+      controller: 'InvoiceTransactionSummaryModalController',
+      windowClass: 'color-background-modal',
+      scope: $scope,
+      resolve: {
+        invoiceNumber: function() {
+          return invoice.invoicenumber;
+        },
+        customerNumber: function() {
+          return invoice.customernumber;
+        },
+        branchId: function() {
+          return invoice.branchid;
         }
-      });
-    };
+      }
+    });
+  };
 
   $scope.filterInvoices = function(filter, input) {
     if(!input && filter){
-      $scope.invoiceCustomers.forEach(function(customer){
-        customer.invoices = $filter('filter')(customer.invoices, {hascreditmemos: true});
+      $scope.invoices.forEach(function(customer){
+        customer.invoices.results = $filter('filter')(customer.invoices.results, {hascreditmemos: true});
       })
     } else if(input && filter === 'Invoice #'){
-      $scope.invoiceCustomers.forEach(function(customer){
-        customer.invoices = $filter('filter')(customer.invoices, {invoicenumber: input});
+      $scope.invoices.forEach(function(customer){
+        customer.invoices.results = $filter('filter')(customer.invoices.results, {invoicenumber: input});
       })
     } else if(filter === 'PO Number'){
-      $scope.invoiceCustomers.forEach(function(customer){
-        customer.invoices = $filter('filter')(customer.invoices, {ponumber: input});
+      $scope.invoices.forEach(function(customer){
+        customer.invoices.results = $filter('filter')(customer.invoices.results, {ponumber: input});
       })
     } else if(filter === 'Invoice Type'){
-      $scope.invoiceCustomers.forEach(function(customer){
-        customer.invoices = $filter('filter')(customer.invoices, {typedescription: input});
+      $scope.invoices.forEach(function(customer){
+        customer.invoices.results = $filter('filter')(customer.invoices.results, {typedescription: input});
       })
     } else {
       invoicePagingModel.loadData();
@@ -283,15 +343,10 @@ angular.module('bekApp')
     invoicePagingModel.loadData();    
   };
 
-  $scope.infiniteScrollLoadMore = function() {
-    invoicePagingModel.loadMoreData($scope.invoices, $scope.totalInvoices, $scope.loadingResults);
-  };
-
-  $scope.sortInvoices = function(field, sortDescending) {
-
+  $scope.sortInvoices = function(sortDirection, sortField) {
    $scope.sort = {
-      field: field,
-      sortDescending: sortDescending
+      field: sortfield,
+      sortDirection: sortDirection
    };
     invoicePagingModel.sortData($scope.sort);
   };
@@ -475,15 +530,15 @@ angular.module('bekApp')
     $scope.invoiceForm.$setDirty();
   };
 
-  $scope.selectAll = function (areAllSelected, fromLocation, customer, $event) {
-    if(!areAllSelected && $scope.errorMessage){
+  $scope.selectAll = function (fromLocation, customer, $event) {
+    if(!$scope.areAllSelected && $scope.errorMessage){
       $scope.errorMessage = '';
     }
     if(fromLocation == 'selectAllInvoices'){
-      angular.forEach($scope.invoiceCustomers, function (customer, index) {
+      angular.forEach($scope.invoices, function (customer, index) {
         customer.selected = angular.element('.invoiceSelectAll')[0].checked;
-        angular.forEach(customer.invoices, function(invoice, index){
-          invoice.isSelected = areAllSelected;
+        angular.forEach(customer.invoices.results, function(invoice, index){
+          invoice.isSelected = customer.selected;
           if (invoice.userCanPayInvoice) {
             $scope.selectInvoice(invoice, invoice.isSelected);
           }
@@ -491,9 +546,8 @@ angular.module('bekApp')
       })
     }else{
       $event.stopPropagation();
-      customer.selected = !customer.selected;
-      customer.invoices.forEach(function(invoice){
-        invoice.isSelected = areAllSelected;
+      customer.invoices.results.forEach(function(invoice){
+        invoice.isSelected = customer.selected;
         
         if (invoice.userCanPayInvoice) {
           $scope.selectInvoice(invoice, invoice.isSelected);
@@ -504,13 +558,16 @@ angular.module('bekApp')
 
   $scope.totalPaymentAmount = function () {    
     var total = 0;
-    if($scope.invoiceCustomers.length){
-    $scope.invoiceCustomers.forEach(function (customer) {
-      customer.invoices.forEach(function (invoice){
-        if (invoice.isSelected) {
-          total += parseFloat(invoice.paymentAmount || 0);
-        }
-      })
+    if($scope.invoices.length){
+    $scope.invoices.forEach(function (customer) {
+      if(customer.invoices.results && customer.invoices.results.length){
+        customer.invoices.results.forEach(function (invoice){
+          if (invoice.isSelected) {
+            total += parseFloat(invoice.paymentAmount || 0);
+          }
+        })
+      }
+
     });
   }
 
@@ -552,12 +609,30 @@ angular.module('bekApp')
     return total;
   };
 
-  $scope.getSelectedInvoices = function() {
-    return $filter('filter')($scope.invoices, {isSelected: true});
+  $scope.getSelectedInvoices = function(customers, callback) {
+    var invoices = [];
+    var deferredPromises = [];
+    if(customers){
+      customers.forEach(function(customer){
+        customer.invoices.results.forEach(function(invoice){
+          var deferred = $q.defer();
+          if(invoice.isSelected){
+            invoices.push(invoice);
+          }
+          deferred.resolve(invoice);
+          deferredPromises.push(deferred.promise);
+        })
+      })
+    }
+    if(callback){
+      $q.all(deferredPromises).then(function(){
+        return callback(invoices);
+      })
+    }
   };
 
   $scope.defaultDates = function(payments){
-    if(payments.length){
+    if(payments && payments.length){
       payments.forEach(function(payment){
         if((payment.statusdescription === 'Payment Pending') || (payment.statusdescription === 'Past Due' && payment.amount < 0)){
           
@@ -579,20 +654,18 @@ angular.module('bekApp')
        return payments
   };
 
-  function defaultAccount(customer){
-    customer.invoices.forEach(function(invoice){
-      if(invoice.statusdescription !== 'Paid' && !invoice.account && customer.banks.length){
+  function defaultAccount(invoice){
+      if(invoice.statusdescription !== 'Paid' && !invoice.account && invoice.banks.length){
         if(invoice.pendingtransaction){
           invoice.account = invoice.pendingtransaction.account;
         }
         else{
-        invoice.account = customer.banks[0].accountNumber;
-        invoice.accountName = customer.banks[0].name;
+        invoice.account = invoice.banks[0].accountNumber;
+        invoice.accountName = invoice.banks[0].name;
         }
       } else {
         return;
       }
-    })
   };
 
   //Opens modal with payments object passed from payInvoices function
@@ -625,26 +698,27 @@ angular.module('bekApp')
     if (!processingPayInvoices) {
       $scope.errorMessage = '';
       processingPayInvoices = true;
-      var payments = $scope.getSelectedInvoices();
-      payments = $scope.defaultDates(payments);
-      processingPayInvoices = false;
-      InvoiceService.checkTotals(payments).then(function(resp) {
-        if(resp.successResponse.isvalid){  
-          $scope.errorMessage = '';
-          $scope.invoices.forEach(function(invoice){
-            invoice.failedBatchValidation = false;
-          });
-          payments.forEach(function(payment){  
-            if(payment.date.length !== 10){
-            payment.date = DateService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format(Constants.dateFormat.yearMonthDayDashes);
-            }
-          });
-        } else{
-          $scope.displayValidationError(resp);          
-          processingPayInvoices = false;
-        }    
+      var payments = $scope.getSelectedInvoices($scope.invoices, function(payments){
+        payments = $scope.defaultDates(payments);
+        processingPayInvoices = false;
+        InvoiceService.checkTotals(payments).then(function(resp) {
+          if(resp.successResponse.isvalid){  
+            $scope.errorMessage = '';
+            $scope.invoices.forEach(function(invoice){
+              invoice.failedBatchValidation = false;
+            });
+            payments.forEach(function(payment){  
+              if(payment.date.length !== 10){
+              payment.date = DateService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format(Constants.dateFormat.yearMonthDayDashes);
+              }
+            });
+          } else{
+            $scope.displayValidationError(resp);          
+            processingPayInvoices = false;
+          }    
+        });
+        $scope.openInvoiceConfirmation(payments);
       });
-      $scope.openInvoiceConfirmation(payments);
     }
   };
 
@@ -655,10 +729,10 @@ angular.module('bekApp')
         var payments = $scope.invoices;
       }
       else{
-        var payments = $scope.getSelectedInvoices();
-      }     
-      payments = $scope.defaultDates(payments);
-      if(payments.length){
+        $scope.getSelectedInvoices($scope.invoices, function(payments){
+          var payments = payments
+                payments = $scope.defaultDates(payments);
+      if(payments && payments.length){
         InvoiceService.checkTotals(payments).then(function(resp) {
 
           if(resp.successResponse.isvalid){
@@ -673,6 +747,10 @@ angular.module('bekApp')
         $scope.clearValidationErrors();
       }
       $scope.validating = false;
+        });
+
+
+      }     
     }
   };
 
