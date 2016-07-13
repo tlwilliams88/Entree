@@ -126,33 +126,46 @@
             </div>
           </div>
           <div>
-            <span ng-if="invoices.length" class="pull-left credit-memo-toggle">
+            <span ng-if="totalInvoices > 0" class="pull-left credit-memo-toggle">
               <input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)"> Invoices with Credit Memos
             </span>
-            <span ng-if="invoices.length && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle">
-              <input type="checkbox" class="invoiceSelectAll" ng-model="invoiceCustomers.allSelected" ng-click="selectAll(areAllSelected = !areAllSelected, 'selectAllInvoices')"> Select All Invoices
+            <span ng-if="totalInvoices > 0 && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle">
+              <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="toggleSelectedState(); selectAll('selectAllInvoices')"> Select All Invoices
             </span>
-            <span ng-if="invoices.length && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
-            <span ng-if="invoices.length && !isInternalUser">
+            <span ng-if="totalInvoices > 0 && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
+            <span ng-if="totalInvoices > 0 && !isInternalUser">
               <a class="expandcollapsecustomers pull-right-lg pull-right-md pull-right-sm pull-left-xs">Expand/Collapse All Customers</a>
             </span>
+<!--             <div ng-if="totalInvoices > 0" class="pull-right">
+              <div class="input-group">
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                      <li ng-repeat="sortParameter in sortParameters" >
+                        <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+                      </li>
+                    </ul>
+                </div>
+                <a style="margin-top:25px;" ng-click="sortInvoices('asc', sortParametervalue)">Asc </a><span>/</span><a ng-click="sortInvoices('desc', sortParametervalue)"> Desc</a>
+              </div>
+            </div> -->
           </div>
         </div>
       </div>
 
-      <div ng-if="invoices.length" class="row topPadded">
+      <div class="row topPadded">
         <div class="col-sm-12">
           <accordion close-others="oneAtATime">
-            <accordion-group is-open="status.openCategories" class="panel-title" ng-show="true" ng-repeat="customer in invoiceCustomers | filter: {invoices: '!!'} | orderBy:'name'">
+            <accordion-group ng-if="customer.invoices.results.length" is-open="status.openCategories" class="panel-title" ng-show="true" ng-repeat="customer in invoices | orderBy:'customerName'">
               <accordion-heading>
-                <input type="checkbox" ng-if="!isInternalAccountAdminUser && customer.ispayable && selectedFilterView.name !== 'Paid Invoices'" ng-click="selectAll(areAllSelected = !areAllSelected, selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" class="pull-left"/>
+                <input type="checkbox" ng-if="!isInternalAccountAdminUser && customer.haspayableinvoices && selectedFilterView.name !== 'Paid Invoices'" ng-click="toggleSelectedState(); selectAll(selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" class="pull-left"/>
                 <div class="white-space: normal;">
-                  <span style="padding-left:10px;"> {{customer.number}} - {{customer.name}} ({{customer.invoices.length}})</span>
-                  <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.street}} {{customer.city}}, {{customer.state}} {{customer.zipcode}}</span>
+                  <span style="padding-left:10px;"> {{customer.customerNumber}} - {{customer.customerName}} ({{customer.invoices.totalResults}})</span>
+                  <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.address.street}} {{customer.address.city}}, {{customer.address.regioncode}} {{customer.address.postalcode}}</span>
                   <i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
                 </div>
               </accordion-heading>
-              <div ng-repeat="invoice in customer.invoices" class="panel panel-body panel-default">
+              <div ng-repeat="invoice in customer.invoices.results" class="panel panel-body panel-default">
                 <div>
                   <div>
                     <label>
@@ -160,7 +173,7 @@
                     </label>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
-                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
+                    <span></span><a ng-click="linkToReferenceNumber(invoice.customerNumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
                     <h5>{{::invoice.typedescription}}</h5>
                     <h5>Status: <span ng-class="{'highlight-text-late': (invoice.statusdescription == 'Past Due'), 'highlight-text-paid': (invoice.statusdescription == 'Paid') }" >{{::invoice.statusdescription}}</span></h5>
                   </div>
@@ -198,9 +211,11 @@
                       date-disabled="disabled(date, mode)"
                       close-text="Close">
                     </a>
+                    <span style="margin-left:-10px;">
                     <span class="date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !== 'Past Due' && invoice.statusdescription !== 'Payment Pending' && invoice.date">{{invoice.date | formatDate}}</span>
                     <span class="date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due'">{{invoice.date || tomorrow | formatDate}}</span>
                     <span class="date-picker-field" ng-if="invoice.statusdescription === 'Payment Pending'">{{invoice.date || invoice.pendingtransaction.date | formatDate}}</span>
+                    </span>
                     <h5>Payment Amount: <span ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</span>
                     <span>
                       <input
@@ -228,15 +243,15 @@
                       /></span>
                     </h5>
                     <h5>Bank Account: <span>
-                      <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="customer.banks.length >= 1 && invoice.statusdescription !== 'Paid'">
-                        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="customer.banks.length <= 1 || isInternalAccountAdminUser">
+                      <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="invoice.banks.length >= 1 && invoice.statusdescription !== 'Paid'">
+                        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="invoice.banks.length <= 1 || isInternalAccountAdminUser">
                           <div class = "account-info span3">                  
                             {{invoice.account}}
                           </div>
                         <span class="icon-arrow-down6 account-info"></span>
                         </button>
                         <div class="dropdown-menu">
-                          <h5 ng-click="selectAccount(invoice, account)" ng-repeat="account in customer.banks">
+                          <h5 ng-click="selectAccount(invoice, account)" ng-repeat="account in invoice.banks">
                             {{account.name}}<br>
                             {{account.accountNumber}}
                           </h5>
@@ -253,7 +268,7 @@
     </div>
   </div>
 
-  <div ng-show="!invoices.length && !loadingResults" class="col-sm-7 no-results">
+  <div ng-show="!totalInvoices > 0 && !loadingResults" class="col-sm-7 no-results">
     <p>There are no invoices to display. Please try selecting another option in the dropdown.</p>
   </div>
 
