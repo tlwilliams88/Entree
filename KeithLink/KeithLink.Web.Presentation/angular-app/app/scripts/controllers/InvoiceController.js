@@ -19,10 +19,6 @@ angular.module('bekApp')
   $scope.selectedSortParameter = 'Invoice Date';
   $scope.sortParametervalue = 'invoicedate';
 
-  $scope.toggleSelectedState = function(){
-    $scope.areAllSelected = !$scope.areAllSelected;
-  }
-
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
     isViewingAllCustomers: true
@@ -542,7 +538,7 @@ angular.module('bekApp')
       angular.forEach($scope.invoices, function (customer, index) {
         customer.selected = angular.element('.invoiceSelectAll')[0].checked;
         angular.forEach(customer.invoices.results, function(invoice, index){
-          invoice.isSelected = $scope.areAllSelected;
+          invoice.isSelected = customer.selected;
           if (invoice.userCanPayInvoice) {
             $scope.selectInvoice(invoice, invoice.isSelected);
           }
@@ -550,9 +546,8 @@ angular.module('bekApp')
       })
     }else{
       $event.stopPropagation();
-      customer.selected = !customer.selected;
       customer.invoices.results.forEach(function(invoice){
-        invoice.isSelected = $scope.areAllSelected;
+        invoice.isSelected = customer.selected;
         
         if (invoice.userCanPayInvoice) {
           $scope.selectInvoice(invoice, invoice.isSelected);

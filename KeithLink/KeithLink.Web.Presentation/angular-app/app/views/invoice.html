@@ -130,7 +130,7 @@
               <input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)"> Invoices with Credit Memos
             </span>
             <span ng-if="totalInvoices > 0 && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle">
-              <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="toggleSelectedState(); selectAll('selectAllInvoices')"> Select All Invoices
+              <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="selectAll('selectAllInvoices')"> Select All Invoices
             </span>
             <span ng-if="totalInvoices > 0 && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
             <span ng-if="totalInvoices > 0 && !isInternalUser">
@@ -158,7 +158,7 @@
           <accordion close-others="oneAtATime">
             <accordion-group ng-if="customer.invoices.results.length" is-open="status.openCategories" class="panel-title" ng-show="true" ng-repeat="customer in invoices | orderBy:'customerName'">
               <accordion-heading>
-                <input type="checkbox" ng-if="!isInternalAccountAdminUser && customer.haspayableinvoices && selectedFilterView.name !== 'Paid Invoices'" ng-click="toggleSelectedState(); selectAll(selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" class="pull-left"/>
+                <input type="checkbox" name="SelectCustomer" ng-if="!isInternalAccountAdminUser && customer.haspayableinvoices && selectedFilterView.name !== 'Paid Invoices'" ng-click="customer.selected = !customer.selected; selectAll(selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" class="pull-left"/>
                 <div class="white-space: normal;">
                   <span style="padding-left:10px;"> {{customer.customerNumber}} - {{customer.customerName}} ({{customer.invoices.totalResults}})</span>
                   <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.address.street}} {{customer.address.city}}, {{customer.address.regioncode}} {{customer.address.postalcode}}</span>
