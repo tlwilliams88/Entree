@@ -59,11 +59,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly IUnitOfWork _uow;
         private readonly IUserActiveCartRepository _userActiveCartRepository;
+        private readonly IShipDateRepository _shipRepo;
         #endregion
 
         #region ctor
         public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, 
-                              IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, 
+                              IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, IShipDateRepository shipRepo, 
                               ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, 
                               IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository) {
 			_catalogLogic = catalogLogic;
@@ -74,6 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _invoiceRepository = kpayInvoiceRepository;
             _orderQueueLogic = orderQueueLogic;
             _priceLogic = priceLogic;
+            _shipRepo = shipRepo;
 			_poRepo = purchaseOrderRepository;
             _uow = unitOfWork;
             _userActiveCartRepository = userActiveCartRepository;
@@ -140,6 +142,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             Order returnOrder = null;
 
+            UserSelectedContext context = null;
+
             if (myOrder == null)
             {
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
@@ -152,6 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 }
                 else
                 {
+                    context = new UserSelectedContext() { BranchId = branchId, CustomerId = po.CustomerName };
                     returnOrder = po.ToOrder();
                     PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
                 }
@@ -159,6 +164,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             else
             {
                 returnOrder = myOrder.ToOrder();
+                context = new UserSelectedContext() { BranchId = branchId, CustomerId = myOrder.CustomerNumber };
 
                 if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0)
                 {
@@ -233,7 +239,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             GiveLinkForSimilarItems(returnOrder);
             HideDeletedItems(returnOrder);
-
+            UpdateOrderForShipDate(context, null, returnOrder);
             returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 
             return returnOrder;
@@ -360,11 +366,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, List<EF.OrderHistoryHeader> headers) {
             var customerOrders = new BlockingCollection<Order>();
 
+            var shipDatesCntnr = _shipRepo.GetShipDates(userContext);            
+
             // Get the customer GUID to retrieve all purchase orders from commerce server
             var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
             var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId).ToList();
 
-            foreach(var h in headers) {
+            foreach(var h in headers.OrderByDescending(hdr => hdr.CreatedUtc)) {
                 try {
                     Order returnOrder = null;
 
@@ -398,9 +406,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                     if(returnOrder.ActualDeliveryTime != null) {
                         returnOrder.Status = "Delivered";
+                        returnOrder.IsChangeOrderAllowed = false;
                     }
 
-                    if(returnOrder.Items != null) {
+                    if (returnOrder.IsChangeOrderAllowed)
+                    {
+                        UpdateOrderForShipDate(userContext, shipDatesCntnr.ShipDates, returnOrder);
+                    }
+
+                    if (returnOrder.Items != null) {
                         if(h.OrderSubtotal>0) returnOrder.OrderTotal = (double)h.OrderSubtotal;
                         else returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
@@ -792,6 +806,32 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var orderNumber = client.UpdatePurchaseOrder(customer.CustomerId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
             return this.ReadOrder(user, catalogInfo, order.OrderNumber);
+        }
+
+        public Order UpdateOrderForShipDate(UserSelectedContext userContext, List<ShipDate> shipDates, Order order)
+        {
+            if (shipDates == null)
+            {
+                var shipDatesCntnr = _shipRepo.GetShipDates(userContext);
+                shipDates = shipDatesCntnr.ShipDates;
+            }
+            var requested = DateTime.Parse(order.RequestedShipDate).ToString("yyyy-MM-dd");
+            if (shipDates.Select(s => s.Date).ToList().Contains(requested))
+            {
+                var cutofftime = shipDates.Where(s => s.Date == requested)
+                                          .Select(s => s.CutOffDateTime)
+                                          .First();
+                if (DateTime.Now > DateTime.Parse(cutofftime))
+                {
+                    order.IsChangeOrderAllowed = false;
+                }
+            }
+            else // if there isn't a ship date matching the order's requested ship date, then we assume it can no longer be edited.
+            {
+                order.IsChangeOrderAllowed = false;
+            }
+
+            return order;
         }
 
         public Order UpdateOrderForEta(UserProfile user, Order order) {
