@@ -10,8 +10,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 	[DataContract]
 	public class ItemValidationResultModel
 	{
-		[DataMember(Name="itemnumber")]
-		public string ItemNumber { get; set; }
+		[DataMember(Name="product")]
+		public Product Product { get; set; }
 		[DataMember(Name="valid")]
 		public bool Valid { get; set; }
 		[DataMember(Name="reason")]
