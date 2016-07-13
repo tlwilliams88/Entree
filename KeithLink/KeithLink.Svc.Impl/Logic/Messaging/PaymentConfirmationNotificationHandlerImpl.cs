@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 try
                 {
-                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, payment.InvoiceNumber);
+                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
                     var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
                     orderDetails.Append(detailTemplate.Body.Inject(new
                     {
