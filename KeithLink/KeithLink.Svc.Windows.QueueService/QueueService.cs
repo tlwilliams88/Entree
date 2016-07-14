@@ -16,6 +16,8 @@ using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Windows.QueueService {
     partial class QueueService : ServiceBase {
@@ -34,6 +36,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope specialOrderScope;
         private ILifetimeScope notificationScope;
 
+        private Task lostOrdersTask;
         private static bool _checkLostOrdersProcessing;
         private Timer _checkLostOrdersTimer;
 
@@ -92,6 +95,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         }
 
         protected override void OnStop() {
+            _log.WriteInformationLog("Service stopping");
+
             TerminateConfirmationThread();
             TerminateOrderHistoryThread();
             TerminateNotificationsThread();
@@ -162,8 +167,10 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void TerminateCheckLostOrdersTimer() {
             if (_checkLostOrdersTimer != null) {
-                _checkLostOrdersTimer.Change( TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP );
+                _checkLostOrdersTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
+                if(lostOrdersTask != null) lostOrdersTask.Wait();
             }
+            if (lostOrdersTask != null) _log.WriteWarningLog(string.Format("QueueService.lostOrdersTask.status = {0:G}", lostOrdersTask.Status));
         }
 
         private void ProcessCheckLostOrdersMinuteTick( object state ) {
@@ -184,32 +191,42 @@ namespace KeithLink.Svc.Windows.QueueService {
                 }
 
                 // only process at the top of the hour
-                if (DateTime.Now.Minute == 0)
-                //if (true) // testing only
+                //if (DateTime.Now.Minute == 0)
+                if (true) // testing only
                 {
-                    //_log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run");
-                    try {
-                        string subject;
-                        string body;
-
-                        orderHistoryScope = container.BeginLifetimeScope();
-                        _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
-                        subject = _orderHistoryLogic.CheckForLostOrders( out body );
-
-                        StringBuilder sbMsgBody = new StringBuilder();
-                        sbMsgBody.Append( body );
-
-                        if ((subject != null) && (subject.Length > 0) && (body != null) && (body.Length > 0)) {
-                            //_log.WriteErrorLog("BEK: " + subject + ";" + body );
-                            _emailClient.SendEmail(Configuration.FailureEmailAdresses,null,null, "BEK: " + subject, body);
-                        }
-                    } catch (Exception ex) {
-                        _log.WriteErrorLog( "Error in ProcessCheckLostOrdersMinuteTick", ex );
-                        KeithLink.Common.Impl.Email.ExceptionEmail.Send( ex );
-                    }
+                    lostOrdersTask = Task.Factory.StartNew(() => ProcessCheckLostOrders(),
+                        CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
                 }
 
                 _checkLostOrdersProcessing = false;
+            }
+        }
+
+        private void ProcessCheckLostOrders()
+        {
+            //_log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run");
+            try
+            {
+                string subject;
+                string body;
+
+                orderHistoryScope = container.BeginLifetimeScope();
+                _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
+                subject = _orderHistoryLogic.CheckForLostOrders(out body);
+
+                StringBuilder sbMsgBody = new StringBuilder();
+                sbMsgBody.Append(body);
+
+                if ((subject != null) && (subject.Length > 0) && (body != null) && (body.Length > 0))
+                {
+                    //_log.WriteErrorLog("BEK: " + subject + ";" + body );
+                    _emailClient.SendEmail(Configuration.FailureEmailAdresses, null, null, "BEK: " + subject, body);
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Error in ProcessCheckLostOrdersMinuteTick", ex);
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex);
             }
         }
         #endregion

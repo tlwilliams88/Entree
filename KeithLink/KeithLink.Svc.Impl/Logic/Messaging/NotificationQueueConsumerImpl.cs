@@ -103,6 +103,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 doListenForMessagesInTask = false;
                 listenForQueueMessagesTask.Wait();
             }
+            if (listenForQueueMessagesTask != null)
+            {
+                eventLogRepository.WriteWarningLog(string.Format("NotificationQueueConsumerImpl.listenForQueueMessagesTask.status = {0:G}", listenForQueueMessagesTask.Status));
+            }
         }
         #endregion
     }

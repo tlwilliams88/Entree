@@ -547,6 +547,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _keepQueueListening = false;
             if (queueListenerTask != null && queueListenerTask.Status == TaskStatus.Running)
                 queueListenerTask.Wait();
+            if (queueListenerTask != null)
+            {
+                _log.WriteWarningLog(string.Format("ConfirmationLogicImpl.queueListenerTask.status = {0:G}", queueListenerTask.Status));
+            }
         }
         #endregion
 

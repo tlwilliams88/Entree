@@ -661,6 +661,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             if(_queueTask != null && _queueTask.Status == TaskStatus.Running) {
                 _queueTask.Wait();
             }
+            if (_queueTask != null)
+            {
+                _log.WriteWarningLog(string.Format("OrderHistoryLogicImpl._queueTask.status = {0:G}", _queueTask.Status));
+            }
+
         }
 
         public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
