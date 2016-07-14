@@ -133,7 +133,7 @@
             <span ng-if="totalInvoices > 0 && !isInternalUser" >
               <p class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs margin-left-5">Total: {{totalPaymentAmount() | currency}}</p>
             </span>
-            <span ng-if="totalInvoices > 0 && !isInternalUser">
+            <span ng-if="invoices.length > 1 && totalInvoices > 0 && !isInternalUser">
               <a class="expandcollapsecustomers pull-right-lg pull-right-md pull-right-sm pull-left-xs">Expand/Collapse All Customers</a>
             </span>
             <div ng-if="totalInvoices > 0" class="pull-right">
@@ -155,14 +155,14 @@
 
       <div class="row topPadded">
         <div class="col-sm-12">
-          <accordion close-others="oneAtATime">
-            <accordion-group ng-if="customer.invoices.results.length" is-open="status.openCategories" class="panel-title" ng-show="true" ng-repeat="customer in invoices | orderBy:'customerName'">
+          <accordion close-others="true">
+            <accordion-group ng-if="customer.invoices.results.length" ng-init="status.openCustomer = $first" is-open="status.openCustomer" class="panel-title" ng-show="true" ng-repeat="customer in invoices | orderBy:'customerName'">
               <accordion-heading>
                 <input type="checkbox" name="SelectCustomer" ng-if="!isInternalAccountAdminUser && customer.haspayableinvoices && selectedFilterView.name !== 'Paid Invoices'" ng-click="customer.selected = !customer.selected; selectAll(selectCustomerInvoices, customer, $event)" ng-checked="customer.selected" class="pull-left"/>
                 <div style="white-space: normal;">
                   <span style="padding-left:10px;"> {{customer.displayname}} ({{customer.invoices.totalResults}})</span>
                   <span class="hidden-sm hidden-xs" ng-if="customer.address.street && customer.address.city && customer.address.regioncode && customer.address.postalcode" style="margin-left:20px;"> {{customer.address.street}} {{customer.address.city}}, {{customer.address.regioncode}} {{customer.address.postalcode}}</span>
-                  <i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
+                  <i class="pull-right" ng-class="{'icon-arrow-up6': status.openCustomer, 'icon-arrow-down7': !status.openCustomer}"></i>
                 </div>
               </accordion-heading>
               <div ng-repeat="invoice in customer.invoices.results" class="panel panel-body panel-default">

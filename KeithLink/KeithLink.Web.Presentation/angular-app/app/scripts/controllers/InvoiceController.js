@@ -176,29 +176,24 @@ angular.module('bekApp')
   }
 
   function setInvoices(data) {
-    // return blockUI.start("Loading Invoices...").then(function(){
-      // customerBanks(data.customerswithinvoices.results, function(customersWithInvoices) {
-        $scope.totalInvoices = data.customerswithinvoices.totalinvoices;
-        $scope.hasPayableInvoices = true;
-        $scope.totalAmountDue = data.totaldue;
+    $scope.totalInvoices = data.customerswithinvoices.totalinvoices;
+    $scope.hasPayableInvoices = true;
+    $scope.totalAmountDue = data.totaldue;
 
-        data.customerswithinvoices.results.forEach(function(customer){
-          customer.invoices.results.forEach(function(invoice){
-            defaultAccount(invoice);
-          })
-        })
+    data.customerswithinvoices.results.forEach(function(customer){
+      customer.invoices.results.forEach(function(invoice){
+        defaultAccount(invoice);
+      })
+    })
 
-        calculateInvoiceFields(data.customerswithinvoices.results);
-        $scope.loadingResults = false;
-        $scope.invoices = data.customerswithinvoices.results;
-        if($scope.invoices.length){
-          $scope.invoices.forEach(function(invoice){
-            invoice.failedBatchValidation = false;       
-          });
-        }
-      // })
-      // blockUI.stop();
-    // })
+    calculateInvoiceFields(data.customerswithinvoices.results);
+    $scope.loadingResults = false;
+    $scope.invoices = data.customerswithinvoices.results;
+    if($scope.invoices.length){
+      $scope.invoices.forEach(function(invoice){
+        invoice.failedBatchValidation = false;       
+      });
+    }
   }
 
   //Combines bank account information with customers and invoices received from api
@@ -221,24 +216,6 @@ angular.module('bekApp')
       return callback($scope.customersWithInvoices);
     })
   }
-
-  // $scope.sortResults = function(sortdirection, sortfield){
-  //   startLoading();
-  //   return blockUI.start("Loading Invoices...").then(function(){
-  //     var params = [{
-  //       sortField: sortField
-  //     }, {
-  //       sortDirection: sortDirection
-  //     }]
-  //     ProductService.getAllOpenInvoices('', ).then(function(data){
-  //       $scope.products = data.products;
-  //     }).then(function(){
-  //       resetPage($scope.products, false);
-  //     })
-  //   stopLoading();
-  //   blockUI.stop();
-  //   })
-  // }
 
   function retrieveFilter() {
     if(InvoiceService && InvoiceService.filterRowFields){
