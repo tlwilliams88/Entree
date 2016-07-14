@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.ShoppingCart;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -12,7 +13,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 	{
 		[DataMember(Name="product")]
 		public Product Product { get; set; }
-		[DataMember(Name="valid")]
+        [DataMember(Name = "item")]
+        public QuickAddItemModel Item { get; set; }
+        [DataMember(Name="valid")]
 		public bool Valid { get; set; }
 		[DataMember(Name="reason")]
 		public InvalidReason Reason { get; set; }

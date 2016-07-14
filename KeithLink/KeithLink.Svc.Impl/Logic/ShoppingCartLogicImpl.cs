@@ -714,23 +714,23 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				var product = productHash.ContainsKey(item.ItemNumber) ? productHash[item.ItemNumber] : null;
 
-				if (product == null)
-					results.Add(new ItemValidationResultModel() { Product = product, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                if (product == null)
+					results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.InvalidItemNumber });
 				else
 				{
                     if (item.Each) {
                         if (product.CaseOnly) {
-						    results.Add(new ItemValidationResultModel() { Product = product, Valid = false, Reason = InvalidReason.EachNotAllowed });
+						    results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.EachNotAllowed });
                         } else if (product.PackagePriceNumeric > 0) {
-                            results.Add(new ItemValidationResultModel() { Product = product, Valid = true });
+                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = true });
                         } else {
-                            results.Add(new ItemValidationResultModel() { Product = product, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.EachNotAllowed });
                         }
                     } else {
                         if (product.CasePriceNumeric > 0) {
-                            results.Add(new ItemValidationResultModel() { Product = product, Valid = true });
+                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = true });
                         } else {
-                            results.Add(new ItemValidationResultModel() { Product = product, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.InvalidItemNumber });
                         }
 
                     }
