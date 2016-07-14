@@ -127,7 +127,7 @@
             <span ng-if="totalInvoices > 0" class="pull-left credit-memo-toggle">
               <input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)"> Invoices with Credit Memos
             </span>
-            <span ng-if="totalInvoices > 0 && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle">
+            <span ng-if="totalInvoices > 0 && !isInternalUser" class="pull-left expandandselectcustomers selectallinvoices credit-memo-toggle">
               <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="selectAll('selectAllInvoices')"> Select All Invoices
             </span>
             <span ng-if="totalInvoices > 0 && !isInternalUser" >

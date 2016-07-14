@@ -551,32 +551,21 @@ angular.module('bekApp')
   var transition = false;
   var $active = true;
 
-  $('.expandcollapsecustomers').on('click', function() {
+  $('.expandcollapsecustomers, .expandandselectcustomers').on('click', function() {
     $('.expandcollapsecustomers').prop('disabled','true');
     if(!$active) {
       $active = true;
       $('.panel-title > div').attr('data-toggle', 'collapse');
       $('.panel-collapse').collapse('hide');
-      $(this).html('Click to disable accordion behavior');
     } else {
       $active = false;
-      // if($('.panel-collapse.in').length){
-      //   transition = true;
-      //   $('.panel-collapse.in').collapse('show');       
-      // }
-      // else{
         $('.panel-collapse').collapse('show');
         if($('.panel-collapse.in').length){
           $('.panel-collapse.in').collapse('show');
           $('.panel-collapse.in').removeClass('in');
         }
-      // }
       $('.panel-title > div').attr('data-toggle','');
-      $(this).html('Expand/Collapse All Customers');
     }
-    setTimeout(function(){
-        $('.expandcollapsecustomers').prop('disabled','');
-    },800);
   });
 
   if($scope.total !== total && (total !==0 || $scope.total)){
