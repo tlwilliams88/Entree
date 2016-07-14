@@ -107,12 +107,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         }
 
         private string BuildExtPriceInfo(OrderLineChange line, Product currentProduct) {
-            string priceExtInfo = currentProduct.CasePrice;
-            priceExtInfo += " per case";
-            if(currentProduct.CaseOnly == false) {
-                priceExtInfo += "/";
-                priceExtInfo += currentProduct.PackagePrice;
-                priceExtInfo += " per package";
+            string priceExtInfo = "";
+            if(currentProduct != null)
+            {
+                priceExtInfo = currentProduct.CasePrice;
+                priceExtInfo += " per case";
+                if (currentProduct.CaseOnly == false)
+                {
+                    priceExtInfo += "/";
+                    priceExtInfo += currentProduct.PackagePrice;
+                    priceExtInfo += " per package";
+                }
             }
             return priceExtInfo;
         }

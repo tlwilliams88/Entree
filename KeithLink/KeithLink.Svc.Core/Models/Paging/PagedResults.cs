@@ -12,7 +12,9 @@ namespace KeithLink.Svc.Core.Models.Paging
 	{
 		[DataMember(Name = "totalResults")]
 		public long TotalResults { get; set; }
-		[DataMember(Name = "results")]
+        [DataMember(Name = "totalinvoices")]
+        public long TotalInvoices { get; set; }
+        [DataMember(Name = "results")]
 		public List<T> Results { get; set; }
 	}
 }
