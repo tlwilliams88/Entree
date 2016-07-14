@@ -343,11 +343,11 @@ angular.module('bekApp')
     invoicePagingModel.loadData();    
   };
 
-  $scope.sortInvoices = function(sortDirection, sortField) {
-   $scope.sort = {
-      field: sortfield,
-      sortDirection: sortDirection
-   };
+  $scope.sortInvoices = function(sortDescending, sortField) {
+    $scope.sort = {
+      field: sortField,
+      sortDescending: sortDescending
+    };
     invoicePagingModel.sortData($scope.sort);
   };
 
