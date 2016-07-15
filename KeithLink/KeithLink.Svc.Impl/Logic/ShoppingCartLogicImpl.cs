@@ -59,14 +59,15 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IAuditLogRepository auditLogRepository;
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
-		#endregion
+        private readonly IExternalCatalogRepository _externalCatalogRepo;
+        #endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
-                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic)
+                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
@@ -82,6 +83,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.auditLogRepository = auditLogRepository;
             this.externalServiceRepository = externalServiceRepository;
             _activeCartLogic = userActiveCartLogic;
+            _externalCatalogRepo = externalCatalogRepo;
 		}
         #endregion
 
@@ -706,7 +708,12 @@ namespace KeithLink.Svc.Impl.Logic
 				totalProcessed += 50;
 			}
 
-			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
+            if(products.Products.Count() < productsToValidate.Count())
+            {
+                LookupUnfoundProductsInExternalCatalogs(catalogInfo, productsToValidate, products);
+            }
+
+            var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
 
 			var results = new List<ItemValidationResultModel>();
 
@@ -740,6 +747,22 @@ namespace KeithLink.Svc.Impl.Logic
 			return results;
 		}
 
+        private void LookupUnfoundProductsInExternalCatalogs(UserSelectedContext catalogInfo, List<QuickAddItemModel> productsToValidate, ProductsReturn products)
+        {
+            List<string> found = products.Products.Select(i => i.ItemNumber).ToList();
+            List<string> batch = productsToValidate.Where(i => found.Contains(i.ItemNumber) == false).Select(i => i.ItemNumber).ToList();
+            Dictionary<string, string> externalCatalogDict =
+                _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
+
+            var tempProducts = catalogLogic.GetProductsByIdsWithPricing(new UserSelectedContext()
+            { CustomerId = catalogInfo.CustomerId, BranchId = externalCatalogDict[catalogInfo.BranchId.ToLower()] }, batch);
+
+            if (tempProducts.Products.Count() > 0)
+            {
+                products.Products.AddRange(tempProducts.Products);
+            }
+        }
+
         #endregion
-	}
+    }
 }
