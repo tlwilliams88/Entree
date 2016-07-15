@@ -230,7 +230,7 @@
                         'addMissingDecimals': true,
                         'preventInvalidInput': true,
                         'prepend': '$',
-                        'min': {{invoice.amount > 0 ? 1 : invoice.amount}}               
+                        'min': {{invoice.amount > 0 ? 0.01 : invoice.amount}}               
                       }"
                       ng-required="invoice.isSelected"
                       ng-change="toggleSelect(invoice, 'amount')"
