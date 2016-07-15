@@ -23,4 +23,16 @@
       min-height: 40px;
     }
   }
+  &.counter-container-sm {
+      display: inline-block;
+
+    input {
+      border-radius: 4px;
+      padding: 7px 10px;
+      width: 55px;
+    }
+    > button {
+      padding: 7px 13px;
+    }
+  }
 }

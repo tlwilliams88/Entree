@@ -18,6 +18,8 @@ angular.module('bekApp')
         element.addClass('counter-container');
         if (attributes.size === 'large') { // item details page
           element.addClass('counter-container-lg');
+        } else if(attributes.size === 'small'){
+          element.addClass('counter-container-sm');
         }
 
         // Make sure the value attribute is not missing.

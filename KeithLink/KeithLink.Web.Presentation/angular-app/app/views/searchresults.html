@@ -310,23 +310,13 @@
                       <a class="block-display" style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
                     <h3 class="block-display">
                       <a ng-click="goToItemDetails(item)">{{item.name}} </a>
+                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
                     </h3>
                     <h5 class="block-display"> 
-                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">{{item.brand_extended_description}}</a><span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
-                      <span
-                        ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                        context-menu-template
-                        class="context-menu-template context-menu__in-list hidden-print hideIconName displayIconName">
-                          <a class="icon-plus2"></a>
-                        </span></span>
-                    <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
-                    <span ng-if="isOrderEntryCustomer" class="large-icon hideIconBrand displayIconBrand" favorite-icons></span>
-                    <span
-                      ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
-                      context-menu-template
-                      class="context-menu-template context-menu__in-list hidden-print hideIconBrand displayIconBrand">
-                        <a class="icon-plus2"></a>
+                    <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">
+                      {{item.brand_extended_description}}</a>
                     </span>
+                    <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
                     </h5>
                     </div>
                     <h6>
@@ -352,6 +342,22 @@
                       <span ng-if="hasCasePrice(item)">Price: {{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
                       <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                     </h6>
+                    <span>
+                      <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" class="hidden-print">
+                        <div class="context-menu-template btn-primary btn btn-sm" context-menu context-menu-template>
+                          Add To...
+                          <span class="icon-arrow-down6"></span>
+                        </div>
+                        <form name="orderForm" class="inline-block-display">
+                          <div counter allowDropdown="true" size="small" ng-model="item.quantity" min="0"></div>
+                          <span ng-if="packagePriceInd">Order By Package             
+                            <ng-form name="eachForm_mobile">
+                              <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                            </ng-form>
+                          </span>
+                        </form>
+                      </div>
+                    </span>
                   </div>
                 </div>
                 <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs search-result-image-container" ng-show="item.productimages.length > 0">
