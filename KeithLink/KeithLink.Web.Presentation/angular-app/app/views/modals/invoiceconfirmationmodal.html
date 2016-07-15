@@ -98,7 +98,8 @@
             analytics-on 
             analytics-category="Invoices" 
             analytics-event="Pay Invoices">
-            <span ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" >Submit Payment(s)</span>
+            <span ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" >Submit <ng-pluralize count="payments.length" when="{'one': 'Payment', 'other': 'Payments'}"></ng-pluralize></span>
+            <span ng-if="selectedFilterView.name == 'Invoices Pending Payment'" >Update <ng-pluralize ng-model="payments.length" count='payments.length' when="{'one': 'Payment', 'other': 'Payments'}"></ng-pluralize></span>
           </button>
        </div>
     </div>
