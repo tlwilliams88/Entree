@@ -67,36 +67,31 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
-        private Message GetEmailMessageForNotification(PaymentTransactionModel payment, Core.Models.Profile.Customer customer)
+        private Message GetEmailMessageForNotification(List<PaymentTransactionModel> payments, Core.Models.Profile.Customer customer)
         {
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
             MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTDETAIL);
 
             StringBuilder orderDetails = new StringBuilder();
 
-                try
+            foreach (var payment in payments)
+            {
+                var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(customer.CustomerBranch), customer.CustomerNumber, payment.InvoiceNumber);
+                var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
+                orderDetails.Append(detailTemplate.Body.Inject(new
                 {
-                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
-                    var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
-                    orderDetails.Append(detailTemplate.Body.Inject(new
-                    {
-                        InvoiceType = invoiceTyped,
-                        InvoiceNumber = payment.InvoiceNumber,
-                        InvoiceDate = invoice.InvoiceDate,
-                        DueDate = invoice.DueDate,
-                        ScheduledDate = payment.PaymentDate,
-                        PaymentAmount = payment.PaymentAmount
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    _log.WriteErrorLog(string.Format("Failure in GetEmailMessageForNotification, payment.branchid={0} payment.CustomerNumber={1} payment.InvoiceNumber={2} ",
-                        payment.BranchId, payment.CustomerNumber, payment.InvoiceNumber), ex);
-                    throw ex;
-                }
+                    InvoiceType = invoiceTyped,
+                    InvoiceNumber = payment.InvoiceNumber,
+                    InvoiceDate = invoice.InvoiceDate,
+                    DueDate = invoice.DueDate,
+                    ScheduledDate = payment.PaymentDate,
+                    PaymentAmount = payment.PaymentAmount
+                }));
+            }
 
-            var bank = _bankRepo.GetBankAccount(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.AccountNumber);
-            var confirmationId = payment.ConfirmationId;
+
+            var bank = _bankRepo.GetBankAccount(DivisionHelper.GetDivisionFromBranchId(customer.CustomerBranch), customer.CustomerNumber, payments[0].AccountNumber);
+            var confirmationId = payments[0].ConfirmationId;
 
             Message message = new Message();
             message.BodyIsHtml = template.IsBodyHtml;
@@ -108,7 +103,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 ConfirmationId = confirmationId,
                 BankAccount = bank.AccountNumber + " - " + bank.Name,
                 PaymentDetailLines = orderDetails.ToString(),
-                TotalPayments = payment.PaymentAmount
+                TotalPayments = payments.Sum(p => p.PaymentAmount)
             });
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerName = customer.CustomerName;
@@ -125,10 +120,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
             PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
 
-            foreach (var payment in confirmation.Payments)
+            List<string> customerNumbers = confirmation.Payments.Select(p => p.CustomerNumber).Distinct().ToList();
+
+            foreach (string customerNumber in customerNumbers)
             {
+                string branchId = confirmation.Payments.Where(p => p.CustomerNumber == customerNumber).Select(p => p.BranchId).First();
+                
                 // load up recipients, customer and message
-                Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(payment.CustomerNumber, payment.BranchId);
+                Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
 
                 if (customer == null)
                 {
@@ -144,7 +143,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 else
                 {
                     List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
-                    Message message = GetEmailMessageForNotification(payment, customer);
+                    Message message = GetEmailMessageForNotification(confirmation.Payments.Where(p => p.CustomerNumber == customerNumber).ToList(), customer);
 
                     // send messages to providers...
                     if (recipients != null && recipients.Count > 0)
