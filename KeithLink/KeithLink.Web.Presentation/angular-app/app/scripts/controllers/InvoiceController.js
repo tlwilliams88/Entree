@@ -194,6 +194,7 @@ angular.module('bekApp')
         invoice.failedBatchValidation = false;       
       });
     }
+    blockUI.stop();
   }
 
   //Combines bank account information with customers and invoices received from api
@@ -284,25 +285,32 @@ angular.module('bekApp')
     if(!input && filter){
       $scope.invoices.forEach(function(customer){
         customer.invoices.results = $filter('filter')(customer.invoices.results, {hascreditmemos: true});
+        customer.invoices.totalResults = customer.invoices.results.length;
       })
     } else if(input && filter === 'Invoice #'){
       $scope.invoices.forEach(function(customer){
         customer.invoices.results = $filter('filter')(customer.invoices.results, {invoicenumber: input});
+        customer.invoices.totalResults = customer.invoices.results.length;
       })
     } else if(filter === 'PO Number'){
       $scope.invoices.forEach(function(customer){
         customer.invoices.results = $filter('filter')(customer.invoices.results, {ponumber: input});
+        customer.invoices.totalResults = customer.invoices.results.length;
       })
     } else if(filter === 'Invoice Type'){
       $scope.invoices.forEach(function(customer){
         customer.invoices.results = $filter('filter')(customer.invoices.results, {typedescription: input});
+        customer.invoices.totalResults = customer.invoices.results.length;
       })
     } else {
-      invoicePagingModel.loadData();
+      blockUI.start('Loading Invoices...').then(function(){
+        invoicePagingModel.loadData();
+      })
     }
   };
 
   $scope.clearFilters = function(filter) {
+    blockUI.start('Clearing Filter...').then(function(){
     if(filter){
       $('#invoiceFilterInput').val('');
     }
@@ -310,22 +318,27 @@ angular.module('bekApp')
     getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
     invoicePagingModel.loadData();
     $scope.showFilter = false;
+    })
   };
 
   $scope.selectFilterView = function (filterView) {
-    $scope.errorMessage = '';
-    InvoiceService.setFilters(filterView, $scope.filterRowFields);
-    getInvoicesFilterObject($scope.filterRowFields, filterView);
-    $scope.selectedFilterView = filterView;
-    invoicePagingModel.loadData();    
+    blockUI.start('Loading Invoices...').then(function(){
+      $scope.errorMessage = '';
+      InvoiceService.setFilters(filterView, $scope.filterRowFields);
+      getInvoicesFilterObject($scope.filterRowFields, filterView);
+      $scope.selectedFilterView = filterView;
+      invoicePagingModel.loadData();
+    })    
   };
 
   $scope.sortInvoices = function(sortDescending, sortField) {
-    $scope.sort = {
-      field: sortField,
-      sortDescending: sortDescending
-    };
-    invoicePagingModel.sortData($scope.sort);
+    blockUI.start('Sorting Invoices...').then(function(){
+      $scope.sort = {
+        field: sortField,
+        sortDescending: sortDescending
+      };
+      invoicePagingModel.sortData($scope.sort);
+    })
   };
 
   $scope.setDateSortValues = function(invoice){
@@ -400,8 +413,9 @@ angular.module('bekApp')
 
       $scope.selectedFilterView = $scope.filterViews[1]; // default to Open Invoices filter view
       setTempContextForViewingAllCustomers();
-      invoicePagingModel.getData = InvoiceService.getAllOpenInvoices;
-
+      blockUI.start('Loading Invoices...').then(function(){
+        invoicePagingModel.getData = InvoiceService.getAllOpenInvoices;
+      })
     } else {
       
       //restore previously selected user context
@@ -535,18 +549,23 @@ angular.module('bekApp')
 
   $scope.totalPaymentAmount = function () {    
     var total = 0;
-    if($scope.invoices.length){
-    $scope.invoices.forEach(function (customer) {
-      if(customer.invoices.results && customer.invoices.results.length){
-        customer.invoices.results.forEach(function (invoice){
-          if (invoice.isSelected) {
-            total += parseFloat(invoice.paymentAmount || 0);
-          }
-        })
-      }
-
-    });
-  }
+    if($scope.invoices.length && $scope.selectedFilterView.name !== 'Invoices Pending Payment'){
+      $scope.invoices.forEach(function (customer) {
+        if(customer.invoices.results && customer.invoices.results.length){
+          customer.invoices.results.forEach(function (invoice){
+            if (invoice.isSelected) {
+              total += parseFloat(invoice.paymentAmount || 0);
+            }
+          })
+        }
+      })
+    }
+    if($scope.total !== total && (total !==0 || $scope.total)){
+      $scope.validateBatch();
+    }
+    $scope.total = total;
+    return total;
+  };
 
   var transition = false;
   var $active = true;
@@ -568,13 +587,6 @@ angular.module('bekApp')
     }
   });
 
-  if($scope.total !== total && (total !==0 || $scope.total)){
-    $scope.validateBatch();
-  }
-    $scope.total = total;
-    return total;
-  };
-
   $scope.getSelectedInvoices = function(customers, callback) {
     var invoices = [];
     var deferredPromises = [];
@@ -589,6 +601,15 @@ angular.module('bekApp')
           deferredPromises.push(deferred.promise);
         })
       })
+    } else {
+      $scope.invoices.forEach(function(customer){
+        customer.invoices.results.forEach(function(invoice){
+          if(invoice.isSelected){
+            invoices.push(invoice);
+          }
+        })
+      })
+      return invoices;
     }
     if(callback){
       $q.all(deferredPromises).then(function(){

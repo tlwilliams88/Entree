@@ -14,23 +14,20 @@
           <!-- Mobile Pay and Update buttons -->
     <button 
       type="button"
-      ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" 
+      ng-if="selectedFilterView.name !== 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser" 
       ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
-      ng-click="payInvoices()" 
-      ng-if="hasPayableInvoices && !isInternalUser" 
+      ng-click="payInvoices()"  
       class="btn-lg btn btn-primary pull-right-lg pull-right-md pull-right-sm pull-right-xs hidden-md hidden-lg hidden-print" 
       analytics-on 
       analytics-category="Invoices" 
-      analytics-event="Pay Invoice"
-      ng-show="hasPayableInvoices">
+      analytics-event="Pay Invoice">
       Pay Now
     </button>
     <button       
       type="button"
-      ng-if="selectedFilterView.name === 'Invoices Pending Payment'" 
-      ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
+      ng-if="selectedFilterView.name === 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser" 
+      ng-disabled="getSelectedInvoices() <= 0" 
       ng-click="payInvoices()" 
-      ng-if="hasPayableInvoices && !isInternalUser" 
       class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print">
       Update Payment(s)
     </button> 
@@ -58,23 +55,20 @@
   <div header-buttons>
     <button 
       type="button"
-      ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" 
+      ng-if="selectedFilterView.name !== 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser" 
       ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
       ng-click="payInvoices()" 
-      ng-if="hasPayableInvoices && !isInternalUser" 
       class="btn-lg btn btn-primary pull-right-sm hidden-print" 
       analytics-on 
       analytics-category="Invoices" 
-      analytics-event="Pay Invoice"
-      ng-show="hasPayableInvoices">
+      analytics-event="Pay Invoice">
       Pay Now
     </button>
     <button       
       type="button"
-      ng-if="selectedFilterView.name === 'Invoices Pending Payment'" 
-      ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
+      ng-if="selectedFilterView.name === 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser" 
+      ng-disabled="getSelectedInvoices() <= 0" 
       ng-click="payInvoices()" 
-      ng-if="hasPayableInvoices && !isInternalUser" 
       class="btn-lg btn btn-primary pull-right-sm hidden-print">
       Update Payment(s)
     </button>
@@ -173,7 +167,7 @@
                     </label>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
-                    <span></span><a ng-click="linkToReferenceNumber(invoice.customerNumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
+                    <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
                     <h5>{{::invoice.typedescription}}</h5>
                     <h5>Status: <span ng-class="{'highlight-text-late': (invoice.statusdescription == 'Past Due'), 'highlight-text-paid': (invoice.statusdescription == 'Paid') }" >{{::invoice.statusdescription}}</span></h5>
                   </div>
@@ -236,7 +230,7 @@
                         'addMissingDecimals': true,
                         'preventInvalidInput': true,
                         'prepend': '$',
-                        'min': {{invoice.amount > 0 ? 0 : invoice.amount}}               
+                        'min': {{invoice.amount > 0 ? 1 : invoice.amount}}               
                       }"
                       ng-required="invoice.isSelected"
                       ng-change="toggleSelect(invoice, 'amount')"
