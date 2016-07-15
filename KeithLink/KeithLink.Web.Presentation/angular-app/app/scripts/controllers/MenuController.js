@@ -274,6 +274,7 @@ angular.module('bekApp')
   // change context menu selection for order-entry customers
   $scope.changeCustomerLocation = function(selectedUserContext) {
     LocalStorage.setTempContext(selectedUserContext);
+    $state.go('menu.home');
     refreshPage();
   };
 
