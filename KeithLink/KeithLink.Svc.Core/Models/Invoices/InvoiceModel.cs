@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using System;
 using System.Collections.Generic;
@@ -105,6 +106,9 @@ namespace KeithLink.Svc.Core.Models.Invoices
         [DataMember(Name = "ponumber")]
         [Description("PO Number")]
         public string PONumber { get; set; }
+
+        [DataMember(Name = "banks")]
+        public List<CustomerBank> Banks { get; set; }
 
         public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
         {

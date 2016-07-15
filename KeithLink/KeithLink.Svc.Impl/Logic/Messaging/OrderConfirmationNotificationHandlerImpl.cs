@@ -107,12 +107,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         }
 
         private string BuildExtPriceInfo(OrderLineChange line, Product currentProduct) {
-            string priceExtInfo = currentProduct.CasePrice;
-            priceExtInfo += " per case";
-            if(currentProduct.CaseOnly == false) {
-                priceExtInfo += "/";
-                priceExtInfo += currentProduct.PackagePrice;
-                priceExtInfo += " per package";
+            string priceExtInfo = "";
+            if(currentProduct != null)
+            {
+                priceExtInfo = currentProduct.CasePrice;
+                priceExtInfo += " per case";
+                if (currentProduct.CaseOnly == false)
+                {
+                    priceExtInfo += "/";
+                    priceExtInfo += currentProduct.PackagePrice;
+                    priceExtInfo += " per package";
+                }
+            }
+            else // log who is not finding a currentproduct
+            {
+                eventLogRepository.WriteWarningLog(string.Format("No currentproduct not found for product={0}", line.ItemNumber));
             }
             return priceExtInfo;
         }
