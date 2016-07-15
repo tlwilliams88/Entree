@@ -1,9 +1,11 @@
 ﻿// KeithLink
 using KeithLink.Common.Core.Interfaces.Logging;
+
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
-using KeithLink.Svc.Impl.ETL;
+
 using KeithLink.Svc.InternalSvc.Interfaces;
+using KeithLink.Svc.Impl.ETL;
 
 // Core
 using System;
@@ -30,11 +32,13 @@ namespace KeithLink.Svc.InternalSvc
         private readonly IItemImport _esItemImportLogic;
         private readonly IListsImportLogic _listImportLogic;
 
+        private readonly IEventLogRepository _log;
+
         #endregion
 
         #region constructor
 
-        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, ICategoriesImport esCategoriesImport, IHouseBrandsImport esHouseBrandsImport, IItemImport esItemImport, IListsImportLogic listImportLogic)
+        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, ICategoriesImport esCategoriesImport, IHouseBrandsImport esHouseBrandsImport, IItemImport esItemImport, IListsImportLogic listImportLogic, IEventLogRepository log)
 
         {
             this.categoryLogic = categoryLogic;
@@ -43,11 +47,57 @@ namespace KeithLink.Svc.InternalSvc
             this._esHouseBrandsImportLogic = esHouseBrandsImport;
             this._esItemImportLogic = esItemImport;
             this._listImportLogic = listImportLogic;
+            this._log = log;
         }
 
         #endregion
 
         #region methods
+
+        public bool ProcessAll()
+        {
+            DateTime startTime = DateTime.Now;
+
+            Task process = Task.Factory.StartNew(() => _log.WriteInformationLog(String.Format("ETL - Loading process started @ {0}", startTime)));
+
+            process.ContinueWith((t) => _esItemImportLogic.ImportItems())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => customerLogic.ImportCustomerItemHistory())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => _listImportLogic.ImportContractItems())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => _listImportLogic.ImportWorksheetItems())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => customerLogic.ImportDsrInfo())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => customerLogic.ImportCustomerItemHistory())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => _esCategoriesImportLogic.ImportCategories())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => _esHouseBrandsImportLogic.ImportHouseBrands())
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => customerLogic.ImportCustomersToOrganizationProfile(), TaskContinuationOptions.ExecuteSynchronously)
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) => categoryLogic.ImportCatalog(), TaskContinuationOptions.ExecuteSynchronously)
+                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            process.ContinueWith((t) =>
+            {
+                TimeSpan took = DateTime.Now - startTime;
+                _log.WriteInformationLog(String.Format("ETL - Loading process took: {0}", took.Minutes));
+            }, TaskContinuationOptions.ExecuteSynchronously);
+
+            return true;
+        }
 
         /// <summary>
         /// PRocess catalog data
@@ -60,6 +110,7 @@ namespace KeithLink.Svc.InternalSvc
 
             return true;
         }
+
         /// <summary>
         /// Process staging customer data
         /// </summary>

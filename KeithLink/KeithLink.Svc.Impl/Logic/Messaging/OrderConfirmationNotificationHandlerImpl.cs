@@ -119,6 +119,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     priceExtInfo += " per package";
                 }
             }
+            else // log who is not finding a currentproduct
+            {
+                eventLogRepository.WriteWarningLog(string.Format("No currentproduct not found for product={0}", line.ItemNumber));
+            }
             return priceExtInfo;
         }
 
