@@ -281,15 +281,21 @@
       <div class="col-sm-12 col-xs-12">
         <h2 class="pull-left" >Search Results</h2>
         <span style="margin-top:25px;" class="pull-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
-        <span style="margin-top:15px; margin-right:10px;" class="pull-right" dropdown is-open="openScope">
-          <button type="button" class="btn btn-default dropdown-toggle">{{selectedSortParameter}}<span class="caret margin-left-5" ></span></button>
-          <ul class="dropdown-menu" role="menu">
-            <li ng-repeat="sortParameter in sortParameters" >
-              <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
-            </li>
-          </ul>
-          <a style="margin-top:25px;" ng-click="sortResults('asc', sortParametervalue)">Asc </a><span>/</span><a ng-click="sortResults('desc', sortParametervalue)"> Desc</a>
-        </span>
+          <div class="pull-right" style="margin-bottom:5px;">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <div class="pull-right">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
+                    <ul class="dropdown-menu">
+                      <li ng-repeat="sortParameter in sortParameters" >
+                        <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+                      </li>
+                    </ul>
+                  <button class="btn btn-default" type="button" ng-click="sortResults('asc', sortParametervalue)">Asc </button><span >/</span><button class="btn btn-default" type="button" ng-click="sortResults('desc', sortParametervalue)" > Desc</button>
+                </div>
+              </div>
+            </div>
+          </div>
       </div>
     </div>
     <div context-menu favorite-item-click-handlers >
