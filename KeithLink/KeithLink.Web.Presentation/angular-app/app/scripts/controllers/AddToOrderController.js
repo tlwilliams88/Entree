@@ -454,9 +454,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       else{
         $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
-            $timeout(function() {
-              $('#rowForFocus').find('input:first').focus();
-            }, 2000);
+
             var continueSearch = resp;       
             if(continueSearch){           
               $scope.visitedPages = [];
