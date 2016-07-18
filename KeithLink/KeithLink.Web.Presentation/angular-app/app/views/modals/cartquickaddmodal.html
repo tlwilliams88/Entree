@@ -21,9 +21,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="item in quickadditems">
+        <tr ng-repeat="item in quickAddItems">
           <td class="input-col" ng-class="{ 'red-border': item.valid === false }">
-            <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" ng-model-options="{ debounce: 300 }" fcsa-number="{ 'noFormat': true, 'minDigits': 6, 'maxDigits': 6 }">
+            <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" fcsa-number="{ 'noFormat': true, 'maxDigits': 6 }">
             <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
           </td>
           <td class="input-col">
@@ -46,9 +46,43 @@
 
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-lg btn-default pull-left" ng-click="validateItems(quickadditems)">Validate Items</button>
-  <button type="submit" style="float:right; display:block;" class="btn-lg btn btn-primary" analytics-on analytics-category="Orders" analytics-event="Create Order" analytics-label="Quick Add" ng-if="!isChangeOrder && !existingCart" ng-disabled="!enableSubmit" ng-click="createCart(quickadditems)">Create Cart</button>
-  <button type="button" class="btn-lg btn btn-primary" style="float:right; display:block;" ng-if="!isChangeOrder && existingCart" ng-click="updateCart(quickadditems)">Save Cart</button>
-  <button type="button" style="float:right; display:block;" class="btn-lg btn btn-primary" ng-if="isChangeOrder && existingCart" ng-click="updateOrder(quickadditems)">Save Change Order</button>
-  <button type="button" style="float:right; display:block;" class="btn-lg btn btn-default" ng-click="close()">Close</button>
+  <button
+  type="button"
+  class="btn btn-lg btn-default pull-left"
+  ng-click="validateItems(quickAddItems)"
+  ng-disabled = "isValidating"
+  >Validate Items
+  </button>
+
+  <button
+  type="submit"
+  style="float:right; display:block;"
+  class="btn-lg btn btn-primary"
+  analytics-on
+  analytics-category="Orders"
+  analytics-event="Create Order" 
+  analytics-label="Quick Add" 
+  ng-if="!isChangeOrder && !existingCart"
+  ng-disabled="!enableSubmit"
+  ng-click="createCart(quickAddItems)">Create Cart
+  </button>
+
+  <button
+  type="button"
+  class="btn-lg btn btn-primary"
+  style="float:right; display:block;"
+  ng-if="existingCart"
+  ng-disabled = "isValidating"
+  ng-click="updateCart(quickAddItems)">Add To
+   <span ng-if="!isChangeOrder">Cart</span>
+   <span ng-if="isChangeOrder">Change Order</span>
+  </button>
+
+  <button
+  type="button"
+  style="float:right; display:block;"
+  class="btn-lg btn btn-default"
+  ng-click="close()"
+  ng-disabled = "isValidating">Close
+  </button>
 </div>
