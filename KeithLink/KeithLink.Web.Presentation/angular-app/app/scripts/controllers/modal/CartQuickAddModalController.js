@@ -76,7 +76,7 @@ angular.module('bekApp')
   $scope.createCart = function(items) {
     // filter items where quantity is greater than 0 and item number is valid
     var newCartItems = getRowsWithQuantity(items);
-    CartService.quickAdd(newartItems).then(function(cartId) {
+    CartService.quickAdd(newCartItems).then(function(cartId) {
       $modalInstance.close(cartId);
       $scope.displayMessage('success', 'Successfully created new cart.');
     }, function(error) {
