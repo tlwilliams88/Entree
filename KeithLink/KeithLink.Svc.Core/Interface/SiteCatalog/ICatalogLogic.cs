@@ -10,16 +10,18 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface ICatalogLogic
     {
+        void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel);
+
         CategoriesReturn GetCategories(int from, int size, string catalogType);
-        
-		List<Division> GetDivisions();
-        
+
+        List<Division> GetDivisions();
+
         ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
-		
+
         Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType);
-        
-		Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile);
-        
+
+        Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile);
+
         ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile);
 
         ProductsReturn GetProductsByIds(string branch, List<string> ids);
@@ -35,10 +37,10 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         List<String> GetExternalBranchIds(string bekBranchId);
 
         bool IsSpecialtyCatalog(string catalogType, string branchId = null);
-        
+
 
         bool IsCatalogIdBEK(string catalogId);
-       
+
 
         string GetCatalogTypeFromCatalogId(string catalogId);
 

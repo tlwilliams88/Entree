@@ -776,8 +776,8 @@ namespace KeithLink.Svc.Impl.Logic
             Dictionary<string, string> externalCatalogDict =
                 _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
 
-            var tempProducts = catalogLogic.GetProductsByIdsWithPricing(new UserSelectedContext()
-            { CustomerId = catalogInfo.CustomerId, BranchId = externalCatalogDict[catalogInfo.BranchId.ToLower()] }, batch);
+            var tempProducts = catalogLogic.GetProductsByIds(externalCatalogDict[catalogInfo.BranchId.ToLower()], batch);
+            catalogLogic.AddPricingInfo(tempProducts, catalogInfo, new SearchInputModel());
 
             if (tempProducts.Products.Count() > 0)
             {

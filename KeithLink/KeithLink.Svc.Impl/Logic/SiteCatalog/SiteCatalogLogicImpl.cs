@@ -100,12 +100,19 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel) {
+        public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel) {
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
 
-            PriceReturn pricingInfo =  _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
-            
+            PriceReturn pricingInfo = null;
+            if (IsSpecialtyCatalog(null, prods.Products[0].CatalogId))
+            {
+                string source = GetCatalogTypeFromCatalogId(prods.Products[0].CatalogId);
+                pricingInfo = _priceLogic.GetNonBekItemPrices("fdf", context.CustomerId, source, DateTime.Now.AddDays(1), prods.Products);
+            } else {
+                pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
+            }
+
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
 
@@ -119,15 +126,15 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if ((searchModel.SField == "caseprice" || searchModel.SField == "unitprice") && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
             {
                 if (searchModel.SDir == "asc")
-					if(searchModel.SField == "caseprice")
-						prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
-					else
-						prods.Products.Sort((x, y) => x.UnitCost.CompareTo(y.UnitCost));
+                    if (searchModel.SField == "caseprice")
+                        prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
+                    else
+                        prods.Products.Sort((x, y) => x.UnitCost.CompareTo(y.UnitCost));
                 else
-					if (searchModel.SField == "caseprice")
-						prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
-					else
-						prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
+                    if (searchModel.SField == "caseprice")
+                    prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
+                else
+                    prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
             }
         }
 
