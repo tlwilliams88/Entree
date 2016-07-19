@@ -15,7 +15,7 @@
     <button 
       type="button"
       ng-if="selectedFilterView.name !== 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser" 
-      ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
+      ng-disabled="getSelectedInvoices() <= 0 || errorMessage.length" 
       ng-click="payInvoices()"  
       class="btn-lg btn btn-primary pull-right-lg pull-right-md pull-right-sm pull-right-xs hidden-md hidden-lg hidden-print" 
       analytics-on 
@@ -56,7 +56,7 @@
     <button 
       type="button"
       ng-if="selectedFilterView.name !== 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser" 
-      ng-disabled="invoiceForm.$invalid || getSelectedInvoices() <= 0 || errorMessage.length" 
+      ng-disabled="getSelectedInvoices() <= 0 || errorMessage.length" 
       ng-click="payInvoices()" 
       class="btn-lg btn btn-primary pull-right-sm hidden-print" 
       analytics-on 
@@ -128,7 +128,7 @@
             </span>
             <span ng-if="totalInvoices > 0 && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
             <span ng-if="totalInvoices > 0 && !isInternalUser">
-              <a class="expandcollapsecustomers pull-right-lg pull-right-md pull-right-sm pull-left-xs">Expand/Collapse All Customers</a>
+              <a class="expandcollapsecustomers pull-right-lg pull-right-md pull-right-sm pull-left-xs" ng-click="expandcollapsecustomers()">Expand/Collapse All Customers</a>
             </span>
 <!--             <div ng-if="totalInvoices > 0" class="pull-right">
               <div class="input-group">
