@@ -250,58 +250,65 @@ angular.module('bekApp')
         processingSubmitOrder = true;        
 
         if($scope.validateShipDate($scope.selectedShipDate)){
-          return;
+        return;
         }
 
-        $scope.saveCart(cart)
-          .then(CartService.submitOrder)
-          .then(function(data) {
-            $scope.setRecentlyOrderedUNFIItems(cart);
-            var orderNumber = -1;
-            var index;
-            for (index in data.ordersReturned) {
+         CartService.validateCart(cart.id).then(function(resp){
+          if(resp === false){
+            // Do nothing. The cart has already been submitted
+          }
+          else{
+            $scope.saveCart(cart)
+            .then(CartService.submitOrder)
+            .then(function(data) {
+              $scope.setRecentlyOrderedUNFIItems(cart);
+              var orderNumber = -1;
+              var index;
+              for (index in data.ordersReturned) {
                 if (data.ordersReturned[index].catalogType == "BEK")
                 {
-                    orderNumber = data.ordersReturned[index].ordernumber;
+                  orderNumber = data.ordersReturned[index].ordernumber;
                 }
-            }
+              }
 
-            var status = '';
-            var message  = '';
+              var status = '';
+              var message  = '';
 
-            if(orderNumber == -1 ) {
+              if(orderNumber == -1 ) {
                 //no BEK items bought
                 if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length != data.numberOfOrders) {
-                    status = 'error';
-                    message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
+                  status = 'error';
+                  message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
                 } else {
-                    status = 'success';
-                    message  = 'Successfully submitted order.';
+                  status = 'success';
+                  message  = 'Successfully submitted order.';
                 }
 
                 if (data.ordersReturned && data.ordersReturned[0] != null) {
-                    orderNumber = data.ordersReturned[0].ordernumber;
+                  orderNumber = data.ordersReturned[0].ordernumber;
                 } else {
-                    orderNumber = null;
+                  orderNumber = null;
                 }
-            } else {
-                //BEK oderNumber exists
-                if (data.ordersReturned.length != data.numberOfOrders) {
-                    status = 'error';
-                    message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
-                } else {
-                    status = 'success';
-                    message  = 'Successfully submitted order.';
-                }
-            }
+              } else {
+              //BEK oderNumber exists
+              if (data.ordersReturned.length != data.numberOfOrders) {
+                status = 'error';
+                message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
+              } else {
+                status = 'success';
+                message  = 'Successfully submitted order.';
+              }
+              }
 
-            $state.go('menu.orderitems', { invoiceNumber: orderNumber });
-            $scope.displayMessage(status, message);
-          }, function(error) {
-            $scope.displayMessage('error', 'Error submitting order.');
-          }).finally(function() {
-            processingSubmitOrder = false;
-          });
+              $state.go('menu.orderitems', { invoiceNumber: orderNumber });
+              $scope.displayMessage(status, message);
+            }, function(error) {
+              $scope.displayMessage('error', 'Error submitting order.');
+            }).finally(function() {
+              processingSubmitOrder = false;
+            });
+          }
+        });
       }
     };
 
@@ -410,24 +417,21 @@ angular.module('bekApp')
       var invalidItemFound =  invalidItemCheck(order.items);
       if (!processingSaveChangeOrder && !invalidItemFound) {
         processingResubmitOrder = true;
-
         if($scope.validateShipDate($scope.selectedShipDate)){
           return;
         }
-
         $scope.saveChangeOrder(order)
-          .then(OrderService.resubmitOrder)
-          .then(function(invoiceNumber) {
-            $scope.setRecentlyOrderedUNFIItems(order);
-            $scope.displayMessage('success', 'Successfully submitted change order.');
-            $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
-          }, function(error) {
-            $scope.displayMessage('error', 'Error re-submitting order.');
-          }).finally(function() {
-            processingResubmitOrder = false;
-          });
+        .then(OrderService.resubmitOrder)
+        .then(function(invoiceNumber) {
+          $scope.setRecentlyOrderedUNFIItems(order);
+          $scope.displayMessage('success', 'Successfully submitted change order.');
+          $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
+        }, function(error) {
+          $scope.displayMessage('error', 'Error re-submitting order.');
+        }).finally(function() {
+          processingResubmitOrder = false;
+        });
       }
-
     };
 
     var processingCancelOrder = false;
