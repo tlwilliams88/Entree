@@ -385,11 +385,6 @@ angular.module('bekApp')
       },
 
       submitOrder: function(cartId) {
-        if(cartId === false){
-          var deferred = $q.defer();
-          deferred.resolve(cartId);
-          return deferred.promise;
-        }
         return Cart.submit({
           cartId: cartId
         }, { message: 'Submitting Order...' }).$promise.then(function(data) {
