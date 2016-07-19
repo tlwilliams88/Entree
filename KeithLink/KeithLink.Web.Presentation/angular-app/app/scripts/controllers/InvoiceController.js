@@ -530,19 +530,22 @@ angular.module('bekApp')
       angular.forEach($scope.invoices, function (customer, index) {
         customer.selected = angular.element('.invoiceSelectAll')[0].checked;
         angular.forEach(customer.invoices.results, function(invoice, index){
-          invoice.isSelected = customer.selected;
-          if (invoice.userCanPayInvoice) {
-            $scope.selectInvoice(invoice, invoice.isSelected);
+          if(invoice.userCanPayInvoice){
+            invoice.isSelected = customer.selected;
+            if (invoice.invoiceamount !== 0) {
+              $scope.selectInvoice(invoice, invoice.isSelected);
+            }
           }
         })
       })
     }else{
       $event.stopPropagation();
       customer.invoices.results.forEach(function(invoice){
-        invoice.isSelected = customer.selected;
-        
-        if (invoice.userCanPayInvoice) {
-          $scope.selectInvoice(invoice, invoice.isSelected);
+        if(invoice.userCanPayInvoice){
+          invoice.isSelected = customer.selected;
+          if (invoice.invoiceamount !== 0) {
+            $scope.selectInvoice(invoice, invoice.isSelected);
+          }
         }
       })
     }
@@ -568,26 +571,11 @@ angular.module('bekApp')
     return total;
   };
 
-  var transition = false;
-  var $active = true;
-
-  $scope.expandcollapsecustomers = function(){
-      if(!$active) {
-        $active = true;
-        $('.panel-body').attr('data-toggle', 'collapse');
-        $('.panel-collapse').collapse('hide');
-        $(this).html('Click to disable accordion behavior');
-      } else {
-        $active = false;
-          $('.panel-collapse').collapse('show');
-          if($('.panel-collapse.in').length){
-            $('.panel-collapse.in').collapse('show');
-            $('.panel-collapse.in').removeClass('in');
-          }
-        $('.panel-body').attr('data-toggle','');
-        $(this).html('Expand/Collapse All Customers');
-      }
-  }
+  $scope.expandcollapseAll = function(state){
+    for (var i=0; i<$scope.invoices.length; i++) {
+      $scope.invoices[i].isOpen=state;
+    }
+  };
 
   $scope.getSelectedInvoices = function(customers, callback) {
     var invoices = [];
@@ -606,7 +594,7 @@ angular.module('bekApp')
     } else {
       $scope.invoices.forEach(function(customer){
         customer.invoices.results.forEach(function(invoice){
-          if(invoice.isSelected && invoice.ispayable){
+          if(invoice.isSelected){
             invoices.push(invoice);
           }
         })
