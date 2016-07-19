@@ -38,14 +38,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-
-
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Logic
 {
 	public class ShoppingCartLogicImpl: IShoppingCartLogic {
         #region attributes
-		private readonly ICustomerRepository customerRepository;
+        private readonly ICacheRepository _cache;
+        private readonly ICustomerRepository customerRepository;
         private readonly IBasketRepository basketRepository;
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IPriceLogic priceLogic;
@@ -60,6 +60,10 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
+
+        private const string CACHE_GROUPNAME = "ShoppingCart";
+        private const string CACHE_NAME = "ProcessingCart";
+        private const string CACHE_PREFIX = "Default";
         #endregion
 
         #region ctor
@@ -67,8 +71,10 @@ namespace KeithLink.Svc.Impl.Logic
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
-                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo)
+                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
+                                     ICacheRepository cache)
 		{
+            _cache = cache;
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
 			this.priceLogic = priceLogic;
@@ -340,8 +346,20 @@ namespace KeithLink.Svc.Impl.Logic
 				return returnCart;
 			}
 		}
-				
-		public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
+
+        public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
+        {
+            string key = cartId.ToString();
+            var cachedCart = _cache.GetItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, key);
+
+            if(cachedCart != null && user.RoleName.Equals("beksysadmin", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			if (basket == null)
@@ -410,7 +428,10 @@ namespace KeithLink.Svc.Impl.Logic
 
         public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
-			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            string cachekey = cartId.ToString();
+            _cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromHours(2), "Processing"); // put item in cache to indicate processing
+
+            var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 			//Check that RequestedShipDate
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 
@@ -536,9 +557,10 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 DeleteCart(user, catalogInfo, cartId);
             }
-            
 
-			return returnOrders; //Return actual order number
+            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey); //Invalidate cache that indicates order is being processed
+
+            return returnOrders; //Return actual order number
 		}
 
         private void PublishSpecialOrderNotification(CS.PurchaseOrder po)

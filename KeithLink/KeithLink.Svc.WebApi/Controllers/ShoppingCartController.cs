@@ -55,6 +55,27 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+
+        [HttpGet]
+        [ApiKeyedRoute("cart/issubmitted/{cartId}")]
+        public Models.OperationReturnModel<bool> IsSubmitted(Guid cartId)
+        {
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                retVal.SuccessResponse = _shoppingCartLogic.IsSubmitted(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("IsSubmitted", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
         /// <summary>
         /// Retrieve user shopping carts (orders not yet submitted)
         /// </summary>
