@@ -25,12 +25,14 @@ namespace KeithLink.Svc.Windows.OrderService
         #region attributes
         private IContainer _diContainer;
         private IEventLogRepository _log;
+        private IOrderHistoryWriter _orderHistoryWriter;
 
         private ILifetimeScope _confirmationScope;
         private ILifetimeScope _historyRequestScope;
         private ILifetimeScope _historyResponseScope;
         private ILifetimeScope _orderScope;
         private ILifetimeScope _queueScope;
+        private ILifetimeScope _orderHistoryWriterScope;
 
         private static bool _allowOrderUpdateProcessing;
         private static bool _historyRequestProcessing;
@@ -44,6 +46,7 @@ namespace KeithLink.Svc.Windows.OrderService
 
         private Thread _confirmationThread;
         private Thread _historyResponseThread;
+        private Thread _historyCreatedWriterThread;
         private Timer _historyRequestTimer;
         private Timer _orderUpdateTimer;
         private Timer _queueTimer;
@@ -243,6 +246,13 @@ namespace KeithLink.Svc.Windows.OrderService
 
             _queueTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
+        private void InitializeOrderHistoryCreatedWriter()
+        {
+            _orderHistoryWriterScope = _diContainer.BeginLifetimeScope();
+            _orderHistoryWriter = _orderHistoryWriterScope.Resolve<IOrderHistoryWriter>();
+            _orderHistoryWriter.ListenForNotificationMessagesOnQueue();
+        }
+
 
         protected override void OnStart(string[] args)
         {
@@ -253,6 +263,7 @@ namespace KeithLink.Svc.Windows.OrderService
             InitializeHistoryResponseThread();
             InitializeOrderUpdateTimer();
             InitializeQueueTimer();
+            InitializeOrderHistoryCreatedWriter();
         }
 
         protected override void OnStop()
@@ -260,7 +271,7 @@ namespace KeithLink.Svc.Windows.OrderService
             TerminateHistoryRequestTimer();
             TerminateOrderUpdateTimer();
             TerminateQueueTimer();
-
+            TerminateOrderHistoryCreatedWriter();
             _log.WriteInformationLog("Service stopping");
         }
 
@@ -545,6 +556,15 @@ namespace KeithLink.Svc.Windows.OrderService
             {
                 _queueScope.Dispose();
             }
+        }
+
+        private void TerminateOrderHistoryCreatedWriter()
+        {
+            if (_orderHistoryWriter != null)
+                _orderHistoryWriter.Stop();
+
+            if (_orderHistoryWriterScope != null)
+                _orderHistoryWriterScope.Dispose();
         }
 
         #endregion

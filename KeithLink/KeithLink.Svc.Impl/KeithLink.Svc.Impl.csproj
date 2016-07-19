@@ -288,6 +288,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderHistoryWriterImpl.cs" />
     <Compile Include="Logic\SiteCatalog\Images\External\UnfiImageProcessing.cs" />
     <Compile Include="Logic\Lists\FavoriteLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryLogic.cs" />

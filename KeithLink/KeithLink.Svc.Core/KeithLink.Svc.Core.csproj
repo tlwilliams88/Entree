@@ -247,6 +247,7 @@
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
     <Compile Include="Interface\OnlinePayments\Log\IKPayLogRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
+    <Compile Include="Interface\Orders\IOrderHistoryWriter.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderLogic.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />

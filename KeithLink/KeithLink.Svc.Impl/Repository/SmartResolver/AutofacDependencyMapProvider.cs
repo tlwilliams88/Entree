@@ -161,6 +161,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<SpecialOrderLogicImpl>().As<ISpecialOrderLogic>();
             builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
             builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
+            builder.RegisterType<OrderHistoryWriterImpl>().As<IOrderHistoryWriter>();
 
             // other
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
