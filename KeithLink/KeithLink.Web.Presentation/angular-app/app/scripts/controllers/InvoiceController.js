@@ -522,6 +522,7 @@ angular.module('bekApp')
   };
 
   $scope.selectAll = function (fromLocation, customer, $event) {
+    // $scope.expandcollapsecustomers();
     if(!$scope.areAllSelected && $scope.errorMessage){
       $scope.errorMessage = '';
     }
@@ -570,33 +571,23 @@ angular.module('bekApp')
   var transition = false;
   var $active = true;
 
-  $('.expandcollapsecustomers').on('click', function() {
-    $('.expandcollapsecustomers').prop('disabled','true');
-    if(!$active) {
-      $active = true;
-      $('.panel-title > div').attr('data-toggle', 'collapse');
-      $('.panel-collapse').collapse('hide');
-      $(this).html('Click to disable accordion behavior');
-    } else {
-      $active = false;
-      // if($('.panel-collapse.in').length){
-      //   transition = true;
-      //   $('.panel-collapse.in').collapse('show');       
-      // }
-      // else{
-        $('.panel-collapse').collapse('show');
-        if($('.panel-collapse.in').length){
-          $('.panel-collapse.in').collapse('show');
-          $('.panel-collapse.in').removeClass('in');
-        }
-      // }
-      $('.panel-title > div').attr('data-toggle','');
-      $(this).html('Expand/Collapse All Customers');
-    }
-    setTimeout(function(){
-        $('.expandcollapsecustomers').prop('disabled','');
-    },800);
-  });
+  $scope.expandcollapsecustomers = function(){
+      if(!$active) {
+        $active = true;
+        $('.panel-body').attr('data-toggle', 'collapse');
+        $('.panel-collapse').collapse('hide');
+        $(this).html('Click to disable accordion behavior');
+      } else {
+        $active = false;
+          $('.panel-collapse').collapse('show');
+          if($('.panel-collapse.in').length){
+            $('.panel-collapse.in').collapse('show');
+            $('.panel-collapse.in').removeClass('in');
+          }
+        $('.panel-body').attr('data-toggle','');
+        $(this).html('Expand/Collapse All Customers');
+      }
+  }
 
   $scope.getSelectedInvoices = function(customers, callback) {
     var invoices = [];
@@ -615,7 +606,7 @@ angular.module('bekApp')
     } else {
       $scope.invoices.forEach(function(customer){
         customer.invoices.results.forEach(function(invoice){
-          if(invoice.isSelected){
+          if(invoice.isSelected && invoice.ispayable){
             invoices.push(invoice);
           }
         })
@@ -634,7 +625,7 @@ angular.module('bekApp')
       payments.forEach(function(payment){
         if((payment.statusdescription === 'Payment Pending') || (payment.statusdescription === 'Past Due' && payment.amount < 0)){
           
-        if(payment.statusdescription === 'Payment Pending' && !payment.date){
+        if(payment.statusdescription === 'Payment Pending' && !payment.date && payment.pendingtransaction && payment.pendingtransaction.date){
              payment.date = DateService.momentObject(payment.pendingtransaction.date,Constants.dateFormat.yearMonthDayHourMinuteSecondDashes).format(Constants.dateFormat.yearMonthDayDashes);
             }                       
         }
