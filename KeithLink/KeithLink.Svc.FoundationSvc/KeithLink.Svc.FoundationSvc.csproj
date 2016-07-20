@@ -292,6 +292,19 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="KeithLink.Svc.FoundationSvc.snk" />
+    <Content Include="newrelic.config">
+      <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="newrelic.Beta.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
+    <None Include="newrelic.Release.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
+    <None Include="newrelic.Test.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
     <None Include="Properties\PublishProfiles\Beta.pubxml" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev2.pubxml" />
