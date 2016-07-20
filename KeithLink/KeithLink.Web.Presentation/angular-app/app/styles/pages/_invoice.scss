@@ -159,3 +159,11 @@ margin-top:20px;
   width:auto !important; 
   margin-right:7px;
 }
+
+@media (max-width: $screen-xs-max) {
+
+  .pull-left-xs-left-10 {
+    float: left !important;
+    margin-left: 10px !important;
+  }
+}
