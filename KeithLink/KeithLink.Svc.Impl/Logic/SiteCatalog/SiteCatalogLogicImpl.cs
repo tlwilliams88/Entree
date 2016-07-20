@@ -470,7 +470,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             while (totalProcessed < ids.Count) {
                 var tempProducts = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
 
-                if (tempProducts != null && tempProducts.Products != null) {
+                if (tempProducts != null && tempProducts.Products != null && tempProducts.Products.Count > 0) {
                     products.Count += tempProducts.Count;
                     products.TotalCount += tempProducts.TotalCount;
                     products.Products.AddRange(tempProducts.Products);
@@ -479,7 +479,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 totalProcessed += 500;
             }
 
-            AddPricingInfo(products, catalogInfo, new SearchInputModel());
+            if (products.Products.Count > 0)
+            {
+                AddPricingInfo(products, catalogInfo, new SearchInputModel());
+            }
 
             return products;
         }
