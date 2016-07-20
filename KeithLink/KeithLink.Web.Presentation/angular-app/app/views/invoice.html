@@ -148,7 +148,7 @@
       <div class="row topPadded">
         <div class="col-sm-12">
           <accordion close-others="false">
-            <accordion-group ng-if="customer.invoices.results.length" class="panel-title" ng-show="true" is-open="customer.isOpen" ng-repeat="customer in invoices | orderBy:'customerName'">
+            <accordion-group ng-if="customer.invoices.results.length" class="panel-title" ng-show="true" ng-init="customer.isOpen = $first" is-open="customer.isOpen" ng-repeat="customer in invoices | orderBy:'customerName'">
               <accordion-heading>
                 <input type="checkbox" name="SelectCustomer" ng-if="!isInternalAccountAdminUser && customer.haspayableinvoices && selectedFilterView.name !== 'Paid Invoices'" ng-click="customer.selected = !customer.selected; selectAll(selectCustomerInvoices, customer, $event);" ng-checked="customer.selected" class="pull-left"/>
                 <div class="white-space: normal;">
