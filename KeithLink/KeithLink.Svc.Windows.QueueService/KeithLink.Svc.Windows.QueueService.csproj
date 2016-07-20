@@ -197,7 +197,22 @@
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
-    <None Include="packages.config" />
+    <Content Include="newrelic.config">
+      <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
+    </Content>
+    <None Include="newrelic.Beta.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
+    <None Include="newrelic.Release.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
+    <None Include="newrelic.Test.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
+    <None Include="packages.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
     <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
   </ItemGroup>
   <ItemGroup>
