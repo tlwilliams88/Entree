@@ -41,31 +41,36 @@ angular.module('bekApp')
 
     if (validationItems.length > 0) {
       return CartService.validateQuickAdd(validationItems).then(function(validatedItems) {
-        //assign validity and reasons
-        items.forEach(function(item) {
-          var validatedItem = [];
-          validatedItems.forEach(function(valItem, index) {
-            if(item.itemnumber === valItem.item.itemnumber && item.each === valItem.item.each){
-              validatedItem = validatedItems[index];
-              item.valid = validatedItem.valid;
-            }
-          });          
-
-          if (validatedItem.valid === false) {
-            invalidItemsExist = true;
-          }
-
-          if (validatedItem.reason === 0) {
-            item.reason = 'Invalid item number';
-          } else if (validatedItem.reason === 1) {
-            item.reason = 'Each not allowed for this item';
-          }
-        });
-        $scope.enableSubmit = !invalidItemsExist;
         $scope.isValidating = false;
-        return validatedItems;
+        if(validatedItems){
+          //assign validity and reasons
+          items.forEach(function(item) {
+            var validatedItem = [];
+            validatedItems.forEach(function(valItem, index) {
+              if(item.itemnumber === valItem.item.itemnumber && item.each === valItem.item.each){
+                validatedItem = validatedItems[index];
+                item.valid = validatedItem.valid;
+              }
+            });          
+
+            if (validatedItem.valid === false) {
+              invalidItemsExist = true;
+            }
+
+            if (validatedItem.reason === 0) {
+              item.reason = 'Invalid item number';
+            } else if (validatedItem.reason === 1) {
+              item.reason = 'Each not allowed for this item';
+            }
+          });
+          $scope.enableSubmit = !invalidItemsExist;        
+          return validatedItems;
+        }
+        else{
+          return [];
+        }
       });
-    } else {     
+    } else {    
       $scope.enableSubmit = false;
       deferred.resolve([]);
       $scope.isValidating = false;
