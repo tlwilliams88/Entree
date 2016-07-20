@@ -522,7 +522,7 @@ angular.module('bekApp')
   };
 
   $scope.selectAll = function (fromLocation, customer, $event) {
-    // $scope.expandcollapsecustomers();
+    $scope.expandcollapseAll($scope.collapsed = !$scope.collapsed)
     if(!$scope.areAllSelected && $scope.errorMessage){
       $scope.errorMessage = '';
     }
