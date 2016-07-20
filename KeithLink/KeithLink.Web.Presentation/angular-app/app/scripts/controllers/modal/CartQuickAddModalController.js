@@ -29,7 +29,7 @@ angular.module('bekApp')
 
   function getRowsWithQuantity(items) {
     return $filter('filter')( items, function(item) {
-      return item.quantity > 0 && item.itemnumber; 
+      return item.quantity > 0 && item.itemnumber && item.itemnumber.length > 0; 
     });
   };
 
