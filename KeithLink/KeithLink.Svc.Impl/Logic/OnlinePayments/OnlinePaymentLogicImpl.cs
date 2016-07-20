@@ -330,6 +330,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
                 GetInvoicePONumber(invoice);
 
+                // To help the UI, we pull in the bank accounts that can be used to pay an invoice here.
                 invoice.Banks = GetAllBankAccounts(new UserSelectedContext() { BranchId=invoice.BranchId, CustomerId=invoice.CustomerNumber });
             }
 
