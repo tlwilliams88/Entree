@@ -200,8 +200,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/image/{invoiceNumber}")]
-        public OperationReturnModel<List<Base64Image>> GetInvoiceImages(string invoiceNumber, string customerId = null, string branchId = null) {
-            OperationReturnModel<List<Base64Image>> retVal = new OperationReturnModel<List<Base64Image>>();
+        public OperationReturnModel<List<string>> GetInvoiceImages(string invoiceNumber, string customerId = null, string branchId = null) {
+            OperationReturnModel<List<string>> retVal = new OperationReturnModel<List<string>>();
             try {
                 if (customerId != null && branchId != null)
                 {
