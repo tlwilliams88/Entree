@@ -77,8 +77,7 @@
   </div>
 </div>
 
-<form name="invoiceForm"
-      unsaved-warning-form 
+<form name="invoiceForm" 
       class="style-validation-errors" 
       novalidate>
   <div class="row">
@@ -179,7 +178,7 @@
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <h5 >Invoice Amount: {{::invoice.invoiceamount | currency}}</h5>
                     <h5>Amount Due: {{::invoice.amount | currency}}<span><a class="icon-plus3 large-icon margin-left-5" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></span></h5>
-                    <h5>Invoice Image: <span><a ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" target="_blank" class="icon-camera large-icon" analytics-on analytics-category="Invoices" analytics-event="View Invoice Image"></a></span></h5>
+                    <h5>Invoice Image: <span><a  ui-sref="invoiceimage({invoiceNumber: invoice.invoicenumber, customerid: invoice.customernumber, branchid: invoice.branchid})"  target="_blank" class="icon-camera large-icon" analytics-on analytics-category="Invoices" analytics-event="View Invoice Image"></a></span></h5>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <span style="padding-right:10px;">Scheduled Date:</span> 

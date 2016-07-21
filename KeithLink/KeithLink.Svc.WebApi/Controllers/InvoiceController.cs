@@ -195,13 +195,23 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// Retrieve invoice image
         /// </summary>
         /// <param name="invoiceNumber">Invoice number</param>
+        /// <param name="customerId">Optional parameter to supply customerId</param>
+        /// <param name="branchId">Optional parameter to supply branchId</param>
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/image/{invoiceNumber}")]
-        public OperationReturnModel<List<Base64Image>> GetInvoiceImages(string invoiceNumber) {
+        public OperationReturnModel<List<Base64Image>> GetInvoiceImages(string invoiceNumber, string customerId = null, string branchId = null) {
             OperationReturnModel<List<Base64Image>> retVal = new OperationReturnModel<List<Base64Image>>();
             try {
-                retVal.SuccessResponse = _imgLogic.GetInvoiceImages(this.SelectedUserContext, invoiceNumber);
+                if (customerId != null && branchId != null)
+                {
+                    retVal.SuccessResponse = _imgLogic.GetInvoiceImages
+                        (new Core.Models.SiteCatalog.UserSelectedContext() { CustomerId = customerId, BranchId = branchId }, invoiceNumber);
+                }
+                else
+                {
+                    retVal.SuccessResponse = _imgLogic.GetInvoiceImages(this.SelectedUserContext, invoiceNumber);
+                }
                 retVal.IsSuccess = true;
             }
             catch (Exception ex) {

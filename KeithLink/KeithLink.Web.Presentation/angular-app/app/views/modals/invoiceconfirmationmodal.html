@@ -9,20 +9,11 @@
         <table class="table table-border table-striped-rows" navigate-table="mobile">
           <thead>
             <tr>
-              <th>
-                Customer 
-                <span>Name </span>
-              </th>
-              <th>
-                Reference
-                <span># </span>
-              </th>
-              <th>
-                Scheduled Date
-              </th>
-              <th>
-                Invoice Amount
-              </th>
+              <th>Customer Name</th>
+              <th>Reference<span># </span></th>
+              <th>Scheduled Date</th>
+              <th>Invoice Amount</th>
+              <th>Amount Due</th>
               <th>Payment Amt</th>
               <th>Bank Account</th>
             </tr>
@@ -45,7 +36,12 @@
             </td>
             <td >
               <div class="inline-block-display nowrap">
-              <span class="pull-left" >{{::payment.amount | currency}}</span>
+              <span class="pull-left" >{{::payment.amountdue | currency}}</span>
+             </div>
+            </td>
+            <td >
+              <div class="inline-block-display nowrap">
+              <span class="pull-left" >{{::payment.paymentAmount | currency}}</span>
              </div>
             </td>
             <td>
