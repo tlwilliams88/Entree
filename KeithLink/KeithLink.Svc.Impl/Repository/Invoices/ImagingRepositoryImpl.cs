@@ -17,8 +17,10 @@ using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Repository.Invoices {
-    public class ImagingRepositoryImpl : IImagingRepository {
+namespace KeithLink.Svc.Impl.Repository.Invoices
+{
+    public class ImagingRepositoryImpl : IImagingRepository
+    {
         #region attributes
         const string API_ENDPOINT_CONNECTION = "connection";
         const string API_ENDPOINT_DOCUMENT = "document";
@@ -28,7 +30,8 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         #endregion
 
         #region ctor
-        public ImagingRepositoryImpl(IEventLogRepository eventLogRepo) {
+        public ImagingRepositoryImpl(IEventLogRepository eventLogRepo)
+        {
             _log = eventLogRepo;
         }
         #endregion
@@ -41,8 +44,10 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// <remarks>
         /// jwames = 3/27/2015 - original code
         /// </remarks>
-        public string Connect() {
-            using (HttpClient client = new HttpClient()) {
+        public string Connect()
+        {
+            using (HttpClient client = new HttpClient())
+            {
                 if (Configuration.ImagingUserName.Length == 0) { throw new ApplicationException("No username supplied for ImageNow Integration Server"); }
                 if (Configuration.ImagingUserPassword.Length == 0) { throw new ApplicationException("No password supplied for ImageNow Integration Server"); }
 
@@ -50,23 +55,32 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_PASSWORD, Configuration.ImagingUserPassword);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
 
-                try {
+                try
+                {
                     string endPoint = string.Concat(Configuration.ImagingServerUrl, API_ENDPOINT_CONNECTION);
 
                     System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
 
-                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
+                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent))
+                    {
                         IEnumerable<string> tokenValues = new List<string>();
-                        
-                        if(response.Headers.TryGetValues(Constants.IMAGING_HEADER_SESSIONTOKEN, out tokenValues)){
+
+                        if (response.Headers.TryGetValues(Constants.IMAGING_HEADER_SESSIONTOKEN, out tokenValues))
+                        {
                             return tokenValues.ToList()[0];
-                        } else {
+                        }
+                        else
+                        {
                             throw new ApplicationException("Connecting to Imaging Server failed to return a session token");
                         }
-                    } else {
+                    }
+                    else
+                    {
                         throw new ApplicationException("Could not connect to Imaging Server");
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     _log.WriteErrorLog("Error connecting to the Imaging Server", ex);
                     throw;
                 }
@@ -83,44 +97,56 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// <remarks>
         /// jwames - 3/30/2015 - original code
         /// </remarks>
-        public List<string> GetDocumentIds(string sessionToken, UserSelectedContext customerInfo, string invoiceNumber) {
+        public List<string> GetDocumentIds(string sessionToken, UserSelectedContext customerInfo, string invoiceNumber)
+        {
             if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
             if (customerInfo.BranchId.Length == 0) { throw new ArgumentException("Branch cannot be blank"); }
             if (customerInfo.CustomerId.Length == 0) { throw new ArgumentException("Customer number cannot be blank"); }
             if (invoiceNumber.Length == 0) { throw new ArgumentException("Invoice number cannot be blank"); }
 
-            using (HttpClient client = new HttpClient()) {
+            using (HttpClient client = new HttpClient())
+            {
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
 
-                try {
+                try
+                {
                     Dictionary<string, string> values = new Dictionary<string, string>();
                     values.Add("vslText", string.Format("[drawer] = '{0}AR501' AND [tab] = '{1}' AND [f4] = '{2}'", customerInfo.BranchId, customerInfo.CustomerId, invoiceNumber));
-                
+
                     string endPoint = string.Format("{0}{1}/{2}/result?category=DOCUMENT", Configuration.ImagingServerUrl, API_ENDPOINT_VIEW, Configuration.ImagingViewId);
 
                     System.Net.Http.HttpResponseMessage response = client.PostAsJsonAsync(endPoint, values).Result;
 
-                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
+                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent))
+                    {
                         string rawJson = response.Content.ReadAsStringAsync().Result;
                         ImageNowViewQueryReturnModel jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ImageNowViewQueryReturnModel>(rawJson);
 
-                        if (jsonResponse.resultRows.Count == 0) {
+                        if (jsonResponse.resultRows.Count == 0)
+                        {
                             throw new ApplicationException("Document not found");
-                        } else {
+                        }
+                        else
+                        {
                             List<string> docIds = new List<string>();
 
-                            foreach (var result in jsonResponse.resultRows) {
+                            foreach (var result in jsonResponse.resultRows)
+                            {
                                 docIds.AddRange(result.fields.Where(item => item.columnId.Equals("8")).Select(i => i.value).ToList());
                             }
 
                             return docIds;
                         }
-                    } else {
+                    }
+                    else
+                    {
                         throw new ApplicationException("Invalid response from server");
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     _log.WriteErrorLog("Error connecting to the Imaging Server", ex);
                     throw;
                 }
@@ -136,47 +162,43 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// <remarks>
         /// jwames - 3/31/2015 - original code
         /// </remarks>
-        public List<Base64Image> GetImages(string sessionToken, string documentId) {
+        public List<string> GetImages(string sessionToken, string documentId)
+        {
             if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
             if (documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
 
-            using (HttpClient client = new HttpClient()) {
+            using (HttpClient client = new HttpClient())
+            {
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
 
-                try {
+                try
+                {
                     string endPoint = string.Format("{0}{1}/{2}/page", Configuration.ImagingServerUrl, API_ENDPOINT_DOCUMENT, documentId);
 
                     System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
 
-                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
+                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent))
+                    {
                         string rawJson = response.Content.ReadAsStringAsync().Result;
                         ImageNowPageReturnModel jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ImageNowPageReturnModel>(rawJson);
 
-						List<Tuple<int, Base64Image>> processedImages = new List<Tuple<int, Base64Image>>();
+                        List<Tuple<int, string>> processedImages = new List<Tuple<int, string>>();
 
                         Parallel.ForEach(jsonResponse.pages, page => {
-                            Base64Image myImage = new Base64Image();
-
-                            if(page.extension.Equals("pdf", StringComparison.InvariantCultureIgnoreCase)) {
-                                myImage.MimeType = Constants.MIMETYPE_PDF;
-                                myImage.ImageString = GetPdfAsBase64String(sessionToken, documentId, page.id);
-
-                            } else {
-                                myImage.MimeType = Constants.MIMETYPE_JPG;
-                                myImage.ImageString = GetImageString(sessionToken, documentId, page.id);
-                            }
-
-                            processedImages.Add(new Tuple<int, Base64Image>(page.pageNumber, myImage));
-
+                            processedImages.Add(new Tuple<int, string>(page.pageNumber, GetImageString(sessionToken, documentId, page.id)));
                         });
 
-						return processedImages.OrderBy(p => p.Item1).Select(t => t.Item2).ToList();
+                        return processedImages.OrderBy(p => p.Item1).Select(t => t.Item2).ToList();
 
-                    } else {
+                    }
+                    else
+                    {
                         throw new ApplicationException("Document not found");
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     _log.WriteErrorLog("Error connecting to the Imaging Server", ex);
                     throw;
                 }
@@ -194,67 +216,67 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// jwames - 3/31/2015 - original code
         /// jwames - 4/1/2015 - convert image from tiff to jpg format
         /// </remarks>
-        private string GetImageString(string sessionToken, string documentId, string pageId) {
+        private string GetImageString(string sessionToken, string documentId, string pageId)
+        {
             if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
             if (documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
             if (pageId.Length == 0) { throw new ArgumentException("PageId cannot be blank."); }
-            
-            using (HttpClient client = new HttpClient()) {
+
+            using (HttpClient client = new HttpClient())
+            {
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
-                
-                try {
+
+                try
+                {
                     string endPoint = string.Format("{0}{1}/{2}/page/{3}/preview", Configuration.ImagingServerUrl, API_ENDPOINT_DOCUMENT, documentId, pageId);
 
                     System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
 
-                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
-						Bitmap image = (Bitmap)System.Drawing.Bitmap.FromStream(response.Content.ReadAsStreamAsync().Result);
+                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent))
+                    {
+                        Bitmap image = (Bitmap)System.Drawing.Bitmap.FromStream(response.Content.ReadAsStreamAsync().Result);
 
-						Rectangle resizeRect = this.GetResizedRectangleWithAspectRatio(image, 1024, 768);
-						image = ResizeImage(image, new Size() { Height = resizeRect.Height, Width = resizeRect.Width });
-						image.SetResolution(120, 120);
-						using (MemoryStream stream = new MemoryStream())
-						{
-							image.Save(stream, ImageFormat.Jpeg);
-							byte[] bytes = stream.GetBuffer();
+                        Rectangle resizeRect = this.GetResizedRectangleWithAspectRatio(image, 1024, 768);
+                        image = ResizeImage(image, new Size() { Height = resizeRect.Height, Width = resizeRect.Width });
+                        image.SetResolution(120, 120);
+                        using (MemoryStream stream = new MemoryStream())
+                        {
+                            image.Save(stream, ImageFormat.Jpeg);
+                            byte[] bytes = stream.GetBuffer();
 
-							return Convert.ToBase64String(bytes);
-						}    
-                    } else {
+                            return Convert.ToBase64String(bytes);
+                        }
+                    }
+                    else
+                    {
                         throw new ApplicationException("Page preview not found");
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     _log.WriteErrorLog("Error connecting to the Imaging Server", ex);
                     throw;
                 }
             }
         }
 
-        private string GetPdfAsBase64String(string sessionToken, string documentId, string pageId) {
-            if(sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
-            if(documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
-            if(pageId.Length == 0) { throw new ArgumentException("PageId cannot be blank."); }
+        /// <summary>
+        /// resizes the image to specified width and height
+        /// </summary>
+        /// <param name="imgToResize">the raw image as a bitmap object </param>
+        /// <param name="size">the width and height of the image</param>
+        /// <returns>the resized image</returns>
+        private Bitmap ResizeImage(Bitmap imgToResize, Size size)
+        {
+            Bitmap b = new Bitmap(size.Width, size.Height);
 
-            using(HttpClient client = new HttpClient()) {
-                client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
-
-                try {
-                    string endPoint = string.Format("{0}{1}/{2}/page/{3}/preview", Configuration.ImagingServerUrl, API_ENDPOINT_DOCUMENT, documentId, pageId);
-
-                    HttpResponseMessage response = client.GetAsync(endPoint).Result;
-
-                    if(response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
-                        byte[] fileBytes = response.Content.ReadAsByteArrayAsync().Result;
-
-                        return Convert.ToBase64String(fileBytes);
-                    } else {
-                        throw new ApplicationException("Page preview not found");
-                    }
-                } catch(Exception ex) {
-                    _log.WriteErrorLog("Error connecting to the Imaging Server", ex);
-                    throw;
-                }
+            using (Graphics g = Graphics.FromImage((Image)b))
+            {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);
             }
+
+            return b;
         }
 
         /// <summary>
@@ -264,7 +286,8 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// <param name="targetWidth">the max width</param>
         /// <param name="targetheight">the max height</param>
         /// <returns>rectangle object with the scaled dimensions</returns>
-        private Rectangle GetResizedRectangleWithAspectRatio(Bitmap image, double targetWidth, double targetheight) {
+        private Rectangle GetResizedRectangleWithAspectRatio(Bitmap image, double targetWidth, double targetheight)
+        {
             double ratioX = (double)targetWidth / (double)image.Width;
             double ratioY = (double)targetheight / (double)image.Height;
             // use whichever multiplier is smaller 
@@ -277,22 +300,6 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
             return new Rectangle(0, 0, newWidth, newHeight);
         }
 
-        /// <summary>
-        /// resizes the image to specified width and height
-        /// </summary>
-        /// <param name="imgToResize">the raw image as a bitmap object </param>
-        /// <param name="size">the width and height of the image</param>
-        /// <returns>the resized image</returns>
-        private Bitmap ResizeImage(Bitmap imgToResize, Size size) {
-            Bitmap b = new Bitmap(size.Width, size.Height);
-
-            using (Graphics g = Graphics.FromImage((Image)b)) {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);
-            }
-            
-            return b;
-        }
         #endregion
     }
 }

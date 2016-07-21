@@ -189,6 +189,11 @@ angular.module('bekApp')
     calculateInvoiceFields(data.customerswithinvoices.results);
     $scope.loadingResults = false;
     $scope.invoices = data.customerswithinvoices.results;
+    $scope.invoices.forEach(function(customer){
+      customer.invoices.results.forEach(function(invoice){
+        invoice.amountdue = invoice.amount;
+      })
+    })
     if($scope.invoices.length){
       $scope.invoices.forEach(function(invoice){
         invoice.failedBatchValidation = false;       

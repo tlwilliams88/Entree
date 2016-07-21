@@ -148,7 +148,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
                     Message message = GetEmailMessageForNotification(confirmation.Payments
                                                                                  .Where(p => p.CustomerNumber == customerCtx.CustomerId && p.BranchId == customerCtx.BranchId)
-                                                                                 .ToList(), 
+                                                                                 .ToList(),
                                                                      customer);
 
                     // send messages to providers...
