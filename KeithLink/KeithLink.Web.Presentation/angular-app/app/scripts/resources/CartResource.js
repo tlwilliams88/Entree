@@ -57,7 +57,7 @@ angular.module('bekApp')
         method: 'POST'
       },
 
-      validate: {
+      isSubmitted: {
         url:'/cart/issubmitted/:cartId',
         method:'GET'
       }

@@ -378,8 +378,8 @@ angular.module('bekApp')
         return shipDateFound;
       },
  
-      validateCart: function(cartId) {
-        return Cart.validate({cartid: cartId}).$promise.then(function(resp) {
+      isSubmitted: function(cartId) {
+        return Cart.isSubmitted({cartid: cartId}).$promise.then(function(resp) {
           return (resp && resp.successResponse) ? resp.successResponse.id: false;        
         });
       },

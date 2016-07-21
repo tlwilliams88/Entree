@@ -253,7 +253,7 @@ angular.module('bekApp')
         return;
         }
 
-         CartService.validateCart(cart.id).then(function(resp){
+         CartService.isSubmitted(cart.id).then(function(resp){
           if(resp === false){
             // Do nothing. The cart has already been submitted
           }
