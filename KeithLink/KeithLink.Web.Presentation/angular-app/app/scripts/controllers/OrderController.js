@@ -6,20 +6,13 @@ angular.module('bekApp')
  
   var currentCustomer = $scope.selectedUserContext.customer;
 
-  CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
- 
   /******
   CARTS
   ******/
-  $scope.loadingCarts = true;
-  
-  CartService.getCartHeaders().finally(function() {
-    CartService.getCartHeaders();
-    $scope.loadingCarts = false;
+  $scope.loadingCarts = true;  
+  CartService.getCartHeaders().finally(function(cartHeaders) {
     $scope.carts = CartService.cartHeaders;
-    $scope.cartHeaders = cartHeaders;
+    $scope.loadingCarts = false;
   });
  
   $scope.cartGuids = [];
@@ -47,9 +40,6 @@ angular.module('bekApp')
       $scope.allCartsSelected = false;
       $scope.cartGuids = [];
       // update cartHeaders in MenuController
-      CartService.getCartHeaders().then(function(cartHeaders){
-        $scope.cartHeaders = cartHeaders;
-      });
       $scope.displayMessage('success', 'Successfully deleted carts.');
     }, function() {
       $scope.displayMessage('error', 'Error deleting carts.');
