@@ -9,9 +9,9 @@ angular.module('bekApp')
   /******
   CARTS
   ******/
-  $scope.loadingCarts = true;  
+  $scope.loadingCarts = true;
+  $scope.carts = CartService.cartHeaders;
   CartService.getCartHeaders().finally(function(cartHeaders) {
-    $scope.carts = CartService.cartHeaders;
     $scope.loadingCarts = false;
   });
  
