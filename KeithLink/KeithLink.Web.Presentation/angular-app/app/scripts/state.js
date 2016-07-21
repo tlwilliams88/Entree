@@ -439,22 +439,15 @@ angular.module('bekApp')
       }
     })
     .state('invoiceimage', {
-      url: '/invoice/image/:invoiceNumber/',
+      url: '/invoice/image/{invoiceNumber}?={customerid}&={branchid}',
       templateUrl: 'views/invoiceimage.html',
       controller: 'InvoiceImageController',
       data: {
         authorize: 'canPayInvoices'
       },
       resolve: {
-        selectedUserContext: ['LocalStorage', function(LocalStorage) {
-          if (LocalStorage.getTempContext()) {
-            LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
-          } else if (LocalStorage.getTempBranch()) {
-            LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
-          }
-        }],
-        images: ['$stateParams', 'InvoiceService', 'selectedUserContext', function($stateParams, InvoiceService, selectedUserContext) {
-          return InvoiceService.getInvoiceImage($stateParams.invoiceNumber);
+        images: ['$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceImage($stateParams.invoiceNumber, $stateParams.customerid, $stateParams.branchid);
         }]
       }
     })
