@@ -309,9 +309,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging)
         {
             //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
-            //var headersQry = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-            //                                              h.CustomerNumber.Equals(customerInfo.CustomerId),
-            //                                              d => d.OrderDetails);
             IQueryable<EF.OrderHistoryHeader> headersQry = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                                          h.CustomerNumber.Equals(customerInfo.CustomerId),
                                                                                     d => d.OrderDetails);
@@ -330,6 +327,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             if (paging != null)
             {
+                headersQry = AddSortToPagedQuery(paging, headersQry);
                 if (paging.Size != null)
                 {
                     headersQry = headersQry.Take(paging.Size.Value);
@@ -338,7 +336,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 {
                     headersQry = headersQry.Take(10);
                 }
-                headersQry = AddSortToPagedQuery(paging, headersQry);
             }
             else
             {
