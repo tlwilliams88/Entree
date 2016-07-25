@@ -97,9 +97,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
                 queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToString( "B" );
                 queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-                
-                queryBaskets.QueryOptions.RefreshBasket = false;
-
+            //queryBaskets.SearchCriteria.SortProperties = new List<CommerceSortProperty>();
+            //queryBaskets.SearchCriteria.SortProperties.Add(new CommerceSortProperty("", 
+            //                                                                        Basket.PropertyName.DateModified, 
+            //                                                                        SortDirection.Descending));
+            queryBaskets.QueryOptions.RefreshBasket = false;
                 var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
 
                 if (response.OperationResponses.Count == 0)
