@@ -1345,7 +1345,7 @@ namespace KeithLink.Svc.Impl
         {
             get
             {
-                return DBAppSettingsRepositoryImpl.GetValue(KEY_PURCHASEORDERS_GETLATESTHOWMANY, "5");
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_PURCHASEORDERS_GETLATESTHOWMANY, "3");
             }
         }
 

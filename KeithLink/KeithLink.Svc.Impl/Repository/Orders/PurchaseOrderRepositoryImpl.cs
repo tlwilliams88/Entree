@@ -138,7 +138,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
             return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null && 
                                                                                      c.Properties["CustomerId"].ToString().Equals(customerNumber)
-                                                                                ).Select(p => (PurchaseOrder)p).ToList();
+                                                                                )
+                                                                         .Select(p => (PurchaseOrder)p)
+                                                                         .OrderByDescending(p => p.Properties["DateCreated"])
+                                                                         .Take(int.Parse(Configuration.PurchaseOrdersGetLatestHowMany))
+                                                                         .ToList();
             //return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 		}
 

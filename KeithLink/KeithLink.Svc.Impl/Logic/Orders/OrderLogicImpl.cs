@@ -756,19 +756,28 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return returnOrder;
         }
 
-        public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false) {
+        public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false, bool changeorder = false) {
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetCustomerByCustomerNumber");
             var orders = _poRepo.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
-            var returnOrders = orders.Select(p => ToOrder(p, header)).ToList();
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - ReadPurchaseOrders");
+            var returnOrders = orders.Select(p => ToOrder(p, header))
+                                     .ToList();
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - SelectToOrder");
             var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetNotes");
 
             returnOrders.ForEach(delegate(Order order) {
                 LookupProductDetails(userProfile, catalogInfo, order, notes);
                 if (omitDeletedItems)
                     order.Items = order.Items.Where(x => x.MainFrameStatus != "deleted").ToList();
+                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - LookupProductDetails");
             });
 
-            return returnOrders;
+            if (changeorder) { returnOrders = returnOrders.Where(co => co.IsChangeOrderAllowed == true).ToList(); }
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - if (changeorder)");
+            return returnOrders.OrderByDescending(o => o.InvoiceNumber).ToList();
         }
 
         public List<Order> ReadOrderHistories(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true) {

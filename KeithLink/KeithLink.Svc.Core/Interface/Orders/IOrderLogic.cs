@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
         List<Order> ReadOrderHistories( UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true );
 
-        List<Order> ReadOrders( UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false );
+        List<Order> ReadOrders( UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false, bool changeorder = false);
 
         bool ResendUnconfirmedOrder( UserProfile userProfile, int controlNumber, UserSelectedContext catalogInfo );
 
