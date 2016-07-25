@@ -158,7 +158,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 if(request.export.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
-                ret = ExportModel<InvoiceModel>(list.PagedResults.Results, request.export, SelectedUserContext);
+
+                List<InvoiceModel> exportData = new List<InvoiceModel>();
+
+                foreach(var customer in list.CustomersWithInvoices.Results) {
+                    exportData.AddRange(customer.PagedResults.Results);
+                }
+
+
+                ret = ExportModel<InvoiceModel>(exportData, request.export, SelectedUserContext);
             }
             catch (Exception ex)
             {
