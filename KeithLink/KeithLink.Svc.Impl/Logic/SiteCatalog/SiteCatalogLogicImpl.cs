@@ -105,7 +105,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 return;
 
             PriceReturn pricingInfo = null;
-            if (IsSpecialtyCatalog(null, prods.Products[0].CatalogId))
+            if (prods.Products.Count > 0 && IsSpecialtyCatalog(null, prods.Products[0].CatalogId))
             {
                 string source = GetCatalogTypeFromCatalogId(prods.Products[0].CatalogId);
                 pricingInfo = _priceLogic.GetNonBekItemPrices("fdf", context.CustomerId, source, DateTime.Now.AddDays(1), prods.Products);
