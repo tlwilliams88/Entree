@@ -22,6 +22,8 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
         private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
 
+        private const string KEY_PURCHASEORDERS_GETLATESTHOWMANY = "PurchaseOrdersGetLatestHowMany";
+
         // Item History
         private const string KEY_ITEM_HISTORY_WEEKS = "ItemHistoryAverageWeeks";
 
@@ -1336,6 +1338,14 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_URL_WEBNOW, string.Empty);
+            }
+        }
+
+        public static string PurchaseOrdersGetLatestHowMany
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_PURCHASEORDERS_GETLATESTHOWMANY, "5");
             }
         }
 

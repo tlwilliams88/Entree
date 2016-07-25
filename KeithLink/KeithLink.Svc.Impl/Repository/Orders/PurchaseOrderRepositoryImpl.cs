@@ -92,24 +92,26 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
-        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId) {
-                var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId)
+        {
+            var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
 
-                queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToString( "B" );
-                queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-            //queryBaskets.SearchCriteria.SortProperties = new List<CommerceSortProperty>();
-            //queryBaskets.SearchCriteria.SortProperties.Add(new CommerceSortProperty("", 
-            //                                                                        Basket.PropertyName.DateModified, 
-            //                                                                        SortDirection.Descending));
+            queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToString("B");
+            queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
+
             queryBaskets.QueryOptions.RefreshBasket = false;
-                var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
 
-                if (response.OperationResponses.Count == 0)
-                    return null;
+            var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
 
-                CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+            if (response.OperationResponses.Count == 0)
+                return null;
 
-                return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder) p).ToList();
+            CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+
+            return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p)
+                                                                         .OrderByDescending(p => p.Properties["DateCreated"])
+                                                                         .Take(int.Parse(Configuration.PurchaseOrdersGetLatestHowMany))
+                                                                         .ToList();
         }
 
 		public List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false)
