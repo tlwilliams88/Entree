@@ -741,30 +741,47 @@ namespace KeithLink.Svc.Impl.Logic
 
 			foreach (var item in productsToValidate)
 			{
-				var product = productHash.ContainsKey(item.ItemNumber) ? productHash[item.ItemNumber] : null;
+                try
+                {
+                    var product = productHash.ContainsKey(item.ItemNumber) ? productHash[item.ItemNumber] : null;
 
-                if (product == null)
-					results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.InvalidItemNumber });
-				else
-				{
-                    if (item.Each) {
-                        if (product.CaseOnly) {
-						    results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.EachNotAllowed });
-                        } else if (product.PackagePriceNumeric > 0) {
-                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = true });
-                        } else {
-                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                    if (product == null)
+                        results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                    else
+                    {
+                        if (item.Each)
+                        {
+                            if (product.CaseOnly)
+                            {
+                                results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                            }
+                            else if (product.PackagePriceNumeric > 0)
+                            {
+                                results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = true });
+                            }
+                            else
+                            {
+                                results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                            }
                         }
-                    } else {
-                        if (product.CasePriceNumeric > 0) {
-                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = true });
-                        } else {
-                            results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                        else
+                        {
+                            if (product.CasePriceNumeric > 0)
+                            {
+                                results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = true });
+                            }
+                            else
+                            {
+                                results.Add(new ItemValidationResultModel() { Product = product, Item = item, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                            }
                         }
-
                     }
-				}				
-			}
+                }
+                catch
+                {
+                    results.Add(new ItemValidationResultModel() { Product = null, Item = item, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                }
+            }
 
 			return results;
 		}
