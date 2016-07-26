@@ -121,7 +121,7 @@ angular.module('bekApp')
       $scope.addRow = function(item, useListItemId) {
         var reportItem = {
           itemnumber: item.itemnumber,
-          position: $scope.report.items.length + 1,
+          position: item.position,
           name: item.name,
           packsize: item.packsize,
           pack: item.pack,
@@ -176,7 +176,7 @@ angular.module('bekApp')
        
       };
 
-      $scope.sortTable = function(field, oldSortDescending) {
+      $scope.sortTable = function(field, oldSortDescending, isSortingPosition) {
         var sortDescending = !oldSortDescending;
         if (oldSortDescending) {
           sortDescending = false;
@@ -184,16 +184,21 @@ angular.module('bekApp')
         $scope.sortField = field;
         $scope.sortDescending = sortDescending;
 
-        $scope.report.items = orderBy($scope.report.items, field, sortDescending);
+        if(!isSortingPosition){
+          $scope.report.items = orderBy($scope.report.items, field, sortDescending);
+        }
         if($scope.report.items.length && !$scope.report.items[($scope.report.items.length -1)].listitemid){
           var dummy = $scope.report.items.slice($scope.report.items.length -1, $scope.report.items.length );
           $scope.report.items = $scope.report.items.slice(0, $scope.report.items.length -1);
-          $scope.report.items.splice(0,0,dummy[0]);
+          $scope.report.items.push(dummy[0]);
+        }
+
+        if(isSortingPosition){
+          $scope.report.items = $scope.report.items.reverse();
         }
 
         $scope.report.items.forEach(function(item, index) {
-            var itemIndex = index + 1;
-            item.position = itemIndex;
+          item.position = (index + 1);
         });
 
         $scope.inventoryForm.$setDirty();
