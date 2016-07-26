@@ -268,6 +268,7 @@
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\ProfileHelper.cs" />
+    <Compile Include="Helpers\StopWatchHelper.cs" />
     <Compile Include="Helpers\UserContextEqualityComparer.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
@@ -846,6 +847,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201606201910103_Add Enable to UserPushNotificationDevices.resx">
       <DependentUpon>201606201910103_Add Enable to UserPushNotificationDevices.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201607252159028_user message index.resx">
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>
     </EmbeddedResource>

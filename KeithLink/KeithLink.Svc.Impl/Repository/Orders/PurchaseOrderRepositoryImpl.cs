@@ -93,50 +93,36 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         }
 
         public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId) {
-                var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+            var manager = CommerceServerCore.GetPoManager();
+            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            // set what to search
+            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            // set what field/value to search for
+            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "SoldToId", customerId.ToCommerceServerFormat());
+            // set what fields to return
+            DataSet results = manager.SearchPurchaseOrders(clause,
+                new SearchOptions() { PropertiesToReturn = "OrderGroupId,TrackingNumber,Created" });
 
-                queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToString( "B" );
-                queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-                
-                queryBaskets.QueryOptions.RefreshBasket = false;
-
-                var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
-
-                if (response.OperationResponses.Count == 0)
-                    return null;
-
-                CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
-
-                return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder) p).ToList();
+            List<PurchaseOrder> Pos = new List<PurchaseOrder>();
+            List<string> poTNs = new List<string>();
+            foreach (DataRow row in results.Tables[0].Rows)
+            {
+                DateTime created = (DateTime)row["Created"];
+                if (created > DateTime.Now.AddDays(int.Parse(Configuration.PurchaseOrdersGetLatestHowManyDays) * -1))
+                {
+                    poTNs.Add(row["TrackingNumber"].ToString());
+                }
+            }
+            if (poTNs.Count > 0)
+            {
+                foreach (string trackingNumber in poTNs)
+                {
+                    PurchaseOrder po = ReadPurchaseOrderByTrackingNumber(trackingNumber);
+                    Pos.Add(po);
+                }
+            }
+            return Pos;
         }
-
-		public List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false)
-		{
-			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-			queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToCommerceServerFormat();
-			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerNumber;
-
-			queryBaskets.QueryOptions.RefreshBasket = false;
-
-			if (!header)
-			{
-				var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
-				queryBaskets.RelatedOperations.Add(queryLineItems);
-			}
-
-			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
-
-			if (response.OperationResponses.Count == 0)
-				return null;
-
-			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
-
-            return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null && 
-                                                                                     c.Properties["CustomerId"].ToString().Equals(customerNumber)
-                                                                                ).Select(p => (PurchaseOrder)p).ToList();
-            //return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
-		}
 
         public List<PurchaseOrder> GetPurchaseOrdersByStatus(string queryStatus)
         {

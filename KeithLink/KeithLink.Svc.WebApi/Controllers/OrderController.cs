@@ -405,7 +405,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<List<Order>> ret = new Models.OperationReturnModel<List<Order>>();
             try
             {
-                List<Order> changeOrders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext, header: header);
+                List<Order> changeOrders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext, header: header, changeorder: true);
 
                 ret.SuccessResponse = changeOrders.Where(x => x.IsChangeOrderAllowed).OrderByDescending(o => o.InvoiceNumber).ToList();
                 ret.IsSuccess = true;
