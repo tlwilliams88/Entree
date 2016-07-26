@@ -11,11 +11,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Globalization;
+using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Orders
 {
 	public class PurchaseOrderRepositoryImpl: IPurchaseOrderRepository
 	{
+        private readonly IEventLogRepository _log;
+        public PurchaseOrderRepositoryImpl(IEventLogRepository log)
+        {
+            _log = log;
+        }
         public Guid? GetSoldToIdForPurchaseOrderByInvoice(string poNumber) {
             System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
             SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
@@ -86,7 +92,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
                 CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
-                return ((PurchaseOrder)basketResponse.CommerceEntities[0]);
+                return (basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).First());
             } else {
                 return null;
             }
@@ -94,57 +100,37 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
         public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId)
         {
-            var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+            //         System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
+            var manager = CommerceServerCore.GetPoManager();
+            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            // set what to search
+            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            // set what field/value to search for
+            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "SoldToId", customerId.ToCommerceServerFormat());
+            // set what fields to return
+            DataSet results = manager.SearchPurchaseOrders(clause,
+                new SearchOptions() { PropertiesToReturn = "OrderGroupId,TrackingNumber,Created" });
 
-            queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToString("B");
-            queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-
-            queryBaskets.QueryOptions.RefreshBasket = false;
-
-            var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
-
-            if (response.OperationResponses.Count == 0)
-                return null;
-
-            CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
-
-            return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p)
-                                                                         .OrderByDescending(p => p.Properties["DateCreated"])
-                                                                         .Take(int.Parse(Configuration.PurchaseOrdersGetLatestHowMany))
-                                                                         .ToList();
+            List<PurchaseOrder> Pos = new List<PurchaseOrder>();
+            List<string> poTNs = new List<string>();
+            foreach (DataRow row in results.Tables[0].Rows)
+            {
+                DateTime created = (DateTime)row["Created"];
+                if (created > DateTime.Now.AddDays(int.Parse(Configuration.PurchaseOrdersGetLatestHowManyDays) * -1))
+                {
+                    poTNs.Add(row["TrackingNumber"].ToString());
+                }
+            }
+            if (poTNs.Count > 0)
+            {
+                foreach (string trackingNumber in poTNs)
+                {
+                    PurchaseOrder po = ReadPurchaseOrderByTrackingNumber(trackingNumber);
+                    Pos.Add(po);
+                }
+            }
+            return Pos;
         }
-
-		public List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false)
-		{
-			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-			queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToCommerceServerFormat();
-			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerNumber;
-
-			queryBaskets.QueryOptions.RefreshBasket = false;
-
-			if (!header)
-			{
-				var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
-				queryBaskets.RelatedOperations.Add(queryLineItems);
-			}
-
-			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
-
-			if (response.OperationResponses.Count == 0)
-				return null;
-
-			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
-
-            return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null && 
-                                                                                     c.Properties["CustomerId"].ToString().Equals(customerNumber)
-                                                                                )
-                                                                         .Select(p => (PurchaseOrder)p)
-                                                                         .OrderByDescending(p => p.Properties["DateCreated"])
-                                                                         .Take(int.Parse(Configuration.PurchaseOrdersGetLatestHowMany))
-                                                                         .ToList();
-            //return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
-		}
 
         public List<PurchaseOrder> GetPurchaseOrdersByStatus(string queryStatus)
         {

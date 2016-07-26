@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Test.Repositories.Order {
 
         #region ctor
         public PurchaseOrderRepositoryTest() {
-            _repo = new PurchaseOrderRepositoryImpl();
+            _repo = new PurchaseOrderRepositoryImpl(null);
         }
         #endregion
 

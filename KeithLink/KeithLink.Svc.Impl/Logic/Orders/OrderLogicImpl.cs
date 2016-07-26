@@ -308,18 +308,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging)
         {
-            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
             IQueryable<EF.OrderHistoryHeader> headersQry = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                                          h.CustomerNumber.Equals(customerInfo.CustomerId),
                                                                                     d => d.OrderDetails);
             headersQry = ApplyPagingToQuery(paging, headersQry);
-            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details query");
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details query");
             List<EF.OrderHistoryHeader> headers = headersQry.ToList();
-            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details list");
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details list");
             var data = LookupControlNumberAndStatus(customerInfo, headers).AsQueryable();
-            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
             var pagedData = data.GetPage(paging);
-            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get page");
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get page");
             return pagedData;
         }
 
@@ -487,17 +487,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, List<EF.OrderHistoryHeader> headers)
         {
-            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customerOrders = new BlockingCollection<Order>();
 
             var shipDatesCntnr = _shipRepo.GetShipDates(userContext);
-            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetShipDates");
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetShipDates");
 
             // Get the customer GUID to retrieve all purchase orders from commerce server
             var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
-            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetCustomerByCustomerNumber");
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetCustomerByCustomerNumber");
             var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId);
-            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - ReadPurchaseOrderHeadersByCustomerId");
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - ReadPurchaseOrderHeadersByCustomerId");
 
             foreach (var h in headers.OrderByDescending(hdr => hdr.CreatedUtc))
             {
@@ -557,7 +557,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     }
 
                     customerOrders.Add(returnOrder);
-                    //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - Add Order");
+                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - Add Order");
                 }
                 catch (Exception ex)
                 {
@@ -754,26 +754,30 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false, bool changeorder = false) {
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetCustomerByCustomerNumber");
-            var orders = _poRepo.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - ReadPurchaseOrders");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetCustomerByCustomerNumber");
+            var orders = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customer.CustomerId);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - ReadPurchaseOrders");
             var returnOrders = orders.Select(p => ToOrder(p, header))
                                      .ToList();
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - SelectToOrder");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - SelectToOrder");
             var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetNotes");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetNotes");
 
             returnOrders.ForEach(delegate(Order order) {
                 LookupProductDetails(userProfile, catalogInfo, order, notes);
                 if (omitDeletedItems)
                     order.Items = order.Items.Where(x => x.MainFrameStatus != "deleted").ToList();
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - LookupProductDetails");
+                    //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - LookupProductDetails");
             });
 
-            if (changeorder) { returnOrders = returnOrders.Where(co => co.IsChangeOrderAllowed == true).ToList(); }
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - if (changeorder)");
+            if (changeorder)
+            {
+                returnOrders = returnOrders.Where(co => co.IsChangeOrderAllowed == true)
+                                           .ToList();
+            }
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - if (changeorder)");
             return returnOrders.OrderByDescending(o => o.InvoiceNumber).ToList();
         }
 
@@ -831,7 +835,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 OrderNumber = purchaseOrder.Properties["OrderNumber"].ToString(),
                 OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
                 InvoiceNumber = purchaseOrder.Properties["MasterNumber"] == null ? string.Empty : purchaseOrder.Properties["MasterNumber"].ToString(),
-                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
+                // if we have a master number (invoice #) and a confirmed or submitted status
+                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null 
+                                       && (purchaseOrder.Status.StartsWith("Confirmed") | purchaseOrder.Status.StartsWith("Submitted"))), 
                 Status = System.Text.RegularExpressions.Regex.Replace(purchaseOrder.Status, "([a-z])([A-Z])", "$1 $2"),
                 RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value.ToLongDateFormat(),
                 Items = purchaseOrder.Properties["LineItems"] == null || headerOnly ? new List<OrderLine>() : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
