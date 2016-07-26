@@ -300,12 +300,134 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).OrderByDescending(o => o.CreatedDate).ToList<Order>();
         }
 
-        public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
-            List<EF.OrderHistoryHeader> headers = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                          d => d.OrderDetails).ToList();
+        public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging)
+        {
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
+            IQueryable<EF.OrderHistoryHeader> headersQry = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                                         h.CustomerNumber.Equals(customerInfo.CustomerId),
+                                                                                    d => d.OrderDetails);
+            headersQry = ApplyPagingToQuery(paging, headersQry);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details query");
+            List<EF.OrderHistoryHeader> headers = headersQry.ToList();
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details list");
+            var data = LookupControlNumberAndStatus(customerInfo, headers).AsQueryable();
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
+            var pagedData = data.GetPage(paging);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get page");
+            return pagedData;
+        }
 
-            return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
+        private IQueryable<EF.OrderHistoryHeader> ApplyPagingToQuery(PagingModel paging, IQueryable<EF.OrderHistoryHeader> headersQry)
+        {
+            if (paging != null)
+            {
+                headersQry = AddSortToPagedQuery(paging, headersQry);
+                if (paging.Size != null)
+                {
+                    headersQry = headersQry.Take(paging.Size.Value);
+                }
+                else
+                {
+                    headersQry = headersQry.Take(10);
+                }
+            }
+            else
+            {
+                headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
+                headersQry = headersQry.Take(6);
+            }
+
+            return headersQry;
+        }
+
+        private IQueryable<EF.OrderHistoryHeader> AddSortToPagedQuery(PagingModel paging, IQueryable<EF.OrderHistoryHeader> headersQry)
+        {
+            if (paging.Sort != null)
+            {
+                switch (paging.Sort[0].Field)
+                {
+                    case "invoicenumber":
+                        if (paging.Sort[0].Order.Equals("asc"))
+                        {
+                            headersQry = headersQry.OrderBy(h => h.InvoiceNumber);
+                        }
+                        else
+                        {
+                            headersQry = headersQry.OrderByDescending(h => h.InvoiceNumber);
+                        }
+                        break;
+                    case "createddate":
+                        if (paging.Sort[0].Order.Equals("asc"))
+                        {
+                            headersQry = headersQry.OrderBy(h => h.CreatedUtc);
+                        }
+                        else
+                        {
+                            headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
+                        }
+                        break;
+                    case "status":
+                        if (paging.Sort[0].Order.Equals("asc"))
+                        {
+                            headersQry = headersQry.OrderBy(h => h.OrderStatus);
+                        }
+                        else
+                        {
+                            headersQry = headersQry.OrderByDescending(h => h.OrderStatus);
+                        }
+                        break;
+                    case "deliverydate":
+                        if (paging.Sort[0].Order.Equals("asc"))
+                        {
+                            headersQry = headersQry.OrderBy(h => h.DeliveryDate);
+                        }
+                        else
+                        {
+                            headersQry = headersQry.OrderByDescending(h => h.DeliveryDate);
+                        }
+                        break;
+                    case "ordertotal":
+                        if (paging.Sort[0].Order.Equals("asc"))
+                        {
+                            headersQry = headersQry.OrderBy(h => h.OrderSubtotal);
+                        }
+                        else
+                        {
+                            headersQry = headersQry.OrderByDescending(h => h.OrderSubtotal);
+                        }
+                        break;
+                    case "invoicestatus":
+                        if (paging.Sort[0].Order.Equals("asc"))
+                        {
+                            headersQry = headersQry.OrderBy(h => h.OrderStatus);
+                        }
+                        else
+                        {
+                            headersQry = headersQry.OrderByDescending(h => h.OrderStatus);
+                        }
+                        break;
+                    case "ponumber":
+                        if (paging.Sort[0].Order.Equals("asc"))
+                        {
+                            headersQry = headersQry.OrderBy(h => h.PONumber);
+                        }
+                        else
+                        {
+                            headersQry = headersQry.OrderByDescending(h => h.PONumber);
+                        }
+                        break;
+                    default:
+                        headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
+                        break;
+                }
+                headersQry = headersQry.Skip(paging.From.Value); // Skip can only be done with a sort
+            }
+            else
+            {
+                headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
+            }
+
+            return headersQry;
         }
 
         public List<OrderHeader> GetSubmittedUnconfirmedOrders() {
@@ -598,19 +720,34 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return returnOrder;
         }
 
-        public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false) {
+        public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false, bool changeorder = false)
+        {
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-            var orders = _poRepo.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
-            var returnOrders = orders.Select(p => ToOrder(p, header)).ToList();
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetCustomerByCustomerNumber");
+            var orders = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customer.CustomerId);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - ReadPurchaseOrders");
+            var returnOrders = orders.Select(p => ToOrder(p, header))
+                                     .ToList();
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - SelectToOrder");
             var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetNotes");
 
-            returnOrders.ForEach(delegate(Order order) {
+            returnOrders.ForEach(delegate (Order order) {
                 LookupProductDetails(userProfile, catalogInfo, order, notes);
                 if (omitDeletedItems)
                     order.Items = order.Items.Where(x => x.MainFrameStatus != "deleted").ToList();
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - LookupProductDetails");
             });
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "Added Orders");
 
-            return returnOrders;
+            if (changeorder)
+            {
+                returnOrders = returnOrders.Where(co => co.IsChangeOrderAllowed == true)
+                                           .ToList();
+            }
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - if (changeorder)");
+            return returnOrders.OrderByDescending(o => o.InvoiceNumber).ToList();
         }
 
         public List<Order> ReadOrderHistories(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true) {

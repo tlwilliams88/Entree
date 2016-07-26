@@ -60,15 +60,15 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             this.Entities.Remove(domainObject);
         }
 
-        public virtual IEnumerable<T> Read(Expression<Func<T, bool>> where) {
+        public virtual IQueryable<T> Read(Expression<Func<T, bool>> where) {
             return this.Entities.Where(where);
         }
 
-        public virtual IEnumerable<T> Read<TProperty>(Expression<Func<T, TProperty>> include) where TProperty : class {
+        public virtual IQueryable<T> Read<TProperty>(Expression<Func<T, TProperty>> include) where TProperty : class {
             return this.Entities.Include(include);
         }
 
-        public virtual IEnumerable<T> Read<TProperty>(Expression<Func<T, bool>> where, Expression<Func<T, TProperty>> include) where TProperty : class {
+        public virtual IQueryable<T> Read<TProperty>(Expression<Func<T, bool>> where, Expression<Func<T, TProperty>> include) where TProperty : class {
             return this.Entities.Where(where).Include(include);
         }
 

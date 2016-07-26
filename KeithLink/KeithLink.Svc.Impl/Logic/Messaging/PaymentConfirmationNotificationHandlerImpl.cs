@@ -19,6 +19,7 @@ using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 //using KeithLink.Svc.Core.Models.Profile;
 
 using KeithLink.Svc.Impl.Helpers;
@@ -120,19 +121,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
             PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
 
-            List<string> customerNumbers = confirmation.Payments.Select(p => p.CustomerNumber).Distinct().ToList();
+            // UserContextEqualityComparer discriminates usercontext's to allow distinct to weed out duplicates
+            List<UserSelectedContext> customerCtxs = confirmation.Payments
+                                                       .Select(p => new UserSelectedContext() { CustomerId = p.CustomerNumber, BranchId = p.BranchId })
+                                                       .Distinct(new UserContextEqualityComparer())
+                                                       .ToList();
 
-            foreach (string customerNumber in customerNumbers)
+            foreach (UserSelectedContext customerCtx in customerCtxs)
             {
-                string branchId = confirmation.Payments.Where(p => p.CustomerNumber == customerNumber).Select(p => p.BranchId).First();
-                
                 // load up recipients, customer and message
-                Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
+                Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(customerCtx.CustomerId, customerCtx.BranchId);
 
                 if (customer == null)
                 {
                     StringBuilder warningMessage = new StringBuilder();
-                    warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                    warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", customerCtx.BranchId, customerCtx.CustomerId);
                     warningMessage.AppendLine();
                     warningMessage.AppendLine();
                     warningMessage.AppendLine("Notification:");
@@ -143,7 +146,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 else
                 {
                     List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
-                    Message message = GetEmailMessageForNotification(confirmation.Payments.Where(p => p.CustomerNumber == customerNumber).ToList(), customer);
+                    Message message = GetEmailMessageForNotification(confirmation.Payments
+                                                                                 .Where(p => p.CustomerNumber == customerCtx.CustomerId && p.BranchId == customerCtx.BranchId)
+                                                                                 .ToList(),
+                                                                     customer);
 
                     // send messages to providers...
                     if (recipients != null && recipients.Count > 0)

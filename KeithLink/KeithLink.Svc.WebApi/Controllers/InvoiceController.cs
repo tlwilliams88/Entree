@@ -158,7 +158,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 if(request.export.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
-                ret = ExportModel<InvoiceModel>(list.PagedResults.Results, request.export, SelectedUserContext);
+
+                List<InvoiceModel> exportData = new List<InvoiceModel>();
+
+                foreach(var customer in list.CustomersWithInvoices.Results) {
+                    exportData.AddRange(customer.PagedResults.Results);
+                }
+
+
+                ret = ExportModel<InvoiceModel>(exportData, request.export, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -195,13 +203,23 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// Retrieve invoice image
         /// </summary>
         /// <param name="invoiceNumber">Invoice number</param>
+        /// <param name="customerId">Optional parameter to supply customerId</param>
+        /// <param name="branchId">Optional parameter to supply branchId</param>
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/image/{invoiceNumber}")]
-        public OperationReturnModel<List<Base64Image>> GetInvoiceImages(string invoiceNumber) {
-            OperationReturnModel<List<Base64Image>> retVal = new OperationReturnModel<List<Base64Image>>();
+        public OperationReturnModel<List<string>> GetInvoiceImages(string invoiceNumber, string customerId = null, string branchId = null) {
+            OperationReturnModel<List<string>> retVal = new OperationReturnModel<List<string>>();
             try {
-                retVal.SuccessResponse = _imgLogic.GetInvoiceImages(this.SelectedUserContext, invoiceNumber);
+                if (customerId != null && branchId != null)
+                {
+                    retVal.SuccessResponse = _imgLogic.GetInvoiceImages
+                        (new Core.Models.SiteCatalog.UserSelectedContext() { CustomerId = customerId, BranchId = branchId }, invoiceNumber);
+                }
+                else
+                {
+                    retVal.SuccessResponse = _imgLogic.GetInvoiceImages(this.SelectedUserContext, invoiceNumber);
+                }
                 retVal.IsSuccess = true;
             }
             catch (Exception ex) {

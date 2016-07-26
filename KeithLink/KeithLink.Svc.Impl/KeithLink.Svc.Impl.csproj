@@ -268,6 +268,8 @@
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\ProfileHelper.cs" />
+    <Compile Include="Helpers\StopWatchHelper.cs" />
+    <Compile Include="Helpers\UserContextEqualityComparer.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
@@ -356,6 +358,10 @@
       <DependentUpon>201606201910103_Add Enable to UserPushNotificationDevices.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
+    <Compile Include="Repository\EF\Migrations\201607252159028_user message index.cs" />
+    <Compile Include="Repository\EF\Migrations\201607252159028_user message index.Designer.cs">
+      <DependentUpon>201607252159028_user message index.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -841,6 +847,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201606201910103_Add Enable to UserPushNotificationDevices.resx">
       <DependentUpon>201606201910103_Add Enable to UserPushNotificationDevices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201607252159028_user message index.resx">
+      <DependentUpon>201607252159028_user message index.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
