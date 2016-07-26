@@ -49,7 +49,8 @@ angular.module('bekApp')
     $scope.numberFacetsToShow = 4;  // determines when to show the 'Show More' link for each facet
     $scope.maxSortCount = 200;      // max number of items that can be sorted by price
 
-
+    $scope.sortDirection = 'asc';
+    $scope.categoryIsOpen = false;
 
     $scope.hideMobileFilters = true;
     if ($state.params.catalogType == "BEK") {
@@ -94,24 +95,18 @@ angular.module('bekApp')
         available: [],
         selected: [],
         showMore: true
+      },
+      parentcategories: {
+        available: [],
+        selected: [],
+        showMore: true
+      },
+      subcategories: {
+        available: [],
+        selected: [],
+        showMore: true
       }
     };
-
-    $scope.selectSortParameter = function(parametername, parametervalue){
-      $scope.selectedSortParameter = parametername;
-      $scope.sortParametervalue = parametervalue;
-    }
-
-    $scope.sortParameters = [{
-      name: 'Item #',
-      value: 'itemnumber'
-    }, {
-      name: 'Name',
-      value: 'name_not_analyzed'
-    }, {
-      name: 'Brand',
-      value: 'brand_not_analyzed'
-    }];
 
     $scope.initPagingValues = function(){
       $scope.visitedPages = [];
@@ -266,21 +261,47 @@ angular.module('bekApp')
       // top level breadcrumb based on the type of search
       var displayText;
 
-      if ($scope.paramType === 'category') {
-        CategoryService.getCategories($state.params.catalogType).then(function(categories) {
-          angular.forEach(categories, function(item, index) {
-            if (item.search_name === $scope.paramId) { // for the bread crumb, we map from the search name back to the display name
-              displayText = item.name;
-            }
-          });
+      // search term
+      if ($scope.paramType === 'search') {
+       $scope.featuredBreadcrumb = {
+          click: $scope.clearFacets,
+          clickData: null,
+          displayText: $stateParams.deptName
+        };
+        breadcrumbs.unshift($scope.featuredBreadcrumb);
+        
+        $scope.featuredBreadcrumb = {
+          click: $scope.clearFacets,
+          clickData: '',
+          displayText: '"' + $scope.paramId + '"'
+        };
+        breadcrumbs.push($scope.featuredBreadcrumb);
+      }
 
-          $scope.featuredBreadcrumb = {
-            click: $scope.clearFacets,
-            clickData: null,
-            displayText: displayText
-          };
-          breadcrumbs.unshift($scope.featuredBreadcrumb);
+      // parent categories
+      if ($scope.facets.parentcategories.selected.length > 0) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.parentcategories.selected = data;
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.parentcategories.selected,
+          displayText: 'Parent Categories: ' + $scope.facets.parentcategories.selected.join(breadcrumbSeparator)
         });
+        filterCount += $scope.facets.parentcategories.selected.length;
+      }
+
+      // sub-categories
+      if ($scope.facets.subcategories.selected.length > 0) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.subcategories.selected = data;
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.subcategories.selected,
+          displayText: 'Categories: ' + $scope.facets.subcategories.selected.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.subcategories.selected.length;
       }
 
       if ($scope.paramType === 'brand') {
@@ -296,22 +317,6 @@ angular.module('bekApp')
           displayText: displayText
         };
         breadcrumbs.push($scope.featuredBreadcrumb);
-      }
-
-      // categories
-      if ($scope.facets.categories.selected.length > 0) {
-        breadcrumbs.push({
-          click: function(data) {
-            $scope.facets.categories.selected = data;
-            $scope.facets.brands.selected = [];
-            $scope.facets.dietary.selected = [];
-            $scope.facets.itemspecs.selected = [];
-            loadProducts().then(refreshFacets);
-          },
-          clickData: $scope.facets.categories.selected,
-          displayText: $scope.facets.categories.selected.join(breadcrumbSeparator)
-        });
-        filterCount += $scope.facets.categories.selected.length;
       }
 
       // brands
@@ -388,23 +393,6 @@ angular.module('bekApp')
         filterCount += $scope.facets.temp_zone.selected.length;
       }
 
-      // search term
-      if ($scope.paramType === 'search') {
-       $scope.featuredBreadcrumb = {
-          click: $scope.clearFacets,
-          clickData: null,
-          displayText: $stateParams.deptName
-        };
-        breadcrumbs.unshift($scope.featuredBreadcrumb);
-        
-        $scope.featuredBreadcrumb = {
-          click: $scope.clearFacets,
-          clickData: '',
-          displayText: '"' + $scope.paramId + '"'
-        };
-        breadcrumbs.push($scope.featuredBreadcrumb);
-      }
-
       $scope.breadcrumbs = breadcrumbs;
       $scope.filterCount = filterCount;
     }
@@ -416,16 +404,17 @@ angular.module('bekApp')
       var facets;
       $scope.aggregateCount;
       
-      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.categories.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length)
+      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length + $scope.facets.parentcategories.selected.length + $scope.facets.subcategories.selected.length)
 
       if($scope.aggregateCount !== 0){
         facets = ProductService.getFacets(
-          $scope.facets.categories.selected,
           $scope.facets.brands.selected,
           $scope.facets.mfrname.selected,
           $scope.facets.dietary.selected,
           $scope.facets.itemspecs.selected,
-          $scope.facets.temp_zone.selected
+          $scope.facets.temp_zone.selected,
+          $scope.facets.parentcategories.selected,
+          $scope.facets.subcategories.selected
         )
       }
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
@@ -463,10 +452,10 @@ angular.module('bekApp')
         if($scope.aggregateCount !==0 || $scope.noFiltersSelected){
           updateFacetCount($scope.facets.brands, data.facets.brands);
           updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
-          updateFacetCount($scope.facets.categories, data.facets.categories);
           updateFacetCount($scope.facets.dietary, data.facets.dietary);
           updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
           updateFacetCount($scope.facets.temp_zone, data.facets.temp_zone);
+          updateParentCategoryFacetCount($scope.facets.parentcategories, data.facets.parentcategories);
         }
 
         setBreadcrumbs(data);
@@ -503,13 +492,39 @@ angular.module('bekApp')
       $scope.noFiltersSelected = false;
     }
 
+    function updateParentCategoryFacetCount(categories, data){
+      if(categories && categories.available){
+        categories.available.forEach(function(category){
+          var facetName = $filter('filter')(data, {name: category.name})
+          category.count = 0;
+          if(facetName && facetName.length > 0 && category.name){
+            category.count = facetName[0].count;
+            if(facetName.categories){
+            facetName.categories.forEach(function(origsubcategory){
+              category.categories.forEach(function(subcategory){
+                if(subcategory.name == origsubcategory.name){
+                  subcategory.count = origcategory.count; 
+                } else {
+                  subcategory.count = 0;
+                }
+                })
+              })
+            }
+          }
+        })
+      }
+      $scope.subcategory = false;
+      $scope.noFiltersSelected = false;
+    }
+
     $scope.clearFacets = function() {
-      $scope.facets.categories.selected = [];
       $scope.facets.brands.selected = [];
       $scope.facets.mfrname.selected = [];
       $scope.facets.dietary.selected = [];
       $scope.facets.itemspecs.selected = [];
       $scope.facets.temp_zone.selected = [];
+      $scope.facets.parentcategories.selected = [];
+      $scope.facets.subcategories.selected = [];
       loadProducts().then(refreshFacets);
       $scope.noFiltersSelected = true;
     }
@@ -517,12 +532,12 @@ angular.module('bekApp')
     function refreshFacets(facets) {
       // set the $scope.facets object using the response data
       if(facets){
-        $scope.facets.categories.available = facets.categories;
         $scope.facets.brands.available = facets.brands;
         $scope.facets.mfrname.available = facets.mfrname;
         $scope.facets.dietary.available = facets.dietary;
         $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
         $scope.facets.temp_zone.available = facets.temp_zone;
+        $scope.facets.parentcategories.available = facets.parentcategories;
       }
     }
 
@@ -578,8 +593,32 @@ angular.module('bekApp')
     }
 
     /*************
-    CLICK EVENTS
+    SORTING
     *************/
+    $scope.selectSortParameter = function(parametername, parametervalue){
+      $scope.selectedSortParameter = parametername;
+      $scope.sortParametervalue = parametervalue;
+      $scope.sortDirection = 'asc';
+    }
+
+    function toggleSortDirection(){
+      if($scope.sortDirection === 'asc'){
+        $scope.sortDirection = 'desc'
+      } else {
+        $scope.sortDirection = 'asc'
+      }
+    }
+
+    $scope.sortParameters = [{
+      name: 'Item #',
+      value: 'itemnumber'
+    }, {
+      name: 'Name',
+      value: 'name_not_analyzed'
+    }, {
+      name: 'Brand',
+      value: 'brand_not_analyzed'
+    }];
 
     $scope.sortResults = function(sortdirection, sortfield){
       startLoading();
@@ -597,16 +636,45 @@ angular.module('bekApp')
       })
     }
 
-    $scope.toggleSelection = function(facetList, selectedFacet) {
+    /*************
+    CLICK EVENTS
+    *************/
+
+    $scope.toggleSubCategories = function(category, index){
+      var subCategories = $('.subcategories_' + index);
+      category.IsOpen = !category.IsOpen;
+      if(subCategories[0].style.display === 'block'){
+        subCategories.css('display','none');
+      } else {
+        subCategories.css('display','block');
+      }
+    }
+
+    $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory) {
       $scope.noFiltersSelected = !$scope.noFiltersSelected;
+      var parentCategories = [];
       $scope.itemsPerPage = 50;
       $scope.itemIndex = 0;
+      if(category === false){
+        $scope.subcategory = true;
+      }
 
       var idx = facetList.indexOf(selectedFacet);
       if (idx > -1) {
         facetList.splice(idx, 1);
       } else {
-        facetList.push(selectedFacet);
+        if(parentcategory){
+          if($scope.facets.parentcategories.selected.length == 0){
+            $scope.facets.parentcategories.selected.push(parentcategory);
+          } else {
+            if($scope.facets.parentcategories.selected.indexOf(parentcategory) == -1){
+              $scope.facets.parentcategories.selected.push(parentcategory);
+            }
+          }
+          facetList.push(selectedFacet);
+        } else {
+          facetList.push(selectedFacet);
+        }
       }
 
       loadProducts().then($scope.refreshFacets);
@@ -640,12 +708,13 @@ angular.module('bekApp')
             // return search url with params
             var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
             var facets = ProductService.getFacets(
-              $scope.facets.categories.selected,
               $scope.facets.brands.selected,
               $scope.facets.mfrname.selected,
               $scope.facets.dietary.selected,
               $scope.facets.itemspecs.selected,
-              $scope.facets.temp_zone.selected
+              $scope.facets.temp_zone.selected,
+              $scope.facets.parentcategories.selected,
+              $scope.facets.subcategories.selected
             );
 
             var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);

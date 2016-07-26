@@ -27,7 +27,7 @@ angular.module('bekApp')
       var Service = {
         selectedProduct: {}, 
 
-        getFacets: function(categories, brands, manufacturers, dietary, itemspecs, temp_zone) {
+        getFacets: function(brands, manufacturers, dietary, itemspecs, temp_zone, parentcategories, subcategories) {
           var facets = [];
 
           // handle nonstock special case
@@ -35,10 +35,6 @@ angular.module('bekApp')
           var cleanItemspecs = angular.copy(itemspecs);
           if (nonstockIndex > -1) {
             cleanItemspecs.splice(nonstockIndex, 1);
-          }
-
-          if (categories && categories.length > 0) {
-            facets.push('categories:' + categories.join('|'));
           }
           if (brands && brands.length > 0) {
             facets.push('brands:' + brands.join('|'));
@@ -54,6 +50,12 @@ angular.module('bekApp')
           }
           if (temp_zone && temp_zone.length > 0){
             facets.push('temp_zone:' + temp_zone.join('|'));
+          }
+          if (parentcategories && parentcategories.length > 0){
+            facets.push('parentcategories:' + parentcategories.join('|'));
+          }
+          if (subcategories && subcategories.length > 0){
+            facets.push('categories:' + subcategories.join('|'));
           }
           if (nonstockIndex > -1) {
             facets.push('nonstock:y');

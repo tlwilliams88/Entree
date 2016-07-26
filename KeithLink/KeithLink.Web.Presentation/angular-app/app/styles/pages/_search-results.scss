@@ -216,21 +216,12 @@
 .sub-accordion{
   > .panel-collapse{
    > .panel-body{
-    height:auto !important;
-    label{
-      padding: 11px 30px !important;
+    height:20% !important;
+    max-height: 300px !important;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
     }
-    }
-  }
-  .panel-heading a{
-    padding:0 !important;
-    color: $color-font;
-    .panel-body{
-      background-color: $background;
-    }
-  }
-  .panel-heading a:hover{
-    color: $color-font !important;
   }
 }
 

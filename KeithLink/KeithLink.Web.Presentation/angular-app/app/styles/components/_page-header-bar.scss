@@ -111,6 +111,35 @@
       }
     }
   }
+  .page-header-bar__searchmessage {
+    font-size: 20px;
+  }
+  .page-subheader-bar {
+    @include header-bar($color-white, 0px);
+ 
+    .page-subheader-bar__searchmessage {
+      padding-top: 10px;
+      padding-bottom: 4px;
+      display: inline-block;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
+    .page-subheader-bar__searchbutton {
+      font-weight: 400;
+      cursor: pointer;
+      line-height: 35px;
+      text-align: center;
+      
+      &.button-left {
+        border-right: 1px solid #c3bc9c;
+        float: left;
+      }
+      &.button-right {
+        border-left: 1px solid #c3bc9c;
+        float: right;
+      }
+    }
+  }
 }
  
 .global-message {
