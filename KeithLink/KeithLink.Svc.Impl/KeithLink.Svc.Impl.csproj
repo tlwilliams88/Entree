@@ -357,6 +357,10 @@
     <Compile Include="Repository\EF\Migrations\201606201910103_Add Enable to UserPushNotificationDevices.Designer.cs">
       <DependentUpon>201606201910103_Add Enable to UserPushNotificationDevices.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201607261857255_blank for 1.8.cs" />
+    <Compile Include="Repository\EF\Migrations\201607261857255_blank for 1.8.Designer.cs">
+      <DependentUpon>201607261857255_blank for 1.8.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.Designer.cs">
@@ -850,6 +854,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201607252159028_user message index.resx">
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201607261857255_blank for 1.8.resx">
+      <DependentUpon>201607261857255_blank for 1.8.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
