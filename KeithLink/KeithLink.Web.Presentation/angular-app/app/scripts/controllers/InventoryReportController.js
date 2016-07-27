@@ -187,11 +187,6 @@ angular.module('bekApp')
         if(!isSortingPosition){
           $scope.report.items = orderBy($scope.report.items, field, sortDescending);
         }
-        // if($scope.report.items.length && !$scope.report.items[($scope.report.items.length -1)].listitemid){
-        //   var dummy = $scope.report.items.slice($scope.report.items.length -1, $scope.report.items.length );
-        //   $scope.report.items = $scope.report.items.slice(0, $scope.report.items.length -1);
-        //   $scope.report.items.push(dummy[0]);
-        // }
 
         if(isSortingPosition){
           $scope.report.items = $scope.report.items.reverse();
