@@ -135,6 +135,7 @@ angular.module('bekApp')
           hasCasePrice: PricingService.hasCasePrice(item),
           average_weight: item.average_weight,
           class: item.class,
+          category: item.category,
           brand_extended_description: item.brand_extended_description
         };        
         if (useListItemId === true) {
