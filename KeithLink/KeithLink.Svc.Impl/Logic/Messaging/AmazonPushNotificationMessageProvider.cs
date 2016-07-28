@@ -137,7 +137,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     _eventLog.WriteErrorLog(msg.ToString().Inject(recipient), ex);
 
                     //if any of the strings we watch for is contained in the exception message, disable the device
-                    if (Configuration.AmazonSnsMessagesToDisableOn.Any(ex.Message.Contains) | Configuration.AmazonSnsMessagesToDisableOn.Any(ex.StackTrace.Contains))
+                    if (Configuration.AmazonSnsMessagesToDisableOn.Any(ex.Message.ToLower().Contains))
                     {
                         var device = _userPushNotificationDeviceRepository.ReadUserDevice(recipient.UserId, recipient.DeviceId, recipient.DeviceOS.Value);
                         device.Enabled = false;
