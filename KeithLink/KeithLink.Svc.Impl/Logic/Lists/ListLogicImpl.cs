@@ -956,6 +956,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     ListId = l.Id,
                     Name = l.DisplayName,
                     IsContractList = l.Type == ListType.Contract,
+                    HasContractItems = l.Type == ListType.Contract,
                     IsFavorite = l.Type == ListType.Favorite,
                     IsWorksheet = l.Type == ListType.Worksheet,
                     IsReminder = l.Type == ListType.Reminder,
@@ -987,7 +988,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 });
 
                 foreach (var tempList in processedList)
+                {
                     LookupPrices(user, tempList.Items, catalogInfo);
+                    if(tempList.Items.Any(item => item.Category != null && item.Category.Length > 0))
+                    {
+                        tempList.HasContractItems = true;
+                    }
+                }
 
                 return processedList;
             }
