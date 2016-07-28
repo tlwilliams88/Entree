@@ -143,9 +143,6 @@ angular.module('bekApp')
           reportItem.position = item.position;
         }       
         $scope.report.items.push(reportItem);
-        if(reportItem.category){
-          $scope.report.hasContractCategories = true;
-        }
 
         var lastIndex = $scope.report.items.length - 1;
         watchersQuantity.push($scope.$watch('report.items[' + lastIndex + '].quantity', onItemQuantityChanged));

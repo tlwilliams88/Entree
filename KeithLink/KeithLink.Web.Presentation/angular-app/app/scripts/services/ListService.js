@@ -378,7 +378,8 @@ angular.module('bekApp')
           return {
             itemnumber: item.itemnumber,
             catalog_id: item.catalog_id,
-            each: item.each
+            each: item.each,
+            category: item.category
           };
         },
         
