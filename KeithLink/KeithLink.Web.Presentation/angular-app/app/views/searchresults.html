@@ -39,13 +39,13 @@
   <div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
     <div class="row">
 
-      <accordion close-others="false">
+      <accordion close-others="true">
         <accordion-group is-open="status.openCategories">
           <accordion-heading>
             <span >Parent Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
           </accordion-heading>
-          <accordion close-others="false">
-            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available" is-open="parentcategory.isOpen" class="sub-accordion" ng-click="toggleSubCategories(parentcategory, $index)">
+          <accordion close-others="true">
+            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion" ng-click="toggleSubCategories(parentcategory, $index)">
               <accordion-heading>
                 <div style="margin-left:15px;">
                   <label
@@ -74,11 +74,11 @@
           </accordion>
         </accordion-group>
 
-        <accordion-group is-open="status.openBrand" ng-show="facets.brands.available.length > 0">
+        <accordion-group is-open="status.openBrand" ng-show="facets.brands.available.length > 0" class="mobile-accordion">
           <accordion-heading>
           Brands<i class="pull-right" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
           </accordion-heading>
-          <div ng-repeat="brand in facets.brands.available" class="panel panel-default">
+          <div ng-repeat="brand in facets.brands.available | orderBy: 'name'" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="brandValue_{{brand.name}}"
@@ -91,7 +91,7 @@
           </div>
         </accordion-group>
 
-        <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
+        <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0" class="mobile-accordion">
           <accordion-heading>
           Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
           </accordion-heading>
@@ -108,7 +108,7 @@
           </div>
         </accordion-group>
 
-        <accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
+        <accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0" class="mobile-accordion">
           <accordion-heading>
           Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
           </accordion-heading>
@@ -124,7 +124,7 @@
           </div>
         </accordion-group>
 
-        <accordion-group is-open="status.temp_zone" ng-show="facets.temp_zone.available.length > 0">
+        <accordion-group is-open="status.temp_zone" ng-show="facets.temp_zone.available.length > 0" class="mobile-accordion">
           <accordion-heading>
           Temp Zone<i class="pull-right" ng-class="{'icon-arrow-up6': status.temp_zone, 'icon-arrow-down7': !status.temp_zone}"></i>
           </accordion-heading>
@@ -140,7 +140,7 @@
           </div>
         </accordion-group>
 
-        <accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0">
+        <accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0" class="mobile-accordion">
           <accordion-heading>
           Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
           </accordion-heading>
@@ -156,7 +156,7 @@
           </div>
         </accordion-group>
 
-        <accordion-group is-open="status.openCatalogs" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0">
+        <accordion-group is-open="status.openCatalogs" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0" class="mobile-accordion">
           <accordion-heading>Catalogs<i class="pull-right" ng-class="{'icon-arrow-up6': status.openCatalogs, 'icon-arrow-down7': !status.openCatalogs}"></i></accordion-heading>
             <div class="panel panel-default">
               <div class="panel-body">
@@ -193,6 +193,12 @@
             <ul class="subcategories_{{$index}}" style="display:none;">
               <li ng-repeat="category in parentcategory.categories | orderBy: '-count'">
                 <div>
+                  <input 
+                    type="checkbox"
+                    ng-checked="facets.subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText"
+                    ng-disabled="category.name === featuredBreadcrumb.displayText"
+                    ng-click="toggleSelection(false, facets.subcategories.selected, category.name, parentcategory.name)"
+                    class="input-margin-5px">
                   <label
                     ng-click="toggleSelection(false, facets.subcategories.selected, category.name, parentcategory.name)" 
                     ng-class="{active: facets.subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">

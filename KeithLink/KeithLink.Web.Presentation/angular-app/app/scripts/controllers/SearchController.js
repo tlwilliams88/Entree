@@ -102,7 +102,6 @@ angular.module('bekApp')
         showMore: true
       },
       subcategories: {
-        available: [],
         selected: [],
         showMore: true
       }
@@ -283,6 +282,7 @@ angular.module('bekApp')
         breadcrumbs.push({
           click: function(data) {
             $scope.facets.parentcategories.selected = data;
+            $scope.facets.subcategories.selected = [];
             loadProducts().then(refreshFacets);
           },
           clickData: $scope.facets.parentcategories.selected,
@@ -599,6 +599,7 @@ angular.module('bekApp')
       $scope.selectedSortParameter = parametername;
       $scope.sortParametervalue = parametervalue;
       $scope.sortDirection = 'asc';
+      $scope.sortResults($scope.sortDirection, $scope.sortParametervalue)
     }
 
     function toggleSortDirection(){
@@ -624,6 +625,7 @@ angular.module('bekApp')
       startLoading();
       $scope.sortField = sortfield; 
       $scope.sortDirection = sortdirection;
+
       return blockUI.start("Loading Products...").then(function(){
         var params = ProductService.getSearchParams(null, $scope.startingPoint, sortfield, sortdirection, $stateParams.dept);
         ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName).then(function(data){
@@ -631,6 +633,8 @@ angular.module('bekApp')
         }).then(function(){
           resetPage($scope.products, false);
         })
+
+      toggleSortDirection();
       stopLoading();
       blockUI.stop();
       })
@@ -652,9 +656,6 @@ angular.module('bekApp')
 
     $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory) {
       $scope.noFiltersSelected = !$scope.noFiltersSelected;
-      var parentCategories = [];
-      $scope.itemsPerPage = 50;
-      $scope.itemIndex = 0;
       if(category === false){
         $scope.subcategory = true;
       }
