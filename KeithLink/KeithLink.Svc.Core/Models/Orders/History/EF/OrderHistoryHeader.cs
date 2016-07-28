@@ -13,6 +13,7 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 	{
 		[MaxLength(1)]
 		[Column(TypeName = "char")]
+        [Index("ix_OrderHistoryheader_OrderSystem_includes")]
 		public string OrderSystem { get; set; }
 		[MaxLength(3)]
 		[Column(TypeName = "char")]
