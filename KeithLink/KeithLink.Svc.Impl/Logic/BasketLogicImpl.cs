@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (customer == null)
 				return new List<CS.Basket>();
 
-			return basketRepository.ReadAllBaskets(customer.CustomerId, type).ToList();
+			return basketRepository.ReadAllBaskets(customer.CustomerId, type);
 						
 		}
 	}

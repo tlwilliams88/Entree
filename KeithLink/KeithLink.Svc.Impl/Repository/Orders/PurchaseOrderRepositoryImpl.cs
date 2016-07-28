@@ -98,9 +98,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
-        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId)
-        {
-            //         System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
+        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId) {
             var manager = CommerceServerCore.GetPoManager();
             System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
             // set what to search

@@ -308,18 +308,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging)
         {
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
             IQueryable<EF.OrderHistoryHeader> headersQry = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                                          h.CustomerNumber.Equals(customerInfo.CustomerId),
                                                                                     d => d.OrderDetails);
             headersQry = ApplyPagingToQuery(paging, headersQry);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details query");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details query");
             List<EF.OrderHistoryHeader> headers = headersQry.ToList();
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details list");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get history headers and details list");
             var data = LookupControlNumberAndStatus(customerInfo, headers).AsQueryable();
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
             var pagedData = data.GetPage(paging);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get page");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetPagedOrders - Total time to get page");
             return pagedData;
         }
 
@@ -753,7 +753,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return returnOrder;
         }
 
-        public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false, bool changeorder = false) {
+        public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false, bool changeorder = false)
+        {
             //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
             //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetCustomerByCustomerNumber");
@@ -765,12 +766,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
             //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - GetNotes");
 
-            returnOrders.ForEach(delegate(Order order) {
+            returnOrders.ForEach(delegate (Order order) {
                 LookupProductDetails(userProfile, catalogInfo, order, notes);
                 if (omitDeletedItems)
                     order.Items = order.Items.Where(x => x.MainFrameStatus != "deleted").ToList();
                     //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadOrders - LookupProductDetails");
             });
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "Added Orders");
 
             if (changeorder)
             {

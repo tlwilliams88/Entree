@@ -151,7 +151,7 @@
       <table class="table table-border table-striped-rows table-inventory-valuation" navigate-table>
         <thead>
         <tr fsm-sticky-header scroll-body="'.table-inventory-valuation'" scroll-stop="0" scroll-offset="245">
-            <th class="sort-col-header" ng-click="sortTable('position', sortDescending)">
+            <th class="sort-col-header" ng-click="sortTable('position', sortDescending, true)">
               <span># <span sort-icons field="'position'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortTable('itemnumber', sortDescending)">
@@ -166,6 +166,9 @@
             <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('class', sortDescending)">
               <span>Category <span sort-icons field="'class'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
+            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('category', sortDescending)">
+              <span>Contract Category <span sort-icons field="'category'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
             <th class="hidden-mobile-visible-print">Pack/Size</th>
             <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortTable('label', sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sortDescending" sortby="sortField"></span></span>
@@ -178,7 +181,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="item in report.items | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }">
             <td>
               <a>{{item.position}}</a>
             </td>
@@ -188,6 +191,7 @@
             <td>{{::item.name}}</td>
             <td class="hidden-mobile item-usage-drop-column">{{::item.brand_extended_description}}</td>
             <td class="hidden-mobile item-usage-drop-column">{{::item.class}}</td>
+            <td class="hidden-mobile item-usage-drop-column">{{::item.category}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
             <td class="hidden-mobile-visible-print label-col">{{::item.label}}</td>
             <td class="input-col nowrap counter-container">  
@@ -224,6 +228,10 @@
                 <tr>
                   <td>Category</td>
                   <td>{{::item.class}}</td>
+                </tr>
+                <tr>
+                  <td>Contract Category</td>
+                  <td>{{::item.category}}</td>
                 </tr>
                 <tr>
                   <td>Pack/Size</td>
