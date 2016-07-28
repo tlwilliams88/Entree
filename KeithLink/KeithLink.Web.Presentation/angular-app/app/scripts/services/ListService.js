@@ -607,7 +607,8 @@ angular.module('bekApp')
             newItems.push({
               itemnumber: item.itemnumber,
               each: item.each,
-              catalog_id: item.catalog_id
+              catalog_id: item.catalog_id,
+              category: item.category
             });
           });
 

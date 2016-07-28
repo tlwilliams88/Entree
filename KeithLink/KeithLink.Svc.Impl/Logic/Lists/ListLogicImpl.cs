@@ -116,6 +116,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 ItemNumber = newItem.ItemNumber,
                 Label = newItem.Label,
                 Par = newItem.ParLevel,
+                Category = newItem.Category,
                 Position = position,
                 Quantity = newItem.Quantity,
                 Each = newItem.Each ?? false,
@@ -155,6 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                         ItemNumber = item.ItemNumber,
                         Label = item.Label,
                         Par = item.ParLevel,
+                        Category = item.Category,
                         Each = !item.Each.Equals(null) ? item.Each : false,
                         Position = nextPosition,
                         Quantity = item.Quantity,
@@ -1400,6 +1402,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                             item.Position = updateItem.Position;
                             item.Each = updateItem.Each;
                             item.Quantity = updateItem.Quantity;
+                            item.Category = updateItem.Category;
                         }
                         else {
                             if ((currentList.Type == ListType.Favorite ||
@@ -1415,7 +1418,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                 Par = updateItem.ParLevel,
                                 Label = updateItem.Label,
                                 Each = updateItem.Each,
-                                Quantity = updateItem.Quantity
+                                Quantity = updateItem.Quantity,
+                                Category = updateItem.Category
                             });
                             itemsAdded = true;
                         }
