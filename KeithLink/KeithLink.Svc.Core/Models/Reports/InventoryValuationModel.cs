@@ -18,6 +18,8 @@ namespace KeithLink.Svc.Core.Models.Reports
         public string Brand { get; set; }
         [DataMember(Name = "class")]
         public string Category { get; set; }
+        [DataMember(Name = "category")]
+        public string ContractCategory { get; set; }
         [DataMember(Name = "quantity")]
         public decimal Quantity { get; set; }
         [DataMember(Name = "price")]

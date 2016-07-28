@@ -174,8 +174,8 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 2, 20);
             OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 3, 20);
             OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 4, 20);
-            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 7, 20);
-            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 11, 10);
+            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 5, 20);
+            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 8, 20);
             return workSheet;
         }
 
@@ -187,18 +187,19 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             //
             uint rowIndex = 1;
 
-            string[] excelColumnNames = new string[11];
+            string[] excelColumnNames = new string[12];
             excelColumnNames[0] = "Item";
             excelColumnNames[1] = "Name";
             excelColumnNames[2] = "Brand";
             excelColumnNames[3] = "Category";
-            excelColumnNames[4] = "Pack";
-            excelColumnNames[5] = "Size";
-            excelColumnNames[6] = "Label";
-            excelColumnNames[7] = "Each";
-            excelColumnNames[8] = "Quantity";
-            excelColumnNames[9] = "Price";
-            excelColumnNames[10] = "ExtPrice";
+            excelColumnNames[4] = "ContractCategory";
+            excelColumnNames[5] = "Pack";
+            excelColumnNames[6] = "Size";
+            excelColumnNames[7] = "Label";
+            excelColumnNames[8] = "Each";
+            excelColumnNames[9] = "Quantity";
+            excelColumnNames[10] = "Price";
+            excelColumnNames[11] = "ExtPrice";
 
             rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
                 (rowIndex, "InventoryValuationModel", excelColumnNames, "Inventory Valuation Report", sheetData);
@@ -212,13 +213,14 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), "Name", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "Brand", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "Category", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), "Pack", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), "Size", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "Label", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), "Each", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), "Quantity", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), "Price", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), "Ext. Price", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), "Contract Category", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), "Pack", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "Size", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), "Label", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), "Each", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), "Quantity", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), "Price", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[11] + rowIndex.ToString(), "Ext. Price", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
 
 
             //
@@ -235,13 +237,14 @@ namespace KeithLink.Svc.Impl.Logic.Reports
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Name, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.Brand, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
                     OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Category, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.Pack, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), item.Size, newExcelRow);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), item.Label, newExcelRow);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), item.Each ? "Y" : "N", newExcelRow);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), item.Quantity.ToString(), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), Math.Round(item.Price, 2).ToString("F2"), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
-                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), Math.Round(item.ExtPrice, 2).ToString("F2"), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.ContractCategory, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), item.Pack, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), item.Size, newExcelRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), item.Label, newExcelRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), item.Each ? "Y" : "N", newExcelRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), item.Quantity.ToString(), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), Math.Round(item.Price, 2).ToString("F2"), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[11] + rowIndex.ToString(), Math.Round(item.ExtPrice, 2).ToString("F2"), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
 
                 }
             }
@@ -259,8 +262,9 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "", newRow);
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), "", newRow);
             OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), "", newRow);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), "Total", newRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
-            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), Math.Round(data.Sum(s => s.ExtPrice), 2).ToString("F2"), newRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), "Total", newRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[11] + rowIndex.ToString(), Math.Round(data.Sum(s => s.ExtPrice), 2).ToString("F2"), newRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
             return sheetData;
         }
         #endregion

@@ -155,11 +155,15 @@ angular.module('bekApp')
       if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
           $scope.canpayinvoice = true;  
           invoice.userCanPayInvoice = true;
+          customer.haspayableinvoices = true;
           invoice.paymentAmount = invoice.pendingtransaction.amount;
           invoice.date = invoice.pendingtransaction.date.substr(0,10); // get format '2014-01-31'
       } else if (invoice.ispayable) {
         $scope.canpayinvoice = true;
         invoice.userCanPayInvoice = true;
+        customer.haspayableinvoices = true;
+      } else {
+        customer.haspayableinvoices = false;
       }
 
       // calculate max payment date
@@ -327,13 +331,17 @@ angular.module('bekApp')
   };
 
   $scope.selectFilterView = function (filterView) {
-    blockUI.start('Loading Invoices...').then(function(){
+    if($scope.selectedFilterView == filterView){
+      return;
+    } else {
+      blockUI.start('Loading Invoices...').then(function(){
       $scope.errorMessage = '';
       InvoiceService.setFilters(filterView, $scope.filterRowFields);
       getInvoicesFilterObject($scope.filterRowFields, filterView);
       $scope.selectedFilterView = filterView;
       invoicePagingModel.loadData();
-    })    
+      })  
+    }
   };
 
   $scope.sortInvoices = function(sortDescending, sortField) {
@@ -486,11 +494,10 @@ angular.module('bekApp')
  $scope.toggleSelect = function(invoice,type){
     switch(type) {
       case 'amount':
-        if (invoice.paymentAmount && invoice.paymentAmount != 0){ // jshint ignore:line
+        if (invoice.paymentAmount && invoice.paymentAmount.toString() !== '0'){ // jshint ignore:line
           invoice.isSelected = true;
         } else {
-          if(invoice.statusdescription === 'Payment Pending' && invoice.paymentAmount == 0){
-          invoice.paymentAmount = '0.00';
+          if(invoice.statusdescription === 'Payment Pending' && invoice.paymentAmount && invoice.paymentAmount.toString() !== '0'){
           invoice.isSelected = true;
           $scope.validateBatch();
           }
@@ -514,14 +521,17 @@ angular.module('bekApp')
     if (isSelected) {
       if (!invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.amount.toString();
+      } else if (invoice.pendingtransaction && (invoice.paymentAmount == '0.00' || invoice.paymentAmount == '0' || invoice.paymentAmount == undefined)) {
+        invoice.paymentAmount = invoice.pendingtransaction.amount;
       }
     } else {
       invoice.failedBatchValidation = false;
-      if (invoice.pendingtransaction) {
-        invoice.paymentAmount = invoice.pendingtransaction.amount; 
+      if(invoice.pendingtransaction){
+        invoice.paymentAmount = invoice.pendingtransaction.amount;
       } else {
-        invoice.paymentAmount = '0';  
+        invoice.paymentAmount = '';
       }
+      
     }   
     $scope.invoiceForm.$setDirty();
   };
@@ -558,7 +568,7 @@ angular.module('bekApp')
 
   $scope.totalPaymentAmount = function () {    
     var total = 0;
-    if($scope.invoices.length && $scope.selectedFilterView.name !== 'Invoices Pending Payment'){
+    if($scope.invoices.length ){
       $scope.invoices.forEach(function (customer) {
         if(customer.invoices.results && customer.invoices.results.length){
           customer.invoices.results.forEach(function (invoice){

@@ -474,6 +474,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
             var confId = _invoiceRepo.GetNextConfirmationId();
 
+            if(payments.Where(p => p.PaymentAmount == 0).Any()) {
+                throw new ApplicationException("$0 payments are not allowed");
+            }
+
             foreach (var payment in payments)
             {
                 var testInvoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);

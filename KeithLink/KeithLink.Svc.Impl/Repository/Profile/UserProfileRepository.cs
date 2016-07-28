@@ -250,7 +250,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             updateQuery.Model.LastActivityDate = DateTime.Now;
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
-            _auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, null, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
+            //_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, null, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
         }
         #endregion
     }

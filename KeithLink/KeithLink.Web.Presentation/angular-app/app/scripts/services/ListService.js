@@ -378,7 +378,8 @@ angular.module('bekApp')
           return {
             itemnumber: item.itemnumber,
             catalog_id: item.catalog_id,
-            each: item.each
+            each: item.each,
+            category: item.category
           };
         },
         
@@ -607,7 +608,8 @@ angular.module('bekApp')
             newItems.push({
               itemnumber: item.itemnumber,
               each: item.each,
-              catalog_id: item.catalog_id
+              catalog_id: item.catalog_id,
+              category: item.category
             });
           });
 

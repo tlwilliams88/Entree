@@ -113,6 +113,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             options.Fields.Add(new ExportModelConfiguration() { Field = "Size", Label = "Size" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "PackagePrice", Label = "Pack Price" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Category", Label = "Contract Category" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryId", Label = "Category" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryName", Label = "Category Desc" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "ItemClass", Label = "Class" });

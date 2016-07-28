@@ -39,6 +39,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -57,6 +58,7 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IOrderQueueLogic orderQueueLogic;
         private readonly IOrderHistoryLogic _historyLogic;
 		private readonly IAuditLogRepository auditLogRepository;
+        private readonly IEventLogRepository _log;
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
@@ -72,7 +74,7 @@ namespace KeithLink.Svc.Impl.Logic
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
                                      INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache)
+                                     ICacheRepository cache, IEventLogRepository log)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -87,6 +89,7 @@ namespace KeithLink.Svc.Impl.Logic
 			_historyLogic = orderHistoryLogic;
 			this.customerRepository = customerRepository;
 			this.auditLogRepository = auditLogRepository;
+            _log = log;
             this.externalServiceRepository = externalServiceRepository;
             _activeCartLogic = userActiveCartLogic;
             _externalCatalogRepo = externalCatalogRepo;
@@ -302,31 +305,38 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
-			if (String.IsNullOrEmpty(catalogInfo.CustomerId))
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(); //Temp: remove
+            if (String.IsNullOrEmpty(catalogInfo.CustomerId))
 				return new List<ShoppingCart>();
-
+            
 			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadAllCarts - RetrieveAllSharedCustomerBaskets");
 
-			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) &&
+            var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) &&
 				!string.IsNullOrEmpty(b.CustomerId) &&
 				b.CustomerId.Equals(catalogInfo.CustomerId));
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadAllCarts - listForBranch");
 
-			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
+            var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadAllCarts - GetUserActiveCart");
 
-			if (headerInfoOnly)
-				return listForBranch.Select(l => new ShoppingCart() 
-				{ 
-					CartId = l.Id.ToGuid(), 
-					Name = l.DisplayName, 
-					Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(), 
-					PONumber = l.PONumber,
-					SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0, 
-					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0,
+            if (headerInfoOnly)
+            {
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadAllCarts - return");
+                return listForBranch.Select(l => new ShoppingCart()
+                {
+                    CartId = l.Id.ToGuid(),
+                    Name = l.DisplayName,
+                    Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(),
+                    PONumber = l.PONumber,
+                    SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0,
+                    ItemCount = l.LineItems != null ? l.LineItems.Count() : 0,
                     PieceCount = l.LineItems != null ? (int)l.LineItems.Sum(i => i.Quantity) : 0,
-					RequestedShipDate = l.RequestedShipDate,
+                    RequestedShipDate = l.RequestedShipDate,
                     CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
-				}).ToList();
-			else
+                }).ToList();
+            }
+            else
 			{
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
 				var notes = _noteLogic.GetNotes(user, catalogInfo);
@@ -343,7 +353,8 @@ namespace KeithLink.Svc.Impl.Logic
                         list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
                     }
 				});
-				return returnCart;
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadAllCarts - return");
+                return returnCart;
 			}
 		}
 
