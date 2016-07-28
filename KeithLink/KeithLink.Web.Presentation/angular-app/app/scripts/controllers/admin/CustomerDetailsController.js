@@ -9,6 +9,12 @@ angular.module('bekApp')
   $scope.loadingCustomer = true;
   $scope.errorMessage = '';
 
+  // set correct user details link based on role
+  $scope.userDetailState = 'menu.admin.user.view';
+  if ($scope.canEditUsers) { // inherited from MenuController
+    $scope.userDetailState = 'menu.admin.user.edit';
+  }
+
   CustomerService.getCustomerDetails($stateParams.customerNumber, $stateParams.branchNumber).then(function(customer) {
     $scope.showPrices = customer.canViewPricing;
     $scope.customer = customer;
