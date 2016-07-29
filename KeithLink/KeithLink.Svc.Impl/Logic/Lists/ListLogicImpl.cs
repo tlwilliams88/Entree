@@ -91,8 +91,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// <param name="listId">the list's unique id</param>
         /// <param name="newItem">the item being added</param>
         /// <returns>the list item's unique id</returns>
-        public long? AddItem(long listId, ListItemModel newItem)
+        public long? AddItem(UserProfile user, UserSelectedContext catalogInfo, long listId, ListItemModel newItem)
         {
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+
             var list = _listRepo.ReadById(listId);
 
             var position = 1;
@@ -111,12 +113,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     return dupItem.Id;
             }
 
+            string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, newItem);
+
             var item = new ListItem()
             {
                 ItemNumber = newItem.ItemNumber,
                 Label = newItem.Label,
                 Par = newItem.ParLevel,
-                Category = newItem.Category,
+                Category = itmcategory,
                 Position = position,
                 Quantity = newItem.Quantity,
                 Each = newItem.Each ?? false,
@@ -137,6 +141,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
         {
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+
             var list = _listRepo.ReadById(listId);
             var nextPosition = 1;
             if (list.Items == null)
@@ -150,13 +156,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 if ((list.Type == ListType.Favorite || list.Type == ListType.Reminder) && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
                     continue;
 
+                string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, item);
+
                 list.Items.Add(
                     new ListItem()
                     {
                         ItemNumber = item.ItemNumber,
                         Label = item.Label,
                         Par = item.ParLevel,
-                        Category = item.Category,
+                        Category = itmcategory,
                         Each = !item.Each.Equals(null) ? item.Each : false,
                         Position = nextPosition,
                         Quantity = item.Quantity,
@@ -1327,7 +1335,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// update the list item in the database and update cache for the item
         /// </summary>
         /// <param name="item"></param>
-        public void UpdateItem(ListItemModel item)
+        public void UpdateItem(UserProfile user, UserSelectedContext catalogInfo, ListItemModel item)
         {
             _listItemRepo.Update(new ListItem()
             {
@@ -1353,8 +1361,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// update an entire list
         /// </summary>
         /// <param name="userList"></param>
-        public void UpdateList(ListModel userList)
+        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel userList)
         {
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+
             bool itemsAdded = false;
             var currentList = _listRepo.Read(l => l.Id.Equals(userList.ListId), i => i.Items)
                                        .FirstOrDefault();
@@ -1399,6 +1409,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                         if (string.IsNullOrEmpty(updateItem.ItemNumber))
                             continue;
 
+                        string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, updateItem);
+
                         if (updateItem.ListItemId != 0)
                         {
                             var item = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId))
@@ -1409,7 +1421,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                             item.Position = updateItem.Position;
                             item.Each = updateItem.Each;
                             item.Quantity = updateItem.Quantity;
-                            item.Category = updateItem.Category;
+                            item.Category = itmcategory;
                         }
                         else {
                             if ((currentList.Type == ListType.Favorite ||

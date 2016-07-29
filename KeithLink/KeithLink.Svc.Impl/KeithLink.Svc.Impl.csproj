@@ -265,6 +265,7 @@
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="Helpers\ContractInformationHelper.cs" />
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\ProfileHelper.cs" />
