@@ -16,6 +16,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
         [Column(TypeName = "varchar")]
         public string CustomerNumber { get; set; }
 
+        [Index("idx_UserId")]
         [Index("idx_UserId_ReadDateUtc", Order = 0)]
         public Guid UserId { get; set; }
 
