@@ -36,7 +36,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
     [Authorize]
     public class ListController : BaseController {
         #region attributes
+        private readonly IAuditLogRepository _auditLogRepo;
         private readonly IListLogic _listLogic;
+        private readonly IListRepository _listRepo;
         private readonly IExportSettingLogic _exportLogic;
         private readonly IEventLogRepository _elRepo;
         private readonly IUserProfileLogic _profileLogic;
@@ -50,13 +52,17 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="listLogic"></param>
         /// <param name="exportSettingsLogic"></param>
         /// <param name="elRepo"></param>
+        /// <param name="auditLogRepo"></param>
+        /// <param name="listRepo"></param>
         public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic,
-                              IEventLogRepository elRepo)
+                              IEventLogRepository elRepo, IAuditLogRepository auditLogRepo, IListRepository listRepo)
             : base(profileLogic) {
+            _auditLogRepo = auditLogRepo;
             _listLogic = listLogic;
             _profileLogic = profileLogic;
             _exportLogic = exportSettingsLogic;
             _elRepo = elRepo;
+            _listRepo = listRepo;
         }
         #endregion
 
@@ -512,7 +518,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try
             {
+                var list = _listRepo.ReadById(listId);
+
                 _listLogic.DeleteList(listId);
+
+                _auditLogRepo.WriteToAuditLog(Common.Core.Enumerations.AuditType.ListDelete, AuthenticatedUser.Name, String.Format("List {0} ({1}) deleted for customer {2} - {3}", list.DisplayName, listId, this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
+
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;
             }
@@ -535,7 +546,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try
             {
+                foreach (int listId in listIds)
+                {
+                    var list = _listRepo.ReadById(listId);
+                    _auditLogRepo.WriteToAuditLog(Common.Core.Enumerations.AuditType.ListDelete, AuthenticatedUser.Name, String.Format("List {0} ({1}) deleted for customer {2} - {3}", list.DisplayName, listId, this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
+                }
+
                 _listLogic.DeleteLists(listIds);
+
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;
             }
