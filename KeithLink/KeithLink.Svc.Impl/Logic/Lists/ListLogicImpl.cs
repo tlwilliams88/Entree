@@ -905,6 +905,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
                 MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
             }
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+
+            foreach(var itm in listClone.Items)
+            {
+                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+            }
 
             if (includePrice)
                 LookupPrices(user, listClone.Items, catalogInfo);
@@ -1066,6 +1072,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             var tempList = list.ToListModel(catalogInfo);
 
             LookupProductDetails(user, tempList, catalogInfo);
+
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+
+            foreach (var itm in tempList.Items)
+            {
+                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+            }
+
             _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
 
             var returnList = tempList.ShallowCopy();
@@ -1238,7 +1252,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     }
 
                     LookupProductDetails(user, listItem, catalogInfo);
+
                     processedList.Add(listItem);
+                    Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+
+                    foreach (var itm in listItem.Items)
+                    {
+                        itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+                    }
                     _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId), TimeSpan.FromHours(2), listItem);
 
                 });
