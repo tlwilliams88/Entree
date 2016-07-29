@@ -26,7 +26,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -40,6 +40,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private readonly IExportSettingLogic _externalCatalogRepository;
         private readonly IFavoriteLogic _favoriteLogic;
         private readonly IHistoryLogic _historyLogic;
+        private readonly IListRepository _listRepo;
         private readonly IProductImageRepository _imgRepository;
         private readonly IOrderHistoryDetailRepository _orderDetailRepo;
         private readonly IOrderHistoryHeaderRepsitory _orderHeaderRepo;
@@ -55,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, ICategoryImageRepository categoryImageRepository, 
                                     ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryHeaderRepo, 
                                     IOrderHistoryDetailRepository orderHistoryDetailRepo, IExportSettingLogic externalCatalogRepository, IFavoriteLogic favoriteLogic, 
-                                    INoteLogic noteLogic, IHistoryLogic historyLogic)
+                                    INoteLogic noteLogic, IHistoryLogic historyLogic, IListRepository listRepo)
         {
             _catalogCacheRepository = catalogCacheRepository;
             _catalogRepository = catalogRepository;
@@ -68,6 +69,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _orderDetailRepo = orderHistoryDetailRepo;
             _orderHeaderRepo = orderHistoryHeaderRepo;
             _noteLogic = noteLogic;
+            _listRepo = listRepo;
             _priceLogic = priceLogic;
         }
         #endregion
@@ -324,6 +326,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             string catalogId = GetBranchId( catalogInfo.BranchId, catalogType );
             catalogInfo.BranchId = catalogId;  
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _catalogCacheRepository);
 
             if (ret == null)
                 return null;
@@ -334,6 +337,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             //AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
+            ret.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, new ListItemModel() { ItemNumber = ret.ItemNumber });
 
             PriceReturn pricingInfo = null;
 

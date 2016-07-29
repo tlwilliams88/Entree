@@ -299,7 +299,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<NewListItem> ret = new OperationReturnModel<NewListItem>();
             try
             {
-                var nlist = new NewListItem() { Id = _listLogic.AddItem(listId, newItem) };
+                var nlist = new NewListItem() { Id = _listLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, listId, newItem) };
                 ret.SuccessResponse = nlist;
                 ret.IsSuccess = true;
             }
@@ -472,7 +472,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try
             {
-                _listLogic.UpdateItem(updatedItem);
+                _listLogic.UpdateItem(this.AuthenticatedUser, this.SelectedUserContext, updatedItem);
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;
             }
@@ -495,7 +495,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
-                _listLogic.UpdateList(updatedList);
+                _listLogic.UpdateList(this.AuthenticatedUser, this.SelectedUserContext, updatedList);
                 ret.SuccessResponse = updatedList;
                 ret.IsSuccess = true;
             }
