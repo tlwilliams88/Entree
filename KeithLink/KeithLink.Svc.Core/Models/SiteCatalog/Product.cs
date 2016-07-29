@@ -66,6 +66,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string CaseCube { get; set; }
 
+        [DataMember(Name = "category")]
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+        public string Category { get; set; }
+
         [DataMember(Name = "productimages")]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public List<ProductImage> ProductImages { get; set; }

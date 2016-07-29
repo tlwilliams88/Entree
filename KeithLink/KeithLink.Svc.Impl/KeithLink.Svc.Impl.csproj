@@ -265,6 +265,7 @@
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="Helpers\ContractInformationHelper.cs" />
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\ProfileHelper.cs" />
@@ -361,6 +362,14 @@
     <Compile Include="Repository\EF\Migrations\201607261857255_blank for 1.8.cs" />
     <Compile Include="Repository\EF\Migrations\201607261857255_blank for 1.8.Designer.cs">
       <DependentUpon>201607261857255_blank for 1.8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201607281621232_Order History Index On OrderSystem.cs" />
+    <Compile Include="Repository\EF\Migrations\201607281621232_Order History Index On OrderSystem.Designer.cs">
+      <DependentUpon>201607281621232_Order History Index On OrderSystem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201607281629416_List Items Index On ParentListId.cs" />
+    <Compile Include="Repository\EF\Migrations\201607281629416_List Items Index On ParentListId.Designer.cs">
+      <DependentUpon>201607281629416_List Items Index On ParentListId.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.cs" />
@@ -858,6 +867,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201607261857255_blank for 1.8.resx">
       <DependentUpon>201607261857255_blank for 1.8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201607281621232_Order History Index On OrderSystem.resx">
+      <DependentUpon>201607281621232_Order History Index On OrderSystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201607281629416_List Items Index On ParentListId.resx">
+      <DependentUpon>201607281629416_List Items Index On ParentListId.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>

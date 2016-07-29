@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void AddItem()
 		{
-			listLogic.AddItem(1, new Core.Models.Lists.ListItemModel() { ItemNumber = "546609", ParLevel = 5 });
+			listLogic.AddItem(null, null, 1, new Core.Models.Lists.ListItemModel() { ItemNumber = "546609", ParLevel = 5 });
 		}
 
 		[TestMethod]
@@ -149,7 +149,7 @@ namespace KeithLink.Svc.Test.Logic
 		public void UpdateList()
 		{
 			var list = listLogic.ReadList(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext, 1);
-			listLogic.UpdateList(list);
+			listLogic.UpdateList(null, null, list);
 		}
 
 		[TestMethod]

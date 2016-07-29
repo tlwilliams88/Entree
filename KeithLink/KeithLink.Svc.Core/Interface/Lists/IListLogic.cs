@@ -13,7 +13,7 @@ using System.IO;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IListLogic {
-        long? AddItem(long listId, ListItemModel item);
+        long? AddItem(UserProfile user, UserSelectedContext catalogInfo, long listId, ListItemModel item);
 
         ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
 
@@ -73,8 +73,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         void ShareList(ListCopyShareModel shareListModel);
 
-        void UpdateItem(ListItemModel item);
+        void UpdateItem(UserProfile user, UserSelectedContext catalogInfo, ListItemModel item);
 
-        void UpdateList(ListModel userList);
+        void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel userList);
     }
 }
