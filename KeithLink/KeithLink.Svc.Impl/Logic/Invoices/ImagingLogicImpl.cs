@@ -4,6 +4,7 @@ using KeithLink.Svc.Core.Interface.Invoices;
 
 using System;
 using System.Collections.Generic;
+using KeithLink.Svc.Core.Models.Invoices.Imaging.Document;
 
 namespace KeithLink.Svc.Impl.Logic.Invoices
 {
@@ -32,7 +33,7 @@ namespace KeithLink.Svc.Impl.Logic.Invoices
         /// <remarks>
         /// jwames - 3/31/2015 - original code
         /// </remarks>
-        public List<string> GetInvoiceImages(UserSelectedContext customerInfo, string invoiceNumber)
+        public List<Base64Image> GetInvoiceImages(UserSelectedContext customerInfo, string invoiceNumber)
         {
             try
             {
@@ -41,14 +42,14 @@ namespace KeithLink.Svc.Impl.Logic.Invoices
                 string sessionToken = _repo.Connect();
                 List<string> documentIds = _repo.GetDocumentIds(sessionToken, customerInfo, invoiceNumber);
 
-                List<string> imageStrings = new List<string>();
+                List<Base64Image> images = new List<Base64Image>();
 
                 foreach (string documentId in documentIds)
                 {
-                    imageStrings.AddRange(_repo.GetImages(sessionToken, documentId));
+                    images.AddRange(_repo.GetImages(sessionToken, documentId));
                 }
 
-                return imageStrings;
+                return images;
             }
             catch (Exception ex)
             {

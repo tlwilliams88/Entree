@@ -162,7 +162,7 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
         /// <remarks>
         /// jwames - 3/31/2015 - original code
         /// </remarks>
-        public List<string> GetImages(string sessionToken, string documentId)
+        public List<Base64Image> GetImages(string sessionToken, string documentId)
         {
             if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
             if (documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
@@ -183,10 +183,25 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
                         string rawJson = response.Content.ReadAsStringAsync().Result;
                         ImageNowPageReturnModel jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ImageNowPageReturnModel>(rawJson);
 
-                        List<Tuple<int, string>> processedImages = new List<Tuple<int, string>>();
+                        List<Tuple<int, Base64Image>> processedImages = new List<Tuple<int, Base64Image>>();
 
                         Parallel.ForEach(jsonResponse.pages, page => {
-                            processedImages.Add(new Tuple<int, string>(page.pageNumber, GetImageString(sessionToken, documentId, page.id)));
+                            Base64Image myImage = new Base64Image();
+
+                            if (page.extension.Equals("pdf", StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                myImage.MimeType = Constants.MIMETYPE_PDF;
+                                myImage.ImageString = GetPdfAsBase64String(sessionToken, documentId, page.id);
+
+                            }
+                            else
+                            {
+                                myImage.MimeType = Constants.MIMETYPE_JPG;
+                                myImage.ImageString = GetImageString(sessionToken, documentId, page.id);
+                            }
+
+                            processedImages.Add(new Tuple<int, Base64Image>(page.pageNumber, myImage));
+
                         });
 
                         return processedImages.OrderBy(p => p.Item1).Select(t => t.Item2).ToList();
@@ -204,6 +219,7 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
                 }
             }
         }
+
 
         /// <summary>
         /// get the image for the specified page as a base64 string
@@ -260,6 +276,41 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
             }
         }
 
+        private string GetPdfAsBase64String(string sessionToken, string documentId, string pageId)
+        {
+            if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
+            if (documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
+            if (pageId.Length == 0) { throw new ArgumentException("PageId cannot be blank."); }
+
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
+
+                try
+                {
+                    string endPoint = string.Format("{0}{1}/{2}/page/{3}/preview", Configuration.ImagingServerUrl, API_ENDPOINT_DOCUMENT, documentId, pageId);
+
+                    HttpResponseMessage response = client.GetAsync(endPoint).Result;
+
+                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent))
+                    {
+                        byte[] fileBytes = response.Content.ReadAsByteArrayAsync().Result;
+
+                        return Convert.ToBase64String(fileBytes);
+                    }
+                    else
+                    {
+                        throw new ApplicationException("Page preview not found");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.WriteErrorLog("Error connecting to the Imaging Server", ex);
+                    throw;
+                }
+            }
+        }
+
         /// <summary>
         /// resizes the image to specified width and height
         /// </summary>
@@ -299,7 +350,6 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
 
             return new Rectangle(0, 0, newWidth, newHeight);
         }
-
         #endregion
     }
 }
