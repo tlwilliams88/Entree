@@ -370,6 +370,10 @@
     <Compile Include="Repository\EF\Migrations\201607281629416_List Items Index On ParentListId.Designer.cs">
       <DependentUpon>201607281629416_List Items Index On ParentListId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201607291615377_Create additional index on user message.cs" />
+    <Compile Include="Repository\EF\Migrations\201607291615377_Create additional index on user message.Designer.cs">
+      <DependentUpon>201607291615377_Create additional index on user message.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.Designer.cs">
@@ -872,6 +876,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201607281629416_List Items Index On ParentListId.resx">
       <DependentUpon>201607281629416_List Items Index On ParentListId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201607291615377_Create additional index on user message.resx">
+      <DependentUpon>201607291615377_Create additional index on user message.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
