@@ -166,7 +166,7 @@
             <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('class', sortDescending)">
               <span>Category <span sort-icons field="'class'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('category', sortDescending)">
+            <th ng-if="report.has_contract_items || report.hasContractCategories" class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('category', sortDescending)">
               <span>Contract Category <span sort-icons field="'category'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
             <th class="hidden-mobile-visible-print">Pack/Size</th>
@@ -191,7 +191,7 @@
             <td>{{::item.name}}</td>
             <td class="hidden-mobile item-usage-drop-column">{{::item.brand_extended_description}}</td>
             <td class="hidden-mobile item-usage-drop-column">{{::item.class}}</td>
-            <td class="hidden-mobile item-usage-drop-column">{{::item.category}}</td>
+            <td ng-if="report.has_contract_items || report.hasContractCategories" class="hidden-mobile item-usage-drop-column">{{::item.category}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
             <td class="hidden-mobile-visible-print label-col">{{::item.label}}</td>
             <td class="input-col nowrap counter-container">  
@@ -229,7 +229,7 @@
                   <td>Category</td>
                   <td>{{::item.class}}</td>
                 </tr>
-                <tr>
+                <tr ng-if="report.has_contract_items || report.hasContractCategories">
                   <td>Contract Category</td>
                   <td>{{::item.category}}</td>
                 </tr>
