@@ -481,28 +481,27 @@
         <thead>
           <tr fsm-sticky-header scroll-body="'.table-products'" scroll-stop="0" scroll-offset="184">
             <th ng-if="isOrderEntryCustomer"></th>
-            <th class="sort-col-header" ng-click="$scope.itemNumberDesc = !$scope.itemNumberDesc; UNFISortByItemNumber(itemNumberDesc)" style="min-width:60px;">
-              Item 
-              <span># <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th class="sort-col-header" style="min-width:60px;">
+              Item #
             </th>
-            <th class="sort-col-header" ng-click="sortTable('name_not_analyzed')">
-              <span>Name <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th class="sort-col-header">
+              <span>Name</span>
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('brand_description_not_analyzed')">
-              <span>Brand <span sort-icons field="'brand_description_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th class="sort-col-header hidden-mobile-visible-print">
+              <span>Brand</span>
             </th>
             <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
             <th class="hidden-mobile-visible-print"></th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-if="canSeePrices" ng-click="sortBy='each';sortOrder=!sortOrder;">
-              <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
+            <th class="sort-col-header hidden-mobile-visible-print" ng-if="canSeePrices">
+              <span>Each</span>
             </th>
-            <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('unitprice')">
-              <span>Portion Cost <span ng-show="totalItems <= maxSortCount" sort-icons field="'unitprice'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}">
+              <span>Portion Cost</span>
             </th>
-            <th ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
-              <span>Price <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}">
+              <span>Price</span>
             </th>
             <th></th>
           </tr>
