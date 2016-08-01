@@ -39,8 +39,8 @@ angular.module('bekApp')
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
 
-    $scope.selectedSortParameter = 'Item #';
-    $scope.sortParametervalue = 'itemnumber';
+    $scope.selectedSortParameter = 'Relevance';
+    $scope.sortParametervalue = '';
     $scope.sortReverse = false;
 
     $scope.usersPageSize = LocalStorage.getPageSize();
@@ -643,6 +643,8 @@ angular.module('bekApp')
     }
 
     $scope.sortParameters = [{
+      name: 'Relevance',
+    }, {
       name: 'Item #',
       value: 'itemnumber'
     }, {
@@ -654,6 +656,9 @@ angular.module('bekApp')
     }];
 
     $scope.sortResults = function(sortdirection, sortfield){
+      if(sortfield == 'Relevance'){
+        resetPage($scope.products, true);
+      }
       startLoading();
       $scope.sortField = sortfield; 
       $scope.sortDirection = sortdirection;

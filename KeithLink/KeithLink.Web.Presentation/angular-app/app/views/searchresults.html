@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    {{pageTitle}}    
+    {{pageTitle}}   
   </div>
 
   <div header-buttons>
@@ -12,8 +12,26 @@
 <!-- Desktop subheader bar -->
 <div class="row page-subheader-bar hidden-xs hidden-sm">
   <div class="col-md-12 page-subheader-bar__container">
-    <div class="page-subheader-bar__message">
+    <div class="page-subheader-bar__message col-md-8">
       <div ng-repeat="bc in breadcrumbs"><a ng-click="bc.click(bc.clickData)">{{bc.displayText}} </a> <span>>></span></div>
+    </div>
+    <div ng-show="products.length !== 0" class="pull-right input-group" style="padding-right: 15px;">
+      <div class="page-header-buttons" style="float:left !important; padding-right:10px;">
+        <span style="margin-right: 5px;">Sort: </span>
+        <div class="btn-group">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
+            <ul class="dropdown-menu">
+              <li ng-repeat="sortParameter in sortParameters" >
+                <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+              </li>
+            </ul>
+          <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
+        </div>
+      </div>
+      <div class="hand-pointer" style="float:right !important;">
+        <span ng-click="toggleListView('ViewWithoutImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : listViewToggle }" class="icon-list extra-large-icon"></span>
+        <span ng-click="toggleListView('ViewWithImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : !listViewToggle }" class="icon-layout extra-large-icon"></span>
+      </div>
     </div>
   </div>
 </div>
@@ -42,7 +60,7 @@
       <accordion close-others="true">
         <accordion-group is-open="status.openCategories">
           <accordion-heading>
-            <span >Parent Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
+            <span >Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
           </accordion-heading>
           <accordion close-others="true">
             <accordion-group ng-repeat="parentcategory in facets.parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion" ng-click="toggleSubCategories(parentcategory, $index)">
@@ -323,33 +341,33 @@
         boundary-links="true" 
         rotate="false" 
         ng-change="blockUIAndChangePage(this); blur();" 
-        class="pagination">
+        class="pagination"
+        style="margin-bottom: 14px !important; margin-top: 15px !important;">
       </pagination>
-      <div style="vertical-align:middle;" class="pull-right hand-pointer">
-        <span ng-click="toggleListView('ViewWithoutImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : listViewToggle }" class="icon-list extra-large-icon"></span>
-        <span ng-click="toggleListView('ViewWithImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : !listViewToggle }" class="icon-layout extra-large-icon"></span>
-      </div>
     </div>
     <div ng-if="!listViewToggle" class="row" ng-show="products.length !== 0">
-      <div class="col-sm-12 col-xs-12">
-        <h2 class="pull-left" >Search Results</h2>
-        <span style="margin-top:25px;" class="pull-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
-          <div class="pull-right" style="margin-bottom:5px;">
-            <div class="input-group">
-              <div class="input-group-btn">
-                <div class="pull-right">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
-                    <ul class="dropdown-menu">
-                      <li ng-repeat="sortParameter in sortParameters" >
-                        <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
-                      </li>
-                    </ul>
-                  <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
-                </div>
-              </div>
-            </div>
+    <div class="col-sm-12 col-xs-12">
+      <div class="pull-left input-group hidden-md hidden-lg" style="padding-right: 15px;">
+        <div class="page-header-buttons" style="float:left !important; padding-right:10px;">
+          <span style="margin-right: 5px;">Sort: </span>
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
+              <ul class="dropdown-menu">
+                <li ng-repeat="sortParameter in sortParameters" >
+                  <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+                </li>
+              </ul>
+            <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
           </div>
+        </div>
+        <div class="hand-pointer" style="float:right !important;">
+          <span ng-click="toggleListView('ViewWithoutImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : listViewToggle }" class="icon-list extra-large-icon"></span>
+          <span ng-click="toggleListView('ViewWithImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : !listViewToggle }" class="icon-layout extra-large-icon"></span>
+        </div>
       </div>
+      <h2 class="pull-left hidden-sm hidden-xs" >Search Results</h2>
+      <span style="margin-top:25px;" class="pull-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
+    </div>
     </div>
     <div ng-if="!listViewToggle" context-menu favorite-item-click-handlers >
       <div>
@@ -360,10 +378,13 @@
                 <div class="pull-left-xs inline-block-display">
                   <div>
                     <div>
-                      <a class="block-display" style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+                    <div class="block-display">
+                      <a style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
+                    </div>
                     <h3 class="block-display">
                       <a ng-click="goToItemDetails(item)">{{item.name}} </a>
-                      <span ng-if="isOrderEntryCustomer" class="large-icon hideIconName displayIconName" favorite-icons></span>
+                      <span class="nowrap small-icon" item-icons></span>
                     </h3>
                     <h5 class="block-display"> 
                     <span ng-if="item.brand_extended_description"> by <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })">
@@ -381,7 +402,6 @@
                     <h6>
                       Pack/Size: {{item.packsize}}
                     </h6>
-                    <h6 class="nowrap" item-icons></h6>
                     <h6 class="input-col" ng-if="canSeePrices">
                       <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
                         Each: <input type="checkbox" ng-model="item.each" id="each" name="each" />
@@ -414,7 +434,9 @@
                   </div>
                 </div>
                 <div class="pull-right-lg pull-right-md pull-right-sm pull-left-xs search-result-image-container" ng-show="item.productimages.length > 0">
-                  <img class="search-result-images" ng-src="{{item.productimages[0].url}}" alt=""/>
+                  <a ng-click="openExternalLink(item.productimages[0].url)">
+                    <img class="search-result-images" ng-src="{{item.productimages[0].url}}" alt=""/>
+                  </a>
                 </div>
               </div>
             </div>
@@ -422,23 +444,23 @@
         </ul>
       </div>
     </div>
-      <div ng-if="!listViewToggle">
-        <pagination
-          ng-show="totalProducts > itemsPerPage"
-          total-items="totalProducts" 
-          ng-model="currentPage" 
-          items-per-page="itemsPerPage" 
-          max-size="10" 
-          boundary-links="true" 
-          rotate="false" 
-          ng-change="blockUIAndChangePage(this)" 
-          class="pagination">
-        </pagination> 
-      </div>
+    <div ng-if="!listViewToggle">
+      <pagination
+        ng-show="totalProducts > itemsPerPage"
+        total-items="totalProducts" 
+        ng-model="currentPage" 
+        items-per-page="itemsPerPage" 
+        max-size="10" 
+        boundary-links="true" 
+        rotate="false" 
+        ng-change="blockUIAndChangePage(this)" 
+        class="pagination">
+      </pagination> 
+    </div>
   </div>
 
     <!-- Standard Search Results View without Images -->
-    <div ng-if="listViewToggle" class="col-md-9 col-xs-12">
+    <div ng-if="listViewToggle" ng-show="products.length !== 0" class="col-md-9 col-xs-12">
       <div>
         <pagination
           ng-show="totalProducts > itemsPerPage"
@@ -449,32 +471,32 @@
           boundary-links="true" 
           rotate="false" 
           ng-change="blockUIAndChangePage(this); blur();" 
-          class="pagination">
+          class="pagination"
+          style="margin-bottom: 15px !important; margin-top: 15px !important;">
         </pagination>
-        <div style="vertical-align:middle;" class="pull-right hand-pointer">
-          <span ng-click="toggleListView('ViewWithoutImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : listViewToggle }" class="icon-list extra-large-icon"></span>
-          <span ng-click="toggleListView('ViewWithImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : !listViewToggle }" class="icon-layout extra-large-icon"></span>
-        </div>
       </div>
       <div class="row" ng-show="products.length !== 0">
         <div class="col-sm-12 col-xs-12">
-          <h2 class="pull-left" >Search Results</h2>
-          <span style="margin-top:25px;" class="pull-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
-            <div class="pull-right" style="margin-bottom:5px;">
-              <div class="input-group">
-                <div class="input-group-btn">
-                  <div class="pull-right">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
-                      <ul class="dropdown-menu">
-                        <li ng-repeat="sortParameter in sortParameters" >
-                          <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
-                        </li>
-                      </ul>
-                    <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
-                  </div>
-                </div>
+          <div class="pull-left input-group hidden-md hidden-lg" style="padding-right: 15px;">
+            <div class="page-header-buttons" style="float:left !important; padding-right:10px;">
+              <span style="margin-right: 5px;">Sort: </span>
+              <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
+                  <ul class="dropdown-menu">
+                    <li ng-repeat="sortParameter in sortParameters" >
+                      <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+                    </li>
+                  </ul>
+                <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
               </div>
             </div>
+            <div class="hand-pointer" style="float:right !important;">
+              <span ng-click="toggleListView('ViewWithoutImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : listViewToggle }" class="icon-list extra-large-icon"></span>
+              <span ng-click="toggleListView('ViewWithImages'); blockUIAndChangePage(this, true); blur();" ng-class="{ 'ico-blue' : !listViewToggle }" class="icon-layout extra-large-icon"></span>
+            </div>
+          </div>
+          <h2 class="pull-left hidden-sm hidden-xs" >Search Results</h2>
+          <span style="margin-top:25px;" class="pull-right">{{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{totalProducts}} Items</span>
         </div>
       </div>
       <table class="table table-striped-rows table-border table-products" context-menu favorite-item-click-handlers >
