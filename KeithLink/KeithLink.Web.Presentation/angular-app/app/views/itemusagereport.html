@@ -53,9 +53,9 @@
     </form>
   </div>
 
-      <div class="row sub-content">
+      <div ng-show="itemusages.length" class="row sub-content">
         <div class="col-xs-7 padding-top-15">
-          {{itemusages.length}} result<span ng-if="itemusages.length !== 1">s</span>
+          {{itemusages.length}} <ng-pluralize count="itemusages.length" when="{'one': 'result', 'other': 'results'}"></ng-pluralize>
         </div>
         <div class="text-green currency-value col-xs-5 text-right">
           {{totalCost | currency}}

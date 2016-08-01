@@ -145,5 +145,4 @@ angular.module('bekApp')
     $scope.itemusagequery.fromDate = ReportService.itemUsageParams.from;
     $scope.itemusagequery.toDate = ReportService.itemUsageParams.to;
   }
-  loadItemUsage();
 }]);
