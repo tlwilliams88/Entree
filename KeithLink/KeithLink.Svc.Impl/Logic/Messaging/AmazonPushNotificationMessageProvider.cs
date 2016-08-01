@@ -1,6 +1,7 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
 
+using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.EF;
@@ -9,6 +10,7 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 using AmazonSNS = Amazon.SimpleNotificationService;
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +33,28 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         #endregion
 
         #region methods
+        private void DisableDevices(List<Recipient> badRecipients) {
+            foreach(Recipient recipient in badRecipients) {
+                UserPushNotificationDevice device = _userPushNotificationDeviceRepository.ReadUserDevice(recipient.UserId, recipient.DeviceId, recipient.DeviceOS.Value);
+
+                if(device != null) {
+                    device.Enabled = false;
+                    device.ModifiedUtc = DateTime.Now.ToUniversalTime();
+
+                    _unitOfWork.SaveChanges();
+
+                    StringBuilder msg = new StringBuilder();
+
+                    msg.AppendLine("Disabling device.");
+                    msg.AppendLine("DeviceId: {DeviceId}");
+                    msg.AppendLine("DeviceOS: {DeviceOS}");
+                    msg.AppendLine("ProviderEndPoint: {ProviderEndpoint}");
+
+                    _eventLog.WriteInformationLog(msg.ToString().Inject(recipient));
+                }
+            }
+        }
+
         public string RegisterRecipient(UserPushNotificationDevice userPushNotificationDevice)
         {
             AmazonSNS.IAmazonSimpleNotificationService client =
@@ -97,6 +121,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     new Amazon.Runtime.BasicAWSCredentials(Configuration.AmazonSnsAccessKey, Configuration.AmazonSnsSecretKey), // TODO: Config
                     Amazon.RegionEndpoint.USEast1);
 
+            BlockingCollection<Recipient> badRecipientList = new BlockingCollection<Recipient>();
+
             Parallel.ForEach(recipients, (recipient) => {
                 try {
                     StringBuilder sendMsg = new StringBuilder();
@@ -111,11 +137,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
                     _eventLog.WriteInformationLog(sendMsg.ToString().Inject(recipient));
 
-                    if(recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.iOS) {
+                    if(recipient.DeviceOS == DeviceOS.iOS) {
                         // format our message for apple
                         client.Publish(new AmazonSNS.Model.PublishRequest() { TargetArn = recipient.ProviderEndpoint, Message = message.MessageSubject }
                         );
-                    } else if(recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.Android) {
+                    } else if(recipient.DeviceOS == DeviceOS.Android) {
                         client.Publish(new AmazonSNS.Model.PublishRequest() {
                             TargetArn = recipient.ProviderEndpoint,
                             MessageStructure = "json",
@@ -137,21 +163,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     _eventLog.WriteErrorLog(msg.ToString().Inject(recipient), ex);
 
                     //if any of the strings we watch for is contained in the exception message, disable the device
-                    if (Configuration.AmazonSnsMessagesToDisableOn.Any(ex.Message.ToLower().Contains))
-                    {
-                        var device = _userPushNotificationDeviceRepository.ReadUserDevice(recipient.UserId, recipient.DeviceId, recipient.DeviceOS.Value);
-                        device.Enabled = false;
-                        device.ModifiedUtc = DateTime.Now.ToUniversalTime();
-                        _unitOfWork.SaveChanges();
-                        msg.Clear();
-                        msg.AppendLine("Disabling device.");
-                        msg.AppendLine("DeviceId: {DeviceId}");
-                        msg.AppendLine("DeviceOS: {DeviceOS}");
-                        msg.AppendLine("ProviderEndPoint: {ProviderEndpoint}");
-                        _eventLog.WriteInformationLog(msg.ToString().Inject(recipient));
+                    if (Configuration.AmazonSnsMessagesToDisableOn.Any(ex.Message.ToLower().Contains)) {
+                        badRecipientList.Add(recipient);
                     }
                 }
             });
+
+            if(badRecipientList.Count > 0) { DisableDevices(badRecipientList.ToList()); }
         }
         #endregion
     }

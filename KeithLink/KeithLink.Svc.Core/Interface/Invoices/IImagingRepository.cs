@@ -9,6 +9,6 @@ namespace KeithLink.Svc.Core.Interface.Invoices {
 
         List<string> GetDocumentIds(string sessionToken, UserSelectedContext customerInfo, string invoiceNumber);
 
-        List<string> GetImages(string sessionToken, string documentId);
+        List<Base64Image> GetImages(string sessionToken, string documentId);
     }
 }
