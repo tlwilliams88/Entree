@@ -8,17 +8,16 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'blockUI',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
       $filter,
       $timeout,
-      ProductService, CategoryService, Constants, PricingService, CartService, // bek custom services
+      ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, // bek custom services
       blockUI,
-      LocalStorage,
-      PagingModel
+      LocalStorage
     ) {
 
     // clear keyword search term at top of the page
@@ -30,6 +29,7 @@ angular.module('bekApp')
       $scope.cartHeaders = cartHeaders;
     });
 
+    $scope.listViewToggle = false;
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
     $scope.hasCasePrice = PricingService.hasCasePrice;
@@ -43,7 +43,10 @@ angular.module('bekApp')
     $scope.sortParametervalue = 'itemnumber';
     $scope.sortReverse = false;
 
-    $scope.itemsPerPage = Constants.infiniteScrollPageSize;
+    $scope.usersPageSize = LocalStorage.getPageSize();
+    $scope.imagesListViewSize = Constants.searchResultListImagesViewSize;
+    // $scope.defaultSearchView = LocalStorage.getdefaultView();
+    $scope.itemsPerPage = $scope.imagesListViewSize;
     $scope.itemIndex = 0;
 
     $scope.numberFacetsToShow = 4;  // determines when to show the 'Show More' link for each facet
@@ -120,15 +123,40 @@ angular.module('bekApp')
     PAGINATION
     *************/
 
-    $scope.blockUIAndChangePage = function(page){
+    //Toggles variable for determining Search Result View, and amount of results requested
+    $scope.toggleListView = function(selectedview){
+      $scope.listViewToggle = !$scope.listViewToggle;
+
+      var defaultSearchView = {userid: '', key: 'defaultSearchView', value: selectedview};
+
+      ApplicationSettingsService.saveApplicationSettings(defaultSearchView);
+
+      if ($scope.listViewToggle == true){
+        $scope.itemsPerPage = $scope.usersPageSize;
+      } else {
+        $scope.itemsPerPage = $scope.imagesListViewSize;
+      }
+    }
+
+    $scope.blockUIAndChangePage = function(page, toggleView){
+      $scope.startingPoint = 0;
+      $scope.endPoint = 0;
+      $scope.toggleView = toggleView;  
+
+      var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+
+      if ($scope.toggleView){
+        visited = [];
+        $scope.currentPage = 1;
+      }
+
       $(document).ready(function(){
+        blur();
         $("html, body").animate({ scrollTop: 0 }, 500);
       })
-      
-      $scope.startingPoint = 0;
-      $scope.endPoint = 0;       
-      var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+
       return blockUI.start("Loading Products...").then(function(){
+
         if(visited.length > 0){
           $timeout(function() {
             $scope.isChangingPage = true;
@@ -138,17 +166,17 @@ angular.module('bekApp')
         else{
           $scope.pageChanged(page, visited);
         }
-      })
-    }
 
-    $scope.pagingPageSize = 25;
+      })
+
+    }
 
      $scope.setStartAndEndPoints = function(page){
       var foundStartPoint = false;
         page.forEach(function(item, index){
           if(page && item.itemnumber === page[0].itemnumber){
             $scope.startingPoint = index;
-            $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
+            $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
             foundStartPoint = true;
           }
         })
@@ -162,23 +190,25 @@ angular.module('bekApp')
         blockUI.stop();
      }
     
-     $scope.pageChanged = function(page) {      
+     $scope.pageChanged = function(page, visited) {      
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
       $scope.loadingPage = true;    
       $scope.currentPage = page.currentPage;
-      $scope.startingPoint = ((page.currentPage - 1)*$scope.pagingPageSize) + 1;
-      $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
-      $scope.firstPageItem = ($scope.currentPage * $scope.pagingPageSize) - ($scope.pagingPageSize - 1);
+      $scope.startingPoint = ((page.currentPage - 1)*$scope.itemsPerPage) + 1;
+      $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
+      $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
       $scope.setRange();
-      var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        var params = ProductService.getSearchParams(null, $scope.startingPoint, $scope.sortField, $scope.sortDirection, $stateParams.dept);
+        var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, $stateParams.dept);
         ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
           $scope.products = data.products;
+          if($scope.toggleView){
+            resetPage($scope.products, true);
+          }
+        blockUI.stop();
+        blockUI.stop();
         })
-        blockUI.stop();
-        blockUI.stop();
       }else {
         $scope.setStartAndEndPoints($scope.products);
         $scope.visitedPages.forEach(function(page){
@@ -195,7 +225,7 @@ angular.module('bekApp')
       $scope.rangeEnd = ($scope.endPoint > $scope.totalProducts) ? $scope.totalProducts : $scope.endPoint - 1;
       if($scope.rangeStart === 0){
         $scope.rangeStart++;
-        if($scope.rangeEnd === $scope.pagingPageSize - 1){
+        if($scope.rangeEnd === $scope.itemsPerPage - 1){
           $scope.rangeEnd ++;
         }
       }
@@ -210,8 +240,8 @@ angular.module('bekApp')
 
       if(initialPageLoad){   
         $scope.currentPage = 1;
-        $scope.firstPageItem = ($scope.currentPage * $scope.pagingPageSize) - ($scope.pagingPageSize);
-        $scope.products = $scope.products.slice($scope.firstPageItem, ($scope.currentPage * $scope.pagingPageSize));
+        $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage);
+        $scope.products = $scope.products.slice($scope.firstPageItem, ($scope.currentPage * $scope.itemsPerPage));
         $scope.setStartAndEndPoints($scope.products);
         $scope.visitedPages.push({page: 1, items: $scope.products, deletedCount: 0});
       }
@@ -417,11 +447,13 @@ angular.module('bekApp')
           $scope.facets.subcategories.selected
         )
       }
+
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
       if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
         $scope.sortField  = '';
       }
-      var params = ProductService.getSearchParams(null, $scope.itemIndex, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
+
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName);
     }
 
@@ -627,7 +659,7 @@ angular.module('bekApp')
       $scope.sortDirection = sortdirection;
 
       return blockUI.start("Loading Products...").then(function(){
-        var params = ProductService.getSearchParams(null, $scope.startingPoint, sortfield, sortdirection, $stateParams.dept);
+        var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, sortfield, sortdirection, $stateParams.dept);
         ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName).then(function(data){
           $scope.products = data.products;
         }).then(function(){

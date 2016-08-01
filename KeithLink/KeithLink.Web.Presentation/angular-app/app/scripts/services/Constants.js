@@ -159,5 +159,6 @@ angular.module('bekApp')
     },
 
     infiniteScrollPageSize: 50,
+    searchResultListImagesViewSize: 25,
     promoItemsSize: 6
   });
