@@ -487,17 +487,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, List<EF.OrderHistoryHeader> headers)
         {
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customerOrders = new BlockingCollection<Order>();
 
             var shipDatesCntnr = _shipRepo.GetShipDates(userContext);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetShipDates");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetShipDates");
 
             // Get the customer GUID to retrieve all purchase orders from commerce server
             var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetCustomerByCustomerNumber");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - GetCustomerByCustomerNumber");
             var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - ReadPurchaseOrderHeadersByCustomerId");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - ReadPurchaseOrderHeadersByCustomerId");
 
             foreach (var h in headers.OrderByDescending(hdr => hdr.CreatedUtc))
             {
@@ -557,7 +557,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     }
 
                     customerOrders.Add(returnOrder);
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - Add Order");
+                    //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "LookupControlNumberAndStatus - Add Order");
                 }
                 catch (Exception ex)
                 {
