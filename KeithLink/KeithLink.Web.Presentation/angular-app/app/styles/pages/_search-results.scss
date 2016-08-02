@@ -253,6 +253,12 @@
   }
 }
 
+@media (max-width: $screen-sm-max){
+  .addPaddingRight-10-sm{
+    padding-right:10px;
+  }
+}
+
 .searchResults{
   background-color: $color-white;
   border-bottom: 1px solid #c3bc9c; 
@@ -277,4 +283,14 @@
 
 .searchItemDetails:nth-of-type(odd) {
   background-color: $color-white !important;
+}
+
+.search-results-pagination {
+  margin-bottom: 14px !important; 
+  margin-top: 15px !important;
+}
+
+.search-result-sort-buttons {
+  float:left !important; 
+  padding-right:10px;
 }

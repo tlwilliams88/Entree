@@ -142,7 +142,7 @@ angular.module('bekApp')
       }
 
       $(document).ready(function(){
-        blur();
+        $(document.activeElement).blur();
         $("html, body").animate({ scrollTop: 0 }, 500);
       })
 
