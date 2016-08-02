@@ -15,7 +15,8 @@ angular.module('bekApp')
       lastList: 'lastList',
       lastOrderList: 'lastOrderList',
       pageSize: 'pageSize',
-      defaultSort: 'defaultSort'
+      defaultSort: 'defaultSort',
+      defaultView: 'defaultView'
     },
 
     offlineLocalStorage: {
@@ -159,6 +160,5 @@ angular.module('bekApp')
     },
 
     infiniteScrollPageSize: 50,
-    searchResultListImagesViewSize: 25,
     promoItemsSize: 6
   });

@@ -92,6 +92,9 @@ angular.module('bekApp')
           if(setting.key === 'sortPreferences'){
             LocalStorage.setDefaultSort(setting.value);
           }
+          if(setting.key === 'defaultSearchView'){
+            LocalStorage.setDefaultView(setting.value);
+          }
         })
       }
       else{

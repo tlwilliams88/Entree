@@ -274,3 +274,7 @@
   max-height:150px; 
   margin:15px 0 15px 0;
 }
+
+.searchItemDetails:nth-of-type(odd) {
+  background-color: $color-white !important;
+}

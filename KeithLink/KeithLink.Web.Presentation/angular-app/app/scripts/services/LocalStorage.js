@@ -112,13 +112,17 @@ angular.module('bekApp')
       localStorageService.set(Constants.localStorage.lastOrderList, allSets);
       },
 
+      /*************
+        System Variables
+      *************/
+
       getPageSize: function() {
         var pageSize = localStorageService.get(Constants.localStorage.pageSize) || 50;
         return parseInt(pageSize);
       },
 
       setPageSize: function(size) { 
-      localStorageService.set(Constants.localStorage.pageSize, size);
+        localStorageService.set(Constants.localStorage.pageSize, size);
       },
 
       getDefaultSort: function() {
@@ -126,7 +130,15 @@ angular.module('bekApp')
       },
 
       setDefaultSort: function(sort) { 
-      localStorageService.set(Constants.localStorage.defaultSort, sort);
+        localStorageService.set(Constants.localStorage.defaultSort, sort);
+      },
+
+      getDefaultView: function() {
+        return localStorageService.get(Constants.localStorage.defaultView);
+      },
+      
+      setDefaultView: function(view) {
+        localStorageService.set(Constants.localStorage.defaultView, view);
       }
 
     };

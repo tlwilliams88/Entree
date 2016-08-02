@@ -29,7 +29,6 @@ angular.module('bekApp')
       $scope.cartHeaders = cartHeaders;
     });
 
-    $scope.listViewToggle = false;
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
     $scope.hasCasePrice = PricingService.hasCasePrice;
@@ -43,10 +42,8 @@ angular.module('bekApp')
     $scope.sortParametervalue = '';
     $scope.sortReverse = false;
 
-    $scope.usersPageSize = LocalStorage.getPageSize();
-    $scope.imagesListViewSize = Constants.searchResultListImagesViewSize;
-    // $scope.defaultSearchView = LocalStorage.getdefaultView();
-    $scope.itemsPerPage = $scope.imagesListViewSize;
+    $scope.defaultSearchView = LocalStorage.getDefaultView();
+    $scope.itemsPerPage = LocalStorage.getPageSize();
     $scope.itemIndex = 0;
 
     $scope.numberFacetsToShow = 4;  // determines when to show the 'Show More' link for each facet
@@ -125,17 +122,11 @@ angular.module('bekApp')
 
     //Toggles variable for determining Search Result View, and amount of results requested
     $scope.toggleListView = function(selectedview){
-      $scope.listViewToggle = !$scope.listViewToggle;
+      var selectedSearchView = {key: 'defaultSearchView', value: selectedview};
+      $scope.defaultSearchView = selectedview;
+      LocalStorage.setDefaultView(selectedview);
 
-      var defaultSearchView = {userid: '', key: 'defaultSearchView', value: selectedview};
-
-      ApplicationSettingsService.saveApplicationSettings(defaultSearchView);
-
-      if ($scope.listViewToggle == true){
-        $scope.itemsPerPage = $scope.usersPageSize;
-      } else {
-        $scope.itemsPerPage = $scope.imagesListViewSize;
-      }
+      ApplicationSettingsService.saveApplicationSettings(selectedSearchView);
     }
 
     $scope.blockUIAndChangePage = function(page, toggleView){
@@ -190,16 +181,16 @@ angular.module('bekApp')
         blockUI.stop();
      }
     
-     $scope.pageChanged = function(page, visited) {      
+     $scope.pageChanged = function(pages, visited) {      
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
       $scope.loadingPage = true;    
-      $scope.currentPage = page.currentPage;
-      $scope.startingPoint = ((page.currentPage - 1)*$scope.itemsPerPage) + 1;
+      $scope.currentPage = pages.currentPage;
+      $scope.startingPoint = ((pages.currentPage - 1)*$scope.itemsPerPage) + 1;
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
       $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
       $scope.setRange();
-      if(!visited.length){
+      // if(!visited.length){
         var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, $stateParams.dept);
         ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
           $scope.products = data.products;
@@ -209,14 +200,16 @@ angular.module('bekApp')
         blockUI.stop();
         blockUI.stop();
         })
-      }else {
-        $scope.setStartAndEndPoints($scope.products);
-        $scope.visitedPages.forEach(function(page){
-          if(page.page == $scope.currentPage){
-            $scope.products = page.items;
-          }
-        })
-      }
+      // }else {
+      //   $scope.setStartAndEndPoints($scope.products);
+      //   $scope.visitedPages.forEach(function(page){
+      //     if(page.page == $scope.currentPage){
+      //       $timeout(function(){
+      //         $scope.products = page.items;
+      //       }, 100);
+      //     }
+      //   })
+      // }
      };
 
     $scope.setRange = function(){
