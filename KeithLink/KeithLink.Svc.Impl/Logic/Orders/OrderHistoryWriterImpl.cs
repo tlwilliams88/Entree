@@ -1,9 +1,13 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Models.Orders;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -33,12 +37,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
         public void ListenForNotificationMessagesOnQueue()
         {
-            listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTaskForUsers(),
-                CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            if (Configuration.OrderServiceMakeKDOELogFiles.Equals(Configuration.TRUE_ORDER_SERVICE_MAKEKDOELOGFILES))
+            {
+                listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTaskForUsers(),
+                    CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+            }
         }
 
         protected void ListenToQueueInTaskForUsers()
         {
+            // recursively create directories for saving order history if they don't exist
+            Directory.CreateDirectory(Configuration.OrderServiceKDOELogPath);
+
             while (doListenForMessagesInTask)
             {
                 consumingMessages = true;
@@ -68,6 +78,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 if (msg != null)
                 {
                     eventLogRepository.WriteInformationLog("Processing notification from queue. OrderHistory: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
+
+                    OrderFile order = JsonConvert.DeserializeObject<OrderFile>(msg);
+
+                    string json = JsonConvert.SerializeObject(order, Formatting.Indented);
+
+                    System.IO.File.WriteAllText
+                        (Configuration.OrderServiceKDOELogPath + 
+                         "\\" + order.Header.OrderingSystem.ToShortString() + 
+                         order.Header.ControlNumber.ToString("0000000") + 
+                         "." + Configuration.OrderServiceKDOELogExtension, 
+                         json);
                 }
                 else
                 {
@@ -85,15 +106,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public void Stop()
         {
-            //if (listenForQueueMessagesTask != null && doListenForMessagesInTask == true)
-            //{
-            //    doListenForMessagesInTask = false;
-            //    listenForQueueMessagesTask.Wait();
-            //}
-            //if (listenForQueueMessagesTask != null)
-            //{
-            //    eventLogRepository.WriteWarningLog(string.Format("NotificationQueueConsumerImpl.listenForQueueMessagesTask.status = {0:G}", listenForQueueMessagesTask.Status));
-            //}
+            if (listenForQueueMessagesTask != null && doListenForMessagesInTask == true)
+            {
+                doListenForMessagesInTask = false;
+                listenForQueueMessagesTask.Wait();
+            }
+            if (listenForQueueMessagesTask != null)
+            {
+                eventLogRepository.WriteWarningLog(string.Format("OrderHistoryWriterImpl.listenForQueueMessagesTask.status = {0:G}", listenForQueueMessagesTask.Status));
+            }
         }
     }
 }

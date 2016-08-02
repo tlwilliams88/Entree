@@ -191,8 +191,8 @@ namespace KeithLink.Svc.Windows.QueueService {
                 }
 
                 // only process at the top of the hour
-                //if (DateTime.Now.Minute == 0)
-                if (true) // testing only
+                if (DateTime.Now.Minute == 0)
+                //if (true) // testing only
                 {
                     lostOrdersTask = Task.Factory.StartNew(() => ProcessCheckLostOrders(),
                         CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
