@@ -828,6 +828,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.BrandExtendedDescription = oProd._source.brand_description;
             p.Description = oProd._source.description;
             p.CategoryCode = oProd._source.categoryid;
+            p.ReplacedItem = oProd._source.replaceditem;
+            p.ReplacementItem = oProd._source.replacementitem;
             p.UPC = oProd._source.upc;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
@@ -880,8 +882,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.BrandControlLabel = oProd._source.brand_control_label;
                 p.ExtendedDescription = string.Empty;
                 p.SubCategoryCode = oProd._source.categoryid;
-                p.ReplacedItem = oProd._source.replaceditem;
-                p.ReplacementItem = oProd._source.replacementitem;
                 p.VendorItemNumber = oProd._source.vendor1;
                 try
                 {
