@@ -1,0 +1,3 @@
+﻿CREATE LOGIN [ecom]
+    WITH PASSWORD = N'Ayf4bZTaxyu{AwhlMskchjwqmsFT7_&#$!~<hQxctkf|>q`m', SID = 0xAE0FA2665A2C944AACD2B6DC986D87A5, DEFAULT_LANGUAGE = [us_english], CHECK_POLICY = OFF;
+
