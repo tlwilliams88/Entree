@@ -146,7 +146,7 @@
     autocomplete="off">
     <div class="table-addtoorder">
       <table      
-        class="table table-striped-rows table-border" 
+        class="table table-border" 
         navigate-table="lists">
         <thead>
           <tr fsm-sticky-header scroll-body="'.table-addtoorder'" scroll-stop="0" current-page="currentPage">
@@ -202,8 +202,7 @@
           </tr>
         </thead>
 
-        <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList" ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) track by item.listitemid"          
-            ng-class="{ odd : $odd, even: $even }">
+        <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList" ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) track by item.listitemid" ng-class="{ oddrow : $odd }">
 
           <tr id="rowForFocus">
             <td>
