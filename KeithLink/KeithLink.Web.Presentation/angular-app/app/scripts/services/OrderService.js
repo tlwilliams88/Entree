@@ -54,6 +54,12 @@ angular.module('bekApp')
       CHANGE ORDERS
       *************/
 
+      isSubmitted: function(id) {
+        return Order.isSubmitted({orderNumber: id}).$promise.then(function(resp) {
+          return (resp && resp.successResponse) ? resp.successResponse.id: false;        
+        });
+      },
+
       getChangeOrders: function(params) {
         var promise = $http.get('/order/changeorder', { params: {
           header: true
