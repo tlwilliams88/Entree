@@ -339,7 +339,6 @@ angular.module('bekApp')
         } 
       },
 
-
       getShipDates: function() {
         var deferred = $q.defer();
         

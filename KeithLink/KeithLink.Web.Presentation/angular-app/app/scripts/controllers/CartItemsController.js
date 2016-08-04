@@ -415,21 +415,31 @@ angular.module('bekApp')
     var processingResubmitOrder = false;
     $scope.resubmitOrder = function(order) {
       var invalidItemFound =  invalidItemCheck(order.items);
+
       if (!processingSaveChangeOrder && !invalidItemFound) {
         processingResubmitOrder = true;
+
         if($scope.validateShipDate($scope.selectedShipDate)){
           return;
         }
-        $scope.saveChangeOrder(order)
-        .then(OrderService.resubmitOrder)
-        .then(function(invoiceNumber) {
-          $scope.setRecentlyOrderedUNFIItems(order);
-          $scope.displayMessage('success', 'Successfully submitted change order.');
-          $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
-        }, function(error) {
-          $scope.displayMessage('error', 'Error re-submitting order.');
-        }).finally(function() {
-          processingResubmitOrder = false;
+
+        OrderService.isSubmitted(order.ordernumber).then(function(resp){
+          if(resp === false){
+            // Do nothing. The cart has already been submitted
+          }
+          else{
+            $scope.saveChangeOrder(order)
+            .then(OrderService.resubmitOrder)
+            .then(function(invoiceNumber) {
+              $scope.setRecentlyOrderedUNFIItems(order);
+              $scope.displayMessage('success', 'Successfully submitted change order.');
+              $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
+            }, function(error) {
+              $scope.displayMessage('error', 'Error re-submitting order.');
+            }).finally(function() {
+              processingResubmitOrder = false;
+            });
+          }
         });
       }
     };

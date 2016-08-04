@@ -42,13 +42,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
 	public class OrderLogicImpl: IOrderLogic {
         #region attributes
-		private readonly ICatalogLogic _catalogLogic;
+        private readonly ICacheRepository _cache;
+        private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
         private readonly IEventLogRepository _log;
         private readonly INoteLogic _noteLogic;
@@ -63,11 +64,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region ctor
-        public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, 
+        public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, ICacheRepository cache,
                               IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, IShipDateRepository shipRepo, 
                               ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, 
                               IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository) {
-			_catalogLogic = catalogLogic;
+            _cache = cache;
+            _catalogLogic = catalogLogic;
             _customerRepository = customerRepository;
             _log = eventLogRepository;
             _noteLogic = noteLogic;
@@ -83,6 +85,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region methods
+        public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, string orderNumber)
+        {
+            return OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, null, orderNumber, _poRepo, _historyHeaderRepo, _cache);
+        }
+
         public NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId) {
             var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 

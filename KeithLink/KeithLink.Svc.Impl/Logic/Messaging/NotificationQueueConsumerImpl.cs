@@ -48,6 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         }
 
         protected void ListenToQueueInTaskForUsers() {
+            Thread.CurrentThread.IsBackground = true;
             while (doListenForMessagesInTask) {
                 consumingMessages = true;
 
@@ -105,7 +106,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             }
             if (listenForQueueMessagesTask != null)
             {
-                eventLogRepository.WriteWarningLog(string.Format("NotificationQueueConsumerImpl.listenForQueueMessagesTask.status = {0:G}", listenForQueueMessagesTask.Status));
+                //eventLogRepository.WriteWarningLog(string.Format("NotificationQueueConsumerImpl.listenForQueueMessagesTask.status = {0:G}", listenForQueueMessagesTask.Status));
             }
         }
         #endregion

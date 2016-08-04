@@ -259,6 +259,24 @@
   }
 }
 
+@media (max-width: $screen-md-max){
+  .category-description-md {
+
+    display: block;
+    width: 125px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
+  }
+
+  .subcategory-description-md {
+
+    margin-left: -35px !important;
+
+  }
+}
+
 .searchResults{
   background-color: $color-white;
   border-bottom: 1px solid #c3bc9c; 

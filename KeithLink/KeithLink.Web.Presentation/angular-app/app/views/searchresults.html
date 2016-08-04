@@ -32,7 +32,6 @@
                 <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
               </li>
             </ul>
-          <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
         </div>
       </div>
       <div class="hand-pointer pull-right">
@@ -70,26 +69,34 @@
             <span >Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
           </accordion-heading>
           <accordion close-others="true">
-            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion" ng-click="toggleSubCategories(parentcategory, $index)">
+            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion">
               <accordion-heading>
-                <div class="margin-left-15">
-                  <label
-                    class="pull-left"
-                    ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name)" 
-                    ng-class="{active: facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
-                    {{::parentcategory.name}} 
-                    <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
-                  </label>
-                  <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen, 'icon-plus3' : !parentcategory.isOpen}" class="subCategoryToggle pull-right"></span>
+                <div>
+                  <div class="pull-left">
+                    <input 
+                    type="checkbox"
+                    class="margin-right-10"
+                    value="categoryValue_{{parentcategory.name}}"
+                    id="categoryId_{{parentcategory.name}}"
+                    ng-checked="facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
+                    ng-disabled="parentcategory.name === featuredBreadcrumb.displayText"
+                    ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name); $event.stopPropagation();">
+                    <label
+                      ng-class="{active: facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
+                      {{::parentcategory.name}} 
+                      <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
+                    </label>
+                  </div>
+                  <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen, 'icon-plus3' : !parentcategory.isOpen}" ng-click="toggleSubCategories(parentcategory, $index)" class="subCategoryToggle pull-right"></span>
                 </div>
               </accordion-heading>
-              <div class="panel-body max-width-100" ng-repeat="category in parentcategory.categories">
+              <div class="panel-body max-width-100Per" ng-repeat="category in parentcategory.categories">
                 <div>
                   <input 
                   type="checkbox"
                   value="categoryValue_{{category.categoryname}}"
                   id="categoryId_{{category.categoryname}}"
-                  ng-checked="facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText"
+                  ng-checked="facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText || category.isSelected"
                   ng-disabled="category.categoryname === featuredBreadcrumb.displayText"
                   ng-click="toggleSelection(false, facets.subcategories.selected, category.name, parentcategory.name)">
                   <label for="categoryId_{{category.categoryname}}">{{::category.categoryname}} <span ng-show="category.count > 0">({{category.count}})</span></label>
@@ -203,31 +210,43 @@
   <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
     <div class="row" ng-show="facets.parentcategories.available.length > 0">
       <div class="col-sm-12">
-        <h3>Categories<span ng-show="facets.parentcategories.selected.length > 0" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
+        <h3>Categories<span ng-show="filterCount" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
           <ul class="nav search-results__category">
             <li class="margin-left-10 " ng-repeat="parentcategory in facets.parentcategories.available | orderBy: '-count'">
             <div>
+              <input 
+                type="checkbox"
+                class="margin-right-5"
+                ng-if="facets.parentcategories.available.length > 1"
+                value="categoryValue_{{parentcategory.name}}"
+                id="categoryId_{{parentcategory.name}}"
+                ng-checked="facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
+                ng-disabled="parentcategory.name === featuredBreadcrumb.displayText"
+                ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name); $event.stopPropagation();">
               <label
-                ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name); toggleSubCategories(parentcategory, $index)" 
                 ng-class="{active: facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
-                {{::parentcategory.name}} 
+                <span class="category-description-md">
+                  {{::parentcategory.name}} 
+                </span>
                 <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
               </label>
-              <a ng-if="parentcategory.categories.length" ng-class="{'icon-minus3' : parentcategory.IsOpen, 'icon-plus3' : !parentcategory.IsOpen}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a>
+              <a ng-if="parentcategory.hasSubCategories" ng-class="{'icon-minus3' : parentcategory.IsOpen, 'icon-plus3' : !parentcategory.IsOpen}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a>
             </div>
-            <ul class="subcategories_{{$index}}" style="display:none;">
+            <ul class="subcategories_{{$index}} subcategory-description-md" style="display:none;">
               <li ng-repeat="category in parentcategory.categories | orderBy: '-count'">
                 <div>
                   <input 
                     type="checkbox"
-                    ng-checked="facets.subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText"
+                    ng-checked="facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText || category.isSelected"
                     ng-disabled="category.name === featuredBreadcrumb.displayText"
                     ng-click="toggleSelection(false, facets.subcategories.selected, category.name, parentcategory.name)"
                     class="input-margin-5px">
                   <label
                     ng-click="toggleSelection(false, facets.subcategories.selected, category.name, parentcategory.name)" 
                     ng-class="{active: facets.subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
-                    {{::category.name}} 
+                    <span class="category-description-md">
+                      {{::category.name}} 
+                    </span> 
                     <span ng-show="category.count > 0">({{category.count}})</span>
                   </label>
                 </div>
@@ -368,7 +387,6 @@
                     <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
                   </li>
                 </ul>
-              <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
             </div>
           </div>
         </div>
@@ -493,7 +511,6 @@
                     <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
                   </li>
                 </ul>
-              <button class="btn btn-default" type="button" ng-click="sortResults(sortDirection, sortParametervalue)">{{sortDirection}}</button>
             </div>
           </div>
         </div>
@@ -627,5 +644,4 @@
 
   <div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
 
-  <div class="pull-right margin-right-5" loading-spinner="loadingResults"></div>
 </div>

@@ -7,13 +7,13 @@ ng-class="{ odd : $odd, even: $even }"
     > tr.odd {
       > td,
       > th {
-        background-color: $background;
+        background-color: $background !important;
       }
     }
     > tr.even {
       > td,
       > th {
-        background-color: $color-white;
+        background-color: $color-white !important;
       }
     }
   }
@@ -219,4 +219,11 @@ table {
       }
     }  
   }
+}
+
+/* To eventually replace table striped rows, 
+  we only need to assign one color, 
+  not two for repeated tables/lists without the delete functionality */
+.oddrow {
+  background-color: $color-white !important;
 }

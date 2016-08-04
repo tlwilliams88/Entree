@@ -436,6 +436,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void ListenForQueueMessagesInTask() {
+            Thread.CurrentThread.IsBackground = true;
             while (_keepListening) {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
@@ -641,16 +642,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public string SetLostOrder(string trackingNumber) {
-            _log.WriteInformationLog("InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ")");
+            //_log.WriteInformationLog("InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ")");
             PurchaseOrder Po = _poRepo.ReadPurchaseOrderByTrackingNumber(trackingNumber);
             //Save to Commerce Server
             if(Po != null) {
                 com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
                 client.UpdatePurchaseOrderStatus(Po.Properties["UserId"].ToString().ToGuid(), Po.Id.ToGuid(), "Lost");
-                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Success");
+                //_log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Success");
                 return "Success";
             } else {
-                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Po not found");
+                //_log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Po not found");
                 return "Po not found";
             }
         }
@@ -663,7 +664,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
             if (_queueTask != null)
             {
-                _log.WriteWarningLog(string.Format("OrderHistoryLogicImpl._queueTask.status = {0:G}", _queueTask.Status));
+                //_log.WriteWarningLog(string.Format("OrderHistoryLogicImpl._queueTask.status = {0:G}", _queueTask.Status));
             }
 
         }

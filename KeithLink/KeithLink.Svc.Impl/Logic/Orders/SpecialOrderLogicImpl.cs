@@ -59,6 +59,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void ListenForQueueMessagesInTask() {
+            Thread.CurrentThread.IsBackground = true;
             while (_keepListening) {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
@@ -156,7 +157,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void ProcessOrderHistoryDetailOnApprovedStatusUpdate(SpecialOrderResponseModel specialorder, EF.OrderHistoryDetail detail) {
-            _log.WriteInformationLog(string.Format(" ({0}) InternalSpecialOrderLogic.ProcessOrderHistoryDetailOnApprovedStatusUpdate", specialorder.MessageId));
+            //_log.WriteInformationLog(string.Format(" ({0}) InternalSpecialOrderLogic.ProcessOrderHistoryDetailOnApprovedStatusUpdate", specialorder.MessageId));
             EF.OrderHistoryHeader header = detail.OrderHistoryHeader;
             header.DeliveryDate = specialorder.Item.EstimatedArrival;
             _headerRepo.Update(header);
@@ -164,7 +165,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void ProcessOrderHistoryDetailOnStatusUpdate(SpecialOrderResponseModel specialorder, EF.OrderHistoryDetail detail) {
-            _log.WriteInformationLog(string.Format(" ({0})  InternalSpecialOrderLogic.ProcessOrderHistoryDetailOnStatusUpdate", specialorder.MessageId));
+            //_log.WriteInformationLog(string.Format(" ({0})  InternalSpecialOrderLogic.ProcessOrderHistoryDetailOnStatusUpdate", specialorder.MessageId));
             switch(specialorder.Item.ItemStatusId) {
                 case Constants.SPECIALORDERITEM_NEW_STATUS_CODE:
                     detail.ItemStatus = Constants.SPECIALORDERITEM_NEW_STATUS_TRANSLATED_CODE;
@@ -226,7 +227,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
             if (_queueTask != null)
             {
-                _log.WriteWarningLog(string.Format("SpecialOrderLogicImpl._queueTask.status = {0:G}", _queueTask.Status));
+                //_log.WriteWarningLog(string.Format("SpecialOrderLogicImpl._queueTask.status = {0:G}", _queueTask.Status));
             }
         }
         #endregion

@@ -300,29 +300,62 @@ angular.module('bekApp')
         breadcrumbs.push($scope.featuredBreadcrumb);
       }
 
-      // parent categories
-      if ($scope.facets.parentcategories.selected.length > 0) {
+      // categories
+      if ($scope.facets.parentcategories.selected.length > 0 && $scope.facets.parentcategories.selected.length < 3) { // parent categories less than 3
         breadcrumbs.push({
           click: function(data) {
             $scope.facets.parentcategories.selected = data;
             $scope.facets.subcategories.selected = [];
+            $scope.facets.brands.selected = [];
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
             loadProducts().then(refreshFacets);
           },
           clickData: $scope.facets.parentcategories.selected,
-          displayText: 'Parent Categories: ' + $scope.facets.parentcategories.selected.join(breadcrumbSeparator)
+          displayText: 'Categories: ' + $scope.facets.parentcategories.selected.join(breadcrumbSeparator)
         });
         filterCount += $scope.facets.parentcategories.selected.length;
-      }
+      } else if ($scope.facets.parentcategories.selected.length >= 3) { // parent categories more than 2
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.parentcategories.selected = data;
+            $scope.facets.subcategories.selected = [];
+            $scope.facets.brands.selected = [];
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.parentcategories.selected,
+          displayText: 'Categories: ' + $scope.facets.parentcategories.selected.length + ' selected'
+        });
+        filterCount += $scope.facets.parentcategories.selected.length;
+      }  
 
       // sub-categories
-      if ($scope.facets.subcategories.selected.length > 0) {
+      if ($scope.facets.subcategories.selected.length > 0 && $scope.facets.subcategories.selected.length < 3) {
         breadcrumbs.push({
           click: function(data) {
             $scope.facets.subcategories.selected = data;
+            $scope.facets.brands.selected = [];
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
             loadProducts().then(refreshFacets);
           },
           clickData: $scope.facets.subcategories.selected,
-          displayText: 'Categories: ' + $scope.facets.subcategories.selected.join(breadcrumbSeparator)
+          displayText: 'Sub-Categories: ' + $scope.facets.subcategories.selected.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.subcategories.selected.length;
+      } else if ($scope.facets.subcategories.selected.length >= 3) { // sub-categories more than 2
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.subcategories.selected = data;
+            $scope.facets.brands.selected = [];
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.subcategories.selected,
+          displayText: 'Sub-Categories: ' + $scope.facets.subcategories.selected.length + ' selected'
         });
         filterCount += $scope.facets.subcategories.selected.length;
       }
@@ -343,7 +376,7 @@ angular.module('bekApp')
       }
 
       // brands
-      if ($scope.facets.brands.selected.length > 0) {
+      if ($scope.facets.brands.selected.length > 0 && $scope.facets.brands.selected.length < 3) {
         breadcrumbs.push({
           click: function(data) {
             $scope.facets.brands.selected = data;
@@ -355,10 +388,22 @@ angular.module('bekApp')
           displayText: 'Brands: ' + $scope.facets.brands.selected.join(breadcrumbSeparator)
         });
         filterCount += $scope.facets.brands.selected.length;
+      } else if ($scope.facets.brands.selected.length >= 3) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.brands.selected = data;
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.brands.selected,
+          displayText: 'Brands: ' + $scope.facets.brands.selected.length + ' selected'
+        });
+        filterCount += $scope.facets.brands.selected.length;
       }
 
       // manufacturers
-      if ($scope.facets.mfrname.selected.length > 0) {
+      if ($scope.facets.mfrname.selected.length > 0 && $scope.facets.mfrname.selected.length < 3) {
           breadcrumbs.push({
             click: function (data) {
               $scope.facets.mfrname.selected = data;
@@ -370,10 +415,22 @@ angular.module('bekApp')
             displayText: 'Manufacturers: ' + $scope.facets.mfrname.selected.join(breadcrumbSeparator)
           });
           filterCount += $scope.facets.mfrname.selected.length;
+      } else if ($scope.facets.mfrname.selected.length >= 3) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.mfrname.selected = data;
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.mfrname.selected,
+          displayText: 'Manufacturers: ' + $scope.facets.mfrname.selected.length + ' selected'
+        });
+        filterCount += $scope.facets.mfrname.selected.length;
       }
 
       // dietary
-      if ($scope.facets.dietary.selected.length > 0) {
+      if ($scope.facets.dietary.selected.length > 0 && $scope.facets.dietary.selected.length < 3) {
         breadcrumbs.push({
           click: function(data) {
             $scope.facets.dietary.selected = data;
@@ -384,10 +441,21 @@ angular.module('bekApp')
           displayText: 'Dietary: ' + $scope.facets.dietary.selected.join(breadcrumbSeparator)
         });
         filterCount += $scope.facets.dietary.selected.length;
+      } else if ($scope.facets.dietary.selected.length >= 3) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.dietary.selected = data;
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.dietary.selected,
+          displayText: 'Dietary: ' + $scope.facets.dietary.selected.length + ' selected'
+        });
+        filterCount += $scope.facets.dietary.selected.length;
       }
 
       // item specifications
-      if ($scope.facets.itemspecs.selected.length > 0) {
+      if ($scope.facets.itemspecs.selected.length > 0 && $scope.facets.itemspecs.selected.length < 3) {
         var specDisplayNames = [];
         $scope.facets.itemspecs.selected.forEach(function(spec) {
           specDisplayNames.push(getIconDisplayInfo(spec).displayname);
@@ -401,10 +469,20 @@ angular.module('bekApp')
           displayText: 'Item Specifications: ' + specDisplayNames.join(breadcrumbSeparator)
         });
         filterCount += $scope.facets.itemspecs.selected.length;
+      } else if ($scope.facets.itemspecs.selected.length >= 3) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.itemspecs.selected = data;
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.itemspecs.selected,
+          displayText: 'Item Specifications: ' + $scope.facets.itemspecs.selected.length + ' selected'
+        });
+        filterCount += $scope.facets.itemspecs.selected.length;
       }
 
       // temp zones
-      if ($scope.facets.temp_zone.selected.length > 0) {
+      if ($scope.facets.temp_zone.selected.length > 0 && $scope.facets.temp_zone.selected.length < 3) {
         breadcrumbs.push({
           click: function(data) {
             $scope.facets.temp_zone.selected = data;
@@ -412,6 +490,16 @@ angular.module('bekApp')
           },
           clickData: $scope.facets.temp_zone.selected,
           displayText: 'Temp Zone: ' + $scope.facets.temp_zone.selected.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.temp_zone.selected.length;
+      } else if ($scope.facets.temp_zone.selected.length >= 3) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.temp_zone.selected = data;
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.temp_zone.selected,
+          displayText: 'Temp Zone: ' + $scope.facets.temp_zone.selected.length + ' selected'
         });
         filterCount += $scope.facets.temp_zone.selected.length;
       }
@@ -505,34 +593,58 @@ angular.module('bekApp')
     *************/
 
     function updateFacetCount(facets, data){
+
       if(facets && facets.available){
-              facets.available.forEach(function(facet){
-        var facetName = $filter('filter') (data, {name: facet.name})
-        facet.count = 0;
-        if(facetName.length > 0 && facet.name){
-          facet.count = facetName[0].count;
-        }
-      })
+
+        facets.available.forEach(function(facet){
+
+          var facetName = $filter('filter') (data, {name: facet.name})
+          facet.count = 0;
+
+          if(facetName.length > 0 && facet.name){
+
+            facet.count = facetName[0].count;
+
+          }
+
+        })
+
       }
+
       $scope.noFiltersSelected = false;
     }
 
     function updateParentCategoryFacetCount(categories, data){
+
       if(categories && categories.available){
+
         categories.available.forEach(function(category){
+
           var facetName = $filter('filter')(data, {name: category.name})
           category.count = 0;
+          category.hasSubCategories = false;
+
           if(facetName && facetName.length > 0 && category.name){
+
             category.count = facetName[0].count;
-            if(facetName.categories){
-            facetName.categories.forEach(function(origsubcategory){
+            category.hasSubCategories = true;
+
+            if(facetName[0].categories.length){
+
               category.categories.forEach(function(subcategory){
-                if(subcategory.name == origsubcategory.name){
-                  subcategory.count = origcategory.count; 
-                } else {
-                  subcategory.count = 0;
-                }
-                })
+
+                  var foundSubcategory = $filter('filter')(facetName[0].categories, {name: subcategory.name})
+
+                  if(foundSubcategory.length){
+
+                    subcategory.count = foundSubcategory[0].count;
+
+                  } else {
+
+                    subcategory.count = 0;
+
+                  }
+
               })
             }
           }
@@ -555,15 +667,45 @@ angular.module('bekApp')
     }
 
     function refreshFacets(facets) {
+      var selectedCategory;
       // set the $scope.facets object using the response data
       if(facets){
+
         $scope.facets.brands.available = facets.brands;
         $scope.facets.mfrname.available = facets.mfrname;
         $scope.facets.dietary.available = facets.dietary;
         $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
         $scope.facets.temp_zone.available = facets.temp_zone;
         $scope.facets.parentcategories.available = facets.parentcategories;
+
+        if($scope.facets.parentcategories.available.length){ // For the initial load to display the sub-category toggle
+          $scope.facets.parentcategories.available.forEach(function(parentcategory){
+            parentcategory.hasSubCategories = true;
+          })
+        }
+
+        if($scope.facets.parentcategories.available.length && $scope.facets.subcategories.selected.length){
+
+          $scope.facets.parentcategories.available.forEach(function(parentcategory){
+
+            parentcategory.categories.forEach(function(category){
+
+              selectedCategory = $scope.facets.subcategories.selected.indexOf(category.name);
+
+              if(selectedCategory > -1){
+
+                category.isSelected = true;
+
+              }
+
+            })
+
+          })
+
+        }
+
       }
+
     }
 
     /*************
@@ -621,17 +763,13 @@ angular.module('bekApp')
     SORTING
     *************/
     $scope.selectSortParameter = function(parametername, parametervalue){
-      $scope.selectedSortParameter = parametername;
-      $scope.sortParametervalue = parametervalue;
-      $scope.sortDirection = 'asc';
-      $scope.sortResults($scope.sortDirection, $scope.sortParametervalue)
-    }
-
-    function toggleSortDirection(){
-      if($scope.sortDirection === 'asc'){
-        $scope.sortDirection = 'desc'
+      if($scope.selectedSortParameter == parametername){
+        return;
       } else {
-        $scope.sortDirection = 'asc'
+        $scope.selectedSortParameter = parametername;
+        $scope.sortParametervalue = parametervalue;
+        $scope.sortDirection = 'asc';
+        $scope.sortResults($scope.sortDirection, $scope.sortParametervalue)
       }
     }
 
@@ -677,38 +815,108 @@ angular.module('bekApp')
     $scope.toggleSubCategories = function(category, index){
       var subCategories = $('.subcategories_' + index);
       category.IsOpen = !category.IsOpen;
-      if(subCategories[0].style.display === 'block'){
+
+      if (subCategories[0].style.display === 'block'){
+
         subCategories.css('display','none');
+
       } else {
+
         subCategories.css('display','block');
+
       }
+
     }
 
     $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory) {
       $scope.noFiltersSelected = !$scope.noFiltersSelected;
-      if(category === false){
+      var parentCategorySelected,
+          isSelected,
+          unSelectedCategory,
+          idx;
+
+      if (category === false){
+
         $scope.subcategory = true;
+
       }
 
-      var idx = facetList.indexOf(selectedFacet);
+      idx = facetList.indexOf(selectedFacet);
+
       if (idx > -1) {
+
         facetList.splice(idx, 1);
-      } else {
-        if(parentcategory){
-          if($scope.facets.parentcategories.selected.length == 0){
-            $scope.facets.parentcategories.selected.push(parentcategory);
-          } else {
-            if($scope.facets.parentcategories.selected.indexOf(parentcategory) == -1){
-              $scope.facets.parentcategories.selected.push(parentcategory);
-            }
+        parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
+
+        if (parentCategorySelected.length){
+
+          if(parentCategorySelected[0].IsOpen){
+
+            $scope.toggleSubCategories(parentCategorySelected[0], idx);
+
           }
-          facetList.push(selectedFacet);
-        } else {
-          facetList.push(selectedFacet);
+
+          isSelected = document.activeElement.checked;
+
+          parentCategorySelected[0].categories.forEach(function(category){ //unselects and removes sub-category when parent Category is unselected
+
+            category.isSelected = isSelected;
+            unSelectedCategory = $scope.facets.subcategories.selected.indexOf(category.name);
+            if($scope.facets.parentcategories.selected.length > 0){
+              $scope.facets.subcategories.selected.splice(unSelectedCategory, 1) // Removes only specific sub-categories associated with category
+            } else {
+              $scope.facets.subcategories.selected = []; // Removes all remaining sub-categories for last remaining category
+            }
+            
+
+          })
+
         }
+
+      } else {
+
+        if (parentcategory){ // Runs if the aggregate selected is a sub-category
+
+          if ($scope.facets.parentcategories.selected.length == 0){ // Runs if parent category selected array is empty
+
+            $scope.facets.parentcategories.selected.push(parentcategory);
+
+          } else { // Runs if parent category selected array is not empty
+
+            if ($scope.facets.parentcategories.selected.indexOf(parentcategory) == -1){ // If the parent category matches one in the selected array don't push
+
+              $scope.facets.parentcategories.selected.push(parentcategory);
+
+            }
+
+          }
+
+          facetList.push(selectedFacet);
+
+        } else { // All other aggregate selections other than sub-category run here
+
+          facetList.push(selectedFacet);
+          parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
+
+          if (parentCategorySelected.length){
+
+            isSelected = document.activeElement.checked;
+
+            parentCategorySelected[0].categories.forEach(function(category){
+
+              category.isSelected = isSelected;
+              $scope.facets.subcategories.selected.push(category.name);
+
+            })
+
+          }
+
+        }
+
       }
 
-      loadProducts().then($scope.refreshFacets);
+      loadProducts();
+
     };
 
     $scope.goToItemDetails = function(item) {
