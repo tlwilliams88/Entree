@@ -30,18 +30,15 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             if(recipients == null || recipients.Count == 0)
                 return;
 
-            if(message.MessageBody.IndexOf("|LOGO|") > -1) // If the logo will be in this email (most notifications) replace it with the standard BEK
-            {
+            // If the logo will be in this email (most notifications) replace it with the standard BEK
+            if(message.MessageBody.IndexOf("|LOGO|") > -1) {
                 message.MessageBody = message.MessageBody.Replace("|LOGO|", "<h2>BEK</h2>");
             }
 
-            foreach (var recipient in recipients)
-            {
-                try
-                {
+            Parallel.ForEach(recipients, (recipient) => {
+                try {
                     userMessageRepository.Create(
-                        new Core.Models.Messaging.EF.UserMessage()
-                        {
+                        new Core.Models.Messaging.EF.UserMessage() {
                             Body = message.MessageBody,
                             CustomerNumber = message.CustomerNumber,
                             Subject = message.MessageSubject,
@@ -51,13 +48,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                             UserId = recipient.UserId,
                             Label = message.NotificationType.ToString() // TODO: add a label for the message?
                         });
-                    unitOfWork.SaveChanges();
-                }
-                catch (Exception ex)
-                {
+                } catch(Exception ex) {
                     eventLogRepository.WriteErrorLog("WebMessageProvider: Error Sending Message", ex);
                 }
-            }
+            });
+
+            unitOfWork.SaveChanges();
         }
         #endregion
     }
