@@ -56,7 +56,7 @@ angular.module('bekApp')
 
       isSubmitted: function(id) {
         return Order.isSubmitted({orderNumber: id}).$promise.then(function(resp) {
-          return (resp && resp.successResponse) ? resp.successResponse.id: false;        
+          return (resp && resp.successResponse) ? resp.successResponse: false;        
         });
       },
 
