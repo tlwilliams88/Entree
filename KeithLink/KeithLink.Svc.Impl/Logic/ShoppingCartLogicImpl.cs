@@ -360,14 +360,7 @@ namespace KeithLink.Svc.Impl.Logic
 
         public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
         {
-            string key = cartId.ToString();
-            var cachedCart = _cache.GetItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, key);
-
-            if(cachedCart != null && user.RoleName.Equals("beksysadmin", StringComparison.CurrentCultureIgnoreCase))
-            {
-                return true;
-            }
-            return false;
+            return OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, cartId, null, purchaseOrderRepository, null, _cache);
         }
 
         public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
@@ -439,9 +432,6 @@ namespace KeithLink.Svc.Impl.Logic
 
         public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
-            string cachekey = cartId.ToString();
-            _cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromHours(2), "Processing"); // put item in cache to indicate processing
-
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 			//Check that RequestedShipDate
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
@@ -492,6 +482,8 @@ namespace KeithLink.Svc.Impl.Logic
                     orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);
                     //if (catalogId == "unfi_7")
                     //    throw new Exception();// for testing
+                    OrderSubmissionHelper.StartOrderBlock(cartId, orderNumber, _cache);
+                    OrderSubmissionHelper.StartOrderBlock(newCartId, orderNumber, _cache);
                 }
                 catch (Exception e)
                 {
@@ -568,8 +560,6 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 DeleteCart(user, catalogInfo, cartId);
             }
-
-            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey); //Invalidate cache that indicates order is being processed
 
             return returnOrders; //Return actual order number
 		}
