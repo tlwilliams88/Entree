@@ -130,35 +130,35 @@ angular.module('bekApp')
     }
 
     $scope.blockUIAndChangePage = function(page, toggleView){
-      $scope.startingPoint = 0;
-      $scope.endPoint = 0;
-      $scope.toggleView = toggleView;  
+        $scope.startingPoint = 0;
+        $scope.endPoint = 0;
+        $scope.toggleView = toggleView;  
 
-      var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
 
-      if ($scope.toggleView){
-        visited = [];
-        $scope.currentPage = 1;
-      }
-
-      $(document).ready(function(){
-        $(document.activeElement).blur();
-        $("html, body").animate({ scrollTop: 0 }, 500);
-      })
-
-      return blockUI.start("Loading Products...").then(function(){
-
-        if(visited.length > 0){
-          $timeout(function() {
-            $scope.isChangingPage = true;
-            $scope.pageChanged(page, visited);
-          }, 100);
-        }
-        else{
-          $scope.pageChanged(page, visited);
+        if ($scope.toggleView){
+          visited = [];
+          $scope.currentPage = 1;
         }
 
-      })
+        $(document).ready(function(){
+          $(document.activeElement).blur();
+          $("html, body").animate({ scrollTop: 0 }, 500);
+        })
+
+        return blockUI.start("Loading Products...").then(function(){
+
+          if(visited.length > 0){
+            $timeout(function() {
+              $scope.isChangingPage = true;
+              $scope.pageChanged(page, visited);
+            }, 100);
+          }
+          else{
+              $scope.pageChanged(page, visited);
+          }
+
+        })
 
     }
 
@@ -181,7 +181,8 @@ angular.module('bekApp')
         blockUI.stop();
      }
     
-     $scope.pageChanged = function(pages, visited) {      
+     $scope.pageChanged = function(pages, visited) {
+      var facets;
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
       $scope.loadingPage = true;    
@@ -191,8 +192,23 @@ angular.module('bekApp')
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
       $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
       $scope.setRange();
+      $scope.aggregateCount;
+      
+      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length + $scope.facets.parentcategories.selected.length + $scope.facets.subcategories.selected.length)
 
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, $stateParams.dept);
+      if($scope.aggregateCount !== 0){
+        facets = ProductService.getFacets(
+          $scope.facets.brands.selected,
+          $scope.facets.mfrname.selected,
+          $scope.facets.dietary.selected,
+          $scope.facets.itemspecs.selected,
+          $scope.facets.temp_zone.selected,
+          $scope.facets.parentcategories.selected,
+          $scope.facets.subcategories.selected
+        )
+      }
+
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
         $scope.products = data.products;
         if($scope.toggleView){
@@ -525,11 +541,11 @@ angular.module('bekApp')
         $scope.sortField  = '';
       }
 
-      if(!$scope.startingResult){
-        $scope.startingResult = 0;
-      }
+      // if(!$scope.startingResult){
+      //   $scope.startingResult = 0;
+      // }
 
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingResult, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName);
     }
 
@@ -791,6 +807,7 @@ angular.module('bekApp')
     }
 
     $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory, index) {
+      $scope.startingPoint = 0;
       $scope.noFiltersSelected = !$scope.noFiltersSelected;
       var parentCategorySelected,
           isSelected,
@@ -843,9 +860,12 @@ angular.module('bekApp')
           facetList.push(selectedFacet); // In this case this pushes the sub-category to the facetList of selected facets
         } else { // All other aggregate selections other than sub-category run here
           facetList.push(selectedFacet);
-          parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
 
-          if (parentCategorySelected.length){
+          if(category == true){
+            parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
+          }
+
+          if (parentCategorySelected && parentCategorySelected.length){
             isSelected = document.activeElement.checked;
 
             parentCategorySelected[0].categories.forEach(function(category){
