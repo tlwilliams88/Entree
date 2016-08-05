@@ -279,7 +279,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         }
 
         private static decimal GetLinePrice(OrderLineChange line, Product currentProduct, Price price) {
-            if(currentProduct.CatchWeight) {
+            if(currentProduct != null && currentProduct.CatchWeight) {
                 if(line.Each) //package catchweight
                 {
                     return (decimal)PricingHelper.GetCatchweightPriceForPackage
