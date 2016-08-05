@@ -69,7 +69,7 @@
             <span >Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
           </accordion-heading>
           <accordion close-others="true">
-            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available | orderBy: '-count'" is-open="parentcategory.isOpen" class="mobile-accordion">
+            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion">
               <accordion-heading>
                 <div>
                   <div class="pull-left">
@@ -90,7 +90,7 @@
                   <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen, 'icon-plus3' : !parentcategory.isOpen}" ng-click="toggleSubCategories(parentcategory, $index)" class="subCategoryToggle pull-right"></span>
                 </div>
               </accordion-heading>
-              <div class="panel-body max-width-100Per" ng-repeat="category in parentcategory.categories | orderBy: '-count'">
+              <div class="panel-body max-width-100Per" ng-repeat="category in parentcategory.categories">
                 <div>
                   <input 
                   type="checkbox"
@@ -127,7 +127,7 @@
           <accordion-heading>
           Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
           </accordion-heading>
-          <div ng-repeat="manufacturer in facets.mfrname.available | orderBy: '-count'" class="panel panel-default">
+          <div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="manufacturerValue_{{manufacturer.name}}"
@@ -144,7 +144,7 @@
           <accordion-heading>
           Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
           </accordion-heading>
-          <div ng-repeat="diet in facets.dietary.available | orderBy: '-count'" class="panel panel-default">
+          <div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="dietValue_{{diet.name}}"
@@ -160,7 +160,7 @@
           <accordion-heading>
           Temp Zone<i class="pull-right" ng-class="{'icon-arrow-up6': status.temp_zone, 'icon-arrow-down7': !status.temp_zone}"></i>
           </accordion-heading>
-          <div ng-repeat="temp_zone in facets.temp_zone.available | orderBy: '-count'" class="panel panel-default">
+          <div ng-repeat="temp_zone in facets.temp_zone.available" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="specValue_{{temp_zone.name}}"
@@ -176,7 +176,7 @@
           <accordion-heading>
           Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
           </accordion-heading>
-          <div ng-repeat="spec in facets.itemspecs.available | orderBy: '-count'" class="panel panel-default">
+          <div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="specValue_{{spec.name}}"
@@ -212,7 +212,7 @@
       <div class="col-sm-12">
         <h3>Categories<span ng-show="filterCount" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
           <ul class="nav search-results__category">
-            <li class="margin-left-10 " ng-repeat="parentcategory in facets.parentcategories.available | orderBy: '-count'">
+            <li class="margin-left-10 " ng-repeat="parentcategory in facets.parentcategories.available">
             <div>
               <input 
                 type="checkbox"
@@ -233,7 +233,7 @@
               <a ng-class="{'icon-minus3' : parentcategory.IsOpen, 'icon-plus3' : !parentcategory.IsOpen}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a>
             </div>
             <ul class="subcategories_{{$index}} subcategory-description-md" style="display:none;">
-              <li ng-repeat="category in parentcategory.categories | orderBy: '-count'">
+              <li ng-repeat="category in parentcategory.categories">
                 <div>
                   <input 
                     type="checkbox"
@@ -281,7 +281,7 @@
         <div class="col-sm-12">
           <h3>Manufacturers</h3>
             <ul class="nav search-results__facets">
-              <li class="facet-checkbox" ng-repeat="manufacturer in facets.mfrname.available | orderBy: '-count'">
+              <li class="facet-checkbox" ng-repeat="manufacturer in facets.mfrname.available">
                 <input 
                   type="checkbox"
                   value="manufacturerValue_{{manufacturer.name}}"
@@ -300,7 +300,7 @@
         <div class="col-sm-12">
           <h3>Dietary</h3>
             <ul class="nav search-results__facets">
-              <li class="facet-checkbox" ng-repeat="diet in facets.dietary.available | orderBy: '-count'">
+              <li class="facet-checkbox" ng-repeat="diet in facets.dietary.available">
                 <input 
                   type="checkbox"
                   value="dietValue_{{diet.name}}"
@@ -318,7 +318,7 @@
         <div class="col-sm-12">
           <h3>Temp Zone</h3>
             <ul class="nav search-results__facets">
-              <li class="facet-checkbox" ng-repeat="temp_zone in facets.temp_zone.available | orderBy: '-count'">
+              <li class="facet-checkbox" ng-repeat="temp_zone in facets.temp_zone.available">
                 <input 
                   type="checkbox"
                   value="temp_zoneValue_{{temp_zone.name}}"
@@ -336,7 +336,7 @@
         <div class="col-sm-12">
           <h3>Item Specifications</h3>
             <ul class="nav search-results__facets">
-              <li ng-repeat="spec in facets.itemspecs.available | orderBy: '-count'">
+              <li ng-repeat="spec in facets.itemspecs.available">
                 <input 
                   type="checkbox"
                   value="specValue_{{spec.name}}"

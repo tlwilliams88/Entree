@@ -187,29 +187,20 @@ angular.module('bekApp')
       $scope.loadingPage = true;    
       $scope.currentPage = pages.currentPage;
       $scope.startingPoint = ((pages.currentPage - 1)*$scope.itemsPerPage) + 1;
+      $scope.startingResult = $scope.startingPoint;
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
       $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
       $scope.setRange();
-      // if(!visited.length){
-        var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, $stateParams.dept);
-        ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
-          $scope.products = data.products;
-          if($scope.toggleView){
-            resetPage($scope.products, true);
-          }
-        blockUI.stop();
-        blockUI.stop();
-        })
-      // }else {
-      //   $scope.setStartAndEndPoints($scope.products);
-      //   $scope.visitedPages.forEach(function(page){
-      //     if(page.page == $scope.currentPage){
-      //       $timeout(function(){
-      //         $scope.products = page.items;
-      //       }, 100);
-      //     }
-      //   })
-      // }
+
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, $stateParams.dept);
+      ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
+        $scope.products = data.products;
+        if($scope.toggleView){
+          resetPage($scope.products, true);
+        }
+      blockUI.stop();
+      blockUI.stop();
+      })
      };
 
     $scope.setRange = function(){
@@ -534,19 +525,25 @@ angular.module('bekApp')
         $scope.sortField  = '';
       }
 
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
+      if(!$scope.startingResult){
+        $scope.startingResult = 0;
+      }
+
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingResult, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName);
     }
 
     //Load list of products and block UI with message
-    function loadProducts(appendResults) {
+    function loadProducts(appendResults, fromFunction) {
       startLoading();
       return blockUI.start("Loading Products...").then(function(){
         return getData().then(function(data) {
         var page = 1;
         $scope.products = data.products;
         $scope.totalProducts = data.totalcount;
-        resetPage(data.products, true);
+        if(fromFunction !== 'sorting'){
+          resetPage(data.products, true);
+        }
         $scope.totalItems = data.totalcount;
         if (data.catalogCounts != null) {
             $scope.bekItemCount = data.catalogCounts.bek;
@@ -760,7 +757,7 @@ angular.module('bekApp')
         $scope.selectedSortParameter = parametername;
         $scope.sortField = parametervalue;
         $scope.sortDirection = 'asc';
-        loadProducts();
+        loadProducts('', 'sorting');
       }
     }
 
