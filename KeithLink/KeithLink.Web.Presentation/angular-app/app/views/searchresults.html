@@ -222,7 +222,7 @@
                 id="categoryId_{{parentcategory.name}}"
                 ng-checked="facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                 ng-disabled="parentcategory.name === featuredBreadcrumb.displayText"
-                ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name); $event.stopPropagation();">
+                ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
               <label
                 ng-class="{active: facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
                 <span class="category-description-md">

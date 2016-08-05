@@ -816,7 +816,7 @@ angular.module('bekApp')
       var subCategories = $('.subcategories_' + index);
       category.IsOpen = !category.IsOpen;
 
-      if (subCategories[0].style.display === 'block'){
+      if (subCategories[0].style.display === 'block' && category.IsOpen == false){
 
         subCategories.css('display','none');
 
@@ -828,7 +828,7 @@ angular.module('bekApp')
 
     }
 
-    $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory) {
+    $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory, index) {
       $scope.noFiltersSelected = !$scope.noFiltersSelected;
       var parentCategorySelected,
           isSelected,
@@ -845,14 +845,13 @@ angular.module('bekApp')
 
       if (idx > -1) {
 
-        facetList.splice(idx, 1);
         parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
 
         if (parentCategorySelected.length){
 
-          if(parentCategorySelected[0].IsOpen){
+          if(parentCategorySelected[0].IsOpen){ // Toggles sub-categories display to none if category is open
 
-            $scope.toggleSubCategories(parentCategorySelected[0], idx);
+            $scope.toggleSubCategories(parentCategorySelected[0], index); // Closes Category when parent category is unselected
 
           }
 
@@ -862,14 +861,24 @@ angular.module('bekApp')
 
             category.isSelected = isSelected;
             unSelectedCategory = $scope.facets.subcategories.selected.indexOf(category.name);
-            if($scope.facets.parentcategories.selected.length > 0){
+
+            if ($scope.facets.parentcategories.selected.length > 0 && unSelectedCategory > -1){
+
               $scope.facets.subcategories.selected.splice(unSelectedCategory, 1) // Removes only specific sub-categories associated with category
-            } else {
+
+            } else if ($scope.facets.parentcategories.selected.length == 0) {
+
               $scope.facets.subcategories.selected = []; // Removes all remaining sub-categories for last remaining category
+
             }
-            
 
           })
+
+          facetList.splice(idx, 1);
+
+        } else {
+
+          facetList.splice(idx, 1);
 
         }
 
@@ -883,7 +892,7 @@ angular.module('bekApp')
 
           } else { // Runs if parent category selected array is not empty
 
-            if ($scope.facets.parentcategories.selected.indexOf(parentcategory) == -1){ // If the parent category matches one in the selected array don't push
+            if ($scope.facets.parentcategories.selected.indexOf(parentcategory) == -1){ // Only push to parentcategories.selected array if parentcategory does not exist
 
               $scope.facets.parentcategories.selected.push(parentcategory);
 
@@ -891,7 +900,7 @@ angular.module('bekApp')
 
           }
 
-          facetList.push(selectedFacet);
+          facetList.push(selectedFacet); // In this case this pushes the sub-category to the facetList of selected facets
 
         } else { // All other aggregate selections other than sub-category run here
 
