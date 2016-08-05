@@ -650,7 +650,6 @@ angular.module('bekApp')
           }
         })
       }
-      $scope.subcategory = false;
       $scope.noFiltersSelected = false;
     }
 
@@ -767,9 +766,9 @@ angular.module('bekApp')
         return;
       } else {
         $scope.selectedSortParameter = parametername;
-        $scope.sortParametervalue = parametervalue;
+        $scope.sortField = parametervalue;
         $scope.sortDirection = 'asc';
-        $scope.sortResults($scope.sortDirection, $scope.sortParametervalue)
+        loadProducts();
       }
     }
 
@@ -786,28 +785,6 @@ angular.module('bekApp')
       value: 'brand_not_analyzed'
     }];
 
-    $scope.sortResults = function(sortdirection, sortfield){
-      if(sortfield == 'Relevance'){
-        resetPage($scope.products, true);
-      }
-      startLoading();
-      $scope.sortField = sortfield; 
-      $scope.sortDirection = sortdirection;
-
-      return blockUI.start("Loading Products...").then(function(){
-        var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, sortfield, sortdirection, $stateParams.dept);
-        ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName).then(function(data){
-          $scope.products = data.products;
-        }).then(function(){
-          resetPage($scope.products, false);
-        })
-
-      toggleSortDirection();
-      stopLoading();
-      blockUI.stop();
-      })
-    }
-
     /*************
     CLICK EVENTS
     *************/
@@ -817,13 +794,9 @@ angular.module('bekApp')
       category.IsOpen = !category.IsOpen;
 
       if (subCategories[0].style.display === 'block' && category.IsOpen == false){
-
         subCategories.css('display','none');
-
       } else {
-
         subCategories.css('display','block');
-
       }
 
     }
@@ -835,39 +808,26 @@ angular.module('bekApp')
           unSelectedCategory,
           idx;
 
-      if (category === false){
-
-        $scope.subcategory = true;
-
-      }
-
       idx = facetList.indexOf(selectedFacet);
 
       if (idx > -1) {
-
         parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
 
         if (parentCategorySelected.length){
 
           if(parentCategorySelected[0].IsOpen){ // Toggles sub-categories display to none if category is open
-
             $scope.toggleSubCategories(parentCategorySelected[0], index); // Closes Category when parent category is unselected
-
           }
 
           isSelected = document.activeElement.checked;
 
           parentCategorySelected[0].categories.forEach(function(category){ //unselects and removes sub-category when parent Category is unselected
-
             category.isSelected = isSelected;
             unSelectedCategory = $scope.facets.subcategories.selected.indexOf(category.name);
 
             if ($scope.facets.parentcategories.selected.length > 0 && unSelectedCategory > -1){
-
               $scope.facets.subcategories.selected.splice(unSelectedCategory, 1) // Removes only specific sub-categories associated with category
-
             } else if ($scope.facets.parentcategories.selected.length == 0) {
-
               $scope.facets.subcategories.selected = []; // Removes all remaining sub-categories for last remaining category
 
             }
@@ -875,57 +835,39 @@ angular.module('bekApp')
           })
 
           facetList.splice(idx, 1);
-
         } else {
-
           facetList.splice(idx, 1);
-
         }
-
       } else {
 
         if (parentcategory){ // Runs if the aggregate selected is a sub-category
 
           if ($scope.facets.parentcategories.selected.length == 0){ // Runs if parent category selected array is empty
-
             $scope.facets.parentcategories.selected.push(parentcategory);
-
           } else { // Runs if parent category selected array is not empty
 
             if ($scope.facets.parentcategories.selected.indexOf(parentcategory) == -1){ // Only push to parentcategories.selected array if parentcategory does not exist
-
               $scope.facets.parentcategories.selected.push(parentcategory);
-
             }
-
           }
 
           facetList.push(selectedFacet); // In this case this pushes the sub-category to the facetList of selected facets
-
         } else { // All other aggregate selections other than sub-category run here
-
           facetList.push(selectedFacet);
           parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
 
           if (parentCategorySelected.length){
-
             isSelected = document.activeElement.checked;
 
             parentCategorySelected[0].categories.forEach(function(category){
-
               category.isSelected = isSelected;
               $scope.facets.subcategories.selected.push(category.name);
-
             })
-
           }
-
         }
-
       }
 
       loadProducts();
-
     };
 
     $scope.goToItemDetails = function(item) {
