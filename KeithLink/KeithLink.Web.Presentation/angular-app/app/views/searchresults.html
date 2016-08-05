@@ -69,7 +69,7 @@
             <span >Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
           </accordion-heading>
           <accordion close-others="true">
-            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion">
+            <accordion-group ng-repeat="parentcategory in facets.parentcategories.available | orderBy: '-count'" is-open="parentcategory.isOpen" class="mobile-accordion">
               <accordion-heading>
                 <div>
                   <div class="pull-left">
@@ -80,7 +80,7 @@
                     id="categoryId_{{parentcategory.name}}"
                     ng-checked="facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                     ng-disabled="parentcategory.name === featuredBreadcrumb.displayText"
-                    ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name); $event.stopPropagation();">
+                    ng-click="toggleSelection(true, facets.parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
                     <label
                       ng-class="{active: facets.parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
                       {{::parentcategory.name}} 
@@ -90,7 +90,7 @@
                   <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen, 'icon-plus3' : !parentcategory.isOpen}" ng-click="toggleSubCategories(parentcategory, $index)" class="subCategoryToggle pull-right"></span>
                 </div>
               </accordion-heading>
-              <div class="panel-body max-width-100Per" ng-repeat="category in parentcategory.categories">
+              <div class="panel-body max-width-100Per" ng-repeat="category in parentcategory.categories | orderBy: '-count'">
                 <div>
                   <input 
                   type="checkbox"
@@ -127,7 +127,7 @@
           <accordion-heading>
           Manufacturers<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
           </accordion-heading>
-          <div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
+          <div ng-repeat="manufacturer in facets.mfrname.available | orderBy: '-count'" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="manufacturerValue_{{manufacturer.name}}"
@@ -144,7 +144,7 @@
           <accordion-heading>
           Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
           </accordion-heading>
-          <div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
+          <div ng-repeat="diet in facets.dietary.available | orderBy: '-count'" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="dietValue_{{diet.name}}"
@@ -160,7 +160,7 @@
           <accordion-heading>
           Temp Zone<i class="pull-right" ng-class="{'icon-arrow-up6': status.temp_zone, 'icon-arrow-down7': !status.temp_zone}"></i>
           </accordion-heading>
-          <div ng-repeat="temp_zone in facets.temp_zone.available" class="panel panel-default">
+          <div ng-repeat="temp_zone in facets.temp_zone.available | orderBy: '-count'" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="specValue_{{temp_zone.name}}"
@@ -176,7 +176,7 @@
           <accordion-heading>
           Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
           </accordion-heading>
-          <div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
+          <div ng-repeat="spec in facets.itemspecs.available | orderBy: '-count'" class="panel panel-default">
             <div class="panel-body">
               <input type="checkbox"
               value="specValue_{{spec.name}}"
@@ -230,7 +230,7 @@
                 </span>
                 <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
               </label>
-              <a ng-if="parentcategory.hasSubCategories" ng-class="{'icon-minus3' : parentcategory.IsOpen, 'icon-plus3' : !parentcategory.IsOpen}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a>
+              <a ng-class="{'icon-minus3' : parentcategory.IsOpen, 'icon-plus3' : !parentcategory.IsOpen}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a>
             </div>
             <ul class="subcategories_{{$index}} subcategory-description-md" style="display:none;">
               <li ng-repeat="category in parentcategory.categories | orderBy: '-count'">

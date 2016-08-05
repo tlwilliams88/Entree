@@ -622,12 +622,10 @@ angular.module('bekApp')
 
           var facetName = $filter('filter')(data, {name: category.name})
           category.count = 0;
-          category.hasSubCategories = false;
 
           if(facetName && facetName.length > 0 && category.name){
 
             category.count = facetName[0].count;
-            category.hasSubCategories = true;
 
             if(facetName[0].categories.length){
 
@@ -676,12 +674,6 @@ angular.module('bekApp')
         $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
         $scope.facets.temp_zone.available = facets.temp_zone;
         $scope.facets.parentcategories.available = facets.parentcategories;
-
-        if($scope.facets.parentcategories.available.length){ // For the initial load to display the sub-category toggle
-          $scope.facets.parentcategories.available.forEach(function(parentcategory){
-            parentcategory.hasSubCategories = true;
-          })
-        }
 
         if($scope.facets.parentcategories.available.length && $scope.facets.subcategories.selected.length){
 
