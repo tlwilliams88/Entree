@@ -20,6 +20,14 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             return this.Entities.Where(a => a.UserId == user.UserId);
         }
 
+        public IEnumerable<UserMessage> ReadUserMessagesPaged(Core.Models.Profile.UserProfile user, int? pageSize, int? startFrom) {
+            int size = pageSize ?? 50;
+            int from = startFrom ?? 0;
+
+            return this.Entities.Where(a => a.UserId == user.UserId).Skip(from).Take(size);
+        }
+
+
         public IEnumerable<UserMessage> ReadUnreadMessagesByUser( Core.Models.Profile.UserProfile user ) {
             return this.Entities.Where( a => (a.UserId.Equals( user.UserId ) && a.MessageReadUtc.Equals( null )) );
         }
