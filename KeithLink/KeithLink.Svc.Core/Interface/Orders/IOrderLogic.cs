@@ -11,6 +11,12 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
     public interface IOrderLogic
     {
+        /// <summary>
+        /// Method to check for an order that has been submitted
+        /// </summary>
+        bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, string orderNumber);
+
+
         NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId);
 
         Order GetOrder(string branchId, string invoiceNumber);
