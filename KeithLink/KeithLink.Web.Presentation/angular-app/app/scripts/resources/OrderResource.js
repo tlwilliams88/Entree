@@ -46,6 +46,11 @@ angular.module('bekApp')
       getDetailExportConfig: {
         url: '/order/export/:orderNumber',
         method: 'GET'
+      },
+
+      isSubmitted: {
+        url:'/order/issubmitted/:orderNumber',
+        method:'GET'
       }
 
     });

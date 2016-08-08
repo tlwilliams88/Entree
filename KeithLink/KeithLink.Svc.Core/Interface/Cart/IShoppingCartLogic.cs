@@ -24,6 +24,12 @@ namespace KeithLink.Svc.Core.Interface.Cart
 
 		List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly);
 		ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
+
+        /// <summary>
+        /// Method to check for a cart that has been submitted
+        /// </summary>
+        bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
+
         ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext catalogInfo, Guid cartId, long listId, Core.Models.Lists.PrintListModel options );
 
 		SaveOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
