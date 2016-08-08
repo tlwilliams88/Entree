@@ -86,6 +86,7 @@
     <Folder Include="Configuration\Stored Procedures\" />
     <Folder Include="Security\" />
     <Folder Include="CommerceServer" />
+    <Folder Include="SchemaComparisons" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Log.sql" />
@@ -216,6 +217,7 @@
   <ItemGroup>
     <None Include="CommerceServer\BEK_Commerce_profiles_v1.4.1.dacpac" />
     <None Include="CommerceServer\BEK_Commerce_transactions_v1.4.1.dacpac" />
+    <None Include="SchemaComparisons\ComparisonToQA.scmp" />
   </ItemGroup>
   <ItemGroup>
     <ArtifactReference Include="CommerceServer\BEK_Commerce_profiles_v1.4.1.dacpac">

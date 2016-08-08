@@ -27,7 +27,7 @@ SELECT
 FROM
 	Bek_Commerce_AppData.ETL.Staging_Customer
 
-MERGE Bek_Commerce_Profiles.dbo.Addresses AS target
+MERGE Bek_Commerce_Profiles..Addresses AS target
 USING
 	(
 		SELECT
@@ -106,7 +106,7 @@ BEGIN
 			TOP 1
 			u_address_id
 		FROM	
-			Bek_Commerce_Profiles.dbo.Addresses
+			Bek_Commerce_Profiles..Addresses
 		WHERE
 			u_address_line1 = @Address1
 			AND u_postal_code = @Zip

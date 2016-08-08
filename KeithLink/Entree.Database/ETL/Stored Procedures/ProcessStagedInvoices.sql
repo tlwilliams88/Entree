@@ -2,6 +2,7 @@
 AS
 BEGIN
 	
+	SET NOCOUNT ON
 
 	CREATE TABLE #NewInvoices (InvoiceNumber varchar(20))
 	CREATE TABLE #OldInvoices (InvoiceNumber varchar(20))

@@ -8,3 +8,6 @@
     [BidNumber]        VARCHAR (10) NULL
 );
 
+GO
+
+CREATE INDEX [IX_Stg_CustBid_BidNumver_DivisionNumber] ON [ETL].[Staging_CustomerBid] ([BidNumber], [DivisionNumber])

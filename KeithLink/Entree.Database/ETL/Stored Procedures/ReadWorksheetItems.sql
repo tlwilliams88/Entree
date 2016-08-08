@@ -4,6 +4,8 @@ CREATE PROCEDURE [ETL].[ReadWorksheetItems]
 	, @DivisionName char(3)
  AS
 
+ SET NOCOUNT ON
+
 /*******************************************************************
 * PROCEDURE: usp_ECOM_SelectDistinctCustomerContracts
 * PURPOSE: Select distinct customer contracts by division

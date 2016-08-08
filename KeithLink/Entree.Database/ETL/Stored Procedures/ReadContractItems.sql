@@ -5,6 +5,8 @@ CREATE PROCEDURE [ETL].[ReadContractItems]
 	, @ContractNumber varchar(10)
  AS
 
+ SET NOCOUNT ON
+
 /*******************************************************************
 * PROCEDURE: usp_ECOM_SelectDistinctCustomerContracts
 * PURPOSE: Select distinct customer contracts by division

@@ -8,6 +8,8 @@ CREATE PROCEDURE [ETL].[ProcessContractItemList]
 AS
 BEGIN
 
+SET NOCOUNT ON
+
 DECLARE @customerId varchar(15)
 DECLARE @contractNumber varchar(50)
 DECLARE @branchID varchar(50)
@@ -50,7 +52,7 @@ DECLARE @DeletedItems TABLE
 )
 
 --DECLARE Cursor for all contracts
-DECLARE contract_Cursor CURSOR FOR
+DECLARE contract_Cursor CURSOR FAST_FORWARD FOR
 	SELECT 
 		[CustomerNumber]
 		,[BidNumber]
@@ -91,7 +93,7 @@ BEGIN
 	END
 
 	
-	IF NOT EXISTS(SELECT TOP 1 * FROM @TempContractItems) --No items for this contract, continue to next
+	IF NOT EXISTS(SELECT 'x' FROM @TempContractItems) --No items for this contract, continue to next
 	BEGIN
 		GOTO cont
 	END
@@ -169,7 +171,7 @@ BEGIN
 			FROM
 				@TempContractItems d
 			WHERE 
-				NOT EXISTS(SELECT top 1 * FROM [BEK_Commerce_AppData].[List].ListItems li 
+				NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
 							WHERE li.ItemNumber = LTRIM(RTRIM(d.ItemNumber)) AND li.Each = d.Each AND li.ParentList_Id = @existingListId)
 
 			--Find items being deleted
@@ -184,7 +186,7 @@ BEGIN
 			WHERE
 				l.ParentList_Id = @existingListId AND
 				NOT EXISTS(SELECT 
-						top 1 *
+						'x'
 					FROM
 						@TempContractItems d
 					WHERE
@@ -192,7 +194,7 @@ BEGIN
 						d.Each = l.Each)							
 
 			--New items to add?
-			IF EXISTS(SELECT top 1 * FROM @AddedItems)
+			IF EXISTS(SELECT 'x' FROM @AddedItems)
 				BEGIN
 					--Add to a Contract Added List, create if one doesn't already exist
 					
@@ -275,7 +277,7 @@ BEGIN
 				END
 				
 			--Items to delete
-			IF EXISTS(SELECT top 1 * FROM @DeletedItems)
+			IF EXISTS(SELECT 'x' FROM @DeletedItems)
 				BEGIN
 					--Add to a Contract Added List, create if one doesn't already exist
 					

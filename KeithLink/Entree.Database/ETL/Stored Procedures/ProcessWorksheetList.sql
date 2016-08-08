@@ -29,7 +29,7 @@ DECLARE @DeletedItems TABLE
 )
 
 --DECLARE Cursor for all contracts
-DECLARE worksheet_Cursor CURSOR FOR
+DECLARE worksheet_Cursor CURSOR FAST_FORWARD FOR
 	SELECT 
 		[CustomerNumber],
 		[DivisionNumber]
@@ -111,7 +111,7 @@ BEGIN
 			WHERE
 				w.CustomerNumber = @customerId AND
 				w.DivisionNumber = @branchID AND
-				NOT EXISTS(SELECT top 1 * FROM [BEK_Commerce_AppData].[List].ListItems li 
+				NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
 							WHERE li.ItemNumber = LTRIM(RTRIM(w.ItemNumber)) AND li.Each = CASE WHEN w.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END AND li.ParentList_Id = @existingListId)
 						
 
@@ -125,7 +125,7 @@ BEGIN
 			WHERE
 				l.ParentList_Id = @existingListId AND
 				NOT EXISTS(SELECT 
-						top 1 *
+						'x'
 					FROM
 						[BEK_Commerce_AppData].[ETL].[Staging_WorksheetItems] w
 					WHERE
@@ -133,7 +133,7 @@ BEGIN
 						CASE WHEN w.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END = l.Each AND
 						w.CustomerNumber = @customerId AND w.DivisionNumber = @branchID)
 			--New items to add?
-			IF EXISTS(SELECT top 1 * FROM @AddedItems)
+			IF EXISTS(SELECT 'x' FROM @AddedItems)
 				BEGIN
 					--Insert items into the list
 					INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
@@ -160,7 +160,7 @@ BEGIN
 				END
 
 			--Items to delete
-			IF EXISTS(SELECT top 1 * FROM @DeletedItems)
+			IF EXISTS(SELECT 'x' FROM @DeletedItems)
 				BEGIN
 					--DELETE Item
 					DELETE [BEK_Commerce_AppData].[List].[ListItems]

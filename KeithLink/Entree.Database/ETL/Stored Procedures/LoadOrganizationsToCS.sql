@@ -4,7 +4,7 @@ CREATE PROCEDURE ETL.LoadOrganizationsToCS AS
 SET NOCOUNT ON;
 
 MERGE
-	Bek_Commerce_Profiles.dbo.OrganizationObject AS target
+	Bek_Commerce_Profiles..OrganizationObject AS target
 USING	
 	(	
 		SELECT
