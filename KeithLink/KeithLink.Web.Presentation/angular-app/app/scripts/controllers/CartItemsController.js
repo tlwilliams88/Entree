@@ -253,13 +253,18 @@ angular.module('bekApp')
           return;
         }
 
-        $scope.saveCart(cart)
-          .then(CartService.submitOrder)
-          .then(function(data) {
-            $scope.setRecentlyOrderedUNFIItems(cart);
-            var orderNumber = -1;
-            var index;
-            for (index in data.ordersReturned) {
+         CartService.isSubmitted(cart.id).then(function(resp){
+          if(resp === false){
+            // Do nothing. The cart has already been submitted
+          }
+          else{
+            $scope.saveCart(cart)
+            .then(CartService.submitOrder)
+            .then(function(data) {
+              $scope.setRecentlyOrderedUNFIItems(cart);
+              var orderNumber = -1;
+              var index;
+              for (index in data.ordersReturned) {
                 if (data.ordersReturned[index].catalogType == "BEK")
                 {
                     orderNumber = data.ordersReturned[index].ordernumber;
@@ -284,24 +289,26 @@ angular.module('bekApp')
                 } else {
                     orderNumber = null;
                 }
-            } else {
-                //BEK oderNumber exists
-                if (data.ordersReturned.length != data.numberOfOrders) {
-                    status = 'error';
-                    message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
-                } else {
-                    status = 'success';
-                    message  = 'Successfully submitted order.';
-                }
-            }
+              } else {
+              //BEK oderNumber exists
+              if (data.ordersReturned.length != data.numberOfOrders) {
+                status = 'error';
+                message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
+              } else {
+                status = 'success';
+                message  = 'Successfully submitted order.';
+              }
+              }
 
-            $state.go('menu.orderitems', { invoiceNumber: orderNumber });
-            $scope.displayMessage(status, message);
-          }, function(error) {
-            $scope.displayMessage('error', 'Error submitting order.');
-          }).finally(function() {
-            processingSubmitOrder = false;
-          });
+              $state.go('menu.orderitems', { invoiceNumber: orderNumber });
+              $scope.displayMessage(status, message);
+            }, function(error) {
+              $scope.displayMessage('error', 'Error submitting order.');
+            }).finally(function() {
+              processingSubmitOrder = false;
+            });
+          }
+        });
       }
     };
 
@@ -408,6 +415,7 @@ angular.module('bekApp')
     var processingResubmitOrder = false;
     $scope.resubmitOrder = function(order) {
       var invalidItemFound =  invalidItemCheck(order.items);
+
       if (!processingSaveChangeOrder && !invalidItemFound) {
         processingResubmitOrder = true;
 
@@ -415,19 +423,25 @@ angular.module('bekApp')
           return;
         }
 
-        $scope.saveChangeOrder(order)
-          .then(OrderService.resubmitOrder)
-          .then(function(invoiceNumber) {
-            $scope.setRecentlyOrderedUNFIItems(order);
-            $scope.displayMessage('success', 'Successfully submitted change order.');
-            $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
-          }, function(error) {
-            $scope.displayMessage('error', 'Error re-submitting order.');
-          }).finally(function() {
-            processingResubmitOrder = false;
-          });
+        OrderService.isSubmitted(order.ordernumber).then(function(resp){
+          if(resp === false){
+            // Do nothing. The cart has already been submitted
+          }
+          else{
+            $scope.saveChangeOrder(order)
+            .then(OrderService.resubmitOrder)
+            .then(function(invoiceNumber) {
+              $scope.setRecentlyOrderedUNFIItems(order);
+              $scope.displayMessage('success', 'Successfully submitted change order.');
+              $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
+            }, function(error) {
+              $scope.displayMessage('error', 'Error re-submitting order.');
+            }).finally(function() {
+              processingResubmitOrder = false;
+            });
+          }
+        });
       }
-
     };
 
     var processingCancelOrder = false;

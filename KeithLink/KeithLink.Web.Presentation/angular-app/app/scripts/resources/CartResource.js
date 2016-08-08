@@ -55,6 +55,11 @@ angular.module('bekApp')
       quickAdd: {
         url: '/cart/quickadd',
         method: 'POST'
+      },
+
+      isSubmitted: {
+        url:'/cart/issubmitted/:cartId',
+        method:'GET'
       }
 
     });
