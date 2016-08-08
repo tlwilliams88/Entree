@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Common.Core.Interfaces.Logging;
 using System.Threading;
 using Newtonsoft.Json;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging
 {
@@ -77,6 +78,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 if (msg != null)
                 {
                     PushMessage pushmessage = JsonConvert.DeserializeObject<PushMessage>(msg);
+
+                    _eventLogRepository.WriteInformationLog("Processing push message from queue. Notification: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
 
                     ProcessIncomingPushMessage(pushmessage);
                 }
