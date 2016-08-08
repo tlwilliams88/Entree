@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             int size = pageSize ?? 50;
             int from = startFrom ?? 0;
 
-            return this.Entities.Where(a => a.UserId == user.UserId).Skip(from).Take(size);
+            return this.Entities.Where(a => a.UserId == user.UserId).OrderByDescending(m => m.CreatedUtc).Skip(from).Take(size);
         }
 
 
