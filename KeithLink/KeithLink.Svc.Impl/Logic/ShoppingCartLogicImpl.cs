@@ -13,6 +13,7 @@ using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
 using KeithLink.Svc.Core.Helpers;
 
+using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Configurations;
@@ -31,6 +32,8 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
+using KeithLink.Svc.Impl.Helpers;
+
 // Core
 using System;
 using System.Collections.Generic;
@@ -38,13 +41,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic
 {
 	public class ShoppingCartLogicImpl: IShoppingCartLogic {
         #region attributes
-		private readonly ICustomerRepository customerRepository;
+        private readonly ICacheRepository _cache;
+        private readonly ICustomerRepository customerRepository;
         private readonly IBasketRepository basketRepository;
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IPriceLogic priceLogic;
@@ -66,8 +69,9 @@ namespace KeithLink.Svc.Impl.Logic
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
-                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IEventLogRepository log)
+                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, ICacheRepository cache, IEventLogRepository log)
 		{
+            _cache = cache;
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
 			this.priceLogic = priceLogic;
@@ -347,8 +351,13 @@ namespace KeithLink.Svc.Impl.Logic
                 return returnCart;
 			}
 		}
-				
-		public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
+
+        public bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
+        {
+            return OrderSubmissionHelper.CheckOrderBlock(user, catalogInfo, cartId, null, purchaseOrderRepository, null, _cache);
+        }
+
+        public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			if (basket == null)
@@ -467,6 +476,8 @@ namespace KeithLink.Svc.Impl.Logic
                     orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);
                     //if (catalogId == "unfi_7")
                     //    throw new Exception();// for testing
+                    OrderSubmissionHelper.StartOrderBlock(cartId, orderNumber, _cache);
+                    OrderSubmissionHelper.StartOrderBlock(newCartId, orderNumber, _cache);
                 }
                 catch (Exception e)
                 {
