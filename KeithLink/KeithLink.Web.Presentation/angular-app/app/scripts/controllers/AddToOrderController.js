@@ -12,17 +12,25 @@ angular.module('bekApp')
 
     $scope.$on('$stateChangeStart', 
       function(event, toState, toParams, fromState, fromParams){
-      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items')){
-        $scope.saveAndRetainQuantity();
+      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !$scope.continueToCart){
+
+        if(!$scope.tempCartName){
+          $scope.saveAndRetainQuantity();
+        } else {
+          $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+        }
+
       }
-    })
+    });
 
     $scope.calculatePieces = function(items){
       //total piece count for cart info box
       $scope.piecesCount = 0;
         items.forEach(function(item){
-          $scope.piecesCount = $scope.piecesCount + item.quantity;
-        })
+          if(item.quantity){
+            $scope.piecesCount = $scope.piecesCount + parseInt(item.quantity);
+          }          
+        });
     }
 
     // redirect to url with correct parameters
@@ -172,7 +180,7 @@ angular.module('bekApp')
             existingItem.quantity = cartItem.quantity; // set list item quantity
           }
           else{   
-            if(!$stateParams.listItems){
+            if(!$stateParams.listItems || $scope.fromQuickAdd){
               $scope.selectedList.items.forEach(function(listItem, index){
               if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
                 $scope.selectedList.items[index].quantity = '';
@@ -383,7 +391,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
             $scope.allowSave = true;
             $scope.updateOrderClick(selectedList, $scope.selectedCart).then(function(resp){
                 $scope.redirect(selectedList.listid, resp)   
-            })
+            });
           }
 
           $scope.visitedPages.push({page: 1, items: selectedList.items});
@@ -405,11 +413,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           return;
         }        
       })
-    }
-
-    function removeQuantity(item){
-      //Removes quantity from item in functions onItemQuantityChanged, confirmQuantity, onItemOnHandAmountChanged
-      return item.quantity = '';
     }
 
     if($stateParams.sortingParams && $stateParams.sortingParams.sort.length > 0){
@@ -457,9 +460,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       else{
         $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
-            $timeout(function() {
-              $('#rowForFocus').find('input:first').focus();
-            }, 2000);
+
             var continueSearch = resp;       
             if(continueSearch){           
               $scope.visitedPages = [];
@@ -480,15 +481,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       }
       else{
         $scope.saveAndRetainQuantity().then(function(resp){
-          if($scope.isRedirecting(resp)){        
-            return
-          }
-          else{
             var clearSearchTerm = resp;       
             if(clearSearchTerm){
               $scope.filterItems($scope.orderSearchTerm);
             }
-          }
         })
       }
       $scope.setCurrentPageAfterRedirect(1);
@@ -522,7 +518,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         if (!isConfirmed) {
           // clear input
           if(type==='quantity'){
-            removeQuantity(item);
+            item.quantity = '';
           }
           else{
             item.onhand=null;
@@ -685,10 +681,16 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           $scope.selectedCart.name = updatedCart.name;
           $scope.isRenaming = false;
           CartService.renameCart = false;
+          $scope.tempCartName = '';
+          if($scope.continueToCart) {
+            return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+          } else {
+            $scope.saveAndRetainQuantity();
+          }
         });
       }
     }
-        $('#rowForFocus').find('input:first').focus(); 
+      $('#rowForFocus').find('input:first').focus(); 
     };
 
     $scope.generateNewCartForDisplay = function() {
@@ -773,11 +775,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-          $scope.addToOrderForm.$setPristine();
+          if($scope.addToOrderForm){
+            $scope.addToOrderForm.$setPristine();
+          }         
 
-          if($scope.continueToCart){ 
-          $state.go('menu.cart.items', {cartId: order.ordernumber});
-          }
           var newItemCount = cart.items.length - $scope.origItemCount;
           $scope.origItemCount = cart.items.length;
 
@@ -801,6 +802,11 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           }
         });
       }
+       else{
+         var deferred = $q.defer();
+          deferred.resolve(false);
+          return deferred.promise;
+      }
     }
 
     $scope.isRedirecting = function(resp){
@@ -818,7 +824,13 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
     $scope.saveAndContinue = function(){
       $scope.continueToCart = true;
-      return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+
+      if($scope.tempCartName){
+        $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+      } else {
+        return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+      }
+
     }
 
     //Function includes support for saving items while filtering and saving cart when changing ship date
@@ -828,10 +840,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       }
       if($scope.addToOrderForm && $scope.addToOrderForm.$invalid){
         var r = confirm('Unsaved data will be lost. Do you wish to continue?');
-          return r;   
+        return r;   
       } 
       else {
-        if($scope.selectedCart.id === 'New'){
+        if($scope.selectedCart && $scope.selectedCart.id === 'New'){
           $scope.creatingCart = true;
         }
         if($scope.tempCartName){
@@ -841,15 +853,17 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           return deferred.promise;
         }
         else {
-          if($scope.selectedCart.subtotal === 0){
+          if($scope.selectedCart && $scope.selectedCart.subtotal === 0){
             $scope.addToOrderForm.$setDirty();
           }
-          return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+          if($scope.selectedList && $scope.selectedCart) {
+            return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
             if(noParentFunction){
               $scope.isRedirecting(resp);
             }
             return resp;
-          });
+            });
+          }
         }
       }
       $scope.addToOrderForm.$setPristine();
@@ -922,9 +936,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     };
 
     $scope.saveBeforeQuickAdd = function(){  
-      $scope.saveAndRetainQuantity().then(function(){
-          $scope.openQuickAddModal();
-      })
+      if($scope.addToOrderForm.$dirty){
+        $scope.saveAndRetainQuantity();        
+      }
+      $scope.openQuickAddModal();     
     };
 
     $scope.openQuickAddModal = function() {
@@ -935,11 +950,47 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
         resolve: {
           cart: function() {
-            return $scope.selectedList;
+            return $scope.selectedCart;
           }
         }
       })
     };
+
+    $scope.$on('QuickAddUpdate', function(event, origCartItems, newItems) {
+      $scope.fromQuickAdd = true;
+      newItems.forEach(function(item){
+        item.extPrice = PricingService.getPriceForItem(item);
+      })
+      if(newItems){
+        $scope.selectedCart.items = origCartItems.concat(newItems);
+      }
+      $scope.saveAndRetainQuantity().then(function(resp){
+        $scope.selectedCart = resp;
+        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+        $scope.calculatePieces($scope.selectedCart.items);
+        $scope.fromQuickAdd = false;
+      });
+    })
+
+    $scope.saveBeforePrint = function(){
+      if($scope.addToOrderForm.$pristine && $scope.selectedCart.id !== 'New'){
+        $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+      }
+      else{
+        if($scope.selectedCart.id === 'New'){
+        $scope.createdFromPrint = true;
+        $scope.addToOrderForm.$setDirty();
+      }         
+      $scope.saveAndRetainQuantity().then(function(resp){
+        if($scope.isRedirecting(resp)){
+          //do nothing
+        }
+        else{
+          $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+        }
+      })
+      }
+    }
 
     $scope.openPrintOptionsModal = function(list, cart) {
       var modalInstance = $modal.open({
