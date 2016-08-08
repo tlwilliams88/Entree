@@ -379,8 +379,8 @@ angular.module('bekApp')
       },
  
       isSubmitted: function(cartId) {
-        return Cart.isSubmitted({cartid: cartId}).$promise.then(function(resp) {
-          return (resp && resp.successResponse) ? resp.successResponse.id: false;        
+        return $http.get('/cart/issubmitted/' + cartId).then(function(resp){
+          return (resp && resp.data) ? resp.data.successResponse : true;
         });
       },
 
