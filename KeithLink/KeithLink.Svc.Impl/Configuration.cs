@@ -1055,7 +1055,7 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQNotificationPushMessagesQueue
+        public static string RabbitMQPushMessagesQueue
         {
             get
             {

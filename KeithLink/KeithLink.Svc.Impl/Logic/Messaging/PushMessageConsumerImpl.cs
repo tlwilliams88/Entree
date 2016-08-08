@@ -92,13 +92,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         public string ConsumeMessageFromQueue()
         {
-            if (Configuration.RabbitMQNotificationPushMessagesQueue == null)
+            if (Configuration.RabbitMQPushMessagesQueue == null)
             {
-                throw new Exception("AppSetting RabbitMQNotificationPushMessagesQueue is not set.");
+                throw new Exception("AppSetting RabbitMQPushMessagesQueue is not set.");
             }
             return
                 _genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
-                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQNotificationPushMessagesQueue);
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQPushMessagesQueue);
         }
 
         public void Stop()
