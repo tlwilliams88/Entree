@@ -18,6 +18,7 @@ angular.module('bekApp')
   $scope.areAllSelected = false;
   $scope.selectedSortParameter = 'Invoice Date';
   $scope.sortParametervalue = 'invoicedate';
+  $scope.sortDirection = 'Asc';
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -114,6 +115,8 @@ angular.module('bekApp')
   $scope.selectSortParameter = function(parametername, parametervalue){
     $scope.selectedSortParameter = parametername;
     $scope.sortParametervalue = parametervalue;
+    $scope.sortDirection = 'Asc';
+    $scope.sortInvoices($scope.sortDirection, parametervalue);
   }
 
   $scope.sortParameters = [{
@@ -344,7 +347,17 @@ angular.module('bekApp')
     }
   };
 
-  $scope.sortInvoices = function(sortDescending, sortField) {
+  $scope.sortInvoices = function(sortDirection, sortField) {
+    var sortDescending;
+
+    if(sortDirection == 'Asc'){
+      sortDescending = false;
+      $scope.sortDirection = 'Desc';
+    } else {
+      sortDescending = true;
+      $scope.sortDirection = 'Asc';
+    }
+
     blockUI.start('Sorting Invoices...').then(function(){
       $scope.sort = {
         field: sortField,
@@ -352,6 +365,7 @@ angular.module('bekApp')
       };
       invoicePagingModel.sortData($scope.sort);
     })
+
   };
 
   $scope.setDateSortValues = function(invoice){
