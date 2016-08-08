@@ -234,7 +234,8 @@
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Lists\INoteLogic.cs" />
     <Compile Include="Interface\Messaging\IMessagingLogic.cs" />
-    <Compile Include="Interface\Messaging\IPushNotificationMessageProvider.cs" />
+    <Compile Include="Interface\Messaging\IPushMessageConsumer.cs" />
+    <Compile Include="Interface\Messaging\IPushMessageProvider.cs" />
     <Compile Include="Interface\Messaging\IMessageProvider.cs" />
     <Compile Include="Interface\Messaging\INotificationHandler.cs" />
     <Compile Include="Interface\Messaging\INotificationQueueConsumer.cs" />
@@ -314,6 +315,7 @@
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
     <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
+    <Compile Include="Models\Messaging\Queue\PushMessage.cs" />
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />

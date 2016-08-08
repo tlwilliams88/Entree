@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IOrderHistoryLogic _orderHistoryLogic;
         private ISpecialOrderLogic _specialOrderLogic;
         private INotificationQueueConsumer _notificationQueueConsumer;
+        private IPushMessageConsumer _pushmessageConsumer;
         private IEventLogRepository _log;
         private IEmailClient _emailClient;
 
@@ -33,6 +34,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope orderHistoryScope;
         private ILifetimeScope specialOrderScope;
         private ILifetimeScope notificationScope;
+        private ILifetimeScope pushMessagesScope;
 
         private static bool _checkLostOrdersProcessing;
         private Timer _checkLostOrdersTimer;
@@ -82,9 +84,9 @@ namespace KeithLink.Svc.Windows.QueueService {
         protected override void OnStart( string[] args ) {
             _log = container.Resolve<IEventLogRepository>();
             _log.WriteInformationLog( "Service starting" );
-
-
+            
             InitializeNotificationsThread();
+            InitializePushMessageConsumerThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
             InitializeCheckLostOrdersTimer();
@@ -95,6 +97,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TerminateConfirmationThread();
             TerminateOrderHistoryThread();
             TerminateNotificationsThread();
+            TerminatePushMessageConsumerThread();
             TerminateCheckLostOrdersTimer();
             TerminateSpecialOrderUpdateThread();
 
@@ -112,6 +115,13 @@ namespace KeithLink.Svc.Windows.QueueService {
             notificationScope = container.BeginLifetimeScope();
             _notificationQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
             _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
+        }
+
+        private void InitializePushMessageConsumerThread()
+        {
+            pushMessagesScope = container.BeginLifetimeScope();
+            _pushmessageConsumer = pushMessagesScope.Resolve<IPushMessageConsumer>();
+            _pushmessageConsumer.ListenForQueueMessages();
         }
 
         private void InitializeOrderUpdateThread() {
@@ -158,6 +168,15 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             if (notificationScope != null)
                 notificationScope.Dispose();
+        }
+
+        private void TerminatePushMessageConsumerThread()
+        {
+            if (_pushmessageConsumer != null)
+                _pushmessageConsumer.Stop();
+
+            if (pushMessagesScope != null)
+                pushMessagesScope.Dispose();
         }
 
         private void TerminateCheckLostOrdersTimer() {
