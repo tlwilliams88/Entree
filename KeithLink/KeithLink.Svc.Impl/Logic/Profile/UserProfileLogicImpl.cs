@@ -1180,8 +1180,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // add to cache if found
             if (retVal.UserProfiles.Count > 0) {
-                _cache.AddItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(retVal.UserProfiles.FirstOrDefault().EmailAddress), TimeSpan.FromHours(2), retVal.UserProfiles.FirstOrDefault());
+                UserProfile currentUser = retVal.UserProfiles.FirstOrDefault();
+
+                if(currentUser != null && !string.IsNullOrEmpty(currentUser.EmailAddress)) {
+                    _cache.AddItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, 
+                                                CacheKey(currentUser.EmailAddress), TimeSpan.FromHours(2), currentUser);
+                }
             }
+
             return retVal;
         }
 
