@@ -136,7 +136,7 @@
                         <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
                       </li>
                     </ul>
-                  <button class="btn btn-default" type="button" ng-click="sortInvoices(false, sortParametervalue)">Asc </button><span >/</span><button class="btn btn-default" type="button" ng-click="sortInvoices(true, sortParametervalue)" > Desc</button>
+                  <button class="btn btn-default" type="button" ng-click="sortInvoices(sortDirection, sortParametervalue)">{{sortDirection}}</button>
                 </div>
               </div>
             </div>

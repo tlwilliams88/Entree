@@ -810,6 +810,10 @@ angular.module('bekApp')
       $scope.startingPoint = 0;
       $scope.noFiltersSelected = !$scope.noFiltersSelected;
       var parentCategorySelected,
+          parentCategoryAvailableIdx,
+          parentCategorySelectedIdx,
+          subcategorySelected,
+          totalSelectedSubCategories,
           isSelected,
           unSelectedCategory,
           idx;
@@ -819,7 +823,7 @@ angular.module('bekApp')
       if (idx > -1) {
         parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:selectedFacet});
 
-        if (parentCategorySelected.length){
+        if (parentCategorySelected.length){ // Parent Category is un-selected here
 
           if(parentCategorySelected[0].IsOpen){ // Toggles sub-categories display to none if category is open
             $scope.toggleSubCategories(parentCategorySelected[0], index); // Closes Category when parent category is unselected
@@ -841,7 +845,32 @@ angular.module('bekApp')
           })
 
           facetList.splice(idx, 1);
-        } else {
+        } else { // All other aggregates are un-selected here
+
+          if(parentcategory){
+            // Identify parent category selected
+            parentCategorySelected = $filter('filter')($scope.facets.parentcategories.available, {name:parentcategory});
+
+            // Find index of parent category in available parent categories
+            parentCategoryAvailableIdx = $scope.facets.parentcategories.available.indexOf(parentCategorySelected[0]);
+
+            // Find index of parent category in selected parent categories
+            parentCategorySelectedIdx = $scope.facets.parentcategories.selected.indexOf(parentCategorySelected[0].name);
+
+            // Identify sub-category selected within selected parent category
+            subcategorySelected = $filter('filter')(parentCategorySelected[0].categories, {name:selectedFacet});
+
+            // Find total count of selected sub-categories within selected parent category
+            totalSelectedSubCategories = $filter('filter')(parentCategorySelected[0].categories, {isSelected:true});// Finds all selected sub-categories
+
+            if(totalSelectedSubCategories.length == 1){
+              // If only one selected sub-category remains un-select parent category and collapses category
+              $scope.facets.parentcategories.selected.splice(parentCategorySelectedIdx, 1);
+              $scope.toggleSubCategories(parentCategorySelected[0], parentCategoryAvailableIdx);
+            }
+            subcategorySelected[0].isSelected = false;// Sets selected sub-category isSelected to false
+          }
+
           facetList.splice(idx, 1);
         }
       } else {
