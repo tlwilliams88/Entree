@@ -38,38 +38,20 @@ namespace KeithLink.Svc.Impl.Helpers
         }
 
         /// <summary>
-        /// Method to remove the cross-references needed to be able to check for a cart/order being submitted
+        /// Method to set up the cross-references needed to be able to check for a cart/order being submitted
         /// </summary>
-        public static void EndOrderBlock(Guid cartId, string orderNumber, ICacheRepository cache) // this is probably not needed; left for now
+        public static void StartChangeOrderBlock(string orderNumber, string newOrderNumber, ICacheRepository cache)
         {
-            if (cartId != null && orderNumber == null) // if we are given cartId, get orderNumber from cross-reference
+            if (orderNumber != null && newOrderNumber != null)
             {
-                string cachekey = string.Format("Cart_{0}", cartId);
-                orderNumber = cache.GetItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
+                string cachekey = string.Format("ChangeOrder_Order_{0}", orderNumber);
+                cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromHours(2), newOrderNumber); // create the cart2order cross-reference
             }
 
-            if (cartId != null) // if we are given cartId, remove cart2order cross-reference if it exists
-            {
-                string cachekey = string.Format("Cart_{0}", cartId);
-                cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
-            }
-
-            if (orderNumber != null)
-            {
-                string cachekey = string.Format("Order_{0}", orderNumber);
-                cartId = cache.GetItem<Guid>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
-                if (cartId != null) // if we are not given cartId, remove cart2order cross-reference if it exists
-                {
-                    cachekey = string.Format("Cart_{0}", cartId);
-                    cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
-                }
-                cachekey = string.Format("Order_{0}", orderNumber);
-                cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey); // remove order2cart cross-reference if it exists
-            }
         }
 
         /// <summary>
-        /// Method to check for a cart/order being submitted
+        /// Method to check for a cart/changeorder being submitted
         /// </summary>
         public static bool CheckOrderBlock(UserProfile user, UserSelectedContext catalogInfo, Guid? cartId, string orderNumber,
             IPurchaseOrderRepository pORepository, IOrderHistoryHeaderRepsitory hHRepository, ICacheRepository cache)
@@ -78,6 +60,16 @@ namespace KeithLink.Svc.Impl.Helpers
             {
                 string cachekey = string.Format("Cart_{0}", cartId);
                 orderNumber = cache.GetItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
+            }
+
+            if (orderNumber != null && cartId == null) // if we are given an orderNumber but not cartId, we could be in changeorder, check for cross-reference
+            {
+                string cachekey = string.Format("ChangeOrder_Order_{0}", orderNumber);
+                string newOrderNumber = cache.GetItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
+                if(newOrderNumber != null)
+                {
+                    orderNumber = newOrderNumber;
+                }
             }
 
             EF.OrderHistoryHeader theEFOrder = null;
