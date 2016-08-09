@@ -42,24 +42,23 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         #endregion
 
         #region methods
-        protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer, bool dsrDSMOnly = false) {
-            if (customer == null) { return new List<Recipient>(); }
+        private UserProfileReturn GetUsers(Customer customer, bool dsrDSMOnly) {
+            UserProfileReturn users = new UserProfileReturn();
 
-            Svc.Core.Models.Profile.UserProfileReturn users = new Core.Models.Profile.UserProfileReturn();
-
-            if (dsrDSMOnly) {
+            if(dsrDSMOnly) {
                 //Only load DSRs and DSMs for the customer
 
                 //Load DSRs
                 var dsr = _dsrLogic.GetDsr(customer.CustomerBranch, customer.DsrNumber);
-                if (dsr != null && dsr.DsrNumber != "000" && !string.IsNullOrEmpty(dsr.EmailAddress)) {
-                    users = (userProfileLogic.GetUserProfile(dsr.EmailAddress));
+                if(dsr != null && dsr.DsrNumber != "000" && !string.IsNullOrEmpty(dsr.EmailAddress)) {
+                    users = (userProfileLogic.GetUserProfile(dsr.EmailAddress, createBekProfile: false));
                 }
 
                 //Load DSM
-                List<Core.Models.Profile.UserProfile> customerUsers = userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch);
-                Core.Models.Profile.UserProfile dsm = customerUsers.Where(x => x.DSMNumber == customer.DsmNumber).FirstOrDefault();
-                if (dsm != null) {
+                List<UserProfile> customerUsers = userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch);
+                UserProfile dsm = customerUsers.Where(x => x.DSMNumber == customer.DsmNumber).FirstOrDefault();
+
+                if(dsm != null) {
                     users.UserProfiles.Add(dsm);
                 }
             } else {
@@ -67,16 +66,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
             }
 
+            return users;
+        }
+
+        protected List<Recipient> LoadRecipients(NotificationType notificationType, Customer customer, bool dsrDSMOnly = false) {
+            if (customer == null) { return new List<Recipient>(); }
+
+            UserProfileReturn users = GetUsers(customer, dsrDSMOnly);
+
+            if(users.UserProfiles.Count == 0) { return new List<Recipient>(); }
+
             List<UserMessagingPreference> userDefaultMessagingPreferences = // list of each user's default prefs
                 userMessagingPreferenceRepository.ReadByUserIdsAndNotificationType(users.UserProfiles.Select(u => u.UserId), notificationType, true).ToList();
             List<UserMessagingPreference> customerMessagingPreferences = // list of customer's user specific pref
                 userMessagingPreferenceRepository.ReadByCustomerAndNotificationType(customer.CustomerNumber, customer.CustomerBranch, notificationType).ToList();
 
-            //foreach (Guid userId in customerMessagingPreferences.Select(x => x.UserId).Except(users.UserProfiles.Select(x => x.UserId)))
-            //{
-            //	// this will handle internal users that have a messaging pref setup for a customer
-            //	users.UserProfiles.Add(userProfileLogic.GetUserProfile(userId).UserProfiles.FirstOrDefault());
-            //}
             List<UserMessagingPreference> ump = new List<UserMessagingPreference>();
             ump.AddRange(userDefaultMessagingPreferences);
             ump.AddRange(customerMessagingPreferences);

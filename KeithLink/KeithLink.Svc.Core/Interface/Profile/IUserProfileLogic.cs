@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         PagedResults<Account> GetPagedAccounts(PagingModel paging);
 
-        UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false);
+        UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false, bool createBekProfile = true);
         
         UserProfileReturn GetUserProfile(Guid userId, bool includeLastOrderDate = true);
 

@@ -1150,7 +1150,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 8/18/2014 - documented
         /// jwames - 8/29/2014 - create a profile for a BEK user if it does not exist
         /// </remarks>
-        public UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false) {
+        public UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false, bool createBekProfile = true) {
             UserProfileReturn retVal = new UserProfileReturn();
 
             // check for cached user profile first
@@ -1169,13 +1169,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(emailAddress);
 
             if (csUserProfile == null) {
-                if (ProfileHelper.IsInternalAddress(emailAddress)) {
+                if (ProfileHelper.IsInternalAddress(emailAddress) && createBekProfile) {
                     CreateBekUserProfile(emailAddress);
 
                     return GetUserProfile(emailAddress);
                 }
             } else {
-                retVal.UserProfiles.Add(FillUserProfile(csUserProfile, includeTermInformation: true));
+                retVal.UserProfiles.Add(FillUserProfile(csUserProfile, includeTermInformation: includeTermInformation));
             }
 
             // add to cache if found
