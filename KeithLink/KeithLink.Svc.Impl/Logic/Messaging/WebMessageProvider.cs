@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 message.MessageBody = message.MessageBody.Replace("|LOGO|", "<h2>BEK</h2>");
             }
 
-            Parallel.ForEach(recipients, (recipient) => {
+            foreach(var recipient in recipients) {
                 try {
                     userMessageRepository.Create(
                         new Core.Models.Messaging.EF.UserMessage() {
@@ -48,12 +48,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                             UserId = recipient.UserId,
                             Label = message.NotificationType.ToString() // TODO: add a label for the message?
                         });
+                    unitOfWork.SaveChanges();
                 } catch(Exception ex) {
                     eventLogRepository.WriteErrorLog("WebMessageProvider: Error Sending Message", ex);
                 }
-            });
-
-            unitOfWork.SaveChanges();
+            }
         }
         #endregion
     }
