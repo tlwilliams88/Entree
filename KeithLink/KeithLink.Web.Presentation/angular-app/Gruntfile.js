@@ -354,6 +354,30 @@ module.exports = function (grunt) {
                   src: '**/fonts/*'
               }]
           },
+          newRelic: {
+              files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/scripts/newrelic/newrelic-dev',
+                dest: '<%= yeoman.dev %>/newrelic',
+                src: '**/newrelic.js'
+              }]
+          },
+          newRelicTest: {
+              files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/scripts/newrelic/newrelic-test',
+                dest: '<%= yeoman.dist %>/newrelic',
+                src: '**/newrelic.js'
+              }]
+          },
+          newRelicProd: {
+              files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/scripts/newrelic/newrelic-prod',
+                dest: '<%= yeoman.dist %>/newrelic',
+                src: '**/newrelic.js'
+              }]
+          },
           styles: {
               expand: true,
               cwd: '<%= yeoman.app %>/styles',
@@ -601,6 +625,7 @@ module.exports = function (grunt) {
     // 'includeSource:dev',
     'compass:server',
     'copy:dev',
+    'copy:newRelic',
     'karma'
   ]);
 
@@ -611,6 +636,7 @@ module.exports = function (grunt) {
     // 'includeSource:dev',
     'compass:server',
     'copy:dev',
+    'copy:newRelic',
     'karma'
   ]);
 
@@ -621,6 +647,7 @@ module.exports = function (grunt) {
     // 'includeSource:dev',
     'compass:server',
     'copy:dev',
+    'copy:newRelic',
     'karma'
   ]);
 
@@ -641,6 +668,7 @@ module.exports = function (grunt) {
     'concat',
     'ngmin',
     'copy:dist',
+    'copy:newRelicTest',
     'cssmin',
     'uglify',
     'filerev',
@@ -658,6 +686,7 @@ module.exports = function (grunt) {
     'concat',
     'ngmin',
     'copy:dist',
+    'copy:newRelic',
     'cssmin',
     'uglify',
     'filerev',
@@ -675,6 +704,7 @@ module.exports = function (grunt) {
     'concat',
     'ngmin',
     'copy:dist',
+    'copy:newRelic',
     'cssmin',
     'uglify',
     'filerev',
@@ -683,20 +713,21 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build-for-stage', [
-      'clean:dist',
-      // 'includeSource:dist',
-      'ngconstant:stage',
-      'useminPrepare',
-      'concurrent:dist',
-      'autoprefixer',
-      'concat',
-      'ngmin',
-      'copy:dist',
-      'cssmin',
-      'uglify',
-      'filerev',
-      'usemin',
-      'htmlmin'
+    'clean:dist',
+    // 'includeSource:dist',
+    'ngconstant:stage',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngmin',
+    'copy:dist',
+    'copy:newRelic',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
   ]);
 
   grunt.registerTask('build', [
@@ -709,6 +740,7 @@ module.exports = function (grunt) {
     'concat',
     'ngmin',
     'copy:dist',
+    'copy:newRelicProd',
     'cssmin',
     'uglify',
     'filerev',
