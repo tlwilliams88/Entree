@@ -56,6 +56,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region methods
 
+        /// <summary>
+        /// An endpoint for determining whether a cart submission has been made
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("cart/issubmitted/{cartId}")]
         public Models.OperationReturnModel<bool> IsSubmitted(Guid cartId)

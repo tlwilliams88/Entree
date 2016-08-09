@@ -148,6 +148,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
             builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
+            builder.RegisterType<PushMessageConsumerImpl>().As<IPushMessageConsumer>();
 
             // order
             builder.RegisterType<ImagingRepositoryImpl>().As<IImagingRepository>();
@@ -240,7 +241,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // keyed types - message providers
             builder.RegisterType<WebMessageProvider>().Keyed<IMessageProvider>(Channel.Web);
             builder.RegisterType<EmailMessageProvider>().Keyed<IMessageProvider>(Channel.Email);
-            builder.RegisterType<AmazonPushNotificationMessageProvider>().Keyed<IMessageProvider>(Channel.MobilePush);
+            builder.RegisterType<PushMessagePublisherImpl>().Keyed<IMessageProvider>(Channel.MobilePush);
             builder.Register<Func<Channel, IMessageProvider>>(
                 c => {
                     var handlers = c.Resolve<IIndex<Channel, IMessageProvider>>();

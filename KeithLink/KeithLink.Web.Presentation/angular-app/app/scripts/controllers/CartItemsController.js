@@ -253,11 +253,8 @@ angular.module('bekApp')
         return;
         }
 
-         CartService.isSubmitted(cart.id).then(function(resp){
-          if(resp === false){
-            // Do nothing. The cart has already been submitted
-          }
-          else{
+         CartService.isSubmitted(cart.id).then(function(hasBeenSubmitted){
+          if(!hasBeenSubmitted){
             $scope.saveCart(cart)
             .then(CartService.submitOrder)
             .then(function(data) {
@@ -423,11 +420,8 @@ angular.module('bekApp')
           return;
         }
 
-        OrderService.isSubmitted(order.ordernumber).then(function(resp){
-          if(resp === false){
-            // Do nothing. The cart has already been submitted
-          }
-          else{
+        //OrderService.isSubmitted(order.ordernumber).then(function(hasBeenSubmitted){
+          //if(!hasBeenSubmitted){
             $scope.saveChangeOrder(order)
             .then(OrderService.resubmitOrder)
             .then(function(invoiceNumber) {
@@ -439,8 +433,8 @@ angular.module('bekApp')
             }).finally(function() {
               processingResubmitOrder = false;
             });
-          }
-        });
+          //}
+        //});
       }
     };
 

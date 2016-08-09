@@ -61,7 +61,6 @@ angular.module('bekApp')
         url:'/cart/issubmitted/:cartId',
         method:'GET'
       }
-
     });
   
   }]);

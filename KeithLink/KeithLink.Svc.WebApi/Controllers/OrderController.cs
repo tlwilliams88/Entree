@@ -54,6 +54,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region methods
         [HttpGet]
         [ApiKeyedRoute("order/issubmitted/{orderNumber}")]
+        /// <summary>
+        /// Endpoint for checking whether a changeorder is in progress
+        /// </summary>        
         public Models.OperationReturnModel<bool> IsSubmitted(string ordernumber)
         {
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
@@ -71,7 +74,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
-
 
         /// <summary>
         /// Retrieve possible ship dates

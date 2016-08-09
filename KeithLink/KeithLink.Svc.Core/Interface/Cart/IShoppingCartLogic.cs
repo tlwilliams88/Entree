@@ -29,6 +29,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
         /// Method to check for a cart that has been submitted
         /// </summary>
         bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
+
         ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext catalogInfo, Guid cartId, long listId, Core.Models.Lists.PrintListModel options );
 
 		SaveOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);

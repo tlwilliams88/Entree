@@ -52,7 +52,6 @@ angular.module('bekApp')
         url:'/order/issubmitted/:orderNumber',
         method:'GET'
       }
-
     });
   
   }]);

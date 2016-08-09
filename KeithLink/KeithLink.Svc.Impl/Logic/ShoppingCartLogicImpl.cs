@@ -13,6 +13,7 @@ using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
 using KeithLink.Svc.Core.Helpers;
 
+using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Configurations;
@@ -31,6 +32,8 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
+using KeithLink.Svc.Impl.Helpers;
+
 // Core
 using System;
 using System.Collections.Generic;
@@ -38,8 +41,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic
 {

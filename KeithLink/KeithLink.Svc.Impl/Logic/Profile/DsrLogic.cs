@@ -44,7 +44,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         private Dsr GetDefault(string branchId) {
-            return ToDsrModel(_dsrRepository.Read( d => d.DsrNumber == "000" && d.BranchId == branchId ).First());
+            var defaultDsr = _dsrRepository.Read(d => d.DsrNumber == "000" && d.BranchId == branchId).FirstOrDefault();
+
+            if(defaultDsr == null) {
+                return new Dsr() { Branch = branchId, DsrNumber = "000" };
+            } else {
+                return ToDsrModel(defaultDsr);
+            }
         }
 
 		private Dsr ToDsrModel(Core.Models.EF.Dsr d)

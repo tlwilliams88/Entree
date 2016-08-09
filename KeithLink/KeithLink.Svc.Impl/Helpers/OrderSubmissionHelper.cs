@@ -25,9 +25,9 @@ namespace KeithLink.Svc.Impl.Helpers
         /// <summary>
         /// Method to set up the cross-references needed to be able to check for a cart/order being submitted
         /// </summary>
-        public static void StartOrderBlock(Guid cartId, string orderNumber,ICacheRepository cache)
+        public static void StartOrderBlock(Guid cartId, string orderNumber, ICacheRepository cache)
         {
-            if(cartId != null && orderNumber != null)
+            if (cartId != null && orderNumber != null)
             {
                 string cachekey = string.Format("Cart_{0}", cartId);
                 cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromHours(2), orderNumber); // create the cart2order cross-reference
@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Helpers
             {
                 string cachekey = string.Format("Order_{0}", orderNumber);
                 cartId = cache.GetItem<Guid>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
-                if(cartId != null) // if we are not given cartId, remove cart2order cross-reference if it exists
+                if (cartId != null) // if we are not given cartId, remove cart2order cross-reference if it exists
                 {
                     cachekey = string.Format("Cart_{0}", cartId);
                     cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);

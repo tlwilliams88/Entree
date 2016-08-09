@@ -240,7 +240,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         }
 
         public PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging) {
-            var userMessages = _userMessageRepository.ReadUserMessages(user).ToList();
+            var userMessages = _userMessageRepository.ReadUserMessagesPaged(user, paging.Size, paging.From).ToList();
 
             return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
         }
