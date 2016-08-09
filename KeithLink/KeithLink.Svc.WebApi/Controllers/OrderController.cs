@@ -62,7 +62,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                retVal.SuccessResponse = true;
+                retVal.SuccessResponse = _orderLogic.IsSubmitted(this.AuthenticatedUser, this.SelectedUserContext, ordernumber);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)

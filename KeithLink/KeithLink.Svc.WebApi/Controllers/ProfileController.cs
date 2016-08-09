@@ -207,7 +207,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                         (upVal.UserProfiles[0].DefaultCustomer != null))
                     {
                         upVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, 
-                            upVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
+                            upVal.UserProfiles[0].DefaultCustomer.CustomerNumber, upVal.UserProfiles[0].DefaultCustomer.CustomerBranch);
                     }
 
                     retVal.SuccessResponse = upVal;
@@ -609,7 +609,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 retVal.SuccessResponse = _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType)typeVal);
 
                 // Set the customers UNFI viewing capabilities
-                retVal.SuccessResponse.Results.ForEach(x => x.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, x.CustomerNumber));
+                retVal.SuccessResponse.Results.ForEach(x => x.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, x.CustomerNumber, x.CustomerBranch));
 
                 retVal.IsSuccess = true;
             }

@@ -101,6 +101,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         /// bakillins - 1/22/2016
         /// </remarks>
         /// <returns>a bool that's true if they are on the whitelists</returns>
-        bool CheckCanViewUNFI(UserProfile user, string customernumber);
+        bool CheckCanViewUNFI(UserProfile user, string customernumber, string customerbranch);
     }
 }

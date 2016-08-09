@@ -829,6 +829,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.SaveOrderAsChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
+            OrderSubmissionHelper.StartChangeOrderBlock(orderNumber, newOrderNumber, _cache);
+
             order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
             _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder, null);
