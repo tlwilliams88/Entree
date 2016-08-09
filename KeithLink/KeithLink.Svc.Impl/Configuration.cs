@@ -193,6 +193,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_UNFI_WHITELIST_DSRS = "UNFIWhitelistDSRs";
         private const string KEY_UNFI_WHITELIST_CUSTOMERS = "UNFIWhitelistCustomers";
         private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
+        private const string KEY_UNFI_WHITELIST_BRANCHES = "UNFIWhitelistBranches";
 
         // Queue Service Functions
         private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
@@ -1388,6 +1389,14 @@ namespace KeithLink.Svc.Impl
             get
             {
                 string val = DBAppSettingsRepositoryImpl.GetValue(KEY_UNFI_WHITELIST_DSRS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        public static List<string> WhiteListedUNFIBranches
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_UNFI_WHITELIST_BRANCHES, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
