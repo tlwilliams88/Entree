@@ -37,6 +37,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
         public void ListenForNotificationMessagesOnQueue()
         {
+            if (Configuration.OrderServiceMakeKDOELogFiles == null)
+            {
+                throw new Exception("AppSetting OrderServiceMakeKDOELogFiles is not set.");
+            }
             if (Configuration.OrderServiceMakeKDOELogFiles.Equals(Configuration.TRUE_ORDER_SERVICE_MAKEKDOELOGFILES))
             {
                 listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTaskForUsers(),
@@ -46,6 +50,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         protected void ListenToQueueInTaskForUsers()
         {
+            if (Configuration.OrderServiceKDOELogPath == null)
+            {
+                throw new Exception("AppSetting OrderServiceKDOELogPath is not set.");
+            }
             // recursively create directories for saving order history if they don't exist
             Directory.CreateDirectory(Configuration.OrderServiceKDOELogPath);
 
@@ -71,23 +79,27 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private void ConsumeMessages()
         {
+            if (Configuration.OrderServiceKDOELogExtension == null)
+            {
+                throw new Exception("AppSetting OrderServiceKDOELogExtension is not set.");
+            }
             while (consumingMessages && doListenForMessagesInTask)
             {
                 string msg = ConsumeMessageFromQueue();
 
                 if (msg != null)
                 {
-                    eventLogRepository.WriteInformationLog("Processing notification from queue. OrderHistory: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
+                    eventLogRepository.WriteInformationLog("Processing from queue. OrderHistory: {QueueMessage}".InjectSingleValue("QueueMessage", msg));
 
                     OrderFile order = JsonConvert.DeserializeObject<OrderFile>(msg);
 
                     string json = JsonConvert.SerializeObject(order, Formatting.Indented);
 
                     System.IO.File.WriteAllText
-                        (Configuration.OrderServiceKDOELogPath + 
-                         "\\" + order.Header.OrderingSystem.ToShortString() + 
-                         order.Header.ControlNumber.ToString("0000000") + 
-                         "." + Configuration.OrderServiceKDOELogExtension, 
+                        (Path.Combine(Configuration.OrderServiceKDOELogPath, 
+                                      string.Format("{0}{1}.{2}", order.Header.OrderingSystem.ToShortString(), 
+                                                                  order.Header.ControlNumber.ToString("0000000"), 
+                                                                  Configuration.OrderServiceKDOELogExtension)), 
                          json);
                 }
                 else
