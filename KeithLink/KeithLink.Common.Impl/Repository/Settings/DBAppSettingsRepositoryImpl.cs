@@ -88,7 +88,7 @@ namespace KeithLink.Common.Impl.Repository.Settings
 
         private void Init() {
             try {
-                _log.WriteInformationLog("Initializing DBAppSettingsRepository");
+                //_log.WriteInformationLog("Initializing DBAppSettingsRepository");
 
                 AppSettingsDictionary.Reset();
 
@@ -107,8 +107,8 @@ namespace KeithLink.Common.Impl.Repository.Settings
 
                 AppSettingsDictionary.UniqueCheck = DateTime.Now;
 
-                _log.WriteInformationLog(" DBAppSettingsRepository, " + AppSettingsDictionary.CountSettings + " settings");
-                _log.WriteInformationLog("Init DBAppSettingsRepository Complete");
+                //_log.WriteInformationLog(" DBAppSettingsRepository, " + AppSettingsDictionary.CountSettings + " settings");
+                //_log.WriteInformationLog("Init DBAppSettingsRepository Complete");
             } catch(Exception ex) {
                 _log.WriteErrorLog("Failed to initialize DBAppSettingsRepository", ex);
             }
