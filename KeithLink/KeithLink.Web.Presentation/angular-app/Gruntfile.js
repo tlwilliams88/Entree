@@ -357,15 +357,23 @@ module.exports = function (grunt) {
           newRelic: {
               files: [{
                 expand: true,
-                cwd: '<%= yeoman.app %>/scripts/newrelic/newrelic-dev',
+                cwd: '<%= yeoman.app %>/newrelic/newrelic-dev',
                 dest: '<%= yeoman.dev %>/newrelic',
+                src: '**/newrelic.js'
+              }]
+          },
+          newRelicDebug: {
+              files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/newrelic/newrelic-dev',
+                dest: '<%= yeoman.app %>/newrelic',
                 src: '**/newrelic.js'
               }]
           },
           newRelicTest: {
               files: [{
                 expand: true,
-                cwd: '<%= yeoman.app %>/scripts/newrelic/newrelic-test',
+                cwd: '<%= yeoman.app %>/newrelic/newrelic-test',
                 dest: '<%= yeoman.dist %>/newrelic',
                 src: '**/newrelic.js'
               }]
@@ -373,7 +381,7 @@ module.exports = function (grunt) {
           newRelicProd: {
               files: [{
                 expand: true,
-                cwd: '<%= yeoman.app %>/scripts/newrelic/newrelic-prod',
+                cwd: '<%= yeoman.app %>/newrelic/newrelic-prod',
                 dest: '<%= yeoman.dist %>/newrelic',
                 src: '**/newrelic.js'
               }]
@@ -636,7 +644,7 @@ module.exports = function (grunt) {
     // 'includeSource:dev',
     'compass:server',
     'copy:dev',
-    'copy:newRelic',
+    'copy:newRelicDebug',
     'karma'
   ]);
 
