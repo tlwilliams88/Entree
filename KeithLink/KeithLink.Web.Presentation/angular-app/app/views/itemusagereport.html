@@ -45,7 +45,7 @@
             {{itemusagequery.toDate | formatDate}}
           </td>
           <td class="hidden-print">
-            <button type="submit" ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
+            <button type="submit" ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="loadItemUsage()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
           </td>
         </tr>
       </table>
