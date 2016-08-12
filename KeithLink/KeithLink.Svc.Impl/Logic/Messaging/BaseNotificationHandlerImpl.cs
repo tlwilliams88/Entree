@@ -56,10 +56,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
                 //Load DSM
                 List<UserProfile> customerUsers = userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch);
-                UserProfile dsm = customerUsers.Where(x => x.DSMNumber == customer.DsmNumber).FirstOrDefault();
 
-                if(dsm != null) {
-                    users.UserProfiles.Add(dsm);
+                if(customerUsers == null || customerUsers.Count == 0) {
+                    // no internal users found with access to the customer
+                    log.WriteWarningLog(string.Format("Could not find any internal users with access to {0}-{1}", customer.CustomerBranch, customer.CustomerNumber));
+                } else {
+                    UserProfile dsm = customerUsers.Where(x => x.DSMNumber == customer.DsmNumber).FirstOrDefault();
+
+                    if(dsm != null) {
+                        users.UserProfiles.Add(dsm);
+                    }
                 }
             } else {
                 users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
@@ -74,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             UserProfileReturn users = GetUsers(customer, dsrDSMOnly);
 
-            if(users.UserProfiles.Count == 0) { return new List<Recipient>(); }
+            if(users == null || users.UserProfiles == null || users.UserProfiles.Count == 0) { return new List<Recipient>(); }
 
             List<UserMessagingPreference> userDefaultMessagingPreferences = // list of each user's default prefs
                 userMessagingPreferenceRepository.ReadByUserIdsAndNotificationType(users.UserProfiles.Select(u => u.UserId), notificationType, true).ToList();
