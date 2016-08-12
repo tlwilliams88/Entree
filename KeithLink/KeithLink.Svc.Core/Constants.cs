@@ -327,6 +327,12 @@ namespace KeithLink.Svc.Core
         public const int QUEUE_REPO_RETRY_COUNT = 5;
         public const int QUEUE_CHECKLOSTORDERS_RETRY_COUNT = 5;
 
+        // RabbitMQ route keys
+        public const string RABBITMQ_NOTIFICATION_ORDERCONFIRMATION_ROUTEKEY = "notificationtype=1";
+        public const string RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY = "notificationtype=8";
+        public const string RABBITMQ_NOTIFICATION_ETA_ROUTEKEY = "notificationtype=32";
+        public const string RABBITMQ_NOTIFICATION_PAYMENTNOTIFICATION_ROUTEKEY = "notificationtype=64";
+
         public const string IXONE_IMAGE_FILETYPE_STANDARDRES = "A";
         public const string IXONE_IMAGE_FILETYPE_HIGHRES = "C";
         public const string IXONE_IMAGE_FACING_FRONT = "1";

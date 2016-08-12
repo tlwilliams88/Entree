@@ -29,6 +29,11 @@ namespace KeithLink.Svc.Impl.Repository.Queue
 		{
 			
 		}
-	}
+
+        public void PublishToDirectedExchange(string item, string serverName, string userName, string password, string virtualHost, string exchange, string routeKey)
+        {
+
+        }
+    }
 
 }

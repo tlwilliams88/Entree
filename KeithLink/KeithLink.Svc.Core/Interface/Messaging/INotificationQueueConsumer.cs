@@ -8,6 +8,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 {
     public interface INotificationQueueConsumer
     {
+        string RabbitMQQueueName { get; set; }
+
         void ListenForNotificationMessagesOnQueue();
 
         void Stop();

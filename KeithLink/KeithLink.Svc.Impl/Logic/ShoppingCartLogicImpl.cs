@@ -41,6 +41,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -596,9 +597,9 @@ namespace KeithLink.Svc.Impl.Logic
             orderConfNotification.BranchId = (string)po.Properties["BranchId"];
             orderConfNotification.InvoiceNumber = (string)po.Properties["InvoiceNumber"];
 
-            queueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
+            queueRepository.PublishToDirectedExchange(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
                 Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
-                Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+                Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification, Constants.RABBITMQ_NOTIFICATION_ORDERCONFIRMATION_ROUTEKEY);
         }
 
         public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId) {

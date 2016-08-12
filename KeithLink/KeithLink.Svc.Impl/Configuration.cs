@@ -96,6 +96,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS = "RabbitMQOrderReprocessExchange";
         private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION = "RabbitMQNotificationExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION_V2 = "RabbitMQNotificationExchangeV2";
         private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION_PUSH_MESSAGES = "RabbitMQPushMessagesExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestExchange";
         private const string KEY_RABBITMQ_QUEUE_ACCESS = "RabbitMQAccessQueue";
@@ -107,6 +108,10 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_REPROCESS = "RabbitMQOrderReprocessQueue";
+        private const string KEY_RABBITMQ_QUEUE_ORDERCONFIRMATION = "RabbitMQOrderConfirmationQueue";
+        private const string KEY_RABBITMQ_QUEUE_HASNEWS = "RabbitMQHasNewsQueue";
+        private const string KEY_RABBITMQ_QUEUE_PAYMENTCONFIRMATION = "RabbitMQPaymentConfirmationQueue";
+        private const string KEY_RABBITMQ_QUEUE_ETA = "RabbitMQETAQueue";
         private const string KEY_RABBITMQ_QUEUE_NOTIFICATION = "RabbitMQNotificationQueue";
         private const string KEY_RABBITMQ_QUEUE_NOTIFICATION_PUSH_MESSAGES = "RabbitMQPushMessagesQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestQueue";
@@ -953,6 +958,14 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQExchangeNotificationV2
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_NOTIFICATION_V2, string.Empty);
+            }
+        }
+
         public static string RabbitMQPushMessagesExchange
         {
             get
@@ -1051,6 +1064,38 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ORDER_REPROCESS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueOrderConfirmation
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ORDERCONFIRMATION, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueHasNews
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_HASNEWS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueuePaymentConfirmation
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_PAYMENTCONFIRMATION, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueETA
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ETA, string.Empty);
             }
         }
 

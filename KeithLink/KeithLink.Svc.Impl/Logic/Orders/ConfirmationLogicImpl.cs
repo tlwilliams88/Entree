@@ -383,9 +383,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     orderConfNotification.BranchId = (string)po["BranchId"];
                     orderConfNotification.InvoiceNumber = confirmation.Header.InvoiceNumber;
 					
-                    genericeQueueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
+                    genericeQueueRepository.PublishToDirectedExchange(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
                         Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
-                        Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+                        Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotificationV2, 
+                        Constants.RABBITMQ_NOTIFICATION_ORDERCONFIRMATION_ROUTEKEY);
                 }
             }
 
