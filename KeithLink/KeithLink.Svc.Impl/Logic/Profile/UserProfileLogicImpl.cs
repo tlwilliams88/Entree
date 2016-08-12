@@ -726,9 +726,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     Notification = string.Format("User {0} has been added to {1}-{2}", user.Email, customer.CustomerNumber, customer.CustomerName),
                     DSRDSMOnly = true
                 };
-                _queue.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
+                _queue.PublishToDirectedExchange(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
                             Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
-                            Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+                            Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotificationV2, Constants.RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY);
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog("Error generating DSR/DSM new user notification", ex);
             }

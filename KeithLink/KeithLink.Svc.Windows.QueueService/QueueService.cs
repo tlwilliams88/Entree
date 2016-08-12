@@ -26,6 +26,10 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IConfirmationLogic _confirmationLogic;
         private IOrderHistoryLogic _orderHistoryLogic;
         private ISpecialOrderLogic _specialOrderLogic;
+        private INotificationQueueConsumer _orderConfirmationQueueConsumer;
+        private INotificationQueueConsumer _hasNewsQueueConsumer;
+        private INotificationQueueConsumer _paymentConfirmationQueueConsumer;
+        private INotificationQueueConsumer _ETAQueueConsumer;
         private INotificationQueueConsumer _notificationQueueConsumer;
         private IPushMessageConsumer _pushmessageConsumer;
         private IEventLogRepository _log;
@@ -88,7 +92,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             _log = container.Resolve<IEventLogRepository>();
             _log.WriteInformationLog( "Service starting" );
             
-            InitializeNotificationsThread();
+            InitializeNotificationsThreads();
             InitializePushMessageConsumerThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
@@ -101,7 +105,7 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             TerminateConfirmationThread();
             TerminateOrderHistoryThread();
-            TerminateNotificationsThread();
+            TerminateNotificationsThreads();
             TerminatePushMessageConsumerThread();
             TerminateCheckLostOrdersTimer();
             TerminateSpecialOrderUpdateThread();
@@ -115,10 +119,28 @@ namespace KeithLink.Svc.Windows.QueueService {
             _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
             _confirmationLogic.ListenForQueueMessages();
         }
-
-        private void InitializeNotificationsThread() {
+        
+        private void InitializeNotificationsThreads() {
             notificationScope = container.BeginLifetimeScope();
+
+            _orderConfirmationQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
+            _orderConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueOrderConfirmation;
+            _orderConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+
+            _hasNewsQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
+            _hasNewsQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueHasNews;
+            _hasNewsQueueConsumer.ListenForNotificationMessagesOnQueue();
+
+            _paymentConfirmationQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
+            _paymentConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueuePaymentConfirmation;
+            _paymentConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+
+            _ETAQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
+            _ETAQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueETA;
+            _ETAQueueConsumer.ListenForNotificationMessagesOnQueue();
+
             _notificationQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
+            _notificationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueNotification;
             _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
@@ -167,7 +189,19 @@ namespace KeithLink.Svc.Windows.QueueService {
                 orderHistoryScope.Dispose();
         }
 
-        private void TerminateNotificationsThread() {
+        private void TerminateNotificationsThreads() {
+            if (_orderConfirmationQueueConsumer != null)
+                _orderConfirmationQueueConsumer.Stop();
+
+            if (_hasNewsQueueConsumer != null)
+                _hasNewsQueueConsumer.Stop();
+
+            if (_paymentConfirmationQueueConsumer != null)
+                _paymentConfirmationQueueConsumer.Stop();
+
+            if (_ETAQueueConsumer != null)
+                _ETAQueueConsumer.Stop();
+
             if (_notificationQueueConsumer != null)
                 _notificationQueueConsumer.Stop();
 

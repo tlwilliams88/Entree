@@ -29,6 +29,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private readonly IGenericQueueRepository genericQueueRepository;
         private readonly IEventLogRepository eventLogRepository;
         Func<NotificationType, INotificationHandler> notificationHandlerFactory;
+
+        public string RabbitMQQueueName { get; set; }
         #endregion
 
         #region constructor
@@ -93,7 +95,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             return 
                 KeithLink.Svc.Impl.Helpers.Retry.Do<string>
                 (() => this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
-                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification), 
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, RabbitMQQueueName), 
                 TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
         }
 

@@ -517,8 +517,9 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             notification.Payments = payments;
 
             // write the payment notification to Rabbit MQ
-            _queue.PublishToQueue(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
-                                  Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+            _queue.PublishToDirectedExchange(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
+                                  Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, 
+                                  Configuration.RabbitMQExchangeNotificationV2, Constants.RABBITMQ_NOTIFICATION_PAYMENTNOTIFICATION_ROUTEKEY);
         }
 
         public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)

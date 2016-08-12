@@ -34,6 +34,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
@@ -533,8 +534,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     Subject = "New recommended items",
                     Notification = "New recommended item(s) have been added to your list"
                 };
-                _queueRepo.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
-                                          Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+                _queueRepo.PublishToDirectedExchange(notifcation.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
+                                          Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, 
+                                          Configuration.RabbitMQExchangeNotificationV2, Constants.RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY);
             }
             catch (Exception ex)
             {
