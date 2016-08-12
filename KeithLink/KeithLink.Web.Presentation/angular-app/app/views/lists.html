@@ -542,7 +542,7 @@
               <td class="nowrap hidden-print large-icon icon-col">
                 <div
                   id="optionsdropdown"
-                  ng-if="!item.activeElement"
+                  ng-if="!item.activeElement && item.isvalid"
                   class="context-menu-template context-menu__in-list hidden-print"
                   ng-mouseenter="item.activeElement = true"
                   ng-style="!(showRowOptionsDropdown && item.canOrder) && {'visibility': 'hidden'}">           
@@ -550,7 +550,7 @@
                 </div>
                 <div
                   id="optionsdropdown"
-                  ng-if="item.activeElement"
+                  ng-if="item.activeElement && item.isvalid"
                   class="context-menu-template context-menu__in-list hidden-print"
                   context-menu-template
                   ng-style="!(showRowOptionsDropdown && item.canOrder) && {'visibility': 'hidden'}">           
