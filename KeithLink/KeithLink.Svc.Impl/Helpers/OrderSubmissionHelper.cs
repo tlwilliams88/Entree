@@ -29,10 +29,8 @@ namespace KeithLink.Svc.Impl.Helpers
         {
             if (cartId != null && orderNumber != null)
             {
-                string cachekey = string.Format("Cart_{0}", cartId);
-                cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromHours(2), orderNumber); // create the cart2order cross-reference
-                cachekey = string.Format("Order_{0}", orderNumber);
-                cache.AddItem<Guid>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromHours(2), cartId); // create the order2cart cross-reference
+                string cachekey = string.Format("Cart2OrderId_{0}", cartId);
+                cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromMinutes(5), orderNumber); // create the cart2order cross-reference
             }
 
         }
@@ -44,8 +42,8 @@ namespace KeithLink.Svc.Impl.Helpers
         {
             if (orderNumber != null && newOrderNumber != null)
             {
-                string cachekey = string.Format("ChangeOrder_Order_{0}", orderNumber);
-                cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromHours(2), newOrderNumber); // create the cart2order cross-reference
+                string cachekey = string.Format("ChangeOrder_Order2NewOrderId_{0}", orderNumber);
+                cache.AddItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey, TimeSpan.FromMinutes(5), newOrderNumber); // create the cart2order cross-reference
             }
 
         }
@@ -58,13 +56,13 @@ namespace KeithLink.Svc.Impl.Helpers
         {
             if (cartId != null && orderNumber == null) // if we are given cartId but not orderNumber, check for cross-reference
             {
-                string cachekey = string.Format("Cart_{0}", cartId);
+                string cachekey = string.Format("Cart2OrderId_{0}", cartId);
                 orderNumber = cache.GetItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
             }
 
             if (orderNumber != null && cartId == null) // if we are given an orderNumber but not cartId, we could be in changeorder, check for cross-reference
             {
-                string cachekey = string.Format("ChangeOrder_Order_{0}", orderNumber);
+                string cachekey = string.Format("ChangeOrder_Order2NewOrderId_{0}", orderNumber);
                 string newOrderNumber = cache.GetItem<string>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, cachekey);
                 if(newOrderNumber != null)
                 {
