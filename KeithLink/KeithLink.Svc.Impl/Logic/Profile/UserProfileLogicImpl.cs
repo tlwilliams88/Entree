@@ -1781,14 +1781,27 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
             if (customernumber != null && customerbranch != null)
             {
-                Customer existingCustomer = _customerRepo.GetCustomerByCustomerNumber(customernumber, customerbranch);
-
-                if (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIBranches.Contains(existingCustomer.CustomerBranch, StringComparer.CurrentCultureIgnoreCase))
+                if (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIBranches.Contains(customerbranch, StringComparer.CurrentCultureIgnoreCase))
                 {
                     return true;
                 }
 
-                if (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIDSRs.Contains(existingCustomer.Dsr.Name, StringComparer.CurrentCultureIgnoreCase))
+                Customer existingCustomer = _customerRepo.GetCustomerByCustomerNumber(customernumber, customerbranch);
+
+                if (existingCustomer == null)
+                {
+                    _eventLog.WriteWarningLog(string.Format("customer lookup; customer or its DSR are null with {0} on branch {1}", customernumber, customerbranch));
+                }
+                else
+                {
+                    if(existingCustomer.Dsr != null)
+                    {
+                        _eventLog.WriteWarningLog(string.Format("customer lookup; customer or its DSR are null with {0} on branch {1}", customernumber, customerbranch));
+                    }
+                }
+
+                if (existingCustomer != null && existingCustomer.Dsr != null && existingCustomer.Dsr.Name != null &&
+                    KeithLink.Svc.Impl.Configuration.WhiteListedUNFIDSRs.Contains(existingCustomer.Dsr.Name, StringComparer.CurrentCultureIgnoreCase))
                 {
                     return true;
                 }
