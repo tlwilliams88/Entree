@@ -1136,12 +1136,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     }))
                     .ToList();
 
-                PopulateProductDetails(catalogInfo, returnItems);
-
-                returnItems.ForEach(delegate (RecentNonBEKItem item)
+                if (returnItems.Count > 0)
                 {
-                    item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
-                });
+                    PopulateProductDetails(catalogInfo, returnItems);
+
+                    returnItems.ForEach(delegate (RecentNonBEKItem item)
+                    {
+                        item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
+                    });
+                }
 
                 return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
             }catch (Exception ex)
