@@ -42,7 +42,12 @@ angular.module('bekApp')
     $scope.sortParametervalue = '';
     $scope.sortReverse = false;
 
-    $scope.defaultSearchView = LocalStorage.getDefaultView();
+    if(LocalStorage.getDefaultView()){
+      $scope.defaultSearchView = LocalStorage.getDefaultView();
+    } else {
+      $scope.defaultSearchView = 'ViewWithImages';
+    }
+
     $scope.itemsPerPage = LocalStorage.getPageSize();
     $scope.itemIndex = 0;
 
