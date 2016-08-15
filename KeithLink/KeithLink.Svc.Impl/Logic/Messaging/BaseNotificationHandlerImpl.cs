@@ -61,14 +61,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     // no internal users found with access to the customer
                     log.WriteWarningLog(string.Format("Could not find any internal users with access to {0}-{1}", customer.CustomerBranch, customer.CustomerNumber));
                 } else {
-                    UserProfile dsm = customerUsers.Where(x => x.DSMNumber == customer.DsmNumber).FirstOrDefault();
-
+                    UserProfile dsm = customerUsers.Where(x =>  x.IsDSM &&
+                                                                !string.IsNullOrEmpty(x.DSMNumber) && 
+                                                                x.DSMNumber == customer.DsmNumber)
+                                                   .FirstOrDefault();
+                    
                     if(dsm != null) {
                         users.UserProfiles.Add(dsm);
                     }
                 }
             } else {
-                users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
+                users = userProfileLogic.GetUsers(new UserFilterModel() { CustomerId = customer.CustomerId });
                 users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
             }
 
