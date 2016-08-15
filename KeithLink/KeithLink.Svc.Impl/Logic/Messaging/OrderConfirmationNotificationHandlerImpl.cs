@@ -93,17 +93,35 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 status.Append(" to " + line.NewStatus);
             }
 
-            itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new {
-                ProductNumber = number.ToString(),
-                ProductDescription = currentProduct.Name,
-                Brand = currentProduct.Brand,
-                Quantity = line.QuantityOrdered.ToString(),
-                Sent = line.QuantityShipped.ToString(),
-                Pack = currentProduct.Pack,
-                Size = currentProduct.Size,
-                Price = priceInfo,
-                Status = status.ToString()
-            }));
+            object lineData = null;
+
+            if(currentProduct == null) {
+                lineData = new {
+                    ProductNumber = number.ToString(),
+                    ProductDescription = "Unknown",
+                    Brand = "Unknown",
+                    Quantity = line.QuantityOrdered.ToString(),
+                    Sent = line.QuantityShipped.ToString(),
+                    Pack = "Unknown",
+                    Size = "Unknown",
+                    Price = priceInfo,
+                    Status = status.ToString()
+                };
+            } else {
+                lineData = new {
+                    ProductNumber = number.ToString(),
+                    ProductDescription = currentProduct.Name,
+                    Brand = currentProduct.Brand,
+                    Quantity = line.QuantityOrdered.ToString(),
+                    Sent = line.QuantityShipped.ToString(),
+                    Pack = currentProduct.Pack,
+                    Size = currentProduct.Size,
+                    Price = priceInfo,
+                    Status = status.ToString()
+                };
+            }
+
+            itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(lineData));
         }
 
         private string BuildExtPriceInfo(OrderLineChange line, Product currentProduct) {
@@ -128,17 +146,36 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private void BuildItemDetail(StringBuilder itemOrderInfo, OrderLineChange line, string priceInfo, string extPriceInfo, Product currentProduct) {
             MessageTemplateModel itemDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMDETAIL);
-            itemOrderInfo.Append(itemDetailTemplate.Body.Inject(new {
-                ProductNumber = line.ItemNumber,
-                ProductDescription = currentProduct.Name,
-                Brand = currentProduct.Brand,
-                Quantity = line.QuantityOrdered.ToString(),
-                Sent = line.QuantityOrdered.ToString(),
-                Pack = currentProduct.Pack,
-                Size = currentProduct.Size,
-                Price = priceInfo,
-                Status = line.OriginalStatus
-            }));
+
+            object lineData = null;
+
+            if(currentProduct == null) {
+                lineData = new {
+                    ProductNumber = line.ItemNumber,
+                    ProductDescription = "Unknown",
+                    Brand = "Unknown",
+                    Quantity = line.QuantityOrdered.ToString(),
+                    Sent = line.QuantityOrdered.ToString(),
+                    Pack = "Unknown",
+                    Size = "Unknown",
+                    Price = priceInfo,
+                    Status = line.OriginalStatus
+                };
+            } else {
+                lineData = new {
+                    ProductNumber = line.ItemNumber,
+                    ProductDescription = currentProduct.Name,
+                    Brand = currentProduct.Brand,
+                    Quantity = line.QuantityOrdered.ToString(),
+                    Sent = line.QuantityOrdered.ToString(),
+                    Pack = currentProduct.Pack,
+                    Size = currentProduct.Size,
+                    Price = priceInfo,
+                    Status = line.OriginalStatus
+                };
+            }
+
+            itemOrderInfo.Append(itemDetailTemplate.Body.Inject(lineData));
         }
 
         private void BuildNotificationChanges(OrderConfirmationNotification notification, StringBuilder orderLineChanges) {
