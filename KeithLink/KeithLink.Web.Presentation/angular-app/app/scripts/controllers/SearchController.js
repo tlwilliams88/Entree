@@ -772,7 +772,15 @@ angular.module('bekApp')
       } else {
         $scope.selectedSortParameter = parametername;
         $scope.sortField = parametervalue;
-        $scope.sortDirection = 'asc';
+
+        if(parametername == 'Case Price Low to High' || parametername == 'Unit Price Low to High') {
+          $scope.sortDirection = 'asc';
+        } else if (parametername == 'Case Price High to Low' || parametername == 'Unit Price High to Low') {
+          $scope.sortDirection = 'desc';
+        } else {
+          $scope.sortDirection = 'asc'
+        }
+
         loadProducts('', 'sorting');
       }
     }
@@ -788,6 +796,18 @@ angular.module('bekApp')
     }, {
       name: 'Brand',
       value: 'brand_not_analyzed'
+    }, {
+      name: 'Case Price Low to High',
+      value: 'caseprice'
+    }, {
+      name: 'Case Price High to Low',
+      value: 'caseprice'
+    }, {
+      name: 'Unit Price Low to High',
+      value: 'unitprice'
+    }, {
+      name: 'Unit Price High to Low',
+      value: 'unitprice'
     }];
 
     /*************
