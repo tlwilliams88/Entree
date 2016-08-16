@@ -124,7 +124,7 @@ angular.module('bekApp')
           }
         } else {
           // do not double-count items in both the list and cart 
-          if (item.isHidden === true) {
+          if (item.isShown === true) {
             item.quantity = '';
           }
           newCartItems.push(item);
@@ -141,7 +141,6 @@ angular.module('bekApp')
       angular.forEach(cartItems, function(cartItem) {
         var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber, 'each', cartItem.each);
         if (existingItem) {
-          cartItem.isHidden = true;
           // flag cart items that are in the list multiple times
           // hide those duplicate cart items from ui
           //$stateParams.listItems and testDuplicates will indicate whether or not the ATO page is being displayed after saving or after returning to the page from a state change.
@@ -165,9 +164,7 @@ angular.module('bekApp')
             if(lastInstanceInAppendedItems && lastInstanceInAppendedItems.name){
               var alreadyAccountedFor = false;
               listItems.forEach(function(listItem){
-                if(listItem.itemnumber === lastInstanceInAppendedItems.itemnumber
-                 && listItem.listitemid !== lastInstanceInAppendedItems.listitemid
-                  && $filter('filter')($scope.appendedItems, {listitemid: listItem.listitemid}).length === 0){
+                if(listItem.itemnumber === lastInstanceInAppendedItems.itemnumber && listItem.listitemid !== lastInstanceInAppendedItems.listitemid && $filter('filter')($scope.appendedItems, {listitemid: listItem.listitemid}).length === 0){
                   alreadyAccountedFor = true;
                 }
               })
@@ -194,7 +191,6 @@ angular.module('bekApp')
           }
         }
         } else {
-          cartItem.isHidden = false;
         }
       });
       $scope.appendedItems = [];           
@@ -222,7 +218,7 @@ angular.module('bekApp')
     $scope.setCartItemsDisplayFlag = function (){
       if($scope.selectedCart.items && $scope.selectedCart.items.length > 0){        
         $scope.selectedCart.items.forEach(function(item){
-          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber}).length > 0){
+          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber, each:item.each}).length > 0){
             item.isShown = true;
           }
           else{
@@ -234,31 +230,31 @@ angular.module('bekApp')
  
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page, visited) {
-      $scope.currentPage = page.currentPage
-      $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
-      $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
-      $scope.setRange();
-        if(!visited.length){
-          listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, []);
+    $scope.currentPage = page.currentPage
+    $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
+    $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
+    $scope.setRange();
+
+    if(!visited.length){
+      listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, []);
+    }
+    else{
+      var foundStartPoint = false;
+      $scope.selectedList.items.forEach(function(item, index){
+        if(item.listitemid && item.listitemid === visited[0].items[0].listitemid){
+          $scope.startingPoint = index;
+          $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
+          foundStartPoint = true;
+          $scope.addItemWatches($scope.startingPoint, $scope.endPoint)
+          $scope.setCartItemsDisplayFlag();
         }
-        else{
-          var foundStartPoint = false;
-          $scope.selectedList.items.forEach(function(item, index){
-            if(item.listitemid && item.listitemid === visited[0].items[0].listitemid){
-              $scope.startingPoint = index;
-              $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
-              foundStartPoint = true;
-              $scope.addItemWatches($scope.startingPoint, $scope.endPoint)
-              $scope.setCartItemsDisplayFlag();
-            }
-          })
- 
-          if(!foundStartPoint && visited[0].items.length > 0){
-            appendListItems(visited[0].items);
-          }
-           blockUI.stop();
-        }        
- 
+      })
+
+      if(!foundStartPoint && visited[0].items.length > 0){
+        appendListItems(visited[0].items);
+      }
+       blockUI.stop();
+    }        
   };
  
 $scope.setCurrentPageAfterRedirect = function(pageToSet){
