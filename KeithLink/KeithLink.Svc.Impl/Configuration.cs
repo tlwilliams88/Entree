@@ -214,6 +214,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ORDER_SERVICE_MAKEKDOELOGFILES = "OrderServiceMakeKDOELogFiles";
         public const string TRUE_ORDER_SERVICE_MAKEKDOELOGFILES = "true";
         private const string KEY_ORDER_SERVICE_KDOELOGPATH = "OrderServiceKDOELogPath";
+        private const string KEY_ORDER_SERVICE_KDOELOGPRE = "OrderServiceKDOELogPre";
         private const string KEY_ORDER_SERVICE_KDOELOGEXT = "OrderServiceKDOELogExtension";
 
         // Export Settings
@@ -1525,6 +1526,14 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_ORDER_SERVICE_KDOELOGPATH, string.Empty);
+            }
+        }
+
+        public static string OrderServiceKDOELogPre
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_ORDER_SERVICE_KDOELOGPRE, string.Empty);
             }
         }
 
