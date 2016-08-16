@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Logic.ContentManagement {
             _audit.WriteToAuditLog(
                 Common.Core.Enumerations.AuditType.MarketingCampaignClicked, 
                 user.UserName,
-                string.Format("{0}|{1},{2}", context.CustomerId, clicked.CampaignId, clicked.TagLine)
+                string.Format("customer {0}, campaign:({1}) {2}", context.CustomerId, clicked.CampaignId, clicked.TagLine)
                 );
             return true;
         }
