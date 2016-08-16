@@ -162,6 +162,29 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
+        /// Truncate the internal user access table
+        /// </summary>
+        public void PurgeInternalUserAccessTable() {
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
+                {
+                    using (var cmd = new SqlCommand("[ETL].[PurgeInternalUserAccess]", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog("Error purging internal user access table", ex);
+            }
+        }
+
+        /// <summary>
         /// Import customers and addresses to CS
         /// </summary>
         public void ImportCustomersToCS()

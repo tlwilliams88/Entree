@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Interface.ETL
 {
     public interface IStagingRepository
     {
+        void PurgeInternalUserAccessTable();
         DataTable ReadAllBranches();
         DataTable ReadBrandControlLabels();
         DataTable ReadItems(string branchId);
