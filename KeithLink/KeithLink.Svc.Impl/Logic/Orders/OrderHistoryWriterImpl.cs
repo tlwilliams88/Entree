@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                     OrderFile order = JsonConvert.DeserializeObject<OrderFile>(msg);
 
-                    string json = JsonConvert.SerializeObject(order, Formatting.Indented);
+                    string json = JsonConvert.SerializeObject(order);
 
                     System.IO.File.WriteAllText
                         (Path.Combine(Configuration.OrderServiceKDOELogPath, 
