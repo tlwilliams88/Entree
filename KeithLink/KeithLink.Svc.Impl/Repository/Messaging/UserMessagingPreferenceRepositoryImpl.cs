@@ -16,10 +16,14 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
 
         public IEnumerable<UserMessagingPreference> ReadByUserIdsAndNotificationType(IEnumerable<Guid> ids, NotificationType notificationType, bool defaultsOnly = false)
         {
-            var ret = defaultsOnly ?
-                this.Entities.Where(u => ids.Contains(u.UserId) && u.NotificationType == notificationType && u.CustomerNumber == null)
-                : this.Entities.Where(u => ids.Contains(u.UserId) && u.NotificationType == notificationType);
-            return ret;
+            if(defaultsOnly) {
+                return this.Entities.Where(u => ids.Contains(u.UserId) && 
+                                                u.NotificationType == notificationType && 
+                                                u.CustomerNumber == null);
+            } else {
+                return this.Entities.Where(u => ids.Contains(u.UserId) && 
+                                                u.NotificationType == notificationType);
+            }
         }
 
         public IEnumerable<UserMessagingPreference> ReadByCustomerAndNotificationType(string customerNumber, string branchId, NotificationType notificationType)

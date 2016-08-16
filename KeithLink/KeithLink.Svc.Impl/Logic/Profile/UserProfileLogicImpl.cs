@@ -917,13 +917,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             try {
                 List<InternalUserAccess> allUsersForCustomer = _internalUserAccessRepo.GetAllUsersWithAccessToCustomer( new UserSelectedContext() { BranchId = branchId, CustomerId = customerNumber } );
+                Dictionary<Guid, bool> existingUser = new Dictionary<Guid, bool>();
 
                 foreach (InternalUserAccess user in allUsersForCustomer) {
-                    UserProfileReturn upToAddToList = GetUserProfile( user.EmailAddress );
+                    if(!existingUser.ContainsKey(user.UserId)) {
+                        existingUser.Add(user.UserId, true);
 
-                    if (upToAddToList.UserProfiles != null && upToAddToList.UserProfiles.Count > 0) {
-                        usersWithAccess.Add( upToAddToList.UserProfiles[0] );
+                        UserProfileReturn upToAddToList = GetUserProfile(user.EmailAddress);
+
+                        if(upToAddToList.UserProfiles != null && upToAddToList.UserProfiles.Count > 0) {
+                            usersWithAccess.Add(upToAddToList.UserProfiles[0]);
+                        }
                     }
+                    
                 }
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog( string.Format( "Error retrieving internal users for {0} - {1}", customerNumber, branchId ) );
