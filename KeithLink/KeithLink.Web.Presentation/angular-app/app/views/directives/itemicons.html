@@ -38,7 +38,7 @@
   <span tooltip="Child nutrition information" class="text-regular icon-apple"></span>
 </a>
 <!-- Non-Stock -->
-<a ng-if="item.nonstock === 'Y'">
+<a ng-if="item.nonstock === 'Y'" href="mailto:{{currentCustomer.customer.dsr.emailaddress}}?subject=Entree Item Inquiry for {{currentCustomer.customer.customerName}}: Item# {{item.itemnumber}}&body={{userProfile.firstname}} {{userProfile.lastname}} from {{currentCustomer.customer.customerName}} ({{currentCustomer.customer.customerNumber}} - {{currentCustomer.customer.customerBranch}}) would like to be contacted regarding the following item: {{item.itemnumber}}-{{item.name}}">
   <span tooltip="Contact your DSR to order this item" class="text-regular icon-user"></span>
 </a>
 <!-- MSDS -->

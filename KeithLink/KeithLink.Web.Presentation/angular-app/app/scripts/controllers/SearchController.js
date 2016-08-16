@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage', 'SessionService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
@@ -17,7 +17,8 @@ angular.module('bekApp')
       $timeout,
       ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, // bek custom services
       blockUI,
-      LocalStorage
+      LocalStorage,
+      SessionService
     ) {
 
     // clear keyword search term at top of the page
@@ -525,6 +526,8 @@ angular.module('bekApp')
     *************/
     function getData() {
       var facets;
+      $scope.userProfile = SessionService.userProfile;
+      $scope.currentCustomer = LocalStorage.getCurrentCustomer();
       $scope.aggregateCount;
       
       $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length + $scope.facets.parentcategories.selected.length + $scope.facets.subcategories.selected.length)
@@ -634,33 +637,23 @@ angular.module('bekApp')
 
     function updateParentCategoryFacetCount(categories, data){
 
-      if(categories && categories.available){
-
+      if (categories && categories.available){
         categories.available.forEach(function(category){
-
           var facetName = $filter('filter')(data, {name: category.name})
           category.count = 0;
 
-          if(facetName && facetName.length > 0 && category.name){
-
+          if (facetName && facetName.length > 0 && category.name){
             category.count = facetName[0].count;
 
-            if(facetName[0].categories.length){
-
+            if (facetName[0].categories.length){
               category.categories.forEach(function(subcategory){
-
                   var foundSubcategory = $filter('filter')(facetName[0].categories, {name: subcategory.name})
 
-                  if(foundSubcategory.length){
-
+                  if (foundSubcategory.length){
                     subcategory.count = foundSubcategory[0].count;
-
                   } else {
-
                     subcategory.count = 0;
-
                   }
-
               })
             }
           }
