@@ -1800,7 +1800,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
                 else
                 {
-                    if(existingCustomer.Dsr != null)
+                    if(existingCustomer.Dsr == null)
                     {
                         _eventLog.WriteWarningLog(string.Format("customer lookup; customer or its DSR are null with {0} on branch {1}", customernumber, customerbranch));
                     }
