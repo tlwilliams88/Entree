@@ -93,12 +93,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                     OrderFile order = JsonConvert.DeserializeObject<OrderFile>(msg);
 
-                    string json = JsonConvert.SerializeObject(order);
+                    string json = JsonConvert.SerializeObject(order, Formatting.Indented);
 
                     System.IO.File.WriteAllText
                         (Path.Combine(Configuration.OrderServiceKDOELogPath, 
-                                      string.Format("{0}{1}.{2}", Configuration.OrderServiceKDOELogPre, 
+                                      string.Format("{0}{1}{2}.{3}", Configuration.OrderServiceKDOELogPre, 
                                                                   order.Header.ControlNumber.ToString("D7"), 
+                                                                  Configuration.OrderServiceKDOELogPost,
                                                                   Configuration.OrderServiceKDOELogExtension)), 
                          json);
                 }
