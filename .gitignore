@@ -196,8 +196,9 @@ node_modules/
 /KeithLink/KeithLink.Web.Presentation/angular-app/test/test-results/
 /KeithLink/packages/
 /KeithLink/KeithLink.Web.Presentation/app/
+/KeithLink/KeithLink.Web.Presentation/angular-app/app/newrelic/newrelic.js
 /KeithLink/KeithLink.Web.Presentation/angular-app/app/scripts/configenv.js
-
+/KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap
 
 #Ignore Log Files
 grunt_log.txt

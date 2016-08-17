@@ -213,6 +213,7 @@
     <Build Include="Security\eluser.sql" />
     <Build Include="Security\ecom.sql" />
     <Build Include="Security\ecom_1.sql" />
+    <Build Include="ETL\Stored Procedures\PurgeInternalUserAccess.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CommerceServer\BEK_Commerce_profiles_v1.4.1.dacpac" />
