@@ -398,7 +398,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
             // load up recipients, customer and message
             eventLogRepository.WriteInformationLog("order confirmation base, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
-            Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
+            Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
 
             if (customer == null)
             {

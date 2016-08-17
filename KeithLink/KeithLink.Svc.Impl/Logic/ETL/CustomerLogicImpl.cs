@@ -584,6 +584,9 @@ namespace KeithLink.Svc.Impl.ETL
                 DateTime start = DateTime.Now;
                 _log.WriteInformationLog( String.Format( "ETL: Internal User Access reference table starting {0}", start.ToString() ) );
 
+                // Truncate table before processing
+                _stagingRepository.PurgeInternalUserAccessTable();
+
                 List<Customer> customers = _customerRepo.GetCustomers();
                 List<CS.UserProfile> internalUsers = _userRepo.GetCSProfileForInternalUsers();
 
