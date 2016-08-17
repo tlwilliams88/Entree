@@ -16,23 +16,17 @@ angular.module('bekApp')
   $scope.itemUsageForm = {};
   $scope.totalCost = 0;
 
+  // Generates today's date for use in formatting and determining the date range that shows in date picker
   $scope.initialFromDate = new Date();
   $scope.initialToDate = new Date();
 
-  if(DateService.momentObject().utc().format(Constants.dateFormat.hourMinuteSecond) < 190000){
-    $scope.mindate = DateService.momentObject($scope.initialFromDate).subtract(6, 'months');
-    $scope.maxdate = DateService.momentObject($scope.initialToDate);
-  }
-  else{
-    $scope.mindate = DateService.momentObject($scope.initialFromDate).add(1,'d').subtract(6, 'months');
-    $scope.maxdate = DateService.momentObject($scope.initialToDate);
-  }
+  // Dates used for date picker
+  $scope.mindate = DateService.momentObject($scope.initialFromDate).subtract(6, 'months');
+  $scope.maxdate = DateService.momentObject($scope.initialToDate);
 
+  // Dates used for api calls(export, requesting products)
   $scope.itemusagequery.fromDate = $scope.mindate.format();
   $scope.itemusagequery.toDate = $scope.maxdate.format();
-
-  $scope.itemusagequery.fromDateSearch = $scope.mindate.format().substr(0,10);
-  $scope.itemusagequery.toDateSearch = $scope.maxdate.format().substr(0,10);
 
   $scope.sortField = 'TotalQuantityOrdered';
   $scope.sortReverse = true;
@@ -145,10 +139,4 @@ angular.module('bekApp')
       }
     });
   };
-
-  // INIT
-  // if (ReportService.itemUsageParams) {
-  //   $scope.itemusagequery.fromDate = ReportService.itemUsageParams.from;
-  //   $scope.itemusagequery.toDate = ReportService.itemUsageParams.to;
-  // }
 }]);
