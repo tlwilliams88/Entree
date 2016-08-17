@@ -61,15 +61,25 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     // no internal users found with access to the customer
                     log.WriteWarningLog(string.Format("Could not find any internal users with access to {0}-{1}", customer.CustomerBranch, customer.CustomerNumber));
                 } else {
-                    UserProfile dsm = customerUsers.Where(x => x.DSMNumber == customer.DsmNumber).FirstOrDefault();
-
+                    UserProfile dsm = customerUsers.Where(x =>  x.IsDSM &&
+                                                                !string.IsNullOrEmpty(x.DSMNumber) && 
+                                                                x.DSMNumber == customer.DsmNumber)
+                                                   .FirstOrDefault();
+                    
                     if(dsm != null) {
                         users.UserProfiles.Add(dsm);
                     }
                 }
             } else {
-                users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
+                users = userProfileLogic.GetUsers(new UserFilterModel() { CustomerId = customer.CustomerId });
                 users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
+            }
+
+            // make sure that we return good data in the users list
+            if(users == null || users.UserProfiles == null) {
+                users =  new UserProfileReturn();
+            } else {
+                users.UserProfiles.RemoveAll(u => u == null || u.UserId == null);
             }
 
             return users;
@@ -80,7 +90,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             UserProfileReturn users = GetUsers(customer, dsrDSMOnly);
 
-            if(users == null || users.UserProfiles == null || users.UserProfiles.Count == 0) { return new List<Recipient>(); }
+            if(users.UserProfiles.Count == 0) { return new List<Recipient>(); }
+
 
             List<UserMessagingPreference> userDefaultMessagingPreferences = // list of each user's default prefs
                 userMessagingPreferenceRepository.ReadByUserIdsAndNotificationType(users.UserProfiles.Select(u => u.UserId), notificationType, true).ToList();

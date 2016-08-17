@@ -32,6 +32,10 @@ namespace KeithLink.Svc.Impl.ETL
                 }
         }
 
+        public void PurgeInternalUserAccessTable() {
+            throw new NotImplementedException("Not implemented in demo");
+        }
+
 		public DataTable ReadAllBranches()
 		{
 			return PopulateDataTable("[ETL].[ReadBranches]");
