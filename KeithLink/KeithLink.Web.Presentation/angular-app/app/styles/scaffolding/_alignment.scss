@@ -64,3 +64,9 @@
     text-align: right !important
   }
 }
+
+@media (max-width: 481px){
+  .pull-left-xxs {
+    float: left !important;
+  }
+}
