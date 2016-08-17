@@ -16,14 +16,15 @@ angular.module('bekApp')
   $scope.itemUsageForm = {};
   $scope.totalCost = 0;
 
+  // Generates today's date for use in formatting and determining the date range that shows in date picker
   $scope.initialFromDate = new Date();
   $scope.initialToDate = new Date();
 
-  if(DateService.momentObject().utc().format(Constants.dateFormat.hourMinuteSecond) < 190000){
-    $scope.mindate = DateService.momentObject($scope.initialFromDate).subtract(6, 'months');
-    $scope.maxdate = DateService.momentObject($scope.initialToDate);
-  }
+  // Dates used for date picker
+  $scope.mindate = DateService.momentObject($scope.initialFromDate).subtract(6, 'months');
+  $scope.maxdate = DateService.momentObject($scope.initialToDate);
 
+  // Dates used for api calls(export, requesting products)
   $scope.itemusagequery.fromDate = $scope.mindate.format();
   $scope.itemusagequery.toDate = $scope.maxdate.format();
 
