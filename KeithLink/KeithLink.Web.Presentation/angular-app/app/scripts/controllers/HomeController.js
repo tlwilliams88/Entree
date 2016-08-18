@@ -87,6 +87,10 @@ angular.module('bekApp')
         }
       });
     };
+
+    $scope.storePromoItemInformation = function(targeturltext, id){
+      MarketingService.storeMarketingUserInteractionInformation(targeturltext, id);
+    }
  
     $scope.notificationParams = {
       size: 6,

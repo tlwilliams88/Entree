@@ -43,6 +43,14 @@ angular.module('bekApp')
       return $http.get('/profile/export/marketinginfo').then(function(response) {
         return response.data.successResponse;
       });
+    },
+
+    storeMarketingUserInteractionInformation: function(targeturltext, id) {
+      var data = {
+          targeturltext: targeturltext,
+          id: id
+      }
+      return $http.post('/cms/promoitems', data);
     }
   };
 
