@@ -28,6 +28,7 @@ angular.module('bekApp')
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
     $scope.allSelected = false;
+    $scope.rangeSelected = false;
     $scope.numberListNamesToShow = 10;
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
@@ -87,6 +88,36 @@ angular.module('bekApp')
 
     $scope.initPagingValues();
 
+    var selectionStartIndex,
+        selectionStopIndex,
+        lastSingleClick,
+        selectionList;
+
+    $scope.shiftSelectOtherRows = function(evt, item){
+      selectionList = $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint);
+      if (evt.shiftKey) {
+        $scope.rangeSelected = true;
+        if (lastSingleClick != undefined) {
+          selectionStartIndex = lastSingleClick;
+        }
+        selectionStopIndex = selectionList.indexOf(item);
+        selectRowsBetweenIndexes([selectionStopIndex, selectionStartIndex], selectionList);
+      } else {
+        lastSingleClick = selectionList.indexOf(item);
+        item.isSelected = !item.isSelected;
+      }
+    };
+
+    function selectRowsBetweenIndexes(indexes, selectionList) {
+      indexes.sort(function(a, b) {
+          return a - b;
+      });
+
+      for (var i = indexes[0]; i <= indexes[1]; i++) {
+          selectionList[i].isSelected = true;
+      }
+    };
+
     $scope.blockUIAndChangePage = function(page){
         $scope.startingPoint = 0;
         $scope.endPoint = 0;       
@@ -114,6 +145,7 @@ angular.module('bekApp')
       $scope.setRange();
       $scope.selectedList.allSelected = false;
       $scope.allSelected = false;
+      $scope.rangeSelected = false;
       var deletedItems = [];
       $scope.selectedList.items.forEach(function(item){
         if(item.deleted){

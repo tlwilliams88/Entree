@@ -137,8 +137,8 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         var row=currentRowEls[id];
 
                         if(row && ((listScope.currentIndex === index 
-                            && !(listScope.isDeletingItem || listScope.isChangingPage || listScope.allSelected))
-                             || listScope.isDeletingItem || listScope.allSelected)) {
+                            && !(listScope.isDeletingItem || listScope.isChangingPage || listScope.allSelected || listScope.rangeSelected))
+                             || listScope.isDeletingItem || listScope.allSelected || listScope.rangeSelected)) {
                             // We've already seen this one
                             if((!row.compiled 
                                 && (forceUpdate || !angular.equals(row.copy, item)))
@@ -150,9 +150,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 row.copy = angular.copy(item);
                                 row.compiled = false;
                                 row.item = item;
-                                if(scope.list.indexOf(item) % 2 == 0) {
-                                    row.el[0].children[0].className += ' even';
-                                }
                             }
                         } else if(!row || listScope.isChangingPage) {
                             if(!disableOpts) {
@@ -161,9 +158,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                     item: item,
                                     el: render(item)
                                 };
-                                if(scope.list.indexOf(item) % 2 == 0) {
-                                    row.el[0].children[0].className += ' even';
-                                }
                             }else{
                                 row = {
                                 copy: angular.copy(item),
@@ -181,14 +175,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 currentRowEls[id] =  row; 
                                 previousEl.after(row.el.last());
                                 previousEl = row.el.last();
-                        }
-
-
-                        if(row && index % 2 == 0) {
-                            row.el[0].children[0].className += ' even';
-                        }
-                        else{
-                            row.el[0].children[0].className -= ' even';
                         }
 
                     });
@@ -294,12 +280,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
                         scope.itemIconsActive = true;
-                        if(scope.list.indexOf(item) % 2 == 0){
-                            $target.replaceWith(clone);
-                            clone[0].children[0].className += ' even';
-                        }else{
-                            $target.replaceWith(clone);
-                        }
+                        $target.replaceWith(clone);
 
                         clone[0].children[0].className += ' unoptimized';
 

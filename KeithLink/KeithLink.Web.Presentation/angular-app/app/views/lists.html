@@ -338,7 +338,7 @@
           <thead>
             <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
-                <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="selectedList.allSelected" ng-click="allSelected = true; changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
+                <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 250 }" ng-model="selectedList.allSelected" ng-click="allSelected = true; changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort[0].order)"> 
                   #
                   <span sort-icons field="'position'" sortorder="sort[0].order" sortby="sort[0].field"></span>
@@ -403,9 +403,11 @@
               jqyoui-draggable="{
                 onStart: 'setIsDragging(true, item.listitemid)', 
                 onStop: 'setIsDragging(false)'}" 
-                id="listsTableRows">                
+                id="listsTableRows"
+                class="highlightRows"
+                ng-click="shiftSelectOtherRows($event, item)">                
            
-            <tr >
+            <tr>
               <td class="hidden-drag bek-drag-handle">
                 <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model-options="{ debounce: 1000 }" ng-model="item.isSelected" no-dirty-check>
                 <span style="font-size:11px;">
