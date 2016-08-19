@@ -4,13 +4,13 @@ angular.module('bekApp')
   .controller('ForgotPasswordController', ['$scope', 'UserProfileService', '$state', 'validToken', '$stateParams', 'toaster',
     function ($scope, UserProfileService, $state, validToken, $stateParams, toaster) {
 
-    var validToken = validToken.data.successResponse;
+    var validatedToken = validToken.data.successResponse;
 
-    $scope.isTokenValid = (validToken && validToken.length > 0) ? true : false;
+    $scope.isTokenValid = (validatedToken && validatedToken.length > 0) ? true : false;
     
     //If token is valid, variable validToken will be the email address of the current user. Otherwise, it will be null.
     if($scope.isTokenValid){
-      $scope.emailAddress = validToken;
+      $scope.emailAddress = validatedToken;
     }
     
     $scope.resetPassword = function(passwordData) {

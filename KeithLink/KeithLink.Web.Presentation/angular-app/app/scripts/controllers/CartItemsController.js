@@ -78,7 +78,7 @@ angular.module('bekApp')
       else{
         $scope.recentlyOrderedUnfiItems = [];
       }      
-    })
+    });
 
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
@@ -104,7 +104,7 @@ angular.module('bekApp')
             if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
               item.isMandatory = true;
             }
-          })
+          });
       } else if ($scope.reminderList) {
         $scope.reminderList.active = true;
       } else {
@@ -156,17 +156,17 @@ angular.module('bekApp')
 
     $scope.validateShipDate = function(shipDate){
       var cutoffDate = DateService.momentObject(shipDate.cutoffdatetime,'').format();
-      var now = DateService.momentObject().tz("America/Chicago").format();
+      var now = DateService.momentObject().tz('America/Chicago').format();
 
       $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
       if($scope.invalidSelectedDate){
         CartService.getShipDates().then(function(result){
           $scope.shipDates = result;
-        })
+        });
       }
       $scope.resetSubmitDisableFlag(true);
       return $scope.invalidSelectedDate;
-    }
+    };
 
     $scope.selectShipDate = function(shipDate) {
 
@@ -196,18 +196,18 @@ angular.module('bekApp')
     function invalidItemCheck(items) {
       var invalidItemFound = false;
       items.forEach(function(item){
-        if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK')){
+        if (!(item.extPrice && (item.extPrice > 0) && item.isMandatory) && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
-        } else if(item.isMandatory && item.status && item.status.toUpperCase() !== "OUT OF STOCK" && item.quantity == 0 && $scope.isChangeOrder){
+        } else if(item.isMandatory && item.status && item.status.toUpperCase() !== 'OUT OF STOCK' && item.quantity === 0 && $scope.isChangeOrder){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
         }
-      })
+      });
       return invalidItemFound;
    }
 
-    var processingSaveCart = false;
+    processingSaveCart = false;
 
     $scope.saveCart = function(cart) {
 
@@ -218,7 +218,7 @@ angular.module('bekApp')
 
         // delete items if quantity is 0 or price is 0
           updatedCart.items = $filter('filter')( updatedCart.items, function(item){
-            return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
+            return (item.quantity > 0 || (item.quantity === 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
           });
           $scope.currentCart.items = updatedCart.items;
           $scope.resetSubmitDisableFlag(true);
@@ -262,7 +262,7 @@ angular.module('bekApp')
               var orderNumber = -1;
               var index;
               for (index in data.ordersReturned) {
-                if (data.ordersReturned[index].catalogType == "BEK")
+                if (data.ordersReturned[index].catalogType === 'BEK')
                 {
                   orderNumber = data.ordersReturned[index].ordernumber;
                 }
@@ -271,9 +271,9 @@ angular.module('bekApp')
               var status = '';
               var message  = '';
 
-              if(orderNumber == -1 ) {
+              if(orderNumber === -1 ) {
                 //no BEK items bought
-                if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length != data.numberOfOrders) {
+                if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length !== data.numberOfOrders) {
                   status = 'error';
                   message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
                 } else {
@@ -281,14 +281,14 @@ angular.module('bekApp')
                   message  = 'Successfully submitted order.';
                 }
 
-                if (data.ordersReturned && data.ordersReturned[0] != null) {
+                if (data.ordersReturned && data.ordersReturned[0] !== null) {
                   orderNumber = data.ordersReturned[0].ordernumber;
                 } else {
                   orderNumber = null;
                 }
               } else {
               //BEK oderNumber exists
-              if (data.ordersReturned.length != data.numberOfOrders) {
+              if (data.ordersReturned.length !== data.numberOfOrders) {
                 status = 'error';
                 message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
               } else {
@@ -319,13 +319,13 @@ angular.module('bekApp')
               $scope.recentlyOrderedUnfiItems.unshift(unfiItem);
               itemsAdded = true;
             }
-          })
+          });
           if(itemsAdded){
             OrderService.UpdateRecentlyOrderedUNFIItems($scope.recentlyOrderedUnfiItems);
           }
         }        
       }
-    }
+    };
 
     $scope.renameCart = function (cartId, cartName) {
       var cart = angular.copy($scope.currentCart);
@@ -385,7 +385,7 @@ angular.module('bekApp')
         });
 
         changeOrder.items = $filter('filter')( changeOrder.items, function(item){
-          return (item.quantity > 0 || (item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
+          return (item.quantity > 0 || (item.quantity === 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
         });
 
         return OrderService.updateOrder(changeOrder).then(function(order) {
