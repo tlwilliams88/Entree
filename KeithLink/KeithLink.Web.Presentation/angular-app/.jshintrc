@@ -1,10 +1,11 @@
+//Removed "eqeqeq": true, which does this This options prohibits the use of == and != in favor of === and !==. The former try to coerce values before comparing them which can lead to some unexpected results. The latter don't do any coercion so they are generally safer.
+
 {
   "node": true,
   "browser": true,
   "esnext": true,
   "bitwise": true,
   "curly": true,
-  "eqeqeq": true,
   "immed": true,
   "indent": 2,
   "newcap": true,
@@ -16,6 +17,7 @@
   "strict": true,
   "trailing": true,
   "smarttabs": true,
+  "-W041": false,
   "globals": {
     "angular": false
   },
