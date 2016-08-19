@@ -39,7 +39,7 @@
 </a>
 <!-- Non-Stock -->
 <a ng-if="item.nonstock === 'Y'" href="mailto:{{currentCustomer.customer.dsr.emailaddress}}?subject=Entree Item Inquiry for {{currentCustomer.customer.customerName}}: Item# {{item.itemnumber}}&body={{userProfile.firstname}} {{userProfile.lastname}} from {{currentCustomer.customer.customerName}} ({{currentCustomer.customer.customerNumber}} - {{currentCustomer.customer.customerBranch}}) would like to be contacted regarding the following item: {{item.itemnumber}}-{{item.name}}" analytics-on analytics-event="Non-stock DSR Contact" analytics-label="Search Result Page">
-  <span tooltip="Contact your DSR to order this item" class="text-regular icon-user"></span>
+  <span tooltip="Non-stock item: Click here to contact your DSR via email" class="text-regular icon-user"></span>
 </a>
 <!-- MSDS -->
 <!--TEMP ZONE-->
