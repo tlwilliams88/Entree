@@ -415,8 +415,8 @@
                 </span>          
               </td>
               <td class="bek-drag-handle">
-                <a class="bek-no-drag" ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
-                <a class="bek-no-drag" ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{item.itemnumber}}</a>
+                <a class="bek-no-drag" ng-click="$event.stopPropagation()" ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
+                <a class="bek-no-drag" ng-click="$event.stopPropagation()" ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{item.itemnumber}}</a>
                 <span ng-if="!item.isvalid" class="bek-no-drag" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })" tooltip="Please contact your DSR for more info.">{{item.itemnumber}}</span>
               </td>
               <td class="bek-drag-handle">
@@ -441,8 +441,8 @@
                 {{item.notes}}
               </td>
               <span class="hidden-sm hidden-xs" >                
-              <td ng-if="itemIconsActive" class="hidden-mobile-visible-print" item-icons></td>
-              <td ng-if="!itemIconsActive" class="hidden-mobile-visible-print">
+              <td ng-if="itemIconsActive" ng-click="$event.stopPropagation()" class="hidden-mobile-visible-print" item-icons></td>
+              <td ng-if="!itemIconsActive" ng-click="$event.stopPropagation()" class="hidden-mobile-visible-print">
                 <a ng-if="item.is_specialty_catalog === true"><span class="text-regular icon-leaf"></span></a>
                 <a ng-if="item.inhistory === true"><span class="text-regular icon-history"></span></a>
                 <a ng-if="item.notes"><span class="icon-docs text-regular"></span> </a>
@@ -464,7 +464,7 @@
                 {{item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
+              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
@@ -486,7 +486,7 @@
                   <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
-              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
+              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
                 {{item.label}}
               </td>
               <!-- Label for Print -->
@@ -494,7 +494,7 @@
                 {{item.label}}
               </td>
               <td class="input-col hidden-mobile-visible-print max-width-20" ng-if="!selectedList.read_only">
-              <ng-form name="eachForm" ng-if="item.hasPackagePrice">
+              <ng-form name="eachForm" ng-click="$event.stopPropagation()" ng-if="item.hasPackagePrice">
                 <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each"/>
                 <label for="each"></label>
               </ng-form>
@@ -504,34 +504,18 @@
                 <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
               </td>
               <!-- Parlevel -->
-              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
-<!--                 <span ng-if="isIE">
-                  <ng-form name="parlevelForm">
-                     <input                    
-                      id="parlevel" 
-                      name="parlevel"                    
-                      type="text" 
-                      ng-init="item.parlevel = item.parlevel || 0"     
-                      numeric-validation
-                      ng-model="item.parlevel"     
-                      ng-blur="initParLvl(item)"
-                      class="text-right input-number bek-no-drag tabstop" 
-                      ng-model-options="{debounce: 500}"
-                      onfocus="this.select();" 
-                      onmouseup="return false;"/>
-                  </ng-form>
-                </span> -->
-                  <ng-form name="parlevelForm">
-                     <input                    
-                      id="defaultElement-{{currentIndex}}" 
-                      name="parlevel"                    
-                      type="text"     
-                      numeric-validation
-                      ng-model="item.parlevel"     
-                      class="text-right input-number bek-no-drag tabstop"
-                      ng-keypress="parlevelChanged($event)"
-                      onfocus="this.select()"/>
-                  </ng-form>
+              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)" ng-click="$event.stopPropagation()">
+                <ng-form name="parlevelForm">
+                   <input                    
+                    id="defaultElement-{{currentIndex}}" 
+                    name="parlevel"                    
+                    type="text"     
+                    numeric-validation
+                    ng-model="item.parlevel"     
+                    class="text-right input-number bek-no-drag tabstop"
+                    ng-keypress="parlevelChanged($event)"
+                    onfocus="this.select()"/>
+                </ng-form>
               </td>
 
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" style="padding-top:12px;" ng-if="(selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel)">
@@ -541,7 +525,7 @@
               <td class="visible-print hidden-drag" ng-if="(selectedList.permissions.canSeeParlevel)">
                 {{item.parlevel}}
               </td> 
-              <td class="nowrap hidden-print large-icon icon-col">
+              <td class="nowrap hidden-print large-icon icon-col" ng-click="$event.stopPropagation()">
                 <div
                   id="optionsdropdown"
                   ng-if="!item.activeElement && item.isvalid"
