@@ -121,35 +121,39 @@ angular.module('bekApp')
       };
 
       $scope.addRow = function(item, useListItemId) {
-        var reportItem = {
-          itemnumber: item.itemnumber,
-          position: item.position,
-          name: item.name,
-          packsize: item.packsize,
-          pack: item.pack,
-          label: item.label,
-          quantity: item.quantity,
-          each: item.each,
-          packageprice: item.packageprice,
-          caseprice: item.caseprice,
-          catchweight: item.catchweight,
-          hasPackagePrice: PricingService.hasPackagePrice(item),
-          hasCasePrice: PricingService.hasCasePrice(item),
-          average_weight: item.average_weight,
-          class: item.class,
-          category: item.category,
-          brand_extended_description: item.brand_extended_description
-        };        
+        var lastIndex,
+            nextLineNumber = $scope.report.items.length + 1,
+            reportItem = {
+              itemnumber: item.itemnumber,
+              position: nextLineNumber,
+              name: item.name,
+              packsize: item.packsize,
+              pack: item.pack,
+              label: item.label,
+              quantity: item.quantity,
+              each: item.each,
+              packageprice: item.packageprice,
+              caseprice: item.caseprice,
+              catchweight: item.catchweight,
+              hasPackagePrice: PricingService.hasPackagePrice(item),
+              hasCasePrice: PricingService.hasCasePrice(item),
+              average_weight: item.average_weight,
+              class: item.class,
+              category: item.category,
+              brand_extended_description: item.brand_extended_description
+            };
+
         if (useListItemId === true) {
           reportItem.listitemid = item.listitemid;
           reportItem.position = item.position;
-        }       
+        }
         $scope.report.items.push(reportItem);
+
         if(reportItem.category){
           $scope.report.hasContractCategories = true;
         }
 
-        var lastIndex = $scope.report.items.length - 1;
+        lastIndex = $scope.report.items.length - 1;
         watchersQuantity.push($scope.$watch('report.items[' + lastIndex + '].quantity', onItemQuantityChanged));
         watchersEach.push($scope.$watch('report.items[' + lastIndex + '].each', onItemQuantityChanged));
       };
