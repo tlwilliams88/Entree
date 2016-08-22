@@ -117,6 +117,7 @@ angular.module('bekApp')
           item.isdeleted = true;
           deletedItems.push(item);
         }
+        refreshSubtotal();
       };
 
       $scope.addRow = function(item, useListItemId) {
