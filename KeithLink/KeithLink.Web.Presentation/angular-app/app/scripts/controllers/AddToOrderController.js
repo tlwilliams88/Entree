@@ -23,7 +23,7 @@ angular.module('bekApp')
       }
     });
  
-    $scope.calculatePieces = function(items){
+    function calculatePieces(items){
       //total piece count for cart info box
       $scope.piecesCount = 0;
         items.forEach(function(item){
@@ -38,7 +38,7 @@ angular.module('bekApp')
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
       selectedCart.items = OrderService.filterDeletedOrderItems(selectedCart);
-      $scope.calculatePieces(selectedCart.items);
+      calculatePieces(selectedCart.items);
       $scope.origItemCount = selectedCart.items.length;
  
       if($stateParams.continueToCart){
@@ -71,7 +71,7 @@ angular.module('bekApp')
  
       if(newVal !== oldVal && item){        
        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);                   
-       $scope.calculatePieces($scope.combinedItems);   
+       calculatePieces($scope.combinedItems);   
        $scope.itemCount = $scope.combinedItems.length;
       }
       if(item !== undefined){
@@ -392,7 +392,7 @@ angular.module('bekApp')
             $scope.generateNewCartForDisplay(); 
             $scope.allowSave = true;
             $scope.updateOrderClick(selectedList, $scope.selectedCart).then(function(resp){
-                $scope.redirect(selectedList.listid, resp);
+                redirect(selectedList.listid, resp);
             });
           }
  
@@ -563,11 +563,22 @@ angular.module('bekApp')
         $scope.addToOrderForm.$setPristine();
       }
     };
+
+    $scope.saveBeforeListChange = function(listId, cart){
+
+      if($scope.addToOrderForm.$dirty){
+        $scope.saveAndRetainQuantity().then(function(){
+          redirect(listId, cart);
+        })      
+      } else {
+        redirect(listId, cart);
+      }
+
+      calculatePieces(selectedCart.items);
+
+    };
  
-    $scope.redirect = function(listId, cart) {
-      if(!$scope.unsavedChangesConfirmation()){
-        return;
-      } 
+    function redirect(listId, cart) {
       $scope.addToOrderForm.$setPristine();
       var cartId;    
       if ($scope.isChangeOrder) {
@@ -816,7 +827,7 @@ angular.module('bekApp')
         return true;
       }
       else if(resp.message && resp.message === 'Creating cart...'){ 
-        $scope.redirect($scope.selectedList.listid, resp);
+        redirect($scope.selectedList.listid, resp);
         return true;
       }
       else{
@@ -970,7 +981,7 @@ angular.module('bekApp')
       $scope.saveAndRetainQuantity().then(function(resp){
         $scope.selectedCart = resp;
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-        $scope.calculatePieces($scope.selectedCart.items);
+        calculatePieces($scope.selectedCart.items);
         $scope.fromQuickAdd = false;
       });
     });
