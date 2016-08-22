@@ -153,6 +153,7 @@ angular.module('bekApp')
 
   function calculateInvoiceFields(customers) {
     customers.forEach(function(customer) {
+      customer.haspayableinvoices = false;
       customer.invoices.results.forEach(function(invoice){
       // determine which invoices are payable
       if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
@@ -166,7 +167,7 @@ angular.module('bekApp')
         invoice.userCanPayInvoice = true;
         customer.haspayableinvoices = true;
       } else {
-        customer.haspayableinvoices = false;
+        return;
       }
 
       // calculate max payment date
