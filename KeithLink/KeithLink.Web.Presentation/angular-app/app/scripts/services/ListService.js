@@ -103,10 +103,10 @@ angular.module('bekApp')
 
           // SHARED WITH ME
           if (list.isshared) {
-            permissions.canEditList = true;
+            // permissions.canEditList = true;
             permissions.canSeeLabels = true;
             permissions.canSeeParlevel = true;
-            permissions.canEditParlevel = true;            
+            // permissions.canEditParlevel = true;            
 
           // OWNER OF LIST
           } else {
