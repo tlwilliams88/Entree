@@ -3,24 +3,31 @@ using CommerceServer.Core.Runtime.Orders;
 
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
+
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Events.EventArgs;
+using KeithLink.Svc.Core.Exceptions.Queue;
+
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+
 using KeithLink.Svc.Core.Helpers;
+
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Newtonsoft.Json;
@@ -41,6 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
     {
         #region attributes
         private IGenericQueueRepository genericeQueueRepository;
+        private IGenericSubsriptionQueueRepository genericSubscriptionQueue;
         private IOrderConversionLogic _conversionLogic;
         private IEventLogRepository _log;
         private ISocketListenerRepository _socket;
@@ -52,10 +60,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region constructor
         public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IGenericQueueRepository internalMessagingLogic, 
-                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork) {
+                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, IGenericSubsriptionQueueRepository subscriptionQueue) {
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             this.genericeQueueRepository = internalMessagingLogic;
+            this.genericSubscriptionQueue = subscriptionQueue;
             _conversionLogic = conversionLogic;
             _unitOfWork = unitOfWork;
 
@@ -66,7 +75,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _socket.BeginningFileReceipt    += SocketBeginningFileReceipt;
             _socket.ErrorEncountered        += SocketExceptionEncountered;
 
+            subscriptionQueue.MessageReceived += SubscriptionQueue_MessageReceived;
+
         }
+
         #endregion
 
         #region events
@@ -244,6 +256,60 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_CONFIRMATIONS));
         }
 
+        public void SubscribeToQueue() {
+            RabbitMQ.Client.ConnectionFactory config = new RabbitMQ.Client.ConnectionFactory();
+            config.HostName = Configuration.RabbitMQConfirmationServer;
+            config.UserName = Configuration.RabbitMQUserNameConsumer;
+            config.Password = Configuration.RabbitMQUserPasswordConsumer;
+            config.VirtualHost = Configuration.RabbitMQVHostConfirmation;
+
+            _log.WriteInformationLog("Subscribing to confirmation queue");
+
+            this.queueListenerTask = Task.Factory.StartNew(() => genericSubscriptionQueue.Subscribe(config, Configuration.RabbitMQQueueConfirmation),
+                CancellationToken.None, TaskCreationOptions.DenyChildAttach,
+                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_CONFIRMATIONS));
+        }
+
+        public void UnsubscribeFromQueue() {
+            genericSubscriptionQueue.Unsubscribe();
+        }
+
+        private void SubscriptionQueue_MessageReceived(object sender, RabbitMQ.Client.Events.BasicDeliverEventArgs args) {
+            RabbitMQ.Client.Events.EventingBasicConsumer consumer = (RabbitMQ.Client.Events.EventingBasicConsumer)sender;
+
+            try {
+                ConfirmationFile confirmation = DeserializeConfirmation(args.Body);
+
+                ProcessIncomingConfirmation(confirmation);
+
+                //Try to save the confirmation 5 times. Several threads are modifying the order history table, so there are occasional concurrency errors.
+                KeithLink.Svc.Impl.Helpers.Retry.Do(() => _conversionLogic.SaveConfirmationAsOrderHistory(confirmation), TimeSpan.FromSeconds(1), 5);
+
+                genericSubscriptionQueue.Ack(consumer, args.DeliveryTag);
+            }
+            catch (QueueDataError dataException) {
+                // Move to errror queue
+                _log.WriteErrorLog(dataException.Message);
+            }
+            catch (Exception ex) {
+                // Send NACK
+                _log.WriteErrorLog("Error processing confirmation.", ex);
+                genericSubscriptionQueue.Nack(consumer, args.DeliveryTag);
+            }
+        }
+
+        private ConfirmationFile DeserializeConfirmation(byte[] bytes) {
+            ConfirmationFile confirmation = null;
+            try {
+                confirmation = JsonConvert.DeserializeObject<ConfirmationFile>(Encoding.ASCII.GetString(bytes));
+            }
+            catch (Exception ex) {
+                throw new QueueDataError("N/A", 292, "DeserializeConfirmation", "Parsing confirmation to ConfirmationFile", ex.Message, ex);
+            }
+
+            return confirmation;
+        }
+
         private void ListenForQueueMessagesInTask() {
             while (_keepQueueListening) {
                 try {
@@ -317,11 +383,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public bool ProcessIncomingConfirmation(ConfirmationFile confirmation) {
             if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
-                throw new ApplicationException("Confirmation Number is Required");
+                throw new QueueDataError(confirmation.ToJson(), 379, "ProcessIncomingConfirmation", "Process incoming confirmations", "Confirmation Number is Required", new Exception());
             if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
-                throw new ApplicationException("Invoice number is required");
+                throw new QueueDataError(confirmation.ToJson(), 382, "ProcessIncomingConfirmation", "Process incoming confirmations", "Invoice Number is Required", new Exception());
             if (confirmation.Header.ConfirmationStatus == null)
-                throw new ApplicationException("Confirmation Status is Required");
+                throw new QueueDataError(confirmation.ToJson(), 382, "ProcessIncomingConfirmation", "Process incoming confirmations", "Confirmation Status is Required", new Exception());
 
             var poNum = confirmation.Header.ConfirmationNumber;
             PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
@@ -335,11 +401,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _log.WriteInformationLog(logMessage.Inject(logInfo));
 
             if (po == null) {
-                _log.WriteWarningLog("Could not find PO for confirmation number: {ConfirmationNumber}".InjectSingleValue("ConfirmationNumber", poNum));
-            } else {
+                _log.WriteWarningLog("Could not find PO for confirmation number: {ConfirmationNumber}, Line: 399, Method: ProcessIncomingConfirmation".InjectSingleValue("ConfirmationNumber", poNum));
+            } else {    
                 // make sure that there are items to process
                 if (po.LineItemCount == 0 || po.OrderForms[0].LineItems.Count == 0) 
-                    throw new ApplicationException("Purchase order has no line items");
+                    throw new QueueDataError(confirmation.ToJson(), 401, "ProcessIncomingConfirmation", "Process incoming confirmations", "Purchase order has no line items", new Exception());
 
                 // need to save away pre and post status info, then if different, add something to the messaging
                 LineItem[] currLineItems = new LineItem[po.LineItemCount];
@@ -355,19 +421,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 } else {
                     SetCsLineInfo(currLineItems, confirmation);
                 }
-
-            //List<OrderLine> hideItems = new List<OrderLine>();
-            //foreach (var item in returnOrder.Items)
-            //{
-            //    if (item.Status.Equals("Deleted", StringComparison.CurrentCultureIgnoreCase))
-            //    {
-            //        hideItems.Add(item);
-            //    }
-            //}
-            //foreach (var item in hideItems)
-            //{
-            //    returnOrder.Items.Remove(item);
-            //}
 
                 SetCsHeaderInfo(confirmation, po, currLineItems);
 

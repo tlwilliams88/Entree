@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         protected override void OnStart( string[] args ) {
             _log = container.Resolve<IEventLogRepository>();
             _log.WriteInformationLog( "Service starting" );
-            
+
             InitializeNotificationsThreads();
             InitializePushMessageConsumerThread();
             InitializeConfirmationMoverThread();
@@ -117,7 +117,8 @@ namespace KeithLink.Svc.Windows.QueueService {
             confirmationScope = container.BeginLifetimeScope();
 
             _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
-            _confirmationLogic.ListenForQueueMessages();
+            _confirmationLogic.SubscribeToQueue();
+            //_confirmationLogic.ListenForQueueMessages();
         }
         
         private void InitializeNotificationsThreads() {

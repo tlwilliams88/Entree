@@ -190,6 +190,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             });
 
         }
+
         public void SaveOrderHistoryAsConfirmation(OrderHistoryFile histFile) {
             if (histFile.Header.OrderSystem == Core.Enumerations.Order.OrderSource.Entree) {
                 ConfirmationFile confirmation = histFile.ToConfirmationFile();

@@ -49,5 +49,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations {
 
             return history;
         }
+
+        public static string ToJson(this ConfirmationFile confirmation) {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(confirmation);
+        }
     }
 }

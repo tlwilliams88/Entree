@@ -13,10 +13,14 @@ namespace KeithLink.Svc.Core.Interface.Orders.Confirmations
         
         void ListenForQueueMessages();
 
+        void SubscribeToQueue();
+
         void ProcessFileData(string[] file);
 
         bool ProcessIncomingConfirmation(ConfirmationFile confirmation);
         
         void Stop();
+
+        void UnsubscribeFromQueue();
     }
 }
