@@ -317,7 +317,7 @@
           <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
           <div class="col-sm-12 hidden-xs hidden-sm">
             <div ng-repeat="item in promoItems">
-              <div class="featured-item text-center">
+              <div class="featured-item text-center" ng-click="storePromoItemInformation(item.targeturltext, item.id)">
                 <img
                  analytics-on="click"
                  analytics-category="PromoItem"

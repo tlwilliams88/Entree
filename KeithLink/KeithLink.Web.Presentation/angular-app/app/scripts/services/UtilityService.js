@@ -70,10 +70,10 @@ angular.module('bekApp')
        * @param  {String/Number/Boolean} matcher    String/Number/Boolean that the given field must match to (12345 for example)
        * @return {Object}            Object found that matches or null if no match was found
        */
-      findObjectByField: function(collection, fieldName, matcher) {
+      findObjectByField: function(collection, fieldName, matcher, secondFieldName, secondMatcher) {
         var obj;
         angular.forEach(collection, function(item, index) {
-          if (item[fieldName] === matcher) {
+          if (item[fieldName] === matcher && item[secondFieldName] === secondMatcher) {
             obj = item;
           }
         });

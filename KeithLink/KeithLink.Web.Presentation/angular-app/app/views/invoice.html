@@ -4,11 +4,14 @@
       <div class="btn-group hidden-print" dropdown is-open="status.isopen1">
         <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedFilterView.name}} <span class="caret text-dark"></span></button>
         <ul class="dropdown-menu">
-          <li><a
-            ng-repeat="filterView in filterViews"
-            ng-click="selectFilterView(filterView)"
-            ng-if="selectedFilterView.name !== filterView.name">
-          {{filterView.name}}</a></li>
+          <li>
+            <a
+              ng-repeat="filterView in filterViews"
+              ng-click="selectFilterView(filterView)"
+              ng-if="selectedFilterView.name !== filterView.name">
+              {{filterView.name}}
+            </a>
+          </li>
         </ul>
       </div>
           <!-- Mobile Pay and Update buttons -->
@@ -31,26 +34,52 @@
       class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print">
       Update Payment(s)
     </button> 
-   <span ng-if="!isMobile">Filter By: </span>
+   <span ng-if="!isMobile && totalInvoices > 0">Filter By: </span>
   
-  <div ng-if="!isMobile" class="btn-group hidden-print hidden-sm">
-    <form name="invoiceFilterForm" class="form-inline">
-      <div dropdown is-open="openScope" style="float:left;">
-        <button type="button" class="btn btn-lg btn-default dropdown-toggle">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
-        <ul class="dropdown-menu" role="menu">
-          <li ng-repeat="invoiceFilter in invoiceFilters" >
-            <a ng-click="selectInvoiceFilter(invoiceFilter.name)">
-            {{invoiceFilter.name}}</a>
-          </li>
-        </ul>
-        <input type="text" id="invoiceFilterInput" ng-model="invoiceFilter.input" class="form-control input-lg webFilterInput" placeholder="Search by {{selectedInvoiceFilter}}">
+    <div ng-if="!isMobile && totalInvoices > 0" class="btn-group hidden-print hidden-sm">
+      <div class="btn-group" style="max-width:700px;">
+        <form name="invoiceFilterForm" class="form-inline">
+          <div class="input-group input-group-lg">
+            <div dropdown is-open="openScope" class="input-group-btn">
+              <button 
+                type="button" 
+                class="btn btn-lg btn-default dropdown-toggle pull-left">
+                {{selectedInvoiceFilter}}
+                <span class="caret margin-left-5" ></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="invoiceFilter in invoiceFilters">
+                  <a ng-click="selectInvoiceFilter(invoiceFilter.name)">{{invoiceFilter.name}}</a>
+                </li>
+              </ul>
+              <input 
+                type="text" 
+                id="invoiceFilterInput" 
+                ng-model="invoiceFilter.input" 
+                class="form-control input-lg" 
+                placeholder="Filter by {{selectedInvoiceFilter}}"
+                style="width:300px;">
+            </div>
+            <span class="input-group-btn">
+              <button 
+                type="submit"
+                class="btn-default btn"  
+                ng-disabled="!invoiceFilter.input" 
+                ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)">
+                <span class="icon-search large-icon hand"></span>
+              </button>
+              <button  
+                type="button"
+                class="btn-default btn" 
+                ng-disabled="!invoiceFilter.input" 
+                ng-click="clearFilters(invoiceFilter.input);">
+                <span class="icon-cross large-icon hand text-red"></span>
+              </button>
+            </span>
+          </div>
+        </form>
       </div>
-      <span class="btn-group">
-        <button class="btn-default btn btn-lg" type="submit" ng-disabled="!invoiceFilter.input" ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)"><span class="icon-search large-icon hand"></span></button>
-        <button class="btn-default btn btn-lg" type="button" ng-disabled="!invoiceFilter.input" ng-click="clearFilters(invoiceFilter.input);"><span class="icon-cross large-icon hand text-red"></span></button>
-      </span> 
-    </form>
-   </div>
+    </div>
   </div>
   <div header-buttons class="hidden-print">
     <button 
@@ -102,17 +131,20 @@
             <p>Filter By: </p>
             <div class="btn-group" style="max-width:500px;">
               <form name="invoiceFilterForm">
-                <div dropdown is-open="openScope" class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="invoiceFilter in invoiceFilters" >
-                    <a ng-click="selectInvoiceFilter(invoiceFilter.name)">
-                    {{invoiceFilter.name}}</a></li>
-                  </ul>
-                  <button class="btn-default btn" type="submit" ng-disabled="!invoiceFilter.input" ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)"><span class="icon-search large-icon hand"></span></button>
-                  <button class="btn-default btn" type="button" ng-disabled="!invoiceFilter.input" ng-click="clearFilters(invoiceFilter.input);"><span class="icon-cross large-icon hand text-red"></span></button>
+                <div class="input-group input-group-lg">
+                  <div dropdown is-open="openScope" class="input-group-btn">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedInvoiceFilter}}<span class="caret margin-left-5" ></span></button>
+                    <ul class="dropdown-menu" role="menu">
+                      <li ng-repeat="invoiceFilter in invoiceFilters"><a ng-click="selectInvoiceFilter(invoiceFilter.name)">{{invoiceFilter.name}}</a></li>
+                    </ul>
+                  </div>
+
+                  <input type="text" id="invoiceFilterInput" ng-model="invoiceFilter.input" class="form-control" placeholder="Filter by {{selectedInvoiceFilter}}">
+                  <span class="input-group-btn">
+                    <button class="btn-default btn" type="submit" ng-disabled="!invoiceFilter.input" ng-click="filterInvoices(selectedInvoiceFilter, invoiceFilter.input)"><span class="icon-search large-icon hand"></span></button>
+                    <button class="btn-default btn" type="button" ng-disabled="!invoiceFilter.input" ng-click="clearFilters(invoiceFilter.input);"><span class="icon-cross large-icon hand text-red"></span></button>
+                  </span>
                 </div>
-                <input type="text" id="invoiceFilterInput" ng-model="invoiceFilter.input" class="form-control" placeholder="Search by {{selectedInvoiceFilter}}">
               </form>
             </div>
           </div>
@@ -123,13 +155,17 @@
             <span ng-if="totalInvoices > 0 && !isInternalUser" class="pull-left selectallinvoices credit-memo-toggle hidden-print">
               <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="selectAll('selectAllInvoices')"> Select All Invoices
             </span>
-            <span ng-if="totalInvoices > 0 && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-left-xs">Total: {{totalPaymentAmount() | currency}}</span>
-            <span class="btn-group pull-right-lg pull-right-md pull-right-sm pull-left-xs-left-10" style="margin-right:10px;" ng-if="totalInvoices > 0 && !isInternalUser">
+          <div>
+            <span ng-if="totalInvoices > 0 && !isInternalUser" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-right-xs pull-left-xxs">Total: {{totalPaymentAmount() | currency}}</span>
+          </div>
+          </div>
+          <div ng-if="totalInvoices > 0" class="pull-right">
+            <span class="btn-group pull-right-lg pull-right-md pull-right-sm pull-left-xs xs-right-5" ng-if="totalInvoices > 0 && !isInternalUser">
               <button class="btn btn-default hidden-print" ng-click="expandcollapseAll(collapsed = !collapsed)">Expand/Collapse All</button>
             </span>
-            <div ng-if="totalInvoices > 0" class="pull-right">
-              <div class="input-group">
-                <div class="input-group-btn">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <span class="pull-right-sm pull-right-lg pull-right-md pull-left-xs" ng-class="{'sm-right-5' : !isInternalUser}">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
                     <ul class="dropdown-menu">
                       <li ng-repeat="sortParameter in sortParameters" >
@@ -137,7 +173,7 @@
                       </li>
                     </ul>
                   <button class="btn btn-default" type="button" ng-click="sortInvoices(sortDirection, sortParametervalue)">{{sortDirection}}</button>
-                </div>
+                </span>
               </div>
             </div>
           </div>

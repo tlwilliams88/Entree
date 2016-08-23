@@ -23,8 +23,8 @@ angular.module('bekApp')
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
 
-    if ($state.params.catalogType == "BEK") {
-      $scope.pageTitle = "Product Catalog";
+    if ($state.params.catalogType === 'BEK') {
+      $scope.pageTitle = 'Product Catalog';
       ProductService.getRecentlyViewedItems().then(function(items) {
         $scope.recentlyViewedItems = items;
         $scope.loadingRecentlyViewedItems = false;
@@ -45,7 +45,7 @@ angular.module('bekApp')
         });
       });
     } else {
-      $scope.pageTitle = "Specialty Catalog";
+      $scope.pageTitle = 'Specialty Catalog';
       CategoryService.getCategories($state.params.catalogType).then(function(categories) {
         $scope.categories = categories;
         $scope.loadingCategories = false;
@@ -57,22 +57,22 @@ angular.module('bekApp')
             $scope.recentlyOrderedUnfiItems = [];
           }          
           $scope.loadingrecentlyOrderedUnfiItems = false;
-        })
+        });
       });
     }
 
     $scope.clearRecentlyViewedItems = function(){
       ProductService.clearRecentlyViewedItems().then(function() {
         $scope.recentlyViewedItems = '';
-        $scope.displayMessage('success', 'Successfully cleared recently viewed items.')
-      })
+        $scope.displayMessage('success', 'Successfully cleared recently viewed items.');
+      });
     };
 
     $scope.clearRecentlyOrderedItems = function(){
       OrderService.clearRecentlyOrderedUNFIItems().then(function(){
         $scope.recentlyOrderedUnfiItems = '';
-        $scope.displayMessage('success', 'Successfully cleared recently ordered items.')
-      })
+        $scope.displayMessage('success', 'Successfully cleared recently ordered items.');
+      });
     };
 
   }]);

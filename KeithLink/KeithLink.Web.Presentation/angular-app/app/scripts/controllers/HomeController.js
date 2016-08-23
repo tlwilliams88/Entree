@@ -14,7 +14,7 @@ angular.module('bekApp')
 
       CartService.getCartHeaders().then(function(cartHeaders){
         $scope.cartHeaders = cartHeaders;
-      })
+      });
 
 
     // get orders
@@ -86,6 +86,10 @@ angular.module('bekApp')
           }
         }
       });
+    };
+
+    $scope.storePromoItemInformation = function(targeturltext, id){
+      MarketingService.storeMarketingUserInteractionInformation(targeturltext, id);
     };
  
     $scope.notificationParams = {

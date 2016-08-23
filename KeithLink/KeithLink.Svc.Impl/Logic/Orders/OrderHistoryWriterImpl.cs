@@ -97,8 +97,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                     System.IO.File.WriteAllText
                         (Path.Combine(Configuration.OrderServiceKDOELogPath, 
-                                      string.Format("{0}{1}.{2}", order.Header.OrderingSystem.ToShortString(), 
-                                                                  order.Header.ControlNumber.ToString("0000000"), 
+                                      string.Format("{0}{1}{2}.{3}", Configuration.OrderServiceKDOELogPre, 
+                                                                  order.Header.ControlNumber.ToString("D7"), 
+                                                                  Configuration.OrderServiceKDOELogPost,
                                                                   Configuration.OrderServiceKDOELogExtension)), 
                          json);
                 }

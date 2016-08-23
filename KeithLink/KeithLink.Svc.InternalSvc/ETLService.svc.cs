@@ -157,6 +157,13 @@ namespace KeithLink.Svc.InternalSvc
             return true;
         }
 
+        public bool ProcessInternalUserAccess() {
+            Task.Factory.StartNew(() => customerLogic.ImportUsersWithAccess()).ContinueWith((t) => 
+            { new ErrorHandler().HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            return true;
+        }
+
         /// <summary>
         /// Process staging data and import into Elastic Search
         /// </summary>

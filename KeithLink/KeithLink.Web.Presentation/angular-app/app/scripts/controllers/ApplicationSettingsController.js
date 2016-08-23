@@ -16,48 +16,50 @@
           $scope.hideNotificationPreferences = true;
         }
 
+        $scope.resetPage();
 
-    $scope.resetPage();
-    $scope.addToOrderFields =  angular.copy($scope.listFields);
-    $scope.addToOrderFields = $scope.addToOrderFields.slice(0,7);
+        $scope.addToOrderFields =  angular.copy($scope.listFields);
+        $scope.addToOrderFields = $scope.addToOrderFields.slice(0,7);
+        $scope.pageSizes.selectedSize = LocalStorage.getPageSize();
 
-    $scope.pageSizes.selectedSize = LocalStorage.getPageSize();
-    var sortSettings = LocalStorage.getDefaultSort();
-    var userid = SessionService.userProfile.userid;
+        var sortSettings = LocalStorage.getDefaultSort(),
+            userid = SessionService.userProfile.userid;
 
-    if(sortSettings && sortSettings.length > 6){
-      //parsing out list and ato sections from stored sort preferences
-      var atoSettings = sortSettings.slice(sortSettings.indexOf('a') + 3, sortSettings.length);
-      var listSettings = sortSettings.slice(3, sortSettings.indexOf('a'));
-      //loop through each section to apply saved settings to view. Numeric characters represent the index of the field in the listFields/atoFields arrays
-      //y/n represent whether or not the field will be sorted descending. Each numeric character is followed by the y/n that corresponds to it
-        for (var i = 0;  i < atoSettings.length; i++) {
-          if(atoSettings[i] !== 'y' && atoSettings[i] !== 'n'){
-            var orderAssigner = (i === 0) ? 1 : 2 ;                
-            $scope.addToOrderFields[atoSettings[i]].order = orderAssigner;
-            $scope.addToOrderFields[atoSettings[i]].sortDesc = atoSettings[i + 1];
-            $scope.addToOrderFields[atoSettings[i]].isSelected = true;
-          }
+        if(sortSettings && sortSettings.length > 6){
+          //parsing out list and ato sections from stored sort preferences
+          var atoSettings = sortSettings.slice(sortSettings.indexOf('a') + 3, sortSettings.length),
+              listSettings = sortSettings.slice(3, sortSettings.indexOf('a')),
+              i,
+              orderAssigner;
+          //loop through each section to apply saved settings to view. Numeric characters represent the index of the field in the listFields/atoFields arrays
+          //y/n represent whether or not the field will be sorted descending. Each numeric character is followed by the y/n that corresponds to it
+            for (i = 0;  i < atoSettings.length; i++) {
+              if(atoSettings[i] !== 'y' && atoSettings[i] !== 'n'){
+                orderAssigner = (i === 0) ? 1 : 2 ;                
+                $scope.addToOrderFields[atoSettings[i]].order = orderAssigner;
+                $scope.addToOrderFields[atoSettings[i]].sortDesc = atoSettings[i + 1];
+                $scope.addToOrderFields[atoSettings[i]].isSelected = true;
+              }
+            }
+
+            for (i = 0;  i < listSettings.length; i++) {
+              if(listSettings[i] !== 'y' && listSettings[i] !== 'n'){
+                orderAssigner = (i === 0) ? 1 : 2 ;                
+                $scope.listFields[listSettings[i]].order = orderAssigner;
+                $scope.listFields[listSettings[i]].sortDesc = listSettings[i + 1];
+                $scope.listFields[listSettings[i]].isSelected = true;
+              }
+            }
         }
-
-        for (var i = 0;  i < listSettings.length; i++) {
-          if(listSettings[i] !== 'y' && listSettings[i] !== 'n'){
-            var orderAssigner = (i === 0) ? 1 : 2 ;                
-            $scope.listFields[listSettings[i]].order = orderAssigner;
-            $scope.listFields[listSettings[i]].sortDesc = listSettings[i + 1];
-            $scope.listFields[listSettings[i]].isSelected = true;
-          }
-        }
-    }
       };
 
       $scope.resetPage = function(){        
         $scope.pages =  {
           availablePages: [
-            { id: 'lists', name: "Lists" },
-            { id: 'addtoorder', name: "Add To Order" }
+            { id: 'lists', name: 'Lists' },
+            { id: 'addtoorder', name: 'Add To Order' }
           ],
-          selectedPage: { id: 'lists', name: "Lists" }
+          selectedPage: { id: 'lists', name: 'Lists' }
         };
 
         $scope.defaultPageSize = 50;
@@ -68,20 +70,20 @@
 
         
         $scope.listFields =  [
-            { "value": 'position', "text": "Line #", "order": '', "sortDesc": "n", "isSelected": false, "code": 0 },
-            { "value": 'itemnumber', "text": "Item #", "order": '', "sortDesc": "n", "isSelected": false, "code":  1 },
-            { "value": 'name', "text": "Name", "order": '', "sortDesc": "n", "isSelected": false, "code": 2  },
-            { "value": 'brandextendeddescription', "text": "Brand", "order": '', "sortDesc": "n", "isSelected": false, "code":  3 },
-            { "value": 'itemclass', "text": "Category", "order": '', "sortDesc": "n", "isSelected": false, "code": 4  },
-            { "value": 'notes', "text": "Notes", "order": '', "sortDesc": "n", "isSelected": false, "code":  5 },
-            { "value": 'label', "text": "Label", "order": '', "sortDesc": "n", "isSelected": false, "code": 6 },
-            { "value": 'parlevel', "text": "Par Level", "order": '', "sortDesc": "n", "isSelected": false, "code": 7 }];
-      }
+            { 'value': 'position', 'text': 'Line #', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 0 },
+            { 'value': 'itemnumber', 'text': 'Item #', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code':  1 },
+            { 'value': 'name', 'text': 'Name', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 2  },
+            { 'value': 'brandextendeddescription', 'text': 'Brand', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code':  3 },
+            { 'value': 'itemclass', 'text': 'Category', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 4  },
+            { 'value': 'notes', 'text': 'Notes', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code':  5 },
+            { 'value': 'label', 'text': 'Label', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 6 },
+            { 'value': 'parlevel', 'text': 'Par Level', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 7 }];
+      };
 
       $scope.setDesc = function(field){
         $scope.sortPreferencesForm.$setDirty();
         field.sortDesc = (field.sortDesc === 'n') ? 'y' : 'n' ;
-      }
+      };
 
       
       $scope.goBack = function(){
@@ -95,10 +97,10 @@
           field.sortDesc = 'n';
          
            fields.forEach(function(sortField){
-          if(sortField.order == 2){
+          if(sortField.order === 2){
             sortField.order = 1;
           }
-        })
+        });
         }
         else{
         var selectedCount = 0;    
@@ -112,11 +114,11 @@
              if(sortField.order === 1){
                 selectedCount++;
              }        
-            })
+            });
             field.order = (selectedCount > 0) ? 2 : 1;
             field.isSelected = true;        
         }   
-      }
+      };
 
        $scope.restoreDefaults = function(){
          var pageSizeSettings = {key: 'pageLoadSize'};
@@ -129,7 +131,7 @@
              init();
             });
           });
-       }
+       };
 
        $scope.savePreferences = function () {
         ApplicationSettingsService.updateNotificationPreferences($scope.defaultPreferences, null).then(function(data) {

@@ -139,10 +139,6 @@ namespace KeithLink.Svc.Windows.QueueService {
             _ETAQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
             _ETAQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueETA;
             _ETAQueueConsumer.ListenForNotificationMessagesOnQueue();
-
-            _notificationQueueConsumer = notificationScope.Resolve<INotificationQueueConsumer>();
-            _notificationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueNotification;
-            _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void InitializePushMessageConsumerThread()
@@ -202,9 +198,6 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             if (_ETAQueueConsumer != null)
                 _ETAQueueConsumer.Stop();
-
-            if (_notificationQueueConsumer != null)
-                _notificationQueueConsumer.Stop();
 
             if (notificationScope != null)
                 notificationScope.Dispose();

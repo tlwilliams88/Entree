@@ -1,12 +1,18 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('ConfigSettingsController', ['$scope', 'ConfigSettingsService',
-    function($scope, ConfigSettingsService) {
+  .controller('ConfigSettingsController', ['$scope', 'ConfigSettingsService', '$filter',
+    function($scope, ConfigSettingsService, $filter) {
 
         ConfigSettingsService.getAppSettings().then(function(resp){
             $scope.configSettings = resp;
         });
+
+        $scope.copyOldValueToNewValue = function(settingKey, settingComment) {
+            var configSetting = $filter('filter')($scope.configSettings, {key: settingKey, comment: settingComment});
+            configSetting[0].newvalue = configSetting[0].value;
+            $scope.configSettingsForm.$setDirty();
+        }
 
         $scope.setSettingsVerified = function(setting){
             if(!$scope.isverified){
@@ -26,22 +32,24 @@ angular.module('bekApp')
                     }
                 })
 
-                ConfigSettingsService.saveAppSettings(settingValues).then(function(resp){
-                    settings.forEach(function(setting){
-                        if(setting.newvalue && resp){
-                            setting.newvalue = '';
+                if(settingValues.length > 0){ // Don't make PUT call if there are no new values
+                    ConfigSettingsService.saveAppSettings(settingValues).then(function(resp){
+                        settings.forEach(function(setting){
+                            if(setting.newvalue && resp){
+                                setting.newvalue = '';
+                            }
+                        })
+                        if(resp && settingValues.length){
+                            $scope.displayMessage('success', 'Successfully saved config settings');
+                            $scope.configSettingsForm.$setPristine();
+                            $scope.verifySettings = false;
+                        } else if(!resp) {
+                            $scope.displayMessage('error', 'Error saving config settings');
+                        } else {
+                            return;
                         }
-                    })
-                    if(resp && settingValues.length){
-                        $scope.displayMessage('success', 'Successfully saved config settings');
-                        $scope.configSettingsForm.$setPristine();
-                        $scope.verifySettings = false;
-                    } else if(!resp) {
-                        $scope.displayMessage('error', 'Error saving config settings');
-                    } else {
-                        return;
-                    }
-                });
+                    });
+                }
             } else {
                 return;
             }

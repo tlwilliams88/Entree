@@ -67,14 +67,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
 
             List<Core.Models.Profile.UserProfile> customerUsers = new List<Core.Models.Profile.UserProfile>();
-            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
-                customerUsers.Add(new Core.Models.Profile.UserProfile()
-                {
-                    UserId = Guid.Parse(ent.Id),
-                    FirstName = (string)ent.Properties["FirstName"],
-                    LastName = (string)ent.Properties["LastName"],
-                    EmailAddress = (string)ent.Properties["Email"]
-                });
+            Dictionary<Guid, bool> existingUsers = new Dictionary<Guid, bool>();
+
+            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities) {
+                Guid userid = Guid.Parse(ent.Id);
+
+                if(!existingUsers.ContainsKey(userid)) {
+                    existingUsers.Add(userid, true);
+
+                    customerUsers.Add(new Core.Models.Profile.UserProfile() {
+                        UserId = userid,
+                        FirstName = (string)ent.Properties["FirstName"],
+                        LastName = (string)ent.Properties["LastName"],
+                        EmailAddress = (string)ent.Properties["Email"]
+                    });
+                }
+            }
+                
+                
 
             return customerUsers;
         }

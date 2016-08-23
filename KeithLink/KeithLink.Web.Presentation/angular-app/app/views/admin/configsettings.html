@@ -40,13 +40,17 @@
           </td>
           <td>
             <input
-            style="width:70%; float:left;"     
+            class="input-lg pull-left"
+            style="width:75%;"     
             name="settingValueInput"                    
             type="text"     
             ng-model="setting.newvalue"    
             onfocus="this.select()"
             placeholder="Enter New Value"
             />
+            <span ng-if="!setting.newvalue" class="btn-group">
+              <button type="button" class="btn btn-default" ng-click="copyOldValueToNewValue(setting.key, setting.comment);">Copy Old Value</button>
+            </span>
             <input type="checkbox" style="display:inline-block; float:left; margin-left:10px;" ng-if="setting.newvalue" ng-click="setSettingsVerified(setting)" />
           </td>
           <td>{{setting.comment}}</td>

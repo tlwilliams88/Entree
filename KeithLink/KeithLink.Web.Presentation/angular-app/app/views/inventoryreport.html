@@ -182,9 +182,7 @@
         </thead>
         <tbody>
           <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }">
-            <td>
-              <a>{{item.position}}</a>
-            </td>
+            <td>{{item.position}}</td>
             <td>
               <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
             </td>

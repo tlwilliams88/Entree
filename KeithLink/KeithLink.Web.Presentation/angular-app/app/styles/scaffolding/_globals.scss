@@ -108,3 +108,7 @@ html, body {
 .padding-right-15 {
   padding-right: 15px;
 }
+
+.highlightRows:nth-of-type(odd) {
+  background-color: $color-white !important;
+}

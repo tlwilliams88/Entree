@@ -10,8 +10,6 @@ namespace KeithLink.Svc.Core.Models.ContentManagement
     [DataContract]
     public class ContentItemClickedModel : ContentItemModelBase
     {
-        [DataMember(Name = "clickdate")]
-        public DateTime ClickDate { get; set; }
 
     }
 }

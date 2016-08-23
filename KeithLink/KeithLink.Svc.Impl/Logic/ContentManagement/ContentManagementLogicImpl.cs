@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.ContentManagement {
     public class ContentManagementLogicImpl : IContentManagementLogic {
@@ -46,7 +47,7 @@ namespace KeithLink.Svc.Impl.Logic.ContentManagement {
             _audit.WriteToAuditLog(
                 Common.Core.Enumerations.AuditType.MarketingCampaignClicked, 
                 user.UserName,
-                string.Format("{0}|{1},{2}", context.CustomerId, clicked.CampaignId, clicked.TagLine)
+                string.Format("customer {0}, campaign {1}", JsonConvert.SerializeObject(context), JsonConvert.SerializeObject(clicked))
                 );
             return true;
         }
