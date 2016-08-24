@@ -158,6 +158,8 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Queue Serv
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Queue Service Functions', 'CheckLostOrdersStatus', 'Submitted', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceMakeKDOELogFiles', 'true', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogPath', 'c:\test\entree\kdoefiles', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogPre', 'rb', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogPost', '01', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogExtension', 'txt', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'UNFI Whitelisting', 'UNFIWhitelistBranches', '', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'UNFI Whitelisting', 'UNFIWhitelistDSRs', '', 0)
