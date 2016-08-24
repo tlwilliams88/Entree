@@ -8,9 +8,12 @@ angular.module('bekApp')
             $scope.configSettings = resp;
         });
 
-        $scope.copyOldValueToNewValue = function(settingKey, settingComment) {
-            var configSetting = $filter('filter')($scope.configSettings, {key: settingKey, comment: settingComment});
-            configSetting[0].newvalue = configSetting[0].value;
+        $scope.copyOldValueToNewValue = function(settingKey) {
+            $scope.configSettings.forEach(function(setting){
+                if(setting.key == settingKey){
+                    setting.newvalue = setting.value;
+                }
+            })
             $scope.configSettingsForm.$setDirty();
         }
 

@@ -25,7 +25,8 @@
       <thead>
         <tr>
           <th class="col-sm-1 col-md-2">Key</th>
-          <th class="col-sm-1 col-md-3">Old Value</th>
+          <th class="col-sm-1 col-md-1">Old Value</th>
+          <th class="col-sm-1 col-md-1"></th>
           <th class="col-sm-1 col-md-3">New Value</th>
           <th class="col-sm-1 col-md-1">Comment</th>
         </tr>
@@ -34,24 +35,24 @@
         <tr ng-repeat="setting in configSettings" ng-class="{ odd: $odd, even: $even }">
           <td>{{setting.key}}</td>
           <td>
-            <label style="max-width: 600px; word-wrap: break-word">
+            <label style="max-width: 300px; word-wrap: break-word">
               {{setting.value}}
             </label>
           </td>
           <td>
+            <button ng-if="!setting.newvalue" type="button" class="btn btn-default pull-right" ng-click="copyOldValueToNewValue(setting.key);" style="margin-top:5px;">Copy</button>
+          </td>
+          <td>
             <input
-            class="input-lg pull-left"
-            style="width:75%;"     
+            class="input-lg"
+            style="width:85%;"     
             name="settingValueInput"                    
             type="text"     
             ng-model="setting.newvalue"    
             onfocus="this.select()"
             placeholder="Enter New Value"
             />
-            <span ng-if="!setting.newvalue" class="btn-group">
-              <button type="button" class="btn btn-default" ng-click="copyOldValueToNewValue(setting.key, setting.comment);">Copy Old Value</button>
-            </span>
-            <input type="checkbox" style="display:inline-block; float:left; margin-left:10px;" ng-if="setting.newvalue" ng-click="setSettingsVerified(setting)" />
+            <input type="checkbox" style="display:inline-block; margin-left:10px;" ng-if="setting.newvalue" ng-click="setSettingsVerified(setting)" />
           </td>
           <td>{{setting.comment}}</td>
         </tr>
