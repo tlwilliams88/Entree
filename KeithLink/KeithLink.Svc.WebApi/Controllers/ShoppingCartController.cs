@@ -20,6 +20,8 @@ using System.Web.Http;
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Interface.Configurations;
+using KeithLink.Common.Impl.Email;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -208,7 +210,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("POST Cart", ex);
+                _log.WriteErrorLog(string.Format("POST Cart({0})", JsonConvert.SerializeObject(cart)), ex);
+                ExceptionEmail.Send(ex, string.Format("POST Cart({0})", JsonConvert.SerializeObject(cart)));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
@@ -287,7 +290,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("POST QuickAddCart", ex);
+                _log.WriteErrorLog(string.Format("POST QuickAddCart({0})", JsonConvert.SerializeObject(items)), ex);
+                ExceptionEmail.Send(ex, string.Format("POST QuickAddCart({0})", JsonConvert.SerializeObject(items)));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
@@ -338,7 +342,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("POST Validate", ex);
+                _log.WriteErrorLog(string.Format("AddItem({0})", JsonConvert.SerializeObject(newItem)), ex);
+                ExceptionEmail.Send(ex, string.Format("AddItem({0})", JsonConvert.SerializeObject(newItem)));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
@@ -364,7 +369,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("PUT UpdateItem", ex);
+                _log.WriteErrorLog(string.Format("AddItem({0})", JsonConvert.SerializeObject(updatedItem)), ex);
+                ExceptionEmail.Send(ex, string.Format("AddItem({0})", JsonConvert.SerializeObject(updatedItem)));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
@@ -390,7 +396,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("PUT UpdateCart", ex);
+                _log.WriteErrorLog(string.Format("PUT Cart({0})", JsonConvert.SerializeObject(updatedCart)), ex);
+                ExceptionEmail.Send(ex, string.Format("PUT Cart({0})", JsonConvert.SerializeObject(updatedCart)));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
