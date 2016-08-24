@@ -150,6 +150,28 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return ret;
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("catalog/{catalogType}/search/brand/{brandName}/products")]
+        public OperationReturnModel<ProductsReturn> GetProductsSearchBrand(string catalogType, string brandName, [FromUri] SearchInputModel searchModel, [FromUri] string searchTerms = null)
+        {
+            OperationReturnModel<ProductsReturn> ret = new OperationReturnModel<ProductsReturn>();
+            try
+            {
+                searchModel.CatalogType = catalogType;
+                searchModel.Facets = string.Format("brands:{0}", brandName.ToUpper());
+                ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
+                ret.SuccessResponse = prods;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetProductsSearch", ex);
+            }
+            return ret;
+        }
+
         /// <summary>
         /// Get Categories
         /// </summary>

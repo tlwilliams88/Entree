@@ -1,4 +1,5 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Impl.Email;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -11,7 +12,7 @@ using KeithLink.Svc.Core.Models.Paging;
 
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic;
-
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -388,7 +389,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("SaveAsOrder", ex);
+                _log.WriteErrorLog(string.Format("SaveAsOrder({0})", cartId.ToString()), ex);
+                ExceptionEmail.Send(ex, string.Format("SaveAsOrder({0})", cartId.ToString()));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
@@ -412,7 +414,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("SubmitChangeOrder", ex);
+                _log.WriteErrorLog(string.Format("SubmitChangeOrder({0})", orderNumber), ex);
+                ExceptionEmail.Send(ex, string.Format("SubmitChangeOrder({0})", orderNumber));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }
@@ -463,7 +466,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("UpdateOrder", ex);
+                _log.WriteErrorLog(string.Format("UpdateOrder({0})", JsonConvert.SerializeObject(order)), ex);
+                ExceptionEmail.Send(ex, string.Format("UpdateOrder({0})", JsonConvert.SerializeObject(order)));
                 retVal.ErrorMessage = ex.Message;
                 retVal.IsSuccess = false;
             }

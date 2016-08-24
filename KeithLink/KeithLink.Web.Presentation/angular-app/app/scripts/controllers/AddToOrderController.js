@@ -192,6 +192,7 @@ angular.module('bekApp')
           }
         }
         } else {
+          return;
         }
       });
       $scope.appendedItems = [];           
@@ -566,16 +567,18 @@ angular.module('bekApp')
 
     $scope.saveBeforeListChange = function(listId, cart){
 
-      if($scope.addToOrderForm.$dirty){
+      if(($scope.addToOrderForm.$dirty || $scope.tempCartName) && $scope.addToOrderForm.$valid){
         $scope.saveAndRetainQuantity().then(function(){
           redirect(listId, cart);
         })      
+      } else if($scope.addToOrderForm.$invalid) {
+        $scope.displayMessage('error', 'Form is invalid.  Please correct errors to continue.');
+        return;
       } else {
         redirect(listId, cart);
       }
 
       calculatePieces(selectedCart.items);
-
     };
  
     function redirect(listId, cart) {
@@ -885,7 +888,6 @@ angular.module('bekApp')
     $scope.updateOrderClick = function(list, cart) {
       clearItemWatches(cartWatches);
       var cartItems = getCombinedCartAndListItems(cart.items, list.items);
-      var deferred;
       UtilityService.deleteFieldFromObjects(cartItems, ['listitemid']);
  
       var updatedCart = angular.copy(cart);
@@ -901,7 +903,7 @@ angular.module('bekApp')
       });
  
       if (invalidItemFound){
-        deferred = $q.defer();
+        var deferred = $q.defer();
         deferred.resolve(invalidItemFound);
         return deferred.promise;
       }
@@ -919,7 +921,7 @@ angular.module('bekApp')
         }
       }
       else{
-        deferred = $q.defer();
+        var deferred = $q.defer();
         deferred.resolve(false);
         return deferred.promise;
       }

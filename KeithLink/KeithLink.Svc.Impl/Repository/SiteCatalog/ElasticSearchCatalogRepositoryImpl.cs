@@ -57,14 +57,19 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             List<dynamic> statusFields = BuildStatusFilter();
 
             List<dynamic> musts = new List<dynamic>();
-            musts.Add( new {
-                multi_match = new {
-                    query = searchExpression,
-                    @type = "most_fields",
-                    fields = fieldsToSearch,
-                    @operator = "and"
-                },
-            } );
+            if(searchExpression != null)
+            {
+                musts.Add(new
+                {
+                    multi_match = new
+                    {
+                        query = searchExpression,
+                        @type = "most_fields",
+                        fields = fieldsToSearch,
+                        @operator = "and"
+                    },
+                });
+            }
 
             musts.Add( filterTerms );
 
@@ -647,7 +652,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             System.Text.RegularExpressions.Regex matchOnlyDigits = new System.Text.RegularExpressions.Regex(@"^\d+$");
 
-            if (matchOnlyDigits.IsMatch(search)) {
+            if (search != null && matchOnlyDigits.IsMatch(search)) {
                 fieldsToSearch = Configuration.ElasticSearchDigitSearchFields;
                 //termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, newFilterTerms, fieldsToSearch, termSearch);
             } else {
@@ -716,7 +721,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             //    digitSearchTerms.Insert(0, searchTerm);
             //    termSearch = String.Join(" OR ", digitSearchTerms);
             //}
-            if (matchOnlyDigits.IsMatch(searchTerm)) {
+            if (searchTerm != null && matchOnlyDigits.IsMatch(searchTerm)) {
                 fieldsToSearch = Configuration.ElasticSearchDigitSearchFields;
                 //termSearchExpression = BuildBoolMultiMatchQueryForDigits(searchModel, newFilterTerms, fieldsToSearch, termSearch);
             } else {
