@@ -173,7 +173,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void TerminateConfirmationThread()
         {
             if (_confirmationLogic != null)
-                _confirmationLogic.Stop();
+                _confirmationLogic.UnsubscribeFromQueue();
             if (confirmationScope != null)
                 confirmationScope.Dispose();
         }
