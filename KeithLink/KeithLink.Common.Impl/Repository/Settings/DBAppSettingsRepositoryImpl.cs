@@ -76,8 +76,7 @@ namespace KeithLink.Common.Impl.Repository.Settings
 
                 return val;
             } catch (Exception ex) {
-                // Apparently we expect some key's not to be found
-                //_log.WriteErrorLog(" DBAppSettingsRepository[" + key + "]", ex);
+                _log.WriteErrorLog(" DBAppSettingsRepository[" + key + "]", ex);
                 return null;
             }
         }

@@ -178,9 +178,18 @@ namespace KeithLink.Svc.Impl.Logic
                         ItemNumber = item.ItemNumber,
                         Each = item.Each,
                         Quantity = item.Quantity,
-                        CatalogId = catalogInfo.BranchId
+                        CatalogId = catalogInfo.BranchId,
+                        CasePriceNumeric = prod.CasePriceNumeric,
+                        PackagePriceNumeric = prod.PackagePriceNumeric,
+                        CatchWeight = prod.CatchWeight,
+                        AverageWeight = prod.AverageWeight,
+                        Pack = prod.Pack
                     }
+//cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
                     );
+
+                    shoppingCart.SubTotal += (decimal)PricingHelper.GetPrice((int)item.Quantity, prod.CasePriceNumeric, prod.PackagePriceNumeric, item.Each, prod.CatchWeight, prod.AverageWeight, prod.Pack.ToInt(1));
+                    
                 }
 
             }
