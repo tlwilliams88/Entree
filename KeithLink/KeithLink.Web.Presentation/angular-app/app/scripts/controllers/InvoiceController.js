@@ -232,17 +232,14 @@ angular.module('bekApp')
   }
 
   function retrieveFilter() {
-    var filter;
     if(InvoiceService && InvoiceService.filterRowFields){
       $scope.showFilter = true;
       $scope.filterRowFields =InvoiceService.filterRowFields;
       $scope.selectedFilterView = InvoiceService.selectedFilterView;
-      filter = getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
     }
     else{
       if(InvoiceService && InvoiceService.selectedFilterView){
       $scope.selectedFilterView = InvoiceService.selectedFilterView;
-      filter = getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
       }
     }
   }
