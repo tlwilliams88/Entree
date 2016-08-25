@@ -112,3 +112,7 @@ html, body {
 .highlightRows:nth-of-type(odd) {
   background-color: $color-white !important;
 }
+
+.block-display {
+  display:block;
+}
