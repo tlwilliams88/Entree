@@ -56,23 +56,21 @@
 
   <button
   type="submit"
-  style="float:right; display:block;"
-  class="btn-lg btn btn-primary"
+  class="btn-lg btn btn-primary pull-right block-display"
   analytics-on
   analytics-category="Orders"
   analytics-event="Create Order" 
   analytics-label="Quick Add" 
   ng-if="!isChangeOrder && !existingCart"
   ng-disabled="!enableSubmit"
-  ng-click="enableSubmit = false; createCart(quickAddItems)">Create Cart
+  ng-click="createCart(quickAddItems)">Create Cart
   </button>
 
   <button
   type="button"
-  class="btn-lg btn btn-primary"
-  style="float:right; display:block;"
+  class="btn-lg btn btn-primary pull-right block-display"
   ng-if="existingCart"
-  ng-disabled = "isValidating"
+  ng-disabled = "!enableSubmit"
   ng-click="updateCart(quickAddItems)">Add To
    <span ng-if="!isChangeOrder">Cart</span>
    <span ng-if="isChangeOrder">Change Order</span>
@@ -80,8 +78,7 @@
 
   <button
   type="button"
-  style="float:right; display:block;"
-  class="btn-lg btn btn-default"
+  class="btn-lg btn btn-default pull-right block-display"
   ng-click="close()"
   ng-disabled = "isValidating">Close
   </button>

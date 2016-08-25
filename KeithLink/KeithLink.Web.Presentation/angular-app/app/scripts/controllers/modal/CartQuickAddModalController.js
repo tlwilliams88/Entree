@@ -20,6 +20,7 @@ angular.module('bekApp')
       quantity: 0,
       each: false
     });
+    $scope.enableSubmit = false;
   };
 
   $scope.removeRow = function(item) {
@@ -81,12 +82,18 @@ angular.module('bekApp')
   $scope.createCart = function(items) {
     // filter items where quantity is greater than 0 and item number is valid
     var newCartItems = getRowsWithQuantity(items);
-    CartService.quickAdd(newCartItems).then(function(cartId) {
-      $modalInstance.close(cartId);
-      $scope.displayMessage('success', 'Successfully created new cart.');
-    }, function(error) {
-      $scope.displayMessage('error', error);
+
+    $scope.validateItems(newCartItems).then(function(validatedItems){
+      if($scope.enableSubmit){
+        CartService.quickAdd(newCartItems).then(function(cartId) {
+          $modalInstance.close(cartId);
+          $scope.displayMessage('success', 'Successfully created new cart.');
+        }, function(error) {
+          $scope.displayMessage('error', error);
+        });
+      }
     });
+
   };
 
   $scope.updateCart = function(items){
