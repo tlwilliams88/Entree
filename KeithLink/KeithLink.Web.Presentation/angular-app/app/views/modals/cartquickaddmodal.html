@@ -9,7 +9,8 @@
     <span ng-if="enableSubmit && !isChangeOrder && !existingCart">All item numbers are valid. Click Create Cart</span>
     <span ng-if="enableSubmit && isChangeOrder || enableSubmit && existingCart">All item numbers are valid.</span>
     </p>
-    <p class="text-red" ng-if="!enableSubmit ">You must enter all valid item numbers before you can create the cart</p>
+    <p class="text-red" ng-if="!enableSubmit">You must enter all valid item numbers before you can create the cart</p>
+    <p class="text-red" ng-if="invalidValue">Please enter a quantity no greater than 999</p>
 
     <table class="table table-border" navigate-quick-add>
       <thead>
@@ -27,7 +28,7 @@
             <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
           </td>
           <td class="input-col">
-            <div counter name="quantity" type="text" ng-model="item.quantity" ></div>
+            <div counter name="quantity" type="text" ng-model="item.quantity" fcsa-number="{ 'noFormat': true, 'maxDigits': 3 }"></div>
           </td>
           <td class="input-col">
             <input name="each" type="checkbox" ng-model="item.each">

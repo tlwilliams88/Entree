@@ -37,6 +37,11 @@
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
     </div>
   </div>
+  <div class="row" ng-if="invalidValue">
+    <div class="col-xs-12 text-red">
+      <span>Please enter a quantity no greater than 999</span>
+    </div>
+  </div>
    <div class="row">
     <div class="col-xs-5" >
       <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel" ng-click="removeRowHighlightParLevel()">

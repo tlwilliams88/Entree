@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-  .directive('counter', ['$filter', '$window', function($filter, $window) {
+  .directive('counter', ['$filter', '$window', '$rootScope', function($filter, $window, $rootScope) {
     return {
       restrict: 'A',
       require: ['^form','ngModel'],
@@ -143,16 +143,29 @@ angular.module('bekApp')
           setValue( val );
         };
 
-        scope.confirmQuantity = function(qty, item) {
-          var pattern = /^([0-9])\1+$/; // repeating digits pattern
+        $rootScope.invalidValue = false;
 
-          if (qty > 50 || pattern.test(qty)) {
-            var isConfirmed = $window.confirm('Do you want to continue with entered quatity of ' + qty + '?');
+        scope.confirmQuantity = function(qty, item) {
+          var pattern = /^([0-9])\1+$/, // repeating digits pattern
+              isConfirmed;
+
+          if ((qty > 50 || pattern.test(qty)) && qty <= 999) {
+            $rootScope.invalidValue = false;
+
+            isConfirmed = $window.confirm('Do you want to continue with entered quatity of ' + qty + '?');
+
             if (!isConfirmed) {
-              // clear input
-              scope.value = null;
+              scope.value = null; // clear input
             }
-          } 
+
+          } else if (qty > 999) {
+            scope.value = null; // clear input
+            $rootScope.invalidValue = true;
+
+          } else {
+            $rootScope.invalidValue = false;
+            return;
+          }
         };
     }
   };

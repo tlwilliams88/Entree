@@ -123,6 +123,7 @@ angular.module('bekApp')
 
   $scope.close = function () {
     $modalInstance.dismiss('cancel');
+    $scope.invalidValue = false;
   };
 
   $scope.addRow();
