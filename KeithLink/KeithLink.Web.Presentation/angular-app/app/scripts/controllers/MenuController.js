@@ -9,14 +9,14 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       $filter,
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService // bek custom services
+      CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -28,6 +28,10 @@ angular.module('bekApp')
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
   $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
+
+  OrderService.getChangeOrders().then(function(resp){
+    $scope.changeOrders = resp;
+  });
  
 
   // global notification at the top of all pages
