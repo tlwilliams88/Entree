@@ -28,7 +28,7 @@
             <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
           </td>
           <td class="input-col">
-            <div counter name="quantity" type="text" ng-model="item.quantity" fcsa-number="{ 'noFormat': true, 'maxDigits': 3 }"></div>
+            <div counter name="quantity" type="text" ng-model="item.quantity"></div>
           </td>
           <td class="input-col">
             <input name="each" type="checkbox" ng-model="item.each">

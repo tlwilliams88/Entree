@@ -149,7 +149,7 @@ angular.module('bekApp')
           var pattern = /^([0-9])\1+$/, // repeating digits pattern
               isConfirmed;
 
-          if ((qty > 50 || pattern.test(qty)) && qty <= 999) {
+          if (qty > 50 && qty <= 999 || pattern.test(qty) && qty <= 999) {
             $rootScope.invalidValue = false;
 
             isConfirmed = $window.confirm('Do you want to continue with entered quatity of ' + qty + '?');
@@ -157,11 +157,10 @@ angular.module('bekApp')
             if (!isConfirmed) {
               scope.value = null; // clear input
             }
-
+            
           } else if (qty > 999) {
             scope.value = null; // clear input
             $rootScope.invalidValue = true;
-
           } else {
             $rootScope.invalidValue = false;
             return;
