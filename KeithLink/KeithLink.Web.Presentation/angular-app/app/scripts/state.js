@@ -131,6 +131,14 @@ angular.module('bekApp')
         authorize: 'canBrowseCatalog'
       }
     })
+    .state('menu.catalog.products.brand', {
+      url: 'catalog/:catalogType/search/:type/:id/products',
+      templateUrl: 'views/searchresults.html',
+      controller: 'SearchController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      }
+    })
     .state('menu.catalog.products.details', {
       url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',

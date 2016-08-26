@@ -113,10 +113,10 @@
         <ul class="horizontal-slide hidden-xs hidden-sm">
     			<li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
     				<div class="featured-item text-center">
-    					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.brand_control_label })" ng-src="{{brand.imageurl}}" alt="image">
+    					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label })" ng-src="{{brand.imageurl}}" alt="image">
     					<div class="featured-item__detail">
     						{{::brand.extended_description}}
-    						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.brand_control_label })" class="text-uppercase">view brand</a>
+    						<a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label })" class="text-uppercase">view brand</a>
     					</div>
     				</div>
     			</li>
