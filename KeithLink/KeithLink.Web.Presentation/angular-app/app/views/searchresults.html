@@ -188,7 +188,7 @@
           </div>
         </accordion-group>
 
-        <accordion-group is-open="status.openCatalogs" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0" class="mobile-accordion">
+        <accordion-group is-open="status.openCatalogs" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0 && selectedUserContext.customer.canViewUNFI" class="mobile-accordion">
           <accordion-heading>Catalogs<i class="pull-right" ng-class="{'icon-arrow-up6': status.openCatalogs, 'icon-arrow-down7': !status.openCatalogs}"></i></accordion-heading>
             <div class="panel panel-default">
               <div class="panel-body">
@@ -350,7 +350,7 @@
         </div>
       </div>
 
-      <div class="row" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0">
+      <div class="row" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0 && selectedUserContext.customer.canViewUNFI">
         <div class="col-sm-12">
           <h3>Catalogs</h3>
             <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Main ({{bekItemCount}})</a>

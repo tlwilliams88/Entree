@@ -95,7 +95,7 @@ angular.module('bekApp')
           } else if (type === 'housebrand') {
             url = '/catalog/search/brands/house/' + id;
           } else if(type === 'brand') {
-            url = 'catalog/' + catalogType + '/search/' + type + '/' + id + '/products';
+            url = '/catalog/' + catalogType + '/search/' + type + '/' + id + '/products';
           }
           return url;
         },
