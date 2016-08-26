@@ -117,12 +117,12 @@ angular.module('bekApp')
           item.isdeleted = true;
           deletedItems.push(item);
         }
+        $scope.sortTable('position', true);
         refreshSubtotal();
       };
 
       $scope.addRow = function(item, useListItemId) {
-        var lastIndex,
-            nextLineNumber = $scope.report.items.length + 1,
+        var nextLineNumber = $scope.report.items.length + 1,
             reportItem = {
               itemnumber: item.itemnumber,
               position: nextLineNumber,
@@ -130,7 +130,7 @@ angular.module('bekApp')
               packsize: item.packsize,
               pack: item.pack,
               label: item.label,
-              quantity: item.quantity,
+              quantity: 0,
               each: item.each,
               packageprice: item.packageprice,
               caseprice: item.caseprice,
@@ -153,7 +153,7 @@ angular.module('bekApp')
           $scope.report.hasContractCategories = true;
         }
 
-        lastIndex = $scope.report.items.length - 1;
+        var lastIndex = $scope.report.items.length - 1;
         watchersQuantity.push($scope.$watch('report.items[' + lastIndex + '].quantity', onItemQuantityChanged));
         watchersEach.push($scope.$watch('report.items[' + lastIndex + '].each', onItemQuantityChanged));
       };
@@ -181,7 +181,7 @@ angular.module('bekApp')
           $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
           $scope.inventoryForm.$setDirty();
           listFound.items.forEach($scope.addRow);          
-           $scope.sortTable('position', true);
+          $scope.sortTable('position', true);
         });
        
       };
