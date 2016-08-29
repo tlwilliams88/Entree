@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             string prefs = string.Empty;
 
             foreach (var u in ump)
-                prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType;
+                prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType + "; ";
 
             log.WriteInformationLog(String.Format("notification prefs: {0}, profiles count: {1}, profiles: {2}, userDefaultMessagingPreferences: {3}, customerMessagingPreferences: {4}",
                                                    prefs, users.UserProfiles.Count, JsonConvert.SerializeObject(users.UserProfiles), userDefaultMessagingPreferences, customerMessagingPreferences));
