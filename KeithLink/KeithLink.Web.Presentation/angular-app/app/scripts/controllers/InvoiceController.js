@@ -728,35 +728,32 @@ angular.module('bekApp')
     }
   };
 
+  var validationCalls = [];
   $scope.validateBatch = function(){
-    var availablePayments;
+    $scope.validating = true;
+      $scope.getSelectedInvoices($scope.invoices, function(payments){
+        var availablePayments = payments;
+        availablePayments = $scope.defaultDates(availablePayments);
+        if(availablePayments && availablePayments.length){
+          validationCalls.push('validation');
+          InvoiceService.checkTotals(availablePayments).then(function(resp) {
+            validationCalls.splice(0,1);
 
-    if(!$scope.validating){
-      $scope.validating = true;
-      if($scope.selectedFilterView.name === 'Invoices Pending Payment'){
-        availablePayments = $scope.invoices;
-      }
-      else{
-        $scope.getSelectedInvoices($scope.invoices, function(payments){
-          availablePayments = payments;
-          availablePayments = $scope.defaultDates(payments);
-          if (availablePayments && availablePayments.length){
-            InvoiceService.checkTotals(availablePayments).then(function(resp) {
-
+            if(validationCalls.length == 0){
               if(resp.successResponse.isvalid){
+                $scope.validating = false;
                 $scope.clearValidationErrors();
-              }
-              else{  
+              } else {
                 $scope.displayValidationError(resp);
-              }        
-            });
-          } else {
-            $scope.clearValidationErrors();
-          }
-        $scope.validating = false;
-        });
-      }     
-    }
+              }
+            }
+
+          });
+        } else {
+          $scope.clearValidationErrors();
+          $scope.validating = false;
+        }
+      });
   };
 
   $scope.clearValidationErrors = function(){

@@ -478,6 +478,13 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 throw new ApplicationException("$0 payments are not allowed");
             }
 
+            var transactionErrors = ValidatePayment(userContext, payments);
+
+            if(transactionErrors.Count > 0) {
+                throw new ApplicationException("Payments failed validation");
+            }
+
+
             foreach (var payment in payments)
             {
                 var testInvoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
