@@ -729,36 +729,32 @@ angular.module('bekApp')
     }
   };
 
+  var validationCalls = [];
   $scope.validateBatch = function(){
-    if(!$scope.validating){
-      $scope.validating = true;
-      if($scope.selectedFilterView.name === 'Invoices Pending Payment'){
-        var payments = $scope.invoices;
-      }
-      else{
-        $scope.getSelectedInvoices($scope.invoices, function(payments){
-          var payments = payments
-                payments = $scope.defaultDates(payments);
-      if(payments && payments.length){
-        InvoiceService.checkTotals(payments).then(function(resp) {
+    $scope.validating = true;
+      $scope.getSelectedInvoices($scope.invoices, function(payments){
+        var payments = payments;
+        payments = $scope.defaultDates(payments);
+        if(payments && payments.length){
+          validationCalls.push('validation');
+          InvoiceService.checkTotals(payments).then(function(resp) {
+            validationCalls.splice(0,1);
 
-          if(resp.successResponse.isvalid){
-            $scope.clearValidationErrors();
-          }
-          else{  
-            $scope.displayValidationError(resp);
-          }        
-        });
-      }
-      else{
-        $scope.clearValidationErrors();
-      }
-      $scope.validating = false;
-        });
+            if(validationCalls.length == 0){
+              if(resp.successResponse.isvalid){
+                $scope.validating = false;
+                $scope.clearValidationErrors();
+              } else {
+                $scope.displayValidationError(resp);
+              }
+            }
 
-
-      }     
-    }
+          });
+        } else {
+          $scope.clearValidationErrors();
+          $scope.validating = false;
+        }
+      });
   };
 
   $scope.clearValidationErrors = function(){
