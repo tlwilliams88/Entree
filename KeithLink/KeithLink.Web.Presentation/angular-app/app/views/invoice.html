@@ -165,15 +165,15 @@
             </span>
             <div class="input-group">
               <div class="input-group-btn">
-                <span class="pull-right-sm pull-right-lg pull-right-md pull-left-xs" ng-class="{'sm-right-5' : !isInternalUser}">
+                <div class="pull-right-sm pull-right-lg pull-right-md pull-left-xs btn-group dropdown" ng-class="{'sm-right-5' : !isInternalUser}">
                   <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu pull-right-sm pull-right-lg pull-right-md pull-left-xs">
                       <li ng-repeat="sortParameter in sortParameters" >
                         <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
                       </li>
                     </ul>
                   <button class="btn btn-default" type="button" ng-click="sortInvoices(sortDirection, sortParametervalue)">{{sortDirection}}</button>
-                </span>
+                </div>
               </div>
             </div>
           </div>
