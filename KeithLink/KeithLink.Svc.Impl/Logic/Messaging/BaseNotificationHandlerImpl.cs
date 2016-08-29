@@ -8,7 +8,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Profile;
-
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -104,10 +104,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             string prefs = string.Empty;
 
             foreach (var u in ump)
-                prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType;
+                prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType + "; ";
 
-            log.WriteInformationLog(String.Format("notification prefs: {0}, profiles count: {1}, userDefaultMessagingPreferences: {2}, customerMessagingPreferences: {3}",
-                                                   prefs, users.UserProfiles.Count, userDefaultMessagingPreferences, customerMessagingPreferences));
+            log.WriteInformationLog(String.Format("notification prefs: {0}, profiles count: {1}, profiles: {2}, userDefaultMessagingPreferences: {3}, customerMessagingPreferences: {4}",
+                                                   prefs, users.UserProfiles.Count, JsonConvert.SerializeObject(users.UserProfiles), userDefaultMessagingPreferences, customerMessagingPreferences));
 
             List<Recipient> recipients = new List<Recipient>();
 
