@@ -12,7 +12,7 @@ angular.module('bekApp')
  
     $scope.$on('$stateChangeStart', 
       function(event, toState, toParams, fromState, fromParams){
-      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !$scope.continueToCart){
+      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !$scope.continueToCart && !$scope.orderCanceled){
  
         if(!$scope.tempCartName){
           $scope.saveAndRetainQuantity();
@@ -58,6 +58,11 @@ angular.module('bekApp')
     $scope.useParLevel = false;
     $scope.visitedPages = [];
     $scope.canSaveCart = false;
+    $scope.setOrderCanceled = false;
+    
+    $scope.setOrderCanceled = function(){
+      $scope.orderCanceled = true;
+    }
         
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');

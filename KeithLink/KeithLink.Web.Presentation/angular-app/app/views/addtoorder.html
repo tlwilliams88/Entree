@@ -2,10 +2,10 @@
   <div header-message>
     Add To Order
     <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="saveAndRetainQuantity(true)" ng-disabled="addToOrderForm.$invalid">Save</button>
-    <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" style="margin-right:3px;" ui-sref="menu.home">Cancel Order</button>
+    <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" style="margin-right:3px;" ui-sref="menu.home" ng-click="setOrderCanceled()">Cancel Order</button>
   </div>
   <div header-buttons ng-hide="invalidParams">
-    <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ui-sref="menu.home">Cancel Order</button>
+    <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ui-sref="menu.home" ng-click="setOrderCanceled()">Cancel Order</button>
     <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity(true)" ng-disabled="addToOrderForm.$invalid">Save</button>
     <a class="btn-lg btn btn-default pull-right-sm hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
     <button title="Print" class="btn btn-default btn-icon" ng-click="saveBeforePrint()"><span class="icon-printer"></span></button>
