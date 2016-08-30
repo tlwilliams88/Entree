@@ -358,7 +358,7 @@ module.exports = function (grunt) {
               files: [{
                 expand: true,
                 cwd: '<%= yeoman.app %>/newrelic/newrelic-dev',
-                dest: '<%= yeoman.dev %>/newrelic',
+                dest: '<%= yeoman.dist %>/newrelic',
                 src: '**/newrelic.js'
               }]
           },
@@ -633,7 +633,7 @@ module.exports = function (grunt) {
     // 'includeSource:dev',
     'compass:server',
     'copy:dev',
-    'copy:newRelic',
+    'copy:newRelicDebug',
     'karma'
   ]);
 
@@ -655,7 +655,7 @@ module.exports = function (grunt) {
     // 'includeSource:dev',
     'compass:server',
     'copy:dev',
-    'copy:newRelic',
+    'copy:newRelicDebug',
     'karma'
   ]);
 
@@ -702,6 +702,8 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
   
+  // Not currently used
+  // Was used to simulate real world conditions with dummy data
   grunt.registerTask('build-for-demo', [
     'clean:dist',
     // 'includeSource:dist',
@@ -720,6 +722,8 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
+  // Not currently used
+  // Originally used to proof marketing content prior to Entree going live
   grunt.registerTask('build-for-stage', [
     'clean:dist',
     // 'includeSource:dist',
