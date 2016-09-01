@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             _log.WriteInformationLog("Service stopping");
 
             TerminateConfirmationThread();
-            TerminateOrderHistoryThread();
+            TerminateOrderUpdateThread();
             TerminateNotificationsThreads();
             TerminatePushMessageConsumerThread();
             TerminateCheckLostOrdersTimer();
@@ -178,7 +178,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                 confirmationScope.Dispose();
         }
 
-        private void TerminateOrderHistoryThread() {
+        private void TerminateOrderUpdateThread() {
             if (_orderHistoryLogic != null)
                 _orderHistoryLogic.StopListening();
 
@@ -217,13 +217,13 @@ namespace KeithLink.Svc.Windows.QueueService {
                 _checkLostOrdersTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
                 if(lostOrdersTask != null) lostOrdersTask.Wait();
             }
-            if (lostOrdersTask != null) _log.WriteWarningLog(string.Format("QueueService.lostOrdersTask.status = {0:G}", lostOrdersTask.Status));
+            //if (lostOrdersTask != null) _log.WriteWarningLog(string.Format("QueueService.lostOrdersTask.status = {0:G}", lostOrdersTask.Status));
         }
 
         private void ProcessCheckLostOrdersMinuteTick( object state ) {
 
-            if ((_checkLostOrdersProcessing) && (DateTime.Now.Minute == 0))
-                _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, _checkLostOrdersProcessing=true");
+//            if ((_checkLostOrdersProcessing) && (DateTime.Now.Minute == 0))
+//                _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, _checkLostOrdersProcessing=true");
             if (!_checkLostOrdersProcessing)
             {
                 _checkLostOrdersProcessing = true;
@@ -233,7 +233,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                     while (DateTime.Now.Hour < 5)
                     {
                         //_log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, asleep");
-                        System.Threading.Thread.Sleep(60000);
+                        return;
                     }
                 }
 
@@ -241,8 +241,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                 if (DateTime.Now.Minute == 0)
                 //if (true) // testing only
                 {
-                    lostOrdersTask = Task.Factory.StartNew(() => ProcessCheckLostOrders(),
-                        CancellationToken.None, TaskCreationOptions.DenyChildAttach, TaskScheduler.Default);
+                    ProcessCheckLostOrders();
                 }
 
                 _checkLostOrdersProcessing = false;
