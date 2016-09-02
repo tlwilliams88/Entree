@@ -118,12 +118,12 @@ angular.module('bekApp')
       ListService.getAllListsForOffline(),
       CartService.getAllCartsForOffline()
     ]).then(function() {
-      // console.log('Downloaded data for offline use.');
+      $scope.displayMessage('success', 'Successfully downloaded offline data.');
     });
   }
 
   if (ENV.mobileApp && AccessService.isOrderEntryCustomer() && AccessService.canCreateOrders()) {
-    // console.log('downloading data');
+    $scope.displayMessage('warning', 'Downloading offline data...');
     downloadDataForOfflineStorage();
   }
 
