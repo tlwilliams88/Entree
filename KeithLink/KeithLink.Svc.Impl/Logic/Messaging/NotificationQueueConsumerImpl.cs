@@ -50,7 +50,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         }
 
         protected void ListenToQueueInTaskForUsers() {
-            Thread.CurrentThread.IsBackground = true;
             while (doListenForMessagesInTask) {
                 consumingMessages = true;
 
