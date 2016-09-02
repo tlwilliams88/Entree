@@ -106,8 +106,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             foreach (var u in ump)
                 prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType + "; ";
 
-            log.WriteInformationLog(String.Format("notification prefs: {0}, profiles count: {1}, profiles: {2}, userDefaultMessagingPreferences: {3}, customerMessagingPreferences: {4}",
-                                                   prefs, users.UserProfiles.Count, JsonConvert.SerializeObject(users.UserProfiles), userDefaultMessagingPreferences, customerMessagingPreferences));
+            log.WriteInformationLog
+                (String.Format(
+                    "notification prefs: {0}, profiles count: {1}, profiles: {2}, userDefaultMessagingPreferences: {3}, customerMessagingPreferences: {4}",
+                    prefs, 
+                    users.UserProfiles.Count, 
+                    JsonConvert.SerializeObject(users.UserProfiles.Select(p => new {
+                        UserId = p.UserId,
+                        EmailAddress = p.EmailAddress
+                    }).ToList()), 
+                    userDefaultMessagingPreferences, 
+                    customerMessagingPreferences));
 
             List<Recipient> recipients = new List<Recipient>();
 
