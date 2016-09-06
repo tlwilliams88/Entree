@@ -6,6 +6,8 @@ using KeithLink.Svc.Impl.Helpers;
 using CommerceServer.Foundation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -67,8 +69,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
 
             List<Core.Models.Profile.UserProfile> customerUsers = new List<Core.Models.Profile.UserProfile>();
+
             Dictionary<Guid, bool> existingUsers = new Dictionary<Guid, bool>();
 
+            if((res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities.Count > 0)
+            {
+                _logger.WriteInformationLog
+                    (String.Format(
+                        "before removing duplicates profiles repo: {0}",
+                        JsonConvert.SerializeObject(((res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities).Select(ent => new {
+                            UserId = Guid.Parse(ent.Id),
+                            EmailAddress = (string)ent.Properties["Email"]
+                        }).ToList())));
+            }
             foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities) {
                 Guid userid = Guid.Parse(ent.Id);
 
@@ -83,8 +96,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     });
                 }
             }
-                
-                
+
+            if (customerUsers.Count > 0)
+            {
+                _logger.WriteInformationLog
+                    (String.Format(
+                        "after removing duplicates profiles repo: {0}",
+                        JsonConvert.SerializeObject((customerUsers).Select(ent => new {
+                            UserId = ent.UserId,
+                            EmailAddress = ent.EmailAddress
+                        }).ToList())));
+            }
 
             return customerUsers;
         }
