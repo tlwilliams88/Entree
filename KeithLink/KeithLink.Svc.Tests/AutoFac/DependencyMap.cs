@@ -71,15 +71,15 @@ namespace KeithLink.Svc.Test
             // Create the container builder.
             var builder = new ContainerBuilder();
 
-			//*******************************************
-			//Mock Items
-			//*******************************************
-            //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
-            builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            //*******************************************
+            //Mock Items
+            //*******************************************
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            //builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
-			//*******************************************
+            //*******************************************
             //Logic Classes
-			//*******************************************
+            //*******************************************
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();

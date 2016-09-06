@@ -1,10 +1,16 @@
-﻿using KeithLink.Svc.Impl;
+﻿using KeithLink.Svc.Core.Interface.Email;
+
+using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.Logic.Messaging;
+
 using KeithLink.Svc.Impl.Repository.Email;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,27 +22,37 @@ namespace KeithLink.Svc.Test.Email
 	[TestClass]
 	public class EmailTemplateTest
 	{
+        private IEmailClient _emailClient;
+        private IMessageTemplateLogic _templateLogic;
+
+        private const string EMAIL_ADDRESS = "mdjoiner@benekeith.com";
+
+        public EmailTemplateTest() {
+            var container = DependencyMap.Build();
+
+            _emailClient = container.Resolve<IEmailClient>();
+            _templateLogic = container.Resolve<IMessageTemplateLogic>();
+        }
+
 		[TestMethod]
 		public void SendEmailTest()
 		{
-			//MessageTemplateLogicImpl messageTemplateLogic = new MessageTemplateLogicImpl(new MessageTemplateRepositoryImpl(new UnitOfWork()));
+            //var template = _templateLogic.ReadForKey("CreatedUserWelcome");
 
-			//var template = messageTemplateLogic.ReadForKey("testEmailTemplate");
+            //_emailClient.SendTemplateEmail(template, new List<string>() { EMAIL_ADDRESS }, new { resetLink = "testUrl" });
 
-			//emailClient.SendTemplateEmail(template, new List<string>() { "jtirey@credera.com" }, null, new List<string> { "jtirey@credera.com" }, new { firstName = "Josh", lastName = "Tirey" });
-
-			Assert.IsTrue(true);
+            Assert.IsTrue(true);
 
 		}
 
         [TestMethod]
         public void SendEmailAndTemporaryPasswordToCreatedUser() {
-            
-            //MessageTemplateLogicImpl m = new MessageTemplateLogicImpl( new MessageTemplateRepositoryImpl( new UnitOfWork() ) );
 
-            //var template = m.ReadForKey( "CreatedUserWeclome" );
+            //MessageTemplateLogicImpl m = new MessageTemplateLogicImpl(new MessageTemplateRepositoryImpl(new UnitOfWork()));
 
-            //emailClient.SendTemplateEmail( template, new List<string> { "mdjoiner@benekeith.com" }, new { password = "hello world" } );
+            //var template = m.ReadForKey("CreatedUserWeclome");
+
+            //emailClient.SendTemplateEmail(template, new List<string> { "mdjoiner@benekeith.com" }, new { password = "hello world" });
 
             Assert.IsTrue( true );
         }

@@ -47,8 +47,6 @@ namespace KeithLink.Svc.Impl
             this.serviceEmailAddress = Configuration.ServiceEmailAddress;
 			this.smtpHostName = Configuration.SMTPHostName;
 			this.smtpSendPort = Configuration.SMTPSendPort;
-			this.smtpUserName = Configuration.SMTPUsername;
-			this.smtpPassword = Configuration.SMTPPassword;
             _log = log;
         }
 
