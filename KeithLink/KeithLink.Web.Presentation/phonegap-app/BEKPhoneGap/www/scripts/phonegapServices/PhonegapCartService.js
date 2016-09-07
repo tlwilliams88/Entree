@@ -16,7 +16,6 @@ angular.module('bekApp')
       }
 
       function updateCachedCarts(updatedCart) {
-        updatedCart.items = [];
         Service.cartHeaders.forEach(function(cart, index) {
           if (cart.id === updatedCart.id) {
             Service.cartHeaders[index] = updatedCart;
