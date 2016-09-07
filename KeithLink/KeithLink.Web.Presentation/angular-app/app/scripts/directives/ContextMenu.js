@@ -67,9 +67,6 @@ angular.module('bekApp')
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
           closeModal();
-        //   $scope.displayMessage('success', 'Successfully created list ' + data[0].name + '.');
-        // }, function() {
-        //   $scope.displayMessage('error', 'Error creating list.');
         });
       };
 

@@ -541,7 +541,7 @@ angular.module('bekApp')
         // accepts listId (guid) and item object
         // returns promise and listitemid
         // Only context menu uses this function
-        addItem: function (listId, item, doNotDisplayMessage) {
+        addItem: function (listId, item) {
           delete item.listitemid;
           item.position = 0;
           item.label = null;
@@ -552,13 +552,8 @@ angular.module('bekApp')
           }, item).$promise.then(function(response) {
             item.listitemid = response.successResponse.listitemid;
             item.editPosition = 0;
-
-            // if (!doNotDisplayMessage) {
-            //   toaster.pop('success', null, 'Successfully added item to list ' + listName + '.');
-            // }
             return item;
           }, function(error) {
-            // toaster.pop('error', null, 'Error adding item to list ' + listName + '.');
             return $q.reject(error);
           });
         },

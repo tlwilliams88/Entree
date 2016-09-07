@@ -576,8 +576,10 @@ angular.module('bekApp')
         $scope.saveAndRetainQuantity().then(function(){
           redirect(listId, cart);
         })      
-      } else {
+      } else if($scope.addToOrderForm.$valid) {
         redirect(listId, cart);
+      } else {
+        return;
       }
 
       calculatePieces(selectedCart.items);
