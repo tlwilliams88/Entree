@@ -71,6 +71,11 @@
   }
 }
 
+.dropdown-menu-scroll {
+  overflow-y:scroll;
+  max-height:300px;
+}
+
 // Hover/Focus state
 .dropdown-menu > li > a {
   &:hover,

@@ -50,7 +50,7 @@
 
   <div class="btn-group pull-left" dropdown is-open="status.listsisopen">
     <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-left text-regular">Reports <span class="icon-arrow-down5"></span></a>
-    <ul class="dropdown-menu" role="menu">
+    <ul class="dropdown-menu dropdown-menu-scroll" role="menu">
       <li ng-repeat="availableReport in reports track by availableReport.listid" ng-if="::(report.listid !== availableReport.listid)">
         <a ng-click="goToList(list, selectedCart)">
           {{availableReport.name}}
@@ -80,7 +80,7 @@
             <div class="text-red" ng-if="listsLoading">Loading Lists...
             </div>
           </button>
-          <ul class="dropdown-menu" role="menu">
+          <ul class="dropdown-menu dropdown-menu-scroll" role="menu" style="width:auto">
             <li ng-repeat="list in ::lists | sortLists">
               <a ng-click="addItemsFromList(list.listid)">{{::list.name}}</a>
             </li>

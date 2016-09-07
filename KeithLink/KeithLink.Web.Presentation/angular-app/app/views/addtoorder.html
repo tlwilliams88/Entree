@@ -60,7 +60,7 @@
           <span class="nav-description text-light">Select a List</span>
           <span class="nav-title">{{selectedList.name}}</span>
           <span class="pull-right caret text-dark"></span>
-          <ul class="dropdown-menu" role="menu">
+          <ul class="dropdown-menu col-xs-12 dropdown-menu-scroll" role="menu">
             <li ng-repeat="list in lists | sortLists" ng-if="list.listid !== selectedList.listid">
               <a ng-click="saveBeforeListChange(list.listid, selectedCart)">
                 {{list.name}}

@@ -48,7 +48,7 @@
     // text-align: left;
     letter-spacing: 0;
     min-width: 150px;
-    max-width: 150px;
+
     padding: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,6 +85,7 @@
 
 .context-menu-dropdown{
   height:auto;
+  width:auto;
   max-height: 180px;
   overflow-y: auto;
   overflow-x:hidden;
