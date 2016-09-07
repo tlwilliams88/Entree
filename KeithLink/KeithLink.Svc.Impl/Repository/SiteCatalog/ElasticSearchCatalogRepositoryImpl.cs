@@ -843,6 +843,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.Size = oProd._source.size;
             p.CaseOnly = oProd._source.caseonly == "Y";
             p.TempZone = oProd._source.temp_zone;
+            p.CatchWeight = oProd._source.catchweight;
             p.CasePriceNumeric = oProd._source.caseprice != null ? oProd._source.caseprice : 0.00;
             p.CasePrice = p.CasePriceNumeric.ToString();
             p.PackagePriceNumeric = oProd._source.packageprice != null ? oProd._source.packageprice : 0.00;
@@ -896,7 +897,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 {
                     p.CaseCube = "";
                 }
-                p.CatchWeight = oProd._source.catchweight;
                 p.IsProprietary = oProd._source.isproprietary;
                 p.AverageWeight = oProd._source.averageweight;
                 if (p.CatalogId.ToLower().StartsWith("unfi"))

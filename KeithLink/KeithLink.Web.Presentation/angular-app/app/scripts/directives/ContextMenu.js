@@ -47,7 +47,7 @@ angular.module('bekApp')
       LISTS
       *************/
 
-      $scope.addItemToList = function(listId, item) {
+      $scope.addItemToList = function(listName, listId, item) {
       var newItem = angular.copy(item);
         $q.all([
           ListService.addItem(listId, newItem),
@@ -55,6 +55,9 @@ angular.module('bekApp')
         ]).then(function(data) {
           item.favorite = true;
           closeModal();
+          $scope.displayMessage('success', 'Successfully added item to list ' + listName + '.');
+        }, function() {
+          $scope.displayMessage('error', 'Error adding item to list ' + listName + '.');
         });
       };
 
@@ -64,7 +67,9 @@ angular.module('bekApp')
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
           closeModal();
-          $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
+        //   $scope.displayMessage('success', 'Successfully created list ' + data[0].name + '.');
+        // }, function() {
+        //   $scope.displayMessage('error', 'Error creating list.');
         });
       };
 
@@ -72,13 +77,13 @@ angular.module('bekApp')
       CARTS
       *************/
 
-      $scope.addItemToCart = function(cartId, item) {
+      $scope.addItemToCart = function(cartName, cartId, item) {
         var newItem = angular.copy(item);
         CartService.addItemToCart(cartId, newItem).then(function(data) {
           closeModal();
-          $scope.displayMessage('success', 'Successfully added item to cart.');
+          $scope.displayMessage('success', 'Successfully added item to cart ' + cartName + '.');
         }, function() {
-          $scope.displayMessage('error', 'Error adding item to cart.');
+          $scope.displayMessage('error', 'Error adding item to cart ' + cartName + '.');
         });
       };
 
@@ -87,8 +92,7 @@ angular.module('bekApp')
         CartService.renameCart = true;
         CartService.createCart(items).then(function(data) {
           closeModal();
-          $state.go('menu.cart.items', { cartId: data.id, renameCart: true });
-          $scope.displayMessage('success', 'Successfully created new cart.');
+          $scope.displayMessage('success', 'Successfully created new cart ' + data.name + '.');
         }, function() {
           $scope.displayMessage('error', 'Error creating new cart.');
         });

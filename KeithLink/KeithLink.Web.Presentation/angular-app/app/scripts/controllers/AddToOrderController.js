@@ -62,7 +62,7 @@ angular.module('bekApp')
     
     $scope.setOrderCanceled = function(){
       $scope.orderCanceled = true;
-    }
+    };
         
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');
@@ -576,9 +576,6 @@ angular.module('bekApp')
         $scope.saveAndRetainQuantity().then(function(){
           redirect(listId, cart);
         })      
-      } else if($scope.addToOrderForm.$invalid) {
-        $scope.displayMessage('error', 'Form is invalid.  Please correct errors to continue.');
-        return;
       } else {
         redirect(listId, cart);
       }
@@ -858,12 +855,7 @@ angular.module('bekApp')
     $scope.saveAndRetainQuantity = function(noParentFunction) {
       if($scope.selectedList && $scope.selectedList.items){
         $stateParams.listItems = $scope.selectedList.items;
-      }
-      if($scope.addToOrderForm && $scope.addToOrderForm.$invalid){
-        var r = confirm('Unsaved data will be lost. Do you wish to continue?');
-        return r;   
-      } 
-      else {
+      } else {
         if($scope.selectedCart && $scope.selectedCart.id === 'New'){
           $scope.creatingCart = true;
         }

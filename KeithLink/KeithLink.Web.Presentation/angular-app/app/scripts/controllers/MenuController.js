@@ -46,9 +46,9 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
  
-  $scope.webVersionNum = '1.9.0';
-  $scope.androidVersionNum = '1.9.0';
-  $scope.iOSVersionNum = '1.9.0';
+  $scope.webVersionNum = '1.10.0';
+  $scope.androidVersionNum = '1.10.0';
+  $scope.iOSVersionNum = '1.10.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
@@ -118,12 +118,12 @@ angular.module('bekApp')
       ListService.getAllListsForOffline(),
       CartService.getAllCartsForOffline()
     ]).then(function() {
-      // console.log('Downloaded data for offline use.');
+      $scope.displayMessage('success', 'Successfully downloaded offline data.');
     });
   }
 
   if (ENV.mobileApp && AccessService.isOrderEntryCustomer() && AccessService.canCreateOrders()) {
-    // console.log('downloading data');
+    $scope.displayMessage('warning', 'Downloading offline data...');
     downloadDataForOfflineStorage();
   }
 

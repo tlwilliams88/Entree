@@ -59,7 +59,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void ListenForQueueMessagesInTask() {
-            Thread.CurrentThread.IsBackground = true;
             while (_keepListening) {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 

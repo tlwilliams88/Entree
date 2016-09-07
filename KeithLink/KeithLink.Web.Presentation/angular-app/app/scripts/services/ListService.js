@@ -417,7 +417,7 @@ angular.module('bekApp')
 
         // items: accepts null, item object, or array of item objects
         // params: type (recommendedItems, Mandatory, InventoryValuation)
-        // returns promise and new list object
+        // returns promise and new item listitemid
         createList: function(items, params) {
           var newList = Service.beforeCreateList(items, params);
           if (!params) {
@@ -540,6 +540,7 @@ angular.module('bekApp')
 
         // accepts listId (guid) and item object
         // returns promise and listitemid
+        // Only context menu uses this function
         addItem: function (listId, item, doNotDisplayMessage) {
           delete item.listitemid;
           item.position = 0;
@@ -552,12 +553,12 @@ angular.module('bekApp')
             item.listitemid = response.successResponse.listitemid;
             item.editPosition = 0;
 
-            if (!doNotDisplayMessage) {
-              toaster.pop('success', null, 'Successfully added item to list.');
-            }
+            // if (!doNotDisplayMessage) {
+            //   toaster.pop('success', null, 'Successfully added item to list ' + listName + '.');
+            // }
             return item;
           }, function(error) {
-            toaster.pop('error', null, 'Error adding item to list.');
+            // toaster.pop('error', null, 'Error adding item to list ' + listName + '.');
             return $q.reject(error);
           });
         },

@@ -64,7 +64,7 @@
   analytics-label="Quick Add" 
   ng-if="!isChangeOrder && !existingCart"
   ng-disabled="!enableSubmit"
-  ng-click="createCart(quickAddItems)">Create Cart
+  ng-click="enableSubmit = false; createCart(quickAddItems)">Create Cart
   </button>
 
   <button

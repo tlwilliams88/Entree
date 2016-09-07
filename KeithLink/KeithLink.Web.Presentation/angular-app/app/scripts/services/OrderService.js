@@ -82,7 +82,7 @@ angular.module('bekApp')
       },
 
       updateOrder: function(order, params) {
-        order.message = 'Saving order...';
+        order.message = 'Updating order...';
         order.items.forEach(function(item){
           if(item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'){
             item.quantity = item.quantityordered;
