@@ -97,7 +97,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
     internal static class AutofacDependencyMapProvider
     {
-        internal static void BuildBaselineDependencies(ContainerBuilder builder) {
+        internal static void BuildBaselineDependencies(ContainerBuilder builder, DependencyInstanceType type = DependencyInstanceType.InstancePerLifetimeScope) {
             ///////////////////////////////////////////////////////////////////////////////
             // Repositories
             ///////////////////////////////////////////////////////////////////////////////
@@ -283,23 +283,26 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 #endif
 
-            AddDatabaseDependencies(builder, DependencyInstanceType.InstancePerLifetimeScope);
+            AddDatabaseDependencies(builder, type);
         }
 
         private static void AddDatabaseDependencies(ContainerBuilder builder, DependencyInstanceType type = DependencyInstanceType.None) {
-            if(type == DependencyInstanceType.InstancePerLifetimeScope) {
-                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
-            }
-            else if (type == DependencyInstanceType.SingleInstance)
-            {
-                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance();
-            }
-            else if (type == DependencyInstanceType.InstancePerRequest)
-            {
-                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
-            }
-            else {
-                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            switch (type) {
+                case DependencyInstanceType.InstancePerLifetimeScope:
+                    builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+                    break;
+                case DependencyInstanceType.InstancePerRequest:
+                    builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerRequest();
+                    break;
+                case DependencyInstanceType.SingleInstance:
+                    builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().SingleInstance();
+                    break;
+                case DependencyInstanceType.InstancePerDependency:
+                    builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerDependency();
+                    break;
+                default:
+                    builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+                    break;
             }
         }
 

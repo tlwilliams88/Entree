@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Enumerations.Dependencies
         None,
         InstancePerLifetimeScope,
         InstancePerRequest,
+        InstancePerDependency,
         SingleInstance
     }
 }
