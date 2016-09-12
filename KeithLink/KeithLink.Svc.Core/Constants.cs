@@ -355,6 +355,8 @@ namespace KeithLink.Svc.Core
         public const string IXONE_PRODUCTINFO_GET_URL =
             "https://exchange.ix-one.net/services/Products/filtered";
         public const string IXONE_PRODUCTIMAGE_GET_URL =
-            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
+            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type={1}&Size=MEDIUM";
+        public const string IXONE_PRODUCTIMAGE_PREFERREDTYPE = "JPG";
+        public const string IXONE_PRODUCTIMAGE_BACKUPTYPE = "PNG";
     }
 }

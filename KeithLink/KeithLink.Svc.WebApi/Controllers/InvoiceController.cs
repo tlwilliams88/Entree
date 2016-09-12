@@ -125,7 +125,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("invoice/")]
-        public OperationReturnModel<InvoiceHeaderReturnModel> Invoice(PagingModel paging, bool forAllCustomers = false) {
+        public OperationReturnModel<InvoiceHeaderReturnModel> Invoice(PagingModel paging, [FromUri]bool forAllCustomers = false) {
             OperationReturnModel<InvoiceHeaderReturnModel> retVal = new OperationReturnModel<InvoiceHeaderReturnModel>();
             try
             {

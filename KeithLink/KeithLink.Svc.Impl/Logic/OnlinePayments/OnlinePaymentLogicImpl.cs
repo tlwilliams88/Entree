@@ -42,12 +42,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Customers;
+using KeithLink.Svc.Core.Interface.Cache;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 {
     public class OnlinePaymentLogicImpl : IOnlinePaymentsLogic
     {
         #region attributes
+        private readonly ICacheRepository _cacheRepo;
         private readonly IAuditLogRepository _auditLog;
         private readonly IInternalUserAccessRepository _internalUserAccessRepo;
         private readonly ICustomerBankRepository _bankRepo;
@@ -58,12 +61,18 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
         private readonly IKPayPaymentTransactionRepository _paymentTransactionRepository;
         private readonly IGenericQueueRepository _queue;
+
+        protected string CACHE_GROUPNAME { get { return "Invoices"; } }
+        protected string CACHE_NAME { get { return "Invoices"; } }
+        protected string CACHE_PREFIX { get { return "Default"; } }
         #endregion
 
         #region ctor
         public OnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-                                      ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, IKPayPaymentTransactionRepository paymentTransactionRepository,
-                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo, IInternalUserAccessRepository internalUserAccessRepo)
+                                      ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, 
+                                      IKPayPaymentTransactionRepository paymentTransactionRepository,
+                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo, 
+                                      IInternalUserAccessRepository internalUserAccessRepo, ICacheRepository cacheRepo)
         {
             _invoiceRepo = invoiceRepo;
             _bankRepo = bankRepo;
@@ -75,6 +84,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             _paymentTransactionRepository = paymentTransactionRepository;
             _kpaylog = kpayLogRepo;
             _auditLog = auditLogRepo;
+            _cacheRepo = cacheRepo;
         }
         #endregion
 
@@ -300,6 +310,11 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             catch { }
         }
 
+        private string GetInvoiceHeadersCacheKey(FilterInfo customerFilter, FilterInfo statusFilter)
+        {
+            return String.Format("InvoiceHeaders_{0}_{1}", JsonConvert.SerializeObject(customerFilter), JsonConvert.SerializeObject(statusFilter));
+        }
+
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(
             PagingModel paging,
             List<Core.Models.Profile.Customer> customers,
@@ -307,11 +322,21 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             out List<EFInvoice.InvoiceHeader> kpayInvoices)
         {
             FilterInfo customerFilter = BuildCustomerFilter(customers);
-            kpayInvoices = _invoiceRepo.ReadAllHeaders()
-                                           .AsQueryable()
-                                           .Filter(customerFilter, null)
-                                           .Filter(statusFilter, null)
-                                           .ToList();
+            List<EFInvoice.InvoiceHeader> cachedInvoiceHeaders = _cacheRepo.GetItem<List<EFInvoice.InvoiceHeader>>
+                (CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetInvoiceHeadersCacheKey(customerFilter, statusFilter));
+            if(cachedInvoiceHeaders == null)
+            {
+                kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                               .AsQueryable()
+                                               .Filter(customerFilter, null)
+                                               .Filter(statusFilter, null)
+                                               .ToList();
+                _cacheRepo.AddItem<List<EFInvoice.InvoiceHeader>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
+                    GetInvoiceHeadersCacheKey(customerFilter, statusFilter), TimeSpan.FromHours(2), kpayInvoices);
+            }else
+            {
+                kpayInvoices = cachedInvoiceHeaders;
+            }
             PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
                                                                    .AsQueryable<InvoiceModel>()
                                                                    .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
