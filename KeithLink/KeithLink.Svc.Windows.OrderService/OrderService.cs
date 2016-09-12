@@ -511,7 +511,7 @@ namespace KeithLink.Svc.Windows.OrderService
                 catch (Exception ex)
                 {
                     _log.WriteErrorLog("Error processing orders", ex);
-                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex);
+                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, "", "Error processing orders");
                 }
 
                 _orderQueueProcessing = false;
