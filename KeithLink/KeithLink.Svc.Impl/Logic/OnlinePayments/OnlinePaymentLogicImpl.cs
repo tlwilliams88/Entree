@@ -51,6 +51,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
     {
         #region attributes
         private readonly ICacheRepository _cacheRepo;
+        private readonly IEventLogRepository _log;
         private readonly IAuditLogRepository _auditLog;
         private readonly IInternalUserAccessRepository _internalUserAccessRepo;
         private readonly ICustomerBankRepository _bankRepo;
@@ -71,9 +72,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         public OnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
                                       ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, 
                                       IKPayPaymentTransactionRepository paymentTransactionRepository,
-                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo, 
+                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo, IEventLogRepository log,
                                       IInternalUserAccessRepository internalUserAccessRepo, ICacheRepository cacheRepo)
         {
+            _log = log;
             _invoiceRepo = invoiceRepo;
             _bankRepo = bankRepo;
             _orderHistoryRepo = orderHistoryrepo;
@@ -239,13 +241,16 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers)
         {
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customers = new List<Core.Models.Profile.Customer>();
 
             FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - BuildStatusFilter");
 
             InvoiceHeaderReturnModel retInvoiceHeaders = new InvoiceHeaderReturnModel();
             if (forAllCustomers)
             {
+                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers");
                 customers = _customerRepository.GetCustomersForUser(user.UserId);
                 if (customers.Count == 0) // in the case of internal users, the relation of customers to users is different, so the above doesn't work for some
                                           // in that case we work with the selected customer
@@ -253,6 +258,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     customers = new List<Core.Models.Profile.Customer>()
                                             { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
                 }
+                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - GetCustomersForUser");
                 retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomerWithInvoices>();
                 retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomerWithInvoices>();
 
@@ -261,8 +267,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     if (customer != null)
                     {
                         CustomerWithInvoices ci = customer.ToCustomerWithInvoices();
+                        EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - ToCustomerWithInvoices");
                         MapInvoicesToCustomer(paging, statusFilter, customer, ci);
-                        if(ci.HasPayableInvoices) // we want to "bubble up" if there are payable invoices
+                        EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - MapInvoicesToCustomer");
+                        if (ci.HasPayableInvoices) // we want to "bubble up" if there are payable invoices
                         {
                             retInvoiceHeaders.HasPayableInvoices = ci.HasPayableInvoices;
                         }
@@ -274,8 +282,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             }
             else
             {
+                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers=false");
                 customers = MapInvoicesToReturn(userContext, paging, statusFilter, retInvoiceHeaders);
             }
+            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - return");
             return retInvoiceHeaders;
         }
 
