@@ -241,16 +241,16 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers)
         {
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customers = new List<Core.Models.Profile.Customer>();
 
             FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - BuildStatusFilter");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - BuildStatusFilter");
 
             InvoiceHeaderReturnModel retInvoiceHeaders = new InvoiceHeaderReturnModel();
             if (forAllCustomers)
             {
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers");
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers");
                 customers = _customerRepository.GetCustomersForUser(user.UserId);
                 if (customers.Count == 0) // in the case of internal users, the relation of customers to users is different, so the above doesn't work for some
                                           // in that case we work with the selected customer
@@ -258,7 +258,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     customers = new List<Core.Models.Profile.Customer>()
                                             { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
                 }
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - GetCustomersForUser");
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - GetCustomersForUser");
                 retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomerWithInvoices>();
                 retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomerWithInvoices>();
 
@@ -267,9 +267,9 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     if (customer != null)
                     {
                         CustomerWithInvoices ci = customer.ToCustomerWithInvoices();
-                        EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - ToCustomerWithInvoices");
+                        //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - ToCustomerWithInvoices");
                         MapInvoicesToCustomer(paging, statusFilter, customer, ci);
-                        EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - MapInvoicesToCustomer");
+                        //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - MapInvoicesToCustomer");
                         if (ci.HasPayableInvoices) // we want to "bubble up" if there are payable invoices
                         {
                             retInvoiceHeaders.HasPayableInvoices = ci.HasPayableInvoices;
@@ -282,10 +282,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             }
             else
             {
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers=false");
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers=false");
                 customers = MapInvoicesToReturn(userContext, paging, statusFilter, retInvoiceHeaders);
             }
-            EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - return");
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - return");
             return retInvoiceHeaders;
         }
 
@@ -376,6 +376,12 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 ApplyCreditMemoFilter(paging, pagedInvoices);
             }
 
+            if ((paging != null) && (paging.DateRange != null) && (paging.DateRange.Filters != null)
+                && (paging.DateRange.Filters.Count > 0))
+            {
+                ApplyDateRangeFilter(paging, pagedInvoices);
+            }
+
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
 
             return pagedInvoices;
@@ -403,6 +409,34 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             {
                 pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
             }
+        }
+
+        private void ApplyDateRangeFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            int yearfilter = int.Parse(paging.DateRange.Filters
+                .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_DATERANGE_YEARKEY).FirstOrDefault().Value);
+            int qtrfilter = int.Parse(paging.DateRange.Filters
+                .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTERKEY).FirstOrDefault().Value);
+            List<int> months = null;
+            switch (qtrfilter)
+            {
+                case 1:
+                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER1_MONTHS;
+                    break;
+                case 2:
+                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER2_MONTHS;
+                    break;
+                case 3:
+                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER3_MONTHS;
+                    break;
+                case 4:
+                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER4_MONTHS;
+                    break;
+            }
+            pagedInvoices.Results = pagedInvoices.Results
+                                                 .Where(i => i.InvoiceDate.Value.Year == yearfilter)
+                                                 .Where(i => months.Contains(i.InvoiceDate.Value.Month))
+                                                 .ToList();
         }
 
         private void GetInvoicePONumber(InvoiceModel invoice)

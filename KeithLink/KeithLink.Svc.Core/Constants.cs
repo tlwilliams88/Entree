@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -302,6 +303,12 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY = "creditmemo";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY = "only";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM = "none";
+        public const string INVOICEREQUESTFILTER_DATERANGE_YEARKEY = "year";
+        public const string INVOICEREQUESTFILTER_DATERANGE_QUARTERKEY = "quarter";
+        public static readonly List<int> INVOICEREQUESTFILTER_DATERANGE_QUARTER1_MONTHS = (new int[] { 1, 2, 3 } ).ToList();
+        public static readonly List<int> INVOICEREQUESTFILTER_DATERANGE_QUARTER2_MONTHS = (new int[] { 4, 5, 6 }).ToList();
+        public static readonly List<int> INVOICEREQUESTFILTER_DATERANGE_QUARTER3_MONTHS = (new int[] { 7, 8, 9 }).ToList();
+        public static readonly List<int> INVOICEREQUESTFILTER_DATERANGE_QUARTER4_MONTHS = (new int[] { 10, 11, 12 }).ToList();
 
         // item history unit of measure
         public const string ITEMHISTORY_AVERAGEUSE_CASE = "C";
