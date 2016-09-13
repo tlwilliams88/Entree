@@ -128,6 +128,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             {
                 return MapStatusDecriptionFilterInfo(passedFilter);
             }
+            if (passedFilter.Field.Equals("invoicenumber", StringComparison.CurrentCultureIgnoreCase))
+            {
+                return new FilterInfo() { Field = "InvoiceStatus", Value = passedFilter.Value.ToUpper(), FilterType = "eq" };
+            }
 
             return null;
         }
