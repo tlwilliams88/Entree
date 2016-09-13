@@ -173,6 +173,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="QueueService-CustomInsturmentation.xml" />
     <None Include="App.Beta.config">
       <DependentUpon>App.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -201,6 +202,9 @@
       <SubType>Designer</SubType>
       <TransformOnBuild>true</TransformOnBuild>
     </Content>
+    <None Include="extension.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="newrelic.Beta.config">
       <DependentUpon>newrelic.config</DependentUpon>
     </None>
