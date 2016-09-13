@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns="urn:newrelic-extension">
+	<instrumentation>
+		<tracerFactory metricName="Custom/Startup">
+			<match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+				<exactMethodMatcher methodName="OnStart"/>
+			</match>
+		</tracerFactory>
+		<tracerFactory metricName="Custom/Shutdown">
+			<match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+				<exactMethodMatcher methodName="OnStop"/>
+			</match>
+		</tracerFactory>
+		<tracerFactory metricName="Custom/ConfirmationLogicImpl-ListenForQueueMessages">
+			<match assemblyName="KeithLink.Svc.Impl" className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+				<exactMethodMatcher methodName="ListenForQueueMessages"/>
+			</match>
+		</tracerFactory>
+	</instrumentation>
+</extension>
