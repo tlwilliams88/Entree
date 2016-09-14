@@ -303,6 +303,7 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY = "creditmemo";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY = "only";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM = "none";
+        public const string INVOICEREQUESTFILTER_PONUMBER_FIELDKEY = "ponumber";
         public const string INVOICEREQUESTFILTER_DATERANGE_YEARKEY = "year";
         public const string INVOICEREQUESTFILTER_DATERANGE_QUARTERKEY = "quarter";
         public static readonly List<int> INVOICEREQUESTFILTER_DATERANGE_QUARTER1_MONTHS = (new int[] { 1, 2, 3 } ).ToList();

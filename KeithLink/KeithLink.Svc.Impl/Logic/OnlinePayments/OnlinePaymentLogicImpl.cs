@@ -124,13 +124,13 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 }
             }
 
-            if (passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
+            if (passedFilter.Field != null && passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
             {
                 return MapStatusDecriptionFilterInfo(passedFilter);
             }
-            if (passedFilter.Field.Equals("invoicenumber", StringComparison.CurrentCultureIgnoreCase))
+            if (passedFilter.Field != null && passedFilter.Field.Equals("InvoiceNumber", StringComparison.CurrentCultureIgnoreCase))
             {
-                return new FilterInfo() { Field = "InvoiceStatus", Value = passedFilter.Value.ToUpper(), FilterType = "eq" };
+                return new FilterInfo() { Field = "InvoiceNumber", Value = passedFilter.Value.ToUpper(), FilterType = "contains" };
             }
 
             return null;
@@ -378,12 +378,21 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
             {
                 ApplyCreditMemoFilter(paging, pagedInvoices);
+                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
+            }
+
+            if ((paging != null) && (paging.Search != null) && 
+                (paging.Search.Field == Constants.INVOICEREQUESTFILTER_PONUMBER_FIELDKEY))
+            {
+                ApplyPONumberFilter(paging, pagedInvoices);
+                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
             }
 
             if ((paging != null) && (paging.DateRange != null) && (paging.DateRange.Filters != null)
                 && (paging.DateRange.Filters.Count > 0))
             {
                 ApplyDateRangeFilter(paging, pagedInvoices);
+                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
             }
 
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
@@ -413,6 +422,12 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             {
                 pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
             }
+        }
+
+        private void ApplyPONumberFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            var filter = paging.Search;
+            pagedInvoices.Results = pagedInvoices.Results.Where(i => i.PONumber == filter.Value).ToList();
         }
 
         private void ApplyDateRangeFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
