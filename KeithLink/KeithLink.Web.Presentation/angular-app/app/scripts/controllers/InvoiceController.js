@@ -53,9 +53,6 @@ angular.module('bekApp')
     
   // different filter views for users to choose in the header dropdown
   $scope.filterViews = [{
-    name: 'All Invoices',
-    filterFields: []
-  }, {
     name: 'Open Invoices',
     filterFields: [],
     specialFitler: {
@@ -108,6 +105,28 @@ angular.module('bekApp')
     }]
   }];
 
+  $scope.dateRangeYears = [{
+    name: '2016'
+  }, {
+    name: '2015'
+  }, {
+    name: '2014'
+  }];
+
+  $scope.dateRangeQuarters = [{
+    name: 'January - March',
+    value: '1'
+  }, {
+    name: 'April - June',
+    value: '2'
+  }, {
+    name: 'July - September',
+    value: '3'
+  }, {
+    name: 'October - December',
+    value: '4'
+  }];
+
   $scope.selectInvoiceFilter = function(filter){
     $scope.selectedInvoiceFilter = filter;
   };
@@ -147,9 +166,18 @@ angular.module('bekApp')
   );
 
   if(!InvoiceService.selectedFilterView){
-    $scope.selectedFilterView = InvoiceService.selectedFilterView = $scope.filterViews[1];
+    $scope.selectedFilterView = InvoiceService.selectedFilterView = $scope.filterViews[0];
   }
   retrieveFilter();
+
+  // Fixes dropdown touch issue on mobile
+  $('body').on('click', '.dateRangeDropdown', function (e) { 
+    e.stopPropagation(); 
+  });
+
+  $('body').on('click', '.dropdown-dateRange', function() {
+    $('.dropdown').removeClass('open');
+  })
 
   function calculateInvoiceFields(customers) {
     customers.forEach(function(customer) {
@@ -320,7 +348,10 @@ angular.module('bekApp')
     }
   };
 
-  $scope.clearFilters = function(filter) {
+  $scope.clearFilters = function(filter, from) {
+    if(from == 'selectFilterView'){
+      $scope.filterRowFields = InvoiceService.filterRowFields = {};
+    }
     blockUI.start('Clearing Filter...').then(function(){
     if(filter){
       $('#invoiceFilterInput').val('');
@@ -332,11 +363,39 @@ angular.module('bekApp')
     });
   };
 
-  $scope.selectFilterView = function (filterView) {
-    if($scope.selectedFilterView === filterView){
+  $scope.selectFilterView = function (filterView, rangeYear, rangeQuarter) {
+    invoicePagingModel.clearFiltersWithoutReload();
+    if($scope.selectedFilterView === filterView && !rangeYear){
       return;
+    } else if(rangeYear) {
+      var dateFilterView = [{
+        name: 'Invoices By Quarter',
+        dateRange: {
+          filter: [{
+            field: 'year',
+            value: rangeYear.name
+          }, {
+            field: 'quarter',
+            value: rangeQuarter.value
+          }]
+        }
+      }];
+
+      if($scope.selectedFilterView == dateFilterView){
+        return;
+      } else {
+        blockUI.start('Loading Invoices...').then(function(){
+          $scope.errorMessage = '';
+          InvoiceService.setFilters(dateFilterView[0], $scope.filterRowFields);
+          getInvoicesFilterObject($scope.filterRowFields, dateFilterView[0]);
+          invoicePagingModel.setAdditionalParams(dateFilterView[0]);
+          $scope.selectedFilterView = dateFilterView[0];
+          invoicePagingModel.loadData();
+        })
+      }
     } else {
       blockUI.start('Loading Invoices...').then(function(){
+      
       $scope.errorMessage = '';
       InvoiceService.setFilters(filterView, $scope.filterRowFields);
       getInvoicesFilterObject($scope.filterRowFields, filterView);
@@ -344,6 +403,7 @@ angular.module('bekApp')
       invoicePagingModel.loadData();
       });
     }
+
   };
 
   $scope.sortInvoices = function(sortDirection, sortField) {
@@ -437,7 +497,7 @@ angular.module('bekApp')
 
     if ($scope.viewingAllCustomers) {
 
-      $scope.selectedFilterView = $scope.filterViews[1]; // default to Open Invoices filter view
+      $scope.selectedFilterView = $scope.filterViews[0]; // default to Open Invoices filter view
       setTempContextForViewingAllCustomers();
       blockUI.start('Loading Invoices...').then(function(){
         invoicePagingModel.getData = InvoiceService.getAllOpenInvoices;

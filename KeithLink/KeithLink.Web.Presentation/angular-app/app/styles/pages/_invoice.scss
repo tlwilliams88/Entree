@@ -174,3 +174,8 @@ margin-top:20px;
     margin-right: 5px !important;
   }
 }
+
+panel-body {
+  max-height: 500px; 
+  overflow-y: scroll;
+}
