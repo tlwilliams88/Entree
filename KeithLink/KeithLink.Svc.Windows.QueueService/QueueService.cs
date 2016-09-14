@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         #region ctor
         public QueueService()
         {
-            container = DependencyMapFactory.GetQueueSvcContainer().Build();
+            container = DependencyMapFactory.GetQueueSvcContainer(Core.Enumerations.Dependencies.DependencyInstanceType.InstancePerDependency).Build();
             InitializeComponent();
         }
         #endregion

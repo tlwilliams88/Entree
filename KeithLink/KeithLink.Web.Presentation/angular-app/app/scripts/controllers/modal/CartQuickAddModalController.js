@@ -17,7 +17,7 @@ angular.module('bekApp')
   $scope.addRow = function() {
     $scope.quickAddItems.push({
       itemnumber: '',
-      quantity: 0,
+      quantity: '',
       each: false
     });
     $scope.enableSubmit = false;
