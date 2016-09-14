@@ -1386,16 +1386,6 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string SMTPUsername
-        {
-            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_USERNAME, null); }
-        }
-
-        public static string SMTPPassword
-        {
-            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_PASSWORD, null); }
-        }
-
         public static string WebNowUrl
         {
             get
