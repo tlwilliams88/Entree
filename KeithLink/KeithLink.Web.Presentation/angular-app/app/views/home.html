@@ -319,7 +319,7 @@
           <div ng-show="promoItems.length > 0">
             <ul class="horizontal-slide hidden-xs hidden-sm">
               <li ng-repeat="item in promoItems" class="item-holder">
-                <div class="featured-item text-center box">
+                <div class="featured-item text-center box" ng-click="storePromoItemInformation(item.targeturltext, item.id)">
                   <img 
                     analytics-on="click" 
                     analytics-category="PromoItem" 
