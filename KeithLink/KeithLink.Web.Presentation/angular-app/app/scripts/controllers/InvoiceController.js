@@ -12,9 +12,9 @@ angular.module('bekApp')
 
   var currentUserSelectedContext = {};
   var customers = [];
+  $scope.selectedFilterViewName;
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
-  $scope.selectedInvoiceFilter = 'Invoice #';
   $scope.areAllSelected = false;
   $scope.selectedSortParameter = 'Invoice Date';
   $scope.sortParametervalue = 'invoicedate';
@@ -87,23 +87,16 @@ angular.module('bekApp')
 
   $scope.invoiceFilters = [{
     name: 'Invoice #',
-    filterFields: [{
-      field: 'invoicenumber',
-      value: 'invoicenumber'
-    }]
+    field: 'invoicenumber'
   }, {
     name: 'PO Number',
-    filterFields: [{
-      field: 'ponumber',
-      value: 'ponumber'
-    }]
+    field: 'ponumber'
   }, {
     name: 'Invoice Type',
-    filterFields: [{
-      field: 'typedescription',
-      value: 'typedescription'
-    }]
+    field: 'typedescription'
   }];
+
+  $scope.selectedInvoiceFilter = $scope.invoiceFilters[0];
 
   $scope.dateRangeYears = [{
     name: '2016'
@@ -128,7 +121,12 @@ angular.module('bekApp')
   }];
 
   $scope.selectInvoiceFilter = function(filter){
-    $scope.selectedInvoiceFilter = filter;
+    $scope.selectedInvoiceFilter = [{
+      name:filter.name,
+      field:filter.field
+    }]
+
+    $scope.selectedInvoiceFilter = $scope.selectedInvoiceFilter[0];
   };
 
   $scope.selectSortParameter = function(parametername, parametervalue){
@@ -283,6 +281,7 @@ angular.module('bekApp')
 
   function stopLoading() {
     $scope.loadingResults = false;
+    blockUI.stop();
   }
 
   function getInvoicesFilterObject(filterFields, filterView) {  
@@ -321,32 +320,45 @@ angular.module('bekApp')
   };
 
   $scope.filterInvoices = function(filter, input) {
-    if(!input && filter){
+    var invoicesFilter;
+    if(!input && filter) {
       $scope.invoices.forEach(function(customer){
         customer.invoices.results = $filter('filter')(customer.invoices.results, {hascreditmemos: true});
         customer.invoices.totalResults = customer.invoices.results.length;
       });
-    } else if(input && filter === 'Invoice #'){
-      $scope.invoices.forEach(function(customer){
-        customer.invoices.results = $filter('filter')(customer.invoices.results, {invoicenumber: input});
-        customer.invoices.totalResults = customer.invoices.results.length;
-      });
-    } else if(filter === 'PO Number'){
-      $scope.invoices.forEach(function(customer){
-        customer.invoices.results = $filter('filter')(customer.invoices.results, {ponumber: input});
-        customer.invoices.totalResults = customer.invoices.results.length;
-      });
-    } else if(filter === 'Invoice Type'){
-      $scope.invoices.forEach(function(customer){
-        customer.invoices.results = $filter('filter')(customer.invoices.results, {typedescription: input});
-        customer.invoices.totalResults = customer.invoices.results.length;
-      });
+    } else if(input && filter == "invoicenumber") {
+      invoicesFilter = [{
+        filter: {
+          field: filter,
+          value: input
+        }
+      }];
+      loadFilteredInvoices(invoicesFilter[0]);
+    } else if(input && filter != "invoicenumber") {
+      invoicesFilter = [{
+        search: {
+          field: filter,
+          value: input
+        }
+      }];
+      loadFilteredInvoices(invoicesFilter[0]);
     } else {
       blockUI.start('Loading Invoices...').then(function(){
         invoicePagingModel.loadData();
       });
     }
   };
+
+  function loadFilteredInvoices(filter){
+    InvoiceService.setFilters(filter, $scope.filterRowFields);
+    getInvoicesFilterObject($scope.filterRowFields, filter);
+    invoicePagingModel.setAdditionalParams(filter);
+    blockUI.start('Loading Invoices...').then(function(){
+      invoicePagingModel.loadData().then(function() {
+        stopLoading();
+      })
+    });
+  }
 
   $scope.clearFilters = function(filter, from) {
     if(from == 'selectFilterView'){
@@ -356,6 +368,7 @@ angular.module('bekApp')
     if(filter){
       $('#invoiceFilterInput').val('');
     }
+    invoicePagingModel.clearFiltersWithoutReload();
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
     getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
     invoicePagingModel.loadData();
@@ -386,21 +399,16 @@ angular.module('bekApp')
       } else {
         blockUI.start('Loading Invoices...').then(function(){
           $scope.errorMessage = '';
-          InvoiceService.setFilters(dateFilterView[0], $scope.filterRowFields);
-          getInvoicesFilterObject($scope.filterRowFields, dateFilterView[0]);
+          $scope.selectedFilterViewName = rangeQuarter.name + ', ' + rangeYear.name;
           invoicePagingModel.setAdditionalParams(dateFilterView[0]);
-          $scope.selectedFilterView = dateFilterView[0];
-          invoicePagingModel.loadData();
+          loadFilteredInvoices(dateFilterView[0]);
         })
       }
     } else {
       blockUI.start('Loading Invoices...').then(function(){
-      
       $scope.errorMessage = '';
-      InvoiceService.setFilters(filterView, $scope.filterRowFields);
-      getInvoicesFilterObject($scope.filterRowFields, filterView);
-      $scope.selectedFilterView = filterView;
-      invoicePagingModel.loadData();
+      $scope.selectedFilterViewName = filterView.name;
+      loadFilteredInvoices(filterView);
       });
     }
 
