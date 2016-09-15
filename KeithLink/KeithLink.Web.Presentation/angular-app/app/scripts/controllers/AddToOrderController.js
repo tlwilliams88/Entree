@@ -571,7 +571,7 @@ angular.module('bekApp')
     };
 
     $scope.saveBeforeListChange = function(listId, cart){
-
+ 
       if(($scope.addToOrderForm.$dirty || $scope.tempCartName) && $scope.addToOrderForm.$valid){
         $scope.saveAndRetainQuantity().then(function(){
           redirect(listId, cart);
@@ -581,7 +581,7 @@ angular.module('bekApp')
       } else {
         return;
       }
-
+ 
       calculatePieces(selectedCart.items);
     };
  
@@ -857,6 +857,9 @@ angular.module('bekApp')
     $scope.saveAndRetainQuantity = function(noParentFunction) {
       if($scope.selectedList && $scope.selectedList.items){
         $stateParams.listItems = $scope.selectedList.items;
+      }
+      if($scope.addToOrderForm.$invalid){
+        return false;
       } else {
         if($scope.selectedCart && $scope.selectedCart.id === 'New'){
           $scope.creatingCart = true;
@@ -873,6 +876,7 @@ angular.module('bekApp')
           }
           if($scope.selectedList && $scope.selectedCart) {
             return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+
             if(noParentFunction){
               $scope.isRedirecting(resp);
             }
@@ -880,10 +884,10 @@ angular.module('bekApp')
             });
           }
         }
-      }
       $scope.addToOrderForm.$setPristine();
+      }
     };
- 
+
     $scope.updateOrderClick = function(list, cart) {
       clearItemWatches(cartWatches);
       var cartItems = getCombinedCartAndListItems(cart.items, list.items);
