@@ -46,7 +46,7 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Dir
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADGuestOU', '_bek_guest', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'WhiteList: must be lowercase', 'WhiteListedBekUsers', 'tcfox,jwames,pabrandt,mdjoiner,jdhughes,corp-ssa-entreadmin,dmderusha,bakillins,jmmills', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'WhiteList', 'WhiteListedBekUsersEnforced', 'true', 0)
-INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchURL', 'http://localhost:9200', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchURL', 'http://qaes.benekeith.com:9200', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'DefaultCategoryReturnSize', '2000', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'DefaultProductReturnSize', '500', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'MaxSortByPriceItemCount', '200', 0)
