@@ -130,35 +130,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             }
             if (passedFilter.Field != null && passedFilter.Field.Equals("YearQtr", StringComparison.CurrentCultureIgnoreCase))
             {
-                FilterInfo fi = new FilterInfo();
-                fi.Condition = "and";
-                fi.Filters = new List<FilterInfo>();
-                string year = passedFilter.Value.Substring(0, passedFilter.Value.IndexOf(','));
-                string qtr = passedFilter.Value.Substring(passedFilter.Value.IndexOf(',')+1);
-                DateTime dtStart;
-                DateTime dtEnd;
-                switch (qtr)
-                {
-                    case "1":
-                        dtStart = DateTime.Parse("1/1/" + year);
-                        dtEnd = DateTime.Parse("4/1/" + year);
-                        break;
-                    case "2":
-                        dtStart = DateTime.Parse("4/1/" + year);
-                        dtEnd = DateTime.Parse("7/1/" + year);
-                        break;
-                    case "3":
-                        dtStart = DateTime.Parse("7/1/" + year);
-                        dtEnd = DateTime.Parse("10/1/" + year);
-                        break;
-                    default:
-                        dtStart = DateTime.Parse("10/1/" + year);
-                        dtEnd = DateTime.Parse("1/1/" + (int.Parse(year) + 1));
-                        break;
-                }
-                fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtStart.ToShortDateString(), FilterType = "gte" });
-                fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtEnd.ToShortDateString(), FilterType = "lt" });
-                return fi;
+                return MapDateRangeFilterInfo(passedFilter);
             }
             if (passedFilter.Field != null && passedFilter.Field.Equals("InvoiceNumber", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -166,6 +138,39 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             }
 
             return null;
+        }
+
+        private FilterInfo MapDateRangeFilterInfo(FilterInfo passedFilter)
+        {
+            FilterInfo fi = new FilterInfo();
+            fi.Condition = "and";
+            fi.Filters = new List<FilterInfo>();
+            string year = passedFilter.Value.Substring(0, passedFilter.Value.IndexOf(','));
+            string qtr = passedFilter.Value.Substring(passedFilter.Value.IndexOf(',') + 1);
+            DateTime dtStart;
+            DateTime dtEnd;
+            switch (qtr)
+            {
+                case "1":
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ1 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ2 + "/" + year);
+                    break;
+                case "2":
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ2 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ3 + "/" + year);
+                    break;
+                case "3":
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ3 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ4 + "/" + year);
+                    break;
+                default:
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ4 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ1 + "/" + (int.Parse(year) + 1));
+                    break;
+            }
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtStart.ToShortDateString(), FilterType = "gte" });
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtEnd.ToShortDateString(), FilterType = "lt" });
+            return fi;
         }
 
         private FilterInfo MapStatusDecriptionFilterInfo(FilterInfo passedFilter)
@@ -470,34 +475,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         {
             var filter = paging.Search;
             pagedInvoices.Results = pagedInvoices.Results.Where(i => i.TypeDescription.StartsWith(filter.Value)).ToList();
-        }
-
-        private void ApplyDateRangeFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
-        {
-            int yearfilter = int.Parse(paging.DateRange.Filters
-                .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_DATERANGE_YEARKEY).FirstOrDefault().Value);
-            int qtrfilter = int.Parse(paging.DateRange.Filters
-                .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTERKEY).FirstOrDefault().Value);
-            List<int> months = null;
-            switch (qtrfilter)
-            {
-                case 1:
-                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER1_MONTHS;
-                    break;
-                case 2:
-                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER2_MONTHS;
-                    break;
-                case 3:
-                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER3_MONTHS;
-                    break;
-                case 4:
-                    months = Constants.INVOICEREQUESTFILTER_DATERANGE_QUARTER4_MONTHS;
-                    break;
-            }
-            pagedInvoices.Results = pagedInvoices.Results
-                                                 .Where(i => i.InvoiceDate.Value.Year == yearfilter)
-                                                 .Where(i => months.Contains(i.InvoiceDate.Value.Month))
-                                                 .ToList();
         }
 
         private void GetInvoicePONumber(InvoiceModel invoice)
