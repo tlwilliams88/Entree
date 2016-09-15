@@ -1,87 +1,148 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension xmlns="urn:newrelic-extension">
 	<instrumentation>
-		<tracerFactory metricName="Custom/Startup">
-			<match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <!--SERVICE STARTUP-->
+		<tracerFactory metricName="Custom/Startup" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+			<match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
 				<exactMethodMatcher methodName="OnStart"/>
 			</match>
 		</tracerFactory>
-    <tracerFactory metricName="Custom/InitializeNotificationsThreads">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/InitializeNotificationsThreads" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="InitializeNotificationsThreads"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/InitializePushMessageConsumerThread">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/InitializePushMessageConsumerThread" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="InitializePushMessageConsumerThread"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/InitializeOrderUpdateThread">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/InitializeOrderUpdateThread" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="InitializeOrderUpdateThread"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/InitializeSpecialOrderUpdateThread">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/InitializeSpecialOrderUpdateThread" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="InitializeSpecialOrderUpdateThread"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/InitializeCheckLostOrdersTimer">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/InitializeCheckLostOrdersTimer" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="InitializeCheckLostOrdersTimer"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/Shutdown">
-			<match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+
+    <!--SERVICE SHUTDOWN-->
+    <tracerFactory metricName="Custom/Shutdown" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+			<match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
 				<exactMethodMatcher methodName="OnStop"/>
 			</match>
 		</tracerFactory>
-    <tracerFactory metricName="Custom/TerminateNotificationsThreads">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/TerminateNotificationsThreads" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="TerminateNotificationsThreads"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/TerminatePushMessageConsumerThread">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/TerminatePushMessageConsumerThread" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="TerminatePushMessageConsumerThread"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/TerminateOrderUpdateThread">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/TerminateOrderUpdateThread" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="TerminateOrderUpdateThread"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/TerminateSpecialOrderUpdateThread">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/TerminateSpecialOrderUpdateThread" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="TerminateSpecialOrderUpdateThread"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/TerminateCheckLostOrdersTimer">
-      <match assemblyName="KeithLink.Svc.Windows.QueueService" className="KeithLink.Svc.Windows.QueueService.QueueService">
+    <tracerFactory metricName="Custom/TerminateCheckLostOrdersTimer" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
         <exactMethodMatcher methodName="TerminateCheckLostOrdersTimer"/>
       </match>
     </tracerFactory>
 
-    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ListenForQueueMessages">
-			<match assemblyName="KeithLink.Svc.Impl" className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+    <!--LOST ORDERS-->
+    <tracerFactory metricName="Custom/ProcessCheckLostOrders"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService"
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="ProcessCheckLostOrders"/>
+      </match>
+    </tracerFactory>
+
+    <!--CONFIRMATIONS-->
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ListenForQueueMessages" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+			<match assemblyName="KeithLink.Svc.Impl" 
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
 				<exactMethodMatcher methodName="ListenForQueueMessages"/>
 			</match>
 		</tracerFactory>
-    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ProcessIncomingConfirmation">
-      <match assemblyName="KeithLink.Svc.Impl" className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ProcessIncomingConfirmation" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl" 
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
         <exactMethodMatcher methodName="ProcessIncomingConfirmation"/>
       </match>
     </tracerFactory>
 
-    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-ProcessNotification">
-      <match assemblyName="KeithLink.Svc.Impl" className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+    <!--NOTIFICATIONS-->
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-ProcessNotification" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl" 
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
         <exactMethodMatcher methodName="ProcessNotification"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/PaymentConfirmationNotificationHandlerImpl-ProcessNotification">
-      <match assemblyName="KeithLink.Svc.Impl" className="KeithLink.Svc.Impl.Logic.Messaging.PaymentConfirmationNotificationHandlerImpl">
+    <tracerFactory metricName="Custom/PaymentConfirmationNotificationHandlerImpl-ProcessNotification" 
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl" 
+             className="KeithLink.Svc.Impl.Logic.Messaging.PaymentConfirmationNotificationHandlerImpl">
         <exactMethodMatcher methodName="ProcessNotification"/>
       </match>
     </tracerFactory>
+    <tracerFactory metricName="Custom/EtaNotificationHandlerImpl-ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EtaNotificationHandlerImpl">
+        <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/HasNewsNotificationHandlerImpl-ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.HasNewsNotificationHandlerImpl">
+        <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+
   </instrumentation>
 </extension>
