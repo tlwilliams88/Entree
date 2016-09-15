@@ -385,11 +385,8 @@ angular.module('bekApp')
         name: 'Invoices By Quarter',
         dateRange: {
           filter: [{
-            field: 'year',
-            value: rangeYear.name
-          }, {
-            field: 'quarter',
-            value: rangeQuarter.value
+            field: 'yearqtr',
+            value: rangeYear.name + ',' + rangeQuarter.value
           }]
         }
       }];
@@ -756,11 +753,11 @@ angular.module('bekApp')
           }
         }
     });
-    //Closes modal window and redirects to transactions window if submit payments button is used
+    //Closes modal window and redirects to Invoices Pending Payment view if submit payments button is used
     modalInstance.result.then(function(){
         if(modalInstance.result.$$state.value){
           $scope.invoiceForm.$setPristine();
-          $state.go('menu.transaction');
+          $scope.selectFilterView($scope.filterViews[1]);
         }else{
           return;
         }

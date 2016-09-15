@@ -209,32 +209,34 @@
                 <div>
                   <div>
                     <label>
-                      <input type="checkbox" style="margin-left:10px;" no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
+                      <input type="checkbox" class="margin-top-10 margin-left-10" no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
                     </label>
                   </div>
-                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display margin-bottom-10">
                     <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
                     <h5>{{::invoice.typedescription}}</h5>
+                    <h5 ng-if="invoice.pendingtransaction.confirmationid">Confirmation ID: {{::invoice.pendingtransaction.confirmationid}}</h5>
                     <h5>Status: <span ng-class="{'highlight-text-late': (invoice.statusdescription == 'Past Due'), 'highlight-text-paid': (invoice.statusdescription == 'Paid') }" >{{::invoice.statusdescription}}</span></h5>
+                    <h5 ng-if="invoice.pendingtransaction.submittedby">Submitted By: {{::invoice.pendingtransaction.submittedby}}</h5>
+                    <h5 ng-if="invoice.pendingtransaction.submittedon">Submitted On: {{::invoice.pendingtransaction.submittedon | formatDateWithTimezone}}</h5>
                   </div>
-                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display margin-bottom-10">
                     <h5 >PO Number: {{::invoice.ponumber}}</h5>
                     <h5 >Invoice Date: {{::invoice.invoicedate |formatDate}}</h5>
                     <h5 >Due Date: {{::invoice.duedate | formatDate}}</h5>
                   </div>
-                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display margin-bottom-10">
                     <h5 >Invoice Amount: {{::invoice.invoiceamount | currency}}</h5>
                     <h5>Amount Due: {{::invoice.amount | currency}}<span><a class="icon-plus3 large-icon margin-left-5" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></span></h5>
                     <h5 class="hidden-print">Invoice Image: <span><a  ui-sref="invoiceimage({invoiceNumber: invoice.invoicenumber, customerid: invoice.customernumber, branchid: invoice.branchid})"  target="_blank" class="icon-camera large-icon" analytics-on analytics-category="Invoices" analytics-event="View Invoice Image"></a></span></h5>
                   </div>
-                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
+                  <div class="col-md-3 col-xs-6 row-fluid inline-block-display margin-bottom-10">
                     <span style="padding-right:10px;">Scheduled Date:</span> 
                     <a 
-                    style="margin-right:10px !important;"
                       ng-class="{'no-display-icon' : ((invoice.statusdescription === 'Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)))}" 
                       ng-if="invoice.userCanPayInvoice && !invoice.showDatePicker && !isInternalAccountAdminUser"
                       ng-mouseenter="invoice.showDatePicker=true"
-                      class="icon-calendar large-icon text-right">
+                      class="icon-calendar large-icon text-right margin-right-10">
                     </a>
                     <a
                       id="datePickerWithOptions"
@@ -323,7 +325,10 @@
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
                     <h5>{{::invoice.typedescription}}</h5>
+                    <h5 ng-if="invoice.pendingtransaction.confirmationid">{{::invoice.pendingtransaction.confirmationid}}</h5>
                     <h5>Status: <span ng-class="{'highlight-text-late': (invoice.statusdescription == 'Past Due'), 'highlight-text-paid': (invoice.statusdescription == 'Paid') }" >{{::invoice.statusdescription}}</span></h5>
+                    <h5 ng-if="invoice.pendingtransaction.submittedby">Submitted By: {{::invoice.pendingtransaction.submittedby}}</h5>
+                    <h5 ng-if="invoice.pendingtransaction.submittedon">Submitted On: {{::invoice.pendingtransaction.submittedon | formatDate}}</h5>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <h5 >PO Number: {{::invoice.ponumber}}</h5>
