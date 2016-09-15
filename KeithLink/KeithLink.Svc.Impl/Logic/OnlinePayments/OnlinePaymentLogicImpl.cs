@@ -128,6 +128,38 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             {
                 return MapStatusDecriptionFilterInfo(passedFilter);
             }
+            if (passedFilter.Field != null && passedFilter.Field.Equals("YearQtr", StringComparison.CurrentCultureIgnoreCase))
+            {
+                FilterInfo fi = new FilterInfo();
+                fi.Condition = "and";
+                fi.Filters = new List<FilterInfo>();
+                string year = passedFilter.Value.Substring(0, passedFilter.Value.IndexOf(','));
+                string qtr = passedFilter.Value.Substring(passedFilter.Value.IndexOf(',')+1);
+                DateTime dtStart;
+                DateTime dtEnd;
+                switch (qtr)
+                {
+                    case "1":
+                        dtStart = DateTime.Parse("1/1/" + year);
+                        dtEnd = DateTime.Parse("4/1/" + year);
+                        break;
+                    case "2":
+                        dtStart = DateTime.Parse("4/1/" + year);
+                        dtEnd = DateTime.Parse("7/1/" + year);
+                        break;
+                    case "3":
+                        dtStart = DateTime.Parse("7/1/" + year);
+                        dtEnd = DateTime.Parse("10/1/" + year);
+                        break;
+                    default:
+                        dtStart = DateTime.Parse("10/1/" + year);
+                        dtEnd = DateTime.Parse("1/1/" + (int.Parse(year) + 1));
+                        break;
+                }
+                fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtStart.ToShortDateString(), FilterType = "gte" });
+                fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtEnd.ToShortDateString(), FilterType = "lt" });
+                return fi;
+            }
             if (passedFilter.Field != null && passedFilter.Field.Equals("InvoiceNumber", StringComparison.CurrentCultureIgnoreCase))
             {
                 return new FilterInfo() { Field = "InvoiceNumber", Value = passedFilter.Value.ToUpper(), FilterType = "contains" };
@@ -250,6 +282,11 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
             FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
             //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - BuildStatusFilter");
+
+            if ((paging != null) && (paging.DateRange != null))
+            {
+                statusFilter = BuildStatusFilter(paging.DateRange);
+            }
 
             InvoiceHeaderReturnModel retInvoiceHeaders = new InvoiceHeaderReturnModel();
             if (forAllCustomers)
@@ -391,13 +428,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 {
                     ApplyTypeDescriptionFilter(paging, pagedInvoices);
                 }
-                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
-            }
-
-            if ((paging != null) && (paging.DateRange != null) && (paging.DateRange.Filters != null)
-                && (paging.DateRange.Filters.Count > 0))
-            {
-                ApplyDateRangeFilter(paging, pagedInvoices);
                 pagedInvoices.TotalResults = pagedInvoices.Results.Count;
             }
 
