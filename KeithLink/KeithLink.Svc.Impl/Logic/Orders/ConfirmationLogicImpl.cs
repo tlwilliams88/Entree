@@ -287,8 +287,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                 genericSubscriptionQueue.Ack(consumer, args.DeliveryTag);
             }
-            catch (QueueDataError dataException) {
+            catch (QueueDataError<ConfirmationFile> dataException) {
                 // Move to errror queue
+                PublishToQueue(dataException.ProcessingObject, ConfirmationQueueLocation.Error);
                 _log.WriteErrorLog(dataException.Message);
             }
             catch (Exception ex) {
@@ -304,7 +305,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 confirmation = JsonConvert.DeserializeObject<ConfirmationFile>(Encoding.ASCII.GetString(bytes));
             }
             catch (Exception ex) {
-                throw new QueueDataError("N/A", 292, "DeserializeConfirmation", "Parsing confirmation to ConfirmationFile", ex.Message, ex);
+                throw new QueueDataError<string>("N/A", "DeserializeConfirmation", "Parsing confirmation to ConfirmationFile", ex.Message, ex);
             }
 
             return confirmation;
@@ -383,11 +384,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public bool ProcessIncomingConfirmation(ConfirmationFile confirmation) {
             if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
-                throw new QueueDataError(confirmation.ToJson(), 379, "ProcessIncomingConfirmation", "Process incoming confirmations", "Confirmation Number is Required", new Exception());
+                throw new QueueDataError<ConfirmationFile>(confirmation, "ProcessIncomingConfirmation", "Process incoming confirmations", "Confirmation Number is Required", new Exception()); ;
             if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
-                throw new QueueDataError(confirmation.ToJson(), 382, "ProcessIncomingConfirmation", "Process incoming confirmations", "Invoice Number is Required", new Exception());
+                throw new QueueDataError<ConfirmationFile>(confirmation, "ProcessIncomingConfirmation", "Process incoming confirmations", "Invoice Number is Required", new Exception()); ;
             if (confirmation.Header.ConfirmationStatus == null)
-                throw new QueueDataError(confirmation.ToJson(), 382, "ProcessIncomingConfirmation", "Process incoming confirmations", "Confirmation Status is Required", new Exception());
+                throw new QueueDataError<ConfirmationFile>(confirmation, "ProcessIncomingConfirmation", "Process incoming confirmations", "Confirmation Status is Required", new Exception()); ;
 
             var poNum = confirmation.Header.ConfirmationNumber;
             PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
@@ -404,8 +405,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 _log.WriteWarningLog("Could not find PO for confirmation number: {ConfirmationNumber}, Line: 399, Method: ProcessIncomingConfirmation".InjectSingleValue("ConfirmationNumber", poNum));
             } else {    
                 // make sure that there are items to process
-                if (po.LineItemCount == 0 || po.OrderForms[0].LineItems.Count == 0) 
-                    throw new QueueDataError(confirmation.ToJson(), 401, "ProcessIncomingConfirmation", "Process incoming confirmations", "Purchase order has no line items", new Exception());
+                if (po.LineItemCount == 0 || po.OrderForms[0].LineItems.Count == 0)
+                    throw new QueueDataError<ConfirmationFile>(confirmation, "ProcessIncomingConfirmation", "Process incoming confirmations", "Purchase order has no line items", new Exception());
 
                 // need to save away pre and post status info, then if different, add something to the messaging
                 LineItem[] currLineItems = new LineItem[po.LineItemCount];

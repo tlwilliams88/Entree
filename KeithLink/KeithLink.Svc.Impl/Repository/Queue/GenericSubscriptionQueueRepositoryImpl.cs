@@ -24,16 +24,19 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
 
         #region functions
         public void Subscribe(ConnectionFactory connection, string queue) {
+            if (connection.RequestedHeartbeat < 1)
+                connection.RequestedHeartbeat = 20;
+
             using (IConnection c = connection.CreateConnection()) {
                 using (IModel channel = c.CreateModel()) {
                     EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
 
                     consumer.Received += MessageReceived;
 
-                    string consumerTag = channel.BasicConsume(queue, false, "Matt debug", consumer);
+                    string consumerTag = channel.BasicConsume(queue, false, String.Format("{0}-{1}", Configuration.ApplicationName, queue), consumer);
 
                     while (_allowProcessing == true) {
-                        System.Threading.Thread.Sleep(20000);
+                        System.Threading.Thread.Sleep(2000);
                     }
 
                     consumer.Received -= MessageReceived;

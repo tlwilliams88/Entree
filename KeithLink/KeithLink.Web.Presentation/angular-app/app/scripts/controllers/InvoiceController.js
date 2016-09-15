@@ -611,17 +611,17 @@ angular.module('bekApp')
   };
 
   $scope.selectAll = function (fromLocation, customer, $event) {
-    $scope.expandcollapseAll($scope.collapsed = !$scope.collapsed);
     if(!$scope.areAllSelected && $scope.errorMessage){
       $scope.errorMessage = '';
     }
     if(fromLocation === 'selectAllInvoices'){
+      $scope.expandcollapseAll($scope.collapsed = !$scope.collapsed);
       angular.forEach($scope.invoices, function (customer, index) {
         customer.selected = angular.element('.invoiceSelectAll')[0].checked;
         angular.forEach(customer.invoices.results, function(invoice, index){
           if(invoice.userCanPayInvoice){
             invoice.isSelected = customer.selected;
-            if (invoice.invoiceamount !== 0) {
+            if (invoice.amountdue != 0) {
               $scope.selectInvoice(invoice, invoice.isSelected);
             }
           }
@@ -632,7 +632,7 @@ angular.module('bekApp')
       customer.invoices.results.forEach(function(invoice){
         if(invoice.userCanPayInvoice){
           invoice.isSelected = customer.selected;
-          if (invoice.invoiceamount !== 0) {
+          if (invoice.amountdue != 0) {
             $scope.selectInvoice(invoice, invoice.isSelected);
           }
         }
