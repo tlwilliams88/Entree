@@ -99,29 +99,157 @@
     </tracerFactory>
 
     <!--CONFIRMATIONS-->
-    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ListenForQueueMessages" 
-                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
-			<match assemblyName="KeithLink.Svc.Impl" 
-             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
-				<exactMethodMatcher methodName="ListenForQueueMessages"/>
-			</match>
-		</tracerFactory>
-    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ProcessIncomingConfirmation" 
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-BuildOrderChanges" 
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl" 
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="BuildOrderChanges"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-GetCsPurchaseOrderByNumber"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="GetCsPurchaseOrderByNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-GetItemPrice"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="GetItemPrice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ProcessMisingItems"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ProcessMisingItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-SetCsHeaderInfo"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SetCsHeaderInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-SetCsLineInfo"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SetCsLineInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-SetCsLineItemInfo"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SetCsLineItemInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/ConfirmationLogicImpl-ProcessIncomingConfirmation"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
         <exactMethodMatcher methodName="ProcessIncomingConfirmation"/>
       </match>
     </tracerFactory>
 
-    <!--NOTIFICATIONS-->
-    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-ProcessNotification" 
+    <!--ORDER NOTIFICATIONS-->
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-BuildExceptionItemDetail" 
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl" 
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildExceptionItemDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-BuildExtPriceInfo"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildExtPriceInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-BuildItemDetail"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildItemDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-BuildNotificationChanges"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildNotificationChanges"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-BuildOrderTables"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildOrderTables"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-BuildPieceCount"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildPieceCount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-BuildPriceInfo"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildPriceInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-GetEmailMessageForNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetEmailMessageForNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-GetInvoiceNumber"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetInvoiceNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-GetLinePrice"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetLinePrice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-MakeConfirmationMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="MakeConfirmationMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-MakeRejectedMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="MakeRejectedMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConfirmationNotificationHandlerImpl-ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
         <exactMethodMatcher methodName="ProcessNotification"/>
       </match>
     </tracerFactory>
+
+    <!--PAYMENT NOTIFICATIONS-->
     <tracerFactory metricName="Custom/PaymentConfirmationNotificationHandlerImpl-ProcessNotification" 
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl" 
@@ -129,6 +257,8 @@
         <exactMethodMatcher methodName="ProcessNotification"/>
       </match>
     </tracerFactory>
+
+    <!--ETA NOTIFICATIONS-->
     <tracerFactory metricName="Custom/EtaNotificationHandlerImpl-ProcessNotification"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -136,11 +266,143 @@
         <exactMethodMatcher methodName="ProcessNotification"/>
       </match>
     </tracerFactory>
+
+    <!--HASNEWS NOTIFICATIONS-->
     <tracerFactory metricName="Custom/HasNewsNotificationHandlerImpl-ProcessNotification"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Messaging.HasNewsNotificationHandlerImpl">
         <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+
+    <!--OTHER CALLS-->
+    <tracerFactory metricName="Custom/BaseNotificationHandlerImpl-LoadRecipients"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.BaseNotificationHandlerImpl">
+        <exactMethodMatcher methodName="LoadRecipients"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/BaseNotificationHandlerImpl-GetUsers"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.BaseNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/DsrLogic-GetDsr"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="GetDsr"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/DsrLogic-ToDsrModel"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="ToDsrModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/DsrLogic-GetDefault"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="GetDefault"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/UserProfileLogicImpl-GetUserProfile"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/UserProfileRepository-GetCSProfile"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="GetCSProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/FoundationService-ExecuteRequest"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.FoundationService">
+        <exactMethodMatcher methodName="ExecuteRequest"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/DsrRepositoryImpl-GetDsrByBranchAndDsrNumber"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.DsrRepositoryImpl">
+        <exactMethodMatcher methodName="GetDsrByBranchAndDsrNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/CustomerRepository-GetCustomerByCustomerNumber"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="GetCustomerByCustomerNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/CustomerRepository-BuildCustomerList"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="BuildCustomerList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/CustomerRepository-RetrieveDsrDictionary"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="RetrieveDsrDictionary"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/CustomerRepository-RetrieveTermsCodeDict"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="RetrieveTermsCodeDict"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/CustomerRepository-GetDsrKey"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="GetDsrKey"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/CustomerRepository-GetTermKey"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="GetTermKey"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/UserProfileLogicImpl-GetInternalUsersWithAccessToCustomer"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetInternalUsersWithAccessToCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/InternalUserAccessRepository-GetAllUsersWithAccessToCustomer"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Customers.InternalUserAccessRepository">
+        <exactMethodMatcher methodName="GetAllUsersWithAccessToCustomer"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/EventLogRepositoryImpl-WriteInformationLog"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Common.Impl.Repository.Logging.EventLogRepositoryImpl">
+        <exactMethodMatcher methodName="WriteInformationLog"/>
       </match>
     </tracerFactory>
 
