@@ -32,7 +32,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             // If the logo will be in this email (most notifications) replace it with the standard BEK
             if(message.MessageBody.IndexOf("|LOGO|") > -1) {
-                message.MessageBody = message.MessageBody.Replace("|LOGO|", "");
+                message.MessageBody = message.MessageBody.Replace("|LOGO|", "&nbsp;");
             }
 
             foreach(var recipient in recipients) {
