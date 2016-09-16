@@ -160,6 +160,10 @@ angular.module('bekApp')
         });
       },
  
+      /********************
+      IMPORT CART
+      ********************/
+
       importCart: function(file, options) {
         var deferred = $q.defer();
  
@@ -197,6 +201,10 @@ angular.module('bekApp')
  
         return deferred.promise;
       },
+
+      /********************
+      QUICK ADD
+      ********************/
  
       validateQuickAdd: function(items) {
         return $http.post('/cart/quickadd/validate', items).then(function(response) {
@@ -216,6 +224,20 @@ angular.module('bekApp')
  
          return $q.reject('An error has occurred with this Quick Add order.');
         });
+      },
+
+      /********************
+      EXPORT
+      ********************/
+
+      getCartExportConfig: function(cartid) {
+        return $http.get('/cart/export/' + cartid).then(function(response){
+          return response.data.successResponse;
+        });
+      },
+
+      exportCart: function(config, cartid) {
+        ExportService.export('/cart/export/' + cartid, config);
       },
  
       /********************
