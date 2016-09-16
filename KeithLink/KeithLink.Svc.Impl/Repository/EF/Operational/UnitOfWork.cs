@@ -27,6 +27,10 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         #endregion
 
         #region methods
+        public void ClearContext() {
+            this.Context.UndoDBContextChanges();
+        }
+
         public IUnitOfWork GetUniqueUnitOfWork() {
             return new UnitOfWork(Context.Database.Connection);
         }

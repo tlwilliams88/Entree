@@ -8,6 +8,8 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,14 +31,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private readonly IGenericQueueRepository genericQueueRepository;
         private readonly IEventLogRepository eventLogRepository;
         Func<NotificationType, INotificationHandler> notificationHandlerFactory;
+        private IUnitOfWork _uow;
         #endregion
 
         #region constructor
         public NotificationQueueConsumerImpl(IEventLogRepository eventLogRepository, IGenericQueueRepository genericQueueRepository,
-            Func<NotificationType, INotificationHandler> notificationHandlerFactory) {
+            Func<NotificationType, INotificationHandler> notificationHandlerFactory, IUnitOfWork unitOfWork) {
             this.eventLogRepository = eventLogRepository;
             this.genericQueueRepository = genericQueueRepository;
             this.notificationHandlerFactory = notificationHandlerFactory;
+            this._uow = unitOfWork;
         }
         #endregion
 
@@ -80,6 +84,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
                     var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
                     handler.ProcessNotification(notification);
+
+                    // Always clear the context at the end of a transaction
+                    _uow.ClearContext();
                 }
                 else
                 {
