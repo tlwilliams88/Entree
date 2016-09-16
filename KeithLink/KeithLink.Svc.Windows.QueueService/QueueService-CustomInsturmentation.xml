@@ -97,6 +97,34 @@
         <exactMethodMatcher methodName="ProcessCheckLostOrders"/>
       </match>
     </tracerFactory>
+    <tracerFactory metricName="Custom/OrderHistoryLogicImpl-CheckForLostOrders"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="CheckForLostOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderHistoryLogicImpl-CheckForLostOrdersByStatus"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="CheckForLostOrdersByStatus"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/PurchaseOrderRepositoryImpl-GetPurchaseOrdersByStatus"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Orders.PurchaseOrderRepositoryImpl">
+        <exactMethodMatcher methodName="GetPurchaseOrdersByStatus"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/PurchaseOrderRepositoryImpl-ReadPurchaseOrderByTrackingNumber"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Orders.ReadPurchaseOrderByTrackingNumber">
+        <exactMethodMatcher methodName="GetPurchaseOrdersByStatus"/>
+      </match>
+    </tracerFactory>
 
     <!--CONFIRMATIONS-->
     <tracerFactory metricName="Custom/ConfirmationLogicImpl-BuildOrderChanges" 
@@ -250,15 +278,43 @@
     </tracerFactory>
 
     <!--PAYMENT NOTIFICATIONS-->
-    <tracerFactory metricName="Custom/PaymentConfirmationNotificationHandlerImpl-ProcessNotification" 
+    <tracerFactory metricName="Custom/PaymentConfirmationNotificationHandlerImpl-GetEmailMessageForNotification"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
-      <match assemblyName="KeithLink.Svc.Impl" 
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PaymentConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetEmailMessageForNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/PaymentConfirmationNotificationHandlerImpl-ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Messaging.PaymentConfirmationNotificationHandlerImpl">
         <exactMethodMatcher methodName="ProcessNotification"/>
       </match>
     </tracerFactory>
+    <tracerFactory metricName="Custom/CustomerBankRepositoryImpl-GetBankAccount"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.OnlinePayments.Customer.CustomerBankRepositoryImpl">
+        <exactMethodMatcher methodName="GetBankAccount"/>
+      </match>
+    </tracerFactory>
 
     <!--ETA NOTIFICATIONS-->
+    <tracerFactory metricName="Custom/EtaNotificationHandlerImpl-IgnoreOffsetTimeString"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EtaNotificationHandlerImpl">
+        <exactMethodMatcher methodName="IgnoreOffsetTimeString"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/EtaNotificationHandlerImpl-GetEmailMessageForNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EtaNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetEmailMessageForNotification"/>
+      </match>
+    </tracerFactory>
     <tracerFactory metricName="Custom/EtaNotificationHandlerImpl-ProcessNotification"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -273,6 +329,15 @@
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Messaging.HasNewsNotificationHandlerImpl">
         <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+
+    <!--PUSH MESSAGES-->
+    <tracerFactory metricName="Custom/PushMessageConsumerImpl-ProcessIncomingPushMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessageConsumerImpl">
+        <exactMethodMatcher methodName="ProcessIncomingPushMessage"/>
       </match>
     </tracerFactory>
 
@@ -291,6 +356,54 @@
         <exactMethodMatcher methodName="GetUsers"/>
       </match>
     </tracerFactory>
+    <tracerFactory metricName="Custom/BaseNotificationHandlerImpl-SendMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.BaseNotificationHandlerImpl">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/PushMessagePublisherImpl-SendMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessagePublisherImpl">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/WebMessageProvider-SendMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.WebMessageProvider">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/EmailMessageProvider-SendMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EmailMessageProvider">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/AmazonPushNotificationMessageProvider-SendMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.AmazonPushNotificationMessageProvider">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/EmailClientImpl-SendEmail"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.EmailClientImpl">
+        <exactMethodMatcher methodName="SendEmail"/>
+      </match>
+    </tracerFactory>
+
     <tracerFactory metricName="Custom/DsrLogic-GetDsr"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -312,6 +425,7 @@
         <exactMethodMatcher methodName="GetDefault"/>
       </match>
     </tracerFactory>
+
     <tracerFactory metricName="Custom/UserProfileLogicImpl-GetUserProfile"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -319,6 +433,7 @@
         <exactMethodMatcher methodName="GetUserProfile"/>
       </match>
     </tracerFactory>
+
     <tracerFactory metricName="Custom/UserProfileRepository-GetCSProfile"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -326,6 +441,7 @@
         <exactMethodMatcher methodName="GetCSProfile"/>
       </match>
     </tracerFactory>
+    
     <tracerFactory metricName="Custom/FoundationService-ExecuteRequest"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -333,6 +449,7 @@
         <exactMethodMatcher methodName="ExecuteRequest"/>
       </match>
     </tracerFactory>
+    
     <tracerFactory metricName="Custom/DsrRepositoryImpl-GetDsrByBranchAndDsrNumber"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -340,6 +457,7 @@
         <exactMethodMatcher methodName="GetDsrByBranchAndDsrNumber"/>
       </match>
     </tracerFactory>
+    
     <tracerFactory metricName="Custom/CustomerRepository-GetCustomerByCustomerNumber"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -397,12 +515,50 @@
         <exactMethodMatcher methodName="GetAllUsersWithAccessToCustomer"/>
       </match>
     </tracerFactory>
-    
+
     <tracerFactory metricName="Custom/EventLogRepositoryImpl-WriteInformationLog"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
-      <match assemblyName="KeithLink.Svc.Impl"
+      <match assemblyName="KeithLink.Common.Impl"
              className="KeithLink.Common.Impl.Repository.Logging.EventLogRepositoryImpl">
         <exactMethodMatcher methodName="WriteInformationLog"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/MessageTemplateLogicImpl-ReadForKey"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl">
+        <exactMethodMatcher methodName="ReadForKey"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/MessageTemplateLogicImpl-BuildHeader"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl">
+        <exactMethodMatcher methodName="BuildHeader"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/StringExtensions-Inject"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Common.Core"
+             className="KeithLink.Common.Core.Extensions.StringExtensions">
+        <exactMethodMatcher methodName="Inject"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/EFBaseRepository-Read"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Common.Core"
+             className="KeithLink.Svc.Impl.Repository.EF.Operational.EFBaseRepository">
+        <exactMethodMatcher methodName="Read"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/EFBaseRepository-Update"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Common.Core"
+             className="KeithLink.Svc.Impl.Repository.EF.Operational.EFBaseRepository">
+        <exactMethodMatcher methodName="Update"/>
       </match>
     </tracerFactory>
 
