@@ -135,7 +135,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 }
 
                 _historyRepo.CreateOrUpdate(header);
-                _uow.SaveChanges();
+                _uow.SaveChangesAndClearContext();
             }
         }
 
