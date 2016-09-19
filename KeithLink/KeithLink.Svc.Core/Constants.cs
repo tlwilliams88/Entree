@@ -303,6 +303,7 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY = "creditmemo";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY = "only";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM = "none";
+        public const string INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY = "invoicenumber";
         public const string INVOICEREQUESTFILTER_PONUMBER_FIELDKEY = "ponumber";
         public const string INVOICEREQUESTFILTER_TYPEDESCRIPTION_FIELDKEY = "typedescription";
         public const string INVOICEREQUESTFILTER_DATERANGE_YEARQTRKEY = "yearqtr";
@@ -310,6 +311,8 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ2 = "4/1";
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ3 = "7/1";
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ4 = "10/1";
+        public const string INVOICEREQUESTSORT_INVOICEAMOUNT = "invoiceamount";
+        public const string INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING = "asc";
 
         // item history unit of measure
         public const string ITEMHISTORY_AVERAGEUSE_CASE = "C";

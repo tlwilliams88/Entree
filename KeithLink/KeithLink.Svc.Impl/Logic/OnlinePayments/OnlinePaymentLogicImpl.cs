@@ -124,17 +124,22 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 }
             }
 
-            if (passedFilter.Field != null && passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
+            if (passedFilter.Field != null && 
+                passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
             {
                 return MapStatusDecriptionFilterInfo(passedFilter);
             }
-            if (passedFilter.Field != null && passedFilter.Field.Equals("YearQtr", StringComparison.CurrentCultureIgnoreCase))
+            if (passedFilter.Field != null && 
+                passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_DATERANGE_YEARQTRKEY, StringComparison.CurrentCultureIgnoreCase))
             {
                 return MapDateRangeFilterInfo(passedFilter);
             }
-            if (passedFilter.Field != null && passedFilter.Field.Equals("InvoiceNumber", StringComparison.CurrentCultureIgnoreCase))
+            if (passedFilter.Field != null && 
+                passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY, StringComparison.CurrentCultureIgnoreCase))
             {
-                return new FilterInfo() { Field = "InvoiceNumber", Value = passedFilter.Value.ToUpper(), FilterType = "contains" };
+                return new FilterInfo() { Field = Constants.INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY,
+                                          Value = passedFilter.Value.ToUpper(),
+                                          FilterType = "contains" };
             }
 
             return null;
@@ -434,6 +439,27 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     ApplyTypeDescriptionFilter(paging, pagedInvoices);
                 }
                 pagedInvoices.TotalResults = pagedInvoices.Results.Count;
+            }
+
+            if ((paging != null) && 
+                (paging.Sort != null) && 
+                (paging.Sort.Count == 1) &&
+                (paging.Sort[0].Field.Equals
+                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
+            {
+                if(paging.Sort[0].Order.Equals
+                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    pagedInvoices.Results = pagedInvoices.Results
+                                                         .OrderBy(i => i.InvoiceAmount)
+                                                         .ToList();
+                }
+                else
+                {
+                    pagedInvoices.Results = pagedInvoices.Results
+                                                         .OrderByDescending(i => i.InvoiceAmount)
+                                                         .ToList();
+                }
             }
 
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
