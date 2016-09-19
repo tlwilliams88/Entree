@@ -341,6 +341,68 @@
       </match>
     </tracerFactory>
 
+    <!--ORDER UPDATES-->
+    <tracerFactory metricName="Custom/OrderHistoryLogicImpl-Create"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="Create"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderHistoryLogicImpl-Create"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="Create"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/OrderConversionLogicImpl-SaveOrderHistoryAsConfirmation"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SaveOrderHistoryAsConfirmation"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConversionLogicImpl-GetCsPurchaseOrderByNumber"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="GetCsPurchaseOrderByNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConversionLogicImpl-SetCsLineInfo"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SetCsLineInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/OrderConversionLogicImpl-SetCsHeaderInfo"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SetCsHeaderInfo"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/CommerceServerCore-GetPoManager"
+               name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.CommerceServerCore">
+        <exactMethodMatcher methodName="GetPoManager"/>
+      </match>
+    </tracerFactory>
+
+    <!--SPECIAL ORDER UPDATES-->
+    <tracerFactory metricName="Custom/SpecialOrderLogicImpl-ProcessSpecialOrderItemUpdate"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ProcessSpecialOrderItemUpdate"/>
+      </match>
+    </tracerFactory>
+
     <!--OTHER CALLS-->
     <tracerFactory metricName="Custom/BaseNotificationHandlerImpl-LoadRecipients"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
@@ -559,6 +621,13 @@
       <match assemblyName="KeithLink.Common.Core"
              className="KeithLink.Svc.Impl.Repository.EF.Operational.EFBaseRepository">
         <exactMethodMatcher methodName="Update"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/EFBaseRepository-CreateOrUpdate"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Common.Core"
+             className="KeithLink.Svc.Impl.Repository.EF.Operational.EFBaseRepository">
+        <exactMethodMatcher methodName="CreateOrUpdate"/>
       </match>
     </tracerFactory>
 
