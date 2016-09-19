@@ -106,6 +106,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             } else {
                 _log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
             }
+
+            // Alwayus clear context at the end of a transaction
+            _unitOfWork.ClearContext();
         }
 
         private EF.OrderHistoryDetail FindOrderHistoryDetailForUpdate(SpecialOrderResponseModel specialorder) {

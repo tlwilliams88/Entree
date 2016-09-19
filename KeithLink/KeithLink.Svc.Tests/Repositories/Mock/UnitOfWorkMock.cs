@@ -219,7 +219,12 @@ namespace KeithLink.Svc.Test.Mock
 			return SaveChanges();
 		}
 
-		public class FakeDbSet<T> : Mock<DbSet<T>> where T : class
+        public void ClearContext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public class FakeDbSet<T> : Mock<DbSet<T>> where T : class
 		{
 			HashSet<T> _data;
 			IQueryable _query;
