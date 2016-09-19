@@ -622,7 +622,7 @@ angular.module('bekApp')
     if(fromLocation === 'selectAllInvoices'){
       $scope.expandcollapseAll($scope.collapsed = !$scope.collapsed);
       angular.forEach($scope.invoices, function (customer, index) {
-        customer.selected = angular.element('.invoiceSelectAll')[0].checked;
+        customer.selected = !customer.selected;
         angular.forEach(customer.invoices.results, function(invoice, index){
           if(invoice.userCanPayInvoice){
             invoice.isSelected = customer.selected;

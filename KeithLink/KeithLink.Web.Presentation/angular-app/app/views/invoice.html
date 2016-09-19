@@ -313,7 +313,7 @@
       <div class="row topPadded visible-print">
         <div class="col-sm-12">
           <accordion close-others="false">
-            <accordion-group ng-if="customer.invoices.results.length" class="panel-title" ng-show="true" is-open="true" ng-repeat="customer in invoices | orderBy:'customerName'">
+            <accordion-group class="panel-title" ng-show="(customer.isOpen || customer.selected) && customer.invoices.results.length" is-open="true" ng-repeat="customer in invoices | orderBy:'customerName'">
               <accordion-heading>
                 <div class="white-space: normal;">
                   <span style="padding-left:10px;"> {{customer.customerNumber}} - {{customer.customerName}} ({{customer.invoices.totalResults}})</span>
