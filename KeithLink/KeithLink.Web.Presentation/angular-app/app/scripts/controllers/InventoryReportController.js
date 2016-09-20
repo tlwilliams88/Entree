@@ -61,7 +61,7 @@ angular.module('bekApp')
               var found = false;
               //Find the requested report
               reports.forEach(function(report, index){
-                if(report.listid === $stateParams.listid || (index === lastIndex) && !found){
+                if(report.listid == $stateParams.listid || (index == lastIndex) && !found){
                   found = true;
                   $scope.report = report;
                   $scope.showMoreReportNames = ((index + 1) > $scope.numberReportNamesToShow) ? true : false;           
