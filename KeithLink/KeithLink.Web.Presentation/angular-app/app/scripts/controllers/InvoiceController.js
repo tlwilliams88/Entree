@@ -370,7 +370,7 @@ angular.module('bekApp')
     }
     invoicePagingModel.clearFiltersWithoutReload();
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
-    getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
+    getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterViewName);    
     invoicePagingModel.loadData();
     $scope.showFilter = false;
     });
@@ -378,7 +378,7 @@ angular.module('bekApp')
 
   $scope.selectFilterView = function (filterView, rangeYear, rangeQuarter) {
     invoicePagingModel.clearFiltersWithoutReload();
-    if($scope.selectedFilterView === filterView && !rangeYear){
+    if($scope.selectedFilterViewName === filterView && !rangeYear){
       return;
     } else if(rangeYear) {
       var dateFilterView = [{
@@ -391,7 +391,7 @@ angular.module('bekApp')
         }
       }];
 
-      if($scope.selectedFilterView == dateFilterView){
+      if($scope.selectedFilterViewName == dateFilterView){
         return;
       } else {
         blockUI.start('Loading Invoices...').then(function(){
