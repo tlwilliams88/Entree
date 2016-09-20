@@ -192,6 +192,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void SaveOrderHistoryAsConfirmation(OrderHistoryFile histFile) {
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("ControlNumber", histFile.Header.ControlNumber);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("CustomerNumber", histFile.Header.CustomerNumber);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("BranchId", histFile.Header.BranchId);
+
             if (histFile.Header.OrderSystem == Core.Enumerations.Order.OrderSource.Entree) {
                 ConfirmationFile confirmation = histFile.ToConfirmationFile();
                 PurchaseOrder po = GetCsPurchaseOrderByNumber(histFile.Header.ControlNumber);

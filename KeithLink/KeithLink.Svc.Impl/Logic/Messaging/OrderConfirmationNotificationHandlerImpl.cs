@@ -400,6 +400,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             eventLogRepository.WriteInformationLog("order confirmation base, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
             Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
 
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("OrderNumber", orderConfirmation.OrderNumber);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("InvoiceNumber", orderConfirmation.InvoiceNumber);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("CustomerNumber", orderConfirmation.CustomerNumber);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("BranchId", orderConfirmation.BranchId);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("OrderChange.Items.Count", orderConfirmation.OrderChange.Items.Count);
+
             if (customer == null)
             {
                 StringBuilder warningMessage = new StringBuilder();

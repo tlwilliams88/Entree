@@ -918,13 +918,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             try {
                 List<InternalUserAccess> allUsersForCustomer = _internalUserAccessRepo.GetAllUsersWithAccessToCustomer( new UserSelectedContext() { BranchId = branchId, CustomerId = customerNumber } );
-                _eventLog.WriteInformationLog
-                    (String.Format(
-                        "before removing duplicates profiles logic: {0}",
-                        JsonConvert.SerializeObject(allUsersForCustomer.Select(p => new {
-                            UserId = p.UserId,
-                            EmailAddress = p.EmailAddress
-                        }).ToList())));
 
                 Dictionary<Guid, bool> existingUser = new Dictionary<Guid, bool>();
 
@@ -938,13 +931,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                             usersWithAccess.Add(upToAddToList.UserProfiles[0]);
                         }
                     }
-                    _eventLog.WriteInformationLog
-                        (String.Format(
-                            "after removing duplicates profiles logic: {0}",
-                            JsonConvert.SerializeObject(usersWithAccess.Select(p => new {
-                                UserId = p.UserId,
-                                EmailAddress = p.EmailAddress
-                            }).ToList())));
                 }
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog( string.Format( "Error retrieving internal users for {0} - {1}", customerNumber, branchId ) );

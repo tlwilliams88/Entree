@@ -43,6 +43,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         public bool ProcessIncomingPushMessage(PushMessage pushmessage)
         {
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("Recipients.Count", pushmessage.Recipients.Count);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("0-DeviceId", pushmessage.Recipients[0].DeviceId);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("0-ProviderEndpoint", pushmessage.Recipients[0].ProviderEndpoint);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("0-UserId", JsonConvert.SerializeObject(pushmessage.Recipients[0].UserId));
+
             // Send message through provider
             _pushMessageProvider.SendMessage(pushmessage.Recipients, pushmessage.Message);
             return true;
