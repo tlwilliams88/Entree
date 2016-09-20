@@ -59,10 +59,6 @@ angular.module('bekApp')
     $scope.visitedPages = [];
     $scope.canSaveCart = false;
     $scope.setOrderCanceled = false;
-    
-    $scope.setOrderCanceled = function(){
-      $scope.orderCanceled = true;
-    };
         
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');
@@ -784,6 +780,19 @@ angular.module('bekApp')
         });
       }
     }
+
+    $scope.deleteCarts = function(cartid) {
+      var cartguid = [];
+      $scope.orderCanceled = true;
+      cartguid.push(cartid);
+      CartService.deleteMultipleCarts(cartguid).then(function() {
+        // $state.go('menu.home');
+        // update cartHeaders in MenuController
+        $scope.displayMessage('success', 'Successfully canceled cart.');
+      }, function() {
+        $scope.displayMessage('error', 'Error canceling cart.');
+      });
+    };
  
     var processingSaveChangeOrder = false;
     function updateChangeOrder(order) {
