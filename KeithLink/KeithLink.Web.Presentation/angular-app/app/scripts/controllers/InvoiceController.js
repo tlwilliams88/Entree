@@ -48,6 +48,30 @@ angular.module('bekApp')
     }
   };
 
+  // Setting Date Range Years
+  var dateRangeStartYear = moment('2014-01-01'),
+      dateRangeEndYear = moment().year();
+  $scope.dateRangeYears = [];
+
+  while(dateRangeEndYear >= dateRangeStartYear.format('YYYY')){
+    $scope.dateRangeYears.push(dateRangeStartYear.format('YYYY'));
+    dateRangeStartYear.add(1, 'year');
+  };
+
+  $scope.dateRangeQuarters = [{
+    name: 'January - March',
+    value: '1'
+  }, {
+    name: 'April - June',
+    value: '2'
+  }, {
+    name: 'July - September',
+    value: '3'
+  }, {
+    name: 'October - December',
+    value: '4'
+  }];
+
   //Scope variable for credit memo filter on invoices page
   $scope.invoiceFilter = false;
     
@@ -97,28 +121,6 @@ angular.module('bekApp')
   }];
 
   $scope.selectedInvoiceFilter = $scope.invoiceFilters[0];
-
-  $scope.dateRangeYears = [{
-    name: '2016'
-  }, {
-    name: '2015'
-  }, {
-    name: '2014'
-  }];
-
-  $scope.dateRangeQuarters = [{
-    name: 'January - March',
-    value: '1'
-  }, {
-    name: 'April - June',
-    value: '2'
-  }, {
-    name: 'July - September',
-    value: '3'
-  }, {
-    name: 'October - December',
-    value: '4'
-  }];
 
   $scope.selectInvoiceFilter = function(filter){
     $scope.selectedInvoiceFilter = [{
@@ -383,12 +385,10 @@ angular.module('bekApp')
     } else if(rangeYear) {
       var dateFilterView = [{
         name: 'Invoices By Quarter',
-        dateRange: {
-          filter: [{
-            field: 'yearqtr',
-            value: rangeYear.name + ',' + rangeQuarter.value
-          }]
-        }
+        filter: [{
+          field: 'yearqtr',
+          value: rangeYear + ',' + rangeQuarter.value
+        }]
       }];
 
       if($scope.selectedFilterViewName == dateFilterView){
@@ -396,7 +396,7 @@ angular.module('bekApp')
       } else {
         blockUI.start('Loading Invoices...').then(function(){
           $scope.errorMessage = '';
-          $scope.selectedFilterViewName = rangeQuarter.name + ', ' + rangeYear.name;
+          $scope.selectedFilterViewName = rangeQuarter.name + ', ' + rangeYear;
           invoicePagingModel.setAdditionalParams(dateFilterView[0]);
           loadFilteredInvoices(dateFilterView[0]);
         })

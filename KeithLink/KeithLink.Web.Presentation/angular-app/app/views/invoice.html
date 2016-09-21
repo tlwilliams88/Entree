@@ -13,7 +13,7 @@
           <a>Invoices By Quarter<span class="pull-right icon-arrow-right6"></span></a>
           <ul class="dropdown-menu" style="margin-top:0;">
             <li class="dropdown-submenu dropdown-submenu-mobile-quarters" is-open="dateRangeYear.isOpen" ng-repeat="dateRangeYear in dateRangeYears">
-              <a ng-click="dateRangeYear.isOpen = !dateRangeYear.isOpen" data-toggle="dropdown">{{dateRangeYear.name}}<span class="pull-right icon-arrow-right6"></span></a>
+              <a ng-click="dateRangeYear.isOpen = !dateRangeYear.isOpen" data-toggle="dropdown">{{dateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
               <ul class="dropdown-menu" style="margin-top:0;">
                 <li ng-repeat="dateRangeQuarter in dateRangeQuarters">
                   <a class="dropdown-dateRange" data-toggle="dropdown" ng-click="selectFilterView('Date Range', dateRangeYear, dateRangeQuarter)">{{dateRangeQuarter.name}}</a>
