@@ -5,7 +5,7 @@
         class="inline-block-display" ng-if="!report.isRenaming">
         
         <a 
-          ng-click="report.isRenaming = true; saveReportName(report.name);">
+          ng-click="report.isRenaming = true;">
           <span class="hidden-print large-icon text-light icon-pencil"></span>
         </a>
         
@@ -17,7 +17,7 @@
         type="text" 
         focus-me="report.isRenaming" 
         required
-        ng-model="report.name"
+        ng-model="selectedReportName"
         ng-model-options="{ debounce: 1000 }" 
         name="reportName" 
         id="reportName" 
@@ -27,7 +27,7 @@
         ng-disabled="renameReportForm.$invalid" 
         class="btn-no-style" 
         type="submit" 
-        ng-click="renameReport(report.name); renameReportForm.$setPristine();">
+        ng-click="renameReport(selectedReportName); renameReportForm.$setPristine();">
         <span class="large-icon text-green icon-checkmark"></span>
       </button>
       
