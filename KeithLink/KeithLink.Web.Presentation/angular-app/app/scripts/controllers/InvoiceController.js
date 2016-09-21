@@ -385,10 +385,10 @@ angular.module('bekApp')
     } else if(rangeYear) {
       var dateFilterView = [{
         name: 'Invoices By Quarter',
-        filter: [{
+        daterange: {
           field: 'yearqtr',
           value: rangeYear + ',' + rangeQuarter.value
-        }]
+        }
       }];
 
       if($scope.selectedFilterViewName == dateFilterView){
