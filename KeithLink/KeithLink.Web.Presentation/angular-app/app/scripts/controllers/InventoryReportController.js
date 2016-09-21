@@ -269,6 +269,23 @@ angular.module('bekApp')
         });
       };
 
+      /**************
+        Rename Report
+      **************/
+      $scope.saveReportName = function(reportname) {
+        $scope.originalReportName = reportname;
+      };
+
+      $scope.renameReport = function (reportname) {
+        $scope.report.isRenaming = false;
+        $scope.saveReport();
+      };
+
+      $scope.cancelRenameReport = function(){
+        $scope.report.name = $scope.originalReportName;
+        $scope.report.isRenaming = false;
+      }
+
       $scope.deleteReport = function(listId){
           List.delete({
             listId: listId
