@@ -1399,6 +1399,7 @@
       <DependentUpon>201604191848159_blank for 1.6.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Images\Logo.png" />
+    <Content Include="NewRelic.Api.Agent.dll" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
