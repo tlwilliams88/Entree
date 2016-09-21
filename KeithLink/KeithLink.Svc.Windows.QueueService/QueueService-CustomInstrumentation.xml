@@ -149,12 +149,14 @@
         <exactMethodMatcher methodName="SetCsLineInfo"/>
       </match>
     </tracerFactory>
+    <!--If a tracer just defines a method that is part of a recorded trace, but doesn't record one itself, you don't add the name attribute-->
     <tracerFactory metricName="ConfirmationLogicImpl-SetCsLineItemInfo">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
         <exactMethodMatcher methodName="SetCsLineItemInfo"/>
       </match>
     </tracerFactory>
+    <!--If a tracer is to actually record a trace you add the name attribute-->
     <tracerFactory metricName="Custom/ProcessConfirmation"
                    name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
       <match assemblyName="KeithLink.Svc.Impl"
@@ -519,6 +521,7 @@
       </match>
     </tracerFactory>
 
+    <!--If you need to remove some of the methods from a trace (If it's too long it won't record them all) just comment those tracers out-->
     <!--<tracerFactory metricName="StringExtensions-Inject">
       <match assemblyName="KeithLink.Common.Core"
              className="KeithLink.Common.Core.Extensions.StringExtensions">
