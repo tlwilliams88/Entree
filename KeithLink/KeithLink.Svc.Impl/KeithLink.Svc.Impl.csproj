@@ -219,7 +219,7 @@
       <HintPath>..\packages\NEST.1.0.1\lib\Nest.dll</HintPath>
     </Reference>
     <Reference Include="NewRelic.Api.Agent">
-      <HintPath>..\..\..\..\..\Users\bakillins\Downloads\NewRelic.Api.Agent.dll</HintPath>
+      <HintPath>.\NewRelic.Api.Agent.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
