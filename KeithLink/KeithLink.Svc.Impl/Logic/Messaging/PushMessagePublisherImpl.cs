@@ -36,9 +36,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             pushNotification.Message = message;
 
             // publish that message to push messages exchange
+#if !DEBUG
             _queueRepository.PublishToQueue(JsonConvert.SerializeObject(pushNotification), Configuration.RabbitMQNotificationServer,
                 Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
                 Configuration.RabbitMQVHostNotification, Configuration.RabbitMQPushMessagesExchange);
+#endif
         }
     }
 }

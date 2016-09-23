@@ -47,6 +47,12 @@ namespace KeithLink.Svc.Impl
             this.serviceEmailAddress = Configuration.ServiceEmailAddress;
 			this.smtpHostName = Configuration.SMTPHostName;
 			this.smtpSendPort = Configuration.SMTPSendPort;
+
+#if DEBUG
+            this.smtpClient.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
+            this.smtpClient.PickupDirectoryLocation = @"c:\temp\mail";
+#endif
+
             _log = log;
         }
 
