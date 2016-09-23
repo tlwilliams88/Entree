@@ -9,3 +9,28 @@
     color: $color-red;
   }  
 }
+
+.notification-body {
+	margin-bottom:20px; 
+	overflow:auto; 
+	height: 200px;
+}
+
+@media print {
+  body * {
+    visibility:hidden;
+  }
+  #printSection * {
+    visibility: visible;
+    width: 100%;
+  }
+  #printSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  pre {
+  	height: auto !important;
+  	overflow: hidden !important;
+  }
+}
