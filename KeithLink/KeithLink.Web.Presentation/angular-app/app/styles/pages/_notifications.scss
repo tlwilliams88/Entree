@@ -17,7 +17,8 @@
 }
 
 @media print {
-  body * {
+  .notification-page *,
+  .notification-page-header * {
     visibility:hidden;
   }
   #printSection * {
@@ -29,7 +30,7 @@
     left: 0;
     top: 0;
   }
-  pre {
+  .notification-body {
   	height: auto !important;
   	overflow: hidden !important;
   }
