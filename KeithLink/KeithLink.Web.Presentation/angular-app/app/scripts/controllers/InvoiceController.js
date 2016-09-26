@@ -620,7 +620,8 @@ angular.module('bekApp')
       $scope.errorMessage = '';
     }
     if(fromLocation === 'selectAllInvoices'){
-      $scope.expandcollapseAll($scope.collapsed = !$scope.collapsed);
+      $scope.collapsed = !$scope.collapsed;
+      $scope.expandcollapseAll($scope.collapsed);
       angular.forEach($scope.invoices, function (customer, index) {
         customer.selected = !customer.selected;
         angular.forEach(customer.invoices.results, function(invoice, index){

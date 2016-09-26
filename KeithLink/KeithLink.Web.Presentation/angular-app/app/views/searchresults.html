@@ -2,7 +2,7 @@
   <div header-message>
     {{pageTitle}} 
 
-    <div class="hand-pointer hidden-md hidden-lg pull-right" style="color: #A1A1A1;">
+    <div class="hand-pointer hidden-md hidden-lg pull-right hidden-print" style="color: #A1A1A1;">
       <span ng-click="toggleListView('ViewWithoutImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithoutImages' }" class="icon-list extra-large-icon"></span>
       <span ng-click="toggleListView('ViewWithImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithImages' }" class="icon-layout extra-large-icon"></span>
     </div> 
@@ -15,7 +15,7 @@
 </div>
 
 <!-- Desktop subheader bar -->
-<div class="row page-subheader-bar hidden-xs hidden-sm">
+<div class="row page-subheader-bar hidden-xs hidden-sm hidden-print">
   <div class="col-md-12 page-subheader-bar__container">
     <div class="page-subheader-bar__message col-md-8">
       <div ng-repeat="bc in breadcrumbs">
@@ -34,7 +34,7 @@
             </ul>
         </div>
       </div>
-      <div class="hand-pointer pull-right">
+      <div class="hand-pointer pull-right hidden-print">
         <span ng-click="toggleListView('ViewWithoutImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithoutImages' }" class="icon-list extra-large-icon"></span>
         <span ng-click="toggleListView('ViewWithImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithImages' }" class="icon-layout extra-large-icon"></span>
       </div>
@@ -377,7 +377,7 @@
     </div>
     <div class="row" ng-show="products.length !== 0">
       <div class="col-sm-12 col-xs-12">
-        <div class="pull-left input-group hidden-md hidden-lg padding-right-15">
+        <div class="pull-left input-group hidden-md hidden-lg padding-right-15 hidden-print">
           <div class="search-result-sort-buttons">
             <span class="margin-right-5">Sort: </span>
             <div class="btn-group">

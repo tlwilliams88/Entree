@@ -18,4 +18,32 @@ angular.module('bekApp')
     $state.go(stateName);
   };
 
+  $scope.printNotificationModal =  function () {
+    var originalNotification = document.getElementById("printThis - " + notification.id),
+        printNotification;
+
+    printElement(originalNotification);
+    
+    printNotification = document.querySelector("#printSection");
+    
+    window.print();
+
+    document.querySelector("#printSection").remove();
+  };
+
+  function printElement(elem) {
+      var domClone = elem.cloneNode(true),
+          $printSection = document.getElementById("printSection");
+      
+      if (!$printSection) {
+          var $printSection = document.createElement("div");
+          $printSection.id = "printSection";
+          document.body.appendChild($printSection);
+      }
+      
+      $printSection.innerHTML = "";
+      
+      $printSection.appendChild(domClone);
+  }
+
 }]);
