@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "KeithLink.ETL.dtproj", "{C59A7457-0EAF-4A10-9634-B26335AF49A5}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Entree.Database", "..\Entree.Database\Entree.Database.sqlproj", "{17ED3689-C842-4A52-833A-D320104B7307}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comparisons", "Comparisons", "{299BE63A-7788-4105-A84A-5057D36B8D78}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{AB1C0360-9CF1-45E0-8DA9-DF8AE405F217}"
@@ -47,23 +45,6 @@ Global
 		{C59A7457-0EAF-4A10-9634-B26335AF49A5}.Release|Any CPU.Build.0 = Beta
 		{C59A7457-0EAF-4A10-9634-B26335AF49A5}.Stage|Any CPU.ActiveCfg = Stage
 		{C59A7457-0EAF-4A10-9634-B26335AF49A5}.Stage|Any CPU.Build.0 = Stage
-		{17ED3689-C842-4A52-833A-D320104B7307}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Beta|Any CPU.Build.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Beta|Any CPU.Deploy.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Demo|Any CPU.ActiveCfg = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Demo|Any CPU.Build.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Demo|Any CPU.Deploy.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Development|Any CPU.Build.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Development|Any CPU.Deploy.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Stage|Any CPU.ActiveCfg = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Stage|Any CPU.Build.0 = Debug|Any CPU
-		{17ED3689-C842-4A52-833A-D320104B7307}.Stage|Any CPU.Deploy.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
