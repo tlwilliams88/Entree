@@ -532,7 +532,7 @@ angular.module('bekApp')
 
   $scope.selectInvoice = function(invoice, isSelected){
     if (isSelected) {
-      if (!invoice.pendingtransaction) {
+      if (!invoice.pendingtransaction && !invoice.paymentAmount) {
         invoice.amount = invoice.amountdue;
         invoice.paymentAmount = invoice.amount.toString();
       } else if (invoice.pendingtransaction && (invoice.paymentAmount == '0.00' || invoice.paymentAmount == '0' || invoice.paymentAmount == undefined)) {
