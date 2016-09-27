@@ -264,10 +264,14 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <None Include="extension.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="lib\bin\en-us\CommerceMessageManager.resources.dll" />
     <Content Include="favicon.ico" />
     <Content Include="FoundationService.svc" />
     <Content Include="Global.asax" />
+    <Content Include="KeithLink.Svc.FoundationSvc-CustomInstrumentation.xml" />
     <Content Include="MetadataDefinitions.xml">
       <SubType>Designer</SubType>
     </Content>
