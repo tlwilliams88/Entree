@@ -599,7 +599,9 @@ angular.module('bekApp')
     if (isSelected) {
       if (!invoice.pendingtransaction) {
         invoice.amount = invoice.amountdue;
-        invoice.paymentAmount = invoice.amount.toString();
+        if(!invoice.paymentAmount){
+          invoice.paymentAmount = invoice.amount.toString();
+        }
       } else if (invoice.pendingtransaction && (invoice.paymentAmount == '0.00' || invoice.paymentAmount == '0' || invoice.paymentAmount == undefined)) {
         invoice.paymentAmount = invoice.pendingtransaction.amount;
       }

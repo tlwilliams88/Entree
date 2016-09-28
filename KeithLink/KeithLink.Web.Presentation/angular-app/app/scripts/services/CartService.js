@@ -105,7 +105,7 @@ angular.module('bekApp')
       CREATE CART
       ********************/
  
-      beforeCreateCart: function(items, shipDate, name) {
+      beforeCreateCart: function(items, shipDate, name, ponumber) {
         var newCart = {};
     
         if (!items) { // if null
@@ -139,13 +139,17 @@ angular.module('bekApp')
           newCart.subtotal = PricingService.getSubtotalForItems(newCart.items);
         }
 
+        if(ponumber){
+          newCart.ponumber = ponumber;
+        }
+
         return newCart;
       },
  
       // accepts null, item object, or array of item objects and shipDate
       // returns promise and new cart object
-      createCart: function(items, shipDate, name) {
-        var newCart = Service.beforeCreateCart(items, shipDate, name);
+      createCart: function(items, shipDate, name, ponumber) {
+        var newCart = Service.beforeCreateCart(items, shipDate, name, ponumber);
  
         newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
