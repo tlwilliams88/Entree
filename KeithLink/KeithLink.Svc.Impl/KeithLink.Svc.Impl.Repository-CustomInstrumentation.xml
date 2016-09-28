@@ -841,32 +841,169 @@
         <exactMethodMatcher methodName="GetSecurityGroup"/>
       </match>
     </tracerFactory>
-
-    <!--OTHER CALLS-->
-    <tracerFactory metricName="UserProfileRepository-GetCSProfile">
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/GetUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="GetUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/GetUserGroup">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="GetUserGroup"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/GrantAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="GrantAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/HasAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="HasAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/IsPasswordExpired">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="IsPasswordExpired"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/JoinGroup">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="JoinGroup"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/RevokeAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="RevokeAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/SetExpiredPassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="SetExpiredPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/UnlockAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="UnlockAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/UpdatePassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="UpdatePassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/UpdateUserAttributes">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="UpdateUserAttributes"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/ExternalUserDomainRepository/UsernameExists">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository">
+        <exactMethodMatcher methodName="UsernameExists"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/InternalUserDomainRepository/AuthenticateUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.InternalUserDomainRepository">
+        <exactMethodMatcher methodName="AuthenticateUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/InternalUserDomainRepository/GetUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.InternalUserDomainRepository">
+        <exactMethodMatcher methodName="GetUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/InternalUserDomainRepository/IsInGroup">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.InternalUserDomainRepository">
+        <exactMethodMatcher methodName="IsInGroup"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/InternalUserDomainRepository/GetAllGroupsUserBelongsTo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.InternalUserDomainRepository">
+        <exactMethodMatcher methodName="GetAllGroupsUserBelongsTo"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/SettingsRepositoryImpl/ReadByUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.SettingsRepositoryImpl">
+        <exactMethodMatcher methodName="ReadByUser"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/CreateUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="CreateUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/GetUsersForCustomerOrAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="GetUsersForCustomerOrAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/GetCSProfile">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
         <exactMethodMatcher methodName="GetCSProfile"/>
       </match>
     </tracerFactory>
-
-    <tracerFactory metricName="DsrRepositoryImpl-GetDsrByBranchAndDsrNumber">
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/GetCSProfileForInternalUsers">
       <match assemblyName="KeithLink.Svc.Impl"
-             className="KeithLink.Svc.Impl.Repository.Profile.DsrRepositoryImpl">
-        <exactMethodMatcher methodName="GetDsrByBranchAndDsrNumber"/>
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="GetCSProfileForInternalUsers"/>
       </match>
     </tracerFactory>
-
-    <tracerFactory metricName="CustomerRepository-GetCustomerByCustomerNumber">
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/GetInternalUsers">
       <match assemblyName="KeithLink.Svc.Impl"
-             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
-        <exactMethodMatcher methodName="GetCustomerByCustomerNumber"/>
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="GetInternalUsers"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="CustomerRepository-BuildCustomerList">
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/GetExternalUsers">
       <match assemblyName="KeithLink.Svc.Impl"
-             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
-        <exactMethodMatcher methodName="BuildCustomerList"/>
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="GetExternalUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/UpdateUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="UpdateUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/UpdateUserProfileLastLogin">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="UpdateUserProfileLastLogin"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/UpdateUserProfileLastAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="UpdateUserProfileLastAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Repository/Profile/UserProfileRepository/UpdateUserProfileLastAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="UpdateUserProfileLastAccess"/>
       </match>
     </tracerFactory>
   </instrumentation>
