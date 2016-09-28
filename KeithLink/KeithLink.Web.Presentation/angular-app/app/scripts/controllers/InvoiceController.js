@@ -49,13 +49,13 @@ angular.module('bekApp')
   };
 
   // Setting Date Range Years
-  var dateRangeStartYear = moment('2014-01-01'),
-      dateRangeEndYear = moment().year();
+  var dateRangeStartYear = 2014,
+      dateRangeEndYear = parseInt(DateService.momentObject().format(Constants.dateFormat.year));
   $scope.dateRangeYears = [];
 
-  while(dateRangeEndYear >= dateRangeStartYear.format('YYYY')){
-    $scope.dateRangeYears.push(dateRangeStartYear.format('YYYY'));
-    dateRangeStartYear.add(1, 'year');
+  while(dateRangeEndYear >= dateRangeStartYear){
+    $scope.dateRangeYears.push(dateRangeStartYear);
+    dateRangeStartYear ++;
   };
 
   $scope.dateRangeQuarters = [{
