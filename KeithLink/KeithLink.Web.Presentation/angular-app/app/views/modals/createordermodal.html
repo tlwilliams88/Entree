@@ -1,0 +1,272 @@
+<div class="modal-header">
+  <h3 class="modal-title">Order From:</h3>
+  <ul class="nav nav-tabs" style="border-bottom:none !important; margin-bottom:-15px; margin-top:5px;" role="tablist">
+    <li role="presentation" class="active"><a aria-controls="list" role="tab" data-toggle="tab" data-target=".listOrder" ng-click="quickAddIsOpen = false; importIsOpen = false;">List</a></li>
+    <li role="presentation"><a aria-controls="quickadd" role="tab" data-toggle="tab" data-target=".quickAddOrder" ng-click="quickAddIsOpen = true; importIsOpen = false;">Quick Add<span ng-if="quickAddItems.length && quickAddItems[0].itemnumber !=='' && !enableSubmit" style="color: #489ecf">*</span></a></li>
+    <li role="presentation"><a aria-controls="import" role="tab" data-toggle="tab" data-target=".importOrder" ng-click="importIsOpen = true; quickAddIsOpen = false;">Import</a></li>
+  </ul>
+</div>
+<div class="modal-body">
+  <div class="tab-content">
+
+    <div class="style-validation-errors form-group listOrder quickAddOrder importOrder">
+      <!-- ORDER BY LIST -->
+      <form name="OrderFromListForm">
+        <div class="form-group row">
+        <label class="col-xs-2 col-form-label">Customer:</label>
+          <div class="col-xs-10">
+            <p type="text"> {{currentCustomer.text}}</p>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xs-2 col-form-label">Cart Name:</label>
+          <div class="col-xs-10">
+            <input type="text" class="form-control" value="{{selectedCart.name}}" ng-model="selectedCart.name">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xs-2 col-form-label">Ship Date:</label>
+          <div class="btn-group hand no-border-right-sm dropdown-toggle form-control orderFromListDropdown" dropdown is-open="showShipDates">
+            <span class="nav-title">
+              {{(selectedCart.requestedshipdate | formatDate) || 'Select a Date...' }}
+            </span>
+            <span class="pull-right caret text-dark margin-top-5"></span>
+            <div class="dropdown-menu">
+              <table class="table no-margin">
+                <tr class="hand-pointer">
+                  <td></td>
+                  <td>Ship Date</td>
+                  <td>Submit By</td>
+                </tr>
+                <tr ng-repeat="shipDate in shipDates" ng-if="shipDate.shipdate != selectedCart.requestedshipdate" ng-click="selectedCart.requestedshipdate = shipDate.shipdate;">
+                  <td>{{shipDate.dayofweek}}</td>
+                  <td class="nowrap">{{shipDate.shipdate}}</td>
+                  <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-xs-2 col-form-label">PO Number:</label>
+          <div class="col-xs-10">
+            <input type="text" class="form-control" name="poNumber" ng-model="selectedCart.ponumber" ng-maxlength="20" placeholder="Enter PO Number...">
+          </div>
+        </div>
+        <div class="form-group row" ng-if="!importIsOpen && !quickAddIsOpen">
+          <label class="col-xs-2 col-form-label">List:</label>        
+          <div class="no-border-right-sm select-nav btn-group dropdown-toggle hand form-control orderFromListDropdown" dropdown is-open="showLists" ng-disabled="lists.length === 1">
+            <span class="nav-title">{{selectedList.name}}</span>
+            <span class="pull-right caret text-dark margin-top-5"></span>
+            <ul class="dropdown-menu col-xs-12 dropdown-menu-scroll" role="menu">
+              <li ng-repeat="list in lists | sortLists" ng-if="list.listid !== selectedList.listid">
+                <a ng-click="selectedList.name = list.name; selectedList.listid = list.listid;">
+                  {{list.name}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- ORDER BY QUICKADD -->
+    <div id="quickadd" class="tab-pane quickAddOrder">
+      <form name="quickAddForm" class="style-validation-errors">
+        <p class="text-green" >
+        <span ng-if="enableSubmit && !isChangeOrder && !existingCart">All item numbers are valid. Click Create Cart</span>
+        <span ng-if="enableSubmit && isChangeOrder || enableSubmit && existingCart">All item numbers are valid.</span>
+        </p>
+        <p class="text-red" ng-if="!enableSubmit">You must enter all valid item numbers before you can create the cart</p>
+        <p class="text-red" ng-if="invalidValue">Please enter a quantity no greater than 999</p>
+
+        <table class="table table-border" navigate-quick-add>
+          <thead>
+            <tr>
+              <th>Item #</th>
+              <th>Qty</th>
+              <th>Each</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in quickAddItems">
+              <td class="input-col" ng-class="{ 'red-border': item.valid === false }">
+                <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" fcsa-number="{ 'noFormat': true, 'maxDigits': 6 }">
+                <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
+              </td>
+              <td class="input-col">
+                <div counter name="quantity" type="text" ng-model="item.quantity"></div>
+              </td>
+              <td class="input-col">
+                <input name="each" type="checkbox" ng-model="item.each">
+              </td>
+              <td>
+                <a ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>
+    </div>
+
+    <!-- ORDER BY IMPORT -->
+    <div id="import" class="tab-pane importOrder">
+      <form name="orderImportForm" class="form-horizontal style-validation-errors">
+        <div class="form-group">
+          <label for="file" class="col-xs-2 control-label">File: </label>
+          <div class="col-xs-10">
+            <label class="btn btn-default" for="importFile">Choose File</label>
+            {{files[0].name}}
+            <input style="display:none;" type="file" id="importFile" name="importFile" ng-file-select="onFileSelect($files)">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="itemType" class="col-xs-2 control-label">Item type: </label>
+          <div class="col-xs-10">
+            <select class="style-select" name="itemType" id="" required ng-model="options.itemnumber">
+              <option value="0">Item Number</option>
+              <option value="1">UPC</option>
+              <option value="2">Item Number or UPC</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contents" class="col-xs-2 control-label">Contents: </label>
+          <div class="col-xs-10">
+            <select class="style-select" name="contents" id="" required ng-model="options.contents">
+              <option value="0">Item Only</option>
+              <option value="1">Item, Quantity</option>
+              <option value="2">Item, Quantity, Broken Case (Y/N)</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="fileFormat" class="col-xs-2 control-label">File format: </label>
+          <div class="col-xs-10">
+            <select class="style-select" name="fileFormat" id="" required ng-model="options.fileformat">
+              <option value="0">CSV</option>
+              <option value="1">Tab</option>
+              <option value="2">Excel</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ignoreZeroes" class="col-xs-2 control-label checkbox-line">Ignore zero quantities: </label>
+          <div class="col-xs-10">
+            <input type="checkbox" name="ignoreZeroes" ng-model="options.ignorezero">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ignoreFirstLine" class="col-xs-2 control-label checkbox-line">Ignore first line: </label>
+          <div class="col-xs-10">
+            <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirst">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="importByInventory" class="col-xs-2 control-label checkbox-line">Import by PAR Level: </label>
+          <div class="col-xs-10">
+            <input type="checkbox" name="importByInventory" ng-model="options.importbyinventory">
+          </div>
+        </div>
+        <div class="form-group" ng-show="options.importbyinventory">
+          <label for="selectedList" class="col-xs-2 control-label checkbox-line">List with PARs: </label>
+          <div class="col-xs-10">
+            <select class="style-select" ng-options="list.listid as list.name for list in customListHeaders" ng-model="options.listid" id="selectedList" name="selectedList"></select>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+  <p 
+  class="text-red text-right margin-right-5" 
+  ng-if="!enableSubmit && quickAddItems[0].itemnumber && !quickAddIsOpen && !importIsOpen">
+  Quick Add Items entered.  Please validate or remove items before creating cart.
+  </p>
+  <div 
+  ng-if="quickAddIsOpen" 
+  class="text-right margin-bottom-10" 
+  style="margin-top:-20px; margin-right:15px;">
+    <button 
+    type="button" 
+    class="btn btn-primary btn-lg" 
+    ng-click="addRow()">
+    Add Row
+    </button>
+  </div>
+  <span 
+  ng-if="importIsOpen">
+    <p 
+    class="text-red text-left" 
+    style="padding-left:15px;" 
+    ng-show="invalidType">
+    This is an incompatible file type. Please choose a file with one of the following extensions: .xls .xlsx .csv .txt.
+    </p>
+    <p 
+    class="text-left" 
+    style="padding-left:15px;" 
+    ng-show="!invalidType">
+    Please choose a file with one of the following extensions: .xls, .xlsx, .csv, or .txt.
+    </p>
+  </span>
+<div class="modal-footer">
+
+  <!-- FOR LIST -->
+  <button
+  type="submit"
+  class="btn-lg btn btn-primary pull-right block-display margin-left-10"
+  analytics-on
+  analytics-category="Orders"
+  analytics-event="Create Order" 
+  analytics-label="From List"
+  ng-if="!quickAddIsOpen && !importIsOpen"
+  ng-disabled="!enableSubmit && quickAddItems[0].itemnumber"
+  ng-click="createCart(selectedCart)">
+  Create Cart
+  </button>
+
+  <!-- FOR QUICK ADD -->
+  <button
+  type="button"
+  class="btn btn-lg btn-default pull-left"
+  ng-click="validateItemsAndUpdateCart(quickAddItems)"
+  ng-disabled = "isValidating"
+  ng-if="(!enableSubmit && quickAddItems[0].itemnumber && !quickAddIsOpen && !importIsOpen) || quickAddIsOpen">
+  Validate Items
+  </button>
+
+  <button
+  type="submit"
+  class="btn-lg btn btn-primary pull-right block-display"
+  analytics-on
+  analytics-category="Orders"
+  analytics-event="Create Order" 
+  analytics-label="Quick Add" 
+  ng-if="quickAddIsOpen"
+  ng-disabled="!enableSubmit"
+  ng-click="enableSubmit = false; createCartFromQuickAdd(quickAddItems)">
+  Create Cart
+  </button>
+
+  <!-- FOR IMPORT -->
+  <button 
+  ng-if="importIsOpen" 
+  class="btn-lg btn btn-primary pull-right block-display margin-left-10" 
+  analytics-on analytics-category="Orders" 
+  ng-disabled = "invalidType" 
+  analytics-event="Create Order" 
+  analytics-label="Import" 
+  ng-click="startOrderUpload(options)">
+  Import
+  </button>
+
+  <button
+  type="button"
+  class="btn-lg btn btn-danger pull-right block-display btn-error"
+  ng-click="close()"
+  ng-disabled = "isValidating">
+  Cancel
+  </button>
+
+</div>

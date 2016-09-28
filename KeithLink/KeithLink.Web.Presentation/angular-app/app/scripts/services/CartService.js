@@ -168,9 +168,20 @@ angular.module('bekApp')
       IMPORT CART
       ********************/
 
-      importCart: function(file, options) {
-        var deferred = $q.defer();
+      importCart: function(file, options, selectedCart) {
+        var deferred = $q.defer(),
+            cart;
  
+        if(selectedCart){
+          options.cartname = selectedCart.name;
+          options.shipdate = selectedCart.requestedshipdate;
+          options.ponumber = selectedCart.ponumber;
+          if(selectedCart.items){
+            selectedCart.items = [];
+          }
+          cart = selectedCart;
+        }
+
         $upload.upload({
           url: '/import/order',
           method: 'POST',
@@ -179,10 +190,10 @@ angular.module('bekApp')
         }).then(function(response) {
           var data = response.data.successResponse;
           if (response.data.isSuccess && data.success) {
-            var cart = {
-              id: data.listid,
-              name: 'Imported Cart'
-            };
+            if(!selectedCart){
+              cart.name = 'Imported Cart';
+            }
+            cart.id = data.listid;
             Service.cartHeaders.push(cart);
  
             // display messages

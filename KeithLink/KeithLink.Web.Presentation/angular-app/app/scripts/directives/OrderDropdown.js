@@ -16,15 +16,21 @@ angular.module('bekApp')
         $scope.tooltipMessage = 'Customer is not set up for ordering in the Entrée System.';
       }
 
-      $scope.openATOModal = function() {
+      $scope.openCreateOrderModal = function() {
         var modalInstance = $modal.open({
-          templateUrl: 'views/modals/atomodal.html',
-          controller: 'ATOModalController',
+          templateUrl: 'views/modals/createordermodal.html',
+          controller: 'CreateOrderModalController',
           backdrop:'static'
         });
    
         modalInstance.result.then(function(cart) {
-          $state.go('menu.addtoorder.items', { listId: cart.listid, cartId: cart.id});
+          if(cart.type && cart.type == 'QuickAdd'){
+            $state.go('menu.cart.items', {cartId: cart.id});
+          } else if(cart.type && cart.type == 'Import') {
+            $state.go('menu.cart.items', { cartId: cart.listid });
+          } else {
+            $state.go('menu.addtoorder.items', { listId: cart.listid, cartId: cart.id});
+          }
         });
       };
 
