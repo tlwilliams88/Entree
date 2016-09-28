@@ -12,6 +12,9 @@ angular.module('bekApp')
   $scope.lists = Lists;
   $scope.cartHeaders = CartHeaders;
   $scope.customListHeaders = CustomListHeaders;
+  $scope.listIsOpen = true;
+  $scope.quickAddIsOpen = false; 
+  $scope.importIsOpen = false;
   $scope.selectedCart = {
     name: UtilityService.generateName(SessionService.userProfile.firstname, $scope.cartHeaders),
     requestedshipdate: '',
@@ -31,7 +34,23 @@ angular.module('bekApp')
   //FOR IMPORT
   $scope.upload = [];
   $scope.files = [];
-  $scope.invalidType = false;    
+  $scope.invalidType = false;
+
+  $scope.toggleOpenTab = function(tab) {
+    if(tab == 'List'){
+      $scope.listIsOpen = true; 
+      $scope.quickAddIsOpen = false; 
+      $scope.importIsOpen = false;
+    } else if(tab == 'Quick Add'){
+      $scope.quickAddIsOpen = true; 
+      $scope.listIsOpen = false; 
+      $scope.importIsOpen = false;
+    } else {
+      $scope.importIsOpen = true; 
+      $scope.listIsOpen = false; 
+      $scope.quickAddIsOpen = false;
+    }
+  };
 
   /*******************
     CREATE FROM LIST

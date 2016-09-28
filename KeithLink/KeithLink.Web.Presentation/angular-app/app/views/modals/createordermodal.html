@@ -1,9 +1,40 @@
 <div class="modal-header">
   <h3 class="modal-title">Order From:</h3>
   <ul class="nav nav-tabs" style="border-bottom:none !important; margin-bottom:-15px; margin-top:5px;" role="tablist">
-    <li role="presentation" class="active"><a aria-controls="list" role="tab" data-toggle="tab" data-target=".listOrder" ng-click="quickAddIsOpen = false; importIsOpen = false;">List</a></li>
-    <li role="presentation"><a aria-controls="quickadd" role="tab" data-toggle="tab" data-target=".quickAddOrder" ng-click="quickAddIsOpen = true; importIsOpen = false;">Quick Add<span ng-if="quickAddItems.length && quickAddItems[0].itemnumber !=='' && !enableSubmit" style="color: #489ecf">*</span></a></li>
-    <li role="presentation"><a aria-controls="import" role="tab" data-toggle="tab" data-target=".importOrder" ng-click="importIsOpen = true; quickAddIsOpen = false;">Import</a></li>
+    <li 
+    role="presentation" 
+    class="active">
+      <a 
+      aria-controls="list" 
+      role="tab" 
+      data-toggle="tab" 
+      data-target=".listOrder" 
+      ng-click="toggleOpenTab('List')">
+      List
+      </a>
+    </li>
+    <li 
+    role="presentation">
+      <a 
+      aria-controls="quickadd" 
+      role="tab" 
+      data-toggle="tab" 
+      data-target=".quickAddOrder" 
+      ng-click="toggleOpenTab('Quick Add')">
+      Quick Add<span ng-if="quickAddItems.length && quickAddItems[0].itemnumber !=='' && !enableSubmit" style="color: #489ecf">*</span>
+      </a>
+    </li>
+    <li 
+    role="presentation">
+      <a 
+      aria-controls="import" 
+      role="tab" 
+      data-toggle="tab" 
+      data-target=".importOrder" 
+      ng-click="toggleOpenTab('Import')">
+      Import
+      </a>
+    </li>
   </ul>
 </div>
 <div class="modal-body">
@@ -12,48 +43,50 @@
     <div class="style-validation-errors form-group listOrder quickAddOrder importOrder">
       <!-- ORDER BY LIST -->
       <form name="OrderFromListForm">
-        <div class="form-group row">
-        <label class="col-xs-2 col-form-label">Customer:</label>
-          <div class="col-xs-10">
-            <p type="text"> {{currentCustomer.text}}</p>
+        <div style="border-bottom: 1px solid #c3bc9c">
+          <div class="form-group row">
+          <label class="col-xs-2 col-form-label">Customer:</label>
+            <div class="col-xs-10">
+              <p type="text"> {{currentCustomer.text}}</p>
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-xs-2 col-form-label">Cart Name:</label>
-          <div class="col-xs-10">
-            <input type="text" class="form-control" value="{{selectedCart.name}}" ng-model="selectedCart.name">
+          <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Cart Name:</label>
+            <div class="col-xs-10">
+              <input type="text" class="form-control" value="{{selectedCart.name}}" ng-model="selectedCart.name">
+            </div>
           </div>
-        </div>
-        <div class="form-group row">
-          <label class="col-xs-2 col-form-label">Ship Date:</label>
-          <div class="btn-group hand no-border-right-sm dropdown-toggle form-control orderFromListDropdown" dropdown is-open="showShipDates">
-            <span class="nav-title">
-              {{(selectedCart.requestedshipdate | formatDate) || 'Select a Date...' }}
-            </span>
-            <span class="pull-right caret text-dark margin-top-5"></span>
-            <div class="dropdown-menu">
-              <table class="table no-margin">
-                <tr class="hand-pointer">
-                  <td></td>
-                  <td>Ship Date</td>
-                  <td>Submit By</td>
-                </tr>
-                <tr ng-repeat="shipDate in shipDates" ng-if="shipDate.shipdate != selectedCart.requestedshipdate" ng-click="selectedCart.requestedshipdate = shipDate.shipdate;">
-                  <td>{{shipDate.dayofweek}}</td>
-                  <td class="nowrap">{{shipDate.shipdate}}</td>
-                  <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
-                </tr>
-              </table>
+          <div class="form-group row">
+            <label class="col-xs-2 col-form-label">Ship Date:</label>
+            <div class="btn-group hand no-border-right-sm dropdown-toggle form-control orderFromListDropdown" dropdown is-open="showShipDates">
+              <span class="nav-title">
+                {{(selectedCart.requestedshipdate | formatDate) || 'Select a Date...' }}
+              </span>
+              <span class="pull-right caret text-dark margin-top-5"></span>
+              <div class="dropdown-menu">
+                <table class="table no-margin">
+                  <tr class="hand-pointer">
+                    <td></td>
+                    <td>Ship Date</td>
+                    <td>Submit By</td>
+                  </tr>
+                  <tr ng-repeat="shipDate in shipDates" ng-if="shipDate.shipdate != selectedCart.requestedshipdate" ng-click="selectedCart.requestedshipdate = shipDate.shipdate;">
+                    <td>{{shipDate.dayofweek}}</td>
+                    <td class="nowrap">{{shipDate.shipdate}}</td>
+                    <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-xs-2 col-form-label">PO Number:</label>
+            <div class="col-xs-10">
+              <input type="text" class="form-control" name="poNumber" ng-model="selectedCart.ponumber" ng-maxlength="20" placeholder="Enter PO Number...">
             </div>
           </div>
         </div>
-        <div class="form-group row">
-          <label class="col-xs-2 col-form-label">PO Number:</label>
-          <div class="col-xs-10">
-            <input type="text" class="form-control" name="poNumber" ng-model="selectedCart.ponumber" ng-maxlength="20" placeholder="Enter PO Number...">
-          </div>
-        </div>
-        <div class="form-group row" ng-if="!importIsOpen && !quickAddIsOpen">
+        <div class="form-group row" ng-if="listIsOpen" style="padding-top:25px;">
           <label class="col-xs-2 col-form-label">List:</label>        
           <div class="no-border-right-sm select-nav btn-group dropdown-toggle hand form-control orderFromListDropdown" dropdown is-open="showLists" ng-disabled="lists.length === 1">
             <span class="nav-title">{{selectedList.name}}</span>
