@@ -221,7 +221,9 @@ namespace KeithLink.Svc.Impl.Logic {
             var returnModel = new OrderImportModel();
 
             var newCart = new ShoppingCart {
-                Name = string.Format( "Imported Order - {0}", DateTime.Now.ToString( "g" ) ),
+                Name = file.Options.CartName,
+                RequestedShipDate = file.Options.ShipDate,
+                PONumber = file.Options.PONumber,
                 BranchId = catalogInfo.BranchId
             };
 
