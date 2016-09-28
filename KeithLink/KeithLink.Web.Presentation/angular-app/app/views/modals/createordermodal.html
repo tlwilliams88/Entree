@@ -60,7 +60,7 @@
             <span class="pull-right caret text-dark margin-top-5"></span>
             <ul class="dropdown-menu col-xs-12 dropdown-menu-scroll" role="menu">
               <li ng-repeat="list in lists | sortLists" ng-if="list.listid !== selectedList.listid">
-                <a ng-click="selectedList.name = list.name; selectedList.listid = list.listid;">
+                <a ng-click="setSelectedList(list)">
                   {{list.name}}
                 </a>
               </li>

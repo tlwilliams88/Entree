@@ -1,11 +1,24 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService',
-  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService) {
+.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders',
+  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders) {
 
-  //FOR LIST
-  $scope.currentCustomer = LocalStorage.getCurrentCustomer();
+  /*******************
+    DEFAULT DATA
+  *******************/
+  $scope.currentCustomer = CurrentCustomer;
+  $scope.shipDates = ShipDates;
+  $scope.lists = Lists;
+  $scope.cartHeaders = CartHeaders;
+  $scope.customListHeaders = CustomListHeaders;
+  $scope.selectedCart = {
+    name: UtilityService.generateName(SessionService.userProfile.firstname, $scope.cartHeaders),
+    requestedshipdate: '',
+    ponumber: '',
+    requestedshipdate: $scope.shipDates[0].shipdate
+  };
+  $scope.selectedList = $filter('filter')($scope.lists, {name: 'History'})[0];
 
   //FOR QUICK ADD
   $scope.enableSubmit = false;
@@ -19,37 +32,6 @@ angular.module('bekApp')
   $scope.upload = [];
   $scope.files = [];
   $scope.invalidType = false;    
-
-  /*******************
-    DEFAULT DATA
-  *******************/
-
-  ListService.getListHeaders().then(function(resp){
-    $scope.lists = resp;
-  })
-
-  CartService.getShipDates().then(function(resp){
-    $scope.shipDates = resp;
-    $scope.selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
-  })
-
-  CartService.getCartHeaders().then(function(cartHeaders){
-    $scope.cartHeaders = cartHeaders;
-  });
-
-  ListService.getCustomListHeaders().then(function(listHeaders){
-    $scope.customerListHeaders = listHeaders;
-  })
-
-  $scope.selectedCart = {
-    name: UtilityService.generateName(SessionService.userProfile.firstname, $scope.cartHeaders),
-    requestedshipdate: '',
-    ponumber: ''
-  };
-  $scope.selectedList = {
-    name: 'History',
-    listid: ''
-  };
 
   /*******************
     CREATE FROM LIST
@@ -69,6 +51,11 @@ angular.module('bekApp')
     });
 
   };
+
+  $scope.setSelectedList = function(list) {
+    $scope.selectedList = list;
+    LocalStorage.setLastList($scope.selectedList.listid);
+  }
 
   /***********************
     CREATE FROM QUICK ADD

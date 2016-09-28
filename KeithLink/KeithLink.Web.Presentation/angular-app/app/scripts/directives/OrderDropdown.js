@@ -20,7 +20,24 @@ angular.module('bekApp')
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/createordermodal.html',
           controller: 'CreateOrderModalController',
-          backdrop:'static'
+          backdrop:'static',
+          resolve: {
+            CurrentCustomer: ['LocalStorage', function(LocalStorage) {
+              return LocalStorage.getCurrentCustomer();
+            }],
+            ShipDates: ['CartService', function(CartService) {
+              return CartService.getShipDates();
+            }],
+            CartHeaders: ['CartService', function(CartService) {
+              return CartService.getCartHeaders();
+            }],
+            Lists: ['ListService', function(ListService) {
+              return ListService.getListHeaders();
+            }],
+            CustomListHeaders: ['ListService', function(ListService) {
+              return ListService.getCustomListHeaders();
+            }]
+          }
         });
    
         modalInstance.result.then(function(cart) {
