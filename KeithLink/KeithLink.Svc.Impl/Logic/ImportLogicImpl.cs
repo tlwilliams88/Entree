@@ -221,8 +221,12 @@ namespace KeithLink.Svc.Impl.Logic {
             var returnModel = new OrderImportModel();
 
             var newCart = new ShoppingCart {
-                Name = file.Options.CartName,
-                RequestedShipDate = file.Options.ShipDate,
+                Name = (file.Options.CartName != null && file.Options.CartName.Length>0) ? 
+                           file.Options.CartName : 
+                           string.Format("Imported Order - {0}", DateTime.Now.ToString("g")),
+                RequestedShipDate = (file.Options.ShipDate != null && file.Options.ShipDate.Length > 0) ?
+                                        file.Options.ShipDate :
+                                        string.Format("Imported Order - {0}", DateTime.Now.ToString("g")),
                 PONumber = file.Options.PONumber,
                 BranchId = catalogInfo.BranchId
             };
@@ -346,7 +350,8 @@ namespace KeithLink.Svc.Impl.Logic {
                     string[] vals = row.Split(Delimiter);
                     string itmNum = DetermineItemNumber(vals[itemNumberColumn].PadLeft(6, '0'), file.Options, user, catalogInfo);
                     decimal qty = 1;
-                    if (file.Options.Contents.Equals(FileContentType.ItemQty))
+                    if ((file.Options.Contents.Equals(FileContentType.ItemQty)) |
+                        (file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase)))
                     {
                         qty = DetermineQuantity(vals[itemNumberColumn].PadLeft(6, '0'), vals[quantityColumn], file.Options, parList);
                     }
@@ -403,7 +408,8 @@ namespace KeithLink.Svc.Impl.Logic {
                 {
                     string itmNum = DetermineItemNumber(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), file.Options, user, catalogInfo);
                     decimal qty = 1;
-                    if (file.Options.Contents.Equals(FileContentType.ItemQty))
+                    if ((file.Options.Contents.Equals(FileContentType.ItemQty)) |
+                        (file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase)))
                     {
                         qty = DetermineQuantity(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), rdr.GetString(quantityColumn), file.Options, parList);
                     }
