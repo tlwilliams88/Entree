@@ -1,0 +1,997 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns="urn:newrelic-extension">
+  <instrumentation>
+    <tracerFactory metricName="WebApi/GET/appsettings" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.AdminController">
+        <exactMethodMatcher methodName="ReadAllSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/appsettings" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.AdminController">
+        <exactMethodMatcher methodName="UpdateSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/AdminController/LogSettingsChange" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.AdminController">
+        <exactMethodMatcher methodName="LogSettingsChange"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/brands/house" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.BrandController">
+        <exactMethodMatcher methodName="GetHouseBrands"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/cache/RefreshCacheItem" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CacheController">
+        <exactMethodMatcher methodName="RefreshCacheItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/cache/RefreshCache" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CacheController">
+        <exactMethodMatcher methodName="RefreshCache"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/catalog/(catalogType)/categories" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/category/(id)/categories" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetSubCategoriesByParentId"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/search/category/(catalogType)/(categoryId)/products" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductsByCategoryId"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/search/brands/house/(brandControlLabel)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductsByHouseBrand"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/(catalogType)/search/brand/(brandName)/products" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductsSearchBrand"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/category/(id)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetCategoriesById"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/(catalogType)/product/(id)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductById"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/product/scan/(idorupc)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductByIdorUPC"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/(catalogType)/search/(searchTerms)/products" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductsSearch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/divisions" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetDivisions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/catalog/export" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="ExportProducts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/catalog/(catalogType)/export/(searchTerms)/products" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="ProductSearchExport"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/catalog/export/category/(catalogType)/(categoryId)/products" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductsByCategoryIdExport"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/catalog/export/brands/house/(brandControlLabel)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CatalogController">
+        <exactMethodMatcher methodName="GetProductsByHouseBrandExport"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/cms/promoitems/(branchId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ContentManagementController">
+        <exactMethodMatcher methodName="ReadMarketingContent"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/cms/promoitems" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ContentManagementController">
+        <exactMethodMatcher methodName="LogMarketingContentHit"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/POST/import/list" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ImportController">
+        <exactMethodMatcher methodName="List"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/import/order" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ImportController">
+        <exactMethodMatcher methodName="Order"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/banks" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="Get"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/banks/(accountNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="GetBackAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/invoice/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="Invoice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/invoice/export/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="ExportInvoices" parameters="KeithLink.Svc.Core.Models.Invoices.InvoiceExportRequestModel,System.Boolean" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/invoice/export/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="ExportInvoices" parameters="" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/invoice/image/(invoiceNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="GetInvoiceImages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/invoice/(invoiceNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="InvoiceDetails"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/invoice/transactions/(branchId)/(customerNumber)/(invoiceNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="InvoiceTransactions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/invoice/export/(invoiceNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="ExportInvoiceDetail" parameters="System.String,KeithLink.Svc.Core.Models.ModelExport.ExportRequestModel" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/invoice/export/(invoiceNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="ExportInvoiceDetail" parameters="System.String" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/invoice/payment" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="Payment"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/invoice/payment/validate" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="ValidatePayment"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/invoice/transactions/pending/single" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="PendingTransactions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/invoice/transactions/pending/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="PendingTransactionsForAllCustomers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/invoice/transactions/pending/export/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="ExportOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/invoice/transactions/pending/export/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
+        <exactMethodMatcher methodName="ExportOrders"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/POST/itemnote/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ItemNoteController">
+        <exactMethodMatcher methodName="AddItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/itemnote/(itemnumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ItemNoteController">
+        <exactMethodMatcher methodName="Delete"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/list/export/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="ExportList" parameters="System.Int64" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/export/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="ExportList" parameters="System.Int64,KeithLink.Svc.Core.Models.ModelExport.ExportRequestModel" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/list/recommended" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="ReadRecommendedItemsList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/list/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="List" parameters="System.Boolean" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/list/type/(type)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="List" parameters="KeithLink.Svc.Core.Enumerations.List.ListType,System.Boolean" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/list/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="List" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/list/labels" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="ListLabels"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/list/reminders" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="ListReminders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="List"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/(listId)/item" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="AddItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/(listId)/items" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="AddItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/copy" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="CopyList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/share" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="ShareList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="pagedList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/list/item" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="UpdateItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/list/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="Put"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/list/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="DeleteList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/list/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="DeleteList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/list/item/(itemId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="DeleteItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/list/item" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="DeleteItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/list/(Id)/item/(itemNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="DeleteItemNumberFromList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/list/barcode/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="Barcode"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/print/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="Print"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/print/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="Print"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/POST/messaging/usermessages/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="usermessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/messaging/usermessages/markasread" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="UpdateReadMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/messaging/usermessages/unreadcount" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="ReadUnreadMessageCount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/messaging/preferences" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="UpdateMessagingPreferences"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/messaging/preferences" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="GetMessagingPreferences"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/messaging/preferences/(customerId)/(branchId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="GetMessagingPreferences"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/messaging/registerpushdevice" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="RegisterPushDeviceToken"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/messaging/createalert" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="CreateAlertMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/messaging/mail" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.MessagingController">
+        <exactMethodMatcher methodName="CreateMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/order/issubmitted/(orderNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="IsSubmitted"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/shipdays" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="GetShipDays"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="Orders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="PagedOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/date" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="OrdersIndate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/totalbymonth/(numberOfMonths)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="GetOrderTotalByMonth"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/export/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="ExportOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/export/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="ExportOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/(orderNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="Orders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/export/(orderNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="ExportOrderDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/export/(orderNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="ExportOrderDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/history" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="RequestOrderHistoryHeaders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/history/(orderNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="RequestOrderHistory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/(cartId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="SaveOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/(cartId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="SaveOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/order/(orderNumber)/changeorder" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="SaveOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/changeorder" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="GetChangeOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/order/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="UpdateOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/order/(commerceId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="CancelOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/lastupdate" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="LastUpdated"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/admin/submittedUnconfirmed" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="GetUnconfirmedOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/order/admin/resubmitUnconfirmed/(controlNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="ResubmitUnconfirmedOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/order/admin/setlostorder" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.OrderController">
+        <exactMethodMatcher methodName="SetLostOrder"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/POST/profile/create" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CreateUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/register" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CreateGuest"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/admin/user" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CreateGuestWithTemporaryPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/searchcustomer/(searchText)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="SearchCustomers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/customer/balance" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CustomerBalance"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/profile/password" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="UpdatePassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/profile" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="UpdateUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/account" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CreateAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/profile/account/(accountId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="DeleteAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/profile/account" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="UpdateAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/account/(accountid)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/profile/account/user" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="AddUserToAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/account/(accountId)/users" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetAcountUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/profile/(userId)/account/(accountId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="RemoveUserFromAcocunt"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/profile/customer/user" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="AddUserToCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/customer/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="SearchCustomers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/customer/(branchId)/(customerNumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/accounts" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetAccounts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/accounts" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="Accounts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/users" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/user/(userid)/customers" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetCustomersForExternalUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/avatar" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="UploadAvatar"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/(email)/access/(appname)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GrantApplicationAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/profile/(email)/access/(appname)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="RevokeApplicationAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/forgotpassword" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="ForgotPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/forgotpassword/validatetoken" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="ValidateToken"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/forgotpassword/change" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="ChangeForgotPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/dsralias" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CreateDsrAlias"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/profile/dsralias" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="DeleteDsrAlias"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/dsralias" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetDsrAliases"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/dsralias/(userId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetDsrAliases"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/marketinginfo" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetMarketingInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/export/marketinginfo" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="ExportMarketingPrefs"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/export/marketinginfo" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="ExportMarketingPrefs"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/settings" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetProfileSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/settings" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CreateOrUpdateProfileSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/profile/settings" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="DeleteProfileSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/customer/viewpricing" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="UpdateCustomerCanViewPricing"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/recent/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.RecentItemController">
+        <exactMethodMatcher methodName="Recent"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/recent/order/(catalog)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.RecentItemController">
+        <exactMethodMatcher methodName="RecentOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/recent/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.RecentItemController">
+        <exactMethodMatcher methodName="DeleteRecent"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/recent/order/(catalog)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.RecentItemController">
+        <exactMethodMatcher methodName="DeleteRecentOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/recent/(itemnumber)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.RecentItemController">
+        <exactMethodMatcher methodName="Recent" parameter="string"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/recent/order" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.RecentItemController">
+        <exactMethodMatcher methodName="PostRecentOrder"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/report/itemusage" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ReportController">
+        <exactMethodMatcher methodName="ReadItemUsage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/report/itemusage/export" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ReportController">
+        <exactMethodMatcher methodName="ExportItemUsage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/report/itemusage/export" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ReportController">
+        <exactMethodMatcher methodName="ExportList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/report/inventoryvalue" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ReportController">
+        <exactMethodMatcher methodName="GenerateInventoryValuationReport"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="WebApi/GET/cart/issubmitted/(cartId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="IsSubmitted"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/cart/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="List"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/cart/(cartId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="Cart"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/cart/print/(cartId)/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="PrintCartWithList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/cart/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="Cart"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/cart/export/(cartId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="ExportCartDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/cart/export/(cartId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="ExportCartDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/cart/quickadd" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="QuickAddCart"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/cart/quickadd/validate" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="Validate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/cart/(cartId)/item" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="AddItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/cart/(cartId)/item" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="UpdateItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/cart" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="Put"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/PUT/cart/(cartId)/active" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="SetActive"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/cart/(cartId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="DeleteCart"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/cart/" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="DeleteCarts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/cart/(cartId)/item/(itemId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ShoppingCartController">
+        <exactMethodMatcher methodName="DeleteItem"/>
+      </match>
+    </tracerFactory>
+  </instrumentation>
+</extension>

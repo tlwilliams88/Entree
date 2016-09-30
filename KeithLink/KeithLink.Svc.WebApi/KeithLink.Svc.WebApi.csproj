@@ -228,7 +228,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Global.asax" />
-    <Content Include="KeithLink.Svc.WebApi-CustomInstrumentation.xml" />
     <Content Include="NewRelic.Api.Agent.dll" />
     <Content Include="newrelic.config">
       <SubType>Designer</SubType>
