@@ -172,13 +172,13 @@
     <tracerFactory metricName="WebApi/POST/invoice/export/" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
-        <exactMethodMatcher methodName="ExportInvoices"/>
+        <exactMethodMatcher methodName="ExportInvoices" parameters="KeithLink.Svc.Core.Models.Invoices.InvoiceExportRequestModel,System.Boolean" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/invoice/export/" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
-        <exactMethodMatcher methodName="ExportInvoices"/>
+        <exactMethodMatcher methodName="ExportInvoices" parameters="" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/invoice/image/(invoiceNumber)" transactionNamingPriority="7">
@@ -202,19 +202,13 @@
     <tracerFactory metricName="WebApi/POST/invoice/export/(invoiceNumber)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
-        <exactMethodMatcher methodName="ExportInvoiceDetail"/>
-      </match>
-    </tracerFactory>
-    <tracerFactory metricName="WebApi/POST/invoice/export/(invoiceNumber)" transactionNamingPriority="7">
-      <match assemblyName="KeithLink.Svc.WebApi"
-             className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
-        <exactMethodMatcher methodName="ExportInvoiceDetail"/>
+        <exactMethodMatcher methodName="ExportInvoiceDetail" parameters="System.String,KeithLink.Svc.Core.Models.ModelExport.ExportRequestModel" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/invoice/export/(invoiceNumber)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
-        <exactMethodMatcher methodName="ExportInvoiceDetail"/>
+        <exactMethodMatcher methodName="ExportInvoiceDetail" parameters="System.String" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/POST/invoice/payment" transactionNamingPriority="7">
@@ -266,17 +260,17 @@
         <exactMethodMatcher methodName="Delete"/>
       </match>
     </tracerFactory>
-    
-    <tracerFactory metricName="WebApi/POST/list/export/(listId)" transactionNamingPriority="7">
-      <match assemblyName="KeithLink.Svc.WebApi"
-             className="KeithLink.Svc.WebApi.Controllers.ListController">
-        <exactMethodMatcher methodName="ExportList"/>
-      </match>
-    </tracerFactory>
+
     <tracerFactory metricName="WebApi/GET/list/export/(listId)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ListController">
-        <exactMethodMatcher methodName="ExportList"/>
+        <exactMethodMatcher methodName="ExportList" parameters="System.Int64" />
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/list/export/(listId)" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ListController">
+        <exactMethodMatcher methodName="ExportList" parameters="System.Int64,KeithLink.Svc.Core.Models.ModelExport.ExportRequestModel" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/list/recommended" transactionNamingPriority="7">
@@ -288,19 +282,19 @@
     <tracerFactory metricName="WebApi/GET/list/" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ListController">
-        <exactMethodMatcher methodName="List"/>
+        <exactMethodMatcher methodName="List" parameters="System.Boolean" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/list/type/(type)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ListController">
-        <exactMethodMatcher methodName="List"/>
+        <exactMethodMatcher methodName="List" parameters="KeithLink.Svc.Core.Enumerations.List.ListType,System.Boolean" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/list/(listId)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ListController">
-        <exactMethodMatcher methodName="List"/>
+        <exactMethodMatcher methodName="List" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/list/labels" transactionNamingPriority="7">
