@@ -17,7 +17,6 @@ angular.module('bekApp')
   $scope.importIsOpen = false;
   $scope.selectedCart = {
     name: UtilityService.generateName(SessionService.userProfile.firstname, $scope.cartHeaders),
-    requestedshipdate: '',
     ponumber: '',
     requestedshipdate: $scope.shipDates[0].shipdate
   };
