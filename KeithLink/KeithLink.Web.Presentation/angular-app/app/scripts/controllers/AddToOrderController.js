@@ -113,7 +113,7 @@ angular.module('bekApp')
       var newCartItems = [];
       
       angular.forEach(items, function(item, index) {
-        var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber, 'each', item.each);
+        var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber);
         item.quantity = parseInt(item.quantity, 10);
         if (duplicateItem) {
           if(item.quantity){
@@ -126,7 +126,7 @@ angular.module('bekApp')
           }
         } else {
           // do not double-count items in both the list and cart 
-          if (item.isShown === true) {
+          if (item.isHidden === true) {
             item.quantity = '';
           }
           newCartItems.push(item);
@@ -141,8 +141,9 @@ angular.module('bekApp')
  
      function flagDuplicateCartItems(cartItems, listItems) {
       angular.forEach(cartItems, function(cartItem) {
-        var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber, 'each', cartItem.each);
+        var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
         if (existingItem) {
+          cartItem.isHidden = true;
           // flag cart items that are in the list multiple times
           // hide those duplicate cart items from ui
           //$stateParams.listItems and testDuplicates will indicate whether or not the ATO page is being displayed after saving or after returning to the page from a state change.
@@ -193,7 +194,7 @@ angular.module('bekApp')
           }
         }
         } else {
-          return;
+          cartItem.isHidden = false;
         }
       });
       $scope.appendedItems = [];           
@@ -221,7 +222,7 @@ angular.module('bekApp')
     $scope.setCartItemsDisplayFlag = function (){
       if($scope.selectedCart.items && $scope.selectedCart.items.length > 0){        
         $scope.selectedCart.items.forEach(function(item){
-          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber, each:item.each}).length > 0){
+          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber}).length > 0){
             item.isShown = true;
           }
           else{
