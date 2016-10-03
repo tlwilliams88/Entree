@@ -10,17 +10,20 @@ angular.module('bekApp')
       isDisabled: '='
     },
     templateUrl: 'views/directives/orderdropdown.html',
-    controller: ['$scope', '$modal', '$state', function($scope, $modal, $state){
+    controller: ['$scope', '$modal', '$state', 'UtilityService', function($scope, $modal, $state, UtilityService){
+
+      $scope.isMobile = UtilityService.isMobileDevice();
 
       if ($scope.isDisabled) {
         $scope.tooltipMessage = 'Customer is not set up for ordering in the Entrée System.';
       }
 
-      $scope.openCreateOrderModal = function() {
+      $scope.openCreateOrderModal = function(size) {
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/createordermodal.html',
           controller: 'CreateOrderModalController',
           backdrop:'static',
+          size: size,
           resolve: {
             CurrentCustomer: ['LocalStorage', function(LocalStorage) {
               return LocalStorage.getCurrentCustomer();
@@ -36,7 +39,10 @@ angular.module('bekApp')
             }],
             CustomListHeaders: ['ListService', function(ListService) {
               return ListService.getCustomListHeaders();
-            }]
+            }],
+            isMobile: function() {
+              return $scope.isMobile;
+            }
           }
         });
    

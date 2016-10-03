@@ -1,5 +1,8 @@
 <div class="btn-group" dropdown is-open="openScope" tooltip="{{tooltipMessage}}">
-  <button type="button" ng-disabled="isDisabled" class="btn btn-lg btn-primary" ng-click="openCreateOrderModal()">
+  <button type="button" ng-if="!isMobile" ng-disabled="isDisabled" class="btn btn-lg btn-primary" ng-click="openCreateOrderModal('lg')">
+    Create An Order
+  </button>
+  <button type="button" ng-if="isMobile" ng-disabled="isDisabled" class="btn btn-lg btn-primary" ng-click="openCreateOrderModal('md')">
     Create An Order
   </button>
 </div>

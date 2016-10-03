@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders',
-  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders) {
+.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'isMobile',
+  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, isMobile) {
 
   /*******************
     DEFAULT DATA
@@ -21,6 +21,7 @@ angular.module('bekApp')
     requestedshipdate: $scope.shipDates[0].shipdate
   };
   $scope.selectedList = $filter('filter')($scope.lists, {name: 'History'})[0];
+  $scope.isMobile = isMobile;
 
   //FOR QUICK ADD
   $scope.enableSubmit = false;
@@ -120,6 +121,12 @@ angular.module('bekApp')
               if(item.itemnumber === valItem.item.itemnumber && item.each === valItem.item.each){
                 validatedItem = validatedItems[index];
                 item.valid = validatedItem.valid;
+                item.name = validatedItem.product.name;
+                item.brand = validatedItem.product.brand_extended_description;
+                item.pack = validatedItem.product.pack;
+                item.size =  validatedItem.product.size;
+                item.packageprice = validatedItem.product.packageprice;
+                item.caseprice = validatedItem.product.caseprice;
               }
             });          
 
