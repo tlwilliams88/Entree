@@ -873,6 +873,7 @@
     <Compile Include="Tasks\LimitedConcurrencyLevelTaskScheduler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\InventoryValuationByContractCategory.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">
       <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
     </EmbeddedResource>
