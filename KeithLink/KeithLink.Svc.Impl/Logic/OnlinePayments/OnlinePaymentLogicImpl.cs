@@ -132,7 +132,12 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             if (passedFilter.Field != null && 
                 passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_DATERANGE_YEARQTRKEY, StringComparison.CurrentCultureIgnoreCase))
             {
-                return MapDateRangeFilterInfo(passedFilter);
+                return MapYearQtrDateRangeFilterInfo(passedFilter);
+            }
+            if (passedFilter.Field != null &&
+                passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_DATERANGE_YEARMONTHKEY, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return MapYearMonthDateRangeFilterInfo(passedFilter);
             }
             if (passedFilter.Field != null && 
                 passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY, StringComparison.CurrentCultureIgnoreCase))
@@ -145,7 +150,21 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             return null;
         }
 
-        private FilterInfo MapDateRangeFilterInfo(FilterInfo passedFilter)
+        private FilterInfo MapYearMonthDateRangeFilterInfo(FilterInfo passedFilter)
+        {
+            FilterInfo fi = new FilterInfo();
+            fi.Condition = "and";
+            fi.Filters = new List<FilterInfo>();
+            string year = passedFilter.Value.Substring(0, passedFilter.Value.IndexOf(','));
+            string month = passedFilter.Value.Substring(passedFilter.Value.IndexOf(',') + 1);
+            DateTime dtStart = DateTime.Parse(month + "/1/" + year);
+            DateTime dtEnd = dtStart.AddMonths(1);
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtStart.ToShortDateString(), FilterType = "gte" });
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtEnd.ToShortDateString(), FilterType = "lt" });
+            return fi;
+        }
+
+        private FilterInfo MapYearQtrDateRangeFilterInfo(FilterInfo passedFilter)
         {
             FilterInfo fi = new FilterInfo();
             fi.Condition = "and";
