@@ -58,19 +58,7 @@ angular.module('bekApp')
     dateRangeStartYear ++;
   };
 
-  $scope.dateRangeQuarters = [{
-    name: 'January - March',
-    value: '1'
-  }, {
-    name: 'April - June',
-    value: '2'
-  }, {
-    name: 'July - September',
-    value: '3'
-  }, {
-    name: 'October - December',
-    value: '4'
-  }];
+  $scope.dateRangeMonths = moment.months();
 
   //Scope variable for credit memo filter on invoices page
   $scope.invoiceFilter = false;
@@ -378,16 +366,16 @@ angular.module('bekApp')
     });
   };
 
-  $scope.selectFilterView = function (filterView, rangeYear, rangeQuarter) {
+  $scope.selectFilterView = function (filterView, rangeYear, rangeMonth) {
     invoicePagingModel.clearFiltersWithoutReload();
     if($scope.selectedFilterViewName === filterView && !rangeYear){
       return;
     } else if(rangeYear) {
       var dateFilterView = [{
-        name: 'Invoices By Quarter',
+        name: 'Invoices By Month',
         daterange: {
-          field: 'yearqtr',
-          value: rangeYear + ',' + rangeQuarter.value
+          field: 'yearmonth',
+          value: rangeYear + ',' + ($scope.dateRangeMonths.indexOf(rangeMonth) + 1)
         }
       }];
 
@@ -396,7 +384,7 @@ angular.module('bekApp')
       } else {
         blockUI.start('Loading Invoices...').then(function(){
           $scope.errorMessage = '';
-          $scope.selectedFilterViewName = rangeQuarter.name + ', ' + rangeYear;
+          $scope.selectedFilterViewName = rangeMonth + ', ' + rangeYear;
           invoicePagingModel.setAdditionalParams(dateFilterView[0]);
           loadFilteredInvoices(dateFilterView[0]);
         })
