@@ -294,7 +294,7 @@
     <tracerFactory metricName="WebApi/GET/list/(listId)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ListController">
-        <exactMethodMatcher methodName="List" />
+        <exactMethodMatcher methodName="List" parameters="System.Boolean,System.Boolean" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/list/labels" transactionNamingPriority="7">
