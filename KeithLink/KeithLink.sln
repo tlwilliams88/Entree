@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D6B19051-C6BA-465B-9D93-B6E48E44667A}"
 EndProject
@@ -98,13 +98,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{41
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Entree.Database", "Entree.Database\Entree.Database.sqlproj", "{3200794C-7841-45BA-A834-690B0D354DA0}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewRelic", "NewRelic", "{343B0AF6-0E22-4610-8514-43B116365675}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NewRelic", "NewRelic", "{38BCF15F-A873-443A-8B35-39EFB3C0D1FA}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\KeithLink.Svc.Impl.Helper-CustomInstrumentation.xml = ..\..\KeithLink.Svc.Impl.Helper-CustomInstrumentation.xml
-		..\..\KeithLink.Svc.Impl.Logic-CustomInstrumentation.xml = ..\..\KeithLink.Svc.Impl.Logic-CustomInstrumentation.xml
-		..\..\KeithLink.Svc.Impl.Repository-CustomInstrumentation.xml = ..\..\KeithLink.Svc.Impl.Repository-CustomInstrumentation.xml
-		..\..\KeithLink.Svc.WebApi-CustomInstrumentation.xml = ..\..\KeithLink.Svc.WebApi-CustomInstrumentation.xml
-		..\..\KeithLink.Svc.Windows.QueueService-CustomInstrumentation.xml = ..\..\KeithLink.Svc.Windows.QueueService-CustomInstrumentation.xml
+		NewRelic\KeithLink.Svc.Impl-CustomInstrumentation.xml = NewRelic\KeithLink.Svc.Impl-CustomInstrumentation.xml
+		NewRelic\KeithLink.Svc.Impl.Helper-CustomInstrumentation.xml = NewRelic\KeithLink.Svc.Impl.Helper-CustomInstrumentation.xml
+		NewRelic\KeithLink.Svc.Impl.Logic-CustomInstrumentation.xml = NewRelic\KeithLink.Svc.Impl.Logic-CustomInstrumentation.xml
+		NewRelic\KeithLink.Svc.Impl.Repository-CustomInstrumentation.xml = NewRelic\KeithLink.Svc.Impl.Repository-CustomInstrumentation.xml
+		NewRelic\KeithLink.Svc.WebApi-CustomInstrumentation.xml = NewRelic\KeithLink.Svc.WebApi-CustomInstrumentation.xml
+		NewRelic\KeithLink.Svc.Windows.QueueService-CustomInstrumentation.xml = NewRelic\KeithLink.Svc.Windows.QueueService-CustomInstrumentation.xml
 	EndProjectSection
 EndProject
 Global

@@ -1,0 +1,3228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns="urn:newrelic-extension">
+  <!--If you need to remove some of the methods from a trace (If it's too long it won't record them all) just comment those tracers out-->
+  <!--If a tracer just defines a method that is part of a recorded trace, but doesn't record one itself, you don't add the name attribute-->
+  <!--If a tracer is to actually record a trace you add the name attribute-->
+  <instrumentation>
+    <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/GetTypeSpecificExportOptions">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">
+        <exactMethodMatcher methodName="GetTypeSpecificExportOptions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/ReadCustomExportOptions">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">
+        <exactMethodMatcher methodName="ReadCustomExportOptions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/ReadExternalCatalogs">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">
+        <exactMethodMatcher methodName="ReadExternalCatalogs"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/SaveUserExportSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">
+        <exactMethodMatcher methodName="SaveUserExportSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/SerializeSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">
+        <exactMethodMatcher methodName="SerializeSettings"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ContentManagement/ContentManagementLogicImpl/ReadContentForBranch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ContentManagement.ContentManagementLogicImpl">
+        <exactMethodMatcher methodName="ReadContentForBranch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ContentManagement/ContentManagementLogicImpl/LogHit">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ContentManagement.ContentManagementLogicImpl">
+        <exactMethodMatcher methodName="LogHit"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ContentManagement/ContentManagementLogicImpl/GetBranchItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ContentManagement.ContentManagementLogicImpl">
+        <exactMethodMatcher methodName="GetBranchItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ContentManagement/ContentManagementLogicImpl/GetBranchName">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ContentManagement.ContentManagementLogicImpl">
+        <exactMethodMatcher methodName="GetBranchName"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ContentManagement/ContentManagementLogicImpl/GetGlobalItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ContentManagement.ContentManagementLogicImpl">
+        <exactMethodMatcher methodName="GetGlobalItems"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CategoriesImportLogicImpl/ImportCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CategoriesImportLogicImpl">
+        <exactMethodMatcher methodName="ImportCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CategoriesImportLogicImpl/ImportUnfiCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CategoriesImportLogicImpl">
+        <exactMethodMatcher methodName="ImportUnfiCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CategoriesImportLogicImpl/PopulateSubCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CategoriesImportLogicImpl">
+        <exactMethodMatcher methodName="PopulateSubCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CategoriesImportLogicImpl/PopulateUnfiSubCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CategoriesImportLogicImpl">
+        <exactMethodMatcher methodName="PopulateUnfiSubCategories"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/HouseBrandsImportLogicImpl/ImportHouseBrands">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.HouseBrandsImportLogicImpl">
+        <exactMethodMatcher methodName="ImportHouseBrands"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/ImportItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="ImportItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/ImportUNFIItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="ImportUNFIItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/BuildAllergenDictionary">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="BuildAllergenDictionary"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/BuildDietDictionary">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="BuildDietDictionary"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/BuildNutritionDictionary">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="BuildNutritionDictionary"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/BuildProprietaryCustomerList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="BuildProprietaryCustomerList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/BuildProprietaryItemDictionary">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="BuildProprietaryItemDictionary"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/GetProductMapping">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="GetProductMapping"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/MapAllergen">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="MapAllergen"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/MapDiet">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="MapDiet"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/MapItemNutrition">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="MapItemNutrition"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/PopulateElasticSearchItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="PopulateElasticSearchItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/PopulateUNFIElasticSearchItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="PopulateUNFIElasticSearchItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ItemImportLogicImpl/PopulateUNFIElasticSearchItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ItemImportLogicImpl">
+        <exactMethodMatcher methodName="PopulateUNFIElasticSearchItem"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/BuildCatalogs">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="BuildCatalogs"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/BuildUNFICatalogs">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="BuildUNFICatalogs"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/CreateDisplayName">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="CreateDisplayName"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/GenerateCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="GenerateCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/GenerateProducts">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="GenerateProducts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/GenerateUNFICategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="GenerateUNFICategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/GenerateUNFIProducts">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="GenerateUNFIProducts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/ImportCatalog">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="ImportCatalog"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CatalogLogicImpl/ImportUNFICatalog">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CatalogLogicImpl">
+        <exactMethodMatcher methodName="ImportUNFICatalog"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/AssignCustomersToUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="AssignCustomersToUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/CompareExistingToUpdatedOrganization">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="CompareExistingToUpdatedOrganization"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/CreateAddressFromStagedData">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="CreateAddressFromStagedData"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/CreateOrganizationFromStagedData">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="CreateOrganizationFromStagedData"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetCustomersForProfileAliases">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetCustomersForProfileAliases"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetBoolFromYorN">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetBoolFromYorN"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetCreateAddressStatement">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetCreateAddressStatement"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetCreateOrganizationStatment">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetCreateOrganizationStatment"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetExistingOrganization">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetExistingOrganization"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetExistingOrganizations">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetExistingOrganizations"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetProfileContext">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetProfileContext"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetSingleProfileProperty">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetSingleProfileProperty"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetUpdateAddressStatement">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetUpdateAddressStatement"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/GetUpdateOrganizationStatement">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="GetUpdateOrganizationStatement"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/ImportCustomerItemHistory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="ImportCustomerItemHistory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/ImportCustomerTasks">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="ImportCustomerTasks"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/ImportCustomersToOrganizationProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="ImportCustomersToOrganizationProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/ImportDsrInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="ImportDsrInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/ImportUsersWithAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="ImportUsersWithAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/SetAddressProperties">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="SetAddressProperties"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/SetOrganizationProperties">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="SetOrganizationProperties"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/ToSQLFormat">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="ToSQLFormat"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/CustomerLogicImpl/UpdateSingleProfileProperty">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.CustomerLogicImpl">
+        <exactMethodMatcher methodName="UpdateSingleProfileProperty"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ProcessItemHistoryData">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessItemHistoryData"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/PurgeInternalUserAccessTable">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="PurgeInternalUserAccessTable"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadAllBranches">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadAllBranches"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadBrandControlLabels">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadBrandControlLabels"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadSubCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadSubCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadParentCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadParentCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadUnfiCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUnfiCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadUnfiSubCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUnfiSubCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadFullItemForElasticSearch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadFullItemForElasticSearch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/PopulateDataTable">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="PopulateDataTable"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadGSDataForItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadGSDataForItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadProprietaryItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadProprietaryItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadCustomers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadCustomers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadCSUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadCSUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ProcessInvoices">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessInvoices"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadContractItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadContractItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadWorksheetItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadWorksheetItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadDsrInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadDsrInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadDsrImages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadDsrImages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ProcessContractItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessContractItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ProcessWorksheetItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessWorksheetItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ExecuteProfileObjectQuery">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ExecuteProfileObjectQuery"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ExecuteProfileObjectQueryReturn">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ExecuteProfileObjectQueryReturn"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ImportCustomersToCS">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ImportCustomersToCS"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadUNFIItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUNFIItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadDistinctUNFIWarehouses">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadDistinctUNFIWarehouses"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/DemoStagingRepositoryImpl/ReadUNFIItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.DemoStagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUNFIItems"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ListImportLogicImpl/ImportContractItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ListImportLogicImpl">
+        <exactMethodMatcher methodName="ImportContractItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ListImportLogicImpl/ImportWorksheetItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ListImportLogicImpl">
+        <exactMethodMatcher methodName="ImportWorksheetItems"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/ListImportLogicImpl/ImportWorksheetItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.ListImportLogicImpl">
+        <exactMethodMatcher methodName="ImportWorksheetItems"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ProcessItemHistoryData">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessItemHistoryData"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/PurgeInternalUserAccessTable">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="PurgeInternalUserAccessTable"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadAllBranches">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadAllBranches"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadBrandControlLabels">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadBrandControlLabels"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadSubCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadSubCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadParentCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadParentCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadUnfiCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUnfiCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadUnfiSubCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUnfiSubCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadFullItemForElasticSearch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadFullItemForElasticSearch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/PopulateDataTable">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="PopulateDataTable"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadGSDataForItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadGSDataForItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadProprietaryItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadProprietaryItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadCustomers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadCustomers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadCSUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadCSUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ProcessInvoices">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessInvoices"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadContractItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadContractItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadWorksheetItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadWorksheetItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadDsrInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadDsrInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadDsrImages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadDsrImages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ProcessContractItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessContractItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ProcessWorksheetItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ProcessWorksheetItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ExecuteProfileObjectQuery">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ExecuteProfileObjectQuery"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ExecuteProfileObjectQueryReturn">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ExecuteProfileObjectQueryReturn"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ImportCustomersToCS">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ImportCustomersToCS"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadUNFIItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUNFIItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadDistinctUNFIWarehouses">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadDistinctUNFIWarehouses"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/ETL/StagingRepositoryImpl/ReadUNFIItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.ETL.StagingRepositoryImpl">
+        <exactMethodMatcher methodName="ReadUNFIItems"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Invoices/ImagingLogicImpl/GetInvoiceImages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Invoices.ImagingLogicImpl">
+        <exactMethodMatcher methodName="GetInvoiceImages"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Invoices/TermLogicImpl/ReadTermInformation">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Invoices.TermLogicImpl">
+        <exactMethodMatcher methodName="ReadTermInformation"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/FavoriteLogicImpl/GetFavoritedItemNumbers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.FavoriteLogicImpl">
+        <exactMethodMatcher methodName="GetFavoritedItemNumbers"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/AddItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="AddItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/AddItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="AddItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/AddNote">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="AddNote"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/AddRecentlyOrderedItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="AddRecentlyOrderedItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/AddRecentlyViewedItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="AddRecentlyViewedItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/CopyList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="CopyList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/CreateList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="CreateList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteItemNumberFromList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteItemNumberFromList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteLists">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteLists"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteNote">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteNote"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteRecent">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteRecent"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/DeleteRecentlyOrdered">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="DeleteRecentlyOrdered"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/GenerateNewRecommendItemNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="GenerateNewRecommendItemNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/GetBarcodeForList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="GetBarcodeForList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/GetBarcode">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="GetBarcode"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/GetItemsHistoryList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="GetItemsHistoryList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/IsBekBranch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="IsBekBranch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/LookupNameAndPackSize">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="LookupNameAndPackSize"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/LookupPrices">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="LookupPrices"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/LookupProductDetails">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="LookupProductDetails"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/MarkFavoritesAndAddNotes">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="MarkFavoritesAndAddNotes"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/PopulateProductDetails">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="PopulateProductDetails"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ApplyDefaultListSort">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ApplyDefaultListSort"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadListByType">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadListByType"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadListLabels">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadListLabels"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadPagedList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadPagedList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadRecent">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadRecent"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadRecentOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadRecentOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadRecommendedItemsList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadRecommendedItemsList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadReminders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadReminders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadUserList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadUserList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ReadListForCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ReadListForCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ShareList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ShareList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/ToPagedList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="ToPagedList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/UpdateItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="UpdateItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ListLogicImpl/UpdateList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ListLogicImpl">
+        <exactMethodMatcher methodName="UpdateList"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/NoteLogicImpl/GetNotes">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.NoteLogicImpl">
+        <exactMethodMatcher methodName="GetNotes"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/AmazonPushNotificationMessageProvider/DisableDevices">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.AmazonPushNotificationMessageProvider">
+        <exactMethodMatcher methodName="DisableDevices"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/AmazonPushNotificationMessageProvider/RegisterRecipient">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.AmazonPushNotificationMessageProvider">
+        <exactMethodMatcher methodName="RegisterRecipient"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/AmazonPushNotificationMessageProvider/SendMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.AmazonPushNotificationMessageProvider">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/BaseNotificationHandlerImpl/GetUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.BaseNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/BaseNotificationHandlerImpl/LoadRecipients">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.BaseNotificationHandlerImpl">
+        <exactMethodMatcher methodName="LoadRecipients"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/BaseNotificationHandlerImpl/SendMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.BaseNotificationHandlerImpl">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/EmailMessageProvider/SendMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EmailMessageProvider">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/EtaNotificationHandlerImpl/IgnoreOffsetTimeString">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EtaNotificationHandlerImpl">
+        <exactMethodMatcher methodName="IgnoreOffsetTimeString"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/EtaNotificationHandlerImpl/GetEmailMessageForNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EtaNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetEmailMessageForNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/EtaNotificationHandlerImpl/ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.EtaNotificationHandlerImpl">
+        <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/HasNewsNotificationHandlerImpl/ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.HasNewsNotificationHandlerImpl">
+        <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/InvoiceNotificationHandlerImpl/ProcessNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.InvoiceNotificationHandlerImpl">
+        <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessageTemplateLogicImpl/ReadForKey">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl">
+        <exactMethodMatcher methodName="ReadForKey"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessageTemplateLogicImpl/BuildHeader">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl">
+        <exactMethodMatcher methodName="BuildHeader"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/CreateMailMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="CreateMailMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/CreateMessagingPreferencesByCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="CreateMessagingPreferencesByCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/CreateUserMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="CreateUserMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/DeleteMessagingPreferencesByCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="DeleteMessagingPreferencesByCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/GetUnreadMessagesCount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="GetUnreadMessagesCount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/MarkAllReadByUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="MarkAllReadByUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/MarkAsReadUserMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="MarkAsReadUserMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/ReadMessagingPreferences">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="ReadMessagingPreferences"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/ReadPagedUserMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="ReadPagedUserMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/ReadUserMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="ReadUserMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/ReadUserMessagingPreference">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="ReadUserMessagingPreference"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/RegisterPushDevice">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="RegisterPushDevice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/MessagingLogicImpl/UpdateMessagingPreferences">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.MessagingLogicImpl">
+        <exactMethodMatcher methodName="UpdateMessagingPreferences"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/NotificationQueueConsumerImpl/ListenForNotificationMessagesOnQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.NotificationQueueConsumerImpl">
+        <exactMethodMatcher methodName="ListenForNotificationMessagesOnQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/NotificationQueueConsumerImpl/ListenToQueueInTaskForUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.NotificationQueueConsumerImpl">
+        <exactMethodMatcher methodName="ListenToQueueInTaskForUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/NotificationQueueConsumerImpl/ConsumeMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.NotificationQueueConsumerImpl">
+        <exactMethodMatcher methodName="ConsumeMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/NotificationQueueConsumerImpl/ConsumeMessageFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.NotificationQueueConsumerImpl">
+        <exactMethodMatcher methodName="ConsumeMessageFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/NotificationQueueConsumerImpl/Stop">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.NotificationQueueConsumerImpl">
+        <exactMethodMatcher methodName="Stop"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/BuildExceptionItemDetail">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildExceptionItemDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/BuildExtPriceInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildExtPriceInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/BuildItemDetail">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildItemDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/BuildNotificationChanges">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildNotificationChanges"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/BuildOrderTables">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildOrderTables"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/BuildPieceCount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildPieceCount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/BuildPriceInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="BuildPriceInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/GetEmailMessageForNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetEmailMessageForNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/GetInvoiceNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetInvoiceNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/GetLinePrice">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetLinePrice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/MakeConfirmationMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="MakeConfirmationMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/MakeRejectedMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="MakeRejectedMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OrderConfirmationNotificationHandlerImpl/ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OrderConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PaymentConfirmationNotificationHandlerImpl/GetEmailMessageForNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PaymentConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="GetEmailMessageForNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PaymentConfirmationNotificationHandlerImpl/ProcessNotification"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PaymentConfirmationNotificationHandlerImpl">
+        <exactMethodMatcher methodName="ProcessNotification"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PushMessageConsumerImpl/ListenForQueueMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessageConsumerImpl">
+        <exactMethodMatcher methodName="ListenForQueueMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PushMessageConsumerImpl/ProcessIncomingPushMessage"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessageConsumerImpl">
+        <exactMethodMatcher methodName="ProcessIncomingPushMessage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PushMessageConsumerImpl/ListenToQueueInTaskForUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessageConsumerImpl">
+        <exactMethodMatcher methodName="ListenToQueueInTaskForUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PushMessageConsumerImpl/ConsumeMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessageConsumerImpl">
+        <exactMethodMatcher methodName="ConsumeMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PushMessageConsumerImpl/ConsumeMessageFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessageConsumerImpl">
+        <exactMethodMatcher methodName="ConsumeMessageFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PushMessageConsumerImpl/Stop">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessageConsumerImpl">
+        <exactMethodMatcher methodName="Stop"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/PushMessagePublisherImpl/SendMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.PushMessagePublisherImpl">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/WebMessageProvider/SendMessage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.WebMessageProvider">
+        <exactMethodMatcher methodName="SendMessage"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/BuildCustomerFilter">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="BuildCustomerFilter"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/BuildStatusFilter">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="BuildStatusFilter"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/MapDateRangeFilterInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="MapDateRangeFilterInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/MapStatusDecriptionFilterInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="MapStatusDecriptionFilterInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/DeleteInvoice">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="DeleteInvoice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetAllBankAccounts">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetAllBankAccounts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetBankAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetBankAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetCustomerAccountBalance">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetCustomerAccountBalance"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetInvoiceDetails">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetInvoiceDetails"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetInvoiceTransactions">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetInvoiceTransactions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetInvoiceHeaders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetInvoiceHeaders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/MapInvoicesToReturn">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="MapInvoicesToReturn"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/MapInvoicesToCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="MapInvoicesToCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetInvoiceHeadersCacheKey">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetInvoiceHeadersCacheKey"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetInvoicesForCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetInvoicesForCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/AddInvoiceLink">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="AddInvoiceLink"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/ApplyCreditMemoFilter">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="ApplyCreditMemoFilter"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/ApplyPONumberFilter">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="ApplyPONumberFilter"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/ApplyTypeDescriptionFilter">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="ApplyTypeDescriptionFilter"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetInvoicePONumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetInvoicePONumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetInvoiceTransactions">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetInvoiceTransactions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/GetPendingTransactionForInvoice">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="GetPendingTransactionForInvoice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/MapCustomerInfoToInvoice">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="MapCustomerInfoToInvoice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/MakeInvoicePayment">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="MakeInvoicePayment"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/PendingTransactionsAllCustomers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="PendingTransactionsAllCustomers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/PendingTransactions">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="PendingTransactions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Messaging/OnlinePaymentLogicImpl/ValidatePayment">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Messaging.OnlinePaymentLogicImpl">
+        <exactMethodMatcher methodName="ValidatePayment"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SocketFileReceived">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SocketFileReceived"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SocketPortClosed">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SocketPortClosed"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SocketOpeningPort">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SocketOpeningPort"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SocketWaitingConnection">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SocketWaitingConnection"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SocketBeginningFileReceipt">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SocketBeginningFileReceipt"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SocketExceptionEncountered">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SocketExceptionEncountered"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/BuildOrderChanges">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="BuildOrderChanges"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/GetCsPurchaseOrderByNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="GetCsPurchaseOrderByNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/GetFileFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="GetFileFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/GetItemPrice">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="GetItemPrice"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/ListenForMainFrameCalls">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ListenForMainFrameCalls"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/ListenForQueueMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ListenForQueueMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SubscribeToQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SubscribeToQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/UnsubscribeFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="UnsubscribeFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SubscriptionQueue_MessageReceived">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SubscriptionQueue_MessageReceived"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/DeserializeConfirmation">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="DeserializeConfirmation"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/ListenForQueueMessagesInTask">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ListenForQueueMessagesInTask"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/ParseFile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ParseFile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/ProcessFileData">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ProcessFileData"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/ProcessIncomingConfirmation"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ProcessIncomingConfirmation"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/ProcessMisingItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="ProcessMisingItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/PublishToQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="PublishToQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SetCsHeaderInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SetCsHeaderInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SetCsLineInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SetCsLineInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SetCsLineItemInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SetCsLineItemInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/SetCsPoStatusFromLineItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="SetCsPoStatusFromLineItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/ConfirmationLogicImpl/Stop">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.ConfirmationLogicImpl">
+        <exactMethodMatcher methodName="Stop"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/GetCsPurchaseOrderByNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="GetCsPurchaseOrderByNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/SaveConfirmationAsOrderHistory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SaveConfirmationAsOrderHistory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/GetSubtotal">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="GetSubtotal"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/LookupProductDetails">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="LookupProductDetails"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/SaveOrderHistoryAsConfirmation"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SaveOrderHistoryAsConfirmation"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/SaveRejectedConfirmationAsOrderHistory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SaveRejectedConfirmationAsOrderHistory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/SetCsHeaderInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SetCsHeaderInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/SetCsLineInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SetCsLineInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/SetCsLineItemInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SetCsLineItemInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderConversionLogicImpl/SetCsPoStatusFromLineItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderConversionLogicImpl">
+        <exactMethodMatcher methodName="SetCsPoStatusFromLineItems"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/BuildAlertStringsForLostPurchaseOrders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="BuildAlertStringsForLostPurchaseOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/CheckForLostOrders"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="CheckForLostOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/CheckForLostOrdersByStatus">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="CheckForLostOrdersByStatus"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/Create">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="Create"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/FindHeader">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="FindHeader"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/DetermineCatalogNotesSpecialOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="DetermineCatalogNotesSpecialOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/GetOrderTotalByMonth">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="GetOrderTotalByMonth"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/GetShallowOrderDetailInDateRange">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="GetShallowOrderDetailInDateRange"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/ListenForMainFrameCalls">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="ListenForMainFrameCalls"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/ListenForQueueMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="ListenForQueueMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/ListenForQueueMessagesInTask">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="ListenForQueueMessagesInTask"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/ParseFile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="ParseFile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/ParseMainframeFile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="ParseMainframeFile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/ReadOrderFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="ReadOrderFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/RemoveSpecialOrderItemsFromHistory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="RemoveSpecialOrderItemsFromHistory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/SaveOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="SaveOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/SetLostOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="SetLostOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/StopListening">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="StopListening"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryLogicImpl/UpdateRelatedOrderNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryLogicImpl">
+        <exactMethodMatcher methodName="UpdateRelatedOrderNumber"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryRequestLogicImpl/ProcessRequests">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryRequestLogicImpl">
+        <exactMethodMatcher methodName="ProcessRequests"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryRequestLogicImpl/RequestAllOrdersForCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryRequestLogicImpl">
+        <exactMethodMatcher methodName="RequestAllOrdersForCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryRequestLogicImpl/RequestOrderForCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryRequestLogicImpl">
+        <exactMethodMatcher methodName="RequestOrderForCustomer"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryWriterImpl/ListenForNotificationMessagesOnQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryWriterImpl">
+        <exactMethodMatcher methodName="ListenForNotificationMessagesOnQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryWriterImpl/ListenToQueueInTaskForUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryWriterImpl">
+        <exactMethodMatcher methodName="ListenToQueueInTaskForUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryWriterImpl/ConsumeMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryWriterImpl">
+        <exactMethodMatcher methodName="ConsumeMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryWriterImpl/ConsumeMessageFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryWriterImpl">
+        <exactMethodMatcher methodName="ConsumeMessageFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderHistoryWriterImpl/Stop">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderHistoryWriterImpl">
+        <exactMethodMatcher methodName="Stop"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/IsSubmitted">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="IsSubmitted"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/CancelOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="CancelOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/ClearEtaInformation">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="ClearEtaInformation"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/FindOrdersRelatedToPurchaseOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="FindOrdersRelatedToPurchaseOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GiveLinkForSimilarItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GiveLinkForSimilarItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/HideDeletedItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="HideDeletedItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetOrderHeaderInDateRange">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetOrderHeaderInDateRange"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetOrderHistoryHeadersForDateRange">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetOrderHistoryHeadersForDateRange"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetOrderHistoryOrders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetOrderHistoryOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetOrders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetPagedOrders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetPagedOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/ApplyPagingToQuery">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="ApplyPagingToQuery"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/AddSortToPagedQuery">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="AddSortToPagedQuery"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetSubmittedUnconfirmedOrders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetSubmittedUnconfirmedOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/GetUserIdForControlNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="GetUserIdForControlNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/LookupControlNumberAndStatus">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="LookupControlNumberAndStatus"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/LookupProductDetails">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="LookupProductDetails"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/MergeOrderLists">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="MergeOrderLists"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/PullCatalogFromPurchaseOrderItemsToOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="PullCatalogFromPurchaseOrderItemsToOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/ReadOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="ReadOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/ReadOrders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="ReadOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/ResendUnconfirmedOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="ResendUnconfirmedOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/SubmitChangeOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="SubmitChangeOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/ToOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="ToOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/ToOrderLine">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="ToOrderLine"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/UpdateExistingOrderInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="UpdateExistingOrderInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/UpdateOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="UpdateOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/UpdateOrderForShipDate">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="UpdateOrderForShipDate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/UpdateOrderForEta">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="UpdateOrderForEta"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderLogicImpl/UpdateOrdersForSecurity">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderLogicImpl">
+        <exactMethodMatcher methodName="UpdateOrdersForSecurity"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/ProcessOrders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="ProcessOrders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendDetailRecordsToHost">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendDetailRecordsToHost"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendEndOfRecordToHost">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendEndOfRecordToHost"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendHeaderRecordToHost">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendHeaderRecordToHost"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendStartTransaction">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendStartTransaction"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/GetSelectedExchange">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="GetSelectedExchange"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/GetSelectedQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="GetSelectedQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendToError">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendToError"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendToHistory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendToHistory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendToReprocess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendToReprocess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/SendToHost">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="SendToHost"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/WorkOrderQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="WorkOrderQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/OrderQueueLogicImpl/WriteFileToQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.OrderQueueLogicImpl">
+        <exactMethodMatcher methodName="WriteFileToQueue"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ListenForQueueMessages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ListenForQueueMessages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ListenForQueueMessagesInTask">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ListenForQueueMessagesInTask"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ProcessSpecialOrderItemUpdate"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ProcessSpecialOrderItemUpdate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/FindOrderHistoryDetailForUpdate">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="FindOrderHistoryDetailForUpdate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ProcessOrderHistoryDetailByUpdateStatus">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ProcessOrderHistoryDetailByUpdateStatus"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ProcessOrderHistoryDetailOnDeletedOrPurgedStatusUpdate">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ProcessOrderHistoryDetailOnDeletedOrPurgedStatusUpdate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ProcessOrderHistoryDetailOnApprovedStatusUpdate">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ProcessOrderHistoryDetailOnApprovedStatusUpdate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ProcessOrderHistoryDetailOnStatusUpdate">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ProcessOrderHistoryDetailOnStatusUpdate"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/ReadOrderFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="ReadOrderFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/SpecialOrderLogicImpl/StopListening">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.SpecialOrderLogicImpl">
+        <exactMethodMatcher methodName="StopListening"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/UserActiveCartLogicImpl/GetUserActiveCart">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.UserActiveCartLogicImpl">
+        <exactMethodMatcher methodName="GetUserActiveCart"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Orders/UserActiveCartLogicImpl/SaveUserActiveCart">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Orders.UserActiveCartLogicImpl">
+        <exactMethodMatcher methodName="SaveUserActiveCart"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/PowerMenu/PowerMenuLogicImpl/SendAccountRequestToPowerMenu">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.PowerMenu.PowerMenuLogicImpl">
+        <exactMethodMatcher methodName="SendAccountRequestToPowerMenu"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/PasswordRequest/PasswordResetLogicImpl/GenerateNewUserPasswordLink">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.PasswordRequest.PasswordResetLogicImpl">
+        <exactMethodMatcher methodName="GenerateNewUserPasswordLink"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/PasswordRequest/PasswordResetLogicImpl/GeneratePasswordResetLink">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.PasswordRequest.PasswordResetLogicImpl">
+        <exactMethodMatcher methodName="GeneratePasswordResetLink"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/PasswordRequest/PasswordResetLogicImpl/IsTokenValid">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.PasswordRequest.PasswordResetLogicImpl">
+        <exactMethodMatcher methodName="IsTokenValid"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/PasswordRequest/PasswordResetLogicImpl/ResetPassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.PasswordRequest.PasswordResetLogicImpl">
+        <exactMethodMatcher methodName="ResetPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/PasswordRequest/PasswordResetLogicImpl/SendResetPasswordEmail">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.PasswordRequest.PasswordResetLogicImpl">
+        <exactMethodMatcher methodName="SendResetPasswordEmail"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrAliasLogicImpl/CreateDsrAlias">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrAliasLogicImpl">
+        <exactMethodMatcher methodName="CreateDsrAlias"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrAliasLogicImpl/DeleteDsrAlias">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrAliasLogicImpl">
+        <exactMethodMatcher methodName="DeleteDsrAlias"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrAliasLogicImpl/GetAllDsrAliasesByUserId">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrAliasLogicImpl">
+        <exactMethodMatcher methodName="GetAllDsrAliasesByUserId"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrLogic/GetDsr">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="GetDsr"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrLogic/GetDefault">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="GetDefault"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrLogic/ToDsrModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="ToDsrModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrLogic/GetAllDsrInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="GetAllDsrInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrLogic/CreateOrUpdateDsr">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="CreateOrUpdateDsr"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrLogic/SendImageToMultiDocs">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="SendImageToMultiDocs"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/DsrLogic/returnDefaultDsrPhone">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.DsrLogic">
+        <exactMethodMatcher methodName="returnDefaultDsrPhone"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/MarketingPreferencesLogicImpl/CreateMarketingPreference">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.MarketingPreferencesLogicImpl">
+        <exactMethodMatcher methodName="CreateMarketingPreference"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/MarketingPreferencesLogicImpl/ReadMarketingPreferences">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.MarketingPreferencesLogicImpl">
+        <exactMethodMatcher methodName="ReadMarketingPreferences"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/GetAllUserSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="GetAllUserSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/CreateOrUpdateSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="CreateOrUpdateSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/DeleteSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="DeleteSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/SetDefaultApplicationSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="SetDefaultApplicationSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/SetDefaultApplicationProfileSetting">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="SetDefaultApplicationProfileSetting"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/SetDefaultApplicationNotifySetting">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="SetDefaultApplicationNotifySetting"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AddProfileImageUrl">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AddProfileImageUrl"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AddUserToCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AddUserToCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertCustomerNameLength">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertCustomerNameLength"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertCustomerNameValidCharacters">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertCustomerNameValidCharacters"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertEmailAddress">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertEmailAddress"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertEmailAddressLength">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertEmailAddressLength"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertEmailAddressUnique">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertEmailAddressUnique"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertFirstNameLength">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertFirstNameLength"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertGuestProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertGuestProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertLastNameLength">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertLastNameLength"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertPasswordComplexity">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertPasswordComplexity"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertPasswordLength">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertPasswordLength"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertPasswordVsAttributes">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertPasswordVsAttributes"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertRoleName">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertRoleName"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertRoleNameLength">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertRoleNameLength"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/AssertUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="AssertUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/BuildPreferenceModelForEachNotificationType">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="BuildPreferenceModelForEachNotificationType"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/CreateAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="CreateAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/CreateDsrAlias">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="CreateDsrAlias"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/DeleteAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="DeleteAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/DeleteDsrAlias">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="DeleteDsrAlias"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/ConvertRoleName">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="ConvertRoleName"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/CreateBekUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="CreateBekUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/CreateGuestUserAndProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="CreateGuestUserAndProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/CreateUserAndProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="CreateUserAndProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/CustomerSearch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="CustomerSearch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/FillUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="FillUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GenerateTemporaryPassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GenerateTemporaryPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GenerateUserAddedNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GenerateUserAddedNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetAccounts">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetAccounts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetAccountUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetAccountUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetBalanceForCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetBalanceForCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetBranchFromOU">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetBranchFromOU"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetCustomerByCustomerNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetCustomerByCustomerNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetCustomersForExternalUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetCustomersForExternalUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetCustomerForUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetCustomerForUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetAllDsrAliasesByUserId">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetAllDsrAliasesByUserId"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetInternalUsersWithAccessToCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetInternalUsersWithAccessToCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetMessagingPreferences">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetMessagingPreferences"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetPowerMenuLoginUrl">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetPowerMenuLoginUrl"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetNonPagedCustomersForUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetNonPagedCustomersForUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetPagedAccounts">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetPagedAccounts"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/FindAccountsForCustomers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="FindAccountsForCustomers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetUserProfileByGuid">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetUserProfileByGuid"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetUserRole">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetUserRole"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetUsers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetUsers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GrantRoleAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GrantRoleAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/NewPassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="NewPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/PasswordMeetsComplexityRequirements">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="PasswordMeetsComplexityRequirements"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/RemoveKbitAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="RemoveKbitAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/RemovePowerMenuAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="RemovePowerMenuAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/BuildPowerMenuRequest">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="BuildPowerMenuRequest"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/RemoveUserFromAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="RemoveUserFromAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/RemoveUserFromCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="RemoveUserFromCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/RequestKbitAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="RequestKbitAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/ResetPassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="ResetPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/RevokeRoleAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="RevokeRoleAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/SendPasswordChangeEmail">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="SendPasswordChangeEmail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/SetupPowerMenuForAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="SetupPowerMenuForAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/SendPowerMenuRequests">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="SendPowerMenuRequests"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/SubmitExternalApplicationRequest">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="SubmitExternalApplicationRequest"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/UserCreatedGuestWithTemporaryPassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="UserCreatedGuestWithTemporaryPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/UpdateAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="UpdateAccount"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/UpdateCustomersForUser">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="UpdateCustomersForUser"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/UpdateUserPassword">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="UpdateUserPassword"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/UpdateUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="UpdateUserProfile"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/GetProfileSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetProfileSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/SaveProfileSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="SaveProfileSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/DeleteProfileSettings">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="DeleteProfileSettings"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/SetUserProfileLastLogin">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="SetUserProfileLastLogin"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/SetUserProfileLastAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="SetUserProfileLastAccess"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/UserProfileLogicImpl/CheckCanViewUNFI">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="CheckCanViewUNFI"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/GenerateReport">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="GenerateReport"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/GeneratePDFReport">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="GeneratePDFReport"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/GenerateTextReport">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="GenerateTextReport"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/GenerateInventoryValuationTextReport">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="GenerateInventoryValuationTextReport"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/WriteTextSum">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="WriteTextSum"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/WriteTextData">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="WriteTextData"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/WriteTextHeaders">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="WriteTextHeaders"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/WriteTextValue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="WriteTextValue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/UseAppropriateDelimiter">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="UseAppropriateDelimiter"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/GenerateExcelReport">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="GenerateExcelReport"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/SetCustomColumnWidths">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="SetCustomColumnWidths"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/InventoryValuationReportLogicImpl/WriteDataTableToExcelWorksheet">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.InventoryValuationReportLogicImpl">
+        <exactMethodMatcher methodName="WriteDataTableToExcelWorksheet"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/ReportLogic/FillProductInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.ReportLogic">
+        <exactMethodMatcher methodName="FillProductInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/ReportLogic/GetItemUsage">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.ReportLogic">
+        <exactMethodMatcher methodName="GetItemUsage"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Reports/ReportLogic/LookupProductInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Reports.ReportLogic">
+        <exactMethodMatcher methodName="LookupProductInfo"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/SingleSignOn/AccessRequestLogicImpl/PopRequestFromQueue">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SingleSignOn.AccessRequestLogicImpl">
+        <exactMethodMatcher methodName="PopRequestFromQueue"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SingleSignOn/AccessRequestLogicImpl/ProcessQueuedRequests">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SingleSignOn.AccessRequestLogicImpl">
+        <exactMethodMatcher methodName="ProcessQueuedRequests"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SingleSignOn/AccessRequestLogicImpl/StopProcessing">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SingleSignOn.AccessRequestLogicImpl">
+        <exactMethodMatcher methodName="StopProcessing"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SingleSignOn/AccessRequestLogicImpl/WorkQueuedRequests">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SingleSignOn.AccessRequestLogicImpl">
+        <exactMethodMatcher methodName="WorkQueuedRequests"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/SingleSignOn/KbitRequestLogicImpl/UpdateUserAccess">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SingleSignOn.AccessRequestLogicImpl">
+        <exactMethodMatcher methodName="UpdateUserAccess"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/Images/External/UnfiImageProcessing/StartProcessAllImages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External.UnfiImageProcessing">
+        <exactMethodMatcher methodName="StartProcessAllImages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/Images/External/UnfiImageProcessing/GetUnfiProductUpcsInOurData">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External.UnfiImageProcessing">
+        <exactMethodMatcher methodName="GetUnfiProductUpcsInOurData"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/AddCategoryImages">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="AddCategoryImages"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/AddCategorySearchName">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="AddCategorySearchName"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/AddItemHistoryToProduct">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="AddItemHistoryToProduct"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/AddPricingInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="AddPricingInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/AddProductImageInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="AddProductImageInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetAdditionalProductInfo">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetAdditionalProductInfo"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetBranchId">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetBranchId"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetCatalogTypeFromCatalogId">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetCatalogTypeFromCatalogId"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetCategories">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetCategories"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetCategorySearchName">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetCategorySearchName"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetDivisions">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetDivisions"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetExternalBranchIds">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetExternalBranchIds"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetHitsForCatalogs">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetHitsForCatalogs"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetHouseProductsByBranch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetHouseProductsByBranch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetLastFiveOrderHistory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetLastFiveOrderHistory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetProductById">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetProductById"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetProductByIdOrUPC">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetProductByIdOrUPC"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetProductsByCategory">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetProductsByCategory"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetProductsByIds">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetProductsByIds"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetProductsByIdsWithPricing">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetProductsByIdsWithPricing"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/GetProductsBySearch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="GetProductsBySearch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/IsCatalogIdBEK">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="IsCatalogIdBEK"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/SiteCatalog/SiteCatalogLogicImpl/IsSpecialtyCatalog">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl">
+        <exactMethodMatcher methodName="IsSpecialtyCatalog"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/BasketLogicImpl/RetrieveSharedCustomerBasket">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.BasketLogicImpl">
+        <exactMethodMatcher methodName="RetrieveSharedCustomerBasket"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/BasketLogicImpl/RetrieveAllSharedCustomerBaskets">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.BasketLogicImpl">
+        <exactMethodMatcher methodName="RetrieveAllSharedCustomerBaskets"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Logic/BasketLogicImpl/RetrieveAllSharedCustomerBaskets">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.BasketLogicImpl">
+        <exactMethodMatcher methodName="RetrieveAllSharedCustomerBaskets"/>
+      </match>
+    </tracerFactory>
+
+    <!--LOST ORDERS-->
+    <tracerFactory metricName="PurchaseOrderRepositoryImpl-GetPurchaseOrdersByStatus">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Orders.PurchaseOrderRepositoryImpl">
+        <exactMethodMatcher methodName="GetPurchaseOrdersByStatus"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="PurchaseOrderRepositoryImpl-ReadPurchaseOrderByTrackingNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Orders.PurchaseOrderRepositoryImpl">
+        <exactMethodMatcher methodName="ReadPurchaseOrderByTrackingNumber"/>
+      </match>
+    </tracerFactory>
+
+    <!--PAYMENT NOTIFICATIONS-->
+    <tracerFactory metricName="CustomerBankRepositoryImpl-GetBankAccount">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.OnlinePayments.Customer.CustomerBankRepositoryImpl">
+        <exactMethodMatcher methodName="GetBankAccount"/>
+      </match>
+    </tracerFactory>
+
+    <!--ORDER UPDATES-->
+    <tracerFactory metricName="CommerceServerCore-GetPoManager">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.CommerceServerCore">
+        <exactMethodMatcher methodName="GetPoManager"/>
+      </match>
+    </tracerFactory>
+
+    <!--OTHER CALLS-->
+    <tracerFactory metricName="UserProfileLogicImpl-GetUserProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetUserProfile"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="UserProfileRepository-GetCSProfile">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository">
+        <exactMethodMatcher methodName="GetCSProfile"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="FoundationService-ExecuteRequest">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.FoundationService">
+        <exactMethodMatcher methodName="ExecuteRequest"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="DsrRepositoryImpl-GetDsrByBranchAndDsrNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.DsrRepositoryImpl">
+        <exactMethodMatcher methodName="GetDsrByBranchAndDsrNumber"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="CustomerRepository-GetCustomerByCustomerNumber">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="GetCustomerByCustomerNumber"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="CustomerRepository-BuildCustomerList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.CustomerRepository">
+        <exactMethodMatcher methodName="BuildCustomerList"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="UserProfileLogicImpl-GetInternalUsersWithAccessToCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Profile.UserProfileLogicImpl">
+        <exactMethodMatcher methodName="GetInternalUsersWithAccessToCustomer"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="InternalUserAccessRepository-GetAllUsersWithAccessToCustomer">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Repository.Customers.InternalUserAccessRepository">
+        <exactMethodMatcher methodName="GetAllUsersWithAccessToCustomer"/>
+      </match>
+    </tracerFactory>
+  </instrumentation>
+</extension>
