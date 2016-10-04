@@ -519,7 +519,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         private void ApplyTypeDescriptionFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
         {
             var filter = paging.Search;
-            pagedInvoices.Results = pagedInvoices.Results.Where(i => i.TypeDescription.StartsWith(filter.Value)).ToList();
+            pagedInvoices.Results = pagedInvoices.Results.Where(i => i.TypeDescription.ToLower().StartsWith(filter.Value.ToLower())).ToList();
         }
 
         private void GetInvoicePONumber(InvoiceModel invoice)
