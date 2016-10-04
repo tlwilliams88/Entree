@@ -106,6 +106,7 @@ angular.module('bekApp')
 
   $scope.validateItems = function(items) {
     $scope.isValidating = true;
+    $scope.duplicateItemsExist = false;
     var invalidItemsExist = false;
     var deferred =  $q.defer();
     var validationItems = getRowsWithQuantity(items);
@@ -128,19 +129,31 @@ angular.module('bekApp')
                 item.packageprice = validatedItem.product.packageprice;
                 item.caseprice = validatedItem.product.caseprice;
               }
-            });          
+              if(validatedItem && validatedItem.product){
+                $scope.duplicateItems = $filter('filter')(items, {itemnumber:validatedItem.product.itemnumber, each:validatedItem.product.each});
+                if($scope.duplicateItems.length > 1){
+                  $scope.duplicateItemsExist = true;
+                  validatedItem.reason = 2;
+                  validatedItem.valid = false;
+                }
+              }
+
+            });
 
             if (validatedItem.valid === false) {
               invalidItemsExist = true;
-            }
+            } 
 
             if (validatedItem.reason === 0) {
               item.reason = 'Invalid item number';
             } else if (validatedItem.reason === 1) {
               item.reason = 'Each not allowed for this item';
+            } else {
+              item.valid = false;
+              item.reason = 'Duplicate';
             }
           });
-          $scope.enableSubmit = !invalidItemsExist;        
+          $scope.enableSubmit = !invalidItemsExist;
           return validatedItems;
         }
         else{
