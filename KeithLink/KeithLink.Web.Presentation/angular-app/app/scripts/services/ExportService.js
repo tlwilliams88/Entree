@@ -165,11 +165,20 @@ angular.module('bekApp')
           });
       },
 
-      exportInventoryValueReport: function(format, items) {
-        var options = {
-          format: format,
-          data: items
-        };
+      exportInventoryValueReport: function(format, items, totalByCategory) {
+        if(totalByCategory){
+          var options = {
+            format: format,
+            data: items,
+            groupby: 'category'
+          };
+        } else {
+          var options = {
+            format: format,
+            data: items
+          };
+        }
+
         return $http.post('/report/inventoryvalue', options, { responseType: 'arraybuffer' }).success(function(data, status, headers) {
           downloadFile(data, status, headers, options.format, '/report/inventoryvalue');
         });
