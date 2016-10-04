@@ -139,13 +139,13 @@
               <td style="width:20%;">
                 <p>{{item.brand}}</p>
               </td>
-              <td class="input-col">
+              <td class="input-col input">
                 <div counter name="quantity" type="text" ng-model="item.quantity"></div>
               </td>
               <td class="input-col">
                 <p>{{item.pack}}<span ng-if="item.pack && item.size">/</span>{{item.size}}</p>
               </td>
-              <td class="input-col">
+              <td class="input-col input">
                 <input name="each" type="checkbox" ng-model="item.each">
               </td>
               <td class="input-col">
