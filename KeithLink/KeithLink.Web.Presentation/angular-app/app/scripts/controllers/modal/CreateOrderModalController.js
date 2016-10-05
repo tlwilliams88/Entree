@@ -122,12 +122,14 @@ angular.module('bekApp')
               if(item.itemnumber === valItem.item.itemnumber && item.each === valItem.item.each){
                 validatedItem = validatedItems[index];
                 item.valid = validatedItem.valid;
-                item.name = validatedItem.product.name;
-                item.brand = validatedItem.product.brand_extended_description;
-                item.pack = validatedItem.product.pack;
-                item.size =  validatedItem.product.size;
-                item.packageprice = validatedItem.product.packageprice;
-                item.caseprice = validatedItem.product.caseprice;
+                if(validatedItem.product){
+                  item.name = validatedItem.product.name;
+                  item.brand = validatedItem.product.brand_extended_description;
+                  item.pack = validatedItem.product.pack;
+                  item.size =  validatedItem.product.size;
+                  item.packageprice = validatedItem.product.packageprice;
+                  item.caseprice = validatedItem.product.caseprice;
+                }
               }
               if(validatedItem && validatedItem.product){
                 $scope.duplicateItems = $filter('filter')(items, {itemnumber:validatedItem.product.itemnumber, each:validatedItem.product.each});
@@ -174,9 +176,11 @@ angular.module('bekApp')
     $scope.validateItems(newCartItems).then(function(cartItems){
       $scope.selectedCart.items = [];
       cartItems.forEach(function(item){
-        item.product.quantity = item.item.quantity;
-        item.product.each = item.item.each;
-        $scope.selectedCart.items.push(item.product);
+        if(item.product){
+          item.product.quantity = item.item.quantity;
+          item.product.each = item.item.each;
+          $scope.selectedCart.items.push(item.product);
+        }
       })
     });
   }
