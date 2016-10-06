@@ -96,6 +96,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS = "RabbitMQOrderReprocessExchange";
         private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION = "RabbitMQNotificationExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION_ERRORS = "RabbitMQNotificationErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION_V2 = "RabbitMQNotificationExchangeV2";
         private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION_PUSH_MESSAGES = "RabbitMQPushMessagesExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestExchange";
@@ -113,6 +114,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_QUEUE_PAYMENTCONFIRMATION = "RabbitMQPaymentConfirmationQueue";
         private const string KEY_RABBITMQ_QUEUE_ETA = "RabbitMQETAQueue";
         private const string KEY_RABBITMQ_QUEUE_NOTIFICATION = "RabbitMQNotificationQueue";
+        private const string KEY_RABBITMQ_QUEUE_NOTIFICATION_ERRORS = "RabbitMQNotificationErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_NOTIFICATION_PUSH_MESSAGES = "RabbitMQPushMessagesQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestQueue";
         private const string KEY_RABBITMQ_SERVER_ACCESS = "RabbitMQAccessServer";
@@ -960,6 +962,13 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQExchangeNotificationError {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_NOTIFICATION_ERRORS, string.Empty);
+            }
+        }
+
         public static string RabbitMQExchangeNotificationV2
         {
             get
@@ -1106,6 +1115,13 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
+            }
+        }
+
+        public static string RabbitMQNotificationErrorQueue {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION_ERRORS, string.Empty);
             }
         }
 

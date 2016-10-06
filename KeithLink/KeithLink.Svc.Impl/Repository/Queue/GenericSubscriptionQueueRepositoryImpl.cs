@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Interface.Common;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+
+using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models;
 
 using System;
@@ -13,13 +15,26 @@ using RabbitMQ.Client.Events;
 namespace KeithLink.Svc.Impl.Repository.Queue {
     public class GenericSubscriptionQueueRepositoryImpl : IGenericSubsriptionQueueRepository {
         #region attributes
-        private bool _allowProcessing;
+        private ConnectionFactory _connection;
+        private string _queue;
+
+        private bool _processing;
+        private bool _restartProcessing;
+        private bool _shutdown;
+
+        private IEventLogRepository _logger;
+
         #endregion
 
         #region constructor
-        public GenericSubscriptionQueueRepositoryImpl() {
-            _allowProcessing = true;
+        public GenericSubscriptionQueueRepositoryImpl(IEventLogRepository logger) {
+            _processing = false;
+            _restartProcessing = false;
+            _shutdown = false;
+
+            _logger = logger;
         }
+
         #endregion
 
         #region functions
@@ -27,29 +42,57 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
             if (connection.RequestedHeartbeat < 1)
                 connection.RequestedHeartbeat = 20;
 
-            using (IConnection c = connection.CreateConnection()) {
+            _connection = connection;
+            _queue = queue;
+
+            _processing = true;
+
+            StartProcessing();
+
+            while (_shutdown == false) {
+                if (_restartProcessing == true && _processing == true) {
+                    StartProcessing();
+                }
+            }
+            
+        }
+
+        private void StartProcessing() {
+            using (IConnection c = _connection.CreateConnection()) {
                 using (IModel channel = c.CreateModel()) {
                     EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
 
                     consumer.Received += MessageReceived;
 
-                    string consumerTag = channel.BasicConsume(queue, false, String.Format("{0}-{1}", Configuration.ApplicationName, queue), consumer);
+                    string consumerTag = channel.BasicConsume(_queue, false, String.Format("{0}-{1}", Configuration.ApplicationName, _queue), consumer);
 
-                    while (_allowProcessing == true) {
+                    while (_processing == true && _restartProcessing == false) {
+                        // If there was an exception from Rabbit and the channel closes, re-subscribe.
+                        if (channel.CloseReason != null) {
+                            _restartProcessing = true;
+                            break;
+                        }
+
                         System.Threading.Thread.Sleep(2000);
                     }
 
                     consumer.Received -= MessageReceived;
 
-                    consumer.Model.BasicCancel(consumerTag);
-                    channel.Close();
-                    c.Close();
+                    if (channel.IsOpen) {
+                        consumer.Model.BasicCancel(consumerTag);
+                        channel.Close();
+                        c.Close();
+                    }
                 }
+            }
+
+            if (_processing == false) {
+                _shutdown = true;
             }
         }
 
         public void Unsubscribe() {
-            _allowProcessing = false;
+            _processing = false;
         }
 
         public void Ack(EventingBasicConsumer consumer, ulong deliveryTag) {

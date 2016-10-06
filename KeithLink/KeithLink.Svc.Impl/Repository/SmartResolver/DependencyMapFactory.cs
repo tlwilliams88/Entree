@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             return builder;
         }
 
-        public static ContainerBuilder GetQueueSvcContainer(DependencyInstanceType type = DependencyInstanceType.InstancePerDependency) {
+        public static ContainerBuilder GetQueueSvcContainer(DependencyInstanceType type = DependencyInstanceType.InstancePerLifetimeScope) {
             ContainerBuilder builder = new ContainerBuilder();
 
             AutofacDependencyMapProvider.BuildBaselineDependencies(builder, type);

@@ -7,54 +7,54 @@
 
   <!-- Processing Folder -->
   <Configuration ConfiguredType="Property" Path="\Package.Variables[User::ETLProcess_KeithComDir].Properties[Value]" ValueType="String">
-    <ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\</ConfiguredValue>
+    <ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\</ConfiguredValue>
 	</Configuration>
 
   <!-- Processing Files -->
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\customerFile.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\customerFile.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_CustomerBid].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\customerBid.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\customerBid.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_BidHeader].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\bidContractHeader.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\bidContractHeader.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_BidDetail].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\bidContractDetail.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\bidContractDetail.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PropItem].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\propItem.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\propItem.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PropCustomer].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\propCustomer.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\propCustomer.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_OpenDetailAR].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\openDetailAR.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\openDetailAR.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PaidDetail].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\paidDetailFile.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\paidDetailFile.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Terms].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\customerTerms.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\customerTerms.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_KeithNetInvoice].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\keithNetInvoice.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\keithNetInvoice.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_CustomerWorksheet].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\customerWorksheet.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\customerWorksheet.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalNumber].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\nationalNumberAndSub.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\nationalNumberAndSub.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalId].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\nationalId.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\nationalId.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalNumber].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\regionalNumber.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\regionalNumber.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalId].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Beta\Entree\regionalId.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\regionalId.SSIS</ConfiguredValue>
 	</Configuration>
 
   <!-- Web Services -->

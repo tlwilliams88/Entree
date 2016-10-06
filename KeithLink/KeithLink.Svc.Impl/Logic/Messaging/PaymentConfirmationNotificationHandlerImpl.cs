@@ -115,48 +115,49 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         public void ProcessNotification(BaseNotification notification)
         {
-            if (notification.NotificationType != NotificationType.PaymentConfirmation)
-                throw new ApplicationException("notification/handler type mismatch");
+            try {
+                if (notification.NotificationType != NotificationType.PaymentConfirmation)
+                    throw new ApplicationException("notification/handler type mismatch");
 
-            // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
-            PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
+                // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
+                PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
 
-            // UserContextEqualityComparer discriminates usercontext's to allow distinct to weed out duplicates
-            List<UserSelectedContext> customerCtxs = confirmation.Payments
-                                                       .Select(p => new UserSelectedContext() { CustomerId = p.CustomerNumber, BranchId = p.BranchId })
-                                                       .Distinct(new UserContextEqualityComparer())
-                                                       .ToList();
+                // UserContextEqualityComparer discriminates usercontext's to allow distinct to weed out duplicates
+                List<UserSelectedContext> customerCtxs = confirmation.Payments
+                                                           .Select(p => new UserSelectedContext() { CustomerId = p.CustomerNumber, BranchId = p.BranchId })
+                                                           .Distinct(new UserContextEqualityComparer())
+                                                           .ToList();
 
-            foreach (UserSelectedContext customerCtx in customerCtxs)
-            {
-                // load up recipients, customer and message
-                Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(customerCtx.CustomerId, customerCtx.BranchId);
+                foreach (UserSelectedContext customerCtx in customerCtxs) {
+                    // load up recipients, customer and message
+                    Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(customerCtx.CustomerId, customerCtx.BranchId);
 
-                if (customer == null)
-                {
-                    StringBuilder warningMessage = new StringBuilder();
-                    warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", customerCtx.BranchId, customerCtx.CustomerId);
-                    warningMessage.AppendLine();
-                    warningMessage.AppendLine();
-                    warningMessage.AppendLine("Notification:");
-                    warningMessage.AppendLine(notification.ToJson());
+                    if (customer == null) {
+                        StringBuilder warningMessage = new StringBuilder();
+                        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", customerCtx.BranchId, customerCtx.CustomerId);
+                        warningMessage.AppendLine();
+                        warningMessage.AppendLine();
+                        warningMessage.AppendLine("Notification:");
+                        warningMessage.AppendLine(notification.ToJson());
 
-                    _log.WriteWarningLog(warningMessage.ToString());
-                }
-                else
-                {
-                    List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
-                    Message message = GetEmailMessageForNotification(confirmation.Payments
-                                                                                 .Where(p => p.CustomerNumber == customerCtx.CustomerId && p.BranchId == customerCtx.BranchId)
-                                                                                 .ToList(),
-                                                                     customer);
+                        _log.WriteWarningLog(warningMessage.ToString());
+                    }
+                    else {
+                        List<Recipient> recipients = LoadRecipients(confirmation.NotificationType, customer);
+                        Message message = GetEmailMessageForNotification(confirmation.Payments
+                                                                                     .Where(p => p.CustomerNumber == customerCtx.CustomerId && p.BranchId == customerCtx.BranchId)
+                                                                                     .ToList(),
+                                                                         customer);
 
-                    // send messages to providers...
-                    if (recipients != null && recipients.Count > 0)
-                    {
-                        SendMessage(recipients, message);
+                        // send messages to providers...
+                        if (recipients != null && recipients.Count > 0) {
+                            SendMessage(recipients, message);
+                        }
                     }
                 }
+            }
+            catch (Exception ex) {
+                throw new Core.Exceptions.Queue.QueueDataError<BaseNotification>(notification, "PaymentConfirmation:ProcessNotification", "Sending PaymentConfirmation notification", "An error occured processing a payment confirmation", ex);
             }
         }
 
