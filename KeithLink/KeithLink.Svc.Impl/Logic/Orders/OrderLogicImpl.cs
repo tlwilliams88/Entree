@@ -245,7 +245,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
 
             GiveLinkForSimilarItems(returnOrder);
-            HideDeletedItems(returnOrder);
             UpdateOrderForShipDate(context, null, returnOrder);
             returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 
@@ -263,22 +262,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 sbSimilarItem.Replace(" ", "%20");
                 sbSimilar.Append("/catalog/search/" + sbSimilarItem.ToString() + "/products?dept=&from=0&sdir=asc&size=50");
                 item.GetSimilarItems = sbSimilar.ToString();
-            }
-        }
-
-        private void HideDeletedItems(Order returnOrder)
-        {
-            List<OrderLine> hideItems = new List<OrderLine>();
-            foreach (var item in returnOrder.Items)
-            {
-                if (item.Status.Equals("Deleted", StringComparison.CurrentCultureIgnoreCase) | item.Status.Equals("D", StringComparison.CurrentCultureIgnoreCase))
-                {
-                    hideItems.Add(item);
-                }
-            }
-            foreach (var item in hideItems)
-            {
-                returnOrder.Items.Remove(item);
             }
         }
 
