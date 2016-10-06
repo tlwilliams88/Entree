@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns="urn:newrelic-extension">
+	<instrumentation>
+    <!--SERVICE STARTUP-->
+		<tracerFactory metricName="Custom/Startup"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+			<match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+				<exactMethodMatcher methodName="OnStart"/>
+			</match>
+		</tracerFactory>
+    <tracerFactory metricName="InitializeNotificationsThreads">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="InitializeNotificationsThreads"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="InitializePushMessageConsumerThread">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="InitializePushMessageConsumerThread"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="InitializeOrderUpdateThread">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="InitializeOrderUpdateThread"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="InitializeSpecialOrderUpdateThread">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="InitializeSpecialOrderUpdateThread"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="InitializeCheckLostOrdersTimer">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="InitializeCheckLostOrdersTimer"/>
+      </match>
+    </tracerFactory>
+
+    <!--SERVICE SHUTDOWN-->
+    <tracerFactory metricName="Custom/Shutdown"
+                   name="NewRelic.Agent.Core.Tracer.Factories.BackgroundThreadTracerFactory">
+			<match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+				<exactMethodMatcher methodName="OnStop"/>
+			</match>
+		</tracerFactory>
+    <tracerFactory metricName="TerminateNotificationsThreads">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="TerminateNotificationsThreads"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="TerminatePushMessageConsumerThread">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="TerminatePushMessageConsumerThread"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="TerminateOrderUpdateThread">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="TerminateOrderUpdateThread"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="TerminateSpecialOrderUpdateThread">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="TerminateSpecialOrderUpdateThread"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="TerminateCheckLostOrdersTimer">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService" 
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="TerminateCheckLostOrdersTimer"/>
+      </match>
+    </tracerFactory>
+
+    <!--LOST ORDERS-->
+    <tracerFactory metricName="QueueService-ProcessCheckLostOrders">
+      <match assemblyName="KeithLink.Svc.Windows.QueueService"
+             className="KeithLink.Svc.Windows.QueueService.QueueService">
+        <exactMethodMatcher methodName="ProcessCheckLostOrders"/>
+      </match>
+    </tracerFactory>
+
+    <!--If a tracer just defines a method that is part of a recorded trace, but doesn't record one itself, you don't add the name attribute-->
+    <!--If a tracer is to actually record a trace you add the name attribute-->
+
+  </instrumentation>
+</extension>

@@ -57,6 +57,8 @@ namespace KeithLink.Svc.WebApi.Controllers
                     _profileLogic.SetUserProfileLastAccess(retVal.UserProfiles[0].UserId);
                     _user = retVal.UserProfiles[0];
                     _user.IsAuthenticated = true;
+                    NewRelic.Api.Agent.NewRelic.AddCustomParameter("AuthenticatedUserName", _user.UserName);
+                    NewRelic.Api.Agent.NewRelic.AddCustomParameter("AuthenticatedUserRoleName", _user.RoleName);
 
                     GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { retVal.UserProfiles[0].RoleName });
                     controllerContext.RequestContext.Principal = genPrincipal;
@@ -81,8 +83,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 								throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1}). Requested URI {2}", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId, this.Request.RequestUri));
 							}
 						}
+                        NewRelic.Api.Agent.NewRelic.AddCustomParameter("userSelectedContext", Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
                     }
 
+                    if (Request.Content != null)
+                    {
+                        System.Threading.Tasks.Task<string> content = Request.Content.ReadAsStringAsync();
+                        NewRelic.Api.Agent.NewRelic.AddCustomParameter("Request.Content", content.Result);
+                    }
                 }
                 else
                 {

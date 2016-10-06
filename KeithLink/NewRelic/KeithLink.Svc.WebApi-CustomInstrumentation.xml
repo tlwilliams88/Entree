@@ -178,7 +178,7 @@
     <tracerFactory metricName="WebApi/GET/invoice/export/" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
-        <exactMethodMatcher methodName="ExportInvoices" parameters="" />
+        <exactMethodMatcher methodName="ExportInvoices"/>
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/invoice/image/(invoiceNumber)" transactionNamingPriority="7">
@@ -208,7 +208,7 @@
     <tracerFactory metricName="WebApi/GET/invoice/export/(invoiceNumber)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.InvoiceController">
-        <exactMethodMatcher methodName="ExportInvoiceDetail" parameters="System.String" />
+        <exactMethodMatcher methodName="ExportInvoiceDetail"/>
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/POST/invoice/payment" transactionNamingPriority="7">
@@ -294,7 +294,7 @@
     <tracerFactory metricName="WebApi/GET/list/(listId)" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ListController">
-        <exactMethodMatcher methodName="List" />
+        <exactMethodMatcher methodName="List" parameters="System.Boolean,System.Boolean" />
       </match>
     </tracerFactory>
     <tracerFactory metricName="WebApi/GET/list/labels" transactionNamingPriority="7">

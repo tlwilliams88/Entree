@@ -10,7 +10,7 @@
     <a class="btn-lg btn btn-default pull-right-sm hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
     <button title="Print" class="btn btn-default btn-icon" ng-click="saveBeforePrint()"><span class="icon-printer"></span></button>
     <button id="quickOrder" class="btn btn-default btn-icon-right" title="Quick Order Entry" ng-click="saveBeforeQuickAdd()"><span class="glyphicon glyphicon-list-alt"></span></button>
-    <button id="deleteCart" class="btn btn-default btn-icon" ng-click="deleteCart(selectedCart.id)"><span class="icon-trash"></span></button>
+    <button id="deleteCart" class="btn btn-default btn-icon" ng-if="selectedCart.id" ng-click="deleteCart(selectedCart.id)"><span class="icon-trash"></span></button>
   </div>
 </div>
 

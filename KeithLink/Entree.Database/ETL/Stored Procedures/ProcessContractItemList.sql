@@ -160,18 +160,16 @@ BEGIN
 			WHERE
 				[Id] = @existingListId
 				
+			--Print N'@CurrentBidNumber = ' + @CurrentBidNumber
+			--Print N'@existingListId = ' + str(@existingListId)
 			--update category on already existing lineitem itemnumbers
 			update li
 				set li.Category=bd.CategoryDescription
 				from List.ListItems as li
-				inner join List.Lists as l
-					on l.Id=li.ParentList_Id
-				inner join etl.Staging_CustomerBid cb
-					on l.CustomerId=ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.divisionnumber))
 				inner join etl.Staging_BidContractDetail bd
-					on ltrim(rtrim(cb.BidNumber))=ltrim(rtrim(bd.BidNumber)) and li.ItemNumber=LTRIM(rtrim(bd.itemnumber))
-				where l.[Id] = @existingListId
-
+					on ltrim(rtrim(bd.BidNumber))=ltrim(rtrim(@CurrentBidNumber)) and LTRIM(rtrim(bd.itemnumber))=li.ItemNumber
+				where li.ParentList_Id = @existingListId
+	
 			--Find new items to be added
 			INSERT INTO @AddedItems (ItemNumber, Each, CategoryDescription, BidLineNumber)
 			SELECT 
@@ -347,9 +345,9 @@ BEGIN
 						@DeletedItems
 				END				
 			
+
 		END
 
-	
 cont:
 	
 	SET @existingListId = null

@@ -610,6 +610,13 @@
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="NewRelic\KeithLink.Svc.Impl.Helper-CustomInstrumentation.xml" />
+    <Content Include="NewRelic\KeithLink.Svc.Impl.Logic-CustomInstrumentation.xml" />
+    <Content Include="NewRelic\KeithLink.Svc.Impl.Repository-CustomInstrumentation.xml" />
+    <Content Include="NewRelic\KeithLink.Svc.WebApi-CustomInstrumentation.xml" />
+    <Content Include="NewRelic\KeithLink.Svc.Windows.QueueService-CustomInstrumentation.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

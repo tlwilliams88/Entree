@@ -9,6 +9,7 @@
         <select 
           class="form-control"
           ng-options="format.value as format.text for format in formats"
+          ng-change="selectFormat(exportFormat)"
           ng-model="exportFormat"
           name="exportFormat" 
           id="exportFormat"
@@ -16,8 +17,9 @@
       </div>
     </div>
   </form>
+  <label ng-if="selectedFormat == 'pdf'"><input type="checkbox" ng-click="setTotalByContractCategory();"/> Total By Contract Category</label>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn-lg btn btn-primary" ng-click="export(exportFormat)">Export</button>
+  <button type="button" class="btn-lg btn btn-primary" ng-click="export(exportFormat, category)">Export</button>
   <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
 </div>

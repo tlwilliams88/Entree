@@ -180,9 +180,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="NewRelic.Api.Agent.dll" />
-    <Content Include="KeithLink.Svc.Windows.QueueService-CustomInstrumentation.xml">
-      <SubType>Designer</SubType>
-    </Content>
     <None Include="App.Beta.config">
       <DependentUpon>App.config</DependentUpon>
       <SubType>Designer</SubType>

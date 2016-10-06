@@ -33,3 +33,17 @@
     display: none !important;
   }
 }
+
+@media (max-width: $screen-md-max) {
+  .orderFromListDropdown {
+    width:78%; 
+    margin-left:16px;
+  }
+}
+
+@media (min-width: $screen-md-max) {
+  .orderFromListDropdown {
+    width:80%; 
+    margin-left:16px;
+  }
+}

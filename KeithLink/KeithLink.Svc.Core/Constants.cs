@@ -311,6 +311,7 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ2 = "4/1";
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ3 = "7/1";
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ4 = "10/1";
+        public const string INVOICEREQUESTFILTER_DATERANGE_YEARMONTHKEY = "yearmonth";
         public const string INVOICEREQUESTSORT_INVOICEAMOUNT = "invoiceamount";
         public const string INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING = "asc";
 
