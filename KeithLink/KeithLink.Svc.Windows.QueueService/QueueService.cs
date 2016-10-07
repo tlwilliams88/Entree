@@ -96,11 +96,11 @@ namespace KeithLink.Svc.Windows.QueueService {
             _log.WriteInformationLog( "Service starting" );
 
             InitializeNotificationsThreads();
-            //InitializePushMessageConsumerThread();
-            //InitializeConfirmationMoverThread();
-            //InitializeOrderUpdateThread();
-            //InitializeCheckLostOrdersTimer();
-            //InitializeSpecialOrderUpdateThread();
+            InitializePushMessageConsumerThread();
+            InitializeConfirmationMoverThread();
+            InitializeOrderUpdateThread();
+            InitializeCheckLostOrdersTimer();
+            InitializeSpecialOrderUpdateThread();
         }
 
         protected override void OnStop() {
