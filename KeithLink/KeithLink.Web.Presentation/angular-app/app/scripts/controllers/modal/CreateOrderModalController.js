@@ -85,7 +85,6 @@ angular.module('bekApp')
 
   $scope.setSelectedList = function(list) {
     $scope.selectedList = list;
-    LocalStorage.setLastList($scope.selectedList.listid);
   };
 
   $scope.setDefaultList = function() {
