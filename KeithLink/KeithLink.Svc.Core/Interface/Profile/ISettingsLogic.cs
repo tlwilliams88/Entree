@@ -14,6 +14,10 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void CreateOrUpdateSettings( SettingsModel settings );
 
+        SettingsModelReturn GetUserCustomerDefaultOrderList(Guid userId, string customernumber, string branchid);
+
+        void CreateOrUpdateUserCustomerDefaultOrderList(string customernumber, string branchid, SettingsModel settings);
+
         void DeleteSettings(SettingsModel settings);
 
         void SetDefaultApplicationSettings(string email);

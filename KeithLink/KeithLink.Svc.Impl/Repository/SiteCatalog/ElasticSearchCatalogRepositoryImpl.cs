@@ -843,7 +843,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.Size = oProd._source.size;
             p.CaseOnly = oProd._source.caseonly == "Y";
             p.TempZone = oProd._source.temp_zone;
+            p.IsProprietary = oProd._source.isproprietary;
             p.CatchWeight = oProd._source.catchweight;
+            p.AverageWeight = oProd._source.averageweight;
             p.CasePriceNumeric = oProd._source.caseprice != null ? oProd._source.caseprice : 0.00;
             p.CasePrice = p.CasePriceNumeric.ToString();
             p.PackagePriceNumeric = oProd._source.packageprice != null ? oProd._source.packageprice : 0.00;
@@ -854,6 +856,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (oProd._source.nutritional != null)
             {
                 Nutritional nutritional = new Nutritional();
+                nutritional.ServingSize = oProd._source.nutritional.servingsize;
                 nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
                 p.Nutritional = nutritional;
             }
@@ -865,6 +868,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.Pack = oProd._source.casequantity.ToString();
                 p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
                 p.IsSpecialtyCatalog = true;
+                p.Cases = oProd._source.onhandqty.ToString();
+                p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
                 p.CasePrice = oProd._source.caseprice.ToString();
                 if (oProd._source.tcscode != null)
                     p.SubCategoryCode = oProd._source.tcscode.ToString();
@@ -882,6 +887,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     unfi.CasePrice = oProd._source.caseprice.ToString();
                 p.Unfi = unfi;
             }
+//            if(true)
             if (listonly == false)
             {
                 p.ManufacturerNumber = oProd._source.mfrnumber;
@@ -897,18 +903,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 {
                     p.CaseCube = "";
                 }
-                p.IsProprietary = oProd._source.isproprietary;
-                p.AverageWeight = oProd._source.averageweight;
                 if (p.CatalogId.ToLower().StartsWith("unfi"))
                 {
                     //make vendor into description
                     p.Description = oProd._source.vendor1;
-                    p.Pack = oProd._source.casequantity.ToString();
-                    p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
                     p.IsSpecialtyCatalog = true;
-                    p.Cases = oProd._source.onhandqty.ToString();
-                    p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
-                    p.CasePrice = oProd._source.caseprice.ToString();
 
                     UNFI unfi = new UNFI();
 
@@ -978,9 +977,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     nutritional.Ingredients = oProd._source.nutritional.ingredients;
                     nutritional.MarketingMessage = oProd._source.nutritional.marketingmessage;
                     nutritional.MoreInformation = oProd._source.nutritional.moreinformation;
-                    nutritional.ServingSize = oProd._source.nutritional.servingsize;
                     nutritional.ServingSizeUOM = oProd._source.nutritional.servingsizeuom;
-                    nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
                     nutritional.ServingSugestion = oProd._source.nutritional.servingsuggestions;
                     nutritional.Shelf = oProd._source.nutritional.shelf;
                     nutritional.StorageTemp = oProd._source.nutritional.storagetemp;

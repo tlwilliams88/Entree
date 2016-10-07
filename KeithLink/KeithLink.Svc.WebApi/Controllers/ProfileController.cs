@@ -1217,6 +1217,64 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+
+        /// <summary>
+        /// Get a user's default order list for selected customer
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("profile/defaultorderlist")]
+        public OperationReturnModel<SettingsModelReturn> GetProfileDefaultOrderList()
+        {
+            OperationReturnModel<SettingsModelReturn> returnValue = new OperationReturnModel<SettingsModelReturn>() { SuccessResponse = null };
+
+            try
+            {
+                returnValue.SuccessResponse = _settingLogic.GetUserCustomerDefaultOrderList
+                    (AuthenticatedUser.UserId, SelectedUserContext.CustomerId, SelectedUserContext.BranchId);
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.ErrorMessage = ex.Message;
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Create or update user's default order list for selected customer
+        /// </summary>
+        /// <param name="defaultorderlist">settings object</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("profile/defaultorderlist")]
+        public OperationReturnModel<bool> CreateOrUpdateProfileDefaultOrderList(DefaultOrderListModel defaultorderlist)
+        {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            try
+            {
+                _settingLogic.CreateOrUpdateUserCustomerDefaultOrderList
+                    (SelectedUserContext.CustomerId, 
+                     SelectedUserContext.BranchId, 
+                     new SettingsModel() { UserId = AuthenticatedUser.UserId,
+                                           Value = defaultorderlist.ListId.ToString() });
+                returnValue.SuccessResponse = true;
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.ErrorMessage = string.Format("Error saving profile settings for user: {0}", ex);
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
+        }
+
         /// <summary>
         /// Delete profile settings
         /// </summary>

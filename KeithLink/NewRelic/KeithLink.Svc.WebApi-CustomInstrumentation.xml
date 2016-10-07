@@ -822,6 +822,18 @@
         <exactMethodMatcher methodName="CreateOrUpdateProfileSettings"/>
       </match>
     </tracerFactory>
+    <tracerFactory metricName="WebApi/GET/profile/defaultorderlist" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="GetProfileDefaultOrderList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/profile/defaultorderlist" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.ProfileController">
+        <exactMethodMatcher methodName="CreateOrUpdateProfileDefaultOrderList"/>
+      </match>
+    </tracerFactory>
     <tracerFactory metricName="WebApi/DELETE/profile/settings" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ProfileController">

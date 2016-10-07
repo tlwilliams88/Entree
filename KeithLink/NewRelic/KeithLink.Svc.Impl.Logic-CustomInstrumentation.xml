@@ -2374,6 +2374,18 @@
         <exactMethodMatcher methodName="CreateOrUpdateSettings"/>
       </match>
     </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/GetUserCustomerDefaultOrderList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="GetUserCustomerDefaultOrderList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/CreateOrUpdateUserCustomerDefaultOrderList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
+        <exactMethodMatcher methodName="CreateOrUpdateUserCustomerDefaultOrderList"/>
+      </match>
+    </tracerFactory>
     <tracerFactory metricName="Custom/Impl/Logic/Profile/SettingsLogicImpl/DeleteSettings">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Profile.SettingsLogicImpl">
