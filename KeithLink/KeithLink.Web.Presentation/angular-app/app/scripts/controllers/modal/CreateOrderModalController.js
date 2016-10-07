@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'isMobile', 'IsOffline',
-  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, isMobile, IsOffline) {
+.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'IsMobile', 'IsOffline', 'SelectedList', 'ApplicationSettingsService',
+  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, IsMobile, IsOffline, SelectedList, ApplicationSettingsService) {
 
   /*******************
     DEFAULT DATA
@@ -22,8 +22,15 @@ angular.module('bekApp')
     ponumber: '',
     requestedshipdate: $scope.shipDates[0].shipdate
   };
-  $scope.selectedList = $filter('filter')($scope.lists, {name: 'History'})[0];
-  $scope.isMobile = isMobile;
+
+  if(SelectedList && SelectedList.value){
+    $scope.selectedList = $filter('filter')($scope.lists, {listid: SelectedList.value})[0];
+    $scope.defaultList = $scope.selectedList.listid;
+  } else {
+    $scope.selectedList = $filter('filter')($scope.lists, {name: 'History'})[0];
+  }
+
+  $scope.isMobile = IsMobile;
 
   //FOR QUICK ADD
   $scope.enableSubmit = false;
@@ -59,6 +66,9 @@ angular.module('bekApp')
   ********************/
 
   $scope.createCart = function(cart, fromFunction) {
+    if($scope.defaultList && $('.defaultCheckbox')[0].checked){
+      ApplicationSettingsService.setDefaultOrderList($scope.selectedList.listid);
+    }
 
     CartService.createCart(cart.items, cart.requestedshipdate, cart.name, cart.ponumber).then(function(cart) {
       if(fromFunction == 'QuickAdd'){
@@ -76,7 +86,11 @@ angular.module('bekApp')
   $scope.setSelectedList = function(list) {
     $scope.selectedList = list;
     LocalStorage.setLastList($scope.selectedList.listid);
-  }
+  };
+
+  $scope.setDefaultList = function() {
+    $scope.defaultList = $scope.selectedList.listid;
+  };
 
   /***********************
     CREATE FROM QUICK ADD
@@ -104,7 +118,7 @@ angular.module('bekApp')
     return $filter('filter')( items, function(item) {
       return item.quantity > 0 && item.itemnumber && item.itemnumber.length > 0; 
     });
-  };
+  }
 
   $scope.validateItems = function(items) {
     $scope.isValidating = true;
@@ -183,9 +197,9 @@ angular.module('bekApp')
           item.product.each = item.item.each;
           $scope.selectedCart.items.push(item.product);
         }
-      })
+      });
     });
-  }
+  };
 
   $scope.createCartFromQuickAdd = function(items) {
 

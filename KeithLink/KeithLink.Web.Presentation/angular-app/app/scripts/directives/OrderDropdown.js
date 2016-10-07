@@ -10,13 +10,14 @@ angular.module('bekApp')
       isDisabled: '='
     },
     templateUrl: 'views/directives/orderdropdown.html',
-    controller: ['$scope', '$modal', '$state', 'UtilityService', 'LocalStorage', 'ListService', 'CartService', function($scope, $modal, $state, UtilityService, LocalStorage, ListService, CartService){
+    controller: ['$scope', '$modal', '$state', 'ApplicationSettingsService', 'UtilityService', 'LocalStorage', 'ListService', 'CartService', function($scope, $modal, $state, ApplicationSettingsService, UtilityService, LocalStorage, ListService, CartService){
 
       $scope.isMobile = UtilityService.isMobileDevice();
       var currentCustomer = LocalStorage.getCurrentCustomer(),
           shipDates = CartService.getShipDates(),
           cartHeaders = CartService.cartHeaders ? CartService.cartHeaders : CartService.getCartHeaders(),
           listHeaders = ListService.getListHeaders(),
+          selectedList= ApplicationSettingsService.getDefaultOrderList(),
           isOffline = CartService.isOffline,
           customListHeaders;
 
@@ -55,8 +56,11 @@ angular.module('bekApp')
             IsOffline: function() {
               return isOffline;
             },
-            isMobile: function() {
+            IsMobile: function() {
               return $scope.isMobile;
+            },
+            SelectedList: function() {
+              return selectedList;
             }
           }
         });

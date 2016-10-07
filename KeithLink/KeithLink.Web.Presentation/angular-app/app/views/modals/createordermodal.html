@@ -99,6 +99,15 @@
               </li>
             </ul>
           </div>
+          <div class="form-check hand">
+            <label class="form-check-label col-xs-2"></label>
+            <div class="col-xs-10">
+              <label class="form-check-label">
+              <input type="checkbox" class="form-check-input defaultCheckbox" ng-change="setDefaultList();" ng-model="defaultList" ng-disabled="defaultList == selectedList.listid" ng-checked="defaultList == selectedList.listid">
+              Set as default List
+              </label>
+            </div>
+          </div>
         </div>
       </form>
     </div>

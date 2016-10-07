@@ -137,6 +137,20 @@ angular.module('bekApp')
       getApplicationSettings: function(userId) {
         var promise = $http.get('/profile/settings' + userId);
         return UtilityService.resolvePromise(promise);
+      },
+
+      setDefaultOrderList: function(list){
+        var listid = { 
+          listid: list 
+        };
+        return $http.post('/profile/defaultorderlist', listid);
+      },
+
+      getDefaultOrderList: function() {
+        var promise = $http.get('/profile/defaultorderlist'); 
+        return UtilityService.resolvePromise(promise).then(function(resp) {
+            return resp;
+        });
       }
 };
 
