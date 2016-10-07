@@ -207,7 +207,7 @@ angular.module('bekApp')
              //A description of how this works exists on the BEK ecommerce wiki under the title: Default Sort String: Explaination
 
              if(filterObject && filterObject.length > 6){        
-              var settings = []
+              var settings = [];
               if(page === 'addToOrder'){
                 settings = filterObject.slice(filterObject.indexOf('a') + 3, filterObject.length);
               }
@@ -219,7 +219,7 @@ angular.module('bekApp')
                 for (var i = 0;  i < settings.length; i++) {
                   if(settings[i] !== 'y' && settings[i] !== 'n'){
                     fields[settings[i]].order = (settings[i + 1] === 'n') ? 'asc':'desc';
-                    params.sort.push(fields[settings[i]])
+                    params.sort.push(fields[settings[i]]);
                   }
                 } 
              }
@@ -230,7 +230,7 @@ angular.module('bekApp')
       
         getCustomListHeaders: function() {
           return $http.get('/list/type/custom', { params: { headerOnly: true } }).then(function(response) {
-            return response.data;
+            return response.data.successResponse;
           });
         },
 

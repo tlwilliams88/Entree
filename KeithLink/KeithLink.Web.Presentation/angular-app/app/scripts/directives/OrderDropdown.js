@@ -10,9 +10,21 @@ angular.module('bekApp')
       isDisabled: '='
     },
     templateUrl: 'views/directives/orderdropdown.html',
-    controller: ['$scope', '$modal', '$state', 'UtilityService', function($scope, $modal, $state, UtilityService){
+    controller: ['$scope', '$modal', '$state', 'UtilityService', 'LocalStorage', 'ListService', 'CartService', function($scope, $modal, $state, UtilityService, LocalStorage, ListService, CartService){
 
       $scope.isMobile = UtilityService.isMobileDevice();
+      var currentCustomer = LocalStorage.getCurrentCustomer(),
+          shipDates = CartService.getShipDates(),
+          cartHeaders = CartService.cartHeaders ? CartService.cartHeaders : CartService.getCartHeaders(),
+          listHeaders = ListService.getListHeaders(),
+          isOffline = CartService.isOffline,
+          customListHeaders;
+
+      if($scope.isMobile){
+        customListHeaders = false;
+      } else {
+        customListHeaders = ListService.getCustomListHeaders();
+      }
 
       if ($scope.isDisabled) {
         $scope.tooltipMessage = 'Customer is not set up for ordering in the Entrée System.';
@@ -25,21 +37,24 @@ angular.module('bekApp')
           backdrop:'static',
           size: size,
           resolve: {
-            CurrentCustomer: ['LocalStorage', function(LocalStorage) {
-              return LocalStorage.getCurrentCustomer();
-            }],
-            ShipDates: ['CartService', function(CartService) {
-              return CartService.getShipDates();
-            }],
-            CartHeaders: ['CartService', function(CartService) {
-              return CartService.getCartHeaders();
-            }],
-            Lists: ['ListService', function(ListService) {
-              return ListService.getListHeaders();
-            }],
-            CustomListHeaders: ['ListService', function(ListService) {
-              return ListService.getCustomListHeaders();
-            }],
+            CurrentCustomer: function() {
+              return currentCustomer;
+            },
+            ShipDates: function() {
+              return shipDates;
+            },
+            CartHeaders: function() {
+              return cartHeaders;
+            },
+            Lists: function() {
+              return listHeaders;
+            },
+            CustomListHeaders: function() {
+              return customListHeaders;
+            },
+            IsOffline: function() {
+              return isOffline;
+            },
             isMobile: function() {
               return $scope.isMobile;
             }

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'isMobile',
-  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, isMobile) {
+.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'isMobile', 'IsOffline',
+  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, isMobile, IsOffline) {
 
   /*******************
     DEFAULT DATA
@@ -15,6 +15,8 @@ angular.module('bekApp')
   $scope.listIsOpen = true;
   $scope.quickAddIsOpen = false; 
   $scope.importIsOpen = false;
+  $scope.isOffline = IsOffline;
+  
   $scope.selectedCart = {
     name: UtilityService.generateName(SessionService.userProfile.firstname, $scope.cartHeaders),
     ponumber: '',
