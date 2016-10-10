@@ -223,8 +223,8 @@
     <None Include="Scripts\v1.5.0.sql" />
     <None Include="Scripts\v1.6.0.sql" />
     <Build Include="ETL\Stored Procedures\PurgeInternalUserAccess.sql" />
-    <Build Include="Scripts\v1.11.0.sql" />
-    <Build Include="Scripts\matt.local.configuration.sql" />
+    <None Include="Scripts\v1.11.0.sql" />
+    <None Include="Scripts\matt.local.configuration.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CommerceServer\BEK_Commerce_profiles_v1.4.1.dacpac" />
