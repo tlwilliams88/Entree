@@ -124,8 +124,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     }
                 }
 
-                GetSubtotal(header);
-
                 //Mark missing items as deleted
                 foreach (var deletedItem in header.OrderDetails.Where(d => !currentFile.Details.Any(c => c.LineNumber.Equals(d.LineNumber))).ToList())
                 {
@@ -133,6 +131,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     deletedItem.OrderQuantity = 0;
                     deletedItem.ShippedQuantity = 0;
                 }
+
+                GetSubtotal(header);
 
                 _historyRepo.CreateOrUpdate(header);
                 _uow.SaveChangesAndClearContext();

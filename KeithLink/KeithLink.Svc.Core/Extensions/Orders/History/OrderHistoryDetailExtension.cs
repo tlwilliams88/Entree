@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.ItemNumber = value.ItemNumber;
             entity.LineNumber = value.LineNumber;
             entity.OrderQuantity = value.OrderQuantity;
-            entity.ShippedQuantity = value.ShippedQuantity;
+            entity.ShippedQuantity = (value.ItemStatus.Equals(Constants.CONFIRMATION_DETAIL_ITEM_STATUS_DELETE)) ? 0 : value.ShippedQuantity;
             entity.UnitOfMeasure = value.UnitOfMeasure.ToShortString();
             entity.CatchWeight = value.CatchWeight;
             entity.ItemDeleted = value.ItemDeleted;

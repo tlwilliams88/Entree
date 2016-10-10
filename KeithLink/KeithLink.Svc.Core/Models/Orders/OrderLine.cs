@@ -135,6 +135,8 @@ namespace KeithLink.Svc.Core.Models.Orders
                 {
                     case Constants.CONFIRMATION_DETAIL_FILLED_CODE:
                         return Constants.CONFIRMATION_DETAIL_FILLED_STATUS;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_STATUS_DELETE:
+                        return Constants.CONFIRMATION_DETAIL_ITEM_STATUS_DELETE_DESCRIPTION;
                     case Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_CODE:
                         return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_STATUS;
                     case Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE:
