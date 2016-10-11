@@ -452,7 +452,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                         Create(historyFile, false);
                         _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
-                        _unitOfWork.SaveChangesAndClearContext();
+                        Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
 
                         // to make sure we do not pull an order off the queue without processing it
                         // check to make sure we can still process before pulling off the queue
