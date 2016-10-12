@@ -59,6 +59,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     _user.IsAuthenticated = true;
                     NewRelic.Api.Agent.NewRelic.AddCustomParameter("AuthenticatedUserName", _user.UserName);
                     NewRelic.Api.Agent.NewRelic.AddCustomParameter("AuthenticatedUserRoleName", _user.RoleName);
+                    NewRelic.Api.Agent.NewRelic.AddCustomParameter("HTTP Verb", System.Web.HttpContext.Current.Request.HttpMethod.ToUpper());
 
                     GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { retVal.UserProfiles[0].RoleName });
                     controllerContext.RequestContext.Principal = genPrincipal;

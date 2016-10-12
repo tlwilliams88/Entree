@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.Profile;
@@ -64,12 +65,42 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             rv.LocalReport.SetParameters(new ReportParameter("Branch", customer.CustomerBranch));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerName", customer.CustomerName));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerNumber", customer.CustomerNumber));
-            rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", request.ReportData));
+            if (request.GroupBy != null && request.GroupBy.Equals("category"))
+            {
+                rv.LocalReport.DataSources.Add(
+                    new ReportDataSource("DataSet1", request.ReportData.Select(iv => NullContractCategoryToPlaceholder(iv)).ToList()));
+            }
+            else
+            {
+                rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", request.ReportData));
+            }
 
             string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
             var bytes = rv.LocalReport.Render("PDF", deviceInfo);
 
             return new MemoryStream(bytes);
+        }
+
+        private InventoryValuationModel NullContractCategoryToPlaceholder(InventoryValuationModel iv)
+        {
+            return new InventoryValuationModel()
+            {
+                Brand = iv.Brand,
+                Category = iv.Category,
+                ContractCategory = (iv.ContractCategory != null && iv.ContractCategory.Trim().Length > 0) ? 
+                    iv.ContractCategory : Constants.REPORT_NULL_Placeholder,
+                Each = iv.Each,
+                ExtPrice = iv.ExtPrice,
+                ItemId = iv.ItemId,
+                Label = iv.Label,
+                Name = iv.Name,
+                Pack = iv.Pack,
+                PackSize =
+                iv.PackSize,
+                Price = iv.Price,
+                Quantity = iv.Quantity,
+                Size = iv.Size
+            };
         }
 
         private MemoryStream GenerateTextReport(InventoryValuationRequestModel request)

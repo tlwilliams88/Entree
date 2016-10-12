@@ -330,6 +330,7 @@ namespace KeithLink.Svc.Core
         public const string REPORT_PRINTLIST_NoParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParYesPriceNoNotes.rdlc";
         public const string REPORT_PRINTLIST_NoParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceYesNotes.rdlc";
         public const string REPORT_PRINTLIST_NoParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceNoNotes.rdlc";
+        public const string REPORT_NULL_Placeholder = "<BLANK>";
 
         // system alerts
         public const string EMAILMASK_ALLSYSTEMALERT = "ALERTALL";
