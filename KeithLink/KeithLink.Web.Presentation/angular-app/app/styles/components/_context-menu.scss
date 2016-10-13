@@ -12,7 +12,7 @@
   display: none;
   // border-radius: 5px;
   // position: fixed;
-  z-index: 2;
+  z-index: 3;
   font-family: 'Open Sans', sans-serif;
   position: absolute;
 
@@ -84,9 +84,13 @@
 }
 
 .context-menu-dropdown{
-  height:auto;
   width:auto;
+  max-width:300px;
   max-height: 180px;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x:hidden;
+}
+
+.reposition-dropdown {
+  margin: -140px 0 0 0;
 }
