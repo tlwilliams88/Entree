@@ -66,7 +66,7 @@ angular.module('bekApp')
   ********************/
 
   $scope.createCart = function(cart, fromFunction) {
-    if($scope.defaultList && $('.defaultCheckbox')[0].checked){
+    if($scope.defaultList && $('.defaultCheckbox')[0] && $('.defaultCheckbox')[0].checked && $scope.listIsOpen){
       ApplicationSettingsService.setDefaultOrderList($scope.selectedList.listid);
     }
 
