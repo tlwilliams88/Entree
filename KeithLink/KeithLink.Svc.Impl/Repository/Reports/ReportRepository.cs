@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Repository.Reports
 {
@@ -31,6 +32,8 @@ namespace KeithLink.Svc.Impl.Repository.Reports
                     .Where(c => c.OrderHistoryHeader.CustomerNumber == customerNumber 
                                  && c.OrderHistoryHeader.BranchId.Equals(branchId, StringComparison.CurrentCultureIgnoreCase)
                                  && dates.Contains(c.OrderHistoryHeader.DeliveryDate)
+                                 && c.OrderHistoryHeader.OrderStatus != Constants.CONFIRMATION_HEADER_DELETED_CODE
+                                 && c.OrderHistoryHeader.OrderStatus != Constants.CONFIRMATION_HEADER_REJECTED_CODE
                                  && !c.ItemDeleted)
                     .ToList();
 
