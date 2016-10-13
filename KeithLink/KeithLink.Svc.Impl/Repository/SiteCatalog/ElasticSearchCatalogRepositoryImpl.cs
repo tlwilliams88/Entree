@@ -887,6 +887,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     unfi.CasePrice = oProd._source.caseprice.ToString();
                 p.Unfi = unfi;
             }
+            p.IsValid = true;
 //            if(true)
             if (listonly == false)
             {
