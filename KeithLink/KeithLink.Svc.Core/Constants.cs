@@ -42,6 +42,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_EXTERNAL_OWNER = "Owner";
         public const string ROLE_EXTERNAL_PURCHASINGAPPROVER = "Approver";
         public const string ROLE_EXTERNAL_PURCHASINGBUYER = "Buyer";
+        public const string ROLE_EXTERNAL_PURCHASINGBUYERWITHINVOICES = "BuyerWithInvoices";
 
         //public const string ROLE_CORPORATE_ADMIN = "CORP-LS-SYS-AC-Entree_Admins";
         public const string ROLE_CORPORATE_SECURITY = "CORP-DIS-Security";

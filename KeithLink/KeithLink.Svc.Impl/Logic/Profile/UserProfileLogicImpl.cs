@@ -378,6 +378,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 return Configuration.RoleNameApprover;
             else if (roleName.Equals(Constants.ROLE_EXTERNAL_PURCHASINGBUYER, StringComparison.InvariantCultureIgnoreCase))
                 return Configuration.RoleNameBuyer;
+            else if (roleName.Equals(Constants.ROLE_EXTERNAL_PURCHASINGBUYERWITHINVOICES, StringComparison.InvariantCultureIgnoreCase))
+                return Configuration.RoleNameBuyerWithInvoices;
             else
                 throw new ArgumentException("Unknown role name received");
         }
@@ -670,6 +672,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 retVal.PhoneNumber = csProfile.Telephone;
                 retVal.CustomerNumber = csProfile.DefaultCustomer;
                 retVal.BranchId = userBranch;
+
+                if (userRole.Equals(Constants.ROLE_EXTERNAL_PURCHASINGBUYERWITHINVOICES, StringComparison.CurrentCultureIgnoreCase))
+                // this is a special case of a buyer that can also see invoices
+                {
+                    userRole = Constants.ROLE_EXTERNAL_PURCHASINGBUYER.ToLower(); // has to be lower case for the front-end
+                    retVal.CanViewInvoices = true; // the user is still a buyer; just with this extra permission
+                }
+
                 retVal.RoleName = userRole;
                 retVal.DSMRole = dsmRole;
                 retVal.DSRNumber = dsrNumber;
@@ -1256,9 +1266,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (ProfileHelper.IsInternalAddress(email)) {
                 //roleName = _intAd.
-                roleName = "owner";
-            } else {
-                roleName = _extAd.GetUserGroup(email, new List<string>() { "owner", "approver", "buyer", "accounting", "guest" });
+                roleName = Constants.ROLE_EXTERNAL_OWNER.ToLower();
+                }
+            else
+            { // order is important here, and it needs to be lowercase
+                roleName = _extAd.GetUserGroup(email, new List<string>() {
+                    Constants.ROLE_EXTERNAL_OWNER.ToLower(),
+                    Constants.ROLE_EXTERNAL_PURCHASINGAPPROVER.ToLower(),
+                    Constants.ROLE_EXTERNAL_PURCHASINGBUYERWITHINVOICES.ToLower(),
+                    Constants.ROLE_EXTERNAL_PURCHASINGBUYER.ToLower(),
+                    Constants.ROLE_EXTERNAL_ACCOUNTING.ToLower(),
+                    Constants.ROLE_EXTERNAL_GUEST.ToLower() });
             }
 
             return roleName;

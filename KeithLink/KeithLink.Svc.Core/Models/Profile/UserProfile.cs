@@ -111,5 +111,8 @@ namespace KeithLink.Svc.Core.Models.Profile
 
 		[DataMember(Name = "canmessage")]
 		public bool CanMessage { get; set; }
+
+        [DataMember(Name = "canviewinvoices")]
+        public bool CanViewInvoices { get; set; }
     }
 }
