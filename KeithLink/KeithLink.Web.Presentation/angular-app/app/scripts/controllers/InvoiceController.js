@@ -399,16 +399,11 @@ angular.module('bekApp')
 
   };
 
+  var sortDescending = false;
   $scope.sortInvoices = function(sortDirection, sortField) {
-    var sortDescending;
+    sortDescending = !sortDescending;
 
-    if(sortDirection === 'Asc'){
-      sortDescending = true;
-      $scope.sortDirection = 'Desc';
-    } else {
-      sortDescending = false;
-      $scope.sortDirection = 'Asc';
-    }
+    $scope.sortDirection = sortDirection == 'Asc' ? 'Desc' : 'Asc';
 
     blockUI.start('Sorting Invoices...').then(function(){
       $scope.sort = {
