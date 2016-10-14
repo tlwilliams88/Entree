@@ -56,7 +56,7 @@ angular.module('bekApp')
   while(dateRangeEndYear >= dateRangeStartYear){
     $scope.dateRangeYears.push(dateRangeStartYear);
     dateRangeStartYear ++;
-  };
+  }
 
   $scope.dateRangeMonths = moment.months();
 
@@ -114,7 +114,7 @@ angular.module('bekApp')
     $scope.selectedInvoiceFilter = [{
       name:filter.name,
       field:filter.field
-    }]
+    }];
 
     $scope.selectedInvoiceFilter = $scope.selectedInvoiceFilter[0];
   };
@@ -165,7 +165,7 @@ angular.module('bekApp')
 
   $('body').on('click', '.dropdown-dateRange', function() {
     $('.dropdown').removeClass('open');
-  })
+  });
 
   function calculateInvoiceFields(customers) {
     customers.forEach(function(customer) {
@@ -346,7 +346,7 @@ angular.module('bekApp')
     blockUI.start('Loading Invoices...').then(function(){
       invoicePagingModel.loadData().then(function() {
         stopLoading();
-      })
+      });
     });
   }
 
@@ -387,7 +387,7 @@ angular.module('bekApp')
           $scope.selectedFilterViewName = rangeMonth + ', ' + rangeYear;
           invoicePagingModel.setAdditionalParams(dateFilterView[0]);
           loadFilteredInvoices(dateFilterView[0]);
-        })
+        });
       }
     } else {
       blockUI.start('Loading Invoices...').then(function(){
@@ -403,10 +403,10 @@ angular.module('bekApp')
     var sortDescending;
 
     if(sortDirection === 'Asc'){
-      sortDescending = false;
+      sortDescending = true;
       $scope.sortDirection = 'Desc';
     } else {
-      sortDescending = true;
+      sortDescending = false;
       $scope.sortDirection = 'Asc';
     }
 
