@@ -635,10 +635,12 @@ angular.module('bekApp')
     var total = 0;
     if($scope.invoices.length ){
       $scope.invoices.forEach(function (customer) {
+        customer.total = 0;
         if(customer.invoices.results && customer.invoices.results.length){
           customer.invoices.results.forEach(function (invoice){
             if (invoice.isSelected) {
               total += parseFloat(invoice.paymentAmount || 0);
+              customer.total += parseFloat(invoice.paymentAmount || 0);
             }
           });
         }
