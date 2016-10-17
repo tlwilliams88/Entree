@@ -33,7 +33,6 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Dir
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtRoleNameAccouting', 'Dev Accounting', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtRoleNameApprover', 'Dev Approver', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtRoleNameBuyer', 'Dev Buyer', 0)
-INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtRoleNameBuyer', 'Dev BuyerWithInvoices', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtRoleNameGuest', 'Dev Guest', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtRoleNameOwner', 'Dev Owner', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADIntDomain', 'bekco', 0)
