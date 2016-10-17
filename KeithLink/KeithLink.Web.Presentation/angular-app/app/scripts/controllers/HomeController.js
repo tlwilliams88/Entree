@@ -52,8 +52,10 @@ angular.module('bekApp')
     // get account info
     $scope.loadingAccountBalance = true;
     CustomerService.getAccountBalanceInfo().then(function(data) {
-      $scope.selectedUserContext.customer.balance = data.balance;
-      $scope.selectedUserContext.customer.lastorderupdate = data.lastorderupdate;
+      if(data){
+        $scope.selectedUserContext.customer.balance = data.balance ? data.balance : 0;
+        $scope.selectedUserContext.customer.lastorderupdate = data.lastorderupdate ? data.lastorderupdate : '';
+      }
     }, function(errorMessage) {
       $scope.accountBalanceMessage = errorMessage;
     }).finally(function() {
