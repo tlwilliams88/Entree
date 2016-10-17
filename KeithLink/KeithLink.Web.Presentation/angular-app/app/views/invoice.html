@@ -199,7 +199,9 @@
                 <div class="white-space: normal;">
                   <span style="padding-left:10px;"> {{customer.customerNumber}} - {{customer.customerName}} ({{customer.invoices.totalinvoices}})</span>
                   <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.address.street}} {{customer.address.city}}<span ng-if="customer.address.regioncode">,</span> {{customer.address.regioncode}} {{customer.address.postalcode}}</span>
-                  <i class="pull-right" ng-class="{'icon-arrow-up6': customer.isOpen, 'icon-arrow-down7': !customer.isOpen}"></i>
+                  <span class="pull-right">Customer Total: {{customer.total | currency}}
+                    <i class="margin-left-10" ng-class="{'icon-arrow-up6': customer.isOpen, 'icon-arrow-down7': !customer.isOpen}"></i>
+                  </span>
                 </div>
               </accordion-heading>
               <div class="col-sm-12 background-white" ng-show="!isInternalAccountAdminUser && customer.haspayableinvoices && selectedFilterView.name !== 'Paid Invoices'">
