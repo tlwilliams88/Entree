@@ -105,7 +105,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         public void CreateAndDeleteUser() {
             const string USER_EMAIL = "deletableuser@somecompany.com";
 
-            _custUserRepo.CreateUser("Jimmys Chicken Shack", USER_EMAIL , "Ab12345", "First", "Last", Configuration.RoleNameOwner);
+            _custUserRepo.CreateUser("Jimmys Chicken Shack", USER_EMAIL , "Ab12345", "First", "Last", Configuration.RoleNameOwner, null);
             
             Assert.IsNotNull(_custUserRepo.GetUser(USER_EMAIL));
 

@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_EXTERNAL_ROLENAME_ACCOUNTING = "ADExtRoleNameAccouting";
         private const string KEY_AD_EXTERNAL_ROLENAME_APPROVER = "ADExtRoleNameApprover";
         private const string KEY_AD_EXTERNAL_ROLENAME_BUYER = "ADExtRoleNameBuyer";
-        private const string KEY_AD_EXTERNAL_ROLENAME_BUYERWITHINVOICES = "ADExtRoleNameBuyerWithInvoices";
+        private const string KEY_AD_EXTERNAL_PERMISSION_VIEWINVOICES = "ADExtPermissionViewInvoices";
         private const string KEY_AD_EXTERNAL_ROLENAME_GUEST = "ADExtRoleNameGuest";
         private const string KEY_AD_EXTERNAL_ROLENAME_OWNER = "ADExtRoleNameOwner";
         private const string KEY_AD_EXTERNAL_SERVERNAME = "ADExtServer";
@@ -1344,11 +1344,11 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RoleNameBuyerWithInvoices
+        public static string PermissionViewInvoices
         {
             get
             {
-                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ROLENAME_BUYERWITHINVOICES, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_PERMISSION_VIEWINVOICES, string.Empty);
             }
         }
 

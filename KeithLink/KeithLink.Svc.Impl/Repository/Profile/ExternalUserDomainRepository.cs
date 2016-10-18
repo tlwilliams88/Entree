@@ -1,6 +1,6 @@
 ﻿using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Interfaces.Logging;
-
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Authentication;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Authentication;
@@ -199,7 +199,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 4/1/2015 - remove the customer container support
         /// jwames - 4/14/2014 - change the userOU to use the container from the config file
         /// </remarks>
-        public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName) {
+        public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName, List<string> permissions) {
             //CustomerContainerReturn custExists = _containerRepo.SearchCustomerContainers(customerName);
 
             // create the customer container if it does not exist
@@ -262,11 +262,27 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             JoinGroup(customerName, roleName, user);
 
+            if (permissions != null)
+            {
+                foreach (string permit in permissions)
+                {
+                    JoinGroup(customerName, ConvertPermission(permit), user);
+                }
+            }
+
             principal.Dispose();
 
             _logger.WriteInformationLog(string.Format("New user({0}) was created within the container ({1}) in Active Directory.", userName, customerName));
             _auditLog.WriteToAuditLog(AuditType.UserCreated, null, string.Concat("User Created: ", emailAddress));
             return userName;
+        }
+
+        private string ConvertPermission(string permission)
+        {
+            if (permission.Equals(Constants.PERMISSION_EXTERNAL_VIEWINVOICES, StringComparison.InvariantCultureIgnoreCase))
+                return Configuration.PermissionViewInvoices;
+            else
+                throw new ArgumentException("Unknown permission received");
         }
 
         public void DeleteUser(string emailAddress) {
@@ -460,6 +476,139 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
             }
             return "guest";
+        }
+
+        public List<string> GetUserPermissions(string userName, List<string> groupNames)
+        {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (groupNames.Count == 0) { throw new ArgumentException("groupName is required", "groupName"); }
+            if (string.IsNullOrEmpty(groupNames.FirstOrDefault())) { throw new ArgumentNullException("groupName", "groupName is required"); }
+
+            try
+            {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryExternalPassword))
+                {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+
+                    if (user == null)
+                        return null;
+                    else
+                    {
+                        try
+                        {
+                            List<string> ret = new List<string>();
+                            foreach (string g in ((DirectoryEntry)user.GetUnderlyingObject()).Properties["memberOf"])
+                            {
+                                foreach (string s in groupNames)
+                                {
+                                    if (g.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0 && ret.Contains(s) == false)
+                                    {
+                                        ret.Add(s);
+                                    }
+                                }
+                            }
+                            return ret;
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.WriteErrorLog("Error loading group", ex);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteErrorLog("Could not get lookup users's permissions", ex);
+            }
+            return null;
+        }
+
+        public void SetUserPermissions(string userName, List<string> updatePermits, string updater)
+        {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+
+            // Following is a list of groupNames we currently support
+            // (add to this list as we have new permissions)
+            List<string> groupNames = new List<string>();
+            groupNames.Add(Configuration.PermissionViewInvoices);
+
+            try
+            {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryExternalPassword))
+                {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+
+                    if (user == null)
+                        return;
+                    else
+                    {
+                        try
+                        {
+                            // Get existing permissions
+                            List<string> existingPermits = new List<string>();
+                            foreach (string g in ((DirectoryEntry)user.GetUnderlyingObject()).Properties["memberOf"])
+                            {
+                                foreach (string s in groupNames)
+                                {
+                                    if (g.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) >= 0 && existingPermits.Contains(s) == false)
+                                    {
+                                        existingPermits.Add(s);
+                                    }
+                                }
+                            }
+
+                            // Delete existingPermits not in updatePermits
+                            foreach (string ePermit in existingPermits)
+                            {
+                                if(updatePermits == null)
+                                {
+                                    RevokeAccess(updater, userName, ePermit);
+                                }
+                                else
+                                {
+                                    if (updatePermits.Contains(ePermit) == false)
+                                    {
+                                        RevokeAccess(updater, userName, ePermit);
+                                    }
+                                }
+                            }
+
+                            // Add updatePermits not in existingPermits
+                            if (updatePermits != null)
+                            {
+                                foreach (string uPermit in updatePermits)
+                                {
+                                    if (existingPermits.Contains(ConvertPermission(uPermit)) == false)
+                                    {
+                                        JoinGroup(userName, ConvertPermission(uPermit), user);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.WriteErrorLog("Error updating permissions", ex);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteErrorLog("Could not get lookup users", ex);
+            }
         }
 
         public void GrantAccess(string grantedBy, string userName, string roleName) {

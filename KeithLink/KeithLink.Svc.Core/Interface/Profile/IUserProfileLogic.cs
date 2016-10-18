@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         
         UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId);
 
-		UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
+		UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, List<string> permissions, string branchId);
 
         PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account, CustomerSearchType searchType);
 
@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
 		bool UpdateUserPassword(UserProfile updatedBy, string emailAddress, string originalPassword, string newPassword);
 
-        void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName);
+        void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName, List<string> permissions);
 
         void SetUserProfileLastLogin(Guid id);
 
@@ -102,5 +102,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         /// </remarks>
         /// <returns>a bool that's true if they are on the whitelists</returns>
         bool CheckCanViewUNFI(UserProfile user, string customernumber, string customerbranch);
+
+        List<string> PackUserPermissions(UserPermissionsModel permissions);
+
+        UserPermissionsModel UnpackUserPermissions(List<string> permissions);
     }
 }

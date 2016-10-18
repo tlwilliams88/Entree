@@ -378,8 +378,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 return Configuration.RoleNameApprover;
             else if (roleName.Equals(Constants.ROLE_EXTERNAL_PURCHASINGBUYER, StringComparison.InvariantCultureIgnoreCase))
                 return Configuration.RoleNameBuyer;
-            else if (roleName.Equals(Constants.ROLE_EXTERNAL_PURCHASINGBUYERWITHINVOICES, StringComparison.InvariantCultureIgnoreCase))
-                return Configuration.RoleNameBuyerWithInvoices;
             else
                 throw new ArgumentException("Unknown role name received");
         }
@@ -421,7 +419,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                               password, 
                               Core.Constants.AD_GUEST_FIRSTNAME, 
                               Core.Constants.AD_GUEST_LASTNAME, 
-                              Configuration.RoleNameGuest
+                              Configuration.RoleNameGuest,
+                              null
                               );
 
             _csProfile.CreateUserProfile(actingUser.EmailAddress,
@@ -461,7 +460,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
 		public UserProfileReturn CreateUserAndProfile(UserProfile actingUser, string customerName, string emailAddress, 
                                                       string password, string firstName, string lastName, 
-                                                      string phone, string roleName, string branchId) {
+                                                      string phone, string roleName, List<string> permissions, string branchId) {
             if (ProfileHelper.IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
@@ -470,7 +469,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                 password,
                                 firstName,
                                 lastName,
-                                ConvertRoleName(roleName)
+                                ConvertRoleName(roleName), 
+                                permissions
                                 );
 
             try {
@@ -590,6 +590,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             string dsmNumber = string.Empty;
             string dsmRole = string.Empty;
             string userRole = string.Empty;
+            List<string> permissions = null;
             string userBranch = string.Empty;
             bool isInternalUser = ProfileHelper.IsInternalAddress(csProfile.Email);
             UserPrincipal adUser = null;
@@ -648,6 +649,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                         isKbitCustomer = true;
                     } else {
                         userRole = GetUserRole(csProfile.Email);
+                        permissions = GetUserPermissions(csProfile.Email);
                         isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
                     }
 
@@ -672,15 +674,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 retVal.PhoneNumber = csProfile.Telephone;
                 retVal.CustomerNumber = csProfile.DefaultCustomer;
                 retVal.BranchId = userBranch;
-
-                if (userRole.Equals(Constants.ROLE_EXTERNAL_PURCHASINGBUYERWITHINVOICES, StringComparison.CurrentCultureIgnoreCase))
-                // this is a special case of a buyer that can also see invoices
-                {
-                    userRole = Constants.ROLE_EXTERNAL_PURCHASINGBUYER.ToLower(); // has to be lower case for the front-end
-                    retVal.CanViewInvoices = true; // the user is still a buyer; just with this extra permission
-                }
-
                 retVal.RoleName = userRole;
+                retVal.Permissions = permissions;
                 retVal.DSMRole = dsmRole;
                 retVal.DSRNumber = dsrNumber;
                 retVal.DSMNumber = dsmNumber;
@@ -1205,6 +1200,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
             }
 
+            if (retVal.UserProfiles.Count > 0)
+            {
+                foreach(UserProfile u in retVal.UserProfiles)
+                {
+                    u.Permit = UnpackUserPermissions(u.Permissions);
+                }
+            }
             return retVal;
         }
 
@@ -1273,7 +1275,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 roleName = _extAd.GetUserGroup(email, new List<string>() {
                     Constants.ROLE_EXTERNAL_OWNER.ToLower(),
                     Constants.ROLE_EXTERNAL_PURCHASINGAPPROVER.ToLower(),
-                    Constants.ROLE_EXTERNAL_PURCHASINGBUYERWITHINVOICES.ToLower(),
                     Constants.ROLE_EXTERNAL_PURCHASINGBUYER.ToLower(),
                     Constants.ROLE_EXTERNAL_ACCOUNTING.ToLower(),
                     Constants.ROLE_EXTERNAL_GUEST.ToLower() });
@@ -1282,6 +1283,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return roleName;
         }
 
+        private List<string> GetUserPermissions(string email)
+        {
+            List<string> permits = null;
+
+            if (ProfileHelper.IsInternalAddress(email) == false)
+            { // order is important here, and it needs to be lowercase
+                permits = _extAd.GetUserPermissions(email, new List<string>() {
+                    Constants.PERMISSION_EXTERNAL_VIEWINVOICES.ToLower() });
+            }
+
+            return permits;
+        }
         public UserProfileReturn GetUsers(UserFilterModel userFilters) {
             if (userFilters != null) {
                 if (userFilters.AccountId.HasValue)
@@ -1617,7 +1630,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 generatedPassword,
                 Core.Constants.AD_GUEST_FIRSTNAME,
                 Core.Constants.AD_GUEST_LASTNAME,
-                Configuration.RoleNameGuest
+                Configuration.RoleNameGuest,
+                null
                 );
 
             _csProfile.CreateUserProfile(
@@ -1665,7 +1679,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // update account user roles to owner
             foreach (UserProfile user in users) // all account users are assumed to be owners on all customers
-                UpdateCustomersForUser(updatedBy, customers, user.RoleName, user);
+                UpdateCustomersForUser(updatedBy, customers, user.RoleName, null, user);
 
             _accountRepo.UpdateAccount(name, accountId);
 
@@ -1674,7 +1688,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return true;
         }
 
-        private void UpdateCustomersForUser(UserProfile updatedBy, List<Customer> customerList, string roleName, UserProfile existingUser) {
+        private void UpdateCustomersForUser(UserProfile updatedBy, List<Customer> customerList, string roleName, List<string> permissions, UserProfile existingUser) {
             var customers = GetNonPagedCustomersForUser(existingUser);
 
             IEnumerable<Guid> custsToAdd = customerList.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
@@ -1688,6 +1702,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 _extAd.GrantAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(roleName));
                 _extAd.RevokeAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
             }
+
+            _extAd.SetUserPermissions(existingUser.EmailAddress, permissions, updatedBy.EmailAddress);
         }
 
         /// <summary>
@@ -1726,8 +1742,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-		public void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId,
-            bool updateCustomerListAndRole, List<Customer> customerList, string roleName) {
+		public void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, 
+            string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName, List<string> permissions) {
             AssertEmailAddressLength(emailAddress);
             AssertEmailAddress(emailAddress);
             AssertFirstNameLength(firstName);
@@ -1747,7 +1763,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			
             // update customer list
             if (updateCustomerListAndRole && customerList != null && customerList.Count > 0) {
-                UpdateCustomersForUser(updatedBy, customerList, roleName, existingUser.UserProfiles[0]);
+                UpdateCustomersForUser(updatedBy, customerList, roleName, permissions, existingUser.UserProfiles[0]);
             }
 
             // remove the old user profile from cache and then update it with the new profile
@@ -1838,6 +1854,29 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
             return false;
         }
+
+        public List<string> PackUserPermissions(UserPermissionsModel permissions)
+        {
+            List<string> listPermits = new List<string>();
+            if (permissions != null && permissions.Invoices != null && permissions.Invoices.CanView)
+            {
+                listPermits.Add(Constants.PERMISSION_EXTERNAL_VIEWINVOICES);
+            }
+            return listPermits;
+        }
+
+        public UserPermissionsModel UnpackUserPermissions(List<string> permissions)
+        {
+            UserPermissionsModel Permits = new UserPermissionsModel();
+            foreach (string s in permissions)
+            {
+                if (Constants.PERMISSION_EXTERNAL_VIEWINVOICES.IndexOf(s, StringComparison.InvariantCultureIgnoreCase)>-1)
+                {
+                    Permits.Invoices.CanView = true;
+                }
+            }
+            return Permits;
+        }
         #endregion
-	}
+    }
 }
