@@ -675,6 +675,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 retVal.CustomerNumber = csProfile.DefaultCustomer;
                 retVal.BranchId = userBranch;
                 retVal.RoleName = userRole;
+
+                // coding for existing rolename to translate to permissions
+                retVal.Permit = new UserPermissionsModel();
+                switch (retVal.RoleName)
+                {
+                    case Constants.ROLE_NAME_SYSADMIN:
+                    case Constants.ROLE_EXTERNAL_ACCOUNTING:
+                    case Constants.ROLE_EXTERNAL_OWNER:
+                        retVal.Permit.Invoices.CanView = true;
+                        break;
+                }
+
                 retVal.Permissions = permissions;
                 retVal.DSMRole = dsmRole;
                 retVal.DSRNumber = dsrNumber;
