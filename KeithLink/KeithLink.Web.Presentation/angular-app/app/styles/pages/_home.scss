@@ -213,38 +213,3 @@ $order-col__background: #f1efe5;
     }
   }
 }
-
-.box {
-  cursor: pointer;
-  /* height: 200px; */
-  position: relative;
-  transition: transform 0.8s;
-  overflow: hidden;
-  /* width: 45%; */
-  text-align: center;
-}
-
-.text {
-    position: absolute;
-    border-top: 1px solid $color-border;
-    display: inline-block;
-    bottom: 0;
-    right: 0;
-    max-width: 158px;
-    min-width: 100%;
-    height: 1px;
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;  
-    white-space: nowrap;
-    background: rgba(255, 255, 255, 0.6);
-    transition: height 300ms ease-out;
-    font-weight:bold;
-    padding-top: 5px;
-}
-
-.box:hover > .text {
-    height: 55%;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.8);
-}

@@ -1,6 +1,23 @@
-<div class="featured-item-mobile visible-xs visible-sm">
+<div class="featured-item-mobile hidden-lg">
   <span class="carousel-index">{{carouselIndex + 1}} / {{itemList.length}}</span>
-  <ul rn-carousel rn-carousel-buffered rn-carousel-index="carouselIndex" class="featured-item-carousel">
+  <ul rn-carousel rn-carousel-buffered rn-carousel-auto-slide="8" rn-carousel-easing rn-carousel-duration="900" rn-carousel-index="carouselIndex" class="featured-item-carousel">
+    <li ng-repeat="item in itemList">
+      <div ng-include="template"></div>
+    </li>
+    <div class="rn-carousel-controls">
+      <span class="rn-carousel-control carousel-control-prev" ng-click="prevSlide()" ng-if="carouselIndex > 0">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </span>
+      <span class="rn-carousel-control carousel-control-next" ng-click="nextSlide()" ng-if="carouselIndex < itemList.length - 1">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </span>
+    </div>
+  </ul>
+</div>
+
+<div class="visible-lg">
+  <span class="carousel-index">{{carouselIndex + 1}} / {{itemList.length}}</span>
+  <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-auto-slide="8" rn-carousel-easing rn-carousel-duration="900" rn-carousel-index="carouselIndex" style="background:transparent" class="featured-item-carousel-web">
     <li ng-repeat="item in itemList">
       <div ng-include="template"></div>
     </li>
