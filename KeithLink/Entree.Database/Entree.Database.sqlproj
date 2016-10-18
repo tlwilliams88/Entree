@@ -228,6 +228,7 @@
     <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.Beta.sql" />
     <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.Production.sql" />
     <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.local.sql" />
+    <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.QA.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CommerceServer\BEK_Commerce_profiles_v1.4.1.dacpac" />

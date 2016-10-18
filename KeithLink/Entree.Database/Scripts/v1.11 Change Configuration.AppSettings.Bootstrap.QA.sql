@@ -7,7 +7,7 @@ DECLARE @AppSettings as TABLE
     PRIMARY KEY CLUSTERED ([Key] ASC)
 )
 
-INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtRoleNameBuyerWithInvoices', 'Dev BuyerWithInvoices', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Active Directory Settings', 'ADExtPermissionViewInvoices', 'Dev ViewInvoices', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])
