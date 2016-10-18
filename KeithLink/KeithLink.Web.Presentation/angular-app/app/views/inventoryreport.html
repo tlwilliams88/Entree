@@ -1,11 +1,12 @@
 <div page-header-bar>
   <div header-message>
-    <span ng-if="!report.isRenaming">{{report.name}}</span><span class = "visible-print pull-right">{{selectedUserContext.customer.customerName}}</span>
+    <span ng-if="!report.isRenaming && reports.length">{{report.name}}</span><span ng-if="!reports.length">{{today}}</span><span class = "visible-print pull-right">{{selectedUserContext.customer.customerName}}</span>
     <div 
         class="inline-block-display" ng-if="!report.isRenaming">
         
         <a 
-          ng-click="report.isRenaming = true;">
+          ng-click="report.isRenaming = true;"
+          ng-if="report && report.name">
           <span class="hidden-print large-icon text-light icon-pencil"></span>
         </a>
         

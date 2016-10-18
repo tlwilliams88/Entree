@@ -28,6 +28,7 @@ angular.module('bekApp')
     $scope.defaultList = $scope.selectedList.listid;
   } else {
     $scope.selectedList = $filter('filter')($scope.lists, {name: 'History'})[0];
+    $scope.defaultList = $scope.selectedList.listid;
   }
 
   $scope.isMobile = IsMobile;

@@ -263,7 +263,7 @@ angular.module('bekApp')
           $scope.inventoryForm.$setPristine();
 
           if(creatingList){
-            $scope.goToReport(response.listitemid);
+            $scope.goToReport(response.successResponse.listitemid);
           }
           toaster.pop('success', 'Successfully saved report.');
         }, function() {
@@ -282,7 +282,7 @@ angular.module('bekApp')
 
       $scope.cancelRenameReport = function(){
         $scope.report.isRenaming = false;
-      }
+      };
 
       $scope.deleteReport = function(listId){
           List.delete({
@@ -301,7 +301,12 @@ angular.module('bekApp')
       $scope.goToReport = function(listId){
         $scope.report.isRenaming = false;
         $state.go('menu.inventoryreport', {listid: listId});
-        $scope.selectedReportName = $filter('filter')($scope.reports, {listid: listId})[0].name;
+        if($scope.reports.length){
+          $scope.selectedReportName = $filter('filter')($scope.reports, {listid: listId})[0].name;
+        } else {
+          $scope.selectedReportName = $scope.today;
+        }
+        
       };
 
       $scope.createReport = function(){        
