@@ -2,6 +2,8 @@
 using System.Text;
 using System.Collections.Generic;
 using KeithLink.Svc.Core.Models.Profile;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.WebApi.Models
 {
@@ -16,6 +18,11 @@ namespace KeithLink.Svc.WebApi.Models
 		public string Password { get; set; }
         public string Address { get; set; }
 		public string Role { get; set; }
+        [JsonIgnore]
+        public List<string> Permissions { get; set; }
+        [DataMember(Name = "permit")]
+        public UserPermissionsModel Permit { get; set; }
+
         public string BranchId { get; set; }
         public List<Customer> Customers { get; set; }
     }

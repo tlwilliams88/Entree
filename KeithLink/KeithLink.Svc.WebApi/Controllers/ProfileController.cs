@@ -78,9 +78,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
+                userInfo.Permissions = _profileLogic.PackUserPermissions(userInfo.Permit);
                 retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(this.AuthenticatedUser, userInfo.CustomerName, userInfo.Email, userInfo.Password,
                                                                             userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
-                                                                            userInfo.Role, userInfo.BranchId);
+                                                                            userInfo.Role, userInfo.Permissions, userInfo.BranchId);
                 retVal.IsSuccess = true;
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
@@ -315,9 +316,10 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (String.IsNullOrEmpty(userInfo.UserId)) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
                 if (!ProfileHelper.IsInternalAddress(userInfo.Email)) {
+                    userInfo.Permissions = _profileLogic.PackUserPermissions(userInfo.Permit);
                     _profileLogic.UpdateUserProfile(this.AuthenticatedUser, userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
                                                   userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId,
-                                                  true /* hard coded security for now */, userInfo.Customers, userInfo.Role);
+                                                  true /* hard coded security for now */, userInfo.Customers, userInfo.Role, userInfo.Permissions);
                 }
 
                 retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);

@@ -96,5 +96,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             
         }
 
+        public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName, List<string> permissions)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> GetUserPermissions(string userName, List<string> groupNames)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetUserPermissions(string userName, List<string> updatePermits, string updater)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
