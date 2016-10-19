@@ -376,7 +376,6 @@ angular.module('bekApp')
     $scope.canViewOrders = AccessService.canViewOrders();
     $scope.canCreateOrders = AccessService.canCreateOrders();
     $scope.canSubmitOrders = AccessService.canSubmitOrders();
-    $scope.canPayInvoices = AccessService.canPayInvoices();
     $scope.canViewInvoices = AccessService.canViewInvoices();
     $scope.canManageCustomerGroups = AccessService.canManageCustomerGroups();
     $scope.canViewCustomerGroups = AccessService.canViewCustomerGroups();
