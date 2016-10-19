@@ -189,6 +189,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
                 {
                     UserProfileReturn upVal = new UserProfileReturn();
+                    AuthenticatedUser.Permit = _profileLogic.UnpackUserPermissions(AuthenticatedUser.Permissions, AuthenticatedUser.RoleName);
                     upVal.UserProfiles.Add(this.AuthenticatedUser);
 
                     PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);

@@ -1868,11 +1868,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public UserPermissionsModel UnpackUserPermissions(List<string> permissions, string role)
         {
             UserPermissionsModel Permits = new UserPermissionsModel();
-            foreach (string s in permissions)
+            if(permissions != null)
             {
-                if (Constants.PERMISSION_EXTERNAL_VIEWINVOICES.IndexOf(s, StringComparison.InvariantCultureIgnoreCase)>-1)
+                foreach (string s in permissions)
                 {
-                    Permits.Invoices.CanView = true;
+                    if (Constants.PERMISSION_EXTERNAL_VIEWINVOICES.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) > -1)
+                    {
+                        Permits.Invoices.CanView = true;
+                    }
                 }
             }
 
