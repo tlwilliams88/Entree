@@ -675,18 +675,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 retVal.CustomerNumber = csProfile.DefaultCustomer;
                 retVal.BranchId = userBranch;
                 retVal.RoleName = userRole;
-
-                // coding for existing rolename to translate to permissions
-                retVal.Permit = new UserPermissionsModel();
-                switch (retVal.RoleName)
-                {
-                    case Constants.ROLE_NAME_SYSADMIN:
-                    case Constants.ROLE_EXTERNAL_ACCOUNTING:
-                    case Constants.ROLE_EXTERNAL_OWNER:
-                        retVal.Permit.Invoices.CanView = true;
-                        break;
-                }
-
                 retVal.Permissions = permissions;
                 retVal.DSMRole = dsmRole;
                 retVal.DSRNumber = dsrNumber;
@@ -1216,7 +1204,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 foreach(UserProfile u in retVal.UserProfiles)
                 {
-                    u.Permit = UnpackUserPermissions(u.Permissions);
+                    u.Permit = UnpackUserPermissions(u.Permissions, u.RoleName);
                 }
             }
             return retVal;
@@ -1714,8 +1702,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 _extAd.GrantAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(roleName));
                 _extAd.RevokeAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
             }
-
-            _extAd.SetUserPermissions(existingUser.EmailAddress, permissions, updatedBy.EmailAddress);
         }
 
         /// <summary>
@@ -1777,6 +1763,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (updateCustomerListAndRole && customerList != null && customerList.Count > 0) {
                 UpdateCustomersForUser(updatedBy, customerList, roleName, permissions, existingUser.UserProfiles[0]);
             }
+
+            _extAd.SetUserPermissions(emailAddress, permissions, updatedBy.EmailAddress);
 
             // remove the old user profile from cache and then update it with the new profile
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(existingUser.UserProfiles[0].EmailAddress));
@@ -1877,7 +1865,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return listPermits;
         }
 
-        public UserPermissionsModel UnpackUserPermissions(List<string> permissions)
+        public UserPermissionsModel UnpackUserPermissions(List<string> permissions, string role)
         {
             UserPermissionsModel Permits = new UserPermissionsModel();
             foreach (string s in permissions)
@@ -1887,6 +1875,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     Permits.Invoices.CanView = true;
                 }
             }
+
+            // coding for existing rolename to translate to permissions
+            switch (role)
+            {
+                case Constants.ROLE_NAME_SYSADMIN:
+                case Constants.ROLE_EXTERNAL_ACCOUNTING:
+                case Constants.ROLE_EXTERNAL_OWNER:
+                    Permits.Invoices.CanView = true;
+                    break;
+            }
+
             return Permits;
         }
         #endregion

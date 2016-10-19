@@ -105,6 +105,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         List<string> PackUserPermissions(UserPermissionsModel permissions);
 
-        UserPermissionsModel UnpackUserPermissions(List<string> permissions);
+        UserPermissionsModel UnpackUserPermissions(List<string> permissions, string role);
     }
 }
