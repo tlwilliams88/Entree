@@ -177,7 +177,7 @@
           <button
             class="btn-no-style"
             type="button"
-            ng-disabled="::!canPayInvoices"
+            ng-disabled="!canViewInvoices"
             ui-sref="menu.invoice"
             ui-sref-active="is-selected" >
             <li>
@@ -185,7 +185,7 @@
               Invoices
             </li>
           </button>
-            <span ng-if="::!canPayInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+            <span ng-if="!canViewInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"

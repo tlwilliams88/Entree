@@ -1,8 +1,8 @@
   'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$q', '$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService', 'blockUI',
-    function ($q, $scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService, blockUI) {
+  .controller('InvoiceController', ['$q', '$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService', 'blockUI', 'canPayInvoices',
+    function ($q, $scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService, blockUI, canPayInvoices) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -19,6 +19,7 @@ angular.module('bekApp')
   $scope.selectedSortParameter = 'Invoice Date';
   $scope.sortParametervalue = 'invoicedate';
   $scope.sortDirection = 'Asc';
+  $scope.userCanPayInvoice = canPayInvoices;
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',

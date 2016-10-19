@@ -61,6 +61,9 @@ angular.module('bekApp')
     var deferred = $q.defer();
     if (!processingSaveProfile) {
       processingSaveProfile = true;
+      if(profile.role == 'guest'){
+        profile.permit.invoices.canView = false;
+      }
       UserProfileService.updateUserProfile(profile).then(function(newProfile){
         // update currently logged in user profile
         if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {

@@ -425,20 +425,20 @@ angular.module('bekApp')
       templateUrl: 'views/invoice.html',
       controller: 'InvoiceController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canViewInvoices'
       },
-      // resolve: {
-      //   accounts: ['BankAccountService', function(BankAccountService) {
-      //     return BankAccountService.getAllBankAccounts();
-      //   }]
-      // }
+      resolve:{
+        canPayInvoices: [ 'AccessService', function(AccessService) {
+          return AccessService.canPayInvoices();
+        }]
+      }
     })
     .state('menu.invoiceitems', {
       url: '/invoice/:invoiceNumber/',
       templateUrl: 'views/invoiceitems.html',
       controller: 'InvoiceItemsController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canViewInvoices'
       },
       resolve: {
         invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
@@ -451,7 +451,7 @@ angular.module('bekApp')
       templateUrl: 'views/invoiceimage.html',
       controller: 'InvoiceImageController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canViewInvoices'
       },
       resolve: {
         images: ['$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
