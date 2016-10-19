@@ -20,12 +20,20 @@ angular.module('bekApp')
       restrict: 'A',
       scope: {
         itemList: '=featuredItemCarousel',
-        template: '@template'
+        template: '@template',
+        attribute: '@attr'
       },
       transclude: true,
-      templateUrl: 'views/directives/featureditemcarousel.html',
-      link: function(scope) {
+      templateUrl: function(scope, elem) {
+        // if(elem.$attr.catalog == 'catalog'){
+        //   return 'views/directives/featureditemcarouselcatalog.html';
+        // } else {
+          return 'views/directives/featureditemcarousel.html';
+        // }
+      },
+      link: function(scope, elem, attr) {
         scope.openExternalLink = $rootScope.openExternalLink;
+        scope.isCatalog = attr.catalog == 'true' ? true : false;
       }
     };
 
