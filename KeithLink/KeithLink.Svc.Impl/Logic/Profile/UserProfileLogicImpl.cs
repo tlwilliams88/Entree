@@ -1702,8 +1702,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 _extAd.GrantAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(roleName));
                 _extAd.RevokeAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
             }
-
-            _extAd.SetUserPermissions(existingUser.EmailAddress, permissions, updatedBy.EmailAddress);
         }
 
         /// <summary>
@@ -1765,6 +1763,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (updateCustomerListAndRole && customerList != null && customerList.Count > 0) {
                 UpdateCustomersForUser(updatedBy, customerList, roleName, permissions, existingUser.UserProfiles[0]);
             }
+
+            _extAd.SetUserPermissions(emailAddress, permissions, updatedBy.EmailAddress);
 
             // remove the old user profile from cache and then update it with the new profile
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(existingUser.UserProfiles[0].EmailAddress));

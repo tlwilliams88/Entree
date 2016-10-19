@@ -578,7 +578,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                 }
                                 else
                                 {
-                                    if (updatePermits.Contains(ePermit) == false)
+                                    if (updatePermits.Contains(ConvertPermission(ePermit)) == false)
                                     {
                                         RevokeAccess(updater, userName, ePermit);
                                     }
