@@ -529,7 +529,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return null;
         }
 
-        public void SetUserPermissions(string userName, List<string> updatePermits, string updater)
+        public void SetUserPermissions(string userName, List<string> updatePermis, string updater)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
@@ -569,6 +569,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                 }
                             }
 
+                            List<string> updatePermits = new List<string>();
+                            foreach (string permis in updatePermis)
+                            {
+                                updatePermits.Add(ConvertPermission(permis));
+                            }
+
                             // Delete existingPermits not in updatePermits
                             foreach (string ePermit in existingPermits)
                             {
@@ -578,7 +584,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                 }
                                 else
                                 {
-                                    if (updatePermits.Contains(ConvertPermission(ePermit)) == false)
+                                    if (updatePermits.Contains(ePermit) == false)
                                     {
                                         RevokeAccess(updater, userName, ePermit);
                                     }
@@ -590,9 +596,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                             {
                                 foreach (string uPermit in updatePermits)
                                 {
-                                    if (existingPermits.Contains(ConvertPermission(uPermit)) == false)
+                                    if (existingPermits.Contains(uPermit) == false)
                                     {
-                                        JoinGroup(userName, ConvertPermission(uPermit), user);
+                                        JoinGroup(userName, uPermit, user);
                                     }
                                 }
                             }
