@@ -1880,13 +1880,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             // coding for existing rolename to translate to permissions
-            switch (role)
+            if (Constants.ROLE_NAME_SYSADMIN.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
             {
-                case Constants.ROLE_NAME_SYSADMIN:
-                case Constants.ROLE_EXTERNAL_ACCOUNTING:
-                case Constants.ROLE_EXTERNAL_OWNER:
-                    Permits.Invoices.CanView = true;
-                    break;
+                Permits.Invoices.CanView = true;
+            }
+            else if (Constants.ROLE_EXTERNAL_ACCOUNTING.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
+            else if (Constants.ROLE_EXTERNAL_OWNER.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
             }
 
             return Permits;
