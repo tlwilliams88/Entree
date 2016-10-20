@@ -67,7 +67,7 @@
         <div ng-hide="profile.role == 'guest'" class="form-group">
           <label for="invoices" class="col-md-2 control-label">Can View Invoices</label>
           <div class="col-md-4">
-            <input id="canViewInvoices" type="checkbox" class="editDetailsCheckbox" ng-model="profile.permit.invoices.canView" />
+            <input id="canViewInvoices" type="checkbox" class="editDetailsCheckbox" ng-disabled="profile.role == 'accounting' || profile.role == 'owner'" ng-model="profile.permit.invoices.canView" ng-checked="profile.permit.invoices.canView == true" />
           </div>
         </div>
 
