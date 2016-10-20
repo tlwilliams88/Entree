@@ -46,7 +46,7 @@ angular.module('bekApp')
 
 
   // TODO: get available roles <----NEEDS ENDPOINT
-  $scope.roles =  [{ "value": "owner", "text": "owner" }, { "value": "accounting", "text": "accounting" },{ "value": "approver", "text": "buyer" }, { "value": "buyer", "text": "shopper" }, { "value": "guest", "text": "guest" }];
+  $scope.roles =  [{ 'value': 'owner', 'text': 'owner' }, { 'value': 'accounting', 'text': 'accounting' },{ 'value': 'approver', 'text': 'buyer' }, { 'value': 'buyer', 'text': 'shopper' }, { 'value': 'guest', 'text': 'guest' }];
 
   checkIfUserExistsOnAnotherGroup();
   processProfile(userProfile);
@@ -61,6 +61,9 @@ angular.module('bekApp')
     var deferred = $q.defer();
     if (!processingSaveProfile) {
       processingSaveProfile = true;
+      if(profile.role == 'guest'){
+        profile.permit.invoices.canView = false;
+      }
       UserProfileService.updateUserProfile(profile).then(function(newProfile){
         // update currently logged in user profile
         if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {

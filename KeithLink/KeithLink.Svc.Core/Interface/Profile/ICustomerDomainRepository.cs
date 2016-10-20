@@ -7,7 +7,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         KeithLink.Svc.Core.Models.Authentication.AuthenticationModel AuthenticateUser(string userName, string password);
         //bool AuthenticateUser(string userName, string password, out string errorMessage);
 
-        string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName);
+        string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName, List<string> permissions);
 
         void DeleteUser(string emailAddress);
 
@@ -19,7 +19,11 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         
         string GetUserGroup(string userName, List<string> groupNames);
 
-		void GrantAccess(string grantedBy, string userName, string roleName);
+        List<string> GetUserPermissions(string userName, List<string> groupNames);
+
+        void SetUserPermissions(string userName, List<string> updatePermits, string updater);
+
+        void GrantAccess(string grantedBy, string userName, string roleName);
 
         bool HasAccess(string userName, string roleName);
 
