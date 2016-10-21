@@ -28,6 +28,7 @@ angular.module('bekApp')
     $scope.defaultList = $scope.selectedList.listid;
   } else {
     $scope.selectedList = $filter('filter')($scope.lists, {name: 'History'})[0];
+    $scope.defaultList = $scope.selectedList.listid;
   }
 
   $scope.isMobile = IsMobile;
@@ -66,7 +67,7 @@ angular.module('bekApp')
   ********************/
 
   $scope.createCart = function(cart, fromFunction) {
-    if($scope.defaultList && $('.defaultCheckbox')[0].checked){
+    if($scope.defaultList && $('.defaultCheckbox')[0] && $('.defaultCheckbox')[0].checked && $scope.listIsOpen){
       ApplicationSettingsService.setDefaultOrderList($scope.selectedList.listid);
     }
 

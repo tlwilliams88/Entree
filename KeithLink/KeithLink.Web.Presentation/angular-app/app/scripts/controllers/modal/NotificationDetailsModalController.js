@@ -10,6 +10,7 @@ angular.module('bekApp')
 
   $scope.closeModal = function() {
     $scope.notification.body = $scope.originalBody;
+    $(document.body).removeClass('NotificationPrinting');
     $modalInstance.dismiss('cancel');
   };
 
@@ -40,6 +41,8 @@ angular.module('bekApp')
           $printSection.id = "printSection";
           document.body.appendChild($printSection);
       }
+
+      $(document.body).addClass('NotificationPrinting');
       
       $printSection.innerHTML = "";
       

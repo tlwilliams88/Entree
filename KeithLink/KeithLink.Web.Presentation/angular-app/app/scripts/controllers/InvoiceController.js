@@ -1,8 +1,8 @@
   'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$q', '$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService', 'blockUI',
-    function ($q, $scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService, blockUI) {
+  .controller('InvoiceController', ['$q', '$scope', '$filter', '$modal', 'Constants', 'InvoiceService', '$rootScope', 'DateService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel', 'BankAccountService', 'blockUI', 'canPayInvoices',
+    function ($q, $scope, $filter, $modal, Constants, InvoiceService, $rootScope, DateService, LocalStorage, CartService, CustomerService, $state, PagingModel, BankAccountService, blockUI, canPayInvoices) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -19,6 +19,7 @@ angular.module('bekApp')
   $scope.selectedSortParameter = 'Invoice Date';
   $scope.sortParametervalue = 'invoicedate';
   $scope.sortDirection = 'Asc';
+  $scope.userCanPayInvoice = canPayInvoices;
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -56,7 +57,7 @@ angular.module('bekApp')
   while(dateRangeEndYear >= dateRangeStartYear){
     $scope.dateRangeYears.push(dateRangeStartYear);
     dateRangeStartYear ++;
-  };
+  }
 
   $scope.dateRangeMonths = moment.months();
 
@@ -114,7 +115,7 @@ angular.module('bekApp')
     $scope.selectedInvoiceFilter = [{
       name:filter.name,
       field:filter.field
-    }]
+    }];
 
     $scope.selectedInvoiceFilter = $scope.selectedInvoiceFilter[0];
   };
@@ -165,7 +166,7 @@ angular.module('bekApp')
 
   $('body').on('click', '.dropdown-dateRange', function() {
     $('.dropdown').removeClass('open');
-  })
+  });
 
   function calculateInvoiceFields(customers) {
     customers.forEach(function(customer) {
@@ -346,7 +347,7 @@ angular.module('bekApp')
     blockUI.start('Loading Invoices...').then(function(){
       invoicePagingModel.loadData().then(function() {
         stopLoading();
-      })
+      });
     });
   }
 
@@ -387,7 +388,7 @@ angular.module('bekApp')
           $scope.selectedFilterViewName = rangeMonth + ', ' + rangeYear;
           invoicePagingModel.setAdditionalParams(dateFilterView[0]);
           loadFilteredInvoices(dateFilterView[0]);
-        })
+        });
       }
     } else {
       blockUI.start('Loading Invoices...').then(function(){
@@ -399,16 +400,11 @@ angular.module('bekApp')
 
   };
 
+  var sortDescending = false;
   $scope.sortInvoices = function(sortDirection, sortField) {
-    var sortDescending;
+    sortDescending = !sortDescending;
 
-    if(sortDirection === 'Asc'){
-      sortDescending = false;
-      $scope.sortDirection = 'Desc';
-    } else {
-      sortDescending = true;
-      $scope.sortDirection = 'Asc';
-    }
+    $scope.sortDirection = sortDirection == 'Asc' ? 'Desc' : 'Asc';
 
     blockUI.start('Sorting Invoices...').then(function(){
       $scope.sort = {
@@ -640,10 +636,12 @@ angular.module('bekApp')
     var total = 0;
     if($scope.invoices.length ){
       $scope.invoices.forEach(function (customer) {
+        customer.total = 0;
         if(customer.invoices.results && customer.invoices.results.length){
           customer.invoices.results.forEach(function (invoice){
             if (invoice.isSelected) {
               total += parseFloat(invoice.paymentAmount || 0);
+              customer.total += parseFloat(invoice.paymentAmount || 0);
             }
           });
         }

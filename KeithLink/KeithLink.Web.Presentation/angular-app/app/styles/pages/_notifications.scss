@@ -12,8 +12,6 @@
 
 .notification-body {
 	margin-bottom:20px; 
-	overflow:auto; 
-	height: 200px;
 }
 
 @media print {
@@ -24,6 +22,7 @@
   #printSection * {
     visibility: visible;
     width: 100%;
+    page-break-after: avoid;
   }
   #printSection {
     position: absolute;
@@ -32,6 +31,8 @@
   }
   .notification-body {
   	height: auto !important;
-  	overflow: hidden !important;
+  }
+  .NotificationPrinting > *:not(#printSection) { /* Used to hide portion of printout that was causing extra blank pages */
+     display: none;
   }
 }
