@@ -87,7 +87,7 @@
   margin-right: auto;
   float: none; 
   width: 45%;
-  padding-top: 10px;
+  padding-top: 20px;
 }
 
 .box:hover > .text {
@@ -99,19 +99,21 @@
 .item-image {
   position: relative;
   float: left;
-  height: 190px;
-  width:90%;
+  height: 185px;
+  width:85%;
+  max-width: 90%;
+  min-width: 80%;
 }
 
 .marketing-description > a {
   width: auto;
-  margin-right: 5px;
+  margin-left: 20px;
   display: block;
   word-wrap: break-word;
   font-weight: bolder;
-  padding-top: 200px;
+  padding-top: 190px;
 }
 
 .marketing-description {
-  width: 91%;
+  width: 79%;
 }
