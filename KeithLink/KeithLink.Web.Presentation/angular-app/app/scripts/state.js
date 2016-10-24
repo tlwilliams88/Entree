@@ -48,6 +48,9 @@ angular.module('bekApp')
           } else if (LocalStorage.getTempBranch()) {
             LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
           }
+        }],
+        mandatoryMessages: ['NotificationService', function(NotificationService) {
+          return NotificationService.mandatoryMessages;
         }]
       }
     })
@@ -73,7 +76,8 @@ angular.module('bekApp')
           return BranchService.getBranches();
         }]
       }
-    })        .state('menu.applicationsettings', {
+    })        
+    .state('menu.applicationsettings', {
       url: '/applicationsettings/',
       templateUrl: 'views/applicationsettings.html',
       controller: 'ApplicationSettingsController',
@@ -603,7 +607,12 @@ angular.module('bekApp')
       controller: 'CustomerGroupDashboardController',
       data: {
         authorize: 'canViewCustomerGroupDashboard'
-      }
+      },
+      resolve : {
+        currentUserProfile : ['UserProfileService', function(UserProfileService){
+        return UserProfileService.getCurrentUserProfile();
+      }]
+      } 
     })
     .state('menu.admin.customergroup', {
       url: 'customergroup/',

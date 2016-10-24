@@ -14,6 +14,7 @@ angular.module('bekApp')
     var Service = {
       userNotificationsCount: { }, // must be an object
       mandatoryMessages: [],
+      systemUpdates: [],
       
       getUnreadMessageCount: function() {
         return $http.get('/messaging/usermessages/unreadcount').then(function(response) {
@@ -34,24 +35,28 @@ angular.module('bekApp')
               case 1: // My order is shipped
               case 32://ETA
                 notification.displayType = 'Order';
-                break;
+              break;
               case 64: //Payment confirmation
               case 2: // My invoices need attention
               case 4: // My invoices need attention
                 notification.displayType = 'Invoice';
-                break;
+              break;
               case 3: // Ben E Keith has news for me
               case 8: // Ben E Keith has news for me
-               notification.displayType = 'News';
-               break;
+                notification.displayType = 'News';
+              break;
               case 16: //Mail
-              notification.displayType = 'Mail';
+                notification.displayType = 'Mail';
               break;
             }
             if(notification.mandatory){
-              notification.displayType = 'News'
+              notification.displayType = 'News';
               if($filter('filter')(Service.mandatoryMessages, {id: notification.id}).length === 0 && !notification.messageread){
-                Service.mandatoryMessages.push(notification);
+                if(notification.label == 'System Update'){
+                  Service.systemUpdates.push(notification);
+                } else {
+                  Service.mandatoryMessages.push(notification);
+                }
               }
             }
           });
@@ -70,6 +75,7 @@ angular.module('bekApp')
         });
 
         return Notification.markAsRead().$promise.then(function() {
+          Service.systemUpdates = [];
           //set unreadcount to 0 to clear notifications counter badge value
           Service.setUnreadCount(0);
         });
