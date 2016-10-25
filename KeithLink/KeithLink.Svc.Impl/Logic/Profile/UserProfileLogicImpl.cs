@@ -826,6 +826,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
+
             acct.CustomerUsers = new List<UserProfile>();
             foreach (Customer c in acct.Customers) {
 				var users = _csProfile.GetUsersForCustomerOrAccount(c.CustomerId);
@@ -846,12 +847,32 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 									.ToList();
 
 			foreach (var up in acct.AdminUsers)
-				up.RoleName = GetUserRole(up.EmailAddress);
-
-            foreach (var up in acct.CustomerUsers)
+            {
                 up.RoleName = GetUserRole(up.EmailAddress);
 
-			
+                // an external user can only edit the adminuser if it is himself
+                if(user.IsInternalUser == false)
+                {
+                    if (up.UserId == user.UserId)
+                    {
+                        up.CanEdit = true;
+                    }
+                }
+                else
+                {
+                    up.CanEdit = true;
+                }
+            }
+
+            foreach (var up in acct.CustomerUsers)
+            {
+                up.RoleName = GetUserRole(up.EmailAddress);
+
+                // the customerusers are always editable
+                up.CanEdit = true;
+            }
+
+
 
 
             return acct;
