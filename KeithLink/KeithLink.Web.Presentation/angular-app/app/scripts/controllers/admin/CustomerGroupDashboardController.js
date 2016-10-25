@@ -19,11 +19,11 @@ angular.module('bekApp')
           if(adminUser.emailaddress === customerUser.emailaddress){
             matchFound = true;
           }
-        })
+        });
         if(!matchFound){
-          $scope.nonAdminCustUsers.push(customerUser)
+          $scope.nonAdminCustUsers.push(customerUser);
         }
-      })
+      });
     }, function() {
       $scope.displayMessage('error', 'An error occured loading the customer group dashboard page (ID: ' + customerGroupId + ').');
       $scope.goToAdminLandingPage();
@@ -88,7 +88,7 @@ angular.module('bekApp')
       $scope.displayMessage('success', 'Successfully deleted customer group.');
     }, function() {
       $scope.displayMessage('error', 'Error deleting customer group.');
-    })
+    });
   };
 
   /**
@@ -258,7 +258,7 @@ angular.module('bekApp')
     CustomerGroupService.getGroups({
           from: 0,
           size: 50,
-          sort: [{order: "asc", field: "name"}]
+          sort: [{order: 'asc', field: 'name'}]
         }).then(function(customerGroups) {
 
     if (customerGroups) {
@@ -275,7 +275,7 @@ angular.module('bekApp')
       // otherwise continue through groups array and save group
           if(duplicateName){
             $scope.currentGroupName = name;
-            document.getElementById("cartName").focus();
+            document.getElementById('cartName').focus();
             toaster.pop('error', 'Error Saving Group -- Cannot have two groups with the same name. Please try renaming this group once more.');
           }else {
             $scope.isRenaming = false;
@@ -283,14 +283,14 @@ angular.module('bekApp')
             saveCustomerGroup(group, true);
           }
       }
-    })
+    });
   };
 
    $scope.addExistingUserWithNoGroup = function (profile) {
-    $scope.customerGroup.adminusers.push(profile)
+    $scope.customerGroup.adminusers.push(profile);
     saveCustomerGroup($scope.customerGroup , true).then(function(promise){
       $state.go('menu.admin.user.edit',{email: $scope.checkEmail, groupId: $scope.customerGroup.id});
-    })
+    });
 
    };
 
@@ -306,8 +306,8 @@ angular.module('bekApp')
         email: $scope.checkEmail
       };    
       UserProfileService.getAllUsers(data).then(function(profiles) {
-         $scope.addExistingUserWithNoGroup(profiles[0])
-       })
+         $scope.addExistingUserWithNoGroup(profiles[0]);
+       });
       }, function(error){
         $scope.displayMessage('error', 'An error occurred: ' + error);
       });
@@ -387,7 +387,7 @@ angular.module('bekApp')
 
     $scope.branches.forEach(function(branch){
       $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
-    })
+    });
   };
 
   $scope.resetMessageFields();
@@ -428,7 +428,7 @@ angular.module('bekApp')
     newEntry.displayName = addedBranch.name;
     newEntry.id = addedBranch.id;
 
-    if(addedBranch.name === "All Users"){    
+    if(addedBranch.name === 'All Users'){    
       $scope.branchRecipients = [];
       $scope.allUsersSelected = true;
       $scope.availableBranches.forEach(function(branch){
@@ -441,7 +441,7 @@ angular.module('bekApp')
   };
 
   $scope.deselectBranch = function(branchName){
-    if(branchName === "All Users"){
+    if(branchName === 'All Users'){
       $scope.allUsersSelected = false;
     }
     $scope.selectedBranch = {};
@@ -450,7 +450,7 @@ angular.module('bekApp')
         branch.selected = false;              
       }
     });
-  }
+  };
 
   $scope.removeFromRecipients = function(recipientId, recipientList) {
     recipientList.forEach(function (current, index) {
@@ -460,12 +460,13 @@ angular.module('bekApp')
     });
   };
 
-  $scope.sendMessage = function (broadcast, customerRecipients, userRecipients) {
+  $scope.sendMessage = function (broadcast, customerRecipients, userRecipients, systemUpdate) {
+    var label = systemUpdate ? 'System Update' : 'Admin Message';
     var payload = {
       customers: [],
       users: [],
       msg: {
-        label: 'Admin Message', // ??
+        label: label, // ??
         subject: broadcast.subject,
         body: broadcast.bodyContent,
         mandatory: false // ??
@@ -474,13 +475,13 @@ angular.module('bekApp')
 
     if($scope.isMandatory){
       payload.msg.mandatory = true;
-      var branches = ''
+      var branches = '';
       if($scope.branchRecipients.length > 0){
         if(!$scope.allUsersSelected){
           //Build string of comma separated branch abbreviations
           $scope.branchRecipients.forEach(function(branch){
           branches = (branches.length === 0) ? branch.id : branches.concat(','+branch.id);
-        })
+        });
         payload.branchtoalert = branches;
       }
         MessagingService.broadcastMandatoryMessage(payload).then(function (success) {

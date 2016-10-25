@@ -24,4 +24,6 @@
 		<div ng-click="dismissNotification(mandatoryMessages[0])"  class="mandatory-message__links"><a>Dismiss </a></div>
 
 	</div>
+	<div ng-if="systemUpdates.length > 0" ng-init="showNotification(systemUpdates[0])">
+	</div>
 </div>
