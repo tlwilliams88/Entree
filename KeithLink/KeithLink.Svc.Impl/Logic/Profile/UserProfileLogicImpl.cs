@@ -520,14 +520,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                                 searchType);
 
                 // if external account, only show the customers this user has access to
-                if (user.IsInternalUser == false)
+                if (list.Results != null && list.Results.Count > 0 && user.IsInternalUser == false)
                 {
                     List<string> mycust = _customerRepo.GetCustomersForUser(user.UserId)
                                                        .Select(myc => myc.CustomerNumber)
                                                        .ToList();
-                    list.Results = list.Results
-                                         .Where(c => mycust.Contains(c.CustomerNumber))
-                                         .ToList();
+                    if (mycust != null)
+                    {
+                        list.Results = list.Results
+                                             .Where(c => mycust.Contains(c.CustomerNumber))
+                                             .ToList();
+                    }
                 }
 
                 return list;
@@ -814,9 +817,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 List<string> mycust = _customerRepo.GetCustomersForUser(user.UserId)
                                                    .Select(myc => myc.CustomerNumber)
                                                    .ToList();
-                acct.Customers = acct.Customers
-                                     .Where(c => mycust.Contains(c.CustomerNumber))
-                                     .ToList();
+                if(mycust != null)
+                {
+                    acct.Customers = acct.Customers
+                                         .Where(c => mycust.Contains(c.CustomerNumber))
+                                         .ToList();
+                }
             }
 
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
