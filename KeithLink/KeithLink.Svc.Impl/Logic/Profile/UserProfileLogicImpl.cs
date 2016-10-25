@@ -817,7 +817,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 List<string> mycust = _customerRepo.GetCustomersForUser(user.UserId)
                                                    .Select(myc => myc.CustomerNumber)
                                                    .ToList();
-                if(mycust != null)
+                if(mycust != null && acct.Customers != null)
                 {
                     acct.Customers = acct.Customers
                                          .Where(c => mycust.Contains(c.CustomerNumber))
