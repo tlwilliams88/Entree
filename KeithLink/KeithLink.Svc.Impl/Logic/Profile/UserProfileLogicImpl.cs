@@ -512,7 +512,29 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 searchTerms = "";
 
             if (!string.IsNullOrEmpty(account))
-                return _customerRepo.GetPagedCustomersForAccount(paging, searchTerms, account.ToGuid().ToCommerceServerFormat(), searchType);
+            {
+                Core.Models.Paging.PagedResults<Customer> list = _customerRepo.
+                    GetPagedCustomersForAccount(paging, 
+                                                searchTerms, 
+                                                account.ToGuid().ToCommerceServerFormat(), 
+                                                searchType);
+
+                // if external account, only show the customers this user has access to
+                if (list.Results != null && list.Results.Count > 0 && user.IsInternalUser == false)
+                {
+                    List<string> mycust = _customerRepo.GetCustomersForUser(user.UserId)
+                                                       .Select(myc => myc.CustomerNumber)
+                                                       .ToList();
+                    if (mycust != null)
+                    {
+                        list.Results = list.Results
+                                             .Where(c => mycust.Contains(c.CustomerNumber))
+                                             .ToList();
+                    }
+                }
+
+                return list;
+            }
 
             if (ProfileHelper.IsInternalAddress(user.EmailAddress))
             {
@@ -789,6 +811,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					cust.CanMessage = false;
 			}
 
+            // if external account, only show the customers this user has access to
+            if (user.IsInternalUser == false)
+            {
+                List<string> mycust = _customerRepo.GetCustomersForUser(user.UserId)
+                                                   .Select(myc => myc.CustomerNumber)
+                                                   .ToList();
+                if(mycust != null && acct.Customers != null)
+                {
+                    acct.Customers = acct.Customers
+                                         .Where(c => mycust.Contains(c.CustomerNumber))
+                                         .ToList();
+                }
+            }
 
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
             acct.CustomerUsers = new List<UserProfile>();
