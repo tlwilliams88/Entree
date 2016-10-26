@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Profile
 {
+    [Serializable]
     public class InvoicePermissionsModel
     {
         [DataMember(Name = "canview")]
