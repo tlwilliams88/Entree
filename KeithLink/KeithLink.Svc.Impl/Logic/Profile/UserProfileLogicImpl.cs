@@ -851,14 +851,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 up.RoleName = GetUserRole(up.EmailAddress);
 
                 // an external user can only edit the adminuser if it is himself
-                if(user.IsInternalUser == false)
+                if(user.IsInternalUser == false && up.UserId == user.UserId)
                 {
-                    if (up.UserId == user.UserId)
-                    {
-                        up.CanEdit = true;
-                    }
+                    up.CanEdit = true;
                 }
-                else
+                else if(user.IsInternalUser)
                 {
                     up.CanEdit = true;
                 }
