@@ -112,6 +112,9 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "canmessage")]
 		public bool CanMessage { get; set; }
 
+        [DataMember(Name = "canedit")]
+        public bool CanEdit { get; set; }
+
         /*
          * To add new permissions you must:
          * 1. Add the constant (a generalized value for the permission which is not environment specific),
