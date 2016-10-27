@@ -82,6 +82,7 @@ namespace KeithLink.Svc.Impl.Helpers
                     item.CasePrice = customInvItem.CasePrice;
                     item.Each = customInvItem.Each;
                     item.PackagePrice = customInvItem.PackagePrice;
+                    item.IsValid = true;
                 }
             }
         }
