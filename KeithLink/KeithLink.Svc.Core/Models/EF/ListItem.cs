@@ -28,5 +28,17 @@ namespace KeithLink.Svc.Core.Models.EF
 		public decimal Quantity { get; set; }
         [MaxLength(24)]
         public string CatalogId { get; set; }
-	}
+        [MaxLength(30)]
+        public string Name { get; set; }
+        [MaxLength(4)]
+        public string Pack { get; set; }
+        [MaxLength(8)]
+        public string Size { get; set; }
+        [MaxLength(6)]
+        public string Vendor { get; set; }
+        [MaxLength(10)]
+        public string CasePrice { get; set; }
+        [MaxLength(10)]
+        public string PackagePrice { get; set; }
+    }
 }

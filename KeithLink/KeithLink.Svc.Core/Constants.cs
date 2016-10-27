@@ -32,6 +32,7 @@ namespace KeithLink.Svc.Core
 
         public const string CATALOG_BEK = "BEK";
         public const string CATALOG_UNFI = "UNFI";
+        public const string CATALOG_CUSTOMINVENTORY = "CUSTOM";
 
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
         public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
