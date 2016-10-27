@@ -826,4 +826,21 @@ angular.module('bekApp')
       }
     }
 
-  }]);
+  $scope.scrollToTop = function($var) {
+    $('.back-to-top').css({'display': 'inline'});
+    var duration = 300;
+    event.preventDefault();
+    jQuery('html, body').animate({scrollTop: 0}, duration);
+    return false;
+  };
+
+  $(window).scroll(function() {
+    if($(this).scrollTop() > 75){
+      $('.back-to-top').fadeIn('fast');
+      $('.back-to-top').css('visibility', 'visible');
+    } else {
+      $('.back-to-top').fadeOut('fast');
+    }
+  });
+
+}]);
