@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Enumerations.List;
+﻿using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.EF;
@@ -82,6 +83,7 @@ namespace KeithLink.Svc.Impl.Helpers
                     item.CasePrice = customInvItem.CasePrice;
                     item.Each = customInvItem.Each;
                     item.PackagePrice = customInvItem.PackagePrice;
+                    item.BrandExtendedDescription = Constants.CATALOG_CUSTOMINVENTORY;
                     item.IsValid = true;
                 }
             }
