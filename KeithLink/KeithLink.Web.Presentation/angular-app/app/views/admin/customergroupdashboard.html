@@ -64,7 +64,16 @@
         <tbody>
           <tr ng-repeat="adminUser in customerGroup.adminusers | orderBy:sortBy1:sortOrder1"
               ng-class="{ odd : $odd, even: $even }">
-            <td><a class="btn-link" ui-sref="{{userDetailState}}({email: adminUser.emailaddress, groupId: customerGroup.id})">{{adminUser.emailaddress}}</a></td>
+            <td>
+              <span ng-if="adminUser.canedit">
+                <a class="btn-link" ui-sref="{{userDetailState}}({email: adminUser.emailaddress, groupId: customerGroup.id})">
+                  {{adminUser.emailaddress}}
+                </a>
+              </span>
+              <span ng-if="!adminUser.canedit">
+                {{adminUser.emailaddress}}
+              </span>
+            </td>
             <td>{{adminUser.firstname}}</td>
             <td>{{adminUser.lastname}}</td>
             <td>
@@ -83,7 +92,7 @@
 
     <h3>Customer Users</h3>
 
-    <form name="addNewCustomerUserForm" class="search-form" ng-show="canEditUsers">
+    <form name="addNewCustomerUserForm" class="search-form" ng-show="caneditUsers">
       <div class="form-inline">
         <div class="form-group">
           
@@ -150,7 +159,11 @@
         </tr>
         <tr ng-repeat="customerUser in nonAdminCustUsers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
             ng-class="{ odd : $odd, even: $even }">
-          <td><a class="btn-link" ui-sref="{{userDetailState}}({email: customerUser.emailaddress, groupId: customerGroup.id})">{{customerUser.emailaddress}}</a></td>
+          <td>
+            <a class="btn-link" ui-sref="{{userDetailState}}({email: customerUser.emailaddress, groupId: customerGroup.id})">
+              {{customerUser.emailaddress}}
+            </a>
+          </td>
           <td>{{customerUser.firstname}}</td>
           <td>{{customerUser.lastname}}</td>
           <td class="text-capitalize">{{customerUser.rolename | roleName}}</td>
