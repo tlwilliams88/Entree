@@ -1291,7 +1291,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     ReadOnly = l.ReadOnly || (!user.IsInternalUser && l.Type.Equals(ListType.RecommendedItems) || (!user.IsInternalUser && l.Type.Equals(ListType.Mandatory))),
                     SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
                     IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
-                    IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)
+                    IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId),
+                    IsCustomInventory = l.Type == ListType.CustomInventory,
+                    Type = l.Type
                 })
                            .ToList();
             else {
@@ -1347,7 +1349,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                             l.Type == ListType.Reminder ||
                                             l.Type == ListType.RecommendedItems ||
                                             l.Type == ListType.Mandatory ||
-                                            l.Type == ListType.CustomInventory);
+                                            l.Type == ListType.CustomInventory).ToList();
             return list;
         }
 
