@@ -57,7 +57,7 @@ namespace KeithLink.Svc.Impl.Helpers
                                                            CACHE_NAME,
                                                            string.Format("CustomInventoryDictionary_{0}_{1}",
                                                                          catalogInfo.BranchId,
-                                                                         catalogInfo.CustomerId), TimeSpan.FromHours(2), inventorydictionary);
+                                                                         catalogInfo.CustomerId), TimeSpan.FromMinutes(5), inventorydictionary);
 
             }
             else
