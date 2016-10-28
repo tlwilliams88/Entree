@@ -43,6 +43,7 @@ namespace KeithLink.Svc.Impl.Helpers
                                                                {
                                                                    ItemNumber = li.ItemNumber.Trim(),
                                                                    Name = li.Name.Trim(),
+                                                                   Brand = li.Brand.Trim(),
                                                                    Vendor = li.Vendor.Trim(),
                                                                    Pack = li.Pack.Trim(),
                                                                    Size = li.Size.Trim(),
@@ -76,6 +77,7 @@ namespace KeithLink.Svc.Impl.Helpers
                 {
                     CustomInventoryItem customInvItem = (CustomInventoryItem)inventorydictionary[item.ItemNumber];
                     item.Name = customInvItem.Name;
+                    item.BrandExtendedDescription = customInvItem.Brand;
                     item.Pack = customInvItem.Pack;
                     item.Size = customInvItem.Size;
                     item.PackSize = string.Format("{0} / {1}", item.Pack, item.Size);

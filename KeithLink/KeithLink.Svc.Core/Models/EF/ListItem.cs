@@ -30,6 +30,8 @@ namespace KeithLink.Svc.Core.Models.EF
         public string CatalogId { get; set; }
         [MaxLength(30)]
         public string Name { get; set; }
+        [MaxLength(6)]
+        public string Brand { get; set; }
         [MaxLength(4)]
         public string Pack { get; set; }
         [MaxLength(8)]

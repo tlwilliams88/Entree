@@ -132,6 +132,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             {
                 item.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
                 item.Name = newItem.Name;
+                item.Brand = newItem.Brand;
                 item.Pack = newItem.Pack;
                 item.Size = newItem.Size;
                 item.Vendor = newItem.Vendor1;
@@ -190,6 +191,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 {
                     itm.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
                     itm.Name = item.Name;
+                    itm.Brand = item.Brand;
                     itm.Pack = item.Pack;
                     itm.Size = item.Size;
                     itm.Vendor = item.Vendor1;
@@ -1436,6 +1438,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             {
                 itm.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
                 itm.Name = item.Name;
+                itm.Brand = item.Brand;
                 itm.Pack = item.Pack;
                 itm.Size = item.Size;
                 itm.Vendor = item.Vendor1;

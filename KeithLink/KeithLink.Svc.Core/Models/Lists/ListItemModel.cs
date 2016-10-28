@@ -79,6 +79,9 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "brandextendeddescription")]
+        public string Brand { get; set; }
+
         [DataMember(Name = "pack")]
         public string Pack { get; set; }
 

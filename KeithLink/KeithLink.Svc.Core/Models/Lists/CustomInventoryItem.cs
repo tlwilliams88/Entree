@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Models.Lists
     {
         public string ItemNumber { get; set; }
         public string Name { get; set; }
+        public string Brand { get; set; }
         public string Pack { get; set; }
         public string Size { get; set; }
         public string Vendor { get; set; }
