@@ -41,14 +41,14 @@ namespace KeithLink.Svc.Impl.Helpers
                                                  .ToDictionary(li => li.ItemNumber,
                                                                li => new CustomInventoryItem()
                                                                {
-                                                                   ItemNumber = li.ItemNumber.Trim(),
-                                                                   Name = li.Name.Trim(),
-                                                                   Brand = li.Brand.Trim(),
-                                                                   Vendor = li.Vendor.Trim(),
-                                                                   Pack = li.Pack.Trim(),
-                                                                   Size = li.Size.Trim(),
-                                                                   CasePrice = li.CasePrice.Trim(),
-                                                                   PackagePrice = li.PackagePrice.Trim(),
+                                                                   ItemNumber = li.ItemNumber,
+                                                                   Name = li.Name,
+                                                                   Brand = li.Brand,
+                                                                   Vendor = li.Vendor,
+                                                                   Pack = li.Pack,
+                                                                   Size = li.Size,
+                                                                   CasePrice = li.CasePrice,
+                                                                   PackagePrice = li.PackagePrice,
                                                                    Each = (li.Each != null) ? li.Each.Value : false
                                                                });
                 }
