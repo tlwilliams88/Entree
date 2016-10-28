@@ -37,20 +37,25 @@ namespace KeithLink.Svc.Impl.Helpers
                                          .FirstOrDefault();
                 if (inventory != null)
                 {
-                    inventorydictionary = inventory.Items
-                                                 .ToDictionary(li => li.ItemNumber,
-                                                               li => new CustomInventoryItem()
-                                                               {
-                                                                   ItemNumber = li.ItemNumber,
-                                                                   Name = li.Name,
-                                                                   Brand = li.Brand,
-                                                                   Vendor = li.Vendor,
-                                                                   Pack = li.Pack,
-                                                                   Size = li.Size,
-                                                                   CasePrice = li.CasePrice,
-                                                                   PackagePrice = li.PackagePrice,
-                                                                   Each = (li.Each != null) ? li.Each.Value : false
-                                                               });
+                    inventorydictionary = new Dictionary<string, CustomInventoryItem>();
+                    foreach (var itm in inventory.Items)
+                    {
+                        if (inventorydictionary.Keys.Contains(itm.ItemNumber) == false)
+                        {
+                            inventorydictionary.Add(itm.ItemNumber, new CustomInventoryItem()
+                            {
+                                ItemNumber = itm.ItemNumber,
+                                Name = itm.Name,
+                                Brand = itm.Brand,
+                                Vendor = itm.Vendor,
+                                Pack = itm.Pack,
+                                Size = itm.Size,
+                                CasePrice = itm.CasePrice,
+                                PackagePrice = itm.PackagePrice,
+                                Each = (itm.Each != null) ? itm.Each.Value : false
+                            });
+                        }
+                    }
                 }
                 cache.AddItem<Dictionary<string, CustomInventoryItem>>(CACHE_GROUPNAME,
                                                            CACHE_PREFIX,
