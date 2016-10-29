@@ -76,6 +76,17 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "catalog_id")]
         public string CatalogId { get; set; }
 
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "pack")]
+        public string Pack { get; set; }
+
+        [DataMember(Name = "size")]
+        public string Size { get; set; }
+
+        [DataMember(Name = "vendor1")]
+        public string Vendor1 { get; set; }
         #endregion
 
         #region functions

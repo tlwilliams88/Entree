@@ -278,6 +278,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="Helpers\ContractInformationHelper.cs" />
+    <Compile Include="Helpers\CustomInventoryHelper.cs" />
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\OrderSubmissionHelper.cs" />
@@ -390,7 +391,6 @@
     <Compile Include="Repository\EF\Migrations\201607291615377_Create additional index on user message.Designer.cs">
       <DependentUpon>201607291615377_Create additional index on user message.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.Designer.cs">
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>

@@ -57,7 +57,10 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember(Name = "isrecommended")]
 		public bool IsRecommended { get; set; }
-		
+
+        [DataMember(Name = "iscustominventory")]
+        public bool IsCustomInventory { get; set; }
+
         public string BranchId { get; set; }
 
 		[DataMember]
