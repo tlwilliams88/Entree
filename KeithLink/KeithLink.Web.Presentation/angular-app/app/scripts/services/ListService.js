@@ -97,6 +97,20 @@ angular.module('bekApp')
           permissions.canAddItems = true;
           permissions.canDeleteItems = true;
           permissions.canReorderItems = true;
+
+        } else if (list.iscustominventory) {
+            permissions.canEditList = true;
+            permissions.canDeleteList = true;
+            permissions.canDeleteItems = true;
+            permissions.canAddItems = false;
+            permissions.canRenameList = true;
+            permissions.canSeeLabels = true;
+            permissions.canEditLabels = true;
+            permissions.canSeeParlevel = true;
+            permissions.canEditParlevel = true;
+            permissions.canShareList = true;
+            permissions.canCopyList = true;
+            permissions.canReorderItems = true;
         
         // CUSTOM LISTS (only these can be shared/copied)
         } else {
@@ -292,11 +306,11 @@ angular.module('bekApp')
               list.items = list.items.results;
               list.items.forEach(function(item){
                 if(item.onhand < 0.01){
-                  item.onhand = ''
+                  item.onhand = '';
                 } else if(item.quantity < 1){
-                    item.quantity = ''
+                    item.quantity = '';
                 }
-              })
+              });
 
               // get calculated fields
               PricingService.updateCaculatedFields(list.items);
@@ -615,7 +629,8 @@ angular.module('bekApp')
             listId: listId
           }, newItems).$promise.then(function() {
             // TODO: favorite all items if favorites list
-            toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
+            var numberOfItems = items.length > 1 ? 'items' : 'item';
+            toaster.pop('success', null, 'Successfully added ' + items.length + ' ' + numberOfItems + ' to list.');
             return Service.getList(listId);
           }, function(error) {
             toaster.pop('error', null, 'Error adding ' + items.length + ' items to list.');
