@@ -128,6 +128,18 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 CatalogId = newItem.CatalogId
             };
 
+            if (list.Type == ListType.CustomInventory)
+            {
+                item.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
+                item.Name = newItem.Name;
+                item.Brand = newItem.BrandExtendedDescription;
+                item.Pack = newItem.Pack;
+                item.Size = newItem.Size;
+                item.Vendor = newItem.Vendor1;
+                item.CasePrice = newItem.CasePrice;
+                item.PackagePrice = newItem.PackagePrice;
+            }
+
             list.Items.Add(item);
             _listRepo.CreateOrUpdate(list);
             _uow.SaveChanges();
@@ -136,6 +148,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 GenerateNewRecommendItemNotification(list.CustomerId, list.BranchId); //Send a notification that new recommended items have been added
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
+            if (list.Type == ListType.CustomInventory)
+            {
+                CustomInventoryHelper.RemoveCache(_cache, list.BranchId, list.CustomerId);
+            }
 
             return item.Id;
         }
@@ -159,8 +175,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
                 string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, item);
 
-                list.Items.Add(
-                    new ListItem()
+                ListItem itm = new ListItem()
                     {
                         ItemNumber = item.ItemNumber,
                         Label = item.Label,
@@ -170,7 +185,22 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                         Position = nextPosition,
                         Quantity = item.Quantity,
                         CatalogId = item.CatalogId
-                    });
+                    };
+
+                if (list.Type == ListType.CustomInventory)
+                {
+                    itm.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
+                    itm.Name = item.Name;
+                    itm.Brand = item.BrandExtendedDescription;
+                    itm.Pack = item.Pack;
+                    itm.Size = item.Size;
+                    itm.Vendor = item.Vendor1;
+                    itm.CasePrice = item.CasePrice;
+                    itm.PackagePrice = item.PackagePrice;
+                }
+
+                list.Items.Add(itm);
+
                 nextPosition++;
             }
 
@@ -632,18 +662,32 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             var products = _catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
             var productHash = products.Products.ToDictionary(p => p.ItemNumber);
 
+            Dictionary<string, CustomInventoryItem> customInventory = null;
+            // Only activate customInventory if there are items with the sentinal CatalogId
+            if (list.Items.Any(li => li.CatalogId == Constants.CATALOG_CUSTOMINVENTORY))
+            {
+                customInventory = CustomInventoryHelper.GetCustomInventoryInformation(catalogInfo, _listRepo, _cache);
+            }
+
             Parallel.ForEach(list.Items, listItem =>
             {
-                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
-                if (prod != null)
+                if (listItem.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    listItem.IsValid = true;
-                    listItem.Name = prod.Name;
-                    listItem.Pack = prod.Pack;
-                    listItem.Size = prod.Size;
-                    listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                    CustomInventoryHelper.AddCustomInventoryItemInformationIfCustomerHasCustomInventory
+                        (customInventory, ref listItem);
                 }
-
+                else
+                {
+                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+                    if (prod != null)
+                    {
+                        listItem.IsValid = true;
+                        listItem.Name = prod.Name;
+                        listItem.Pack = prod.Pack;
+                        listItem.Size = prod.Size;
+                        listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                    }
+                }
             });
         }
 
@@ -705,6 +749,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 totalProcessed += 50;
             }
 
+            Dictionary<string, CustomInventoryItem> customInventory = null;
+            // Only activate customInventory if there are items with the sentinal CatalogId
+            if (list.Items.Any(li => li.CatalogId == Constants.CATALOG_CUSTOMINVENTORY))
+            {
+                customInventory = CustomInventoryHelper.GetCustomInventoryInformation(catalogInfo, _listRepo, _cache);
+            }
 
             var productHash = products.Products.GroupBy(p => p.ItemNumber)
                                                .Select(i => i.First())
@@ -714,66 +764,73 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                                                .ToList();
             Parallel.ForEach(list.Items, listItem =>
             {
-                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
-
-                if (prod != null)
+                if (listItem.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    listItem.IsValid = true;
-                    listItem.Name = prod.Name;
-                    listItem.Pack = prod.Pack;
-                    listItem.Size = prod.Size;
-                    listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-                    listItem.Size = prod.Size;
-                    listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
-                    listItem.Description = prod.Description;
-                    listItem.Brand = prod.BrandExtendedDescription;
-                    listItem.ReplacedItem = prod.ReplacedItem;
-                    listItem.ReplacementItem = prod.ReplacementItem;
-                    listItem.NonStock = prod.NonStock;
-                    listItem.ChildNutrition = prod.ChildNutrition;
-                    listItem.SellSheet = prod.SellSheet;
-                    listItem.CatchWeight = prod.CatchWeight;
-                    listItem.ItemClass = prod.ItemClass;
-                    listItem.CategoryCode = prod.CategoryCode;
-                    listItem.SubCategoryCode = prod.SubCategoryCode;
-                    listItem.CategoryName = prod.CategoryName;
-                    listItem.UPC = prod.UPC;
-                    listItem.VendorItemNumber = prod.VendorItemNumber;
-                    listItem.Cases = prod.Cases;
-                    listItem.Kosher = prod.Kosher;
-                    listItem.ManufacturerName = prod.ManufacturerName;
-                    listItem.ManufacturerNumber = prod.ManufacturerNumber;
-                    listItem.AverageWeight = prod.AverageWeight;
-                    listItem.TempZone = prod.TempZone;
-                    listItem.IsSpecialtyCatalog = prod.CatalogId.StartsWith("UNFI", StringComparison.InvariantCultureIgnoreCase);
-                    listItem.Unfi = prod.Unfi;
-                    if (prod.Nutritional != null)
+                    CustomInventoryHelper.AddCustomInventoryItemInformationIfCustomerHasCustomInventory
+                        (customInventory, ref listItem);
+                }
+                else
+                {
+                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+
+                    if (prod != null)
                     {
-                        listItem.StorageTemp = prod.Nutritional.StorageTemp;
-                        listItem.Nutritional = new Nutritional()
+                        listItem.IsValid = true;
+                        listItem.Name = prod.Name;
+                        listItem.Pack = prod.Pack;
+                        listItem.Size = prod.Size;
+                        listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                        listItem.Size = prod.Size;
+                        listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
+                        listItem.Description = prod.Description;
+                        listItem.Brand = prod.BrandExtendedDescription;
+                        listItem.ReplacedItem = prod.ReplacedItem;
+                        listItem.ReplacementItem = prod.ReplacementItem;
+                        listItem.NonStock = prod.NonStock;
+                        listItem.ChildNutrition = prod.ChildNutrition;
+                        listItem.SellSheet = prod.SellSheet;
+                        listItem.CatchWeight = prod.CatchWeight;
+                        listItem.ItemClass = prod.ItemClass;
+                        listItem.CategoryCode = prod.CategoryCode;
+                        listItem.SubCategoryCode = prod.SubCategoryCode;
+                        listItem.CategoryName = prod.CategoryName;
+                        listItem.UPC = prod.UPC;
+                        listItem.VendorItemNumber = prod.VendorItemNumber;
+                        listItem.Cases = prod.Cases;
+                        listItem.Kosher = prod.Kosher;
+                        listItem.ManufacturerName = prod.ManufacturerName;
+                        listItem.ManufacturerNumber = prod.ManufacturerNumber;
+                        listItem.AverageWeight = prod.AverageWeight;
+                        listItem.TempZone = prod.TempZone;
+                        listItem.IsSpecialtyCatalog = prod.CatalogId.StartsWith("UNFI", StringComparison.InvariantCultureIgnoreCase);
+                        listItem.Unfi = prod.Unfi;
+                        if (prod.Nutritional != null)
                         {
-                            CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
-                            GrossWeight = prod.Nutritional.GrossWeight,
-                            HandlingInstructions = prod.Nutritional.HandlingInstructions,
-                            Height = prod.Nutritional.Height,
-                            Length = prod.Nutritional.Length,
-                            Ingredients = prod.Nutritional.Ingredients,
-                            Width = prod.Nutritional.Width
+                            listItem.StorageTemp = prod.Nutritional.StorageTemp;
+                            listItem.Nutritional = new Nutritional()
+                            {
+                                CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                                GrossWeight = prod.Nutritional.GrossWeight,
+                                HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                                Height = prod.Nutritional.Height,
+                                Length = prod.Nutritional.Length,
+                                Ingredients = prod.Nutritional.Ingredients,
+                                Width = prod.Nutritional.Width
+                            };
+                        }
+                        listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel()
+                        {
+                            CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) &&
+                                                                    f.UnitOfMeasure.Equals("C"))
+                                                        .Select(p => p.AverageUse)
+                                                        .FirstOrDefault(),
+                            PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) &&
+                                                                       f.UnitOfMeasure.Equals("P"))
+                                                           .Select(p => p.AverageUse)
+                                                           .FirstOrDefault()
                         };
                     }
-                    listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel()
-                    {
-                        CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) &&
-                                                                f.UnitOfMeasure.Equals("C"))
-                                                    .Select(p => p.AverageUse)
-                                                    .FirstOrDefault(),
-                        PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) &&
-                                                                   f.UnitOfMeasure.Equals("P"))
-                                                       .Select(p => p.AverageUse)
-                                                       .FirstOrDefault()
-                    };
                 }
-
             });
         }
 
@@ -1060,6 +1117,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
                 var cachedPagedList = ToPagedList(paging, cachedReturnList);
+
                 LookupPrices(user, cachedPagedList.Items.Results, catalogInfo);
 
                 return cachedPagedList;
@@ -1088,12 +1146,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
 
-
-
             var pagedList = ToPagedList(paging, returnList);
 
             LookupPrices(user, pagedList.Items.Results, catalogInfo);
-
 
             return pagedList;
         }
@@ -1238,7 +1293,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     ReadOnly = l.ReadOnly || (!user.IsInternalUser && l.Type.Equals(ListType.RecommendedItems) || (!user.IsInternalUser && l.Type.Equals(ListType.Mandatory))),
                     SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
                     IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
-                    IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)
+                    IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId),
+                    IsCustomInventory = l.Type == ListType.CustomInventory,
+                    Type = l.Type
                 })
                            .ToList();
             else {
@@ -1293,7 +1350,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                             l.Type == ListType.ContractItemsDeleted ||
                                             l.Type == ListType.Reminder ||
                                             l.Type == ListType.RecommendedItems ||
-                                            l.Type == ListType.Mandatory);
+                                            l.Type == ListType.Mandatory ||
+                                            l.Type == ListType.CustomInventory).ToList();
             return list;
         }
 
@@ -1363,7 +1421,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// <param name="item"></param>
         public void UpdateItem(UserProfile user, UserSelectedContext catalogInfo, ListItemModel item)
         {
-            _listItemRepo.Update(new ListItem()
+            var existingItem = _listItemRepo.Read(i => i.Id.Equals(item.ListItemId), l => l.ParentList)
+                .FirstOrDefault();
+
+            ListItem itm = new ListItem()
             {
                 Id = item.ListItemId,
                 ItemNumber = item.ItemNumber,
@@ -1371,7 +1432,22 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 Par = item.ParLevel,
                 Position = item.Position,
                 Each = item.Each
-            });
+            };
+
+            if (existingItem.ParentList.Type == ListType.CustomInventory)
+            {
+                itm.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
+                itm.Name = item.Name;
+                itm.Brand = item.BrandExtendedDescription;
+                itm.Pack = item.Pack;
+                itm.Size = item.Size;
+                itm.Vendor = item.Vendor1;
+                itm.CasePrice = item.CasePrice;
+                itm.PackagePrice = item.PackagePrice;
+            }
+
+            _listItemRepo.Update(itm);
+
             _uow.SaveChanges();
 
             var updatedItem = _listItemRepo.Read(i => i.Id.Equals(item.ListItemId), l => l.ParentList)
@@ -1380,6 +1456,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             if (updatedItem != null && updatedItem.ParentList != null)
             {
                 _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", updatedItem.ParentList.Id)); //Invalidate cache
+                if (updatedItem.ParentList.Type == ListType.CustomInventory)
+                {
+                    CustomInventoryHelper.RemoveCache
+                        (_cache, updatedItem.ParentList.BranchId, updatedItem.ParentList.CustomerId);
+                }
             }
         }
 
