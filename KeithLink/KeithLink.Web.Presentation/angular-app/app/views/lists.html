@@ -396,7 +396,7 @@
 
           <tbody 
               ng-class="{ 'item-selected': item.isSelected }" 
-              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | orderBy: 'position' | filter:{listitemid: '!!', isdeleted:'!true'}"
+              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}"
               data-product="{{item}}" 
               data-drag="dragEnabled" 
               data-jqyoui-options="{
@@ -809,7 +809,7 @@
         class="text-right margin-bottom-10">
           <button 
           type="button" 
-          class="btn btn-primary btn-lg pull-left" 
+          class="btn btn-primary btn-lg pull-left-xs pull-left-sm pull-left-md pull-right-lg" 
           ng-click="addNewItemToList()">
           Add Item To List
           </button>
