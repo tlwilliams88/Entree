@@ -23,6 +23,8 @@ angular.module('bekApp')
         item.sortPriority = 5;
       } else if (item.isrecommended) {
         item.sortPriority = 6;
+      } else if (item.iscustominventory) {
+        item.sortPriority = 7;
       } else {
         item.sortPriority = 10;
       }

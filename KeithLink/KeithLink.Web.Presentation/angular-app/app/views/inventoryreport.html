@@ -217,7 +217,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }" ng-style="item.catalog_id == 'CUSTOM' && {'border-left': '3px solid orange'}">
             <td>{{item.position}}</td>
             <td>
               <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>

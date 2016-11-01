@@ -127,6 +127,7 @@ angular.module('bekApp')
         var nextLineNumber = $scope.report.items.length + 1,
             reportItem = {
               itemnumber: item.itemnumber,
+              catalog_id: item.catalog_id,
               position: nextLineNumber,
               name: item.name,
               packsize: item.packsize,
