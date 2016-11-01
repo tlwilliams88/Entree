@@ -12,8 +12,8 @@
         <li class="dropdown-submenu dateRangeDropdown dropdown-submenu-mobile">
           <a>Paid Invoices By Month<span class="pull-right icon-arrow-right6"></span></a>
           <ul class="dropdown-menu" style="margin-top:0;">
-            <li class="dropdown-submenu dropdown-submenu-mobile-months" is-open="paidDateRangeYear.isOpen" ng-repeat="paidDateRangeYear in dateRangeYears">
-              <a ng-click="paidDateRangeYear.isOpen = !paidDateRangeYear.isOpen" data-toggle="dropdown">{{paidDateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
+            <li class="dropdown-submenu dropdown-submenu-mobile-months" is-open="paidDateRangeYearIsOpen" ng-repeat="paidDateRangeYear in dateRangeYears">
+              <a ng-click="paidDateRangeYearIsOpen = !paidDateRangeYearIsOpen" data-toggle="dropdown">{{paidDateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
               <ul class="dropdown-menu" style="margin-top:0;">
                 <li ng-repeat="paidDateRangeMonth in dateRangeMonths">
                   <a class="dropdown-dateRange" data-toggle="dropdown" ng-click="selectFilterView('Paid Date Range', paidDateRangeYear, paidDateRangeMonth)">{{paidDateRangeMonth}}</a>
@@ -25,8 +25,8 @@
         <li class="dropdown-submenu dateRangeDropdown dropdown-submenu-mobile">
           <a>All Invoices By Month<span class="pull-right icon-arrow-right6"></span></a>
           <ul class="dropdown-menu" style="margin-top:0;">
-            <li class="dropdown-submenu dropdown-submenu-mobile-months" is-open="dateRangeYear.isOpen" ng-repeat="dateRangeYear in dateRangeYears">
-              <a ng-click="dateRangeYear.isOpen = !dateRangeYear.isOpen" data-toggle="dropdown">{{dateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
+            <li class="dropdown-submenu dropdown-submenu-mobile-months" is-open="dateRangeYearIsOpen" ng-repeat="dateRangeYear in dateRangeYears">
+              <a ng-click="dateRangeYearIsOpen = !dateRangeYearIsOpen" data-toggle="dropdown">{{dateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
               <ul class="dropdown-menu" style="margin-top:0;">
                 <li ng-repeat="dateRangeMonth in dateRangeMonths">
                   <a class="dropdown-dateRange" data-toggle="dropdown" ng-click="selectFilterView('Date Range', dateRangeYear, dateRangeMonth)">{{dateRangeMonth}}</a>
