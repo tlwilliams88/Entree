@@ -14,7 +14,7 @@
     <RootNamespace>KeithLink.Svc.WebApi</RootNamespace>
     <AssemblyName>KeithLink.Svc.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -279,6 +279,7 @@
     <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ContentManagementController.cs" />
+    <Compile Include="Controllers\CustomInventoryController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\MessagingController.cs" />
     <Compile Include="Controllers\ImportController.cs" />

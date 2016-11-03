@@ -18,12 +18,12 @@ namespace KeithLink.Svc.Impl.Helpers
         private const string CACHE_GROUPNAME = "CustomInventory";
         private const string CACHE_NAME = "CustomInventory";
         private const string CACHE_PREFIX = "Default";
-        public static Dictionary<string, CustomInventoryItem> GetCustomInventoryInformation
+        public static Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel> GetCustomInventoryInformation
             (UserSelectedContext catalogInfo, IListRepository listRepo, ICacheRepository cache)
         {
-            Dictionary<string, CustomInventoryItem> inventorydictionary = new Dictionary<string, CustomInventoryItem>();
+            Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel> inventorydictionary = new Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel>();
 
-            Dictionary<string, CustomInventoryItem> cachedInventorydictionary = cache.GetItem<Dictionary<string, CustomInventoryItem>>(CACHE_GROUPNAME,
+            Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel> cachedInventorydictionary = cache.GetItem<Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel>>(CACHE_GROUPNAME,
                                                                                                              CACHE_PREFIX,
                                                                                                              CACHE_NAME,
                                                                                                              string.Format("CustomInventoryDictionary_{0}_{1}",
@@ -32,37 +32,37 @@ namespace KeithLink.Svc.Impl.Helpers
 
             if (cachedInventorydictionary == null)
             {
-                List inventory = listRepo.ReadListForCustomer(catalogInfo, true)
-                                         .Where(i => i.Type == ListType.CustomInventory)
-                                         .FirstOrDefault();
-                if (inventory != null)
-                {
-                    inventorydictionary = new Dictionary<string, CustomInventoryItem>();
-                    foreach (var itm in inventory.Items)
-                    {
-                        if (inventorydictionary.Keys.Contains(itm.ItemNumber) == false)
-                        {
-                            inventorydictionary.Add(itm.ItemNumber, new CustomInventoryItem()
-                            {
-                                ItemNumber = itm.ItemNumber,
-                                Name = itm.Name,
-                                Brand = itm.Brand,
-                                Vendor = itm.Vendor,
-                                Pack = itm.Pack,
-                                Size = itm.Size,
-                                CasePrice = itm.CasePrice,
-                                PackagePrice = itm.PackagePrice,
-                                Each = (itm.Each != null) ? itm.Each.Value : false
-                            });
-                        }
-                    }
-                }
-                cache.AddItem<Dictionary<string, CustomInventoryItem>>(CACHE_GROUPNAME,
-                                                           CACHE_PREFIX,
-                                                           CACHE_NAME,
-                                                           string.Format("CustomInventoryDictionary_{0}_{1}",
-                                                                         catalogInfo.BranchId,
-                                                                         catalogInfo.CustomerId), TimeSpan.FromMinutes(5), inventorydictionary);
+                //List inventory = listRepo.ReadListForCustomer(catalogInfo, true)
+                //                         .Where(i => i.Type == ListType.CustomInventory)
+                //                         .FirstOrDefault();
+                //if (inventory != null)
+                //{
+                //    inventorydictionary = new Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel>();
+                //    foreach (var itm in inventory.Items)
+                //    {
+                //        if (inventorydictionary.Keys.Contains(itm.ItemNumber) == false)
+                //        {
+                //            inventorydictionary.Add(itm.ItemNumber, new Core.Models.Lists.CustomInventoryItemReturnModel()
+                //            {
+                //                ItemNumber = itm.ItemNumber,
+                //                Name = itm.Name,
+                //                Brand = itm.Brand,
+                //                Vendor = itm.Vendor,
+                //                Pack = itm.Pack,
+                //                Size = itm.Size,
+                //                CasePrice = itm.CasePrice,
+                //                PackagePrice = itm.PackagePrice,
+                //                Each = (itm.Each != null) ? itm.Each.Value : false
+                //            });
+                //        }
+                //    }
+                //}
+                //cache.AddItem<Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel>>(CACHE_GROUPNAME,
+                //                                           CACHE_PREFIX,
+                //                                           CACHE_NAME,
+                //                                           string.Format("CustomInventoryDictionary_{0}_{1}",
+                //                                                         catalogInfo.BranchId,
+                //                                                         catalogInfo.CustomerId), TimeSpan.FromMinutes(5), inventorydictionary);
 
             }
             else
@@ -74,13 +74,13 @@ namespace KeithLink.Svc.Impl.Helpers
         }
 
         public static void AddCustomInventoryItemInformationIfCustomerHasCustomInventory
-            (Dictionary<string, CustomInventoryItem> inventorydictionary, ref ListItemModel item)
+            (Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel> inventorydictionary, ref ListItemModel item)
         {
             if (inventorydictionary.Count > 0)
             {
                 if (inventorydictionary.ContainsKey(item.ItemNumber))
                 {
-                    CustomInventoryItem customInvItem = (CustomInventoryItem)inventorydictionary[item.ItemNumber];
+                    Core.Models.Lists.CustomInventoryItemReturnModel customInvItem = (Core.Models.Lists.CustomInventoryItemReturnModel)inventorydictionary[item.ItemNumber];
                     item.Name = customInvItem.Name;
                     item.BrandExtendedDescription = customInvItem.Brand;
                     item.Pack = customInvItem.Pack;
