@@ -316,6 +316,7 @@
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowDocumentReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ImageNowViewQueryReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
+    <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
     <Compile Include="Models\Lists\InHistoryReturnModel.cs" />
     <Compile Include="Models\Lists\ListCopyResultModel.cs" />

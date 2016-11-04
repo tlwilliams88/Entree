@@ -43,6 +43,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #region attributes
         private readonly ICacheRepository _cache;
         private readonly ICatalogLogic _catalogLogic;
+        private readonly ICustomInventoryItemsRepository _customInventoryRepo;
         private readonly ICustomerRepository _customerRepo;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IItemHistoryRepository     _itemHistoryRepo;
@@ -66,11 +67,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                             ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic,
                             IProductImageRepository productImageRepository, IListShareRepository listShareRepository, ICustomerRepository customerRepository, 
                             IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository, ISettingsRepository settingsRepo,
-                            IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository) {
+                            IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository, ICustomInventoryItemsRepository customInventoryRepo) {
 
             _cache = listCacheRepository;
             _catalogLogic = catalogLogic;
             _customerRepo = customerRepository;
+            _customInventoryRepo = customInventoryRepo;
             _itemHistoryRepo = itemHistoryRepository;
             _externalCatalogRepo = externalCatalogRepository;
             _listItemRepo = listItemRepository;
@@ -128,18 +130,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 CatalogId = newItem.CatalogId
             };
 
-            //if (list.Type == ListType.CustomInventory)
-            //{
-            //    item.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
-            //    item.Name = newItem.Name;
-            //    item.Brand = newItem.BrandExtendedDescription;
-            //    item.Pack = newItem.Pack;
-            //    item.Size = newItem.Size;
-            //    item.Vendor = newItem.Vendor1;
-            //    item.CasePrice = newItem.CasePrice;
-            //    item.PackagePrice = newItem.PackagePrice;
-            //}
-
             list.Items.Add(item);
             _listRepo.CreateOrUpdate(list);
             _uow.SaveChanges();
@@ -148,10 +138,40 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 GenerateNewRecommendItemNotification(list.CustomerId, list.BranchId); //Send a notification that new recommended items have been added
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
-            //if (list.Type == ListType.CustomInventory)
-            //{
-            //    CustomInventoryHelper.RemoveCache(_cache, list.BranchId, list.CustomerId);
-            //}
+
+            return item.Id;
+        }
+
+        public long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, long listId, long customInventoryItemId) {
+            List list = _listRepo.ReadById(listId);
+            CustomInventoryItem customInventoryItem = _customInventoryRepo.Get(customInventoryItemId);
+
+            int position = 1;
+
+            if (list.Items == null) {
+                list.Items = new List<ListItem>();
+            } else if (list.Items.Any()) {
+                position = list.Items.Max(i => i.Position) + 1;
+            }
+
+            // If the list type is favorite or reminder, don't allow duplicates
+            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder) {
+                ListItem duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(customInventoryItem.Id)).FirstOrDefault();
+                if (duplicateItem != null) {
+                    return duplicateItem.Id;
+                }
+            }
+
+            ListItem item = new ListItem() {
+                ItemNumber = customInventoryItem.ItemNumber.Trim(),
+                CatalogId = Constants.CATALOG_CUSTOMINVENTORY
+            };
+
+            list.Items.Add(item);
+            _listRepo.CreateOrUpdate(list);
+            _uow.SaveChangesAndClearContext();
+
+            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id));
 
             return item.Id;
         }

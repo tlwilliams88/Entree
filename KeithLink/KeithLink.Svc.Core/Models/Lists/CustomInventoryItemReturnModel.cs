@@ -15,6 +15,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [Serializable]
+    [DataContract(Name = "custominventoryitem")]
     public class CustomInventoryItemReturnModel
     {
         [DataMember(Name = "id")]

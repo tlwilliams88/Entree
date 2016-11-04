@@ -48,11 +48,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("custominventory")]
-        public OperationReturnModel<List<CustomInventoryItemReturnModel>> GetAll() {
-            OperationReturnModel<List<CustomInventoryItemReturnModel>> results = new OperationReturnModel<List<CustomInventoryItemReturnModel>>();
+        public OperationReturnModel<CustomInventoryHeaderReturnModel> GetAll() {
+            OperationReturnModel<CustomInventoryHeaderReturnModel> results = new OperationReturnModel<CustomInventoryHeaderReturnModel>();
 
             try {
-                results.SuccessResponse = _customInventoryRepo.GetItemsByBranchAndCustomer(this.SelectedUserContext.BranchId, this.SelectedUserContext.CustomerId).ToReturnModelList();
+                results.SuccessResponse = new CustomInventoryHeaderReturnModel();
+                results.SuccessResponse.Items = _customInventoryRepo.GetItemsByBranchAndCustomer(this.SelectedUserContext.BranchId, this.SelectedUserContext.CustomerId).ToReturnModelList();
                 results.IsSuccess = true;
             }
             catch (Exception ex) {
@@ -95,10 +96,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// Delete a single instance of an item
         /// </summary>
         /// <param name="itemId"></param>
-        [HttpPost]
-        [ApiKeyedRoute("custominventory")]
+        [HttpDelete]
+        [ApiKeyedRoute("custominventory/{itemId}")]
         public void Delete(long itemId) {
-            _customInventoryRepo.Delete(itemId);
+            try {
+                _customInventoryRepo.Delete(itemId);
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Error deleting custom inventory item: ", ex);
+            }
         }
         #endregion
 

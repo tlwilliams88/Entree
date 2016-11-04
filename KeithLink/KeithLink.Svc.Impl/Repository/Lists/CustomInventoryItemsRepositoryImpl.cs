@@ -65,7 +65,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
         #region Deletes
         public void Delete(long id) {
-            this.Entities.Remove(new CustomInventoryItem() { Id = id });
+            CustomInventoryItem objectToDelete = new CustomInventoryItem() { Id = id };
+            this.Entities.Attach(objectToDelete);
+            this.Entities.Remove(objectToDelete);
             this.UnitOfWork.SaveChanges();
         }
 

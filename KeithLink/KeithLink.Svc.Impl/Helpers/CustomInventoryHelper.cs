@@ -76,23 +76,23 @@ namespace KeithLink.Svc.Impl.Helpers
         public static void AddCustomInventoryItemInformationIfCustomerHasCustomInventory
             (Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel> inventorydictionary, ref ListItemModel item)
         {
-            if (inventorydictionary.Count > 0)
-            {
-                if (inventorydictionary.ContainsKey(item.ItemNumber))
-                {
-                    Core.Models.Lists.CustomInventoryItemReturnModel customInvItem = (Core.Models.Lists.CustomInventoryItemReturnModel)inventorydictionary[item.ItemNumber];
-                    item.Name = customInvItem.Name;
-                    item.BrandExtendedDescription = customInvItem.Brand;
-                    item.Pack = customInvItem.Pack;
-                    item.Size = customInvItem.Size;
-                    item.PackSize = string.Format("{0} / {1}", item.Pack, item.Size);
-                    item.Vendor1 = customInvItem.Vendor;
-                    item.CasePrice = customInvItem.CasePrice;
-                    item.Each = customInvItem.Each;
-                    item.PackagePrice = customInvItem.PackagePrice;
-                    item.IsValid = true;
-                }
-            }
+            //if (inventorydictionary.Count > 0)
+            //{
+            //    if (inventorydictionary.ContainsKey(item.ItemNumber))
+            //    {
+            //        Core.Models.Lists.CustomInventoryItemReturnModel customInvItem = (Core.Models.Lists.CustomInventoryItemReturnModel)inventorydictionary[item.ItemNumber];
+            //        item.Name = customInvItem.Name;
+            //        item.BrandExtendedDescription = customInvItem.Brand;
+            //        item.Pack = customInvItem.Pack;
+            //        item.Size = customInvItem.Size;
+            //        item.PackSize = string.Format("{0} / {1}", item.Pack, item.Size);
+            //        item.Vendor1 = customInvItem.Vendor;
+            //        item.CasePrice = customInvItem.CasePrice;
+            //        item.Each = customInvItem.Each;
+            //        item.PackagePrice = customInvItem.PackagePrice;
+            //        item.IsValid = true;
+            //    }
+            //}
         }
 
         public static void RemoveCache(ICacheRepository cache, string branchId, string customerNumber)
