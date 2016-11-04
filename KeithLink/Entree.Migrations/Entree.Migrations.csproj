@@ -70,9 +70,6 @@
     <Content Include="SQL\Configs\Configuration.AppSettings.Bootstrap.QA.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL\Configs\bakillins.local.configuration.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SQL\Configs\matt.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -26,7 +26,7 @@ angular.module('bekApp')
     }
 
     function moveLeft(td, row) {
-      var moveTo = td.prev('td:has(input,textarea,select)').find('input,textarea,select')[0];
+      var moveTo = td.prev('td:has(input,textarea)').find('input,textarea')[0];
       if (!moveTo) {
         moveTo = getPreviousTabstop(row);
       }
@@ -34,7 +34,7 @@ angular.module('bekApp')
     }
 
     function moveRight(td, row) {
-      var moveTo = td.nextAll('td:has(input,textarea,select)').find('input,textarea,select')[0];
+      var moveTo = td.next('td:has(input,textarea)').find('input,textarea')[0];
       if (!moveTo) {
         moveTo = getNextTabstop(row);
       }
@@ -91,16 +91,16 @@ angular.module('bekApp')
             $timeout(function(){
               e.preventDefault();
               moveTo.focus();
-            }, 0);
+            }, 0)
 
           }else {
             e.preventDefault();
             moveTo.focus();
           }
           if (moveTo.type != 'checkbox') {
-            if(scope.isIE || moveTo.id == 'label'){
+            if(scope.isIE){
               return;
-            } else {
+            }else {
               moveTo.select();
             }
           }
