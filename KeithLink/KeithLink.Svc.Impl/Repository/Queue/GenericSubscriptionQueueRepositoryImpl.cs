@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using KeithLink.Svc.Core.Exceptions.Queue;
 
 namespace KeithLink.Svc.Impl.Repository.Queue {
     public class GenericSubscriptionQueueRepositoryImpl : IGenericSubsriptionQueueRepository {
@@ -105,41 +104,6 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
         public void Nack(EventingBasicConsumer consumer, ulong deliveryTag) {
             if (consumer.Model.IsOpen) {
                 consumer.Model.BasicNack(deliveryTag, false, true);
-            }
-        }
-
-        public void CheckQueueHealth
-            (string server, string userName, string password, string virtualHost, string queueLogical, string queueActual)
-        {
-            try
-            {
-                ConnectionFactory connectionFactory = new ConnectionFactory()
-                {
-                    HostName = server,
-                    UserName = userName,
-                    Password = password,
-                    VirtualHost = virtualHost
-                };
-
-                using (IConnection connection = connectionFactory.CreateConnection())
-                {
-                    using (IModel model = connection.CreateModel())
-                    {
-                        QueueDeclareOk result = model.QueueDeclarePassive(queueActual);
-
-                        if (result != null)
-                        {
-                            NewRelic.Api.Agent.NewRelic.RecordMetric
-                                (queueLogical + ".messagecount", result.MessageCount);
-                            NewRelic.Api.Agent.NewRelic.RecordMetric
-                                (queueLogical + ".consumercount", result.ConsumerCount);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new QueueConnectionException(server, virtualHost, string.Empty, queueActual, ex.Message, ex);
             }
         }
         #endregion
