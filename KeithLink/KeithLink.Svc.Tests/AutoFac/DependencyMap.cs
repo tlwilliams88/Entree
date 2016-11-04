@@ -105,6 +105,7 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
+			builder.RegisterType<CustomInventoryItemsRepositoryImpl>().As<ICustomInventoryItemsRepository>();
 
             // Bill Pay
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();

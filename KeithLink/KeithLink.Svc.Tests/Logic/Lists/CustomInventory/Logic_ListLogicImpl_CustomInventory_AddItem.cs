@@ -23,37 +23,37 @@ namespace KeithLink.Svc.Test.Logic.Lists.CustomInventory
         [TestInitialize]
         public void Init()
         {
-            uow = new Mock<IUnitOfWork>();
+            //uow = new Mock<IUnitOfWork>();
 
-            listrepo = new Mock<IListRepository>();
-            retList = new Core.Models.EF.List() { Type = Core.Enumerations.List.ListType.CustomInventory };
-            listrepo.Setup(t => t.ReadById(0)).Returns(() => retList);
+            //listrepo = new Mock<IListRepository>();
+            //retList = new Core.Models.EF.List() { Type = Core.Enumerations.List.ListType.CustomInventory };
+            //listrepo.Setup(t => t.ReadById(0)).Returns(() => retList);
 
-            cache = new Mock<ICacheRepository>();
+            //cache = new Mock<ICacheRepository>();
 
-            li = new ListItemModel()
-            {
-                ItemNumber = "TEST",
-                Name = "TestName",
-                Brand = "TestBrand",
-                Vendor1 = "TestVendor",
-                Each = true,
-                Quantity = 1,
-                CasePrice = "2",
-                Pack = "3",
-                Size = "4",
-                PackagePrice = "5",
-                ParLevel = 6,
-                Label = "TestLabel"
-            };
+            //li = new ListItemModel()
+            //{
+            //    ItemNumber = "TEST",
+            //    Name = "TestName",
+            //    Brand = "TestBrand",
+            //    Vendor1 = "TestVendor",
+            //    Each = true,
+            //    Quantity = 1,
+            //    CasePrice = "2",
+            //    Pack = "3",
+            //    Size = "4",
+            //    PackagePrice = "5",
+            //    ParLevel = 6,
+            //    Label = "TestLabel"
+            //};
 
-            ListLogicImpl listlogic = new ListLogicImpl(uow.Object, listrepo.Object, null, null, cache.Object, null,
-                                                        null, null, null,
-                                                        null, null, null, null, null);
-            listlogic.AddItem(null,
-                              new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = "FDF", CustomerId = "726971" },
-                              0,
-                              li);
+            //ListLogicImpl listlogic = new ListLogicImpl(uow.Object, listrepo.Object, null, null, cache.Object, null,
+            //                                            null, null, null,
+            //                                            null, null, null, null, null);
+            //listlogic.AddItem(null,
+            //                  new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = "FDF", CustomerId = "726971" },
+            //                  0,
+            //                  li);
 
         }
 

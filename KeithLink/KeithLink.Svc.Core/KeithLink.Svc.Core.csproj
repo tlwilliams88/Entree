@@ -178,6 +178,7 @@
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
+    <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
     <Compile Include="Interface\Common\IGenericSubsriptionQueueRepository.cs" />
@@ -234,6 +235,7 @@
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
     <Compile Include="Interface\Invoices\ITermLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
+    <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
     <Compile Include="Interface\Lists\IFavoriteLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
@@ -300,6 +302,7 @@
     <Compile Include="Models\Customers\EF\InternalUserAccess.cs" />
     <Compile Include="Models\Customers\EF\ItemHistory.cs" />
     <Compile Include="Models\Customers\ItemHistoryModel.cs" />
+    <Compile Include="Models\EF\CustomInventoryItem .cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
@@ -313,7 +316,8 @@
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowDocumentReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ImageNowViewQueryReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
-    <Compile Include="Models\Lists\CustomInventoryItem.cs" />
+    <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
+    <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
     <Compile Include="Models\Lists\InHistoryReturnModel.cs" />
     <Compile Include="Models\Lists\ListCopyResultModel.cs" />
     <Compile Include="Models\Lists\ListItemReportModel.cs" />

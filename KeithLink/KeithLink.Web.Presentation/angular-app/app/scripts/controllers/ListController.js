@@ -15,9 +15,6 @@ angular.module('bekApp')
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
-    if(originalList.type == 13){
-      $scope.isCustomInventoryList = true;
-    }
 
     var orderBy = $filter('orderBy');
 
@@ -62,21 +59,22 @@ angular.module('bekApp')
       $scope.hideRecommendedListCreateButton = true;
     }
 
-    //Toggle scope variable to render Reports side panel when screen is resized
-    $(window).resize(function(){ 
-      $scope.$apply(function(){ 
-        $scope.renderSidePanel();
-      });
-    });
+      //Toggle scope variable to render Reports side panel when screen is resized
+        $(window).resize(function(){ 
+          $scope.$apply(function(){ 
+            $scope.renderSidePanel();
+          });
+        });
   
-    $scope.renderSidePanel = function(){
-      $scope.resized = window.innerWidth > 991;
-    };
-    $scope.renderSidePanel();
+        $scope.renderSidePanel = function(){
+          $scope.resized = window.innerWidth > 991;
+        }
+       $scope.renderSidePanel();
+
 
     $scope.rowChanged = function(index){
       $scope.indexOfSDestroyedRow = index;
-    };
+    }
 
     $scope.initPagingValues = function(resetPage){
       $scope.visitedPages = [];
@@ -86,7 +84,7 @@ angular.module('bekApp')
       if(resetPage){        
         $scope.currentPage = 1;
       }
-    };
+    }
 
     $scope.initPagingValues();
 
@@ -118,30 +116,30 @@ angular.module('bekApp')
       for (var i = indexes[0]; i <= indexes[1]; i++) {
           selectionList[i].isSelected = true;
       }
-    }
-
-    $scope.blockUIAndChangePage = function(page){
-      $scope.startingPoint = 0;
-      $scope.endPoint = 0;       
-      var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-      blockUI.start('Loading List...').then(function(){
-        if(visited.length > 0){
-          $timeout(function() {
-            $scope.isChangingPage = true;
-            $scope.pageChanged(page, visited);
-          }, 100);
-        }
-        else{
-          $scope.pageChanged(page, visited);
-        }
-      });
     };
 
-    $scope.pageChanged = function(page) {      
+    $scope.blockUIAndChangePage = function(page){
+        $scope.startingPoint = 0;
+        $scope.endPoint = 0;       
+        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+        blockUI.start("Loading List...").then(function(){
+          if(visited.length > 0){
+            $timeout(function() {
+              $scope.isChangingPage = true;
+              $scope.pageChanged(page, visited);
+            }, 100);
+          }
+          else{
+            $scope.pageChanged(page, visited);
+          }
+        })
+    }
+
+     $scope.pageChanged = function(page) {      
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
       $scope.loadingPage = true;    
-      $scope.currentPage = page.currentPage;
+      $scope.currentPage = page.currentPage
       $scope.startingPoint = ((page.currentPage - 1)*$scope.pagingPageSize) + 1;
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
       $scope.setRange();
@@ -153,18 +151,19 @@ angular.module('bekApp')
         if(item.deleted){
           deletedItems.push(item);
         }
-      });
+      })
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){             
         listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);       
-      } else {
-        $scope.setStartAndEndPoints(visited[0]);
-        if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
-          $scope.selectedList.allSelected = true;
-        }
-        updateItemPositions();
       }
-    };
+      else{
+          $scope.setStartAndEndPoints(visited[0]);
+          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
+            $scope.selectedList.allSelected = true;
+          };
+          updateItemPositions();
+      }
+     };
 
      $scope.setStartAndEndPoints = function(page){
       var foundStartPoint = false;
@@ -174,7 +173,7 @@ angular.module('bekApp')
             $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
             foundStartPoint = true;
           }
-        });
+        })
 
         if(!foundStartPoint){
           appendListItems(page);
@@ -183,7 +182,7 @@ angular.module('bekApp')
         //automatically (deleting all items on page/saving) the event will fire twice and two loading overlays will be generated.
         blockUI.stop();
         blockUI.stop();
-     };
+     }
 
     $scope.setRange = function(){    
       $scope.rangeStart = (($scope.currentPage - 1)*$scope.pagingPageSize) + 1;
@@ -195,7 +194,7 @@ angular.module('bekApp')
           $scope.rangeEnd ++;
         }
       }
-    };
+    }
 
     $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
 
@@ -224,8 +223,8 @@ angular.module('bekApp')
 
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
-      });
-    }
+      })
+    };
 
     function appendListItems(list) {
       list.items.forEach(function(item) {
@@ -238,12 +237,12 @@ angular.module('bekApp')
         var sorterval1 = obj1.page;      
         var sorterval2 = obj2.page;       
         return sorterval1 - sorterval2;         
-      });
+      })
       //Rebuild selectedList with all items currently in the controller, in the correct order.
       $scope.selectedList.items = [];
       $scope.visitedPages.forEach(function(page){
         $scope.selectedList.items = $scope.selectedList.items.concat(page.items);
-      });
+      })
 
       if(list.items.length === 0){
         $scope.startingPoint = 0;
@@ -255,7 +254,7 @@ angular.module('bekApp')
        updateItemPositions();
       if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
         $scope.selectedList.allSelected = true;
-      }
+      };
       
     }
 
@@ -293,12 +292,12 @@ angular.module('bekApp')
       var lastlist ={
           listId: list.listid,          
           timeset: timeset
-      };
+      }
      
       LocalStorage.setLastList(lastlist);
       if(list.listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
         $scope.listForm.$setPristine();
-        blockUI.start('Loading List...').then(function(){
+        blockUI.start("Loading List...").then(function(){
           return $state.go('menu.lists.items', {listId: list.listid, renameList: false});      
         });
       }
@@ -311,7 +310,7 @@ angular.module('bekApp')
      var lastlist ={
           listId: newList.listid,          
           timeset: timeset
-         };
+         }  
     
       LocalStorage.setLastList(lastlist);
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
@@ -450,7 +449,7 @@ angular.module('bekApp')
           from: $scope.rangeStart - 1,
           size: $scope.pagingPageSize,
           sort: $scope.sort
-        };
+        }
 
       if (!processingSaveList) {
         processingSaveList = true;
@@ -510,10 +509,10 @@ angular.module('bekApp')
         deletedItemCount += page.deletedCount;
       }
       if($scope.currentPage === page.page){
-        currentPageDeletedCount = page.deletedCount;
+        currentPageDeletedCount = page.deletedCount
       }
       $scope.itemCountOffset += page.deletedCount;
-      });
+      })
 
       $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
       $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
@@ -535,7 +534,7 @@ angular.module('bekApp')
         if($scope.currentPage === page.page){
           page.deletedCount++;
         }
-      });
+      })
     }
 
     $scope.deleteItem = function(item) {    
@@ -552,7 +551,7 @@ angular.module('bekApp')
           item.isdeleted = true;
           updateDeletedCount();
         }
-      });
+      })
 
       $scope.selectedList.allSelected = false;
       updateItemPositions();
@@ -601,43 +600,6 @@ angular.module('bekApp')
           $scope.multiSelect.showLists = false;
         }
         unselectAllDraggedItems();
-      });
-    };
-
-    $scope.addNewItemToList = function(){
-      var newItem = [{
-        brand_extended_description:null,
-        caseonly:false,
-        caseprice:'0.00',
-        catalog_id:'CUSTOM',
-        category:null,
-        each:false,
-        favorite:false,
-        fromdate:null,
-        is_specialty_catalog:false,
-        isdeleted:false,
-        isvalid:true,
-        itemnumber:'Add Item Number',
-        itemstatistics:null,
-        label:'This is new item',
-        listitemid:null,
-        name:'',
-        pack:'',
-        packageprice:'0.00',
-        packsize:'',
-        parlevel:0,
-        position:$scope.selectedList.items.length + 1,
-        quantity:0,
-        size:null,
-        specialtyitemcost:0,
-        temp_zone:null,
-        todate:null,
-        type:0,
-        unitprice:0,
-        vendor1:null
-      }];
-      ListService.addMultipleItems($scope.selectedList.listid, newItem).then(function(resp){
-        $scope.selectedList = resp;
       });
     };
 
@@ -715,7 +677,7 @@ angular.module('bekApp')
         if(itemId === item.listitemid){
           item.isSelected = true;
         }
-      });
+      })
       $scope.isDragging = isDragging;
     };
 
