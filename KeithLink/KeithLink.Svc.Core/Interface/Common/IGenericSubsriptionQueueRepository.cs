@@ -13,6 +13,8 @@ namespace KeithLink.Svc.Core.Interface.Common {
         void Nack(EventingBasicConsumer consumer, ulong deliveryTag);
         void Subscribe(ConnectionFactory connection, string queue);
         void Unsubscribe();
+        void CheckQueueHealth
+            (string server, string userName, string password, string virtualHost, string queueLogical, string queueActual);
 
 
         event RabbitMQ.Client.Events.BasicDeliverEventHandler MessageReceived;

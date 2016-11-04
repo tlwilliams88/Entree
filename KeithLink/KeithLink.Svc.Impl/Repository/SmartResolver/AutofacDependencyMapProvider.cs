@@ -92,6 +92,8 @@ using Autofac.Features.Indexed;
 using System;
 using KeithLink.Svc.Core.Enumerations.Dependencies;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
+using KeithLink.Svc.Core.Interface.ApplicationHealth;
+using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -275,6 +277,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // reports
             builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
             builder.RegisterType<ReportLogic>().As<IReportLogic>();
+
+            // application health
+            builder.RegisterType<QueueHealthCheckImpl>().As<IQueueHealthCheck>();
+
 
 #if DEMO
 			builder.RegisterType<DemoExternalUserDomainRepositoryImpl>().As<ICustomerDomainRepository>();

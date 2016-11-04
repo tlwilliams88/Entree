@@ -206,6 +206,8 @@ namespace KeithLink.Svc.Impl
         // Queue Service Functions
         private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
         private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
+        private const string KEY_QUEUE_SERVICE_CHECKQUEUESIZES = "CheckQueueSizes";
+        private const string KEY_QUEUE_SERVICE_CHECKQUEUESIZES_QUEUESTOCHECK = "QueuesToCheckSizes";
 
         // Catalog Service Functions
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_PROCESSTIME = "CatalogServiceUnfiImagesProcessTime";
@@ -1484,6 +1486,7 @@ namespace KeithLink.Svc.Impl
                 return GetCommaSeparatedValues(val);
             }
         }
+
         public static string CheckLostOrders
         {
             get
@@ -1498,6 +1501,22 @@ namespace KeithLink.Svc.Impl
             {
                 string val = DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS, string.Empty);
                 return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static string CheckQueueSizes
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_CHECKQUEUESIZES, string.Empty);
+            }
+        }
+
+        public static string QueuesToCheckSizes
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_CHECKQUEUESIZES_QUEUESTOCHECK, string.Empty);
             }
         }
 

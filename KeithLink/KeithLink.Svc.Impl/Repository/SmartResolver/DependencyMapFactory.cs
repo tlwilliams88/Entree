@@ -56,6 +56,15 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             return builder;
         }
 
+        public static ContainerBuilder GetMonitorSvcContainer(DependencyInstanceType type = DependencyInstanceType.InstancePerLifetimeScope)
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+
+            AutofacDependencyMapProvider.BuildBaselineDependencies(builder, type);
+
+            return builder;
+        }
+
         public static ContainerBuilder GetWebApiContainer() {
             ContainerBuilder builder = new ContainerBuilder();
 
