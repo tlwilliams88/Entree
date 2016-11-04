@@ -15,7 +15,7 @@ namespace KeithLink.Svc.WebApi.Controllers
     /// end points for dealing with cache
     /// </summary>
 	[AllowAnonymous]
-	[RequireHttps(true)]
+	[RequireHttps(false)]
 	public class CacheController: BaseController
 	{
         #region attributes

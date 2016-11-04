@@ -89,7 +89,8 @@ namespace KeithLink.Svc.Core.Extensions
                         ToDate = i.ToDate,
                         Each = i.Each ?? false,
                         Quantity = i.Quantity,
-                        CatalogId = i.CatalogId
+                        CatalogId = i.CatalogId,
+                        CustomInventoryItemId = i.CustomInventoryItemId.Value,
                     } ).OrderBy( l => l.Position ).ToList()
             };
         }

@@ -164,7 +164,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             ListItem item = new ListItem() {
                 ItemNumber = customInventoryItem.ItemNumber.Trim(),
-                CatalogId = Constants.CATALOG_CUSTOMINVENTORY
+                CatalogId = Constants.CATALOG_CUSTOMINVENTORY,
+                CustomInventoryItemId = customInventoryItem.Id
+                
             };
 
             list.Items.Add(item);
@@ -770,11 +772,16 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
 
             //Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel> customInventory = null;
-            // Only activate customInventory if there are items with the sentinal CatalogId
-            //if (list.Items.Any(li => li.CatalogId == Constants.CATALOG_CUSTOMINVENTORY))
-            //{
+            ////Only activate customInventory if there are items with the sentinal CatalogId
+            //if (list.Items.Any(li => li.CatalogId == Constants.CATALOG_CUSTOMINVENTORY)) {
             //    customInventory = CustomInventoryHelper.GetCustomInventoryInformation(catalogInfo, _listRepo, _cache);
             //}
+
+            List<long> customInventoryItemIds = list.Items.Where(x => x.CustomInventoryItemId != 0).Select(i => i.CustomInventoryItemId).ToList<long>();
+            List<CustomInventoryItem> customItems = new List<CustomInventoryItem>();
+            if (customInventoryItemIds.Count > 0) {
+                customItems = _customInventoryRepo.GetItemsByItemIds(customInventoryItemIds);
+            }
 
             var productHash = products.Products.GroupBy(p => p.ItemNumber)
                                                .Select(i => i.First())
@@ -784,14 +791,21 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                                                .ToList();
             Parallel.ForEach(list.Items, listItem =>
             {
-                //if (listItem.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase))
-                //{
-                //    CustomInventoryHelper.AddCustomInventoryItemInformationIfCustomerHasCustomInventory
-                //        (customInventory, ref listItem);
-                //}
-                //else
-                //{
-                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+            if (listItem.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase) && listItem.CustomInventoryItemId > 0) {
+                    CustomInventoryItem customItem = customItems.Where(x => x.Id.Equals(listItem.CustomInventoryItemId)).FirstOrDefault();
+                    listItem.Name = customItem.Name;
+                    listItem.BrandExtendedDescription = customItem.Brand;
+                    listItem.PackSize = string.Format("{0} / {1}", customItem.Pack, customItem.Size);
+                    listItem.Pack = customItem.Pack;
+                    listItem.Size = customItem.Size;
+                    listItem.VendorItemNumber = customItem.Vendor;
+                    listItem.Each = customItem.Each;
+                    listItem.CasePrice = customItem.CasePrice.ToString();
+                    listItem.PackagePrice = customItem.PackagePrice.ToString();
+                    listItem.IsValid = true;
+            }
+            else {
+                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
                     if (prod != null)
                     {
@@ -850,7 +864,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                                            .FirstOrDefault()
                         };
                     }
-                //}
+                }
             });
         }
 
