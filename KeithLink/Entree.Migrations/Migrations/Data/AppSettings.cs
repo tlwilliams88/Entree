@@ -23,7 +23,7 @@ namespace Entree.Migrations.Data {
             _specificConfigurationsToRun.Add("CORPMISDEV2B", @"SQL\Configs\Configuration.Boostrap.local.sql");
 
             // Brett
-            _specificConfigurationsToRun.Add("CORPMISDEV2H", @"SQL\Configs\Configuration.Bootstrap.local.sql");
+            _specificConfigurationsToRun.Add("CORPMISDEV2H", @"SQL\Configs\bakillins.local.configuration.sql");
         }
 
         public override void Up() {
