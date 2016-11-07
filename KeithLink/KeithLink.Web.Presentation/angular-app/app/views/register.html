@@ -20,8 +20,12 @@
                <div ng-show="loginErrorMessage.length">
                 {{loginErrorMessage}}        
                </div>
-               <a ng-confirm-click="{{'Request a password reset for the following email: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" >
-                <strong>Forgot your password?</strong></a>
+               <a ng-if="!isInternalEmail" ng-confirm-click="{{'Request a password reset for the following email: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" >
+                  <strong>Forgot Password?</strong>
+               </a>
+               <span ng-if="isInternalEmail">
+                <strong class="text-red">The Forgot Password link is for non-Ben E. Keith users.  Please use your network password to log in.  Contact your local I.T. support if you need assistance.</strong>
+               </span>
             </div>
         </div>
     </form>

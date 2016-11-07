@@ -82,6 +82,7 @@
       <div class="page-header__buttons">
         <a title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></a>
         <a title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></a>
+        <a title="Export" class="btn btn-default btn-icon" ng-click="openCartExportModal(currentCart.id)"><span class="icon-export"></span></a>
       </div>
     </div>
 
@@ -110,11 +111,18 @@
         </div>
 
         <div class="row">
-          <div class="col-sm-4 col-md-4 text-green currency-value">
-            {{currentCart.subtotal | currency}}
+          <div class="col-xs-5">
+            <span class="text-green currency-value block-display">
+              {{currentCart.subtotal | currency}}
+            </span>
+            <span class="block-display">
+              <h4>
+                {{(currentCart.itemcount ||  '0') + (currentCart.itemcount === 1 ? ' Item / ' : ' Items / ') + (currentCart.piececount || '0') + (currentCart.piececount === 1 ? ' Piece' : ' Pieces')}}
+              </h4>
+            </span>
           </div>
 
-          <div class="col-sm-8 col-md-8 hidden-print text-right-lg text-left-xs">
+          <div class="col-xs-7 hidden-print text-right-lg text-right-xs">
             <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id })" class="btn btn-default">Continue Shopping</a>
 
             <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber })" class="btn btn-default">Continue Shopping</a>

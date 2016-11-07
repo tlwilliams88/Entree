@@ -27,10 +27,10 @@
             <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" fcsa-number="{ 'noFormat': true, 'maxDigits': 6 }">
             <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
           </td>
-          <td class="input-col">
+          <td class="input-col input">
             <div counter name="quantity" type="text" ng-model="item.quantity"></div>
           </td>
-          <td class="input-col">
+          <td class="input-col input">
             <input name="each" type="checkbox" ng-model="item.each">
           </td>
           <td>

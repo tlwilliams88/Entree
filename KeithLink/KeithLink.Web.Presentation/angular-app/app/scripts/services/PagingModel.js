@@ -139,6 +139,12 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
       this.loadData();
     },
 
+    clearFiltersWithoutReload: function() {
+      this.pageIndex = 0;
+      this.filter = [];
+      this.additionalParams = null;
+    },
+
     sortData: function(sort) {
       this.pageIndex = 0;
       this.sort = sort;

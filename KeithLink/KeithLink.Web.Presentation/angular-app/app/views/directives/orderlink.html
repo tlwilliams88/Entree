@@ -2,7 +2,12 @@
 <a 
   format="telephone=no"
   ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">
-  {{order.invoicenumber}}
+  <span ng-if="!order.ponumber">
+    {{order.invoicenumber}}
+  </span>
+    <span ng-if="order.ponumber">
+    {{order.ponumber}}
+  </span>
   
 </a>
 <a class="icon-pencil" ui-sref="menu.cart.items({ cartId: order.ordernumber })"></a>
@@ -11,11 +16,21 @@
   ng-if="order.invoicenumber !== 'Processing' && order.invoicenumber !== 'Rejected' && !order.ischangeorderallowed" 
   format="telephone=no"
   ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})">
-  {{order.invoicenumber}}
+  <span ng-if="!order.ponumber">
+    {{order.invoicenumber}}
+  </span>
+    <span ng-if="order.ponumber">
+    {{order.ponumber}}
+  </span>
 </a>
 <a 
   ng-if="(order.invoicenumber === 'Processing' || order.invoicenumber === 'Rejected') && !order.ischangeorderallowed" 
   format="telephone=no"
   ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">
-  {{order.invoicenumber}}
+  <span ng-if="!order.ponumber">
+    {{order.invoicenumber}}
+  </span>
+    <span ng-if="order.ponumber">
+    {{order.ponumber}}
+  </span>
 </a>

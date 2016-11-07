@@ -17,7 +17,7 @@ angular.module('bekApp')
 
       var input = e.target;
       var td = angular.element(e.target).closest('td');
-      var moveTo = td.next('td');
+      var moveTo = td.nextAll('.input:first');
 
       // go to next input if available
       if (moveTo && moveTo.length && moveTo.find('input,textarea').length) {

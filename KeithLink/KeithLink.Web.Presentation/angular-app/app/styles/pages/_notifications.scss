@@ -9,3 +9,30 @@
     color: $color-red;
   }  
 }
+
+.notification-body {
+	margin-bottom:20px; 
+}
+
+@media print {
+  .notification-page *,
+  .notification-page-header * {
+    visibility:hidden;
+  }
+  #printSection * {
+    visibility: visible;
+    width: 100%;
+    page-break-after: avoid;
+  }
+  #printSection {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+  .notification-body {
+  	height: auto !important;
+  }
+  .NotificationPrinting > *:not(#printSection) { /* Used to hide portion of printout that was causing extra blank pages */
+     display: none;
+  }
+}

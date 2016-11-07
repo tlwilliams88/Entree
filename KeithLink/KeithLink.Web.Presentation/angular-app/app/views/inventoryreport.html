@@ -1,6 +1,42 @@
 <div page-header-bar>
   <div header-message>
-    Inventory Valuation Report<span class = "visible-print pull-right">{{selectedUserContext.customer.customerName}}</span>
+    <span ng-if="!report.isRenaming && reports.length">{{report.name}}</span><span ng-if="!reports.length">{{today}}</span><span class = "visible-print pull-right">{{selectedUserContext.customer.customerName}}</span>
+    <div 
+        class="inline-block-display" ng-if="!report.isRenaming">
+        
+        <a 
+          ng-click="report.isRenaming = true;"
+          ng-if="report && report.name">
+          <span class="hidden-print large-icon text-light icon-pencil"></span>
+        </a>
+        
+      </div>
+      <form name="renameReportForm" class="style-validation-errors inline-header-form nowrap" ng-if="report.isRenaming">
+      <input 
+        no-duplicates="name" 
+        collection="reports" 
+        type="text" 
+        focus-me="report.isRenaming" 
+        required
+        ng-model="selectedReportName"
+        ng-model-options="{ debounce: 1000 }" 
+        name="reportName" 
+        id="reportName" 
+        class="input-lg form-control" />
+      
+      <button 
+        ng-disabled="renameReportForm.$invalid" 
+        class="btn-no-style" 
+        type="submit" 
+        ng-click="renameReport(selectedReportName); renameReportForm.$setPristine();">
+        <span class="large-icon text-green icon-checkmark"></span>
+      </button>
+      
+      <a ng-click="cancelRenameReport()"><span class="large-icon text-red icon-cross"></span></a>
+      
+      <span class="form-error-message" ng-if="renameReportForm.reportName.$error.required">Report name is required</span>
+      <span class="form-error-message" ng-if="renameReportForm.reportName.$error.noDuplicates">Duplicate report name</span>
+    </form>
   <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6 hidden-print" ng-click="clearReport(report.listid)" type="button">Clear</button> 
  <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right hidden-print" ng-click="saveReport(report)" type="button">Save</button>
   </div>

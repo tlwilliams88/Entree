@@ -52,7 +52,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser( userId );
 
             foreach (Core.Models.Profile.EF.Settings s in settings) {
-                returnValue.Add( s.ToReturnModel() );
+                if (s.Key.IndexOf("defaultorderlist,") < 0) // do not include defaultorderlist settings
+                {
+                    returnValue.Add(s.ToReturnModel());
+                }
             }
 
             return returnValue;
@@ -72,6 +75,59 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             _repo.CreateOrUpdate( mySettings );
+            _uow.SaveChanges();
+        }
+
+        /// <summary>
+        /// Finds all the settings for the customer.
+        /// </summary>
+        /// <param name="userId">Guid - userId</param>
+        /// <returns>A collection (list) of SettingModel objects.</returns>
+        public SettingsModelReturn GetUserCustomerDefaultOrderList(Guid userId, string customernumber, string branchid)
+        {
+            SettingsModelReturn returnValue = new SettingsModelReturn();
+
+            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser(userId);
+
+            foreach (Core.Models.Profile.EF.Settings s in settings)
+            {
+                if (s.Key.Equals(DefaultOrderListKey(customernumber, branchid), StringComparison.CurrentCultureIgnoreCase))
+                {
+                    returnValue = s.ToReturnModel();
+                    returnValue.Key = "defaultorderlistid";
+                }
+            }
+
+            return returnValue;
+        }
+
+        private string DefaultOrderListKey(string customernumber, string branchid)
+        {
+            return string.Format("{0},{1},{2}", "defaultorderlist", customernumber, branchid);
+        }
+
+        /// <summary>
+        /// Creates or Updates the passed in Settings Model
+        /// </summary>
+        /// <param name="settings"></param>
+        public void CreateOrUpdateUserCustomerDefaultOrderList(string customernumber, string branchid, SettingsModel settings)
+        {
+            string key = DefaultOrderListKey(customernumber, branchid);
+            Settings mySettings = _repo.Read(x => 
+                x.Key == key && 
+                x.UserId == settings.UserId).FirstOrDefault();
+
+            if (mySettings != null)
+            {
+                mySettings.Value = settings.Value;
+            }
+            else
+            {
+                mySettings = settings.ToEFSettings();
+                mySettings.Key = DefaultOrderListKey(customernumber, branchid);
+            }
+
+            _repo.CreateOrUpdate(mySettings);
             _uow.SaveChanges();
         }
 

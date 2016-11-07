@@ -1,32 +1,12 @@
- <div class="modal-header">
+<div class="modal-header">
     <div class="modal-close-button" ng-click="closeModal()"><span class="icon-cross large-icon"></span></div>
-    <h2 class="modal-title">Notification Details</h2>
 </div>
-<div class="modal-body">
+<div id="printThis - {{notification.id}}" class="modal-body">
 
   <h3>{{notification.messagecreated | formatDate:'MMM D, YYYY' }}</h3>
 
-  <h4 style="margin-top:20px;">Subject: {{notification.subject}}</h4>
-  <pre style="margin-bottom:20px; overflow-y:scroll; height: 200px;" ng-class="{ 'text-red': notification.mandatory }" ng-bind-html="notification.body"></pre>
-
-<span ng-if="!notification.mandatory">
-  <div class="row">
-    <label class="col-xs-4" for="">Label</label>
-    <div class="col-xs-8">{{notification.displayType}}</div>
-  </div>
-  <div class="row">
-    <label class="col-xs-4" for="">Customer #</label>
-    <div class="col-xs-8">{{notification.customernumber}}</div>
-  </div>
-  <div class="row">
-    <label class="col-xs-4" for="">Customer Name</label>
-    <div class="col-xs-8">{{notification.customername}}</div>
-  </div>
-  <div class="row">
-    <label class="col-xs-4" for="">Type</label>
-    <div class="col-xs-8">{{notification.notificationtypedescription}}</div>
-  </div>
-</span>
+  <h4 style="margin-top:20px;">{{notification.subject}}</h4>
+  <pre class="notification-body" ng-class="{ 'text-red': notification.mandatory }" ng-bind-html="notification.body"></pre>
 
 </div>
 <div class="modal-footer">
@@ -48,4 +28,15 @@
     class="btn btn-lg btn-primary pull-left">
     OK
   </button>
+  <button 
+    class="btn btn-lg btn-primary pull-right"
+    ng-click="printNotificationModal()">
+    Print
+  </button>
+<!--   <a 
+    class="btn btn-lg btn-primary pull-right"
+    type="button"
+    href="mailto:%20?body={{emailBody}}&subject=Entree Notification - {{notification.messagecreated | formatDate:'MMM D, YYYY' }} - {{notification.subject}}">
+    Email
+  </a> -->
 </div>

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('NotificationsController', ['$scope', '$modal', 'NotificationService', 'PagingModel',
-    function ($scope, $modal, NotificationService, PagingModel) {
+  .controller('NotificationsController', ['$scope', '$modal', 'NotificationService', 'PagingModel', 'UtilityService',
+    function ($scope, $modal, NotificationService, PagingModel, UtilityService) {
 
   function markMessagesRead(messages) {
     NotificationService.updateUnreadMessages(angular.copy(messages));
@@ -21,6 +21,12 @@ angular.module('bekApp')
   }
   function stopLoading() {
     $scope.loadingResults = false;
+  }
+
+  $scope.isMobile = UtilityService.isMobileDevice();
+  var size = 'lg';
+  if($scope.isMobile){
+    size = 'md';
   }
 
   // Remove focus from notifications icon in header bar
@@ -67,6 +73,7 @@ angular.module('bekApp')
       controller: 'NotificationDetailsModalController',
       windowClass: 'color-background-modal',
       scope: $scope,
+      size: size,
       resolve: {
         notification: function() {
           return notification;

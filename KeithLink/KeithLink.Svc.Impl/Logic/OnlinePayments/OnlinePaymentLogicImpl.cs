@@ -42,12 +42,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Customers;
+using KeithLink.Svc.Core.Interface.Cache;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 {
     public class OnlinePaymentLogicImpl : IOnlinePaymentsLogic
     {
         #region attributes
+        private readonly ICacheRepository _cacheRepo;
+        private readonly IEventLogRepository _log;
         private readonly IAuditLogRepository _auditLog;
         private readonly IInternalUserAccessRepository _internalUserAccessRepo;
         private readonly ICustomerBankRepository _bankRepo;
@@ -58,13 +62,20 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
         private readonly IKPayPaymentTransactionRepository _paymentTransactionRepository;
         private readonly IGenericQueueRepository _queue;
+
+        protected string CACHE_GROUPNAME { get { return "Invoices"; } }
+        protected string CACHE_NAME { get { return "Invoices"; } }
+        protected string CACHE_PREFIX { get { return "Default"; } }
         #endregion
 
         #region ctor
         public OnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-                                      ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, IKPayPaymentTransactionRepository paymentTransactionRepository,
-                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo, IInternalUserAccessRepository internalUserAccessRepo)
+                                      ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, 
+                                      IKPayPaymentTransactionRepository paymentTransactionRepository,
+                                      IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo, IEventLogRepository log,
+                                      IInternalUserAccessRepository internalUserAccessRepo, ICacheRepository cacheRepo)
         {
+            _log = log;
             _invoiceRepo = invoiceRepo;
             _bankRepo = bankRepo;
             _orderHistoryRepo = orderHistoryrepo;
@@ -75,6 +86,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             _paymentTransactionRepository = paymentTransactionRepository;
             _kpaylog = kpayLogRepo;
             _auditLog = auditLogRepo;
+            _cacheRepo = cacheRepo;
         }
         #endregion
 
@@ -112,12 +124,77 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 }
             }
 
-            if (passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
+            if (passedFilter.Field != null && 
+                passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
             {
                 return MapStatusDecriptionFilterInfo(passedFilter);
             }
+            if (passedFilter.Field != null && 
+                passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_DATERANGE_YEARQTRKEY, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return MapYearQtrDateRangeFilterInfo(passedFilter);
+            }
+            if (passedFilter.Field != null &&
+                passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_DATERANGE_YEARMONTHKEY, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return MapYearMonthDateRangeFilterInfo(passedFilter);
+            }
+            if (passedFilter.Field != null && 
+                passedFilter.Field.Equals(Constants.INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY, StringComparison.CurrentCultureIgnoreCase))
+            {
+                return new FilterInfo() { Field = Constants.INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY,
+                                          Value = passedFilter.Value.ToUpper(),
+                                          FilterType = "contains" };
+            }
 
             return null;
+        }
+
+        private FilterInfo MapYearMonthDateRangeFilterInfo(FilterInfo passedFilter)
+        {
+            FilterInfo fi = new FilterInfo();
+            fi.Condition = "and";
+            fi.Filters = new List<FilterInfo>();
+            string year = passedFilter.Value.Substring(0, passedFilter.Value.IndexOf(','));
+            string month = passedFilter.Value.Substring(passedFilter.Value.IndexOf(',') + 1);
+            DateTime dtStart = DateTime.Parse(month + "/1/" + year);
+            DateTime dtEnd = dtStart.AddMonths(1);
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtStart.ToShortDateString(), FilterType = "gte" });
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtEnd.ToShortDateString(), FilterType = "lt" });
+            return fi;
+        }
+
+        private FilterInfo MapYearQtrDateRangeFilterInfo(FilterInfo passedFilter)
+        {
+            FilterInfo fi = new FilterInfo();
+            fi.Condition = "and";
+            fi.Filters = new List<FilterInfo>();
+            string year = passedFilter.Value.Substring(0, passedFilter.Value.IndexOf(','));
+            string qtr = passedFilter.Value.Substring(passedFilter.Value.IndexOf(',') + 1);
+            DateTime dtStart;
+            DateTime dtEnd;
+            switch (qtr)
+            {
+                case "1":
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ1 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ2 + "/" + year);
+                    break;
+                case "2":
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ2 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ3 + "/" + year);
+                    break;
+                case "3":
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ3 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ4 + "/" + year);
+                    break;
+                default:
+                    dtStart = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ4 + "/" + year);
+                    dtEnd = DateTime.Parse(Constants.INVOICEREQUESTFILTER_DATERANGE_STARTQ1 + "/" + (int.Parse(year) + 1));
+                    break;
+            }
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtStart.ToShortDateString(), FilterType = "gte" });
+            fi.Filters.Add(new FilterInfo() { Field = "InvoiceDate", Value = dtEnd.ToShortDateString(), FilterType = "lt" });
+            return fi;
         }
 
         private FilterInfo MapStatusDecriptionFilterInfo(FilterInfo passedFilter)
@@ -229,13 +306,21 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers)
         {
+            //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
             var customers = new List<Core.Models.Profile.Customer>();
 
             FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - BuildStatusFilter");
+
+            if ((paging != null) && (paging.DateRange != null))
+            {
+                statusFilter = BuildStatusFilter(paging.DateRange);
+            }
 
             InvoiceHeaderReturnModel retInvoiceHeaders = new InvoiceHeaderReturnModel();
             if (forAllCustomers)
             {
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers");
                 customers = _customerRepository.GetCustomersForUser(user.UserId);
                 if (customers.Count == 0) // in the case of internal users, the relation of customers to users is different, so the above doesn't work for some
                                           // in that case we work with the selected customer
@@ -243,6 +328,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     customers = new List<Core.Models.Profile.Customer>()
                                             { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
                 }
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - GetCustomersForUser");
                 retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomerWithInvoices>();
                 retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomerWithInvoices>();
 
@@ -251,8 +337,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     if (customer != null)
                     {
                         CustomerWithInvoices ci = customer.ToCustomerWithInvoices();
+                        //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - ToCustomerWithInvoices");
                         MapInvoicesToCustomer(paging, statusFilter, customer, ci);
-                        if(ci.HasPayableInvoices) // we want to "bubble up" if there are payable invoices
+                        //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - MapInvoicesToCustomer");
+                        if (ci.HasPayableInvoices) // we want to "bubble up" if there are payable invoices
                         {
                             retInvoiceHeaders.HasPayableInvoices = ci.HasPayableInvoices;
                         }
@@ -264,8 +352,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             }
             else
             {
+                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - forAllCustomers=false");
                 customers = MapInvoicesToReturn(userContext, paging, statusFilter, retInvoiceHeaders);
             }
+            //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "GetInvoiceHeaders - return");
             return retInvoiceHeaders;
         }
 
@@ -300,6 +390,11 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             catch { }
         }
 
+        private string GetInvoiceHeadersCacheKey(FilterInfo customerFilter, FilterInfo statusFilter)
+        {
+            return String.Format("InvoiceHeaders_{0}_{1}", JsonConvert.SerializeObject(customerFilter), JsonConvert.SerializeObject(statusFilter));
+        }
+
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(
             PagingModel paging,
             List<Core.Models.Profile.Customer> customers,
@@ -307,11 +402,21 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             out List<EFInvoice.InvoiceHeader> kpayInvoices)
         {
             FilterInfo customerFilter = BuildCustomerFilter(customers);
-            kpayInvoices = _invoiceRepo.ReadAllHeaders()
-                                           .AsQueryable()
-                                           .Filter(customerFilter, null)
-                                           .Filter(statusFilter, null)
-                                           .ToList();
+            List<EFInvoice.InvoiceHeader> cachedInvoiceHeaders = _cacheRepo.GetItem<List<EFInvoice.InvoiceHeader>>
+                (CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetInvoiceHeadersCacheKey(customerFilter, statusFilter));
+            if(cachedInvoiceHeaders == null)
+            {
+                kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                               .AsQueryable()
+                                               .Filter(customerFilter, null)
+                                               .Filter(statusFilter, null)
+                                               .ToList();
+                _cacheRepo.AddItem<List<EFInvoice.InvoiceHeader>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
+                    GetInvoiceHeadersCacheKey(customerFilter, statusFilter), TimeSpan.FromHours(2), kpayInvoices);
+            }else
+            {
+                kpayInvoices = cachedInvoiceHeaders;
+            }
             PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
                                                                    .AsQueryable<InvoiceModel>()
                                                                    .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
@@ -339,6 +444,41 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
             {
                 ApplyCreditMemoFilter(paging, pagedInvoices);
+                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
+            }
+
+            if ((paging != null) && (paging.Search != null))
+            {
+                if (paging.Search.Field == Constants.INVOICEREQUESTFILTER_PONUMBER_FIELDKEY)
+                {
+                    ApplyPONumberFilter(paging, pagedInvoices);
+                }
+                else if (paging.Search.Field == Constants.INVOICEREQUESTFILTER_TYPEDESCRIPTION_FIELDKEY)
+                {
+                    ApplyTypeDescriptionFilter(paging, pagedInvoices);
+                }
+                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
+            }
+
+            if ((paging != null) && 
+                (paging.Sort != null) && 
+                (paging.Sort.Count == 1) &&
+                (paging.Sort[0].Field.Equals
+                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
+            {
+                if(paging.Sort[0].Order.Equals
+                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    pagedInvoices.Results = pagedInvoices.Results
+                                                         .OrderBy(i => i.InvoiceAmount)
+                                                         .ToList();
+                }
+                else
+                {
+                    pagedInvoices.Results = pagedInvoices.Results
+                                                         .OrderByDescending(i => i.InvoiceAmount)
+                                                         .ToList();
+                }
             }
 
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
@@ -368,6 +508,18 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             {
                 pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
             }
+        }
+
+        private void ApplyPONumberFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            var filter = paging.Search;
+            pagedInvoices.Results = pagedInvoices.Results.Where(i => i.PONumber == filter.Value).ToList();
+        }
+
+        private void ApplyTypeDescriptionFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            var filter = paging.Search;
+            pagedInvoices.Results = pagedInvoices.Results.Where(i => i.TypeDescription.ToLower().StartsWith(filter.Value.ToLower())).ToList();
         }
 
         private void GetInvoicePONumber(InvoiceModel invoice)

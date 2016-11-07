@@ -1,6 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Profile.EF;
-
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,5 +111,19 @@ namespace KeithLink.Svc.Core.Models.Profile
 
 		[DataMember(Name = "canmessage")]
 		public bool CanMessage { get; set; }
+
+        /*
+         * To add new permissions you must:
+         * 1. Add the constant (a generalized value for the permission which is not environment specific),
+         * 2. Add a configuration for the expected value (value is specific for this environment),
+         * 3. The profile permissions model,
+         * 4. Add to the pack and unpack methods (in UserProfileLogicImpl.cs) a conversion between the object for the frontend and the list array used in the backend
+         * 5. Add the direct conversion to the ConvertPermission method in the ExternalUserDomainRepository
+         */
+        [JsonIgnore]
+        public List<string> Permissions { get; set; }
+        [DataMember(Name = "permit")]
+        public UserPermissionsModel Permit { get; set; }
+
     }
 }

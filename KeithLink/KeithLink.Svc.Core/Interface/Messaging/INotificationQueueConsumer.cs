@@ -13,5 +13,9 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         void ListenForNotificationMessagesOnQueue();
 
         void Stop();
+
+        void SubscribeToQueue(string queue);
+
+        void Unsubscribe();
     }
 }

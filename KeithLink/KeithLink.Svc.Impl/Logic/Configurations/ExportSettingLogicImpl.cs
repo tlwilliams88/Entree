@@ -159,9 +159,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     break;
 
                 case ExportType.OrderDetail:
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "Quantity", Label = "# Requested" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Label = "# Ordered" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "QantityShipped", Label = "# Shipped" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "EachYN", Label = "Each" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Price", Label = "Price" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });

@@ -1,10 +1,8 @@
 <div class="btn-group" dropdown is-open="openScope" tooltip="{{tooltipMessage}}">
-  <button type="button" ng-disabled="isDisabled" class="btn btn-lg btn-default dropdown-toggle">
-    Create An Order <span class="caret text-dark"></span>
+  <button type="button" ng-if="!isMobile" ng-disabled="isDisabled" class="btn btn-lg btn-primary" ng-click="openCreateOrderModal('lg')">
+    Create An Order
   </button>
-  <ul class="dropdown-menu" role="menu">
-    <li><a ui-sref="menu.addtoorder.items({ listId: 0, cartId: 'New' })">From List</a></li>
-    <li><a ng-click="openQuickAddModal()">From Quick Add</a></li>
-    <li><a ng-click="openOrderImportModal()">From Import</a></li>
-  </ul>
+  <button type="button" ng-if="isMobile" ng-disabled="isDisabled" class="btn btn-lg btn-primary" ng-click="openCreateOrderModal('md')">
+    Create An Order
+  </button>
 </div>

@@ -13,7 +13,9 @@ namespace KeithLink.Svc.Core.Models.Reports
 	{
 		[DataMember(Name = "format")]
 		public string ReportFormat { get; set; }
-		[DataMember(Name = "data")]
+        [DataMember(Name = "groupby")]
+        public string GroupBy { get; set; }
+        [DataMember(Name = "data")]
 		public List<InventoryValuationModel> ReportData { get; set; }
         public UserSelectedContext context { get; set; }
     }

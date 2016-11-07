@@ -105,7 +105,7 @@ angular.module('bekApp')
       CREATE CART
       ********************/
  
-      beforeCreateCart: function(items, shipDate, name) {
+      beforeCreateCart: function(items, shipDate, name, ponumber) {
         var newCart = {};
     
         if (!items) { // if null
@@ -139,13 +139,17 @@ angular.module('bekApp')
           newCart.subtotal = PricingService.getSubtotalForItems(newCart.items);
         }
 
+        if(ponumber){
+          newCart.ponumber = ponumber;
+        }
+
         return newCart;
       },
  
       // accepts null, item object, or array of item objects and shipDate
       // returns promise and new cart object
-      createCart: function(items, shipDate, name) {
-        var newCart = Service.beforeCreateCart(items, shipDate, name);
+      createCart: function(items, shipDate, name, ponumber) {
+        var newCart = Service.beforeCreateCart(items, shipDate, name, ponumber);
  
         newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
@@ -160,9 +164,24 @@ angular.module('bekApp')
         });
       },
  
-      importCart: function(file, options) {
-        var deferred = $q.defer();
+      /********************
+      IMPORT CART
+      ********************/
+
+      importCart: function(file, options, selectedCart) {
+        var deferred = $q.defer(),
+            cart;
  
+        if(selectedCart){
+          options.cartname = selectedCart.name;
+          options.shipdate = selectedCart.requestedshipdate;
+          options.ponumber = selectedCart.ponumber;
+          if(selectedCart.items){
+            selectedCart.items = [];
+          }
+          cart = selectedCart;
+        }
+
         $upload.upload({
           url: '/import/order',
           method: 'POST',
@@ -171,10 +190,10 @@ angular.module('bekApp')
         }).then(function(response) {
           var data = response.data.successResponse;
           if (response.data.isSuccess && data.success) {
-            var cart = {
-              id: data.listid,
-              name: 'Imported Cart'
-            };
+            if(!selectedCart){
+              cart.name = 'Imported Cart';
+            }
+            cart.id = data.listid;
             Service.cartHeaders.push(cart);
  
             // display messages
@@ -197,6 +216,10 @@ angular.module('bekApp')
  
         return deferred.promise;
       },
+
+      /********************
+      QUICK ADD
+      ********************/
  
       validateQuickAdd: function(items) {
         return $http.post('/cart/quickadd/validate', items).then(function(response) {
@@ -216,6 +239,20 @@ angular.module('bekApp')
  
          return $q.reject('An error has occurred with this Quick Add order.');
         });
+      },
+
+      /********************
+      EXPORT
+      ********************/
+
+      getCartExportConfig: function(cartid) {
+        return $http.get('/cart/export/' + cartid).then(function(response){
+          return response.data.successResponse;
+        });
+      },
+
+      exportCart: function(config, cartid) {
+        ExportService.export('/cart/export/' + cartid, config);
       },
  
       /********************

@@ -57,29 +57,20 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
                     string best = ChooseBestFilename(product);
                     foreach (string filename in product.Filenames)
                     {
-                        bool isdownloaded = false;
-                        if (filename.IndexOf('_') > -1 && filename.Length > filename.IndexOf('_') + 5)
-                        {
-                            if (Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake.Any(s => s == filename.Substring(filename.IndexOf('_') + 1, 4)))
-                            {
-                                isdownloaded = true;
-                            }
-                        }
 
                         string thisName = null;
-                        // Set the best image to be the first alphabetically
-                        if (filename.Equals(best, StringComparison.CurrentCultureIgnoreCase))
+                        int trial = 0;
+                        try
                         {
-                            thisName = filename.Substring(0, filename.IndexOf("_"));
-                            thisName += "_APRI.JPG";
+                            GetItem(best, filename, Constants.IXONE_PRODUCTIMAGE_PREFERREDTYPE);
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            thisName = filename.Replace(".TIF", ".JPG");
-                        }
-                        if (isdownloaded)
-                        {
-                            ProcessItem(thisName, filename);
+                            trial++;
+                            if (trial == 1)
+                            {
+                                GetItem(best, filename, Constants.IXONE_PRODUCTIMAGE_BACKUPTYPE);
+                            }
                         }
                     }
                 }
@@ -88,6 +79,34 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
                     _log.WriteInformationLog(string.Format(" Downloaded {0} products from Ix-One", index));
                 }
             });
+        }
+
+        private void GetItem(string best, string filename, string imagetype)
+        {
+            string thisName;
+            bool isdownloaded = false;
+            if (filename.IndexOf('_') > -1 && filename.Length > filename.IndexOf('_') + 5)
+            {
+                if (Configuration.CatalogServiceUnfiImagesIxOneImagesWeTake.Any(s => s == filename.Substring(filename.IndexOf('_') + 1, 4)))
+                {
+                    isdownloaded = true;
+                }
+            }
+
+            // Set the best image to be the first alphabetically
+            if (filename.Equals(best, StringComparison.CurrentCultureIgnoreCase))
+            {
+                thisName = filename.Substring(0, filename.IndexOf("_"));
+                thisName += "_APRI." + imagetype;
+            }
+            else
+            {
+                thisName = filename.Replace(".TIF", "." + imagetype);
+            }
+            if (isdownloaded)
+            {
+                ProcessItem(thisName, filename, imagetype);
+            }
         }
 
         private void Define(string json)
@@ -121,29 +140,50 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
             return count;
         }
 
-        private void ProcessItem(string savedas, string filename)
+        private void ProcessItem(string savedas, string filename, string imagetype)
         {
             try
             {
                 FileInfo fi = new FileInfo(Configuration.CatalogServiceUnfiImagesRepo + "\\" + savedas);
                 if (!fi.Exists)
                 {
-                    byte[] buf = GetIXOneImage(filename);
+                    byte[] buf = GetIXOneImage(filename, imagetype);
                     if (buf != null)
                     {
                         Image img = byteArrayToImage(buf);
                         if (img != null)
                         {
                             Image img2 = (Image)img.Clone();
-                            img.Save(Configuration.CatalogServiceUnfiImagesRepo + "\\" + savedas,
-                                System.Drawing.Imaging.ImageFormat.Jpeg);
+                            System.Drawing.Imaging.ImageFormat imgformat = null;
+                            if (imagetype.Equals("JPG"))
+                            {
+                                imgformat = System.Drawing.Imaging.ImageFormat.Jpeg;
+                            }
+                            else if(imagetype.Equals("PNG"))
+                            {
+                                imgformat = System.Drawing.Imaging.ImageFormat.Png;
+                            }
+                            //img2.Save(Configuration.CatalogServiceUnfiImagesRepo + "\\" + savedas,
+                            //    imgformat);
+                            using (MemoryStream memory = new MemoryStream())
+                            {
+                                using (FileStream fs = new FileStream(Configuration.CatalogServiceUnfiImagesRepo + "\\" + savedas, 
+                                                                      FileMode.Create, 
+                                                                      FileAccess.ReadWrite))
+                                {
+                                    img2.Save(memory, imgformat);
+                                    byte[] bytes = memory.ToArray();
+                                    fs.Write(bytes, 0, bytes.Length);
+                                }
+                            }
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog("ProcessItem", ex);
+                _log.WriteErrorLog(string.Format("ProcessItem savedas={0} filename={1} imagetype={2}", savedas, filename, imagetype), ex);
+                throw ex;
             }
         }
 
@@ -236,12 +276,12 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
             }
         }
 
-        private byte[] GetIXOneImage(string filename)
+        private byte[] GetIXOneImage(string filename, string imagetype)
         {
             string url = null;
             try
             {
-                url = string.Format(Constants.IXONE_PRODUCTIMAGE_GET_URL, filename);
+                url = string.Format(Constants.IXONE_PRODUCTIMAGE_GET_URL, filename, imagetype);
                 //_log.WriteInformationLog(" Url is " + url);
                 WebClient client = new WebClient();
                 client.Headers[HttpRequestHeader.Authorization] = "Bearer " +

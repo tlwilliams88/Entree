@@ -220,6 +220,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     _log.WriteInformationLog(string.Format("Order sent to mainframe({0})", order.Header.ControlNumber));
                 } catch (Exception ex) {
                     _log.WriteErrorLog(string.Format("Error while sending order({0})", order.Header.ControlNumber), ex);
+                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, "",
+                                                                    string.Format("Error while sending order({0})", order.Header.ControlNumber));
 
                     if (ex is EarlySocketException || ex is CancelledTransactionException) {
                         SendToReprocess(rawOrder);

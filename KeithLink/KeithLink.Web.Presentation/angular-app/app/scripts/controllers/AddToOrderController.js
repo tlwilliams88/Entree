@@ -59,10 +59,6 @@ angular.module('bekApp')
     $scope.visitedPages = [];
     $scope.canSaveCart = false;
     $scope.setOrderCanceled = false;
-    
-    $scope.setOrderCanceled = function(){
-      $scope.orderCanceled = true;
-    };
         
     $scope.removeRowHighlightParLevel = function(){
       $('.ATOrowHighlight').removeClass('ATOrowHighlight');
@@ -785,6 +781,74 @@ angular.module('bekApp')
         });
       }
     }
+
+    /*******************************
+
+      Cancel Changes And Delete Cart
+
+    ********************************/
+
+    $scope.cancelChanges = function(cartid) {
+      $scope.orderCanceled = true;
+
+      if($scope.selectedCart.items.length) {
+        $scope.selectedList.items.forEach(function(listitem){
+          var itemInCart = $filter('filter')($scope.selectedCart.items, {itemnumber: listitem.itemnumber, each: listitem.each})[0];
+          var itemInOtherCartItems = $filter('filter')($scope.filteredCartItems, {itemnumber: listitem.itemnumber, each: listitem.each});
+
+          if(itemInCart && !itemInOtherCartItems.length) {
+            var duplicateItem = $filter('filter')($scope.selectedList.items, {itemnumber: itemInCart.itemnumber, each: itemInCart.each});
+
+            if(duplicateItem.length > 1) {
+              var lastDuplicateItemIdx = duplicateItem.length - 1;
+              $scope.lastDuplicateItem = duplicateItem[lastDuplicateItemIdx];
+              duplicateItem.pop();
+
+              duplicateItem.forEach(function(duplicateitem){
+                duplicateitem.quantity = '';
+                duplicateitem.extPrice = 0.00;
+              })
+
+              $scope.lastDuplicateItem.quantity = itemInCart.quantity;
+              $scope.lastDuplicateItem.extprice = PricingService.getPriceForItem($scope.lastDuplicateItem);
+              $scope.lastDuplicateItem.each = itemInCart.each;
+            } else {
+              listitem.quantity = itemInCart.quantity;
+              listitem.extprice = PricingService.getPriceForItem(listitem);
+              listitem.each = itemInCart.each;
+            }
+
+          } else {
+            listitem.quantity = '';
+            listitem.extPrice = 0.00;
+          }
+
+        })
+      } else {
+
+        $scope.selectedList.items.forEach(function(listitem){
+          if(listitem.quantity > 0) {
+            listitem.quantity = '';
+            listitem.extPrice = 0.00;
+          }
+        })
+
+      }
+    };
+
+    $scope.deleteCart = function(cartid) {
+      var cartguid = [];
+      $scope.orderCanceled = true;
+      cartguid.push(cartid);
+
+      CartService.deleteMultipleCarts(cartguid).then(function() {
+        $scope.displayMessage('success', 'Successfully deleted cart.');
+        $state.go('menu.home');
+      }, function() {
+        $scope.displayMessage('error', 'Error deleting cart.');
+      });
+
+    };
  
     var processingSaveChangeOrder = false;
     function updateChangeOrder(order) {

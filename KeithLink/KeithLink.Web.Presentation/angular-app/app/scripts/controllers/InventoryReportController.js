@@ -64,6 +64,7 @@ angular.module('bekApp')
                 if(report.listid == $stateParams.listid || (index == lastIndex) && !found){
                   found = true;
                   $scope.report = report;
+                  $scope.selectedReportName = $scope.report.name;
                   $scope.showMoreReportNames = ((index + 1) > $scope.numberReportNamesToShow) ? true : false;           
                 }
               });
@@ -72,6 +73,7 @@ angular.module('bekApp')
           else{
             //Find last created report if none requested and not creating new report            
             $scope.report = reports[lastIndex];
+            $scope.selectedReportName = $scope.report.name;
             $scope.showMoreReportNames = (lastIndex > $scope.numberReportNamesToShow) ? true : false;
           }
         }
@@ -261,12 +263,25 @@ angular.module('bekApp')
           $scope.inventoryForm.$setPristine();
 
           if(creatingList){
-            $scope.goToReport(response.listitemid);
+            $scope.goToReport(response.successResponse.listitemid);
           }
           toaster.pop('success', 'Successfully saved report.');
         }, function() {
           toaster.pop('error', 'Error saving report.');
         });
+      };
+
+      /**************
+        Rename Report
+      **************/
+      $scope.renameReport = function (reportname) {
+        $scope.report.isRenaming = false;
+        $scope.report.name = reportname;
+        $scope.saveReport();
+      };
+
+      $scope.cancelRenameReport = function(){
+        $scope.report.isRenaming = false;
       };
 
       $scope.deleteReport = function(listId){
@@ -284,7 +299,14 @@ angular.module('bekApp')
       };
 
       $scope.goToReport = function(listId){
+        $scope.report.isRenaming = false;
         $state.go('menu.inventoryreport', {listid: listId});
+        if($scope.reports.length){
+          $scope.selectedReportName = $filter('filter')($scope.reports, {listid: listId})[0].name;
+        } else {
+          $scope.selectedReportName = $scope.today;
+        }
+        
       };
 
       $scope.createReport = function(){        

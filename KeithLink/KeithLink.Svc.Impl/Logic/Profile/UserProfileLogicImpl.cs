@@ -419,7 +419,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                               password, 
                               Core.Constants.AD_GUEST_FIRSTNAME, 
                               Core.Constants.AD_GUEST_LASTNAME, 
-                              Configuration.RoleNameGuest
+                              Configuration.RoleNameGuest,
+                              null
                               );
 
             _csProfile.CreateUserProfile(actingUser.EmailAddress,
@@ -459,7 +460,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
 		public UserProfileReturn CreateUserAndProfile(UserProfile actingUser, string customerName, string emailAddress, 
                                                       string password, string firstName, string lastName, 
-                                                      string phone, string roleName, string branchId) {
+                                                      string phone, string roleName, List<string> permissions, string branchId) {
             if (ProfileHelper.IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
@@ -468,7 +469,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                 password,
                                 firstName,
                                 lastName,
-                                ConvertRoleName(roleName)
+                                ConvertRoleName(roleName), 
+                                permissions
                                 );
 
             try {
@@ -588,6 +590,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             string dsmNumber = string.Empty;
             string dsmRole = string.Empty;
             string userRole = string.Empty;
+            List<string> permissions = null;
             string userBranch = string.Empty;
             bool isInternalUser = ProfileHelper.IsInternalAddress(csProfile.Email);
             UserPrincipal adUser = null;
@@ -646,6 +649,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                         isKbitCustomer = true;
                     } else {
                         userRole = GetUserRole(csProfile.Email);
+                        permissions = GetUserPermissions(csProfile.Email);
                         isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
                     }
 
@@ -671,6 +675,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 retVal.CustomerNumber = csProfile.DefaultCustomer;
                 retVal.BranchId = userBranch;
                 retVal.RoleName = userRole;
+                retVal.Permissions = permissions;
                 retVal.DSMRole = dsmRole;
                 retVal.DSRNumber = dsrNumber;
                 retVal.DSMNumber = dsmNumber;
@@ -918,13 +923,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             try {
                 List<InternalUserAccess> allUsersForCustomer = _internalUserAccessRepo.GetAllUsersWithAccessToCustomer( new UserSelectedContext() { BranchId = branchId, CustomerId = customerNumber } );
-                _eventLog.WriteInformationLog
-                    (String.Format(
-                        "before removing duplicates profiles logic: {0}",
-                        JsonConvert.SerializeObject(allUsersForCustomer.Select(p => new {
-                            UserId = p.UserId,
-                            EmailAddress = p.EmailAddress
-                        }).ToList())));
 
                 Dictionary<Guid, bool> existingUser = new Dictionary<Guid, bool>();
 
@@ -938,13 +936,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                             usersWithAccess.Add(upToAddToList.UserProfiles[0]);
                         }
                     }
-                    _eventLog.WriteInformationLog
-                        (String.Format(
-                            "after removing duplicates profiles logic: {0}",
-                            JsonConvert.SerializeObject(usersWithAccess.Select(p => new {
-                                UserId = p.UserId,
-                                EmailAddress = p.EmailAddress
-                            }).ToList())));
                 }
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog( string.Format( "Error retrieving internal users for {0} - {1}", customerNumber, branchId ) );
@@ -1209,6 +1200,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
             }
 
+            if (retVal.UserProfiles.Count > 0)
+            {
+                foreach(UserProfile u in retVal.UserProfiles)
+                {
+                    u.Permit = UnpackUserPermissions(u.Permissions, u.RoleName);
+                }
+            }
             return retVal;
         }
 
@@ -1270,14 +1268,33 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (ProfileHelper.IsInternalAddress(email)) {
                 //roleName = _intAd.
-                roleName = "owner";
-            } else {
-                roleName = _extAd.GetUserGroup(email, new List<string>() { "owner", "approver", "buyer", "accounting", "guest" });
+                roleName = Constants.ROLE_EXTERNAL_OWNER.ToLower();
+                }
+            else
+            { // order is important here, and it needs to be lowercase
+                roleName = _extAd.GetUserGroup(email, new List<string>() {
+                    Constants.ROLE_EXTERNAL_OWNER.ToLower(),
+                    Constants.ROLE_EXTERNAL_PURCHASINGAPPROVER.ToLower(),
+                    Constants.ROLE_EXTERNAL_PURCHASINGBUYER.ToLower(),
+                    Constants.ROLE_EXTERNAL_ACCOUNTING.ToLower(),
+                    Constants.ROLE_EXTERNAL_GUEST.ToLower() });
             }
 
             return roleName;
         }
 
+        private List<string> GetUserPermissions(string email)
+        {
+            List<string> permits = null;
+
+            if (ProfileHelper.IsInternalAddress(email) == false)
+            { // order is important here, and it needs to be lowercase
+                permits = _extAd.GetUserPermissions(email, new List<string>() {
+                    Constants.PERMISSION_EXTERNAL_VIEWINVOICES.ToLower() });
+            }
+
+            return permits;
+        }
         public UserProfileReturn GetUsers(UserFilterModel userFilters) {
             if (userFilters != null) {
                 if (userFilters.AccountId.HasValue)
@@ -1613,7 +1630,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 generatedPassword,
                 Core.Constants.AD_GUEST_FIRSTNAME,
                 Core.Constants.AD_GUEST_LASTNAME,
-                Configuration.RoleNameGuest
+                Configuration.RoleNameGuest,
+                null
                 );
 
             _csProfile.CreateUserProfile(
@@ -1661,7 +1679,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // update account user roles to owner
             foreach (UserProfile user in users) // all account users are assumed to be owners on all customers
-                UpdateCustomersForUser(updatedBy, customers, user.RoleName, user);
+                UpdateCustomersForUser(updatedBy, customers, user.RoleName, null, user);
 
             _accountRepo.UpdateAccount(name, accountId);
 
@@ -1670,7 +1688,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return true;
         }
 
-        private void UpdateCustomersForUser(UserProfile updatedBy, List<Customer> customerList, string roleName, UserProfile existingUser) {
+        private void UpdateCustomersForUser(UserProfile updatedBy, List<Customer> customerList, string roleName, List<string> permissions, UserProfile existingUser) {
             var customers = GetNonPagedCustomersForUser(existingUser);
 
             IEnumerable<Guid> custsToAdd = customerList.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
@@ -1722,8 +1740,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-		public void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId,
-            bool updateCustomerListAndRole, List<Customer> customerList, string roleName) {
+		public void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, 
+            string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName, List<string> permissions) {
             AssertEmailAddressLength(emailAddress);
             AssertEmailAddress(emailAddress);
             AssertFirstNameLength(firstName);
@@ -1743,8 +1761,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			
             // update customer list
             if (updateCustomerListAndRole && customerList != null && customerList.Count > 0) {
-                UpdateCustomersForUser(updatedBy, customerList, roleName, existingUser.UserProfiles[0]);
+                UpdateCustomersForUser(updatedBy, customerList, roleName, permissions, existingUser.UserProfiles[0]);
             }
+
+            _extAd.SetUserPermissions(emailAddress, permissions, updatedBy.EmailAddress);
 
             // remove the old user profile from cache and then update it with the new profile
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(existingUser.UserProfiles[0].EmailAddress));
@@ -1834,6 +1854,47 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
             return false;
         }
+
+        public List<string> PackUserPermissions(UserPermissionsModel permissions)
+        {
+            List<string> listPermits = new List<string>();
+            if (permissions != null && permissions.Invoices != null && permissions.Invoices.CanView)
+            {
+                listPermits.Add(Constants.PERMISSION_EXTERNAL_VIEWINVOICES);
+            }
+            return listPermits;
+        }
+
+        public UserPermissionsModel UnpackUserPermissions(List<string> permissions, string role)
+        {
+            UserPermissionsModel Permits = new UserPermissionsModel();
+            if(permissions != null)
+            {
+                foreach (string s in permissions)
+                {
+                    if (Constants.PERMISSION_EXTERNAL_VIEWINVOICES.IndexOf(s, StringComparison.InvariantCultureIgnoreCase) > -1)
+                    {
+                        Permits.Invoices.CanView = true;
+                    }
+                }
+            }
+
+            // coding for existing rolename to translate to permissions
+            if (Constants.ROLE_NAME_SYSADMIN.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
+            else if (Constants.ROLE_EXTERNAL_ACCOUNTING.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
+            else if (Constants.ROLE_EXTERNAL_OWNER.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
+
+            return Permits;
+        }
         #endregion
-	}
+    }
 }

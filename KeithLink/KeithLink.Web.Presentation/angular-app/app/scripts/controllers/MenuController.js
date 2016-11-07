@@ -46,9 +46,9 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
  
-  $scope.webVersionNum = '1.10.0';
-  $scope.androidVersionNum = '1.10.0';
-  $scope.iOSVersionNum = '1.10.0';
+  $scope.webVersionNum = '1.11.0';
+  $scope.androidVersionNum = '1.11.0';
+  $scope.iOSVersionNum = '1.11.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
@@ -376,7 +376,7 @@ angular.module('bekApp')
     $scope.canViewOrders = AccessService.canViewOrders();
     $scope.canCreateOrders = AccessService.canCreateOrders();
     $scope.canSubmitOrders = AccessService.canSubmitOrders();
-    $scope.canPayInvoices = AccessService.canPayInvoices();
+    $scope.canViewInvoices = AccessService.canViewInvoices();
     $scope.canManageCustomerGroups = AccessService.canManageCustomerGroups();
     $scope.canViewCustomerGroups = AccessService.canViewCustomerGroups();
     $scope.canViewCustomerGroupDashboard = AccessService.canViewCustomerGroupDashboard();

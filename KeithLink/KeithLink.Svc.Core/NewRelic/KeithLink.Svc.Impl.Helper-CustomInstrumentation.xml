@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns="urn:newrelic-extension">
+  <!--If you need to remove some of the methods from a trace (If it's too long it won't record them all) just comment those tracers out-->
+  <!--If a tracer just defines a method that is part of a recorded trace, but doesn't record one itself, you don't add the name attribute-->
+  <!--If a tracer is to actually record a trace you add the name attribute-->
+  <instrumentation>
+    <tracerFactory metricName="Custom/Impl/Helpers/CommerceServerCore/LoadOrderContext">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.CommerceServerCore">
+        <exactMethodMatcher methodName="LoadOrderContext"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/CommerceServerCore/GetPoManager">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.CommerceServerCore">
+        <exactMethodMatcher methodName="GetPoManager"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/CommerceServerCore/GetOrderContext">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.CommerceServerCore">
+        <exactMethodMatcher methodName="GetOrderContext"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/CommerceServerCore/GetOrderManagementContext">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.CommerceServerCore">
+        <exactMethodMatcher methodName="GetOrderManagementContext"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Helpers/ContractInformationHelper/GetContractInformation">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.ContractInformationHelper">
+        <exactMethodMatcher methodName="GetContractInformation"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/ContractInformationHelper/AddContractInformationIfInContract">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.ContractInformationHelper">
+        <exactMethodMatcher methodName="AddContractInformationIfInContract"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Helpers/DivisionHelper/GetDivisionFromBranchId">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.DivisionHelper">
+        <exactMethodMatcher methodName="GetDivisionFromBranchId"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Helpers/ElasticSearch/RawSearch">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.ElasticSearch">
+        <exactMethodMatcher methodName="RawSearch"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/FoundationService/ExecuteRequest">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.FoundationService">
+        <exactMethodMatcher methodName="ExecuteRequest"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/FoundationService/CreateRequestContext">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.FoundationService">
+        <exactMethodMatcher methodName="CreateRequestContext"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/FoundationService/GetServiceAgent">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.FoundationService">
+        <exactMethodMatcher methodName="GetServiceAgent"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Helpers/ListSortHelper/GetSort">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.ListSortHelper">
+        <exactMethodMatcher methodName="GetSort"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/ListSortHelper/SortOrderItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.ListSortHelper">
+        <exactMethodMatcher methodName="SortOrderItems"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Helpers/OpenXmlSpreadsheetUtilities/MakeSpreadSheet">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OpenXmlSpreadsheetUtilities">
+        <exactMethodMatcher methodName="MakeSpreadSheet"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/OpenXmlSpreadsheetUtilities/GenerateStyleSheet">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OpenXmlSpreadsheetUtilities">
+        <exactMethodMatcher methodName="GenerateStyleSheet"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/OpenXmlSpreadsheetUtilities/SetColumnWidth">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OpenXmlSpreadsheetUtilities">
+        <exactMethodMatcher methodName="SetColumnWidth"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/OpenXmlSpreadsheetUtilities/AddTitleRow">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OpenXmlSpreadsheetUtilities">
+        <exactMethodMatcher methodName="AddTitleRow"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/OpenXmlSpreadsheetUtilities/AddCustomerRow">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OpenXmlSpreadsheetUtilities">
+        <exactMethodMatcher methodName="AddCustomerRow"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/OpenXmlSpreadsheetUtilities/AppendTextCell">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OpenXmlSpreadsheetUtilities">
+        <exactMethodMatcher methodName="AppendTextCell"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Helpers/OrderSubmissionHelper/StartOrderBlock">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OrderSubmissionHelper">
+        <exactMethodMatcher methodName="StartOrderBlock"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/OrderSubmissionHelper/StartChangeOrderBlock">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OrderSubmissionHelper">
+        <exactMethodMatcher methodName="StartChangeOrderBlock"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/OrderSubmissionHelper/CheckOrderBlock">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.OrderSubmissionHelper">
+        <exactMethodMatcher methodName="CheckOrderBlock"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Helpers/ProfileHelper/IsInternalAddress">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.ProfileHelper">
+        <exactMethodMatcher methodName="IsInternalAddress"/>
+      </match>
+    </tracerFactory>
+    
+    <tracerFactory metricName="Custom/Impl/Helpers/UserContextEqualityComparer/Equals">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.UserContextEqualityComparer">
+        <exactMethodMatcher methodName="Equals"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Helpers/UserContextEqualityComparer/GetHashCode">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Helpers.UserContextEqualityComparer">
+        <exactMethodMatcher methodName="GetHashCode"/>
+      </match>
+    </tracerFactory>
+  </instrumentation>
+</extension>

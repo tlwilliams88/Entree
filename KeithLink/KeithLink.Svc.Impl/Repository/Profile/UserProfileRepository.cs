@@ -72,16 +72,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             Dictionary<Guid, bool> existingUsers = new Dictionary<Guid, bool>();
 
-            if((res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities.Count > 0)
-            {
-                _logger.WriteInformationLog
-                    (String.Format(
-                        "before removing duplicates profiles repo: {0}",
-                        JsonConvert.SerializeObject(((res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities).Select(ent => new {
-                            UserId = Guid.Parse(ent.Id),
-                            EmailAddress = (string)ent.Properties["Email"]
-                        }).ToList())));
-            }
             foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities) {
                 Guid userid = Guid.Parse(ent.Id);
 
@@ -95,17 +85,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         EmailAddress = (string)ent.Properties["Email"]
                     });
                 }
-            }
-
-            if (customerUsers.Count > 0)
-            {
-                _logger.WriteInformationLog
-                    (String.Format(
-                        "after removing duplicates profiles repo: {0}",
-                        JsonConvert.SerializeObject((customerUsers).Select(ent => new {
-                            UserId = ent.UserId,
-                            EmailAddress = ent.EmailAddress
-                        }).ToList())));
             }
 
             return customerUsers;

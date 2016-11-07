@@ -19,7 +19,7 @@ using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -391,128 +391,46 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         public void ProcessNotification(BaseNotification notification)
         {
-            if (notification.NotificationType != NotificationType.OrderConfirmation)
-                throw new ApplicationException("notification/handler type mismatch");
+            try {
+                if (notification.NotificationType != NotificationType.OrderConfirmation)
+                    throw new ApplicationException("notification/handler type mismatch");
 
-            OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
+                OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
 
-            // load up recipients, customer and message
-            eventLogRepository.WriteInformationLog("order confirmation base, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
-            Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
+                // load up recipients, customer and message
+                eventLogRepository.WriteInformationLog("order confirmation base, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
+                Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
 
-            if (customer == null)
-            {
-                StringBuilder warningMessage = new StringBuilder();
-                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Order Confirmation notification.", notification.BranchId, notification.CustomerNumber);
-                warningMessage.AppendLine();
-                warningMessage.AppendLine();
-                warningMessage.AppendLine("Notification:");
-                warningMessage.AppendLine(notification.ToJson());
+                NewRelic.Api.Agent.NewRelic.AddCustomParameter("OrderNumber", orderConfirmation.OrderNumber);
+                NewRelic.Api.Agent.NewRelic.AddCustomParameter("InvoiceNumber", orderConfirmation.InvoiceNumber);
+                NewRelic.Api.Agent.NewRelic.AddCustomParameter("CustomerNumber", orderConfirmation.CustomerNumber);
+                NewRelic.Api.Agent.NewRelic.AddCustomParameter("BranchId", orderConfirmation.BranchId);
+                NewRelic.Api.Agent.NewRelic.AddCustomParameter("OrderChange.Items.Count", orderConfirmation.OrderChange.Items.Count);
 
-                eventLogRepository.WriteWarningLog(warningMessage.ToString());
-            }
-            else
-            {
-                List<Recipient> recipients = LoadRecipients(orderConfirmation.NotificationType, customer);
-                Message message = GetEmailMessageForNotification(orderConfirmation, customer);
+                if (customer == null) {
+                    StringBuilder warningMessage = new StringBuilder();
+                    warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Order Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                    warningMessage.AppendLine();
+                    warningMessage.AppendLine();
+                    warningMessage.AppendLine("Notification:");
+                    warningMessage.AppendLine(notification.ToJson());
 
-                // send messages to providers...
-                if (recipients != null && recipients.Count > 0)
-                {
-                    SendMessage(recipients, message);
+                    eventLogRepository.WriteWarningLog(warningMessage.ToString());
                 }
+                else {
+                    List<Recipient> recipients = LoadRecipients(orderConfirmation.NotificationType, customer);
+                    Message message = GetEmailMessageForNotification(orderConfirmation, customer);
+
+                    // send messages to providers...
+                    if (recipients != null && recipients.Count > 0) {
+                        SendMessage(recipients, message);
+                    }
+                }
+            } catch(Exception ex) {
+                throw new Core.Exceptions.Queue.QueueDataError<BaseNotification>(notification, "OrderConfirmation:ProcessNotification", "Sending order confirmation", "There was an exception sending an order confirmation", ex);
             }
         }
 
-        //public void ProcessNotificationForExternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
-        //{
-        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.OrderConfirmation)
-        //        throw new ApplicationException("notification/handler type mismatch");
-
-        //    OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
-
-        //    // load up recipients, customer and message
-        //    eventLogRepository.WriteInformationLog("order confirmation ext, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
-        //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
-
-        //    if (customer == null)
-        //    {
-        //        System.Text.StringBuilder warningMessage = new StringBuilder();
-        //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Order Confirmation notification.", notification.BranchId, notification.CustomerNumber);
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine("Notification:");
-        //        warningMessage.AppendLine(notification.ToJson());
-
-        //        eventLogRepository.WriteWarningLog(warningMessage.ToString());
-        //    }
-        //    else
-        //    {
-        //        List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer, false, false, true);
-
-        //        // send messages to providers...
-        //        if (recipients != null && recipients.Count > 0)
-        //        {
-        //            try
-        //            {
-        //                Message message = GetEmailMessageForNotification(orderConfirmation, customer);
-        //                base.SendMessage(recipients, message);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
-        //            }
-        //        }
-        //    }
-        //}
-
-        //public void ProcessNotificationForInternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
-        //{
-        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.OrderConfirmation)
-        //        throw new ApplicationException("notification/handler type mismatch");
-
-        //    OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
-
-        //    // load up recipients, customer and message
-        //    eventLogRepository.WriteInformationLog("order confirmation int, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
-        //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
-
-        //    if (customer == null)
-        //    {
-        //        System.Text.StringBuilder warningMessage = new StringBuilder();
-        //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Order Confirmation notification.", notification.BranchId, notification.CustomerNumber);
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine("Notification:");
-        //        warningMessage.AppendLine(notification.ToJson());
-
-        //        eventLogRepository.WriteWarningLog(warningMessage.ToString());
-        //    }
-        //    else
-        //    {
-        //        List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer, false, true, false);
-
-        //        // send messages to providers...
-        //        if (recipients != null && recipients.Count > 0)
-        //        {
-        //            try
-        //            {
-        //                eventLogRepository.WriteInformationLog("order confirmation int, custNum: " +
-        //                                                       notification.CustomerNumber +
-        //                                                       ", branch: " +
-        //                                                       notification.BranchId +
-        //                                                       ", recipients " +
-        //                                                       recipients.Count);
-        //                Message message = GetEmailMessageForNotification(orderConfirmation, customer);
-        //                base.SendMessage(recipients, message);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
-        //            }
-        //        }
-        //    }
-        //}
         #endregion
     }
 }

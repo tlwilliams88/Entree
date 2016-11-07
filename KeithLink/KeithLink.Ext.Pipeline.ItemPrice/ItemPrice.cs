@@ -50,21 +50,24 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 					foreach (object lineItem in lineItems)
 					{
 						IDictionary Item = (IDictionary)lineItem;
-						var itemPrice = ((KeithLink.Ext.Pipeline.ItemPrice.PipelineService.PriceReturn)prices).Prices.Where(p => p.ItemNumber.Equals(Item["product_id"].ToString()));
 
-						if (itemPrice.Any())
-						{
-							var price = Item["Each"].ToString().ToLower() == "true" ? itemPrice.First().PackagePrice : itemPrice.First().CasePrice;
+                        // Only price new items, filled/subbed/replacement items get their pricing from the mainframe
+                        if (Item["MainFrameStatus"].ToString().Length == 0) {
+                            var itemPrice = ((KeithLink.Ext.Pipeline.ItemPrice.PipelineService.PriceReturn)prices).Prices.Where(p => p.ItemNumber.Equals(Item["product_id"].ToString()));
 
-                            if (price == 0) //TODO: Enable this check once we are using a real customer. For now there are far too many products without a price.
+                            if (itemPrice.Any()) {
+                                var price = Item["Each"].ToString().ToLower() == "true" ? itemPrice.First().PackagePrice : itemPrice.First().CasePrice;
+
+                                if (price == 0) //TODO: Enable this check once we are using a real customer. For now there are far too many products without a price.
+                                    throw new Exception("Price Not Found");
+
+                                Item["_cy_iadjust_regularprice"] = (decimal)price;
+
+                                Item["cy_placed_price"] = (decimal)price;
+                            }
+                            else
                                 throw new Exception("Price Not Found");
-
-							Item["_cy_iadjust_regularprice"] = (decimal)price;
-
-							Item["cy_placed_price"] = (decimal)price;
-						}
-						else
-							throw new Exception("Price Not Found");
+                        }
 					}
 				}
 

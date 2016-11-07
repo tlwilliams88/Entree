@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,6 +42,8 @@ namespace KeithLink.Svc.Core
         public const string ROLE_EXTERNAL_OWNER = "Owner";
         public const string ROLE_EXTERNAL_PURCHASINGAPPROVER = "Approver";
         public const string ROLE_EXTERNAL_PURCHASINGBUYER = "Buyer";
+
+        public const string PERMISSION_EXTERNAL_VIEWINVOICES = "ViewInvoices";
 
         //public const string ROLE_CORPORATE_ADMIN = "CORP-LS-SYS-AC-Entree_Admins";
         public const string ROLE_CORPORATE_SECURITY = "CORP-DIS-Security";
@@ -302,6 +305,17 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY = "creditmemo";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY = "only";
         public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM = "none";
+        public const string INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY = "invoicenumber";
+        public const string INVOICEREQUESTFILTER_PONUMBER_FIELDKEY = "ponumber";
+        public const string INVOICEREQUESTFILTER_TYPEDESCRIPTION_FIELDKEY = "typedescription";
+        public const string INVOICEREQUESTFILTER_DATERANGE_YEARQTRKEY = "yearqtr";
+        public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ1 = "1/1";
+        public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ2 = "4/1";
+        public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ3 = "7/1";
+        public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ4 = "10/1";
+        public const string INVOICEREQUESTFILTER_DATERANGE_YEARMONTHKEY = "yearmonth";
+        public const string INVOICEREQUESTSORT_INVOICEAMOUNT = "invoiceamount";
+        public const string INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING = "asc";
 
         // item history unit of measure
         public const string ITEMHISTORY_AVERAGEUSE_CASE = "C";
@@ -318,6 +332,7 @@ namespace KeithLink.Svc.Core
         public const string REPORT_PRINTLIST_NoParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParYesPriceNoNotes.rdlc";
         public const string REPORT_PRINTLIST_NoParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceYesNotes.rdlc";
         public const string REPORT_PRINTLIST_NoParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceNoNotes.rdlc";
+        public const string REPORT_NULL_Placeholder = "<BLANK>";
 
         // system alerts
         public const string EMAILMASK_ALLSYSTEMALERT = "ALERTALL";
@@ -355,6 +370,8 @@ namespace KeithLink.Svc.Core
         public const string IXONE_PRODUCTINFO_GET_URL =
             "https://exchange.ix-one.net/services/Products/filtered";
         public const string IXONE_PRODUCTIMAGE_GET_URL =
-            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type=JPG&Size=MEDIUM";
+            "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type={1}&Size=MEDIUM";
+        public const string IXONE_PRODUCTIMAGE_PREFERREDTYPE = "JPG";
+        public const string IXONE_PRODUCTIMAGE_BACKUPTYPE = "PNG";
     }
 }

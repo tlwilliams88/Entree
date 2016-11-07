@@ -10,11 +10,71 @@ angular.module('bekApp')
       isDisabled: '='
     },
     templateUrl: 'views/directives/orderdropdown.html',
-    controller: ['$scope', '$modal', '$state', function($scope, $modal, $state){
+    controller: ['$scope', '$modal', '$state', 'ApplicationSettingsService', 'UtilityService', 'LocalStorage', 'ListService', 'CartService', function($scope, $modal, $state, ApplicationSettingsService, UtilityService, LocalStorage, ListService, CartService){
+
+      $scope.isMobile = UtilityService.isMobileDevice();
+      var currentCustomer = LocalStorage.getCurrentCustomer(),
+          shipDates = CartService.getShipDates(),
+          cartHeaders = CartService.cartHeaders ? CartService.cartHeaders : CartService.getCartHeaders(),
+          listHeaders = ListService.getListHeaders(),
+          selectedList= ApplicationSettingsService.getDefaultOrderList(),
+          isOffline = CartService.isOffline,
+          customListHeaders;
+
+      if($scope.isMobile){
+        customListHeaders = false;
+      } else {
+        customListHeaders = ListService.getCustomListHeaders();
+      }
 
       if ($scope.isDisabled) {
         $scope.tooltipMessage = 'Customer is not set up for ordering in the Entrée System.';
       }
+
+      $scope.openCreateOrderModal = function(size) {
+        var modalInstance = $modal.open({
+          templateUrl: 'views/modals/createordermodal.html',
+          controller: 'CreateOrderModalController',
+          backdrop:'static',
+          size: size,
+          resolve: {
+            CurrentCustomer: function() {
+              return currentCustomer;
+            },
+            ShipDates: function() {
+              return shipDates;
+            },
+            CartHeaders: function() {
+              return cartHeaders;
+            },
+            Lists: function() {
+              return listHeaders;
+            },
+            CustomListHeaders: function() {
+              return customListHeaders;
+            },
+            IsOffline: function() {
+              return isOffline;
+            },
+            IsMobile: function() {
+              return $scope.isMobile;
+            },
+            SelectedList: function() {
+              return selectedList;
+            }
+          }
+        });
+   
+        modalInstance.result.then(function(cart) {
+          if(cart.type && cart.type == 'QuickAdd'){
+            $state.go('menu.cart.items', {cartId: cart.id});
+          } else if(cart.type && cart.type == 'Import') {
+            $state.go('menu.cart.items', { cartId: cart.listid });
+          } else {
+            $state.go('menu.addtoorder.items', { listId: cart.listid, cartId: cart.id});
+          }
+        });
+      };
 
       $scope.openQuickAddModal = function() {
         var modalInstance = $modal.open({

@@ -46,6 +46,14 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[DataMember( Name = "listid")]
 		public long? ListId { get; set; }
 
-	}
+        [DataMember(Name = "cartname")]
+        public string CartName { get; set; }
+
+        [DataMember(Name = "shipdate")]
+        public string ShipDate { get; set; }
+
+        [DataMember(Name = "ponumber")]
+        public string PONumber { get; set; }
+    }
 
 }

@@ -14,6 +14,7 @@ angular.module('bekApp')
   $scope.isMobileApp = ENV.mobileApp;
 
     $scope.signUpBool = false;
+    $scope.isInternalEmail = false;
 
   // gets prepopulated login info for dev environment
   $scope.loginInfo = {
@@ -41,12 +42,18 @@ angular.module('bekApp')
 
   };
 
-  $scope.forgotPassword = function(email) { 
-    UserProfileService.resetPassword(email).then(function(data){      
+  $scope.forgotPassword = function(email) {
+    $scope.checkForInternalEmail(email);
+    if(!$scope.isInternalEmail){
+      UserProfileService.resetPassword(email).then(function(data){      
        toaster.pop('success', null, 'We have sent a password reset request if the email was verified');
       },function(error) {
       toaster.pop('error', null, 'Error resetting password.');        
       });
+    } else {
+      return false;
+    }
+
    };
 
   $scope.setSignUpBool = function(signUpBool) { 
@@ -56,6 +63,7 @@ angular.module('bekApp')
   $scope.checkForInternalEmail = function(email) {    
     if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === "@benekeith.com"){
       $scope.isInternalEmail = true;
+      $scope.$apply(); // Needed to use $apply to update view
     }else{
       $scope.isInternalEmail = false;
     }

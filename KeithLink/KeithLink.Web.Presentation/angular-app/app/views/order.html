@@ -1,7 +1,7 @@
 <div page-header-bar>
   <div header-message>
     Orders
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
+    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right hidden-print"></order-dropdown>
     <button type="button" ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success pull-right" style="font-size: 12px; padding: 7px 10px; margin-right:6px;">Get Latest
       <br>Updates</button>
 
@@ -10,7 +10,7 @@
     <button type="button" ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
     <a title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></a>
     <a title="Export" ng-click="openExportModal()" class="btn btn-icon-right btn-default"><span class="icon-export"></span></a>
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1"></order-dropdown>
+    <order-dropdown class="hidden-print" is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1"></order-dropdown>
   </div>
 </div>
 <div class="page-content">
@@ -28,7 +28,7 @@
       <thead>
         <tr>
           <th class="input-col">
-            <input type="checkbox" ng-model="allCartsSelected" ng-disabled="!carts" ng-change="toggleAllCarts(allCartsSelected)" />
+            <input type="checkbox" class="hidden-print" ng-model="allCartsSelected" ng-disabled="!carts" ng-change="toggleAllCarts(allCartsSelected)" />
           </th>
           <th>
             Name
@@ -50,7 +50,7 @@
       <tbody>
         <tr ng-repeat="cart in carts | orderBy:'createddate':true" ng-class="{ odd : $odd, even: $even }">
           <td class="input-col">
-            <input type="checkbox" ng-checked="cartGuids.indexOf(cart.id) > -1" ng-click="toggleCart(cart.id)" />
+            <input type="checkbox" class="hidden-print" ng-checked="cartGuids.indexOf(cart.id) > -1" ng-click="toggleCart(cart.id)" />
           </td>
           <td>
             <a ui-sref="menu.cart.items({ cartId: cart.id })">{{::cart.name}}</a>
@@ -104,7 +104,7 @@
           </th>
           <th class="hidden-mobile-visible-print">Item Count</th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortOrders('ordertotal', !sort.sortDescending)">
-            <span>Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span>
+            <span>Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue hidden-print"></span>
             <span sort-icons field="'ordertotal'" sortorder="sort.sortDescending" sortby="sort.field"></span>
           </span>
           </th>
@@ -120,7 +120,7 @@
           <th class="col-header">
             Order System
           </th>
-          <th class="large-icon icon-col">
+          <th class="large-icon icon-col hidden-print">
             <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
           </th>
         </tr>

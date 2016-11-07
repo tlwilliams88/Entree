@@ -393,6 +393,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var poNum = confirmation.Header.ConfirmationNumber;
             PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
 
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("ConfirmationNumber", confirmation.Header.ConfirmationNumber);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("CustomerNumber", confirmation.Header.CustomerNumber);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("Branch", confirmation.Header.Branch);
+            NewRelic.Api.Agent.NewRelic.AddCustomParameter("ItemCount", confirmation.Detail.Count());
+
             string logMessage = "Processing confirmation for control number: {ConfirmationNumber}, {Status} get purchase order";
             object logInfo = new {
                 ConfirmationNumber = confirmation.Header.ConfirmationNumber,

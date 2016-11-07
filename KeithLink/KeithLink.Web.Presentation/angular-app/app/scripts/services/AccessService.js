@@ -8,6 +8,10 @@ angular.module('bekApp')
     return SessionService.userProfile.rolename;
   }
 
+  function canViewInvoices() {
+    return SessionService.userProfile.permit.invoices.canView;
+  }
+
   // EXTERNAL
   function isOwner() {
     return ( getRole() === Constants.roles.OWNER );
@@ -144,6 +148,10 @@ angular.module('bekApp')
 
     canPayInvoices: function() {
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() );
+    },
+
+    canViewInvoices: function() {
+      return ( canViewInvoices() );
     },
 
     canGrantAccessToOtherServices: function() {

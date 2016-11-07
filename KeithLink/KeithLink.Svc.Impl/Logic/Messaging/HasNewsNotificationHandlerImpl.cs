@@ -41,141 +41,45 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
         #region methods
         public void ProcessNotification(Core.Models.Messaging.Queue.BaseNotification notification) {
-            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.HasNews)
-                throw new ApplicationException("notification/handler type mismatch");
+            try {
+                if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.HasNews)
+                    throw new ApplicationException("notification/handler type mismatch");
 
-            var hasNewsNotification = (HasNewsNotification)notification;
+                var hasNewsNotification = (HasNewsNotification)notification;
 
-            Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, hasNewsNotification.BranchId);
+                Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, hasNewsNotification.BranchId);
 
-            if (customer == null) {
-                System.Text.StringBuilder warningMessage = new StringBuilder();
-                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, hasNewsNotification.CustomerNumber);
-                warningMessage.AppendLine();
-                warningMessage.AppendLine();
-                warningMessage.AppendLine("Notification:");
-                warningMessage.AppendLine(notification.ToJson());
+                if (customer == null) {
+                    System.Text.StringBuilder warningMessage = new StringBuilder();
+                    warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, hasNewsNotification.CustomerNumber);
+                    warningMessage.AppendLine();
+                    warningMessage.AppendLine();
+                    warningMessage.AppendLine("Notification:");
+                    warningMessage.AppendLine(notification.ToJson());
 
-                eventLogRepository.WriteWarningLog(warningMessage.ToString());
-            } else {
-                List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer, notification.DSRDSMOnly);
-
-                if (recipients != null && recipients.Count > 0) {
-                    // send messages to providers...
-                    Message msg = new Message() {
-                        CustomerName = customer.CustomerName,
-                        CustomerNumber = customer.CustomerNumber,
-                        BranchId = customer.CustomerBranch,
-                        MessageSubject = hasNewsNotification.Subject,
-                        MessageBody = hasNewsNotification.Notification,
-                        NotificationType = NotificationType.HasNews
-                    };
-
-                    base.SendMessage(recipients, msg);
+                    eventLogRepository.WriteWarningLog(warningMessage.ToString());
                 }
+                else {
+                    List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer, notification.DSRDSMOnly);
+
+                    if (recipients != null && recipients.Count > 0) {
+                        // send messages to providers...
+                        Message msg = new Message() {
+                            CustomerName = customer.CustomerName,
+                            CustomerNumber = customer.CustomerNumber,
+                            BranchId = customer.CustomerBranch,
+                            MessageSubject = hasNewsNotification.Subject,
+                            MessageBody = hasNewsNotification.Notification,
+                            NotificationType = NotificationType.HasNews
+                        };
+
+                        base.SendMessage(recipients, msg);
+                    }
+                }
+            } catch (Exception ex) {
+                throw new Core.Exceptions.Queue.QueueDataError<BaseNotification>(notification, "HasNews:ProcessNotification", "Sending HasNews notification", "There was an error sending a HasNews notification", ex);
             }
         }
-
-        //public void ProcessNotificationForExternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
-        //{
-        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.HasNews)
-        //        throw new ApplicationException("notification/handler type mismatch");
-
-        //    var hasNewsNotification = (HasNewsNotification)notification;
-
-        //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, hasNewsNotification.BranchId);
-
-        //    if (customer == null)
-        //    {
-        //        System.Text.StringBuilder warningMessage = new StringBuilder();
-        //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, hasNewsNotification.CustomerNumber);
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine("Notification:");
-        //        warningMessage.AppendLine(notification.ToJson());
-
-        //        eventLogRepository.WriteWarningLog(warningMessage.ToString());
-        //    }
-        //    else
-        //    {
-        //        //external
-        //        List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer, false, false, true); 
-
-        //        if (recipients != null && recipients.Count > 0)
-        //        {
-        //            // send messages to providers...
-        //            Message msg = new Message()
-        //            {
-        //                CustomerName = customer.CustomerName,
-        //                CustomerNumber = customer.CustomerNumber,
-        //                BranchId = customer.CustomerBranch,
-        //                MessageSubject = hasNewsNotification.Subject,
-        //                MessageBody = hasNewsNotification.Notification,
-        //                NotificationType = NotificationType.HasNews
-        //            };
-
-        //            try
-        //            {
-        //                base.SendMessage(recipients, msg);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
-        //            } 
-        //        }
-        //    }
-        //}
-
-        //public void ProcessNotificationForInternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
-        //{
-        //    if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.HasNews)
-        //        throw new ApplicationException("notification/handler type mismatch");
-
-        //    var hasNewsNotification = (HasNewsNotification)notification;
-
-        //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, hasNewsNotification.BranchId);
-
-        //    if (customer == null)
-        //    {
-        //        System.Text.StringBuilder warningMessage = new StringBuilder();
-        //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, hasNewsNotification.CustomerNumber);
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine();
-        //        warningMessage.AppendLine("Notification:");
-        //        warningMessage.AppendLine(notification.ToJson());
-
-        //        eventLogRepository.WriteWarningLog(warningMessage.ToString());
-        //    }
-        //    else
-        //    {
-        //        //internal
-        //        List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer, false, true, false);
-
-        //        if (recipients != null && recipients.Count > 0)
-        //        {
-        //            // send messages to providers...
-        //            Message msg = new Message()
-        //            {
-        //                CustomerName = customer.CustomerName,
-        //                CustomerNumber = customer.CustomerNumber,
-        //                BranchId = customer.CustomerBranch,
-        //                MessageSubject = hasNewsNotification.Subject,
-        //                MessageBody = hasNewsNotification.Notification,
-        //                NotificationType = NotificationType.HasNews
-        //            };
-
-        //            try
-        //            {
-        //                base.SendMessage(recipients, msg);
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
-        //            } 
-        //        }
-        //    }
-        //}
-        
         
         #endregion
     }

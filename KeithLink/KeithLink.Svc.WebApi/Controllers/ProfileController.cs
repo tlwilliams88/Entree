@@ -78,9 +78,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
+                userInfo.Permissions = _profileLogic.PackUserPermissions(userInfo.Permit);
                 retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(this.AuthenticatedUser, userInfo.CustomerName, userInfo.Email, userInfo.Password,
                                                                             userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
-                                                                            userInfo.Role, userInfo.BranchId);
+                                                                            userInfo.Role, userInfo.Permissions, userInfo.BranchId);
                 retVal.IsSuccess = true;
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
@@ -188,6 +189,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
                 {
                     UserProfileReturn upVal = new UserProfileReturn();
+                    AuthenticatedUser.Permit = _profileLogic.UnpackUserPermissions(AuthenticatedUser.Permissions, AuthenticatedUser.RoleName);
                     upVal.UserProfiles.Add(this.AuthenticatedUser);
 
                     PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);
@@ -315,9 +317,10 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (String.IsNullOrEmpty(userInfo.UserId)) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
                 if (!ProfileHelper.IsInternalAddress(userInfo.Email)) {
+                    userInfo.Permissions = _profileLogic.PackUserPermissions(userInfo.Permit);
                     _profileLogic.UpdateUserProfile(this.AuthenticatedUser, userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
                                                   userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId,
-                                                  true /* hard coded security for now */, userInfo.Customers, userInfo.Role);
+                                                  true /* hard coded security for now */, userInfo.Customers, userInfo.Role, userInfo.Permissions);
                 }
 
                 retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);
@@ -1209,6 +1212,64 @@ namespace KeithLink.Svc.WebApi.Controllers
                 returnValue.IsSuccess = true;
             }
             catch (Exception ex) {
+                returnValue.ErrorMessage = string.Format("Error saving profile settings for user: {0}", ex);
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
+        }
+
+
+        /// <summary>
+        /// Get a user's default order list for selected customer
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("profile/defaultorderlist")]
+        public OperationReturnModel<SettingsModelReturn> GetProfileDefaultOrderList()
+        {
+            OperationReturnModel<SettingsModelReturn> returnValue = new OperationReturnModel<SettingsModelReturn>() { SuccessResponse = null };
+
+            try
+            {
+                returnValue.SuccessResponse = _settingLogic.GetUserCustomerDefaultOrderList
+                    (AuthenticatedUser.UserId, SelectedUserContext.CustomerId, SelectedUserContext.BranchId);
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.ErrorMessage = ex.Message;
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Create or update user's default order list for selected customer
+        /// </summary>
+        /// <param name="defaultorderlist">settings object</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("profile/defaultorderlist")]
+        public OperationReturnModel<bool> CreateOrUpdateProfileDefaultOrderList(DefaultOrderListModel defaultorderlist)
+        {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            try
+            {
+                _settingLogic.CreateOrUpdateUserCustomerDefaultOrderList
+                    (SelectedUserContext.CustomerId, 
+                     SelectedUserContext.BranchId, 
+                     new SettingsModel() { UserId = AuthenticatedUser.UserId,
+                                           Value = defaultorderlist.ListId.ToString() });
+                returnValue.SuccessResponse = true;
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
                 returnValue.ErrorMessage = string.Format("Error saving profile settings for user: {0}", ex);
                 _log.WriteErrorLog(returnValue.ErrorMessage, ex);
                 returnValue.IsSuccess = false;

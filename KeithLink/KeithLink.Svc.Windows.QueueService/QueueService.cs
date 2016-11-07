@@ -39,10 +39,10 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope lostOrdersScope;
         private ILifetimeScope orderHistoryScope;
         private ILifetimeScope specialOrderScope;
-        private ILifetimeScope notification1Scope;
-        private ILifetimeScope notification2Scope;
-        private ILifetimeScope notification3Scope;
-        private ILifetimeScope notification4Scope;
+        private ILifetimeScope notificationOrderConfirmationScope;
+        private ILifetimeScope notificationHasNewsScope;
+        private ILifetimeScope notificationPaymentConfirmationScope;
+        private ILifetimeScope notificationEtaScope;
         private ILifetimeScope pushMessagesScope;
 
         private Task lostOrdersTask;
@@ -125,26 +125,26 @@ namespace KeithLink.Svc.Windows.QueueService {
         }
         
         private void InitializeNotificationsThreads() {
-            notification1Scope = container.BeginLifetimeScope();
-            notification2Scope = container.BeginLifetimeScope();
-            notification3Scope = container.BeginLifetimeScope();
-            notification4Scope = container.BeginLifetimeScope();
+            notificationOrderConfirmationScope = container.BeginLifetimeScope();
+            notificationHasNewsScope = container.BeginLifetimeScope();
+            notificationPaymentConfirmationScope = container.BeginLifetimeScope();
+            notificationEtaScope = container.BeginLifetimeScope();
 
-            _orderConfirmationQueueConsumer = notification1Scope.Resolve<INotificationQueueConsumer>();
+            _orderConfirmationQueueConsumer = notificationOrderConfirmationScope.Resolve<INotificationQueueConsumer>();
             _orderConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueOrderConfirmation;
-            _orderConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _orderConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueOrderConfirmation);
 
-            _hasNewsQueueConsumer = notification2Scope.Resolve<INotificationQueueConsumer>();
+            _hasNewsQueueConsumer = notificationHasNewsScope.Resolve<INotificationQueueConsumer>();
             _hasNewsQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueHasNews;
-            _hasNewsQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _hasNewsQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueHasNews);
 
-            _paymentConfirmationQueueConsumer = notification3Scope.Resolve<INotificationQueueConsumer>();
+            _paymentConfirmationQueueConsumer = notificationPaymentConfirmationScope.Resolve<INotificationQueueConsumer>();
             _paymentConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueuePaymentConfirmation;
-            _paymentConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _paymentConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueuePaymentConfirmation);
 
-            _ETAQueueConsumer = notification4Scope.Resolve<INotificationQueueConsumer>();
+            _ETAQueueConsumer = notificationEtaScope.Resolve<INotificationQueueConsumer>();
             _ETAQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueETA;
-            _ETAQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _ETAQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueETA);
         }
 
         private void InitializePushMessageConsumerThread()
@@ -194,28 +194,28 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void TerminateNotificationsThreads() {
             if (_orderConfirmationQueueConsumer != null)
-                _orderConfirmationQueueConsumer.Stop();
+                _orderConfirmationQueueConsumer.Unsubscribe();
 
             if (_hasNewsQueueConsumer != null)
-                _hasNewsQueueConsumer.Stop();
+                _hasNewsQueueConsumer.Unsubscribe();
 
             if (_paymentConfirmationQueueConsumer != null)
-                _paymentConfirmationQueueConsumer.Stop();
+                _paymentConfirmationQueueConsumer.Unsubscribe();
 
             if (_ETAQueueConsumer != null)
-                _ETAQueueConsumer.Stop();
+                _ETAQueueConsumer.Unsubscribe();
 
-            if (notification1Scope != null)
-                notification1Scope.Dispose();
+            if (notificationOrderConfirmationScope != null)
+                notificationOrderConfirmationScope.Dispose();
 
-            if (notification2Scope != null)
-                notification2Scope.Dispose();
+            if (notificationHasNewsScope != null)
+                notificationHasNewsScope.Dispose();
 
-            if (notification3Scope != null)
-                notification3Scope.Dispose();
+            if (notificationPaymentConfirmationScope != null)
+                notificationPaymentConfirmationScope.Dispose();
 
-            if (notification4Scope != null)
-                notification4Scope.Dispose();
+            if (notificationEtaScope != null)
+                notificationEtaScope.Dispose();
         }
 
         private void TerminatePushMessageConsumerThread()
