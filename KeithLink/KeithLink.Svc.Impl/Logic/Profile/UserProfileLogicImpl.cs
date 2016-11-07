@@ -1884,6 +1884,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 Permits.Invoices.CanView = true;
             }
+            else if (Constants.ROLE_NAME_BRANCHIS.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
+            else if (Constants.ROLE_NAME_POWERUSER.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
+            else if (Constants.ROLE_NAME_DSR.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
             else if (Constants.ROLE_EXTERNAL_ACCOUNTING.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
             {
                 Permits.Invoices.CanView = true;
