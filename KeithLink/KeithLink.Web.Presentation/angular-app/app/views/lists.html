@@ -59,11 +59,19 @@
   </div>
   <div header-buttons>
     <button 
-      ng-if="selectedList.permissions.canEditList" 
+      ng-if="selectedList.permissions.canEditList && !isCustomInventoryList" 
       type="submit" 
       class="btn-lg btn btn-primary" 
       ng-disabled="listForm.$invalid" 
       ng-click="saveList(selectedList)">
+      Save
+    </button>
+    <button 
+      ng-if="selectedList.permissions.canEditList && isCustomInventoryList" 
+      type="submit" 
+      class="btn-lg btn btn-primary" 
+      ng-disabled="listForm.$invalid" 
+      ng-click="saveCustomInventoryList(selectedList)">
       Save
     </button>
     <button 
@@ -95,11 +103,20 @@
 <div class="visible-xs visible-sm hidden-print row page-subheader-bar">
 
   <button 
-    ng-if="selectedList.permissions.canEditList" 
+    ng-if="selectedList.permissions.canEditList && !isCustomInventoryList" 
     type="submit" 
     class="btn-no-style page-subheader-bar__button button-left" 
     ng-disabled="listForm.$invalid" 
     ng-click="saveList(selectedList)">
+    Save
+  </button>
+
+  <button 
+    ng-if="selectedList.permissions.canEditList && isCustomInventoryList" 
+    type="submit" 
+    class="btn-no-style page-subheader-bar__button button-left" 
+    ng-disabled="listForm.$invalid" 
+    ng-click="saveCustomInventoryList(selectedList)">
     Save
   </button>
 
@@ -160,6 +177,15 @@
             </h5>
             
             <div class="btn-group-vertical">
+            <button 
+              type="button" 
+              ng-click="getCustomInventoryList()" 
+              data-drop="isDragging" 
+              data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
+              jqyoui-droppable="{onDrop: 'createListFromDrag()'}" 
+              class="btn btn-default btn-list text-light btn-lg">
+              Custom Inventory
+            </button>
             <button 
               type="button" 
               ng-click="createList()" 
@@ -323,14 +349,16 @@
     </div>
     </div>
 
+<!-- Non-Custom Entry List -->
      <form 
       unsaved-warning-form 
       novalidate 
-      name="listForm" 
+      name="forms.listForm" 
       class="style-validation-errors list-form" 
       autocomplete="off" 
       context-menu 
-      favorite-item-click-handlers>
+      favorite-item-click-handlers
+      ng-if="!isCustomInventoryList">
       
         <table 
           navigate-table="lists"
@@ -428,11 +456,6 @@
                   </span>
                 </span>
               </td>
-              <td ng-if="isCustomInventoryList">
-                <span ng-click="$event.stopPropagation()">
-                  <input class="tabstop form-control" type="text" ng-model="item.itemnumber" maxlength="15" no-duplicates="itemnumber" collection="selectedList" style="min-width: 90px;">
-                </span>
-              </td>
               <td ng-if="!isCustomInventoryList" class="bek-drag-handle">
                 <span ng-if="item.isvalid">
                   {{item.name}}
@@ -441,19 +464,9 @@
                   Invalid item
                 </span>
               </td>
-              <td ng-if="isCustomInventoryList">
-                <span ng-click="$event.stopPropagation()">
-                  <input class="tabstop form-control" type="text" ng-model="item.name" maxlength="30" style="min-width:60px">
-                </span>
-              </td>
               <td class="drop-column hidden-mobile-visible-print bek-drag-handle" ng-if="!isCustomInventoryList">
                 <span>
                   {{item.brand_extended_description}}
-                </span>
-              </td>
-              <td class="drop-column hidden-mobile-visible-print" ng-if="isCustomInventoryList">
-                <span ng-click="$event.stopPropagation()">
-                  <input class="tabstop form-control" type="text" ng-model="item.brand_extended_description" maxlength="30" style="min-width:60px">
                 </span>
               </td>
               <td class="drop-column bek-drag-handle" ng-if="!isCustomInventoryList">
@@ -461,46 +474,9 @@
                   {{item.class}}
                 </span>
               </td>
-              <td class="drop-column" ng-if="isCustomInventoryList">
-                <span ng-click="$event.stopPropagation()">
-                  <input class="tabstop form-control" type="text" ng-model="item.class" class="form-control" style="min-width:70px">
-                </span>
-              </td>
               <td class="hidden-mobile-visible-print bek-drag-handle" ng-if="!isCustomInventoryList" style="width:60px;">
                 <span>
                   {{item.packsize}}
-                </span>
-              </td>
-              <td class="hidden-mobile-visible-print" ng-if="isCustomInventoryList">
-                <span ng-click="$event.stopPropagation()">
-                  <ng-form>
-                    <input                    
-                    id="defaultElement-{{currentIndex}}"                     
-                    type="text"     
-                    pattern="([0-9])"
-                    ng-model="item.pack"     
-                    class="text-left bek-no-drag tabstop form-control"
-                    maxlength="4"
-                    style="min-width:40px; max-width:50px;"
-                    inputmode="numeric" 
-                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
-                  </ng-form>
-                </span>
-              </td>
-              <td class="hidden-mobile-visible-print" ng-if="isCustomInventoryList">
-                <span ng-click="$event.stopPropagation()">
-                  <ng-form name="itemSizeForm">
-                    <input                    
-                    id="defaultElement-{{currentIndex}}"                
-                    type="text"     
-                    pattern="([0-9])"
-                    ng-model="item.size"     
-                    class="text-left bek-no-drag tabstop form-control"
-                    maxlength="8"
-                    style="min-width:40px; max-width:50px;"
-                    inputmode="numeric" 
-                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
-                </ng-form>
                 </span>
               </td>
               <!-- Notes -->
@@ -573,32 +549,6 @@
                   <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                 </span>
               </td>
-              <td class="hidden-mobile-visible-print" ng-click="$event.stopPropagation()" ng-if="isCustomInventoryList && item.each">
-                <ng-form>
-                  <input                    
-                  id="packagePrice"                    
-                  type="text"     
-                  numeric-validation
-                  ng-model="item.packageprice"     
-                  class="text-right bek-no-drag tabstop form-control"
-                  style="max-width:80px; min-width:50px;"
-                  max-length="10"/>
-                </ng-form>
-              </td>
-              <td class="hidden-mobile-visible-print" ng-if="isCustomInventoryList && !item.each">
-                <span ng-click="$event.stopPropagation()">                
-                  <ng-form>
-                    <input                    
-                    id="casePrice"                   
-                    type="text"     
-                    numeric-validation
-                    ng-model="item.caseprice"     
-                    class="text-right bek-no-drag tabstop form-control"
-                    max-length="10"
-                    style="max-width:80px; min-width: 60px;"/>
-                  </ng-form>
-                </span>
-              </td>
               <!-- Parlevel -->
               <td class="hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)" ng-click="$event.stopPropagation()">
                 <ng-form name="parlevelForm">
@@ -662,9 +612,6 @@
                         <span ng-if="!isCustomInventoryList">
                           {{item.brand_extended_description}}
                         </span>
-                        <span ng-if="isCustomInventoryList" ng-click="$event.stopPropagation()">
-                          <input class="tabstop form-control" type="text" ng-model="item.brand_extended_description" maxlength="8" style="max-width:40%;">
-                        </span>
                       </td>
                     </tr>
                     <tr>
@@ -673,23 +620,12 @@
                         <span ng-if="!isCustomInventoryList">
                           {{item.class}}
                         </span>
-                        <span ng-if="isCustomInventoryList" ng-click="$event.stopPropagation()">
-                          <input class="tabstop form-control" type="text" ng-model="item.class" maxlength="8" style="max-width:40%;">
-                        </span>
                       </td>
                     </tr>
                     <tr>
                       <td ng-if="!isCustomInventoryList">Pack/Size</td>
                       <td ng-if="!isCustomInventoryList">
                           {{item.packsize}}
-                      </td>
-                      <td ng-if="isCustomInventoryList">Pack</td>
-                      <td ng-if="isCustomInventoryList">
-                        <span ng-click="$event.stopPropagation()">
-                          <ng-form>
-                            <input class="tabstop form-control pull-left" type="number" ng-model="item.pack" maxlength="4" style="max-width:40%;">
-                          </ng-form>
-                        </span>
                       </td>
                     </tr>
                     <tr ng-if="isCustomInventoryList">
@@ -804,8 +740,404 @@
             </tr>
           </tfoot>
         </table>
+      </form>
+
+      <!-- Custom Entry List -->
+      <form 
+        unsaved-warning-form 
+        novalidate 
+        name="forms.customListForm" 
+        class="style-validation-errors list-form" 
+        autocomplete="off" 
+        context-menu 
+        favorite-item-click-handlers
+        ng-if="isCustomInventoryList">
+      
+        <table 
+          navigate-table="lists"
+          class="custom-lists__table table table-border table-striped-rows"
+          style="border-right: 1px solid #C3BC9C">
+          <thead>
+            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
+              <th class="nowrap input-col">
+                <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 250 }" ng-model="selectedList.allSelected" ng-click="allSelected = true; changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
+                <span class="sort-col-header" ng-click="sortList('position',sort[0].order)"> 
+                  #
+                  <span sort-icons field="'position'" sortorder="sort[0].order" sortby="sort[0].field"></span>
+                </span>
+              </th>
+              <th class="sort-col-header" ng-click="sortList('itemnumber',sort[0].order)">
+                <span>Item <span sort-icons field="'itemnumber'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="sort-col-header" ng-click="sortList('name',sort[0].order)">
+                <span>Name <span sort-icons field="'name'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="hidden-mobile-visible-print sort-col-header"  ng-click="sortList('brandextendeddescription',sort[0].order)">
+                <span>Brand <span sort-icons field="'brandextendeddescription'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="sort-col-header drop-column" ng-click="sortList('itemclass',sort[0].order)">
+                <span>Category <span sort-icons field="'itemclass'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="hidden-mobile-visible-print">
+                <span >Pack</span>
+              </th>
+              <th class="hidden-mobile-visible-print" >
+                Size
+              </th>        
+              <th class="hidden-mobile-visible-print sort-col-header text-center" ng-if="selectedList.permissions.alternativeFieldHeader" ng-click="sortList(selectedList.permissions.alternativeFieldName,sort[0].order)">
+                <span>{{selectedList.permissions.alternativeFieldHeader}}
+                <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="hidden-mobile-visible-print sort-col-header text-center" ng-if="selectedList.permissions.alternativeFieldHeader2" ng-click="sortList(selectedList.permissions.alternativeFieldName2,sort[0].order)">
+                <span>{{selectedList.permissions.alternativeFieldHeader2}}
+                <span sort-icons field="selectedList.permissions.alternativeFieldName2" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
+                <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              </th>
+              <th class="hidden-mobile-visible-print" ng-if="(!selectedList.read_only)">
+                  Each
+              </th>
+              <th ng-if="canSeePrices" class="hidden-mobile-visible-print">
+                  Price
+              </th>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeParlevel" ng-click="sortList('parlevel',sort[0].order)">
+                <span>{{selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              
+              <th class="hidden-print"></th>
+            </tr> 
+          </thead>
+
+          <tbody 
+              ng-class="{ 'item-selected': item.isSelected }" 
+              fast-repeat="item in selectedList.items"
+              data-product="{{item}}" 
+              data-drag="dragEnabled" 
+              data-jqyoui-options="{
+                helper:generateDragHelper, 
+                cursorAt: { top: -5, left: -5 }, 
+                cancel: '.bek-no-drag', 
+                handle: '.bek-drag-handle',
+                delay: 200}" 
+              jqyoui-draggable="{
+                onStart: 'setIsDragging(true, item.listitemid)', 
+                onStop: 'setIsDragging(false)'}" 
+                id="listsTableRows"
+                class="highlightRows"
+                ng-click="shiftSelectOtherRows($event, item)">                
+           
+            <tr>
+              <td class="hidden-drag bek-drag-handle">
+                <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model-options="{ debounce: 1000 }" ng-model="item.isSelected" no-dirty-check>
+                <span style="font-size:11px;">
+                  {{item.position}}
+                </span>          
+              </td>
+              <td >
+                <span ng-click="$event.stopPropagation()">
+                  <input class="tabstop form-control" type="text" ng-model="item.itemnumber" maxlength="15" no-duplicates="itemnumber" collection="selectedList" style="min-width: 90px;">
+                </span>
+              </td>
+              <td >
+                <span ng-click="$event.stopPropagation()">
+                  <input class="tabstop form-control" type="text" ng-model="item.name" maxlength="30" style="min-width:60px">
+                </span>
+              </td>
+              <td class="drop-column hidden-mobile-visible-print" >
+                <span ng-click="$event.stopPropagation()">
+                  <input class="tabstop form-control" type="text" ng-model="item.brand_extended_description" maxlength="30" style="min-width:60px">
+                </span>
+              </td>
+              <td class="drop-column" >
+                <span ng-click="$event.stopPropagation()">
+                  <input class="tabstop form-control" type="text" ng-model="item.class" class="form-control" style="min-width:70px">
+                </span>
+              </td>
+              <td class="hidden-mobile-visible-print" >
+                <span ng-click="$event.stopPropagation()">
+                  <ng-form>
+                    <input                    
+                    id="defaultElement-{{currentIndex}}"                     
+                    type="text"     
+                    pattern="([0-9])"
+                    ng-model="item.pack"     
+                    class="text-left bek-no-drag tabstop form-control"
+                    maxlength="4"
+                    style="min-width:40px; max-width:50px;"
+                    inputmode="numeric" 
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                  </ng-form>
+                </span>
+              </td>
+              <td class="hidden-mobile-visible-print" >
+                <span ng-click="$event.stopPropagation()">
+                  <ng-form name="itemSizeForm">
+                    <input                    
+                    id="defaultElement-{{currentIndex}}"                
+                    type="text"     
+                    pattern="([0-9])"
+                    ng-model="item.size"     
+                    class="text-left bek-no-drag tabstop form-control"
+                    maxlength="8"
+                    style="min-width:40px; max-width:50px;"
+                    inputmode="numeric" 
+                    onkeypress="return event.charCode >= 48 && event.charCode <= 57"/>
+                </ng-form>
+                </span>
+              </td>
+              <td id="{{item[selectedList.permissions.alternativeFieldName]}}" ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
+                {{item[selectedList.permissions.alternativeFieldName]}}
+              </td>
+              <td id="{{item[selectedList.permissions.alternativeFieldName2]}}" ng-if="selectedList.permissions.alternativeFieldName2" class="hidden-xs hidden-sm text-center">
+                {{item[selectedList.permissions.alternativeFieldName2]}}
+              </td>
+              <!-- Label -->
+              <td class="nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
+                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
+                  <select name="" id="label" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
+                    <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
+                  </select>
+                  <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                </div>
+
+                <ng-form class="hidden-print bek-no-drag" name="addLabelForm" ng-if="item.isEditing">
+                  <input 
+                    id="newLabel" 
+                    name="newLabel" 
+                    type="text" 
+                    class="edit-label bek-no-drag form-control" 
+                    focus-me="item.isEditing" 
+                    placeholder="New Label..." 
+                    ng-required="item.isEditing" 
+                    ng-model="item.editLabel" />
+
+                  <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
+                </ng-form>
+              </td>
+              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle label-col" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
+                {{item.label}}
+              </td>
+              <!-- Label for Print -->
+              <td class="visible-print label-col" ng-if="(selectedList.permissions.canSeeLabels)">
+                {{item.label}}
+              </td>
+              <td class="hidden-mobile-visible-print max-width-20" ng-if="!selectedList.read_only">
+              <ng-form name="eachForm" ng-click="$event.stopPropagation()" ng-if="item.hasPackagePrice || isCustomInventoryList">
+                <input type="checkbox" class="mousetrap" ng-checked = "(!item.hasCasePrice && !isCustomInventoryList) || item.each" ng-disabled="!item.hasCasePrice && !isCustomInventoryList" ng-model="item.each" id="each" name="each"/>
+                <label for="each"></label>
+              </ng-form>
+              </td>
+              <td class="hidden-mobile-visible-print" ng-click="$event.stopPropagation()" ng-if="isCustomInventoryList && item.each">
+                <ng-form>
+                  <input                    
+                  id="packagePrice"                    
+                  type="text"     
+                  numeric-validation
+                  ng-model="item.packageprice"     
+                  class="text-right bek-no-drag tabstop form-control"
+                  style="max-width:80px; min-width:50px;"
+                  max-length="10"/>
+                </ng-form>
+              </td>
+              <td class="hidden-mobile-visible-print" ng-if="isCustomInventoryList && !item.each">
+                <span ng-click="$event.stopPropagation()">                
+                  <ng-form>
+                    <input                    
+                    id="casePrice"                   
+                    type="text"     
+                    numeric-validation
+                    ng-model="item.caseprice"     
+                    class="text-right bek-no-drag tabstop form-control"
+                    max-length="10"
+                    style="max-width:80px; min-width: 60px;"/>
+                  </ng-form>
+                </span>
+              </td>
+              <!-- Parlevel -->
+              <td class="hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)" ng-click="$event.stopPropagation()">
+                <ng-form name="parlevelForm">
+                   <input                    
+                    id="defaultElement-{{currentIndex}}" 
+                    name="parlevel"                    
+                    type="text"     
+                    numeric-validation
+                    ng-model="item.parlevel"     
+                    class="text-right input-number bek-no-drag tabstop form-control"
+                    ng-keypress="parlevelChanged($event)"
+                    onfocus="this.select()"/>
+                </ng-form>
+              </td>
+
+              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" style="padding-top:12px;" ng-if="(selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel)">
+                {{item.parlevel}}
+              </td>
+              <!-- Parlevel for Print -->
+              <td class="visible-print hidden-drag" ng-if="(selectedList.permissions.canSeeParlevel)">
+                {{item.parlevel}}
+              </td> 
+              <td class="nowrap hidden-print large-icon icon-col" ng-click="$event.stopPropagation()">
+                <div
+                  id="optionsdropdown"
+                  ng-if="!item.activeElement && item.isvalid"
+                  class="context-menu-template context-menu__in-list hidden-print"
+                  ng-mouseenter="item.activeElement = true"
+                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">           
+                  <a class="icon-plus2"></a>
+                </div>
+                <div
+                  id="optionsdropdown"
+                  ng-if="item.activeElement && item.isvalid"
+                  class="context-menu-template context-menu__in-list hidden-print"
+                  context-menu-template
+                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">           
+                  <a class="icon-plus2"></a>
+                </div>                   
+                <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
+              </td>
+            </tr>
+            
+            <tr ng-if="item.showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
+              <td colspan="10">
+                <table>
+                  <colgroup>
+                    <col width="25%" />
+                    <col width="75%" />
+                  </colgroup>
+                  <tbody>
+                    <tr>
+                      <td>Brand</td>
+                      <td>
+                        <span  ng-click="$event.stopPropagation()">
+                          <input class="tabstop form-control" type="text" ng-model="item.brand_extended_description" maxlength="8" style="max-width:40%;">
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Class</td>
+                      <td>
+                        <span  ng-click="$event.stopPropagation()">
+                          <input class="tabstop form-control" type="text" ng-model="item.class" maxlength="8" style="max-width:40%;">
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td >Pack</td>
+                      <td >
+                        <span ng-click="$event.stopPropagation()">
+                          <ng-form>
+                            <input class="tabstop form-control pull-left" type="number" ng-model="item.pack" maxlength="4" style="max-width:40%;">
+                          </ng-form>
+                        </span>
+                      </td>
+                    </tr>
+                    <tr >
+                      <td>Size</td>
+                      <td ng-click="$event.stopPropagation()" style="width:60px;">
+                        <ng-form>
+                          <input class="tabstop form-control pull-left" type="number" ng-model="item.size" maxlength="8" style="max-width:40%;">
+                        </ng-form>
+                      </td>
+                    <tr ng-if="(selectedList.permissions.alternativeFieldName)">
+                      <td>{{selectedList.permissions.alternativeFieldHeader}}</td>
+                      <td>{{item[selectedList.permissions.alternativeFieldName]}}</td>
+                    </tr>
+                    <tr ng-if="(selectedList.permissions.alternativeFieldName2)">
+                      <td>{{selectedList.permissions.alternativeFieldHeader2}}</td>
+                      <td>{{item[selectedList.permissions.alternativeFieldName2]}}</td>
+                    </tr>
+                    <tr ng-if="(selectedList.permissions.canSeeLabels)">
+                      <td>Label</td>
+                      <td ng-if="(selectedList.permissions.canEditLabels)">
+                        <div ng-hide="item.isEditing" class="form-control-group__input">
+                          <div class="select-div bek-no-drag hidden-print">
+                            <select name="" id="" ng-model-options="{ debounce: 1000}" ng-model="item.label" ng-options="label for label in labels" style="max-width:170px;">
+                              <option style="display:none"  value="">{{item.label || 'Select A Label '}}</option>
+                            </select>
+                          </div>
+                          <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                        </div>
+
+                        <ng-form 
+                          class="hidden-print form-control-group__input" 
+                          name="addLabelForm_mobile" 
+                          ng-if="item.isEditing">
+                          
+                          <input 
+                            type="text" 
+                            class="form-control edit-label bek-no-drag" 
+                            placeholder="New Label..." 
+                            ng-required="item.isEditing" 
+                            ng-model-options="{ debounce: 1000 }" ng-model="item.editLabel" />
+                          <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
+                        </ng-form>
+                      </td>
+                      <td class = "label-col" ng-if="(!selectedList.permissions.canEditLabels)">
+                        {{item.label}}
+                      </td>
+                    </tr>
+                    <tr ng-if="(item.hasPackagePrice && !selectedList.read_only)">
+                    <td>Each</td>
+                    <td>
+                      <ng-form name="eachForm_mobile">
+                        <input type="checkbox" ng-model="item.each" ng-checked = "!item.hasCasePrice || item.each" class="mousetrap" ng-disabled="(!item.hasCasePrice)" id="each" name="each" />
+                      </ng-form>
+                    </td>
+                    </tr>
+                    <tr ng-if="canSeePrices">
+                      <td>Price</td>
+                      <td>
+                        <span  ng-click="$event.stopPropagation()">
+                          <input id="packagePrice" class="tabstop form-control" ng-if="item.each" type="text" ng-model="item.packageprice" max-length="10" numeric-validation style="max-width:40%;">
+                          <input id="casePrice" class="tabstop form-control" ng-if="!item.each" type="text" ng-model="item.caseprice"  max-length="10" numeric-validation style="max-width:40%;">
+                        </span>
+                      </td>
+                    </tr>
+                    <tr ng-if="(selectedList.permissions.canSeeParlevel)">
+                      <td>{{selectedList.permissions.alternativeParHeader || 'PAR'}}</td>
+                      <td ng-if="(selectedList.permissions.canEditParlevel)">
+                        <ng-form name="parlevelForm_mobile" class="form-control-group__input">
+                          <span class="counter-container">
+                            <button selection-model-ignore type="button" class="btn btn-warning icon-minus3 hidden-lg" ng-disabled = "item.parlevel === 0" ng-click="item.parlevel = item.parlevel - 1;"></button>
+                              <input 
+                                id="parlevel" 
+                                name="parlevel" 
+                                type="text"
+                                numeric-validation
+                                ng-model="item.parlevel" 
+                                ng-blur="initParLvl(item)"
+                                class="input-number input-number-mobile text-right bek-no-drag form-control"
+                              />
+                            <button selection-model-ignore type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.parlevel = item.parlevel + 1;"></button>
+                          </span>
+                        </ng-form>
+                      </td>
+                      <td ng-if="(!selectedList.permissions.canEditParlevel)">
+                        {{item.parlevel}}
+                      </td>
+                    </tr>
+                    <tr ng-if="(selectedList.permissions.canDeleteItems)">
+                      <td colspan="2">
+                        <button type="button" class="btn btn-lg btn-danger" ng-click="deleteItem(item)"><span class="icon-cross"></span> Remove Item</button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+
+          </tbody> 
+
+          <tfoot ng-if="(selectedList.items.length) === 0 && !loadingResults">
+            <tr>
+              <td colspan="13">
+                No products to display.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
         <div 
-        ng-if="isCustomInventoryList" 
         class="text-right margin-bottom-10">
           <button 
           type="button" 
