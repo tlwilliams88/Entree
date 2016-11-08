@@ -333,10 +333,16 @@ angular.module('bekApp')
           });
         },
 
-        saveCustomInventoryList: function(list) {
-          return $http.put('/custominventory', {
-            data: list
-          }).then(function (response){
+        addNewItemToCustomInventoryList: function(listitem) {
+          return $http.post('/custominventory', listitem).then(function(response){
+            var customInventoryItems = response.data.successResponse.items;
+
+            return customInventoryItems;
+          })
+        },
+
+        saveCustomInventoryList: function(listitems) {
+          return $http.post('/custominventory', listitems).then(function (response){
             var customInventory = response.data.successResponse;
 
             customInventory.iscustominventory = true;

@@ -630,27 +630,26 @@ angular.module('bekApp')
     };
 
     $scope.addNewItemToList = function(){
-      var newItem = {
-        brand:null,
-        caseprice:'0.00',
-        catalog_id:'CUSTOM',
-        category:null,
-        each:false,
-        isdeleted:false,
-        isvalid:true,
-        itemnumber:'Add Item Number',
-        label:'This is new item',
-        name:'',
-        pack:'',
-        packageprice:'0.00',
-        packsize:'',
-        parlevel:0,
-        position:$scope.selectedList.items && $scope.selectedList.items.length ? $scope.selectedList.items.length + 1 : 1,
-        quantity:0,
-        size:null,
-      };
-      $scope.selectedList.items.push(newItem);
-      // $scope.saveCustomInventoryList($scope.selectedList);
+      var newItem = [],
+          item = {
+            brand:null,
+            caseprice:0,
+            each:false,
+            itemnumber:'Add Item Number',
+            pack:null,
+            packageprice:0,
+            parlevel:0,
+            id:null,
+            quantity:0,
+            size:null,
+            vendor:null
+          };
+      newItem.push(item);
+      ListService.addNewItemToCustomInventoryList(newItem).then(function(resp){
+        $scope.selectedList.items = resp;
+        $scope.forms.customListForm.$setPristine();
+        $scope.forms.listForm.$setPristine();
+      })
     };
 
     /********************
