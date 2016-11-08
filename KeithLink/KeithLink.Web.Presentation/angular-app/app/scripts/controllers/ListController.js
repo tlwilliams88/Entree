@@ -635,7 +635,7 @@ angular.module('bekApp')
             brand:null,
             caseprice:0,
             each:false,
-            itemnumber:'Add Item Number',
+            itemnumber:null,
             pack:null,
             packageprice:0,
             parlevel:0,
@@ -644,12 +644,7 @@ angular.module('bekApp')
             size:null,
             vendor:null
           };
-      newItem.push(item);
-      ListService.addNewItemToCustomInventoryList(newItem).then(function(resp){
-        $scope.selectedList.items = resp;
-        $scope.forms.customListForm.$setPristine();
-        $scope.forms.listForm.$setPristine();
-      })
+      $scope.selectedList.items.push(item);
     };
 
     /********************

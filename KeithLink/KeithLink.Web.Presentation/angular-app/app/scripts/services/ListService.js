@@ -325,7 +325,7 @@ angular.module('bekApp')
             var customInventory = response.data.successResponse;
 
             customInventory.iscustominventory = true;
-            customInventory.name = 'Custom Inventory';
+            customInventory.name = 'Non BEK Items';
 
             updateListPermissions(customInventory);
 
@@ -346,7 +346,7 @@ angular.module('bekApp')
             var customInventory = response.data.successResponse;
 
             customInventory.iscustominventory = true;
-            customInventory.name = 'Custom Inventory';
+            customInventory.name = 'Non BEK Items';
 
             updateListPermissions(customInventory);
 
