@@ -339,6 +339,30 @@ namespace KeithLink.Svc.WebApi.Controllers {
         }
 
         /// <summary>
+        /// Add a custom inventory item to a list
+        /// </summary>
+        /// <param name="listId"></param>
+        /// <param name="customInventoryId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("list/{listId}/custominventoryitem/{customInventoryId}")]
+        public OperationReturnModel<NewListItem> AddCustomInventoryItem(long listId, long customInventoryId) {
+            OperationReturnModel<NewListItem> returnValue = new OperationReturnModel<NewListItem>();
+
+            try {
+                NewListItem listItem = new NewListItem() { Id = _listLogic.AddCustomInventory(this.AuthenticatedUser, this.SelectedUserContext, listId, customInventoryId) };
+                returnValue.SuccessResponse = listItem;
+                returnValue.IsSuccess = true;
+            } catch (Exception ex) {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("Error adding custom inventory to list", ex);
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
         /// Copy list
         /// </summary>
         /// <param name="copyListModel">Copy options</param>

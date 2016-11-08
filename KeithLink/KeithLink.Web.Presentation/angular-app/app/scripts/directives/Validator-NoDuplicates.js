@@ -27,22 +27,11 @@ angular.module('bekApp')
       ctrl.$validators.noDuplicates = function(modelValue, viewValue) {
         var isDuplicate = false;
         if (viewValue !== ctrl.$modelValue) { // check only if the user has tried to change the name
-          if(scope.collection.iscustominventory && scope.collection.items){
-            scope.collection.items.forEach(function(product){
-              if (product[attrs.noDuplicates] != null && product[attrs.noDuplicates].toUpperCase() === viewValue.toUpperCase()) {
-                isDuplicate = true;
-              }
-            });
-          } else {
-            
-            angular.forEach(scope.collection, function(item, index) {
-              if (item[attrs.noDuplicates] != null && item[attrs.noDuplicates].toUpperCase() === viewValue.toUpperCase()) {
-                isDuplicate = true;
-              }
-            });
-
-          }
-
+          angular.forEach(scope.collection, function(item, index) {
+            if (item[attrs.noDuplicates] != null && item[attrs.noDuplicates].toUpperCase() === viewValue.toUpperCase()) {
+              isDuplicate = true;
+            }
+          });
         }
 
         return !isDuplicate;

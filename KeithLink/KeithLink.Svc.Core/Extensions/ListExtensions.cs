@@ -42,7 +42,8 @@ namespace KeithLink.Svc.Core.Extensions
                     Note = i.Notes,
                     Each = i.Each ?? false,
                     Quantity = i.Quantity,
-                    CatalogId = i.CatalogId
+                    CatalogId = i.CatalogId,
+                    CustomInventoryItemId = i.CustomInventoryItemId
                 }).OrderBy(l => l.Position).ToArray()
             };
         }
@@ -55,8 +56,7 @@ namespace KeithLink.Svc.Core.Extensions
         /// <returns>ListModel object</returns>
         public static ListModel ToListModel(this List list, UserSelectedContext catalogInfo)
         {
-            return new ListModel()
-            {
+            return new ListModel() {
                 BranchId = list.BranchId,
                 IsContractList = list.Type == ListType.Contract,
                 IsFavorite = list.Type == ListType.Favorite,
@@ -74,8 +74,7 @@ namespace KeithLink.Svc.Core.Extensions
                                                 : false,
                 IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
-                    list.Items.Select(i => new ListItemModel()
-                    {
+                    list.Items.Select(i => new ListItemModel() {
                         Category = i.Category,
                         Type = list.Type,
                         ItemNumber = i.ItemNumber,
@@ -89,7 +88,8 @@ namespace KeithLink.Svc.Core.Extensions
                         ToDate = i.ToDate,
                         Each = i.Each ?? false,
                         Quantity = i.Quantity,
-                        CatalogId = i.CatalogId
+                        CatalogId = i.CatalogId,
+                        CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
                     } ).OrderBy( l => l.Position ).ToList()
             };
         }

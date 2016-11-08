@@ -53,6 +53,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         public DbSet<List> Lists { get; set; }
         public DbSet<ListItem> ListItems { get; set; }
         public DbSet<ListShare> ListShares { get; set; }
+        public DbSet<CustomInventoryItem> CustomInventoryItems { get; set; }
 
         // Messaging
         public DbSet<CustomerTopic> CustomerTopics { get; set; }
@@ -76,6 +77,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             modelBuilder.Entity<List>().ToTable( "Lists", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ListItem>().ToTable( "ListItems", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ListShare>().ToTable( "ListShares", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<CustomInventoryItem>().ToTable( "CustomInventoryItems", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
             // Orders
             modelBuilder.Entity<OrderHistoryHeader>().ToTable( "OrderHistoryHeader", schemaName: "Orders" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );

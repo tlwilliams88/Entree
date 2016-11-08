@@ -33,7 +33,7 @@ Vendor VARCHAR(6) NULL
 */
 
 -- Add CustomInventoryItemId column
-ALTER TABLE [List].[ListItems] ADD CustomInventoryItemId INT NULL
+ALTER TABLE [List].[ListItems] ADD CustomInventoryItemId BIGINT NULL
 GO
 --ALTER TABLE [List].[ListItems] ADD CasePrice VARCHAR(10) NULL, PackagePrice VARCHAR(10) NULL, Brand VARCHAR(6) NULL
 GO
