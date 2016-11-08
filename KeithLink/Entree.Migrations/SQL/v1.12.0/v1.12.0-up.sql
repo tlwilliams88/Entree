@@ -8,9 +8,9 @@ GO
 
 CREATE TABLE [List].[CustomInventoryItems] (
 	Id BIGINT PRIMARY KEY IDENTITY(1,1) NOT NULL,
-	ItemNumber CHAR(25) NOT NULL,
-	CustomerNumber CHAR(6) NOT NULL,
-	BranchId CHAR(3) NOT NULL,
+	ItemNumber VARCHAR(25) NOT NULL,
+	CustomerNumber VARCHAR(6) NOT NULL,
+	BranchId VARCHAR(3) NOT NULL,
 	Name VARCHAR(30) NULL,
 	Brand VARCHAR(25) NULL,
 	Pack VARCHAR(4) NULL,

@@ -59,6 +59,12 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
         public void SaveRange(List<CustomInventoryItem> items) {
             this.Entities.AddRange(items);
+
+            // Set added or modified state based on Id
+            foreach (CustomInventoryItem item in items) {
+                this.UnitOfWork.Context.Entry(item).State = item.Id == 0 ? System.Data.Entity.EntityState.Added : System.Data.Entity.EntityState.Modified;
+            }
+
             this.UnitOfWork.SaveChanges();
         }
         #endregion
