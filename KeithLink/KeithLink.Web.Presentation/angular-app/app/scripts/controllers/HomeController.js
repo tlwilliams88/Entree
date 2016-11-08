@@ -42,22 +42,6 @@ angular.module('bekApp')
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
       $scope.promoItems = items;
-
-      $scope.promoItemsweb = [
-      [],
-      [],
-      []
-      ];
-
-      items.forEach(function(item){
-        if(items.indexOf(item) < 2){
-          $scope.promoItemsweb[0].push(item);
-        } else if(items.indexOf(item) > 1 && items.indexOf(item) < 4) {
-          $scope.promoItemsweb[1].push(item);
-        } else {
-          $scope.promoItemsweb[2].push(item);
-        }
-      });
       delete $scope.promoMessage;
     }, function(errorMessage) {
       $scope.promoMessage = errorMessage;

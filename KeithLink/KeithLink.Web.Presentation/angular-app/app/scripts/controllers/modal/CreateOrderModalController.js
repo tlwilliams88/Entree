@@ -24,10 +24,10 @@ angular.module('bekApp')
   };
 
   if(SelectedList && SelectedList.value){
-    $scope.selectedList = $filter('filter')($scope.lists, {listid: SelectedList.value})[0];
+    $scope.selectedList = ($filter('filter')($scope.lists, {listid: SelectedList.value})[0]) ? $filter('filter')($scope.lists, {listid: SelectedList.value})[0] : $scope.lists[0];
     $scope.defaultList = $scope.selectedList.listid;
   } else {
-    $scope.selectedList = $filter('filter')($scope.lists, {name: 'History'})[0];
+    $scope.selectedList = ($filter('filter')($scope.lists, {name: 'History'})[0]) ? $filter('filter')($scope.lists, {name: 'History'})[0] : $scope.lists[0];
     $scope.defaultList = $scope.selectedList.listid;
   }
 
