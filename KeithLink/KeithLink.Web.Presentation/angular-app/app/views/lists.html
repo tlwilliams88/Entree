@@ -71,7 +71,7 @@
       type="submit" 
       class="btn-lg btn btn-primary" 
       ng-disabled="listForm.$invalid" 
-      ng-click="saveCustomInventoryList(selectedList)">
+      ng-click="saveCustomInventoryList(selectedList.items)">
       Save
     </button>
     <button 
@@ -812,7 +812,7 @@
 
           <tbody 
               ng-class="{ 'item-selected': item.isSelected }" 
-              fast-repeat="item in selectedList.items"
+              ng-repeat="item in selectedList.items"
               data-product="{{item}}" 
               data-drag="dragEnabled" 
               data-jqyoui-options="{
@@ -832,7 +832,7 @@
               <td class="hidden-drag bek-drag-handle">
                 <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model-options="{ debounce: 1000 }" ng-model="item.isSelected" no-dirty-check>
                 <span style="font-size:11px;">
-                  {{item.position}}
+                  {{item.id}}
                 </span>          
               </td>
               <td >
