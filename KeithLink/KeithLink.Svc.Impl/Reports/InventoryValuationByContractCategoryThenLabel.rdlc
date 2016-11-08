@@ -399,14 +399,14 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="ContractCategory">
+                    <Textbox Name="Grouping1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ContractCategory.Value</Value>
+                              <Value>=Fields!Grouping.Value</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -415,7 +415,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>ContractCategory</rd:DefaultName>
+                      <rd:DefaultName>Grouping1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1219,7 +1219,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ContractCategory.Value</Value>
+                              <Value>=Fields!Grouping.Value</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1569,14 +1569,14 @@
           <TablixMembers>
             <TablixMember />
             <TablixMember>
-              <Group Name="ContractCategory">
+              <Group Name="Grouping">
                 <GroupExpressions>
-                  <GroupExpression>=Fields!ContractCategory.Value</GroupExpression>
+                  <GroupExpression>=Fields!Grouping.Value</GroupExpression>
                 </GroupExpressions>
               </Group>
               <SortExpressions>
                 <SortExpression>
-                  <Value>=Fields!ContractCategory.Value</Value>
+                  <Value>=Fields!Grouping.Value</Value>
                 </SortExpression>
               </SortExpressions>
               <TablixMembers>
@@ -1640,7 +1640,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Contract Category</Value>
+                              <Value>Grouping</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1767,14 +1767,14 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox137">
+                    <Textbox Name="Grouping">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ContractCategory.Value</Value>
+                              <Value>=Fields!Grouping.Value</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1785,7 +1785,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox137</rd:DefaultName>
+                      <rd:DefaultName>Grouping</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1918,14 +1918,14 @@
           <TablixMembers>
             <TablixMember />
             <TablixMember>
-              <Group Name="ContractCategory2">
+              <Group Name="Grouping2">
                 <GroupExpressions>
-                  <GroupExpression>=Fields!ContractCategory.Value</GroupExpression>
+                  <GroupExpression>=Fields!Grouping.Value</GroupExpression>
                 </GroupExpressions>
               </Group>
               <SortExpressions>
                 <SortExpression>
-                  <Value>=Fields!ContractCategory.Value</Value>
+                  <Value>=Fields!Grouping.Value</Value>
                 </SortExpression>
               </SortExpressions>
               <TablixMembers>
@@ -2043,7 +2043,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>Inventory Valuation Report By Contract Category</Value>
+                  <Value>Inventory Valuation Report By Contract Category Then Label</Value>
                   <Style>
                     <FontSize>16pt</FontSize>
                   </Style>
@@ -2312,6 +2312,10 @@
         <Field Name="ExtPrice">
           <DataField>ExtPrice</DataField>
           <rd:TypeName>System.Decimal</rd:TypeName>
+        </Field>
+        <Field Name="Grouping">
+          <DataField>Grouping</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ItemId">
           <DataField>ItemId</DataField>

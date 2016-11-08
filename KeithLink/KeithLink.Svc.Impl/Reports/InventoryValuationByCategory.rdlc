@@ -399,14 +399,14 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="ContractCategory">
+                    <Textbox Name="Category1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ContractCategory.Value</Value>
+                              <Value>=Fields!Category.Value</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -415,7 +415,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>ContractCategory</rd:DefaultName>
+                      <rd:DefaultName>Category1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1219,7 +1219,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ContractCategory.Value</Value>
+                              <Value>=Fields!Category.Value</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1569,9 +1569,9 @@
           <TablixMembers>
             <TablixMember />
             <TablixMember>
-              <Group Name="ContractCategory">
+              <Group Name="CategoryGroup">
                 <GroupExpressions>
-                  <GroupExpression>=Fields!ContractCategory.Value</GroupExpression>
+                  <GroupExpression>=Fields!Category.Value</GroupExpression>
                 </GroupExpressions>
               </Group>
               <SortExpressions>
@@ -1581,9 +1581,9 @@
               </SortExpressions>
               <TablixMembers>
                 <TablixMember>
-                  <Group Name="ContractCategory1">
+                  <Group Name="CategoryGroup1">
                     <GroupExpressions>
-                      <GroupExpression>=Fields!ContractCategory.Value</GroupExpression>
+                      <GroupExpression>=Fields!Category.Value</GroupExpression>
                     </GroupExpressions>
                   </Group>
                   <SortExpressions>
@@ -1640,7 +1640,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Contract Category</Value>
+                              <Value>Category</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1767,14 +1767,14 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox137">
+                    <Textbox Name="Category">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ContractCategory.Value</Value>
+                              <Value>=Fields!Category.Value</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1785,7 +1785,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox137</rd:DefaultName>
+                      <rd:DefaultName>Category</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1918,9 +1918,9 @@
           <TablixMembers>
             <TablixMember />
             <TablixMember>
-              <Group Name="ContractCategory2">
+              <Group Name="CategoryGroup2">
                 <GroupExpressions>
-                  <GroupExpression>=Fields!ContractCategory.Value</GroupExpression>
+                  <GroupExpression>=Fields!Category.Value</GroupExpression>
                 </GroupExpressions>
               </Group>
               <SortExpressions>
@@ -2043,7 +2043,7 @@
             <Paragraph>
               <TextRuns>
                 <TextRun>
-                  <Value>Inventory Valuation Report By Contract Category</Value>
+                  <Value>Inventory Valuation Report By Category</Value>
                   <Style>
                     <FontSize>16pt</FontSize>
                   </Style>

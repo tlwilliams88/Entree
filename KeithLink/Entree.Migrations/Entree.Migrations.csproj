@@ -58,6 +58,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQL\Configs\bakillins.local.configuration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQL\Configs\Configuration.AppSettings.Bootstrap.Beta.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

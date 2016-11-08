@@ -56,6 +56,18 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             {
                 rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByContractCategory.rdlc");
             }
+            else if (request.GroupBy != null && request.GroupBy.Equals("categorythenlabel"))
+            {
+                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByContractCategoryThenLabel.rdlc");
+            }
+            else if (request.GroupBy != null && request.GroupBy.Equals("categoryname"))
+            {
+                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByCategory.rdlc");
+            }
+            else if (request.GroupBy != null && request.GroupBy.Equals("label"))
+            {
+                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByLabel.rdlc");
+            }
             else
             {
                 rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuation.rdlc");
@@ -65,15 +77,15 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             rv.LocalReport.SetParameters(new ReportParameter("Branch", customer.CustomerBranch));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerName", customer.CustomerName));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerNumber", customer.CustomerNumber));
-            if (request.GroupBy != null && request.GroupBy.Equals("category"))
-            {
-                rv.LocalReport.DataSources.Add(
-                    new ReportDataSource("DataSet1", request.ReportData.Select(iv => NullContractCategoryToPlaceholder(iv)).ToList()));
+
+            request.ReportData = request.ReportData.Select(iv => NullFieldToPlaceholder(iv)).ToList();
+            if (request.GroupBy != null && request.GroupBy.Equals("categorythenlabel"))
+            { // if the user is requesting this specialized contract category then label, we add that to the data
+                request.ReportData = request.ReportData.Select(iv => ContractCategoryThenLabelIVM(iv)).ToList();
             }
-            else
-            {
-                rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", request.ReportData));
-            }
+
+            rv.LocalReport.DataSources.Add(
+                new ReportDataSource("DataSet1", request.ReportData));
 
             string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
             var bytes = rv.LocalReport.Render("PDF", deviceInfo);
@@ -81,14 +93,37 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             return new MemoryStream(bytes);
         }
 
-        private InventoryValuationModel NullContractCategoryToPlaceholder(InventoryValuationModel iv)
+        private InventoryValuationModel NullFieldToPlaceholder(InventoryValuationModel iv)
+        {
+            return new InventoryValuationModel()
+            {
+                Brand = iv.Brand,
+                Category = (iv.Category != null && iv.Category.Trim().Length > 0) ?
+                    iv.Category : Constants.REPORT_NULL_Placeholder,
+                ContractCategory = (iv.ContractCategory != null && iv.ContractCategory.Trim().Length > 0) ? 
+                    iv.ContractCategory : Constants.REPORT_NULL_Placeholder,
+                Each = iv.Each,
+                ExtPrice = iv.ExtPrice,
+                ItemId = iv.ItemId,
+                Label = (iv.Label != null && iv.Label.Trim().Length > 0) ?
+                    iv.Label : Constants.REPORT_NULL_Placeholder,
+                Name = iv.Name,
+                Pack = iv.Pack,
+                PackSize =
+                iv.PackSize,
+                Price = iv.Price,
+                Quantity = iv.Quantity,
+                Size = iv.Size
+            };
+        }
+
+        private InventoryValuationModel ContractCategoryThenLabelIVM(InventoryValuationModel iv)
         {
             return new InventoryValuationModel()
             {
                 Brand = iv.Brand,
                 Category = iv.Category,
-                ContractCategory = (iv.ContractCategory != null && iv.ContractCategory.Trim().Length > 0) ? 
-                    iv.ContractCategory : Constants.REPORT_NULL_Placeholder,
+                ContractCategory = iv.ContractCategory,
                 Each = iv.Each,
                 ExtPrice = iv.ExtPrice,
                 ItemId = iv.ItemId,
@@ -99,7 +134,12 @@ namespace KeithLink.Svc.Impl.Logic.Reports
                 iv.PackSize,
                 Price = iv.Price,
                 Quantity = iv.Quantity,
-                Size = iv.Size
+                Size = iv.Size,
+                Grouping = 
+                    (iv.ContractCategory != null) ? iv.ContractCategory :
+                    (iv.Label != null) ? iv.Label :
+                    Constants.REPORT_NULL_Placeholder
+                // Grouping is ContractCategory if there is one, else Label if there is one, else the placeholder
             };
         }
 
