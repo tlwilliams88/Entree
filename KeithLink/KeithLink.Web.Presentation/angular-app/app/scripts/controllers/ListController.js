@@ -15,9 +15,6 @@ angular.module('bekApp')
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
-    if(originalList.type == 13){
-      $scope.isCustomInventoryList = true;
-    }
 
     var orderBy = $filter('orderBy');
 
@@ -36,6 +33,7 @@ angular.module('bekApp')
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
+    $scope.forms = {};
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -218,8 +216,8 @@ angular.module('bekApp')
       }
       $scope.setRange();
 
-      if ($scope.listForm) {
-        $scope.listForm.$setPristine();
+      if ($scope.forms.listForm) {
+        $scope.forms.listForm.$setPristine();
       }
 
       $scope.selectedList.items.forEach(function(item) {
@@ -297,16 +295,42 @@ angular.module('bekApp')
      
       LocalStorage.setLastList(lastlist);
       if(list.listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
-        $scope.listForm.$setPristine();
+        if($scope.forms.listForm && $scope.forms.listForm.length) {
+          $scope.forms.listForm.$setPristine();
+        }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listId: list.listid, renameList: false});      
+          return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
+          blockUI.stop();    
         });
       }
+    };
+
+    var listThatWillNotBeUpdatedElsewhere;
+
+    $scope.getCustomInventoryList = function() {
+      ListService.getCustomInventoryList().then(function(resp){
+        if(!listThatWillNotBeUpdatedElsewhere) {
+          listThatWillNotBeUpdatedElsewhere = resp;
+        }
+        originalList = resp;
+        $scope.selectedList = originalList;
+        $scope.isCustomInventoryList = true;
+        if($scope.selectedList.items.length == 0){
+          $scope.addNewItemToList();
+        }
+      });
+    };
+
+    $scope.saveCustomInventoryList = function(list) {
+      ListService.saveCustomInventoryList(list).then(function(resp){
+        $scope.selectedList = resp;
+        $scope.isCustomInventoryList = true;
+      });
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
-      $scope.listForm.$setPristine();
+      $scope.forms.listForm.$setPristine();
      var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
      var lastlist ={
           listId: newList.listid,          
@@ -318,11 +342,12 @@ angular.module('bekApp')
     }
 
     $scope.undoChanges = function() {
-      resetPage(angular.copy(originalList));
+      originalList = listThatWillNotBeUpdatedElsewhere;
+      resetPage(angular.copy(listThatWillNotBeUpdatedElsewhere));
     };
 
     $scope.unsavedChangesConfirmation = function(){
-      if($scope.listForm.$dirty){
+      if($scope.forms.listForm && $scope.forms.listForm.$dirty || $scope.forms.customListForm && $scope.forms.customListForm.$dirty){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
       }
@@ -539,7 +564,7 @@ angular.module('bekApp')
     }
 
     $scope.deleteItem = function(item) {    
-      $scope.listForm.$setDirty();
+      $scope.forms.listForm.$setDirty();
       item.isdeleted = true;
       updateDeletedCount();
       updateItemPositions();
@@ -556,7 +581,7 @@ angular.module('bekApp')
 
       $scope.selectedList.allSelected = false;
       updateItemPositions();
-      $scope.listForm.$setDirty();
+      $scope.forms.listForm.$setDirty();
     };
 
     /**********
@@ -568,7 +593,7 @@ angular.module('bekApp')
       angular.forEach(items, function(item, index) {
         item.label = label;
       });
-      $scope.listForm.$setDirty();
+      $scope.forms.listForm.$setDirty();
       $scope.multiSelect.showLabels = false;
     };
 
@@ -581,7 +606,7 @@ angular.module('bekApp')
       $scope.addingNewLabel = false;
       $scope.newLabel = null;
       unselectAllDraggedItems();
-      $scope.listForm.$setDirty();
+      $scope.forms.listForm.$setDirty();
     };
 
     /**********
@@ -605,40 +630,27 @@ angular.module('bekApp')
     };
 
     $scope.addNewItemToList = function(){
-      var newItem = [{
-        brand_extended_description:null,
-        caseonly:false,
+      var newItem = {
+        brand:null,
         caseprice:'0.00',
         catalog_id:'CUSTOM',
         category:null,
         each:false,
-        favorite:false,
-        fromdate:null,
-        is_specialty_catalog:false,
         isdeleted:false,
         isvalid:true,
         itemnumber:'Add Item Number',
-        itemstatistics:null,
         label:'This is new item',
-        listitemid:null,
         name:'',
         pack:'',
         packageprice:'0.00',
         packsize:'',
         parlevel:0,
-        position:$scope.selectedList.items.length + 1,
+        position:$scope.selectedList.items && $scope.selectedList.items.length ? $scope.selectedList.items.length + 1 : 1,
         quantity:0,
         size:null,
-        specialtyitemcost:0,
-        temp_zone:null,
-        todate:null,
-        type:0,
-        unitprice:0,
-        vendor1:null
-      }];
-      ListService.addMultipleItems($scope.selectedList.listid, newItem).then(function(resp){
-        $scope.selectedList = resp;
-      });
+      };
+      $scope.selectedList.items.push(newItem);
+      // $scope.saveCustomInventoryList($scope.selectedList);
     };
 
     /********************
@@ -647,8 +659,8 @@ angular.module('bekApp')
 
     $scope.parlevelChanged = function(evt) {
       var keycode=evt.keyCode ? evt.keyCode : evt.charCode;
-      if (keycode >= Constants.jskeycodes.int0 && keycode <= Constants.jskeycodes.int9 && $scope.listForm.$pristine) {
-        $scope.listForm.$setDirty();
+      if (keycode >= Constants.jskeycodes.int0 && keycode <= Constants.jskeycodes.int9 && $scope.forms.listForm.$pristine) {
+        $scope.forms.listForm.$setDirty();
       }else{
         return;
       }
