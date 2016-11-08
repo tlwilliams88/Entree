@@ -317,6 +317,38 @@ angular.module('bekApp')
         },
 
         /********************
+        CUSTOM INVENTORY LIST
+        ********************/
+
+        getCustomInventoryList: function() {
+          return $http.get('/custominventory').then(function(response){
+            var customInventory = response.data.successResponse;
+
+            customInventory.iscustominventory = true;
+            customInventory.name = 'Custom Inventory';
+
+            updateListPermissions(customInventory);
+
+            return customInventory;
+          });
+        },
+
+        saveCustomInventoryList: function(list) {
+          return $http.put('/custominventory', {
+            data: list
+          }).then(function (response){
+            var customInventory = response.data.successResponse;
+
+            customInventory.iscustominventory = true;
+            customInventory.name = 'Custom Inventory';
+
+            updateListPermissions(customInventory);
+
+            return customInventory;
+          });
+        },
+
+        /********************
         EXPORT
         ********************/
 

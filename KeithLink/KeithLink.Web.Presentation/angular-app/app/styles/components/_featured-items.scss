@@ -86,8 +86,8 @@
   margin-left: auto; 
   margin-right: auto;
   float: none; 
-  width: 45%;
-  padding-top: 20px;
+  padding-top: 5px;
+  display:inline-block;
 }
 
 .box:hover > .text {
@@ -98,11 +98,9 @@
 
 .item-image {
   position: relative;
-  float: left;
-  height: 185px;
-  width:85%;
-  max-width: 90%;
-  min-width: 80%;
+  height: 220px;
+  display:block; 
+  margin:0 auto;
 }
 
 .marketing-description > a {
