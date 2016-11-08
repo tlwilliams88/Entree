@@ -875,6 +875,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\InventoryValuationByCategory.rdlc" />
+    <EmbeddedResource Include="Reports\InventoryValuationByContractCategoryThenLabel.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByLabel.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByContractCategory.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">

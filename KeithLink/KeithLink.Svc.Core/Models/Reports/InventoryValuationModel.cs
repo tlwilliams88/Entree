@@ -34,5 +34,8 @@ namespace KeithLink.Svc.Core.Models.Reports
         public string Size { get; set; }
         [DataMember(Name = "label")]
         public string Label { get; set; }
+        // Grouping is a groupby used internally for the case where they want to
+        // group by contract category then label (if there is no contract category)
+        public string Grouping { get; set; }
     }
 }
