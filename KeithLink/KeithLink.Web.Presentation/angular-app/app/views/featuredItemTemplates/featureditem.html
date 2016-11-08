@@ -20,50 +20,50 @@
     </a>
     <a 
       ng-if="!item.targeturl && !item.productid && item.content" 
-      ng-click="showPromoitemContent(item)"
+      ng-click="showPromoItemContent(item)"
       class="text-uppercase">
       {{item.targeturltext}}
     </a>
   </div>
 </div>
 
-<div style="padding-left:100px;">
-<div ng-repeat="slide in item" class="text-center box col-lg-8 visible-lg" ng-click="storePromoitemInformation(slide.targeturltext, slide.id)" style="background:transparent; float: left;">
-  <img class="item-image" ng-if="slide.imageurl" ng-src="{{slide.imageurl}}" ng-click="openExternalLink(slide.targeturl)" alt="image">
-  <img ng-if="!slide.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
-  <div class="marketing-description">
-    {{::slide.tagline}}
+<div class="text-center box col-lg-8 visible-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)" style="background:transparent;">
+<div style="display:inline-block">
+    <img class="item-image" ng-if="item.imageurl" ng-src="{{item.imageurl}}" ng-click="openExternalLink(item.targeturl)" alt="image">
+    <img class="item-image" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+  <div style="display:inline-block">
+    {{::item.tagline}}
     <a 
-      ng-if="slide.targeturl" 
+      ng-if="item.targeturl" 
       analytics-on="click" 
-      analytics-category="Promoitem" 
+      analytics-category="PromoItem" 
       analytics-event="Promo Content Viewed" 
-      analytics-label="{{slide.targeturl}}" 
-      ng-click="openExternalLink(slide.targeturl)" 
+      analytics-label="{{item.targeturl}}" 
+      ng-click="openExternalLink(item.targeturl)" 
       class="text-uppercase" 
       target="_blank">
-      {{slide.targeturltext}}
+      {{item.targeturltext}}
     </a>
     <a 
-      ng-if="slide.productid" 
+      ng-if="item.productid" 
       analytics-on="click" 
-      analytics-category="Promoitem" 
+      analytics-category="PromoItem" 
       analytics-event="Promo Content Viewed" 
-      analytics-label="{{slide.targeturl}}" 
-      ui-sref="menu.catalog.products.details({ itemId: slide.productid})" 
+      analytics-label="{{item.targeturl}}" 
+      ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
       class="text-uppercase">
-      {{slide.targeturltext}}
+      {{item.targeturltext}}
     </a>
     <a 
-      ng-if="!slide.targeturl && !slide.productid && slide.content" 
+      ng-if="!item.targeturl && !item.productid && item.content" 
       analytics-on="click" 
-      analytics-category="Promoitem" 
+      analytics-category="PromoItem" 
       analytics-event="Promo Content Viewed" 
-      analytics-label="{{slide.targeturltext}}" 
-      ng-click="showPromoitemContent(item)" 
+      analytics-label="{{item.targeturltext}}" 
+      ng-click="showPromoItemContent(item)" 
       class="text-uppercase">
-      {{slide.targeturltext}}
+      {{item.targeturltext}}
     </a>
   </div>
-</div>
+  </div>
 </div>
