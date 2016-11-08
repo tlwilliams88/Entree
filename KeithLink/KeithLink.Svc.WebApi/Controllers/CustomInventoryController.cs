@@ -73,7 +73,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         [HttpPost]
         [ApiKeyedRoute("custominventory")]
-        public void Save(List<CustomInventoryItemReturnModel> items) {
+        public OperationReturnModel<CustomInventoryHeaderReturnModel> Save(List<CustomInventoryItemReturnModel> items) {
+            OperationReturnModel<CustomInventoryHeaderReturnModel> returnValue = new OperationReturnModel<CustomInventoryHeaderReturnModel>();
+            returnValue.SuccessResponse = new CustomInventoryHeaderReturnModel();
+
             // We set the branch and customer number to the proper context because the front end
             // Does not have any concept of this link. 
             foreach(CustomInventoryItemReturnModel item in items) {
@@ -82,9 +85,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 _customInventoryRepo.SaveRange(items.ToModel());
+                returnValue.IsSuccess = true;
+                returnValue.SuccessResponse.Items = _customInventoryRepo.GetItemsByBranchAndCustomer(this.SelectedUserContext.BranchId, this.SelectedUserContext.CustomerId).ToReturnModelList();
             } catch (Exception ex) {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+
                 _logger.WriteErrorLog("Error saving custom inventory items", ex);
             }
+
+            return returnValue;
         }
         #endregion
 
