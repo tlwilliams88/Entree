@@ -71,7 +71,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ElasticSear
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('EnableEtaForUsers', 'all', 'Site Settings: values are none, internal_only, all', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('EntreeCollectorType', 'B', 'Mainframe Connection Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('EntreeSiteURL', 'http://corpmisdev2a.bekco.com:9000', 'Misc Settings', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FailureEmailAddress', 'mdjoiner@benekeith.com', 'Email Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FailureEmailAddress', 'bakillins@benekeith.com', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FAM_ContactEmail', 'amainfo@benekeith.com', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FAQ_ContactEmail', 'faqinfo@benekeith.com', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('FDF_ContactEmail', 'dfwinfo@benekeith.com', 'Email Settings', 0)
