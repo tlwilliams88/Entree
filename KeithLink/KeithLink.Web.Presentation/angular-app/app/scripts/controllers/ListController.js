@@ -34,6 +34,7 @@ angular.module('bekApp')
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
     $scope.forms = {};
+    $scope.isCustomInventoryList = false;
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -94,7 +95,7 @@ angular.module('bekApp')
         selectionList;
 
     $scope.shiftSelectOtherRows = function(evt, item){
-      selectionList = $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint);
+      selectionList = $scope.selectedList.items.slice($scope.startingPoint, $scope.selectedList.items.length);
       if (evt.shiftKey) {
         $scope.rangeSelected = true;
         if (lastSingleClick != undefined) {
@@ -285,6 +286,9 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
+      if($scope.selectedList.iscustominventory){
+        $scope.isCustomInventoryList = false;
+      }
 
       var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
     
@@ -299,33 +303,13 @@ angular.module('bekApp')
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
-          blockUI.stop();    
+          if($scope.previousList && list.listid == $scope.previousList.listid){
+            $scope.selectedList = $scope.previousList;
+            blockUI.stop();
+          }
+          return $state.go('menu.lists.items', {listId: list.listid, renameList: false});  
         });
       }
-    };
-
-    var listThatWillNotBeUpdatedElsewhere;
-
-    $scope.getCustomInventoryList = function() {
-      ListService.getCustomInventoryList().then(function(resp){
-        if(!listThatWillNotBeUpdatedElsewhere) {
-          listThatWillNotBeUpdatedElsewhere = resp;
-        }
-        originalList = resp;
-        $scope.selectedList = originalList;
-        $scope.isCustomInventoryList = true;
-        if($scope.selectedList.items.length == 0){
-          $scope.addNewItemToList();
-        }
-      });
-    };
-
-    $scope.saveCustomInventoryList = function(list) {
-      ListService.saveCustomInventoryList(list).then(function(resp){
-        $scope.selectedList = resp;
-        $scope.isCustomInventoryList = true;
-      });
     };
     
     function goToNewList(newList) {
@@ -342,8 +326,7 @@ angular.module('bekApp')
     }
 
     $scope.undoChanges = function() {
-      originalList = listThatWillNotBeUpdatedElsewhere;
-      resetPage(angular.copy(listThatWillNotBeUpdatedElsewhere));
+      resetPage(angular.copy(originalList));
     };
 
     $scope.unsavedChangesConfirmation = function(){
@@ -756,6 +739,35 @@ angular.module('bekApp')
       $scope.addItemsToList(list, dragSelection);
     };
 
+    /*********************
+    CUSTOM INVENTORY LIST
+    *********************/
+
+    $scope.getCustomInventoryList = function() {
+      $scope.previousList = originalList;
+
+      ListService.getCustomInventoryList().then(function(resp){
+        originalList = resp;
+        $scope.selectedList = originalList;
+        $scope.isCustomInventoryList = true;
+        if($scope.selectedList.items.length == 0){
+          $scope.addNewItemToList();
+        }
+      });
+    };
+
+    $scope.saveCustomInventoryList = function(list) {
+      ListService.saveCustomInventoryList(list).then(function(resp){
+        $scope.selectedList = resp;
+        $scope.isCustomInventoryList = true;
+      });
+    };
+
+    $scope.deleteCustomInventoryItem = function(listitem) {
+      ListService.deleteCustomInventoryItem(listitem.id).then(function(){
+        $scope.getCustomInventoryList();
+      })
+    };
    
     /******
     MODALS

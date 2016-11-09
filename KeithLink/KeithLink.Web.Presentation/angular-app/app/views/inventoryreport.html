@@ -117,6 +117,9 @@
             </div>
           </button>
           <ul class="dropdown-menu dropdown-menu-scroll" role="menu" style="width:auto">
+            <li>
+              <a ng-click="addItemsFromList('Custom Inventory')">Custom Inventory</a>
+            </li>
             <li ng-repeat="list in ::lists | sortLists">
               <a ng-click="addItemsFromList(list.listid)">{{::list.name}}</a>
             </li>
@@ -217,13 +220,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }" ng-style="item.isCustomInventory == true && {'border-left': '3px solid orange'}">
             <td>{{item.position}}</td>
             <td>
               <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
             </td>
             <td>{{::item.name}}</td>
-            <td class="hidden-mobile item-usage-drop-column">{{::item.brand_extended_description}}</td>
+            <td class="hidden-mobile item-usage-drop-column" ng-if="!item.isCustomInventory">{{::item.brand_extended_description}}</td>
+            <td class="hidden-mobile item-usage-drop-column" ng-if="item.isCustomInventory">{{::item.brand}}</td>
             <td class="hidden-mobile item-usage-drop-column">{{::item.class}}</td>
             <td ng-if="report.has_contract_items || report.hasContractCategories" class="hidden-mobile item-usage-drop-column">{{::item.category}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>

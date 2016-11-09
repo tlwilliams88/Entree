@@ -142,7 +142,9 @@ angular.module('bekApp')
               average_weight: item.average_weight,
               class: item.class,
               category: item.category,
-              brand_extended_description: item.brand_extended_description
+              brand_extended_description: item.brand_extended_description,
+              brand: item.brand,
+              isCustomInventory: item.isCustomInventory
             };
 
         if (useListItemId === true) {
@@ -179,13 +181,24 @@ angular.module('bekApp')
       $scope.addItemsFromList = function(listId) {
         $scope.successMessage = '';
 
-        ListService.getListWithItems(listId).then(function(listFound) {
-          $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
-          $scope.inventoryForm.$setDirty();
-          listFound.items.forEach($scope.addRow);          
-          $scope.sortTable('position', true);
-        });
-       
+        if(listId == 'Custom Inventory'){
+          ListService.getCustomInventoryList().then(function(list){
+            $scope.successMessage = 'Added ' + list.items.length + ' items from ' + list.name + ' to report.';
+            $scope.inventoryForm.$setDirty();
+            list.items.forEach(function(item){
+              item.isCustomInventory = true;
+              $scope.addRow(item);
+            });          
+            $scope.sortTable('position', true);
+          })
+        } else {
+            ListService.getListWithItems(listId).then(function(listFound) {
+            $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
+            $scope.inventoryForm.$setDirty();
+            listFound.items.forEach($scope.addRow);          
+            $scope.sortTable('position', true);
+          });
+        }
       };
 
       $scope.sortTable = function(field, oldSortDescending, isSortingPosition) {
@@ -219,7 +232,7 @@ angular.module('bekApp')
           report.name = $scope.today;
         }
         
-        if($scope.reports.length > 0 && report.name.length === 10){   
+        if($scope.reports && $scope.reports.length > 0 && report.name.length === 10){   
           $scope.reports.forEach(function(existingReport){
 
             if(report.name === existingReport.name.slice(0,10)){             
@@ -301,7 +314,7 @@ angular.module('bekApp')
       $scope.goToReport = function(listId){
         $scope.report.isRenaming = false;
         $state.go('menu.inventoryreport', {listid: listId});
-        if($scope.reports.length){
+        if($scope.reports && $scope.reports.length){
           $scope.selectedReportName = $filter('filter')($scope.reports, {listid: listId})[0].name;
         } else {
           $scope.selectedReportName = $scope.today;

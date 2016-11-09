@@ -342,7 +342,7 @@ angular.module('bekApp')
         },
 
         saveCustomInventoryList: function(listitems) {
-          return $http.post('/custominventory', listitems).then(function (response){
+          return $http.post('/custominventory', listitems).then(function(response){
             var customInventory = response.data.successResponse;
 
             customInventory.iscustominventory = true;
@@ -352,6 +352,12 @@ angular.module('bekApp')
 
             return customInventory;
           });
+        },
+
+        deleteCustomInventoryItem: function(listitem) {
+          return $http.delete('/custominventory/' + listitem).then(function(response){
+            return response.data.successResponse;
+          })
         },
 
         /********************
