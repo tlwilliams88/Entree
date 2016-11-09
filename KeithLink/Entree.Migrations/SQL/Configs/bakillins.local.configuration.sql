@@ -52,8 +52,6 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('BrandAssets
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CacheServerEndpoints', 'http://corpmisdev2a.bekco.com:60606', 'Misc Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CategoryPrefixesToExclude', 'AA,ZZ,TW', 'Elastic Search Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckForAppSettingsChangeDelayMinutes', '3', 'DB Has Changed', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrders', 'true', 'Queue Service Functions', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrdersStatus', 'Submitted', 'Queue Service Functions', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ClientSettingsProvider.ServiceUri', '', 'Email Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CorsEnabledDomains', '*', 'CORS', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CorsEnabledHeaders', '*', 'CORS', 0)
@@ -194,6 +192,14 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('UNFIWhiteli
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WebNowUrl', 'http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}', 'Misc Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsers', 'tcfox,jwames,pabrandt,mdjoiner,jdhughes,corp-ssa-entreadmin,dmderusha,bakillins,jmmills,meiacomini', 'WhiteList: must be lowercase', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsersEnforced', 'false', 'WhiteList', 0)
+
+-- Monitor Service Entries
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrders', 'true', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrdersStatus', 'Submitted', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckQueueHealth', 'true', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToCheck', '{targets:[
+{"server":"qarmq.benekeith.com","username":"orderclnt","password":"ordpassclnt","virtualhost":"orders_statusnotification","logicalname":"order_update","queue":"matt_orders_updates","minimumconsumerswarningthreshold":2,"maximummessageswarningthreshold":1}
+]}', 'Monitor Service Functions', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])
