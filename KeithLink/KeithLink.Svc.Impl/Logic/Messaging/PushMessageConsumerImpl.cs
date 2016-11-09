@@ -53,6 +53,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 // Send message through provider
                 _pushMessageProvider.SendMessage(pushmessage.Recipients, pushmessage.Message);
             }
+            else
+            {
+                _eventLogRepository.WriteErrorLog("Push message consumed with 0 recipients.");
+            }
             return true;
         }
         protected void ListenToQueueInTaskForUsers()
