@@ -10,9 +10,7 @@
 }
 .context-menu {
   display: none;
-  // border-radius: 5px;
-  // position: fixed;
-  z-index: 3;
+  z-index: 2;
   font-family: 'Open Sans', sans-serif;
   position: absolute;
 
@@ -58,12 +56,6 @@
       background-color: $color-blue !important;
       border-color: $color-blue !important;
     }
-
-    // &:focus {
-    //   background-color: $color-white;
-    //   color: $color-font-light;
-    //   border: 1px solid $color-border;
-    // }
   }
 
   .btn-group.open > button {
@@ -73,11 +65,6 @@
 }
 
 .context-menu__in-list {
-//   position: relative;
-//   .context-menu { 
-//     right: 80%;
-//     margin-top: -10px;
-//   }
   .dropdown-menu {
     left: -100%;  
   }
@@ -87,10 +74,7 @@
   width:auto;
   max-width:300px;
   max-height: 180px;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x:hidden;
 }
 
-.reposition-dropdown {
-  margin: -140px 0 0 0;
-}
