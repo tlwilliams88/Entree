@@ -13,6 +13,7 @@ CREATE TABLE [List].[CustomInventoryItems] (
 	BranchId VARCHAR(3) NOT NULL,
 	Name VARCHAR(30) NULL,
 	Brand VARCHAR(25) NULL,
+	Supplier VARCHAR(30) NULL,
 	Pack VARCHAR(4) NULL,
 	Size VARCHAR(8) NULL,
 	Vendor VARCHAR(6) NULL,
