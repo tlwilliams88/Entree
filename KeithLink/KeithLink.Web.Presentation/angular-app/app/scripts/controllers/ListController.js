@@ -554,13 +554,20 @@ angular.module('bekApp')
     };
 
     $scope.deleteMultipleItems = function() {
-    $scope.isDeletingItem = true;  
+    $scope.isDeletingItem = true;
+
+    if($scope.isCustomInventoryList){
+      var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true});
+      ListService.deleteCustomInventoryItems(itemsToDelete);
+    } else {
       $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
         if(item.isSelected){
           item.isdeleted = true;
           updateDeletedCount();
         }
       });
+    }
+
 
       $scope.selectedList.allSelected = false;
       updateItemPositions();
@@ -600,16 +607,20 @@ angular.module('bekApp')
       if (!items) {
         items = angular.copy(getMultipleSelectedItems());
       }
-      
-      ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
-        if ($scope.selectedList.listid === updatedList.listid) {
-          $scope.selectedList = list;
-        }
-        if($scope.multiSelect){
-          $scope.multiSelect.showLists = false;
-        }
-        unselectAllDraggedItems();
-      });
+
+      if($scope.isCustomInventoryList){
+        ListService.addNewItemsToCustomInventoryList(list.listid, items);
+      } else {
+        ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
+          if ($scope.selectedList.listid === updatedList.listid) {
+            $scope.selectedList = list;
+          }
+          if($scope.multiSelect){
+            $scope.multiSelect.showLists = false;
+          }
+        });
+      }
+      unselectAllDraggedItems();
     };
 
     $scope.addNewItemToList = function(){
