@@ -115,6 +115,30 @@ namespace KeithLink.Svc.WebApi.Controllers
                 _logger.WriteErrorLog("Error deleting custom inventory item: ", ex);
             }
         }
+
+        /// <summary>
+        /// Delete a list of CustomInventoryItems
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiKeyedRoute("custominventory")]
+        public OperationReturnModel<CustomInventoryHeaderReturnModel> DeleteRange(List<CustomInventoryItemReturnModel> items) {
+            OperationReturnModel<CustomInventoryHeaderReturnModel> returnValue = new OperationReturnModel<CustomInventoryHeaderReturnModel>();
+            returnValue.SuccessResponse = new CustomInventoryHeaderReturnModel();
+
+            try {
+                _customInventoryRepo.DeleteRange(items.ToModel());
+                returnValue.IsSuccess = true;
+                returnValue.SuccessResponse.Items = _customInventoryRepo.GetItemsByBranchAndCustomer(this.SelectedUserContext.BranchId, this.SelectedUserContext.CustomerId).ToReturnModelList();
+            } catch (Exception ex) {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _logger.WriteErrorLog("Error deleting custom inventory items:", ex);
+            }
+
+            return returnValue;
+        }
         #endregion
 
         #region helpers
