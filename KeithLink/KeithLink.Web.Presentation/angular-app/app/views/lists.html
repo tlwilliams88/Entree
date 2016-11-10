@@ -31,7 +31,7 @@
         </div>
       </span>
 
-      <div style="font-size: .5em">
+      <div class="hidden-md" style="font-size: .5em">
         <span ng-if="isCustomInventoryList">Enter non-Ben E. Keith items here if you'd like to include them in your Inventory report</span>
       </div>
 
@@ -166,7 +166,7 @@
               <button 
                 type="button" 
                 ng-repeat="list in lists | sortLists | limitTo: showMoreListNames ? numberListNamesToShow : lists.length track by list.listid" 
-                ng-click="goToList(list)" 
+                ng-click="goToList(list.listid)" 
                 ng-class="{'current-list' : list.listid == selectedList.listid}" 
                 class="btn-lg custom-lists__name btn btn-default btn-list" 
                 data-drop="isDragging && list.permissions.canAddItems" 
@@ -186,7 +186,7 @@
             <div class="btn-group-vertical">
               <button 
                 type="button" 
-                ng-click="getCustomInventoryList()" 
+                ng-click="goToList('nonbeklist')" 
                 class="btn btn-default btn-list text-light btn-lg">
                 Non-BEK Items
               </button>
@@ -728,9 +728,9 @@
                 <span>{{selectedList.permissions.alternativeFieldHeader2}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName2" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
+<!--               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
                 <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
-              </th>
+              </th> -->
               </th>
               <th class="hidden-mobile-visible-print" ng-if="(!selectedList.read_only)">
                   Each
@@ -786,7 +786,7 @@
               </td>
               <td class="drop-column" >
                 <span ng-click="$event.stopPropagation()">
-                  <input class="tabstop form-control" type="text" ng-model="item.class" class="form-control" style="min-width:70px">
+                  <input class="tabstop form-control" type="text" ng-model="item.supplier" class="form-control" style="min-width:70px">
                 </span>
               </td>
               <td class="hidden-mobile-visible-print" >
@@ -810,8 +810,7 @@
                   <ng-form name="itemSizeForm">
                     <input                    
                     id="defaultElement-{{currentIndex}}"                
-                    type="text"     
-                    pattern="([0-9])"
+                    type="text"
                     ng-model="item.size"     
                     class="text-right bek-no-drag tabstop form-control"
                     maxlength="8"
@@ -827,7 +826,7 @@
                 {{item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
-              <td class="nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
+<!--               <td class="nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="label" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
@@ -848,7 +847,7 @@
 
                   <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
-              </td>
+              </td> -->
               <td class="hidden-mobile-visible-print max-width-20" ng-if="!selectedList.read_only">
               <ng-form name="eachForm" ng-click="$event.stopPropagation()" ng-if="item.hasPackagePrice || isCustomInventoryList">
                 <input type="checkbox" class="mousetrap" ng-checked = "(!item.hasCasePrice && !isCustomInventoryList) || item.each" ng-disabled="!item.hasCasePrice && !isCustomInventoryList" ng-model="item.each" id="each" name="each"/>
@@ -932,10 +931,10 @@
                       </td>
                     </tr>
                     <tr>
-                      <td>Class</td>
+                      <td>Supplier</td>
                       <td>
                         <span  ng-click="$event.stopPropagation()">
-                          <input class="tabstop form-control" type="text" ng-model="item.class" maxlength="8" style="max-width:40%;">
+                          <input class="tabstop form-control" type="text" ng-model="item.supplier" maxlength="8" style="max-width:40%;">
                         </span>
                       </td>
                     </tr>
@@ -953,7 +952,7 @@
                       <td>Size</td>
                       <td ng-click="$event.stopPropagation()" style="width:60px;">
                         <ng-form>
-                          <input class="tabstop form-control pull-left" type="number" ng-model="item.size" maxlength="8" style="max-width:40%;">
+                          <input class="tabstop form-control pull-left" type="text" ng-model="item.size" maxlength="8" style="max-width:40%;">
                         </ng-form>
                       </td>
                     <tr ng-if="(selectedList.permissions.alternativeFieldName)">
@@ -964,7 +963,7 @@
                       <td>{{selectedList.permissions.alternativeFieldHeader2}}</td>
                       <td>{{item[selectedList.permissions.alternativeFieldName2]}}</td>
                     </tr>
-                    <tr ng-if="(selectedList.permissions.canSeeLabels)">
+<!--                     <tr ng-if="(selectedList.permissions.canSeeLabels)">
                       <td>Label</td>
                       <td ng-if="(selectedList.permissions.canEditLabels)">
                         <div ng-hide="item.isEditing" class="form-control-group__input">
@@ -990,7 +989,7 @@
                           <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
-                    </tr>
+                    </tr> -->
                     <tr ng-if="(item.hasPackagePrice && !selectedList.read_only)">
                     <td>Each</td>
                     <td>
