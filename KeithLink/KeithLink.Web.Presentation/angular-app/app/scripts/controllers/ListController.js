@@ -120,7 +120,9 @@ angular.module('bekApp')
       });
 
       for (var i = indexes[0]; i <= indexes[1]; i++) {
+        if(selectionList[i].itemnumber){
           selectionList[i].isSelected = true;
+        }
       }
     }
 
@@ -309,7 +311,7 @@ angular.module('bekApp')
      
       LocalStorage.setLastList(lastlist);
       if(listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
-        if($scope.forms.listForm && $scope.forms.listForm.length) {
+        if($scope.forms.listForm) {
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
@@ -691,9 +693,12 @@ angular.module('bekApp')
     }
 
     $scope.changeAllSelectedItems = function(allSelected) {
+      if($scope.selectedList.iscustominventory){
+        $scope.startingPoint = 0;
+      } 
       angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint) , function(item, index) {
         if (item.itemnumber) {      
-            item.isSelected = !allSelected; 
+          item.isSelected = !allSelected;
         }
       });
     };
@@ -779,6 +784,7 @@ angular.module('bekApp')
       ListService.saveCustomInventoryList(list).then(function(resp){
         $scope.selectedList = resp;
         $scope.isCustomInventoryList = true;
+        $scope.forms.listForm.$setPristine();
       });
     };
 
