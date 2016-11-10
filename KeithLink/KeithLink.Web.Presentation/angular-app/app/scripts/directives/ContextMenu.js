@@ -58,9 +58,6 @@ angular.module('bekApp')
           ]).then(function(data) {
             item.favorite = true;
             closeModal();
-            $scope.displayMessage('success', 'Successfully added item to list ' + listName + '.');
-          }, function() {
-            $scope.displayMessage('error', 'Error adding item to list ' + listName + '.');
           });
         } else {
           $q.all([

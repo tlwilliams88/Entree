@@ -235,6 +235,9 @@ angular.module('bekApp')
 
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
+        if(item.custominventoryitemid > -1){
+          $scope.listHasCustomItems = true;
+        }
       });
     }
 
