@@ -285,6 +285,7 @@
     <Compile Include="Helpers\ProfileHelper.cs" />
     <Compile Include="Helpers\StopWatchHelper.cs" />
     <Compile Include="Helpers\UserContextEqualityComparer.cs" />
+    <Compile Include="Logic\ApplicationHealth\ApplicationHealthLogicImpl.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
