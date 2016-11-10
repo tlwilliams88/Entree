@@ -145,6 +145,7 @@ namespace KeithLink.Svc.Core.Extensions
                 item.Each = i.Each;
                 item.CasePrice = i.CasePrice.ToDouble().Value;
                 item.PackagePrice = i.PackagePrice.ToDouble().Value;
+                
 
                 item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
                                                        (i.Each ?? false), i.CatchWeight, i.AverageWeight,

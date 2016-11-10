@@ -771,7 +771,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             var prices = new PriceReturn() { Prices = new List<Price>() };
 
             prices.AddRange(_priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
-                                                  listItems.GroupBy(g => g.ItemNumber)
+                                                  listItems.Where(x => x.CustomInventoryItemId < 1).GroupBy(g => g.ItemNumber)
                                                            .Select(i => new Product()
                                                            {
                                                                ItemNumber = i.First().ItemNumber,
@@ -841,7 +841,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                                                .ToList();
             Parallel.ForEach(list.Items, listItem =>
             {
-            if (listItem.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase) && listItem.CustomInventoryItemId > 0) {
+            if (listItem.CustomInventoryItemId > 0) {
                     CustomInventoryItem customItem = customItems.Where(x => x.Id.Equals(listItem.CustomInventoryItemId)).FirstOrDefault();
                     listItem.Name = customItem.Name;
                     listItem.BrandExtendedDescription = customItem.Brand;
