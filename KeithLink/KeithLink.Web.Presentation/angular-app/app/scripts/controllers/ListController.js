@@ -12,6 +12,11 @@ angular.module('bekApp')
    'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
      PricingService, ListPagingModel, LocalStorage, UtilityService, DateService) {
+
+    if(originalList.name == 'Non BEK Items'){
+      originalList.listid = 'nonbeklist';
+      $scope.selectedList = originalList;
+    }
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
@@ -34,7 +39,7 @@ angular.module('bekApp')
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
     $scope.forms = {};
-    $scope.isCustomInventoryList = false;
+    $scope.isCustomInventoryList = originalList.iscustominventory ? true : false;
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -221,6 +226,11 @@ angular.module('bekApp')
         $scope.forms.listForm.$setPristine();
       }
 
+
+      if($scope.selectedList.name == 'Non BEK Items' && $scope.selectedList.items.length == 0){
+        $scope.addNewItemToList();
+      }
+
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
       });
@@ -285,7 +295,7 @@ angular.module('bekApp')
     );
 
     // LIST INTERACTIONS
-    $scope.goToList = function(list) {
+    $scope.goToList = function(listid) {
       if($scope.selectedList.iscustominventory){
         $scope.isCustomInventoryList = false;
       }
@@ -293,21 +303,17 @@ angular.module('bekApp')
       var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
     
       var lastlist ={
-          listId: list.listid,          
+          listId: listid,          
           timeset: timeset
       };
      
       LocalStorage.setLastList(lastlist);
-      if(list.listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
+      if(listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm && $scope.forms.listForm.length) {
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          if($scope.previousList && list.listid == $scope.previousList.listid){
-            $scope.selectedList = $scope.previousList;
-            blockUI.stop();
-          }
-          return $state.go('menu.lists.items', {listId: list.listid, renameList: false});  
+          return $state.go('menu.lists.items', {listId: listid, renameList: false});
         });
       }
     };
@@ -755,7 +761,9 @@ angular.module('bekApp')
     *********************/
 
     $scope.getCustomInventoryList = function() {
-      $scope.previousList = originalList;
+      if($scope.selectedList.name != 'Non BEK Items') {
+        $scope.previousList = originalList;
+      }
 
       ListService.getCustomInventoryList().then(function(resp){
         originalList = resp;
