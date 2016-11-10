@@ -10,8 +10,11 @@ namespace Entree.Migrations.Data {
     [Migration(2, "Baseline seed data")]
     public class Baseline : Migration {
         public override void Up() {
-            this.Execute.Script(@"SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData_Seed.sql");
-            this.Execute.Script(@"SQL\Messaging\Configuration.MessageTemplates.Bootstrap.sql");
+            // Only run this if the baseline needs scaffolded
+            if (this.ApplicationContext != null && this.ApplicationContext.Equals("BaselineSetup")) {
+                this.Execute.Script(@"SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData_Seed.sql");
+                this.Execute.Script(@"SQL\Messaging\Configuration.MessageTemplates.Bootstrap.sql");
+            }
         }
 
         public override void Down() {
