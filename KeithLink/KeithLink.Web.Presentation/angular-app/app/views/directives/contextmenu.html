@@ -28,7 +28,7 @@
       <button type="button" class="btn btn-default dropdown-toggle">
         <span class="pull-right icon-arrow-right6"></span>Add to List
       </button>
-      <ul class="dropdown-menu context-menu-dropdown reposition-dropdown" role="menu">
+      <ul class="dropdown-menu context-menu-dropdown" role="menu">
         <div class="btn-group-vertical" style="margin-top:150px;">
           <button ng-repeat="list in ::lists | sortLists" ng-if="::list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.name, list.listid, item)">{{::list.name}}</button>
           <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
@@ -41,7 +41,7 @@
       <button type="button" class="btn btn-default dropdown-toggle">
         <span class="pull-right icon-arrow-right6"></span>Add to Change Order
       </button>
-      <ul class="dropdown-menu context-menu-dropdown reposition-dropdown" role="menu">
+      <ul class="dropdown-menu context-menu-dropdown" role="menu">
         <div class="btn-group-vertical" style="margin-top: 150px;">
           <button ng-repeat="order in ::changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{::order.invoicenumber}}</button>
         </div>
