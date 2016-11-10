@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Core.Extensions
                 item.ItemNumber = i.ItemNumber;
                 item.Name = i.Name;
                 item.Brand = i.BrandExtendedDescription;
-                item.Category = i.Category;
+                item.Category = i.ItemClass;
                 item.PackSize = i.PackSize;
                 if (i.Notes != null)
                 {
