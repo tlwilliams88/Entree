@@ -146,37 +146,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             HttpResponseMessage ret;
             try
             {
-                ReportViewer rv = new ReportViewer();
-
-                Assembly assembly = Assembly.Load("KeithLink.Svc.Impl");
-
-                Stream rdlcStream = null;
-                var deviceInfo = string.Empty;
-                if (options.Landscape)
-                {
-                    deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
-                    rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport_Landscape.rdlc");
-                }
-                else {
-                    deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
-                    rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
-                }
-
-                ShoppingCartReportModel reportModel = _shoppingCartLogic.PrintCartWithList(this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options);
-
-                rv.LocalReport.LoadReportDefinition(rdlcStream);
-                ReportParameter[] parameters = new ReportParameter[3];
-                parameters[0] = new ReportParameter("ListName", reportModel.ListName);
-                parameters[1] = new ReportParameter("CartName", reportModel.CartName);
-                parameters[2] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
-
-                rv.LocalReport.SetParameters(parameters);
-
-                rv.LocalReport.DataSources.Add(new ReportDataSource("CartItems", reportModel.CartItems));
-                rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", reportModel.ListItems));
-
-                var bytes = rv.LocalReport.Render("PDF", deviceInfo);
-                Stream stream = new MemoryStream(bytes);
+                Stream stream = _shoppingCartLogic.CartReport
+                    (AuthenticatedUser, SelectedUserContext, cartId, listId, options);
 
                 HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
                 result.Content = new StreamContent(stream);
