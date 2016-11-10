@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Orders;
+﻿using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -32,7 +33,9 @@ namespace KeithLink.Svc.Core.Interface.Cart
 
         ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext catalogInfo, Guid cartId, long listId, Core.Models.Lists.PrintListModel options );
 
-		SaveOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
+        System.IO.MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options);
+
+        SaveOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
 
 		void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 
