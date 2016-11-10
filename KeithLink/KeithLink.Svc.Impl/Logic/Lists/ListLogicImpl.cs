@@ -852,6 +852,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     listItem.Each = customItem.Each;
                     listItem.CasePrice = customItem.CasePrice.ToString();
                     listItem.PackagePrice = customItem.PackagePrice.ToString();
+                    listItem.Supplier = customItem.Supplier;
                     listItem.IsValid = true;
             }
             else {
