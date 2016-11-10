@@ -333,7 +333,7 @@ angular.module('bekApp')
           });
         },
 
-        addNewItemToCustomInventoryList: function(listitem) {
+        addNewItemFromCustomInventoryList: function(listitem) {
           return $http.post('/custominventoryitem', listitem).then(function(response){
             var customInventoryItems = response.data.successResponse.items;
 
@@ -341,7 +341,7 @@ angular.module('bekApp')
           })
         },
 
-        addNewItemsToCustomInventoryList: function(listid, listitems) {
+        addNewItemsFromCustomInventoryList: function(listid, listitems) {
           var itemsToAdd = [];
 
           listitems.forEach(function(item){
