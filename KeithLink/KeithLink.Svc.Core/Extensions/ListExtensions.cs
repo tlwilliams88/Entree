@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Core.Extensions
                 item.ItemNumber = i.ItemNumber;
                 item.Name = i.Name;
                 item.Brand = i.BrandExtendedDescription;
-                item.Category = i.Category;
+                item.Category = i.ItemClass;
                 item.PackSize = i.PackSize;
                 if (i.Notes != null)
                 {
@@ -145,6 +145,7 @@ namespace KeithLink.Svc.Core.Extensions
                 item.Each = i.Each;
                 item.CasePrice = i.CasePrice.ToDouble().Value;
                 item.PackagePrice = i.PackagePrice.ToDouble().Value;
+                
 
                 item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
                                                        (i.Each ?? false), i.CatchWeight, i.AverageWeight,

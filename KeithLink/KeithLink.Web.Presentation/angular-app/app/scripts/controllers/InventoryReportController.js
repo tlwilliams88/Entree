@@ -80,6 +80,9 @@ angular.module('bekApp')
         if($scope.report.items.length > 0){
           $scope.report.items.forEach(function(item,index){
             item.position = index + 1;
+            if(item.custominventoryitemid){
+              $scope.hasCustomItems = true;
+            }
             watchersQuantity.push($scope.$watch('report.items[' + index + '].quantity', onItemQuantityChanged));
             watchersEach.push($scope.$watch('report.items[' + index + '].each', onItemQuantityChanged));
           });
@@ -142,10 +145,15 @@ angular.module('bekApp')
               average_weight: item.average_weight,
               class: item.class,
               category: item.category,
-              brand_extended_description: item.brand_extended_description,
-              brand: item.brand,
-              isCustomInventory: item.isCustomInventory
+              brand_extended_description: item.brand_extended_description || item.brand,
+              isCustomInventory: item.isCustomInventory,
+              supplier: item.supplier
             };
+
+        if(item.isCustomInventory){
+          reportItem.custominventoryitemid = item.id ? item.id : item.custominventoryitemid;
+          $scope.hasCustomItems = true;
+        }
 
         if (useListItemId === true) {
           reportItem.listitemid = item.listitemid;
@@ -185,6 +193,7 @@ angular.module('bekApp')
           ListService.getCustomInventoryList().then(function(list){
             $scope.successMessage = 'Added ' + list.items.length + ' items from ' + list.name + ' to report.';
             $scope.inventoryForm.$setDirty();
+            $scope.isCustomInventory = true;
             list.items.forEach(function(item){
               item.isCustomInventory = true;
               $scope.addRow(item);
@@ -195,7 +204,12 @@ angular.module('bekApp')
             ListService.getListWithItems(listId).then(function(listFound) {
             $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
             $scope.inventoryForm.$setDirty();
-            listFound.items.forEach($scope.addRow);          
+            listFound.items.forEach(function(item) {
+              if(item.custominventoryitemid){
+                item.isCustomInventory = true;
+              }
+              $scope.addRow(item);
+            });
             $scope.sortTable('position', true);
           });
         }

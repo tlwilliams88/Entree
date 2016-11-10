@@ -333,7 +333,7 @@ angular.module('bekApp')
           });
         },
 
-        addNewItemToCustomInventoryList: function(listitem) {
+        addNewItemFromCustomInventoryList: function(listitem) {
           return $http.post('/custominventoryitem', listitem).then(function(response){
             var customInventoryItems = response.data.successResponse.items;
 
@@ -341,7 +341,7 @@ angular.module('bekApp')
           })
         },
 
-        addNewItemsToCustomInventoryList: function(listid, listitems) {
+        addNewItemsFromCustomInventoryList: function(listid, listitems) {
           var itemsToAdd = [];
 
           listitems.forEach(function(item){
@@ -349,15 +349,16 @@ angular.module('bekApp')
           })
 
           return $http.post('/list/'+ listid + '/custominventoryitem', itemsToAdd).then(function() {
-            toaster.pop('success', null, 'Successfully added ' + itemsToAdd.length + ' to list.');
+            toaster.pop('success', null, 'Successfully added items to list.');
           }, function(error) {
-            toaster.pop('error', null, 'Error adding ' + itemsToAdd.length + ' to list.');
+            toaster.pop('error', null, 'Error adding items to list.');
           });
         },
 
         saveCustomInventoryList: function(listitems) {
           return $http.post('/custominventory', listitems).then(function(response){
             var customInventory = response.data.successResponse;
+            toaster.pop('success', null, 'Successfully saved Non BEK Items list.');
 
             customInventory.iscustominventory = true;
             customInventory.name = 'Non BEK Items';
@@ -365,22 +366,33 @@ angular.module('bekApp')
             updateListPermissions(customInventory);
 
             return customInventory;
+            
+          }, function(error) {
+            toaster.pop('error', null, 'Error saving Non BEK Items list.');
           });
         },
 
         deleteCustomInventoryItem: function(listitem) {
           return $http.delete('/custominventory/' + listitem).then(function(response){
+            toaster.pop('success', null, 'Successfully deleted item from list.');
             return response.data.successResponse;
-            toaster.pop('success', null, 'Successfully added ' + itemsToAdd.length + ' items to list.');
           }, function(error) {
             toaster.pop('error', null, 'Error adding items to list.');
           });
         },
 
         deleteCustomInventoryItems: function(listitems) {
-          return $http.delete('/custominventory', listitems).then(function(response){
-            return response.data.successResponse;
+          // create array of list item ids
+          var itemIds = [];
+          angular.forEach(listitems, function(item, index) {
+            itemIds.push(item.id);
+          });
+
+          return $http.delete('/custominventory', { 
+            data: listitems 
+          }).then(function(response){
             toaster.pop('success', null, 'Successfully deleted items from list.');
+            return response.data.successResponse;
           }, function(error) {
             toaster.pop('error', null, 'Error deleting items from list');
           });

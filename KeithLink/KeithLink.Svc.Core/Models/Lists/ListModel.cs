@@ -143,7 +143,9 @@ namespace KeithLink.Svc.Core.Models.Lists
                         NonStock = item.NonStock,
                         StorageTemp = item.StorageTemp,
                         IsSpecialtyCatalog = item.IsSpecialtyCatalog,
-                        Unfi = item.Unfi
+                        Unfi = item.Unfi,
+                        Supplier = item.Supplier,
+                        CustomInventoryItemId = item.CustomInventoryItemId,
 					});
 				}
 

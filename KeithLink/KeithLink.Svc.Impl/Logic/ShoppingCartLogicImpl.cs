@@ -42,6 +42,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Core;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using System.Reflection;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -428,7 +431,7 @@ namespace KeithLink.Svc.Impl.Logic
             clonedCartReportItems.ForEach(x => {
                 ShoppingCartItemReportModel item = listReportItems.Where( i => i.ItemNumber.Equals( x.ItemNumber ) ).FirstOrDefault();
                 if (item != null) {
-                    item.Category = x.Category;
+                    //item.Category = x.Category;
                     //item.Label = x.Label;
                     item.Quantity = x.Quantity;
                     item.Each = x.Each;
@@ -439,6 +442,42 @@ namespace KeithLink.Svc.Impl.Logic
             });
 
             return new ShoppingCartReportModel() { CartName = cart.Name, ListName = list.Name, CartItems = cartReportItems, ListItems = listReportItems };
+        }
+
+        public MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options)
+        {
+            ReportViewer rv = new ReportViewer();
+
+            Assembly assembly = Assembly.Load("KeithLink.Svc.Impl");
+
+            Stream rdlcStream = null;
+            var deviceInfo = string.Empty;
+            if (options.Landscape)
+            {
+                deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
+                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport_Landscape.rdlc");
+            }
+            else
+            {
+                deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
+                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
+            }
+
+            ShoppingCartReportModel reportModel = PrintCartWithList(user, context, cartId, listId, options);
+
+            rv.LocalReport.LoadReportDefinition(rdlcStream);
+            ReportParameter[] parameters = new ReportParameter[3];
+            parameters[0] = new ReportParameter("ListName", reportModel.ListName);
+            parameters[1] = new ReportParameter("CartName", reportModel.CartName);
+            parameters[2] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
+
+            rv.LocalReport.SetParameters(parameters);
+
+            rv.LocalReport.DataSources.Add(new ReportDataSource("CartItems", reportModel.CartItems));
+            rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", reportModel.ListItems));
+
+            var bytes = rv.LocalReport.Render("PDF", deviceInfo);
+            return new MemoryStream(bytes);
         }
 
         public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
