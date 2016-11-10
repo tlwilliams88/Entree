@@ -146,7 +146,7 @@ angular.module('bekApp')
               isCustomInventory: item.isCustomInventory,
             };
 
-        if($scope.isCustomInventory){
+        if(item.isCustomInventory){
           reportItem.custominventoryitemid = item.id ? item.id : item.custominventoryitemid;
         }
 
