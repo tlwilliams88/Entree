@@ -11,7 +11,10 @@ namespace Entree.Migrations.v1_11 {
     public class Baseline : Migration {
 
         public override void Up() {
-            this.Execute.Script(@"SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData.sql");
+            // Only run this if the baseline needs scaffolded
+            if (this.ApplicationContext != null && this.ApplicationContext.Equals("BaselineSetup")) {
+                this.Execute.Script(@"SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData.sql");
+            }
         }
 
         public override void Down() {
