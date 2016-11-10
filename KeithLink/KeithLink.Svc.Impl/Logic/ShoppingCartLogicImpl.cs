@@ -431,7 +431,7 @@ namespace KeithLink.Svc.Impl.Logic
             clonedCartReportItems.ForEach(x => {
                 ShoppingCartItemReportModel item = listReportItems.Where( i => i.ItemNumber.Equals( x.ItemNumber ) ).FirstOrDefault();
                 if (item != null) {
-                    item.Category = x.Category;
+                    //item.Category = x.Category;
                     //item.Label = x.Label;
                     item.Quantity = x.Quantity;
                     item.Each = x.Each;
