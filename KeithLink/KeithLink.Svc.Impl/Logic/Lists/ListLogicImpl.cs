@@ -1629,7 +1629,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                 Label = updateItem.Label,
                                 Each = updateItem.Each,
                                 Quantity = updateItem.Quantity,
-                                Category = updateItem.Category
+                                Category = updateItem.Category,
+                                CustomInventoryItemId = updateItem.CustomInventoryItemId,
                             });
                             itemsAdded = true;
                         }
