@@ -208,6 +208,9 @@
             <th ng-if="report.has_contract_items || report.hasContractCategories" class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('category', sortDescending)">
               <span>Contract Category <span sort-icons field="'category'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
+            <th ng-if="hasCustomItems" class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('supplier', sortDescending)">
+              <span>Supplier <span sort-icons field="'supplier'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
             <th class="hidden-mobile-visible-print">Pack/Size</th>
             <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortTable('label', sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sortDescending" sortby="sortField"></span></span>
@@ -220,7 +223,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }" ng-style="(item.isCustomInventory == true) || (item.custominventoryitemid) && {'border-left': '3px solid orange'}">
+          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }" ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">
             <td>{{item.position}}</td>
             <td>
               <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
@@ -230,6 +233,7 @@
             <td class="hidden-mobile item-usage-drop-column" ng-if="item.isCustomInventory">{{::item.brand}}</td>
             <td class="hidden-mobile item-usage-drop-column">{{::item.class}}</td>
             <td ng-if="report.has_contract_items || report.hasContractCategories" class="hidden-mobile item-usage-drop-column">{{::item.category}}</td>
+            <td ng-if="item.custominventoryitemid" class="hidden-mobile item-usage-drop-column">{{::item.supplier}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
             <td class="hidden-mobile-visible-print label-col">{{::item.label}}</td>
             <td class="input-col nowrap counter-container">  

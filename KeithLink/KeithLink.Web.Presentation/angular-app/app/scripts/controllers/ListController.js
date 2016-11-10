@@ -617,7 +617,7 @@ angular.module('bekApp')
       }
 
       if($scope.isCustomInventoryList){
-        ListService.addNewItemsToCustomInventoryList(list.listid, items);
+        ListService.addNewItemsFromCustomInventoryList(list.listid, items);
       } else {
         ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
           if ($scope.selectedList.listid === updatedList.listid) {

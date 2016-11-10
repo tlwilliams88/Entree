@@ -80,6 +80,9 @@ angular.module('bekApp')
         if($scope.report.items.length > 0){
           $scope.report.items.forEach(function(item,index){
             item.position = index + 1;
+            if(item.custominventoryitemid){
+              $scope.hasCustomItems = true;
+            }
             watchersQuantity.push($scope.$watch('report.items[' + index + '].quantity', onItemQuantityChanged));
             watchersEach.push($scope.$watch('report.items[' + index + '].each', onItemQuantityChanged));
           });
@@ -144,10 +147,12 @@ angular.module('bekApp')
               category: item.category,
               brand_extended_description: item.brand_extended_description || item.brand,
               isCustomInventory: item.isCustomInventory,
+              supplier: item.supplier
             };
 
         if(item.isCustomInventory){
           reportItem.custominventoryitemid = item.id ? item.id : item.custominventoryitemid;
+          $scope.hasCustomItems = true;
         }
 
         if (useListItemId === true) {

@@ -144,6 +144,7 @@
           {{list.name}}
         </a>
       </li>
+      <li> <a ng-click="goToList('nonbeklist')" ng-if="(list.listid !== selectedList.listid)">Non-BEK Items</a></li>
       <li><a ng-click="createList()">Create a List...</a></li>
 
       <li ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>

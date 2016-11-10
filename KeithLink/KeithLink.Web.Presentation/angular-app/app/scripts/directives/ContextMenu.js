@@ -47,18 +47,33 @@ angular.module('bekApp')
       LISTS
       *************/
 
-      $scope.addItemToList = function(listName, listId, item) {
+      $scope.addItemToList = function(listName, listId, item, selectedList) {
       var newItem = angular.copy(item);
-        $q.all([
-          ListService.addItem(listId, newItem),
-          ListService.addItemToFavorites(newItem)
-        ]).then(function(data) {
-          item.favorite = true;
-          closeModal();
-          $scope.displayMessage('success', 'Successfully added item to list ' + listName + '.');
-        }, function() {
-          $scope.displayMessage('error', 'Error adding item to list ' + listName + '.');
-        });
+        if(selectedList.iscustominventory){
+          var newItem = [
+            item
+          ];
+          $q.all([
+            ListService.addNewItemsFromCustomInventoryList(listId, newItem),
+          ]).then(function(data) {
+            item.favorite = true;
+            closeModal();
+            $scope.displayMessage('success', 'Successfully added item to list ' + listName + '.');
+          }, function() {
+            $scope.displayMessage('error', 'Error adding item to list ' + listName + '.');
+          });
+        } else {
+          $q.all([
+            ListService.addItem(listId, newItem),
+            ListService.addItemToFavorites(newItem)
+          ]).then(function(data) {
+            item.favorite = true;
+            closeModal();
+            $scope.displayMessage('success', 'Successfully added item to list ' + listName + '.');
+          }, function() {
+            $scope.displayMessage('error', 'Error adding item to list ' + listName + '.');
+          });
+        }
       };
 
       $scope.createListWithItem = function(item) {
