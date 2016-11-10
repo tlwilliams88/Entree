@@ -142,10 +142,13 @@ angular.module('bekApp')
               average_weight: item.average_weight,
               class: item.class,
               category: item.category,
-              brand_extended_description: item.brand_extended_description,
-              brand: item.brand,
-              isCustomInventory: item.isCustomInventory
+              brand_extended_description: item.brand_extended_description || item.brand,
+              isCustomInventory: item.isCustomInventory,
             };
+
+        if(item.isCustomInventory){
+          reportItem.custominventoryitemid = item.id ? item.id : item.custominventoryitemid;
+        }
 
         if (useListItemId === true) {
           reportItem.listitemid = item.listitemid;
@@ -185,6 +188,7 @@ angular.module('bekApp')
           ListService.getCustomInventoryList().then(function(list){
             $scope.successMessage = 'Added ' + list.items.length + ' items from ' + list.name + ' to report.';
             $scope.inventoryForm.$setDirty();
+            $scope.isCustomInventory = true;
             list.items.forEach(function(item){
               item.isCustomInventory = true;
               $scope.addRow(item);
@@ -195,7 +199,12 @@ angular.module('bekApp')
             ListService.getListWithItems(listId).then(function(listFound) {
             $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
             $scope.inventoryForm.$setDirty();
-            listFound.items.forEach($scope.addRow);          
+            listFound.items.forEach(function(item) {
+              if(item.custominventoryitemid){
+                item.isCustomInventory = true;
+              }
+              $scope.addRow(item);
+            });
             $scope.sortTable('position', true);
           });
         }

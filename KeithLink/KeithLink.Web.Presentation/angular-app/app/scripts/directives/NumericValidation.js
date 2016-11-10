@@ -46,13 +46,18 @@ angular.module('bekApp')
           scope.checkRegex = directive.REGEXP.test(truncatedVal);
         }
         //set validity
-        if (!truncatedVal || scope.checkRegex ) {
-          ctrl.$setValidity('numericValidation', true);
-          return parseFloat(truncatedVal);
-        } else {
-          ctrl.$setValidity('numericValidation', false);
-          return undefined;
-        }
+
+          if (!truncatedVal || scope.checkRegex ) {
+            ctrl.$setValidity('numericValidation', true);
+            if(attrs.id == 'casePrice' || attrs.id == 'packagePrice'){
+              return truncatedVal;
+            } else {
+              return parseFloat(truncatedVal);
+            }
+          } else {
+            ctrl.$setValidity('numericValidation', false);
+            return undefined;
+          }
       }
 
       function truncateViewValue(limit,viewVal){
