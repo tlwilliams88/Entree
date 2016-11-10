@@ -220,7 +220,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }" ng-style="item.isCustomInventory == true && {'border-left': '3px solid orange'}">
+          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }" ng-style="(item.isCustomInventory == true) || (item.custominventoryitemid) && {'border-left': '3px solid orange'}">
             <td>{{item.position}}</td>
             <td>
               <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
