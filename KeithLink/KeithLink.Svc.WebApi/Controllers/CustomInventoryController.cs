@@ -94,7 +94,6 @@ namespace KeithLink.Svc.WebApi.Controllers
                 _customInventoryRepo.SaveRange(items.ToModel());
                 returnValue.IsSuccess = true;
                 returnValue.SuccessResponse.Items = _customInventoryRepo.GetItemsByBranchAndCustomer(this.SelectedUserContext.BranchId, this.SelectedUserContext.CustomerId).ToReturnModelList();
-                _cache.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
             } catch (Exception ex) {
                 returnValue.IsSuccess = false;
                 returnValue.ErrorMessage = ex.Message;
