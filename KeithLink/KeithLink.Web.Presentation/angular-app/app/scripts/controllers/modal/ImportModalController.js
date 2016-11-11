@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ImportModalController', ['$scope', '$analytics', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders',
-  function ($scope, $analytics, $modalInstance, $state, ListService, CartService, customListHeaders) {
+.controller('ImportModalController', ['$scope', '$analytics', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders', 'listType',
+  function ($scope, $analytics, $modalInstance, $state, ListService, CartService, customListHeaders, listType) {
 
   $scope.customListHeaders = customListHeaders;
+
+  $scope.listType = listType;
   
   $scope.upload = [];
   $scope.files = [];
@@ -33,9 +35,16 @@ angular.module('bekApp')
   $scope.startListUpload = function(options) {
     var file = $scope.files[0];
     $analytics.eventTrack('Import List', {category: 'Lists'});
-    ListService.importList(file, options).then(function(data) {
-      goToImportedPage('menu.lists.items', { listId: data.listid });
-    });
+    if($scope.listType == 'CustomInventory'){
+      ListService.importNonBEKListItems(file, options).then(function() {
+        $state.go('menu.lists.items', {listId: 'nonbeklist'});
+      });
+    } else {
+      ListService.importList(file, options).then(function(data) {
+        goToImportedPage('menu.lists.items', { listId: data.listid });
+      });
+    }
+
   };
 
 
