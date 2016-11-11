@@ -913,7 +913,7 @@
                 class="bek-no-drag hidden-xs hidden-sm margin-top-10">
                   <span 
                   class="text-red icon-cross" 
-                  ng-click="deleteCustomInventoryItem(item)">
+                  ng-click="deleteCustomInventoryItem(item, $index)">
                   </span>
                 </a>
                 <a 
@@ -1021,7 +1021,7 @@
                     </tr>
                     <tr ng-if="(selectedList.permissions.canDeleteItems)">
                       <td colspan="2">
-                        <button type="button" class="btn btn-lg btn-danger" ng-click="deleteCustomInventoryItem(item)"><span class="icon-cross"></span> Remove Item</button>
+                        <button type="button" class="btn btn-lg btn-danger" ng-click="deleteCustomInventoryItem(item, $index)"><span class="icon-cross"></span> Remove Item</button>
                       </td>
                     </tr>
                   </tbody>
