@@ -875,6 +875,7 @@
     <Compile Include="Tasks\LimitedConcurrencyLevelTaskScheduler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\InventoryValuationBySupplier.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByCategory.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByContractCategoryThenLabel.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByLabel.rdlc" />

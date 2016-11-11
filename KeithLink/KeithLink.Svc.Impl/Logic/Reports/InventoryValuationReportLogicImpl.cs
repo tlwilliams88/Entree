@@ -59,6 +59,8 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             else if (request.GroupBy != null && request.GroupBy.Equals("categorythenlabel"))
             {
                 rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByContractCategoryThenLabel.rdlc");
+                // if the user is requesting this specialized contract category then label, we add that to the data
+                request.ReportData = request.ReportData.Select(iv => ContractCategoryThenLabelIVM(iv)).ToList();
             }
             else if (request.GroupBy != null && request.GroupBy.Equals("categoryname"))
             {
@@ -67,6 +69,10 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             else if (request.GroupBy != null && request.GroupBy.Equals("label"))
             {
                 rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByLabel.rdlc");
+            }
+            else if (request.GroupBy != null && request.GroupBy.Equals("supplier"))
+            {
+                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationBySupplier.rdlc");
             }
             else
             {
@@ -77,12 +83,6 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             rv.LocalReport.SetParameters(new ReportParameter("Branch", customer.CustomerBranch));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerName", customer.CustomerName));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerNumber", customer.CustomerNumber));
-
-            request.ReportData = request.ReportData.Select(iv => NullFieldToPlaceholder(iv)).ToList();
-            if (request.GroupBy != null && request.GroupBy.Equals("categorythenlabel"))
-            { // if the user is requesting this specialized contract category then label, we add that to the data
-                request.ReportData = request.ReportData.Select(iv => ContractCategoryThenLabelIVM(iv)).ToList();
-            }
 
             rv.LocalReport.DataSources.Add(
                 new ReportDataSource("DataSet1", request.ReportData));
