@@ -95,11 +95,11 @@
         List Actions <span class="caret text-dark"></span>
       </a>
       <ul class="dropdown-menu">
-        <li><a ng-click="openPrintOptionsModal(selectedList)">Print</a></li>
-        <li><a ng-click="openExportModal()">Export</a></li>
+        <li><a ng-click="openPrintOptionsModal(selectedList)" ng-if="!isCustomInventoryList">Print</a></li>
+        <li><a ng-click="openExportModal()" ng-if="!isCustomInventoryList">Export</a></li>
         <li><a ng-click="openListImportModal()">Import</a></li>
-        <li><a ng-if="selectedList.permissions.canShareList || selectedList.permissions.canCopyList" ng-click="openReplicateListModal(selectedList)">Give list</a></li>
-        <li><a ng-click="copyList(selectedList)">Duplicate list</a></li>
+        <li><a ng-if="(selectedList.permissions.canShareList || selectedList.permissions.canCopyList) && !isCustomInventoryList" ng-click="openReplicateListModal(selectedList)">Give list</a></li>
+        <li><a ng-click="copyList(selectedList)" ng-if="!isCustomInventoryList">Duplicate list</a></li>
       </ul>
     </div>
 
