@@ -441,7 +441,8 @@
               id="listsTableRows"
               class="highlightRows"
               ng-click="shiftSelectOtherRows($event, item)"
-              ng-show="!isCustomInventoryList">                
+              ng-show="!isCustomInventoryList"
+              ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">                
            
             <tr>
               <td class="hidden-drag bek-drag-handle">

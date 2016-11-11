@@ -784,7 +784,8 @@ angular.module('bekApp')
     };
 
     $scope.saveCustomInventoryList = function(list) {
-      ListService.saveCustomInventoryList(list).then(function(resp){
+      var itemsToSave = $filter('filter')(list, {itemnumber: ''});
+      ListService.saveCustomInventoryList(itemsToSave).then(function(resp){
         $scope.selectedList = resp;
         $scope.isCustomInventoryList = true;
         $scope.forms.listForm.$setPristine();
