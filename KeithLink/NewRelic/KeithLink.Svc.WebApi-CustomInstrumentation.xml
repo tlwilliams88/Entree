@@ -138,6 +138,31 @@
       </match>
     </tracerFactory>
 
+    <tracerFactory metricName="WebApi/GET/custominventory" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CustomInventoryController">
+        <exactMethodMatcher methodName="GetAll"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/POST/custominventory" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CustomInventoryController">
+        <exactMethodMatcher methodName="Save"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/custominventory/{itemId}" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CustomInventoryController">
+        <exactMethodMatcher methodName="Delete"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="WebApi/DELETE/custominventory" transactionNamingPriority="7">
+      <match assemblyName="KeithLink.Svc.WebApi"
+             className="KeithLink.Svc.WebApi.Controllers.CustomInventoryController">
+        <exactMethodMatcher methodName="DeleteRange"/>
+      </match>
+    </tracerFactory>
+
     <tracerFactory metricName="WebApi/POST/import/list" transactionNamingPriority="7">
       <match assemblyName="KeithLink.Svc.WebApi"
              className="KeithLink.Svc.WebApi.Controllers.ImportController">
