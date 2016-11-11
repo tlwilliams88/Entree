@@ -565,20 +565,19 @@ angular.module('bekApp')
     };
 
     $scope.deleteMultipleItems = function() {
-    $scope.isDeletingItem = true;
+      $scope.isDeletingItem = true;
 
-    if($scope.isCustomInventoryList){
-      var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true});
-      ListService.deleteCustomInventoryItems(itemsToDelete);
-    } else {
-      $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
-        if(item.isSelected){
-          item.isdeleted = true;
-          updateDeletedCount();
-        }
-      });
-    }
-
+      if($scope.isCustomInventoryList){
+        var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true, id: ''});
+        ListService.deleteCustomInventoryItems(itemsToDelete);
+      } else {
+        $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
+          if(item.isSelected){
+            item.isdeleted = true;
+            updateDeletedCount();
+          }
+        });
+      }
 
       $scope.selectedList.allSelected = false;
       updateItemPositions();
@@ -792,10 +791,15 @@ angular.module('bekApp')
       });
     };
 
-    $scope.deleteCustomInventoryItem = function(listitem) {
-      ListService.deleteCustomInventoryItem(listitem.id).then(function(){
-        $scope.getCustomInventoryList();
-      })
+    $scope.deleteCustomInventoryItem = function(listitem, index) {
+      if(!listitem.id){
+        $scope.selectedList.items.splice(index, 1);
+      } else {
+        ListService.deleteCustomInventoryItem(listitem.id).then(function(){
+          $scope.getCustomInventoryList();
+        })
+      }
+
     };
    
     /******
