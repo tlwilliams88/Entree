@@ -15,6 +15,8 @@ namespace KeithLink.Svc.Core.Models.EF {
         public string Name { get; set; }
         [MaxLength(25)]
         public string Brand { get; set; }
+        [MaxLength(30)]
+        public string Supplier { get; set; }
         [MaxLength(4)]
         public string Pack { get; set; }
         [MaxLength(8)]

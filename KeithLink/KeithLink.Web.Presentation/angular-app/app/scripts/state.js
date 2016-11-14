@@ -209,14 +209,14 @@ angular.module('bekApp')
           });
 
           var listIdtoBeUsed = '';
-          if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
+          if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
              last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
              LocalStorage.setLastList(last);
              listIdtoBeUsed = last.listId;
           }
           else{
              LocalStorage.setLastList({});
-             listIdtoBeUsed = validListId
+             listIdtoBeUsed = validListId;
            }
 
           var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
@@ -226,8 +226,12 @@ angular.module('bekApp')
              $stateParams.sortingParams = storedParams;
              params = storedParams;
             })
-          } 
+          }
+          if(listIdtoBeUsed == 'nonbeklist'){
+            return ListService.getCustomInventoryList();
+          } else {
             return ListService.getList(listIdtoBeUsed, params);
+            }
         
         }]
       }

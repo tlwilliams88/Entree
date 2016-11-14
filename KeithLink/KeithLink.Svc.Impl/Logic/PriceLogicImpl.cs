@@ -78,17 +78,13 @@ namespace KeithLink.Svc.Impl.Logic
 
             foreach (Product currentProduct in fullList) {
                 // don't get prices for currentProducts that reference custominventory items
-                if (currentProduct.CatalogId.Equals
-                        (Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCulture) == false)
-                {
+                if (currentProduct.CatalogId == null || currentProduct.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase) == false) {
                     Price tempPrice = _priceCacheRepository.GetItem<Price>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
                                                                            GetCacheKey(branchId, customerNumber, currentProduct.ItemNumber));
-                    if (tempPrice == null)
-                    {
+                    if (tempPrice == null) {
                         newProductList.Add(currentProduct);
                     }
-                    else
-                    {
+                    else {
                         cachedList.Add(tempPrice);
                     }
                 }

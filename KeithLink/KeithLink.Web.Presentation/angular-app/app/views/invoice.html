@@ -10,10 +10,23 @@
           <a ng-click="selectFilterView(filterView)">{{filterView.name}}</a>
         </li>
         <li class="dropdown-submenu dateRangeDropdown dropdown-submenu-mobile">
-          <a>Invoices By Month<span class="pull-right icon-arrow-right6"></span></a>
+          <a>Paid Invoices By Month<span class="pull-right icon-arrow-right6"></span></a>
           <ul class="dropdown-menu" style="margin-top:0;">
-            <li class="dropdown-submenu dropdown-submenu-mobile-months" is-open="dateRangeYear.isOpen" ng-repeat="dateRangeYear in dateRangeYears">
-              <a ng-click="dateRangeYear.isOpen = !dateRangeYear.isOpen" data-toggle="dropdown">{{dateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
+            <li class="dropdown-submenu dropdown-submenu-mobile-months" is-open="paidDateRangeYearIsOpen" ng-repeat="paidDateRangeYear in dateRangeYears">
+              <a ng-click="paidDateRangeYearIsOpen = !paidDateRangeYearIsOpen" data-toggle="dropdown">{{paidDateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
+              <ul class="dropdown-menu" style="margin-top:0;">
+                <li ng-repeat="paidDateRangeMonth in dateRangeMonths">
+                  <a class="dropdown-dateRange" data-toggle="dropdown" ng-click="selectFilterView('Paid Date Range', paidDateRangeYear, paidDateRangeMonth)">{{paidDateRangeMonth}}</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li class="dropdown-submenu dateRangeDropdown dropdown-submenu-mobile">
+          <a>All Invoices By Month<span class="pull-right icon-arrow-right6"></span></a>
+          <ul class="dropdown-menu" style="margin-top:0;">
+            <li class="dropdown-submenu dropdown-submenu-mobile-months" is-open="dateRangeYearIsOpen" ng-repeat="dateRangeYear in dateRangeYears">
+              <a ng-click="dateRangeYearIsOpen = !dateRangeYearIsOpen" data-toggle="dropdown">{{dateRangeYear}}<span class="pull-right icon-arrow-right6"></span></a>
               <ul class="dropdown-menu" style="margin-top:0;">
                 <li ng-repeat="dateRangeMonth in dateRangeMonths">
                   <a class="dropdown-dateRange" data-toggle="dropdown" ng-click="selectFilterView('Date Range', dateRangeYear, dateRangeMonth)">{{dateRangeMonth}}</a>
@@ -290,7 +303,7 @@
                       />
                     </h5>
                     </span>
-                    <h5>Bank Account: <span>
+                    <h5 ng-if="userCanPayInvoice">Bank Account: <span>
                       <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="invoice.banks.length >= 1 && invoice.statusdescription !== 'Paid'">
                         <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="invoice.banks.length <= 1 || isInternalAccountAdminUser">
                           <div class = "account-info span3">                  

@@ -52,6 +52,15 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="BetaScriptGenerate.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="QaMigrate.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="DevMigrate.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="LocalMigrate.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

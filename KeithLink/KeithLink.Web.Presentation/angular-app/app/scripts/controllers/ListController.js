@@ -12,6 +12,11 @@ angular.module('bekApp')
    'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
      PricingService, ListPagingModel, LocalStorage, UtilityService, DateService) {
+
+    if(originalList.name == 'Non BEK Items'){
+      originalList.listid = 'nonbeklist';
+      $scope.selectedList = originalList;
+    }
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
@@ -34,6 +39,7 @@ angular.module('bekApp')
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
     $scope.forms = {};
+    $scope.isCustomInventoryList = originalList.iscustominventory ? true : false;
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -94,7 +100,7 @@ angular.module('bekApp')
         selectionList;
 
     $scope.shiftSelectOtherRows = function(evt, item){
-      selectionList = $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint);
+      selectionList = $scope.selectedList.items.slice($scope.startingPoint, $scope.selectedList.items.length);
       if (evt.shiftKey) {
         $scope.rangeSelected = true;
         if (lastSingleClick != undefined) {
@@ -114,7 +120,9 @@ angular.module('bekApp')
       });
 
       for (var i = indexes[0]; i <= indexes[1]; i++) {
+        if(selectionList[i].itemnumber){
           selectionList[i].isSelected = true;
+        }
       }
     }
 
@@ -220,8 +228,16 @@ angular.module('bekApp')
         $scope.forms.listForm.$setPristine();
       }
 
+
+      if($scope.selectedList.name == 'Non BEK Items' && $scope.selectedList.items.length == 0){
+        $scope.addNewItemToList();
+      }
+
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
+        if(item.custominventoryitemid > -1){
+          $scope.listHasCustomItems = true;
+        }
       });
     }
 
@@ -284,48 +300,27 @@ angular.module('bekApp')
     );
 
     // LIST INTERACTIONS
-    $scope.goToList = function(list) {
+    $scope.goToList = function(listid) {
+      if($scope.selectedList.iscustominventory){
+        $scope.isCustomInventoryList = false;
+      }
 
       var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
     
       var lastlist ={
-          listId: list.listid,          
+          listId: listid,          
           timeset: timeset
       };
      
       LocalStorage.setLastList(lastlist);
-      if(list.listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
-        if($scope.forms.listForm && $scope.forms.listForm.length) {
+      if(listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
+        if($scope.forms.listForm) {
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
-          blockUI.stop();    
+          return $state.go('menu.lists.items', {listId: listid, renameList: false});
         });
       }
-    };
-
-    var listThatWillNotBeUpdatedElsewhere;
-
-    $scope.getCustomInventoryList = function() {
-      ListService.getCustomInventoryList().then(function(resp){
-        if(!listThatWillNotBeUpdatedElsewhere) {
-          listThatWillNotBeUpdatedElsewhere = resp;
-        }
-        originalList = resp;
-        $scope.selectedList = originalList;
-        $scope.isCustomInventoryList = true;
-        if($scope.selectedList.items.length == 0){
-          $scope.addNewItemToList();
-        }
-      });
-    };
-
-    $scope.saveCustomInventoryList = function(list) {
-      ListService.saveCustomInventoryList(list).then(function(resp){
-        $scope.selectedList = resp;
-        $scope.isCustomInventoryList = true;
-      });
     };
     
     function goToNewList(newList) {
@@ -342,8 +337,7 @@ angular.module('bekApp')
     }
 
     $scope.undoChanges = function() {
-      originalList = listThatWillNotBeUpdatedElsewhere;
-      resetPage(angular.copy(listThatWillNotBeUpdatedElsewhere));
+      resetPage(angular.copy(originalList));
     };
 
     $scope.unsavedChangesConfirmation = function(){
@@ -571,13 +565,19 @@ angular.module('bekApp')
     };
 
     $scope.deleteMultipleItems = function() {
-    $scope.isDeletingItem = true;  
-      $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
-        if(item.isSelected){
-          item.isdeleted = true;
-          updateDeletedCount();
-        }
-      });
+      $scope.isDeletingItem = true;
+
+      if($scope.isCustomInventoryList){
+        var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true, id: ''});
+        ListService.deleteCustomInventoryItems(itemsToDelete);
+      } else {
+        $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
+          if(item.isSelected){
+            item.isdeleted = true;
+            updateDeletedCount();
+          }
+        });
+      }
 
       $scope.selectedList.allSelected = false;
       updateItemPositions();
@@ -617,40 +617,38 @@ angular.module('bekApp')
       if (!items) {
         items = angular.copy(getMultipleSelectedItems());
       }
-      
-      ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
-        if ($scope.selectedList.listid === updatedList.listid) {
-          $scope.selectedList = list;
-        }
-        if($scope.multiSelect){
-          $scope.multiSelect.showLists = false;
-        }
-        unselectAllDraggedItems();
-      });
+
+      if($scope.isCustomInventoryList){
+        ListService.addNewItemsFromCustomInventoryList(list.listid, items);
+      } else {
+        ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
+          if ($scope.selectedList.listid === updatedList.listid) {
+            $scope.selectedList = list;
+          }
+          if($scope.multiSelect){
+            $scope.multiSelect.showLists = false;
+          }
+        });
+      }
+      unselectAllDraggedItems();
     };
 
     $scope.addNewItemToList = function(){
-      var newItem = {
-        brand:null,
-        caseprice:'0.00',
-        catalog_id:'CUSTOM',
-        category:null,
-        each:false,
-        isdeleted:false,
-        isvalid:true,
-        itemnumber:'Add Item Number',
-        label:'This is new item',
-        name:'',
-        pack:'',
-        packageprice:'0.00',
-        packsize:'',
-        parlevel:0,
-        position:$scope.selectedList.items && $scope.selectedList.items.length ? $scope.selectedList.items.length + 1 : 1,
-        quantity:0,
-        size:null,
-      };
-      $scope.selectedList.items.push(newItem);
-      // $scope.saveCustomInventoryList($scope.selectedList);
+      var newItem = [],
+          item = {
+            brand:null,
+            caseprice:0,
+            each:false,
+            itemnumber:null,
+            pack:null,
+            packageprice:0,
+            parlevel:0,
+            id:null,
+            quantity:0,
+            size:null,
+            vendor:null
+          };
+      $scope.selectedList.items.push(item);
     };
 
     /********************
@@ -697,9 +695,12 @@ angular.module('bekApp')
     }
 
     $scope.changeAllSelectedItems = function(allSelected) {
+      if($scope.selectedList.iscustominventory){
+        $scope.startingPoint = 0;
+      } 
       angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint) , function(item, index) {
         if (item.itemnumber) {      
-            item.isSelected = !allSelected; 
+          item.isSelected = !allSelected;
         }
       });
     };
@@ -762,6 +763,44 @@ angular.module('bekApp')
       $scope.addItemsToList(list, dragSelection);
     };
 
+    /*********************
+    CUSTOM INVENTORY LIST
+    *********************/
+
+    $scope.getCustomInventoryList = function() {
+      if($scope.selectedList.name != 'Non BEK Items') {
+        $scope.previousList = originalList;
+      }
+
+      ListService.getCustomInventoryList().then(function(resp){
+        originalList = resp;
+        $scope.selectedList = originalList;
+        $scope.isCustomInventoryList = true;
+        if($scope.selectedList.items.length == 0){
+          $scope.addNewItemToList();
+        }
+      });
+    };
+
+    $scope.saveCustomInventoryList = function(list) {
+      var itemsToSave = $filter('filter')(list, {itemnumber: ''});
+      ListService.saveCustomInventoryList(itemsToSave).then(function(resp){
+        $scope.selectedList = resp;
+        $scope.isCustomInventoryList = true;
+        $scope.forms.listForm.$setPristine();
+      });
+    };
+
+    $scope.deleteCustomInventoryItem = function(listitem, index) {
+      if(!listitem.id){
+        $scope.selectedList.items.splice(index, 1);
+      } else {
+        ListService.deleteCustomInventoryItem(listitem.id).then(function(){
+          $scope.getCustomInventoryList();
+        })
+      }
+
+    };
    
     /******
     MODALS
@@ -774,6 +813,13 @@ angular.module('bekApp')
         resolve: {
           customListHeaders: function() {
             return [];
+          },
+          listType: function() {
+            if($scope.isCustomInventoryList){
+              return 'CustomInventory';
+            } else {
+              return 'StandardList';
+            }
           }
         }
       });

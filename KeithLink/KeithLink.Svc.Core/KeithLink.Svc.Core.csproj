@@ -181,6 +181,7 @@
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
+    <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
     <Compile Include="Interface\Common\IGenericSubsriptionQueueRepository.cs" />
     <Compile Include="Interface\Configurations\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
@@ -289,6 +290,8 @@
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
     <Compile Include="Interface\SiteCatalog\IExternalImageProcessorUnfi.cs" />
     <Compile Include="Interface\SpecialOrders\ISpecialOrderDBContext.cs" />
+    <Compile Include="Models\ApplicationHealth\QueuesToCheckModel.cs" />
+    <Compile Include="Models\ApplicationHealth\QueueToCheckModel.cs" />
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExternalCatalog.cs" />

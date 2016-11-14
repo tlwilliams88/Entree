@@ -2,6 +2,7 @@
 
 using KeithLink.Common.Core.Interfaces.Logging;
 
+using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 
@@ -25,7 +26,12 @@ namespace KeithLink.Svc.WebApi.Controllers
     {
         #region attributes
         private ICustomInventoryItemsRepository _customInventoryRepo;
+        private ICacheRepository _cache;
         private IEventLogRepository _logger;
+
+        private const string CACHE_GROUPNAME = "UserList";
+        private const string CACHE_NAME = "UserList";
+        private const string CACHE_PREFIX = "Default";
         #endregion
 
         #region constructor
@@ -34,8 +40,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="customInventoryRepo"></param>
-        public CustomInventoryController(IUserProfileLogic profileLogic, ICustomInventoryItemsRepository customInventoryRepo, IEventLogRepository logger) : base(profileLogic) {
+        public CustomInventoryController(IUserProfileLogic profileLogic, ICustomInventoryItemsRepository customInventoryRepo, IEventLogRepository logger, ICacheRepository cache) : base(profileLogic) {
             _customInventoryRepo = customInventoryRepo;
+            _cache = cache;
             _logger = logger;
         }
         #endregion
@@ -114,6 +121,30 @@ namespace KeithLink.Svc.WebApi.Controllers
             } catch (Exception ex) {
                 _logger.WriteErrorLog("Error deleting custom inventory item: ", ex);
             }
+        }
+
+        /// <summary>
+        /// Delete a list of CustomInventoryItems
+        /// </summary>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiKeyedRoute("custominventory")]
+        public OperationReturnModel<CustomInventoryHeaderReturnModel> DeleteRange(List<CustomInventoryItemReturnModel> items) {
+            OperationReturnModel<CustomInventoryHeaderReturnModel> returnValue = new OperationReturnModel<CustomInventoryHeaderReturnModel>();
+            returnValue.SuccessResponse = new CustomInventoryHeaderReturnModel();
+
+            try {
+                _customInventoryRepo.DeleteRange(items.ToModel());
+                returnValue.IsSuccess = true;
+                returnValue.SuccessResponse.Items = _customInventoryRepo.GetItemsByBranchAndCustomer(this.SelectedUserContext.BranchId, this.SelectedUserContext.CustomerId).ToReturnModelList();
+            } catch (Exception ex) {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _logger.WriteErrorLog("Error deleting custom inventory items:", ex);
+            }
+
+            return returnValue;
         }
         #endregion
 

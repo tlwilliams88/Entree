@@ -30,6 +30,8 @@ namespace KeithLink.Svc.Core.Models.Lists
         public string Name { get; set; }
         [DataMember(Name = "brand")]
         public string Brand { get; set; }
+        [DataMember(Name = "supplier")]
+        public string Supplier { get; set; }
         [DataMember(Name = "pack")]
         public string Pack { get; set; }
         [DataMember(Name = "size")]

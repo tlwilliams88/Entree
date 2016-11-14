@@ -90,12 +90,6 @@ angular.module('bekApp')
       field: 'statusdescription',
       value: 'Past Due'
     }]
-  }, {
-    name: 'Paid Invoices',
-    filterFields: [{
-      field: 'statusdescription',
-      value: 'Paid'
-    }]
   }];
 
   $scope.invoiceFilters = [{
@@ -317,7 +311,7 @@ angular.module('bekApp')
         customer.invoices.results = $filter('filter')(customer.invoices.results, {hascreditmemos: true});
         customer.invoices.totalResults = customer.invoices.results.length;
       });
-    } else if(input && filter == "invoicenumber") {
+    } else if(input && filter == 'invoicenumber') {
       invoicesFilter = [{
         filter: {
           field: filter,
@@ -325,7 +319,7 @@ angular.module('bekApp')
         }
       }];
       loadFilteredInvoices(invoicesFilter[0]);
-    } else if(input && filter != "invoicenumber") {
+    } else if(input && filter != 'invoicenumber') {
       invoicesFilter = [{
         search: {
           field: filter,
@@ -372,13 +366,27 @@ angular.module('bekApp')
     if($scope.selectedFilterViewName === filterView && !rangeYear){
       return;
     } else if(rangeYear) {
-      var dateFilterView = [{
+      var dateFilterView;
+      dateFilterView = [{
         name: 'Invoices By Month',
         daterange: {
           field: 'yearmonth',
           value: rangeYear + ',' + ($scope.dateRangeMonths.indexOf(rangeMonth) + 1)
         }
       }];
+
+      if(filterView == 'Paid Date Range'){
+        dateFilterView = [{
+          filter: {
+            field: 'statusdescription',
+            value: 'Paid'
+          },
+          daterange: {
+          field: 'yearmonth',
+          value: rangeYear + ',' + ($scope.dateRangeMonths.indexOf(rangeMonth) + 1)
+        }
+        }];
+      }
 
       if($scope.selectedFilterViewName == dateFilterView){
         return;

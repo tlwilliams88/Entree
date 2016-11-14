@@ -135,6 +135,35 @@ namespace KeithLink.Svc.Impl.Repository.Queue
 			}
 		}
 
+        public QueueDeclareOk PassivelyDeclareQueue
+            (string server, string username, string password, string virtualHost, string queue)
+        {
+            QueueDeclareOk result = null;
+            try
+            {
+                ConnectionFactory connectionFactory = new ConnectionFactory()
+                {
+                    HostName = server,
+                    UserName = username,
+                    Password = password,
+                    VirtualHost = virtualHost
+                };
+
+                using (IConnection connection = connectionFactory.CreateConnection())
+                {
+                    using (IModel model = connection.CreateModel())
+                    {
+                        result = model.QueueDeclarePassive(queue);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new QueueConnectionException(server, virtualHost, string.Empty, queue, ex.Message, ex);
+            }
+            return result;
+        }
+
         #endregion
     }
 }

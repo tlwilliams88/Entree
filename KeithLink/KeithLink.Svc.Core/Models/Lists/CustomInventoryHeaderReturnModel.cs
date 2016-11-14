@@ -12,18 +12,23 @@ namespace KeithLink.Svc.Core.Models.Lists {
     public class CustomInventoryHeaderReturnModel {
 
         #region attribute
+        private string _listId;
         private bool _isCustomInventory;
         private List<CustomInventoryItemReturnModel> _items;
         #endregion
 
         #region constructor
         public CustomInventoryHeaderReturnModel() {
+            _listId = "nonbeklist";
             _isCustomInventory = true;
             _items = new List<CustomInventoryItemReturnModel>();
         }
         #endregion
 
         #region properties
+        [DataMember(Name = "listid")]
+        public string ListId { get { return _listId; } set { _listId = value; } }
+
         /// <summary>
         /// This gets defaulted to true for all return models of this type
         /// </summary>

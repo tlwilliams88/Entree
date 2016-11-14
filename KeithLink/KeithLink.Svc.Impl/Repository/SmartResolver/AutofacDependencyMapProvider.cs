@@ -92,6 +92,8 @@ using Autofac.Features.Indexed;
 using System;
 using KeithLink.Svc.Core.Enumerations.Dependencies;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
+using KeithLink.Svc.Core.Interface.ApplicationHealth;
+using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -174,6 +176,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
+            builder.RegisterType<ApplicationHealthLogicImpl>().As<IApplicationHealthLogic>();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
@@ -332,6 +335,11 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // cache
             builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
             builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+        }
+
+        internal static void AddOtherMonitorServiceDependencies(ContainerBuilder builder)
+        {
+            builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
         }
 
         internal static void AddOtherQueueServiceDependencies(ContainerBuilder builder)

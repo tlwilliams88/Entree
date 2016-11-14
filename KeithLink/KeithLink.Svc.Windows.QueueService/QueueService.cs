@@ -124,27 +124,51 @@ namespace KeithLink.Svc.Windows.QueueService {
             //_confirmationLogic.ListenForQueueMessages();
         }
         
-        private void InitializeNotificationsThreads() {
-            notificationOrderConfirmationScope = container.BeginLifetimeScope();
-            notificationHasNewsScope = container.BeginLifetimeScope();
-            notificationPaymentConfirmationScope = container.BeginLifetimeScope();
+        private void InitializeNotificationsThreads()
+        {
+            Task.Factory.StartNew(StartOrderNotifications);
+
+            Task.Factory.StartNew(StartHasNewsNotifications);
+
+            Task.Factory.StartNew(StartPaymentNotifications);
+
+            Task.Factory.StartNew(StartEtaNotifications);
+        }
+
+        private void StartEtaNotifications()
+        {
             notificationEtaScope = container.BeginLifetimeScope();
-
-            _orderConfirmationQueueConsumer = notificationOrderConfirmationScope.Resolve<INotificationQueueConsumer>();
-            _orderConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueOrderConfirmation;
-            _orderConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueOrderConfirmation);
-
-            _hasNewsQueueConsumer = notificationHasNewsScope.Resolve<INotificationQueueConsumer>();
-            _hasNewsQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueHasNews;
-            _hasNewsQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueHasNews);
-
-            _paymentConfirmationQueueConsumer = notificationPaymentConfirmationScope.Resolve<INotificationQueueConsumer>();
-            _paymentConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueuePaymentConfirmation;
-            _paymentConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueuePaymentConfirmation);
 
             _ETAQueueConsumer = notificationEtaScope.Resolve<INotificationQueueConsumer>();
             _ETAQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueETA;
             _ETAQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueETA);
+        }
+
+        private void StartHasNewsNotifications()
+        {
+            notificationHasNewsScope = container.BeginLifetimeScope();
+
+            _hasNewsQueueConsumer = notificationHasNewsScope.Resolve<INotificationQueueConsumer>();
+            _hasNewsQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueHasNews;
+            _hasNewsQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueHasNews);
+        }
+
+        private void StartOrderNotifications()
+        {
+            notificationOrderConfirmationScope = container.BeginLifetimeScope();
+
+            _orderConfirmationQueueConsumer = notificationOrderConfirmationScope.Resolve<INotificationQueueConsumer>();
+            _orderConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueOrderConfirmation;
+            _orderConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueOrderConfirmation);
+        }
+
+        private void StartPaymentNotifications()
+        {
+            notificationPaymentConfirmationScope = container.BeginLifetimeScope();
+
+            _paymentConfirmationQueueConsumer = notificationPaymentConfirmationScope.Resolve<INotificationQueueConsumer>();
+            _paymentConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueuePaymentConfirmation;
+            _paymentConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueuePaymentConfirmation);
         }
 
         private void InitializePushMessageConsumerThread()

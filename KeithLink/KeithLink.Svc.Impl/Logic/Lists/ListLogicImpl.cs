@@ -178,6 +178,56 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             return item.Id;
         }
 
+        public List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<long> customInventoryItemIds) {
+            List<long?> returnValue = new List<long?>();
+            List list = _listRepo.ReadById(listId);
+            List<CustomInventoryItem> customInventoryItems = _customInventoryRepo.GetItemsByItemIds(customInventoryItemIds);
+
+            SetPosition(ref list);
+
+            // If the list type is favorite or reminder, don't allow duplicates
+            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder) {
+                foreach (CustomInventoryItem item in customInventoryItems) {
+                    ListItem duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(item.Id)).FirstOrDefault();
+                    if (duplicateItem != null) {
+                        returnValue.Add(duplicateItem.Id);
+                    }
+                }
+
+                return returnValue;
+            }
+
+            foreach (CustomInventoryItem item in customInventoryItems) {
+                ListItem listItem = new ListItem();
+                listItem.ItemNumber = item.ItemNumber;
+                listItem.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
+                listItem.CustomInventoryItemId = item.Id;
+
+                list.Items.Add(listItem);
+            }
+
+            _listRepo.CreateOrUpdate(list);
+            _uow.SaveChangesAndClearContext();
+
+            foreach (ListItem item in list.Items) {
+                returnValue.Add(item.Id);
+            }
+
+            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id));
+
+            return returnValue;
+        }
+
+        private void SetPosition(ref List list) {
+            int position = 1;
+
+            if (list.Items == null) {
+                list.Items = new List<ListItem>();
+            } else if (list.Items.Any()) {
+                position = list.Items.Max(i => i.Position) + 1;
+            }
+        }
+
         public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
         {
             Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
@@ -721,7 +771,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             var prices = new PriceReturn() { Prices = new List<Price>() };
 
             prices.AddRange(_priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
-                                                  listItems.GroupBy(g => g.ItemNumber)
+                                                  listItems.Where(x => x.CustomInventoryItemId < 1).GroupBy(g => g.ItemNumber)
                                                            .Select(i => new Product()
                                                            {
                                                                ItemNumber = i.First().ItemNumber,
@@ -791,7 +841,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                                                .ToList();
             Parallel.ForEach(list.Items, listItem =>
             {
-            if (listItem.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase) && listItem.CustomInventoryItemId > 0) {
+            if (listItem.CustomInventoryItemId > 0) {
                     CustomInventoryItem customItem = customItems.Where(x => x.Id.Equals(listItem.CustomInventoryItemId)).FirstOrDefault();
                     listItem.Name = customItem.Name;
                     listItem.BrandExtendedDescription = customItem.Brand;
@@ -802,6 +852,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     listItem.Each = customItem.Each;
                     listItem.CasePrice = customItem.CasePrice.ToString();
                     listItem.PackagePrice = customItem.PackagePrice.ToString();
+                    listItem.Supplier = customItem.Supplier;
                     listItem.IsValid = true;
             }
             else {
@@ -1579,7 +1630,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                 Label = updateItem.Label,
                                 Each = updateItem.Each,
                                 Quantity = updateItem.Quantity,
-                                Category = updateItem.Category
+                                Category = updateItem.Category,
+                                CustomInventoryItemId = updateItem.CustomInventoryItemId,
                             });
                             itemsAdded = true;
                         }
