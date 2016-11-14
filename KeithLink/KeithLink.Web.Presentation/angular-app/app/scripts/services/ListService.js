@@ -398,6 +398,39 @@ angular.module('bekApp')
           });
         },
 
+        importNonBEKListItems: function(file, options) {
+          var deferred = $q.defer();
+
+          $upload.upload({
+            url: '/import/custominventory',
+            method: 'POST',
+            data: { options: options },
+            file: file,
+          }).then(function(response) {
+            var data = response.data.successResponse;
+
+            if (response.data.isSuccess && data.success) {
+
+              // display messages
+              if (data.warningmsg) {
+                toaster.pop('warning', null, data.warningmsg);
+              } else {
+                toaster.pop('success', null, 'Successfully imported items to Non-BEK Items list.');
+              }
+
+              deferred.resolve(data);
+            } else {
+              var errorMessage = response.data.errorMessage;
+              if(data && data.errormsg){
+                toaster.pop('error', null, data.errormsg);
+                errorMessage = data.errormsg;
+              }
+              deferred.reject(errorMessage);
+            }
+          })
+          return deferred.promise;
+        },
+
         /********************
         EXPORT
         ********************/

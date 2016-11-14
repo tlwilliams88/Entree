@@ -813,6 +813,13 @@ angular.module('bekApp')
         resolve: {
           customListHeaders: function() {
             return [];
+          },
+          listType: function() {
+            if($scope.isCustomInventoryList){
+              return 'CustomInventory';
+            } else {
+              return 'StandardList';
+            }
           }
         }
       });
