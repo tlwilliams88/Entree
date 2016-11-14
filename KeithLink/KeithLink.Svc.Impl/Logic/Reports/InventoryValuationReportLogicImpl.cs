@@ -52,21 +52,36 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 
             Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
             Stream rdlcStream = null;
-            if(request.GroupBy != null && request.GroupBy.Equals("category"))
+            if (request.GroupBy != null)
             {
-                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByContractCategory.rdlc");
-            }
-            else if (request.GroupBy != null && request.GroupBy.Equals("categorythenlabel"))
-            {
-                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByContractCategoryThenLabel.rdlc");
-            }
-            else if (request.GroupBy != null && request.GroupBy.Equals("categoryname"))
-            {
-                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByCategory.rdlc");
-            }
-            else if (request.GroupBy != null && request.GroupBy.Equals("label"))
-            {
-                rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuationByLabel.rdlc");
+                switch (request.GroupBy)
+                {
+                    case "category":
+                        rdlcStream = assembly.GetManifestResourceStream
+                            ("KeithLink.Svc.Impl.Reports.InventoryValuationByContractCategory.rdlc");
+                        break;
+                    case "categorythenlabel":
+                        rdlcStream = assembly.GetManifestResourceStream
+                            ("KeithLink.Svc.Impl.Reports.InventoryValuationByContractCategoryThenLabel.rdlc");
+                        // if the user is requesting this specialized contract category then label, 
+                        // we add that to the data
+                        request.ReportData = request.ReportData.Select(iv => ContractCategoryThenLabelIVM(iv)).ToList();
+                        break;
+                    case "categoryname":
+                        rdlcStream = assembly.GetManifestResourceStream
+                            ("KeithLink.Svc.Impl.Reports.InventoryValuationByCategory.rdlc");
+                        break;
+                    case "label":
+                        rdlcStream = assembly.GetManifestResourceStream
+                            ("KeithLink.Svc.Impl.Reports.InventoryValuationByLabel.rdlc");
+                        break;
+                    case "supplier":
+                        rdlcStream = assembly.GetManifestResourceStream
+                            ("KeithLink.Svc.Impl.Reports.InventoryValuationBySupplier.rdlc");
+                        break;
+                    default:
+                        break;
+                }
             }
             else
             {
@@ -77,12 +92,6 @@ namespace KeithLink.Svc.Impl.Logic.Reports
             rv.LocalReport.SetParameters(new ReportParameter("Branch", customer.CustomerBranch));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerName", customer.CustomerName));
             rv.LocalReport.SetParameters(new ReportParameter("CustomerNumber", customer.CustomerNumber));
-
-            request.ReportData = request.ReportData.Select(iv => NullFieldToPlaceholder(iv)).ToList();
-            if (request.GroupBy != null && request.GroupBy.Equals("categorythenlabel"))
-            { // if the user is requesting this specialized contract category then label, we add that to the data
-                request.ReportData = request.ReportData.Select(iv => ContractCategoryThenLabelIVM(iv)).ToList();
-            }
 
             rv.LocalReport.DataSources.Add(
                 new ReportDataSource("DataSet1", request.ReportData));
