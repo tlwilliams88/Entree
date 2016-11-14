@@ -722,7 +722,8 @@ angular.module('bekApp')
               itemnumber: item.itemnumber,
               each: item.each,
               catalog_id: item.catalog_id,
-              category: item.category
+              category: item.category,
+              label: item.label
             });
           });
 
