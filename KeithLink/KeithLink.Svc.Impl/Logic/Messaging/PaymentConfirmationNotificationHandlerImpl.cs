@@ -36,6 +36,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #region attributes
         private const string MESSAGE_TEMPLATE_PAYMENTCONFIRMATION = "PaymentConfirmation";
         private const string MESSAGE_TEMPLATE_PAYMENTDETAIL = "PaymentConfirmationDetail";
+        private const string MESSAGE_TEMPLATE_MULTI_PAYMENTCONFIRMATION = "MultiPaymentConfirmation";
+        private const string MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL = "MultiPaymentConfirmationDetail";
 
         private readonly IEventLogRepository _log;
         private readonly IUserProfileLogic _userLogic;
@@ -113,6 +115,54 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             return message;
         }
 
+        private Message GetEmailMessageForMultipleAccountSummaryNotification
+            (List<PaymentTransactionModel> payments, List<UserSelectedContext> customers)
+        {
+            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_MULTI_PAYMENTCONFIRMATION);
+            MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL);
+
+            StringBuilder orderDetails = new StringBuilder();
+
+            foreach (var customer in customers.OrderBy(ctx => ctx.CustomerId))
+            {
+                foreach (var payment in payments.Where(p => p.CustomerNumber == customer.CustomerId &&
+                                                            p.BranchId == customer.BranchId))
+                {
+                    var bank = _bankRepo.GetBankAccount
+                        (DivisionHelper.GetDivisionFromBranchId(customer.BranchId),
+                        customer.CustomerId, payment.AccountNumber);
+                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId
+                        (customer.BranchId), customer.CustomerId, payment.InvoiceNumber);
+                    var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
+                    //var confirmationId = payments[0].ConfirmationId;
+                    orderDetails.Append(detailTemplate.Body.Inject(new
+                    {
+                        CustomerNumber = customer.CustomerId,
+                        BranchID = customer.BranchId,
+                        BankAccount = bank.AccountNumber,
+                        ConfirmationId = payment.ConfirmationId,
+                        InvoiceType = invoiceTyped,
+                        InvoiceNumber = payment.InvoiceNumber,
+                        InvoiceDate = invoice.InvoiceDate,
+                        DueDate = invoice.DueDate,
+                        ScheduledDate = payment.PaymentDate,
+                        PaymentAmount = payment.PaymentAmount
+                    }));
+                }
+            }
+
+            Message message = new Message();
+            message.BodyIsHtml = template.IsBodyHtml;
+            message.MessageSubject = template.Subject;
+            message.MessageBody = template.Body.Inject(new
+            {
+                PaymentDetailLines = orderDetails.ToString(),
+                TotalPayments = payments.Sum(p => p.PaymentAmount)
+            });
+            message.NotificationType = NotificationType.PaymentConfirmation;
+            return message;
+        }
+
         public void ProcessNotification(BaseNotification notification)
         {
             try {
@@ -127,6 +177,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                                                            .Select(p => new UserSelectedContext() { CustomerId = p.CustomerNumber, BranchId = p.BranchId })
                                                            .Distinct(new UserContextEqualityComparer())
                                                            .ToList();
+
+                bool complexPayment = customerCtxs.Count > 1;
+                string payerEmail = confirmation.Payments.Select(p => p.UserName).FirstOrDefault();
+                Recipient payerRecipient = null;
 
                 foreach (UserSelectedContext customerCtx in customerCtxs) {
                     // load up recipients, customer and message
@@ -151,9 +205,26 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                         // send messages to providers...
                         if (recipients != null && recipients.Count > 0) {
-                            SendMessage(recipients, message);
+                            if (complexPayment) // mask out payeremail recipient from the regular recipients
+                            {
+                                payerRecipient = recipients.Where(r => r.UserEmail == payerEmail).FirstOrDefault();
+                                recipients = recipients.Where(r => r.UserEmail != payerEmail).ToList();
+                            }
+
+                            if(recipients.Count > 0)
+                            {
+                                SendMessage(recipients, message);
+                            }
                         }
                     }
+                }
+
+                if (complexPayment && payerRecipient != null)
+                {
+                    List<Recipient> recips = new List<Recipient>();
+                    recips.Add(payerRecipient);
+                    SendMessage(recips,
+                        GetEmailMessageForMultipleAccountSummaryNotification(confirmation.Payments, customerCtxs));
                 }
             }
             catch (Exception ex) {
