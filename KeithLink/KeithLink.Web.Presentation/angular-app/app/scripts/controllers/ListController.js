@@ -341,7 +341,7 @@ angular.module('bekApp')
     };
 
     $scope.unsavedChangesConfirmation = function(){
-      if($scope.forms.listForm && $scope.forms.listForm.$dirty || $scope.forms.customListForm && $scope.forms.customListForm.$dirty){
+      if($scope.forms.listForm && $scope.forms.listForm.$dirty){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
       }
@@ -670,8 +670,8 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true'});
-     }
+      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', custominventoryitemid: '0'});
+    }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
     // helper object is passed in from the drag event
@@ -784,6 +784,11 @@ angular.module('bekApp')
 
     $scope.saveCustomInventoryList = function(list) {
       var itemsToSave = $filter('filter')(list, {itemnumber: ''});
+        itemsToSave.forEach(function(item){
+          if(item.editLabel && item.isEditing){
+            item.label = item.editLabel;
+          }
+        })
       ListService.saveCustomInventoryList(itemsToSave).then(function(resp){
         $scope.selectedList = resp;
         $scope.isCustomInventoryList = true;
