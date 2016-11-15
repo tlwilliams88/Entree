@@ -647,6 +647,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
                 if (!payment.PaymentDate.HasValue) { payment.PaymentDate = DateTime.Now; }
                 payment.ConfirmationId = (int)confId;
+                payment.UserName = emailAddress;
 
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
                 {
