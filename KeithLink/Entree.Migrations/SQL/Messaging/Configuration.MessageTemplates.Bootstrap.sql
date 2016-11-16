@@ -84,6 +84,7 @@ body { background-color: #FFFEF2; margin: 0; padding: 0; color: #353334; font-si
 TR.tableHead { COLOR: white; BACKGROUND-COLOR: #0054a3 }
 TR.dataRow { background-color: white; }
 TR.altDataRow { background-color: #e8e5cb; }
+TR.tableFoot { background-color: #e6f3ff; }
 .heading { FONT-WEIGHT: bold; FONT-SIZE: 18pt; FONT-FAMILY: Times, Arial, helvetica, sans-serif; color: #353334; }
 .appLink { color: blue; text-decoration: underline; }
 </style></head>
@@ -135,20 +136,20 @@ VALUES ('MultiPaymentConfirmationCustomerAltNextRowsDetail', '', 1, '
 <td align="right" nowrap="">${PaymentAmount:f2} </td>
 </tr>', getdate(), getdate(), 0)
 INSERT INTO @Templates
-VALUES ('MultiPaymentConfirmationCustomerFooterAccount', '', 1, '<tr>
+VALUES ('MultiPaymentConfirmationCustomerFooterAccount', '', 1, '<tr class="tableFoot">
 <td align="right">{BankName} - {AccountNumber} Total </td>
 <td colspan="4">&nbsp; </td>
 <td align="right" nowrap="">${AccountSum:f2} </td>
 </tr>', getdate(), getdate(), 0)
 INSERT INTO @Templates
-VALUES ('MultiPaymentConfirmationCustomerFooterCustomer', '', 1, '<tr>
+VALUES ('MultiPaymentConfirmationCustomerFooterCustomer', '', 1, '<tr class="tableFoot">
 <td align="right">{CustomerNumber}/{CustomerBranch} - {CustomerName} Total </td>
 <td colspan="4">&nbsp; </td>
 <td align="right" nowrap="">${CustomerSum:f2} </td>
 </tr>', getdate(), getdate(), 0)
 INSERT INTO @Templates
 VALUES ('MultiPaymentConfirmationCustomerFooterGrand', '', 1, '
-<table cellpadding="3" cellspacing="0" border="0" width="700"><tr>
+<table cellpadding="3" cellspacing="0" border="0" width="700"><tr class="tableFoot">
 <td width="375" align="right">Grand total being collected on {ScheduledDate:MM/dd/yyyy} </td>
 <td align="right" nowrap="">${GrandSum:f2} </td>
 </tr></table>', getdate(), getdate(), 0)
