@@ -77,41 +77,83 @@ VALUES ('PaymentConfirmationDetail', '', 1, '<tr>
 <td style="font-size:small;text-align:right;">${PaymentAmount:f2}</td>
 </tr>', getdate(), getdate(), 0)
 INSERT INTO @Templates
-VALUES ('MultiPaymentConfirmation', 'Ben E. Keith: Payment Confirmation for Multiple Customers', 1, '
-<table style="width: 100%">
-<tr>
-<th style="font-size:small;text-align:left;">Cust# </th>
-<th style="font-size:small;text-align:left;">Div </th>
-<th style="font-size:small;text-align:left;">Bank </th>
-<th style="font-size:small;text-align:left;">Confirm </th>
-<th style="font-size:small;text-align:left;">Type </th>
-<th style="font-size:small;text-align:left;">Number </th>
-<th style="font-size:small;text-align:left;">Ref. Date </th>
-<th style="font-size:small;text-align:left;">Due Date </th>
-<th style="font-size:small;text-align:left;">Scheduled Date </th>
-<th style="font-size:small;text-align:right;">Amount</th>
-</tr>
-{PaymentDetailLines}
-<tr>
-<td colspan="5" style="text-align:right">Payment Total</td>
-<td style="text-align:right">
-${TotalPayments:f2}
-<td>
-</tr>
-</table>', getdate(), getdate(), 0)
+VALUES ('MultiPaymentConfirmation', 'Payment Confirmation', 1, '
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii"><style type="text/css" rel="stylesheet">
+body { background-color: #FFFEF2; margin: 0; padding: 0; color: #353334; font-size: 11pt; font-family: Times, Arial, helvetica, sans-serif; }
+TR.tableHead { COLOR: white; BACKGROUND-COLOR: #0054a3 }
+TR.dataRow { background-color: white; }
+TR.altDataRow { background-color: #e8e5cb; }
+.heading { FONT-WEIGHT: bold; FONT-SIZE: 18pt; FONT-FAMILY: Times, Arial, helvetica, sans-serif; color: #353334; }
+.appLink { color: blue; text-decoration: underline; }
+</style></head>
+<body>
+	<h1 align="center">Ben E. Keith Entrée</h1>
+<p class="heading" align="center">Payment Confirmation</p>
+<p align="center">Thank you for paying your invoices on-line. Below is a list of the payments paid by {UserName}. The confirmation number for these payments is {ConfirmationId}.</p>
+{PaymentCollection}
+</body></html>', getdate(), getdate(), 0)
 INSERT INTO @Templates
-VALUES ('MultiPaymentConfirmationDetail', '', 1, '<tr>
-<td style="font-size:small;text-align:left;">{CustomerNumber} </td>
-<td style="font-size:small;text-align:left;">{BranchID} </td>
-<td style="font-size:small;text-align:left;">{BankAccount} </td>
-<td style="font-size:small;text-align:left;">{ConfirmationId} </td>
-<td style="font-size:small;text-align:left;">{InvoiceType} </td>
-<td style="font-size:small;text-align:left;">{InvoiceNumber} </td>
-<td style="font-size:small;text-align:left;">{InvoiceDate:MM/dd/yyyy} </td>
-<td style="font-size:small;text-align:left;">{DueDate:MM/dd/yyyy} </td>
-<td style="font-size:small;text-align:left;">{ScheduledDate:MM/dd/yyyy} </td>
-<td style="font-size:small;text-align:right;">${PaymentAmount:f2}</td>
+VALUES ('MultiPaymentConfirmationCustomerHeader', '', 1, '<p style="FONT-WEIGHT: bold;">{BankName} - {AccountNumber}</p>
+<table cellpadding="3" cellspacing="0" border="0" width="700">
+<tr class="tableHead">
+<td>Customer
+<td>Ref
+<td>Number
+<td align="right">Ref Date
+<td align="right">Due Date
+<td align="right">Amount
 </tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFirstRowDetail', '', 1, '
+<tr class="dataRow">
+<td width="375">{CustomerNumber}/{CustomerBranch} - {CustomerName} </td>
+<td>{InvoiceType} </td>
+<td>{InvoiceNumber} </td>
+<td align="right">{InvoiceDate:MM/dd/yyyy} </td>
+<td align="right">{DueDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${PaymentAmount:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerNextRowsDetail', '', 1, '
+<tr class="dataRow">
+<td></td>
+<td>{InvoiceType} </td>
+<td>{InvoiceNumber} </td>
+<td align="right">{InvoiceDate:MM/dd/yyyy} </td>
+<td align="right">{DueDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${PaymentAmount:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerAltNextRowsDetail', '', 1, '
+<tr class="altDataRow">
+<td></td>
+<td>{InvoiceType} </td>
+<td>{InvoiceNumber} </td>
+<td align="right">{InvoiceDate:MM/dd/yyyy} </td>
+<td align="right">{DueDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${PaymentAmount:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterAccount', '', 1, '<tr>
+<td align="right">{BankName} - {AccountNumber} Total </td>
+<td colspan="4">&nbsp; </td>
+<td align="right" nowrap="">${AccountSum:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterCustomer', '', 1, '<tr>
+<td align="right">{CustomerNumber}/{CustomerBranch} - {CustomerName} Total </td>
+<td colspan="4">&nbsp; </td>
+<td align="right" nowrap="">${CustomerSum:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterGrand', '', 1, '
+<table cellpadding="3" cellspacing="0" border="0" width="700"><tr>
+<td width="375" align="right">Grand total being collected on {ScheduledDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${GrandSum:f2} </td>
+</tr></table>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterEnd', '', 1, '</table>', getdate(), getdate(), 0)
 INSERT INTO @Templates
 VALUES ('OrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}; {InvoiceNumber}', 1, '{NotifHeader}<table style="width: 100%;">
    <tr>

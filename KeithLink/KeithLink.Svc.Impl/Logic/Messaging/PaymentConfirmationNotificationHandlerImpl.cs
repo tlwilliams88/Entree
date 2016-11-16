@@ -1,7 +1,7 @@
 ﻿using KeithLink.Common.Core.Extensions;
 
 using KeithLink.Common.Core.Interfaces.Logging;
-
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 
 using KeithLink.Svc.Core.Extensions.Messaging;
@@ -34,11 +34,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
     public class PaymentConfirmationNotificationHandlerImpl : BaseNotificationHandlerImpl, INotificationHandler
     {
         #region attributes
-        private const string MESSAGE_TEMPLATE_PAYMENTCONFIRMATION = "PaymentConfirmation";
-        private const string MESSAGE_TEMPLATE_PAYMENTDETAIL = "PaymentConfirmationDetail";
-        private const string MESSAGE_TEMPLATE_MULTI_PAYMENTCONFIRMATION = "MultiPaymentConfirmation";
-        private const string MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL = "MultiPaymentConfirmationDetail";
-
         private readonly IEventLogRepository _log;
         private readonly IUserProfileLogic _userLogic;
         private readonly IUserPushNotificationDeviceRepository _pushRepo;
@@ -72,8 +67,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #region methods
         private Message GetEmailMessageForNotification(List<PaymentTransactionModel> payments, Core.Models.Profile.Customer customer)
         {
-            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
-            MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTDETAIL);
+            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(Constants.MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
+            MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(Constants.MESSAGE_TEMPLATE_PAYMENTDETAIL);
 
             StringBuilder orderDetails = new StringBuilder();
 
@@ -118,46 +113,166 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private Message GetEmailMessageForMultipleAccountSummaryNotification
             (List<PaymentTransactionModel> payments, List<UserSelectedContext> customers)
         {
-            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_MULTI_PAYMENTCONFIRMATION);
-            MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL);
+            MessageTemplateModel template = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTCONFIRMATION);
+            MessageTemplateModel headerTemplate = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTHEADER);
+            MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL1);
+            MessageTemplateModel detail2Template = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL2);
+            MessageTemplateModel detail3Template = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL3);
+            MessageTemplateModel footerAccountTemplate = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERACCOUNT);
+            MessageTemplateModel footerCustomerTemplate = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERCUSTOMER);
+            MessageTemplateModel footerGrandTemplate = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERGRAND);
+            MessageTemplateModel footerEndTemplate = _messageTemplateLogic.ReadForKey
+                (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTEREND);
 
             StringBuilder orderDetails = new StringBuilder();
 
+            int confirmationId = 0;
+            string payer = null;
+            decimal grandSum = 0;
+            DateTime submittedDate = DateTime.MinValue;
+            int customerNumber = 0;
+
             foreach (var customer in customers.OrderBy(ctx => ctx.CustomerId))
-            {
+            { // the start of each customer
+                ++customerNumber;
+
+                Svc.Core.Models.Profile.Customer cust =
+                    _customerRepo.GetCustomerByCustomerNumber(customer.CustomerId, customer.BranchId);
+
+                int paymentNumber = 0;
+                decimal paymentSum = 0;
+                Core.Models.OnlinePayments.Customer.EF.CustomerBank bankUsed = null;
+
                 foreach (var payment in payments.Where(p => p.CustomerNumber == customer.CustomerId &&
-                                                            p.BranchId == customer.BranchId))
+                                                            p.BranchId == customer.BranchId)
+                                                .OrderBy(p => p.AccountNumber))
                 {
-                    var bank = _bankRepo.GetBankAccount
+                    paymentNumber++;
+
+                    Core.Models.OnlinePayments.Customer.EF.CustomerBank bank = _bankRepo.GetBankAccount
                         (DivisionHelper.GetDivisionFromBranchId(customer.BranchId),
                         customer.CustomerId, payment.AccountNumber);
-                    var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId
-                        (customer.BranchId), customer.CustomerId, payment.InvoiceNumber);
-                    var invoiceTyped = KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
-                    //var confirmationId = payments[0].ConfirmationId;
-                    orderDetails.Append(detailTemplate.Body.Inject(new
+
+                    if(bankUsed == null || bankUsed.AccountNumber.Equals(bank.AccountNumber) == false)
                     {
-                        CustomerNumber = customer.CustomerId,
-                        BranchID = customer.BranchId,
-                        BankAccount = bank.AccountNumber,
-                        ConfirmationId = payment.ConfirmationId,
-                        InvoiceType = invoiceTyped,
-                        InvoiceNumber = payment.InvoiceNumber,
-                        InvoiceDate = invoice.InvoiceDate,
-                        DueDate = invoice.DueDate,
-                        ScheduledDate = payment.PaymentDate,
-                        PaymentAmount = payment.PaymentAmount
-                    }));
+                        if(bankUsed != null)
+                        { // not sure if this happens, but wanted to provide for it just in case
+                          // if bankused is not null but the bank account used changes, then we close out the table
+                          // for the previous account
+                            orderDetails.Append(footerAccountTemplate.Body.Inject(new
+                            {
+                                BankName = bankUsed.Name,
+                                AccountNumber = bankUsed.AccountNumber,
+                                AccountSum = paymentSum
+                            }));
+
+                            orderDetails.Append(footerEndTemplate.Body);
+                        }
+
+                        bankUsed = bank;
+
+                        // this starts a table for the new account
+                        orderDetails.Append(headerTemplate.Body.Inject(new
+                        {
+                            BankName = bankUsed.Name,
+                            AccountNumber = bankUsed.AccountNumber
+                        }));
+                    }
+
+                    paymentSum = paymentSum + payment.PaymentAmount;
+                    grandSum = grandSum + payment.PaymentAmount;
+
+                    Core.Models.OnlinePayments.Invoice.EF.Invoice invoice = 
+                        _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId
+                        (customer.BranchId), customer.CustomerId, payment.InvoiceNumber);
+                    Core.Enumerations.InvoiceType invoiceTyped = 
+                        KeithLink.Svc.Core.Extensions.InvoiceExtensions.DetermineType(invoice.InvoiceType);
+
+                    confirmationId = payment.ConfirmationId;
+                    payer = payment.UserName;
+                    submittedDate = payment.PaymentDate.Value;
+
+                    if (paymentNumber == 1)
+                    {  // the following entries add details for the tables, the first line includes customer information
+                        orderDetails.Append(detailTemplate.Body.Inject(new
+                        {
+                            CustomerNumber = cust.CustomerNumber,
+                            CustomerBranch = cust.CustomerBranch,
+                            CustomerName = cust.CustomerName,
+                            InvoiceType = invoiceTyped,
+                            InvoiceNumber = payment.InvoiceNumber,
+                            InvoiceDate = invoice.InvoiceDate,
+                            DueDate = invoice.DueDate,
+                            PaymentAmount = payment.PaymentAmount
+                        }));
+                    }
+                    else
+                    {// the other data line alternate background color
+                        if (paymentNumber % 2 == 1)
+                        {
+                            orderDetails.Append(detail2Template.Body.Inject(new
+                            {
+                                InvoiceType = invoiceTyped,
+                                InvoiceNumber = payment.InvoiceNumber,
+                                InvoiceDate = invoice.InvoiceDate,
+                                DueDate = invoice.DueDate,
+                                PaymentAmount = payment.PaymentAmount
+                            }));
+                        }
+                        else
+                        {
+                            orderDetails.Append(detail3Template.Body.Inject(new
+                            {
+                                InvoiceType = invoiceTyped,
+                                InvoiceNumber = payment.InvoiceNumber,
+                                InvoiceDate = invoice.InvoiceDate,
+                                DueDate = invoice.DueDate,
+                                PaymentAmount = payment.PaymentAmount
+                            }));
+                        }
+                    }
                 }
+                // the following appends a summation of the account used
+                orderDetails.Append(footerAccountTemplate.Body.Inject(new
+                {
+                    BankName = bankUsed.Name,
+                    AccountNumber = bankUsed.AccountNumber,
+                    AccountSum = paymentSum
+                }));
+                // the following appends a summation of payments on the customer
+                orderDetails.Append(footerCustomerTemplate.Body.Inject(new
+                {
+                    CustomerNumber = cust.CustomerNumber,
+                    CustomerBranch = cust.CustomerBranch,
+                    CustomerName = cust.CustomerName,
+                    CustomerSum = paymentSum
+                }));
+                orderDetails.Append(footerEndTemplate.Body);
             }
+            // the following appends a summation for all payments
+            orderDetails.Append(footerGrandTemplate.Body.Inject(new
+            {
+                GrandSum = grandSum,
+                ScheduledDate = submittedDate
+            }));
 
             Message message = new Message();
             message.BodyIsHtml = template.IsBodyHtml;
             message.MessageSubject = template.Subject;
+            // the following assembles the template for the body of the payer summary
             message.MessageBody = template.Body.Inject(new
             {
-                PaymentDetailLines = orderDetails.ToString(),
-                TotalPayments = payments.Sum(p => p.PaymentAmount)
+                UserName = payer,
+                ConfirmationId = confirmationId,
+                PaymentCollection = orderDetails.ToString()
             });
             message.NotificationType = NotificationType.PaymentConfirmation;
             return message;
