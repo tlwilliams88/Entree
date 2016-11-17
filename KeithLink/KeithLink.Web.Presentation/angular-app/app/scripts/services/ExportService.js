@@ -165,12 +165,12 @@ angular.module('bekApp')
           });
       },
 
-      exportInventoryValueReport: function(format, items, totalByCategory) {
-        if(totalByCategory){
+      exportInventoryValueReport: function(format, items, category) {
+        if(category){
           var options = {
             format: format,
             data: items,
-            groupby: 'category'
+            category: category
           };
         } else {
           var options = {

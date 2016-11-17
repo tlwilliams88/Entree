@@ -77,6 +77,42 @@ VALUES ('PaymentConfirmationDetail', '', 1, '<tr>
 <td style="font-size:small;text-align:right;">${PaymentAmount:f2}</td>
 </tr>', getdate(), getdate(), 0)
 INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmation', 'Ben E. Keith: Payment Confirmation for Multiple Customers', 1, '
+<table style="width: 100%">
+<tr>
+<th style="font-size:small;text-align:left;">Cust# </th>
+<th style="font-size:small;text-align:left;">Div </th>
+<th style="font-size:small;text-align:left;">Bank </th>
+<th style="font-size:small;text-align:left;">Confirm </th>
+<th style="font-size:small;text-align:left;">Type </th>
+<th style="font-size:small;text-align:left;">Number </th>
+<th style="font-size:small;text-align:left;">Ref. Date </th>
+<th style="font-size:small;text-align:left;">Due Date </th>
+<th style="font-size:small;text-align:left;">Scheduled Date </th>
+<th style="font-size:small;text-align:right;">Amount</th>
+</tr>
+{PaymentDetailLines}
+<tr>
+<td colspan="5" style="text-align:right">Payment Total</td>
+<td style="text-align:right">
+${TotalPayments:f2}
+<td>
+</tr>
+</table>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationDetail', '', 1, '<tr>
+<td style="font-size:small;text-align:left;">{CustomerNumber} </td>
+<td style="font-size:small;text-align:left;">{BranchID} </td>
+<td style="font-size:small;text-align:left;">{BankAccount} </td>
+<td style="font-size:small;text-align:left;">{ConfirmationId} </td>
+<td style="font-size:small;text-align:left;">{InvoiceType} </td>
+<td style="font-size:small;text-align:left;">{InvoiceNumber} </td>
+<td style="font-size:small;text-align:left;">{InvoiceDate:MM/dd/yyyy} </td>
+<td style="font-size:small;text-align:left;">{DueDate:MM/dd/yyyy} </td>
+<td style="font-size:small;text-align:left;">{ScheduledDate:MM/dd/yyyy} </td>
+<td style="font-size:small;text-align:right;">${PaymentAmount:f2}</td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
 VALUES ('OrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}; {InvoiceNumber}', 1, '{NotifHeader}<table style="width: 100%;">
    <tr>
        <td>Delivery Date: {ShipDate}</td>

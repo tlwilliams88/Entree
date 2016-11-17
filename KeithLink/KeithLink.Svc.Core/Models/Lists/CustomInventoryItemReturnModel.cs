@@ -44,5 +44,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         public string CasePrice { get; set; }
         [DataMember(Name = "packageprice")]
         public string PackagePrice { get; set; }
+        [DataMember(Name = "label")]
+        public string Label { get; set; }
     }
 }

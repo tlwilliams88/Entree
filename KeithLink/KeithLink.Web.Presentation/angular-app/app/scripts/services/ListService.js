@@ -377,20 +377,12 @@ angular.module('bekApp')
             toaster.pop('success', null, 'Successfully deleted item from list.');
             return response.data.successResponse;
           }, function(error) {
-            toaster.pop('error', null, 'Error adding items to list.');
+            toaster.pop('error', null, 'Error deleting item to list.');
           });
         },
 
         deleteCustomInventoryItems: function(listitems) {
-          // create array of list item ids
-          var itemIds = [];
-          angular.forEach(listitems, function(item, index) {
-            itemIds.push(item.id);
-          });
-
-          return $http.delete('/custominventory', { 
-            data: listitems 
-          }).then(function(response){
+          return $http.post('/custominventory/delete', listitems).then(function(response){
             toaster.pop('success', null, 'Successfully deleted items from list.');
             return response.data.successResponse;
           }, function(error) {
@@ -722,7 +714,8 @@ angular.module('bekApp')
               itemnumber: item.itemnumber,
               each: item.each,
               catalog_id: item.catalog_id,
-              category: item.category
+              category: item.category,
+              label: item.label
             });
           });
 
