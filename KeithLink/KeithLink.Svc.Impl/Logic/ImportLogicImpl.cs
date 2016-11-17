@@ -702,7 +702,7 @@ namespace KeithLink.Svc.Impl.Logic
                             ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
                             Name = l[nameColumn].Replace("\"", string.Empty),
                             Brand = l[brandColumn].Replace("\"", string.Empty),
-                            // Label = l[labelColumn].Replace("\"", string.Empty),
+                            Label = l[labelColumn].Replace("\"", string.Empty),
                             Supplier = l[supplierColumn].Replace("\"", string.Empty),
                             Pack = l[packColumn].Replace("\"", string.Empty),
                             Size = l[sizeColumn].Replace("\"", string.Empty),
