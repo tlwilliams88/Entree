@@ -313,7 +313,7 @@ angular.module('bekApp')
       };
      
       LocalStorage.setLastList(lastlist);
-      if(listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
+      if($scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm) {
           $scope.forms.listForm.$setPristine();
         }

@@ -217,3 +217,9 @@
   z-index: 100;
   font-size: 45px;
 }
+
+.inactive-option {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.4;
+}

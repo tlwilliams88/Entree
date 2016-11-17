@@ -144,7 +144,7 @@
           {{list.name}}
         </a>
       </li>
-      <li> <a ng-click="goToList('nonbeklist')" ng-if="(list.listid !== selectedList.listid)">Non-BEK Items</a></li>
+      <li> <a ng-click="goToList('nonbeklist')" ng-if="(selectedList.listid != 'nonbeklist')" ng-class="{'inactive-option': selectedList.listid == 'nonbeklist'}">Non-BEK Items</a></li>
       <li><a ng-click="createList()">Create a List...</a></li>
 
       <li ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
@@ -172,7 +172,8 @@
                 class="btn-lg custom-lists__name btn btn-default btn-list" 
                 data-drop="isDragging && list.permissions.canAddItems" 
                 data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
-                jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}">
+                jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}"
+                ng-disabled="selectedList.listid == list.listid">
                 {{list.name}}
               </button>
             </div>
@@ -188,7 +189,9 @@
               <button 
                 type="button" 
                 ng-click="goToList('nonbeklist')" 
-                class="btn btn-default btn-list text-light btn-lg">
+                class="btn btn-default btn-list text-light btn-lg" 
+                ng-disabled="selectedList.listid == 'nonbeklist'"
+                ng-class="{'current-list' : list.listid == selectedList.listid}">
                 Non-BEK Items
               </button>
 
