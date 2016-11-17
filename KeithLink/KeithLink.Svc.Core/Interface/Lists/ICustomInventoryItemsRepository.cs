@@ -22,6 +22,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         // Deletes
         void Delete(long id);
+        void DeleteRange(List<long> ids);
         void DeleteRange(List<CustomInventoryItem> items);
 
     }

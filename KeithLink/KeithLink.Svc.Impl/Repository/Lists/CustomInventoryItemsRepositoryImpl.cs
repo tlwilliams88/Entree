@@ -2,26 +2,34 @@
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.EF;
 
-
+using KeithLink.Svc.Impl.Repository.DataConnection;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 // Plugins
 using Autofac;
+using Dapper;
 
 //Core
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.Lists {
-    public class CustomInventoryItemsRepositoryImpl : EFBaseRepository<CustomInventoryItem>, ICustomInventoryItemsRepository {
+    public class CustomInventoryItemsRepositoryImpl : EFBaseRepository<CustomInventoryItem>, ICustomInventoryItemsRepository  {
         #region attributes
+        DapperDatabaseConnection _connection;
+
+        private const string SP_DELETE_CUSTOM_INVENTORY_ITEMS = "List.DeleteCustomInventoryItems";
+        private const string TVP_BIG_INT_LIST = "BigIntList";
         #endregion
 
         #region constructor
-        public CustomInventoryItemsRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+        public CustomInventoryItemsRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) {
+            _connection = new DataConnection.DapperDatabaseConnection(Configuration.BEKDBConnectionString);
+        }
         #endregion
 
         #region methods
@@ -71,20 +79,39 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
         #region Deletes
         public void Delete(long id) {
-            CustomInventoryItem objectToDelete = new CustomInventoryItem() { Id = id };
-            this.Entities.Attach(objectToDelete);
-            this.Entities.Remove(objectToDelete);
+            _connection.ExecuteCommand(GetDeleteCommandWithTvpParameters(new List<long> { id }));
+        }
 
-            this.UnitOfWork.SaveChanges();
+        public void DeleteRange(List<long> ids)
+        {
+            _connection.ExecuteCommand(GetDeleteCommandWithTvpParameters(ids));
         }
 
         public void DeleteRange(List<CustomInventoryItem> items) {
-            foreach (CustomInventoryItem item in items) {
-                this.Entities.Attach(item);
-                this.Entities.Remove(item);
-            }
+            List<long> KeysToDelete = items.Select(x => x.Id).ToList<long>();
             
-            this.UnitOfWork.SaveChanges();
+            _connection.ExecuteCommand(GetDeleteCommandWithTvpParameters(KeysToDelete));
+        }
+        #endregion
+
+        #region helpers
+        private CommandDefinition GetDeleteCommandWithTvpParameters(List<long> ids)
+        {
+            DataTable parameterTable = new DataTable()
+            {
+                Columns = { { "Id", typeof(long) } },
+            };
+
+            foreach (long id in ids)
+            {
+                parameterTable.Rows.Add(id);
+            }
+
+            CommandDefinition command = new CommandDefinition(SP_DELETE_CUSTOM_INVENTORY_ITEMS,
+                            new { Ids = parameterTable.AsTableValuedParameter(TVP_BIG_INT_LIST) },
+                commandType: System.Data.CommandType.StoredProcedure);
+
+            return command;
         }
         #endregion
 

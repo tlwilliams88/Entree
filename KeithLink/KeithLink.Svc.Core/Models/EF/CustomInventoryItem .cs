@@ -26,5 +26,6 @@ namespace KeithLink.Svc.Core.Models.EF {
         public bool Each { get; set; }
         public decimal CasePrice { get; set; }
         public decimal PackagePrice { get; set; }
+        public string Label { get; set; }
     }
 }

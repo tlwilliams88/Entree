@@ -854,6 +854,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     listItem.PackagePrice = customItem.PackagePrice.ToString();
                     listItem.Supplier = customItem.Supplier;
                     listItem.IsValid = true;
+                    listItem.Label = customItem.Label;
             }
             else {
                 var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
