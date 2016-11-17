@@ -140,39 +140,46 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     Core.Models.OnlinePayments.Customer.EF.CustomerBank bank = _bankRepo.GetBankAccount
                         (DivisionHelper.GetDivisionFromBranchId(customer.BranchId),
                         customer.CustomerId, payment.AccountNumber);
-
-                    if (bankUsed == null || bankUsed.AccountNumber.Equals(bank.AccountNumber) == false)
-                    {
-                        InPaymentSummaryAccountForMultiplePaymentAccountsWithOneCustomer
-                            (orderDetails, paymentSum, bankUsed);
-
-                        bankUsed = bank;
-
-                        ApplyPaymentSummaryAccountHeaderTemplate(orderDetails, bankUsed);
-                    }
+                    bankUsed = BuildPaymentSummaryBankUsed(orderDetails, paymentSum, bankUsed, bank);
 
                     paymentSum = paymentSum + payment.PaymentAmount;
                     grandSum = grandSum + payment.PaymentAmount;
-
-                    Core.Models.OnlinePayments.Invoice.EF.Invoice invoice;
-                    Core.Enumerations.InvoiceType invoiceTyped;
-                    GetPaymentInvoiceInformation(customer, payment, out invoice, out invoiceTyped);
 
                     confirmationId = payment.ConfirmationId;
                     payer = payment.UserName;
                     submittedDate = payment.PaymentDate.Value;
 
-                    BuildPaymentSummaryPaymentDetails(orderDetails, cust, paymentNumber, payment, invoice, invoiceTyped);
+                    BuildPaymentSummaryPaymentDetails(orderDetails, customer, cust, paymentNumber, payment);
                 }
-                ApplyAccountPaymentSummaryTemplate(orderDetails, bankUsed, paymentSum);
-
-                ApplyCustomerPaymentSummaryTemplate(orderDetails, cust, paymentSum);
-
-                ApplyEndFooterTemplate(orderDetails);
+                BuildPaymentSummaryFooter(orderDetails, cust, paymentSum, bankUsed);
             }
             ApplyGrandPaymentSummaryTemplate(orderDetails, grandSum, submittedDate);
 
             return AssembleMessageForPayerSummary(orderDetails, confirmationId, payer);
+        }
+
+        private void BuildPaymentSummaryFooter(StringBuilder orderDetails, Core.Models.Profile.Customer cust, decimal paymentSum, Core.Models.OnlinePayments.Customer.EF.CustomerBank bankUsed)
+        {
+            ApplyAccountPaymentSummaryTemplate(orderDetails, bankUsed, paymentSum);
+
+            ApplyCustomerPaymentSummaryTemplate(orderDetails, cust, paymentSum);
+
+            ApplyEndFooterTemplate(orderDetails);
+        }
+
+        private Core.Models.OnlinePayments.Customer.EF.CustomerBank BuildPaymentSummaryBankUsed(StringBuilder orderDetails, decimal paymentSum, Core.Models.OnlinePayments.Customer.EF.CustomerBank bankUsed, Core.Models.OnlinePayments.Customer.EF.CustomerBank bank)
+        {
+            if (bankUsed == null || bankUsed.AccountNumber.Equals(bank.AccountNumber) == false)
+            {
+                InPaymentSummaryAccountForMultiplePaymentAccountsWithOneCustomer
+                    (orderDetails, paymentSum, bankUsed);
+
+                bankUsed = bank;
+
+                ApplyPaymentSummaryAccountHeaderTemplate(orderDetails, bankUsed);
+            }
+
+            return bankUsed;
         }
 
         private void InPaymentSummaryAccountForMultiplePaymentAccountsWithOneCustomer
@@ -189,8 +196,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         }
 
         private void BuildPaymentSummaryPaymentDetails
-            (StringBuilder orderDetails, Core.Models.Profile.Customer cust, int paymentNumber, PaymentTransactionModel payment, Core.Models.OnlinePayments.Invoice.EF.Invoice invoice, Core.Enumerations.InvoiceType invoiceTyped)
+            (StringBuilder orderDetails, UserSelectedContext customer, 
+             Core.Models.Profile.Customer cust, int paymentNumber, PaymentTransactionModel payment)
         {
+            Core.Models.OnlinePayments.Invoice.EF.Invoice invoice;
+            Core.Enumerations.InvoiceType invoiceTyped;
+            GetPaymentInvoiceInformation(customer, payment, out invoice, out invoiceTyped);
+
             if (paymentNumber == 1)
             {
                 ApplyPaymentSummaryDetailsWithCustomerTemplate
