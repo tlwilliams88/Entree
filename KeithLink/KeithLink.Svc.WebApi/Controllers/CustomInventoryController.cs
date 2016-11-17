@@ -128,8 +128,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         /// <param name="items"></param>
         /// <returns></returns>
-        [HttpDelete]
-        [ApiKeyedRoute("custominventory")]
+        [HttpPost]
+        [ApiKeyedRoute("custominventory/delete")]
         public OperationReturnModel<CustomInventoryHeaderReturnModel> DeleteRange(List<CustomInventoryItemReturnModel> items) {
             OperationReturnModel<CustomInventoryHeaderReturnModel> returnValue = new OperationReturnModel<CustomInventoryHeaderReturnModel>();
             returnValue.SuccessResponse = new CustomInventoryHeaderReturnModel();
