@@ -215,7 +215,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
-                _log.WriteErrorLog("Import List", ex);
+                _log.WriteErrorLog("Import Custom Inventory", ex);
             }
             return ret;
         }
