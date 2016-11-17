@@ -94,6 +94,8 @@ using KeithLink.Svc.Core.Enumerations.Dependencies;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
 using KeithLink.Svc.Core.Interface.ApplicationHealth;
 using KeithLink.Svc.Impl.Logic.ApplicationHealth;
+using KeithLink.Svc.Impl.Repository.Templates;
+using KeithLink.Svc.Core.Interface.Templates;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -177,6 +179,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<ApplicationHealthLogicImpl>().As<IApplicationHealthLogic>();
+            builder.RegisterType<TemplatesRepositoryImpl>().As<ITemplatesRepository>();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();

@@ -29,6 +29,7 @@ namespace KeithLink.Svc.Impl.Logic
         #region attributes
         private IListLogic listServiceRepository;
         private ICatalogLogic catalogLogic;
+        private ICustomInventoryItemsRepository _customInventoryRepo;
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
         private IPriceLogic priceLogic;
@@ -45,13 +46,16 @@ namespace KeithLink.Svc.Impl.Logic
         #endregion
 
         #region ctor
-        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic)
+        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, 
+            IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic,
+            ICustomInventoryItemsRepository customInventoryRepo)
         {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
             this.eventLogRepository = eventLogRepository;
             this.shoppingCartLogic = shoppingCartLogic;
             this.priceLogic = priceLogic;
+            _customInventoryRepo = customInventoryRepo;
 
             _errors = new StringBuilder();
             _warnings = new StringBuilder();
@@ -581,21 +585,9 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 var importReturn = new CustomInventoryImportModel();
 
-                List<CustomInventoryItem> items = new List<CustomInventoryItem>();
+                List<CustomInventoryItem> items = parseListDelimited(file, CSV_DELIMITER, user, catalogInfo);
 
-                switch (file.FileFormat)
-                {
-                    case FileFormat.CSV:
-                        items = parseListDelimited(file, CSV_DELIMITER, user, catalogInfo);
-                        break;
-                    case FileFormat.Tab:
-                        items = parseListDelimited(file, TAB_DELIMITER, user, catalogInfo);
-                        break;
-                    case FileFormat.Excel:
-                        items = parseListExcel(file, user, catalogInfo);
-                        break;
-                }
-
+                _customInventoryRepo.SaveRange(items);
                 importReturn.Success = true;
 
                 return importReturn;
@@ -603,7 +595,7 @@ namespace KeithLink.Svc.Impl.Logic
             catch (Exception ex)
             {
                 eventLogRepository.WriteErrorLog
-                    (string.Format("List Import Error for Customer {0}", catalogInfo.CustomerId), ex);
+                    (string.Format("Custom Inventory Import Error for Customer {0}", catalogInfo.CustomerId), ex);
                 SendErrorEmail(file, ex);
 
 
@@ -660,23 +652,44 @@ namespace KeithLink.Svc.Impl.Logic
         {
             List<CustomInventoryItem> returnValue = new List<CustomInventoryItem>();
 
-            var itemNumberColumn = 0;
-            var labelColumn = -1;
+            int itemNumberColumn = 0;
+            int nameColumn = -1;
+            int brandColumn = -1;
+            int supplierColumn = -1;
+            int packColumn = -1;
+            int sizeColumn = -1;
+            int eachColumn = -1;
+            int casePriceColumn = -1;
+            int packagePriceColumn = -1;
+            int labelColumn = -1;
             //See if we can determine which columns the item number and label exist
-            if (file.IgnoreFirstLine)
+            var header = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Take(1).Select(i => i.Split(delimiter).ToList()).FirstOrDefault();
+            int colCount = 0;
+            foreach (var col in header)
             {
-                var header = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Take(1).Select(i => i.Split(delimiter).ToList()).FirstOrDefault();
-                int colCount = 0;
-                foreach (var col in header)
-                {
-                    if (col.Replace("\"", string.Empty).Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                        itemNumberColumn = colCount;
-                    else if (col.Replace("\"", string.Empty).Equals("label", StringComparison.CurrentCultureIgnoreCase))
-                        labelColumn = colCount;
-                    colCount++;
-                }
+                string replaced = col.Replace("\"", string.Empty);
+                if (replaced.Equals("itemid", StringComparison.CurrentCultureIgnoreCase))
+                    itemNumberColumn = colCount;
+                else if (replaced.Equals("name", StringComparison.CurrentCultureIgnoreCase))
+                    nameColumn = colCount;
+                else if (replaced.Equals("brand", StringComparison.CurrentCultureIgnoreCase))
+                    brandColumn = colCount;
+                else if (replaced.Equals("supplier", StringComparison.CurrentCultureIgnoreCase))
+                    supplierColumn = colCount;
+                else if (replaced.Equals("pack", StringComparison.CurrentCultureIgnoreCase))
+                    packColumn = colCount;
+                else if (replaced.Equals("size", StringComparison.CurrentCultureIgnoreCase))
+                    sizeColumn = colCount;
+                else if (replaced.Equals("each(t or f)", StringComparison.CurrentCultureIgnoreCase))
+                    eachColumn = colCount;
+                else if (replaced.Equals("caseprice", StringComparison.CurrentCultureIgnoreCase))
+                    casePriceColumn = colCount;
+                else if (replaced.Equals("packageprice", StringComparison.CurrentCultureIgnoreCase))
+                    packagePriceColumn = colCount;
+                else if (replaced.Equals("label", StringComparison.CurrentCultureIgnoreCase))
+                    labelColumn = colCount;
+                colCount++;
             }
-
 
             var rows = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Skip(file.IgnoreFirstLine ? 1 : 0);
             returnValue = rows
@@ -684,7 +697,21 @@ namespace KeithLink.Svc.Impl.Logic
                         .Select(i => i.Split(delimiter))
                         .Select(l => new CustomInventoryItem()
                         {
-                            ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty)
+                            CustomerNumber = catalogInfo.CustomerId,
+                            BranchId = catalogInfo.BranchId,
+                            ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
+                            Name = l[nameColumn].Replace("\"", string.Empty),
+                            Brand = l[brandColumn].Replace("\"", string.Empty),
+                            // Label = l[labelColumn].Replace("\"", string.Empty),
+                            Supplier = l[supplierColumn].Replace("\"", string.Empty),
+                            Pack = l[packColumn].Replace("\"", string.Empty),
+                            Size = l[sizeColumn].Replace("\"", string.Empty),
+                            Each = ((l[eachColumn].Replace("\"", string.Empty).Equals
+                                ("t", StringComparison.CurrentCultureIgnoreCase)) ? true : false),
+                            CasePrice = (l[casePriceColumn].Replace("\"", string.Empty).Length > 0) ?
+                                decimal.Parse(l[casePriceColumn].Replace("\"", string.Empty)) : 0,
+                            PackagePrice = (l[packagePriceColumn].Replace("\"", string.Empty).Length > 0) ?
+                                decimal.Parse(l[packagePriceColumn].Replace("\"", string.Empty)) : 0
                         })
                         .Where(x => !String.IsNullOrEmpty(x.ItemNumber))
                         .ToList();
@@ -692,46 +719,6 @@ namespace KeithLink.Svc.Impl.Logic
             return returnValue;
         }
 
-        private List<CustomInventoryItem> parseListExcel
-            (CustomInventoryImportFileModel file, UserProfile user, UserSelectedContext catalogInfo)
-        {
-            List<CustomInventoryItem> returnValue = new List<CustomInventoryItem>() { };
-
-            IExcelDataReader rdr = null;
-
-            if (System.IO.Path.GetExtension(file.FileName).Equals(BINARY_EXCEL_EXTENSION, StringComparison.InvariantCultureIgnoreCase))
-            {
-                rdr = ExcelReaderFactory.CreateBinaryReader(file.Stream);
-            }
-            else
-            {
-                rdr = ExcelReaderFactory.CreateOpenXmlReader(file.Stream);
-            }
-            var itemNumberColumn = 0;
-            var labelColumn = -1;
-
-            if (file.IgnoreFirstLine)
-            {
-                rdr.Read(); // Skip the first line
-                for (int i = 0; i < rdr.FieldCount - 1; i++)
-                {
-                    if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                        itemNumberColumn = i;
-                    else if (rdr.GetString(i).Equals("label", StringComparison.CurrentCultureIgnoreCase))
-                        labelColumn = i;
-                }
-            }
-
-            while (rdr.Read())
-            {
-                returnValue.Add(new CustomInventoryItem()
-                {
-                    ItemNumber = rdr.GetString(itemNumberColumn).PadLeft(6, '0')
-                });
-            }
-
-            return returnValue;
-        }
         #endregion
     }
 }

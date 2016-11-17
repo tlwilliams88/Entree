@@ -833,6 +833,7 @@
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
+    <Compile Include="Repository\Templates\TemplatesRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
@@ -1036,6 +1037,7 @@
     </None>
     <None Include="Service References\com.benekeith.ShipDateService\shipdate.wsdl" />
     <None Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
+    <EmbeddedResource Include="Templates\importcustominventory.csv" />
     <None Include="Unity.config" />
     <None Include="Web.config">
       <SubType>Designer</SubType>

@@ -14,7 +14,7 @@
     <RootNamespace>KeithLink.Svc.WebApi</RootNamespace>
     <AssemblyName>KeithLink.Svc.WebApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -290,6 +290,7 @@
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RecentItemController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\TemplateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
