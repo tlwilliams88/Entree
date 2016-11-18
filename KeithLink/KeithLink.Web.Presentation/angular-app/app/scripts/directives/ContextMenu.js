@@ -49,7 +49,7 @@ angular.module('bekApp')
 
       $scope.addItemToList = function(listName, listId, item, selectedList) {
       var newItem = angular.copy(item);
-        if(selectedList.iscustominventory){
+        if(selectedList && selectedList.iscustominventory){
           var newItem = [
             item
           ];

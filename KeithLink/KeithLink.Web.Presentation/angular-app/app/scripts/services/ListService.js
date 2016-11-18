@@ -377,25 +377,50 @@ angular.module('bekApp')
             toaster.pop('success', null, 'Successfully deleted item from list.');
             return response.data.successResponse;
           }, function(error) {
-            toaster.pop('error', null, 'Error adding items to list.');
+            toaster.pop('error', null, 'Error deleting item to list.');
           });
         },
 
         deleteCustomInventoryItems: function(listitems) {
-          // create array of list item ids
-          var itemIds = [];
-          angular.forEach(listitems, function(item, index) {
-            itemIds.push(item.id);
-          });
-
-          return $http.delete('/custominventory', { 
-            data: listitems 
-          }).then(function(response){
+          return $http.post('/custominventory/delete', listitems).then(function(response){
             toaster.pop('success', null, 'Successfully deleted items from list.');
             return response.data.successResponse;
           }, function(error) {
             toaster.pop('error', null, 'Error deleting items from list');
           });
+        },
+
+        importNonBEKListItems: function(file, options) {
+          var deferred = $q.defer();
+
+          $upload.upload({
+            url: '/import/custominventory',
+            method: 'POST',
+            data: { options: options },
+            file: file,
+          }).then(function(response) {
+            var data = response.data.successResponse;
+
+            if (response.data.isSuccess && data.success) {
+
+              // display messages
+              if (data.warningmsg) {
+                toaster.pop('warning', null, data.warningmsg);
+              } else {
+                toaster.pop('success', null, 'Successfully imported items to Non-BEK Items list.');
+              }
+
+              deferred.resolve(data);
+            } else {
+              var errorMessage = response.data.errorMessage;
+              if(data && data.errormsg){
+                toaster.pop('error', null, data.errormsg);
+                errorMessage = data.errormsg;
+              }
+              deferred.reject(errorMessage);
+            }
+          })
+          return deferred.promise;
         },
 
         /********************
@@ -689,7 +714,8 @@ angular.module('bekApp')
               itemnumber: item.itemnumber,
               each: item.each,
               catalog_id: item.catalog_id,
-              category: item.category
+              category: item.category,
+              label: item.label
             });
           });
 

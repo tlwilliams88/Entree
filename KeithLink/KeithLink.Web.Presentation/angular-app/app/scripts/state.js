@@ -199,7 +199,7 @@ angular.module('bekApp')
           var params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'};
    
           ListService.lists.forEach(function(list){
-            if(last && list.listid === last.listId){
+            if(last && last.listId && list.listid === last.listId.listid){
                stillExists = true;
                var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
                if(last.timeset < timeoutDate){         
@@ -212,7 +212,7 @@ angular.module('bekApp')
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
              last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
              LocalStorage.setLastList(last);
-             listIdtoBeUsed = last.listId;
+             listIdtoBeUsed = last.listId.listid ? last.listId.listid : last.listId;
           }
           else{
              LocalStorage.setLastList({});

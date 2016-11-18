@@ -233,7 +233,7 @@
             <td class="hidden-mobile item-usage-drop-column" ng-if="item.isCustomInventory">{{::item.brand}}</td>
             <td class="hidden-mobile item-usage-drop-column">{{::item.class}}</td>
             <td ng-if="report.has_contract_items || report.hasContractCategories" class="hidden-mobile item-usage-drop-column">{{::item.category}}</td>
-            <td ng-if="item.custominventoryitemid" class="hidden-mobile item-usage-drop-column">{{::item.supplier}}</td>
+            <td ng-if="hasCustomItems" class="hidden-mobile item-usage-drop-column">{{::item.supplier}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
             <td class="hidden-mobile-visible-print label-col">{{::item.label}}</td>
             <td class="input-col nowrap counter-container">  

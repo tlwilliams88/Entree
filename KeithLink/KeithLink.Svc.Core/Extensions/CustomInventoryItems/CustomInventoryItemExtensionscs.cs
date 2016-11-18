@@ -30,7 +30,8 @@ namespace KeithLink.Svc.Core.Extensions.CustomInventoryItems {
                 Vendor = item.Vendor,
                 Each = item.Each,
                 CasePrice = item.CasePrice.ToString(),
-                PackagePrice = item.PackagePrice.ToString()
+                PackagePrice = item.PackagePrice.ToString(),
+                Label = item.Label
             };
         }
 
@@ -53,7 +54,8 @@ namespace KeithLink.Svc.Core.Extensions.CustomInventoryItems {
                 Vendor = item.Vendor,
                 Each = item.Each,
                 CasePrice = Decimal.Parse(item.CasePrice),
-                PackagePrice = Decimal.Parse(item.PackagePrice)
+                PackagePrice = Decimal.Parse(item.PackagePrice),
+                Label = item.Label
             };
         }
 

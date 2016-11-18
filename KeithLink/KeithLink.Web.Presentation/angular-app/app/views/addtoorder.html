@@ -208,7 +208,7 @@
           </tr>
         </thead>
 
-        <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList" ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) track by item.listitemid" ng-class="{ oddrow : $odd }">
+        <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) || item.custominventoryitemid && selectedList" ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) track by item.listitemid" ng-class="{ oddrow : $odd }">
 
           <tr id="rowForFocus">
             <td>

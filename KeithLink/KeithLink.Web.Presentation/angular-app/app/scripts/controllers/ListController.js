@@ -313,7 +313,7 @@ angular.module('bekApp')
       };
      
       LocalStorage.setLastList(lastlist);
-      if(listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
+      if($scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm) {
           $scope.forms.listForm.$setPristine();
         }
@@ -341,7 +341,7 @@ angular.module('bekApp')
     };
 
     $scope.unsavedChangesConfirmation = function(){
-      if($scope.forms.listForm && $scope.forms.listForm.$dirty || $scope.forms.customListForm && $scope.forms.customListForm.$dirty){
+      if($scope.forms.listForm && $scope.forms.listForm.$dirty){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
       }
@@ -565,20 +565,19 @@ angular.module('bekApp')
     };
 
     $scope.deleteMultipleItems = function() {
-    $scope.isDeletingItem = true;
+      $scope.isDeletingItem = true;
 
-    if($scope.isCustomInventoryList){
-      var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true});
-      ListService.deleteCustomInventoryItems(itemsToDelete);
-    } else {
-      $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
-        if(item.isSelected){
-          item.isdeleted = true;
-          updateDeletedCount();
-        }
-      });
-    }
-
+      if($scope.isCustomInventoryList){
+        var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true, id: ''});
+        ListService.deleteCustomInventoryItems(itemsToDelete);
+      } else {
+        $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
+          if(item.isSelected){
+            item.isdeleted = true;
+            updateDeletedCount();
+          }
+        });
+      }
 
       $scope.selectedList.allSelected = false;
       updateItemPositions();
@@ -671,8 +670,8 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true'});
-     }
+      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', custominventoryitemid: '0'});
+    }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
     // helper object is passed in from the drag event
@@ -784,17 +783,28 @@ angular.module('bekApp')
     };
 
     $scope.saveCustomInventoryList = function(list) {
-      ListService.saveCustomInventoryList(list).then(function(resp){
+      var itemsToSave = $filter('filter')(list, {itemnumber: ''});
+        itemsToSave.forEach(function(item){
+          if(item.editLabel && item.isEditing){
+            item.label = item.editLabel;
+          }
+        })
+      ListService.saveCustomInventoryList(itemsToSave).then(function(resp){
         $scope.selectedList = resp;
         $scope.isCustomInventoryList = true;
         $scope.forms.listForm.$setPristine();
       });
     };
 
-    $scope.deleteCustomInventoryItem = function(listitem) {
-      ListService.deleteCustomInventoryItem(listitem.id).then(function(){
-        $scope.getCustomInventoryList();
-      })
+    $scope.deleteCustomInventoryItem = function(listitem, index) {
+      if(!listitem.id){
+        $scope.selectedList.items.splice(index, 1);
+      } else {
+        ListService.deleteCustomInventoryItem(listitem.id).then(function(){
+          $scope.getCustomInventoryList();
+        })
+      }
+
     };
    
     /******
@@ -808,6 +818,13 @@ angular.module('bekApp')
         resolve: {
           customListHeaders: function() {
             return [];
+          },
+          listType: function() {
+            if($scope.isCustomInventoryList){
+              return 'CustomInventory';
+            } else {
+              return 'StandardList';
+            }
           }
         }
       });

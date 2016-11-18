@@ -48,10 +48,14 @@
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column.cs" />
+    <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="BetaScriptGenerate.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="QaMigrate.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -91,7 +95,13 @@
     <Content Include="SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData_Seed.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-up.sql">

@@ -32,6 +32,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+        #region Import List
         /// <summary>
 		/// Import a user List
 		/// </summary>
@@ -90,13 +91,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             return ret;
 		}
+        #endregion
 
 
-		/// <summary>
-		/// Import Order
-		/// </summary>
-		/// <returns></returns>
-		[HttpPost]
+        #region Import Order
+        /// <summary>
+        /// Import Order
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
 		[ApiKeyedRoute("import/order")]
 		public async Task<OperationReturnModel<OrderImportModel>> Order()
 		{
@@ -153,6 +156,70 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             return ret;
         }
+        #endregion
+
+        #region Import Custom Inventory
+        /// <summary>
+		/// Import a user CustomInventory
+		/// </summary>
+		/// <returns></returns>
+		[HttpPost]
+        [ApiKeyedRoute("import/custominventory")]
+        public async Task<OperationReturnModel<CustomInventoryImportModel>> CustomInventory()
+        {
+            OperationReturnModel<CustomInventoryImportModel> ret = new OperationReturnModel<CustomInventoryImportModel>();
+            try
+            {
+                if (!Request.Content.IsMimeMultipartContent())
+                    throw new InvalidOperationException();
+
+                var provider = new MultipartMemoryStreamProvider();
+                await Request.Content.ReadAsMultipartAsync(provider);
+
+                CustomInventoryImportFileModel fileModel = new CustomInventoryImportFileModel();
+
+                foreach (var content in provider.Contents)
+                {
+                    var file = content;
+                    var paramName = file.Headers.ContentDisposition.Name.Trim('\"');
+                    var buffer = await file.ReadAsByteArrayAsync();
+                    var stream = new MemoryStream(buffer);
+
+                    using (var s = new StreamReader(stream))
+                    {
+                        switch (paramName)
+                        {
+                            case "file":
+                                stream.CopyTo(fileModel.Stream);
+                                fileModel.FileName = file.Headers.ContentDisposition.FileName.Trim('\"');
+                                stream.Seek(0, SeekOrigin.Begin);
+                                fileModel.Contents = s.ReadToEnd();
+                                break;
+                            case "options":
+                                // Figure out what to do here
+                                fileModel = Newtonsoft.Json.JsonConvert.
+                                    DeserializeObject<CustomInventoryImportFileModel>(s.ReadToEnd());
+                                break;
+                        }
+                    }
+                }
+
+                //if (string.IsNullOrEmpty(fileModel.Contents))
+                //    return new ListImportModel() { Success = false, ErrorMessage = "Invalid request" };
+
+                ret.SuccessResponse = importLogic.ImportCustomInventory
+                    (this.AuthenticatedUser, this.SelectedUserContext, fileModel);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("Import Custom Inventory", ex);
+            }
+            return ret;
+        }
+        #endregion
         #endregion
     }
 }
