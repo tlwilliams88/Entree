@@ -1,8 +1,8 @@
 {
-  "name": "Entrée System - Powered by Ben E. Keith",
+  "name": "Entree System - Powered by Ben E. Keith",
   "homepage": "",
   "author": {
-    "name": "Credera",
+    "name": "Ben E. Keith",
     "email": "",
     "href": ""
   },
@@ -115,10 +115,10 @@
   },
   "build": {
     "angular": {
-      "description": "Ben E Keith eCommerce Angular Web App"
+      "description": "Ben E Keith eCommerce Web App"
     },
     "phonegap": {
-      "description": "Phone Gap mobile project"
+      "description": "Ben E Keith eCommerce Mobile App"
     }
   }
 }

@@ -77,6 +77,91 @@ VALUES ('PaymentConfirmationDetail', '', 1, '<tr>
 <td style="font-size:small;text-align:right;">${PaymentAmount:f2}</td>
 </tr>', getdate(), getdate(), 0)
 INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmation', 'Payment Confirmation', 1, '
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii"><style type="text/css" rel="stylesheet">
+body { background-color: #FFFEF2; margin: 0; padding: 0; color: #353334; font-size: 10pt; font-family: Verdana, Tahoma, Calibri, sans-serif; }
+TR.tableHead { COLOR: white; BACKGROUND-COLOR: #0054a3 }
+TR.dataRow { background-color: white; }
+TR.altDataRow { background-color: #e8e5cb; }
+TR.tableFoot { background-color: #e6f3ff; }
+.heading { FONT-WEIGHT: bold; FONT-SIZE: 14pt; FONT-FAMILY: Verdana, Tahoma, Calibri, sans-serif; color: #353334; }
+.appLink { color: blue; text-decoration: underline; }
+</style></head>
+<body>
+<table style="width: 100%;">
+<tr>
+<td>|LOGO|</td>
+<td style="text-align:center;"><h3>Thank you for your payment.</h3></td>
+<td style="text-align:center;">
+Below is a list of the payments paid by {UserName}. The confirmation number for these payments are {ConfirmationId}.</td>
+</tr>
+</table>
+<hr/>
+{PaymentCollection}
+</body></html>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerHeader', '', 1, '<p style="FONT-WEIGHT: bold;">{BankName} - {AccountNumber}</p>
+<table cellpadding="3" cellspacing="0" border="0" width="700">
+<tr class="tableHead">
+<td>Customer </td>
+<td>Ref </td>
+<td>Number </td>
+<td align="right">Ref Date </td>
+<td align="right">Due Date </td>
+<td align="right">Amount </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFirstRowDetail', '', 1, '
+<tr class="dataRow">
+<td width="375">{CustomerNumber}/{CustomerBranch} - {CustomerName} </td>
+<td>{InvoiceType} </td>
+<td>{InvoiceNumber} </td>
+<td align="right">{InvoiceDate:MM/dd/yyyy} </td>
+<td align="right">{DueDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${PaymentAmount:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerNextRowsDetail', '', 1, '
+<tr class="dataRow">
+<td></td>
+<td>{InvoiceType} </td>
+<td>{InvoiceNumber} </td>
+<td align="right">{InvoiceDate:MM/dd/yyyy} </td>
+<td align="right">{DueDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${PaymentAmount:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerAltNextRowsDetail', '', 1, '
+<tr class="altDataRow">
+<td></td>
+<td>{InvoiceType} </td>
+<td>{InvoiceNumber} </td>
+<td align="right">{InvoiceDate:MM/dd/yyyy} </td>
+<td align="right">{DueDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${PaymentAmount:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterAccount', '', 1, '<tr class="tableFoot">
+<td>{BankName} - {AccountNumber} Total </td>
+<td colspan="4">&nbsp; </td>
+<td align="right" nowrap="">${AccountSum:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterCustomer', '', 1, '<tr class="tableFoot">
+<td>{CustomerNumber}/{CustomerBranch} - {CustomerName} Total </td>
+<td colspan="4">&nbsp; </td>
+<td align="right" nowrap="">${CustomerSum:f2} </td>
+</tr>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterGrand', '', 1, '
+<table cellpadding="3" cellspacing="0" border="0" width="700"><tr class="tableFoot">
+<td width="375">Grand total being collected on {ScheduledDate:MM/dd/yyyy} </td>
+<td align="right" nowrap="">${GrandSum:f2} </td>
+</tr></table>', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('MultiPaymentConfirmationCustomerFooterEnd', '', 1, '</table>', getdate(), getdate(), 0)
+INSERT INTO @Templates
 VALUES ('OrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}; {InvoiceNumber}', 1, '{NotifHeader}<table style="width: 100%;">
    <tr>
        <td>Delivery Date: {ShipDate}</td>
