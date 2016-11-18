@@ -170,7 +170,7 @@ angular.module('bekApp')
           var options = {
             format: format,
             data: items,
-            category: category
+            groupby: category
           };
         } else {
           var options = {

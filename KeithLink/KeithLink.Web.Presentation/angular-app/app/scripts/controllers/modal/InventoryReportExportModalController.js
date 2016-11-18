@@ -6,7 +6,8 @@ angular.module('bekApp')
 
   $scope.options = {
     category: false,
-    groupByLabel: false
+    groupByLabel: false,
+    groupBySupplier: false
   };
 
   $scope.formats = [{
@@ -33,14 +34,17 @@ angular.module('bekApp')
     $analytics.eventTrack('Export Inventory Valuation', {category: 'Reports'});
 
     var groupByCategory = $scope.options.category,
-        groupByLabel = $scope.options.groupByLabel;
+        groupByLabel = $scope.options.groupByLabel,
+        groupBySupplier = $scope.options.groupBySupplier;
 
-    if(groupByCategory == true && groupByLabel == false) {
+    if(groupByCategory == true && groupByLabel == false && groupBySupplier == false) {
       ExportService.exportInventoryValueReport(format, items, 'category');
-    } else if(groupByCategory == true && groupByLabel == true) {
+    } else if(groupByCategory == true && groupByLabel == true && groupBySupplier == false) {
       ExportService.exportInventoryValueReport(format, items, 'categorythenlabel');
-    } else if(groupByCategory == false && groupByLabel == true) {
+    } else if(groupByCategory == false && groupByLabel == true && groupBySupplier == false) {
       ExportService.exportInventoryValueReport(format, items, 'label');
+    } else if(groupBySupplier == true) {
+      ExportService.exportInventoryValueReport(format, items, 'supplier');
     } else {
       ExportService.exportInventoryValueReport(format, items);
     }
