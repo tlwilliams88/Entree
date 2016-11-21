@@ -691,7 +691,7 @@ namespace KeithLink.Svc.Impl.Logic
                 colCount++;
             }
 
-            var rows = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Skip(file.IgnoreFirstLine ? 1 : 0);
+            var rows = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Skip(1);
             returnValue = rows
                         .Where(line => !String.IsNullOrWhiteSpace(line))
                         .Select(i => i.Split(delimiter))

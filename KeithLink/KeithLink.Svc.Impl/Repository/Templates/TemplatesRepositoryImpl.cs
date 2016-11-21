@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.Repository.Templates
         public Stream Get(TemplateRequestModel templateRequest)
         {
             Stream strm = null;
-            if(templateRequest != null)
+            if(templateRequest != null && templateRequest.Name != null && templateRequest.Format != null)
             {
                 Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
                 if (templateRequest.Name != null)
@@ -28,6 +28,10 @@ namespace KeithLink.Svc.Impl.Repository.Templates
                                  ("KeithLink.Svc.Impl.Templates.importcustominventory.csv");
                     }
                 }
+            }
+            else
+            {
+                throw new ApplicationException("template request needs to include name and format");
             }
             return strm;
         }
