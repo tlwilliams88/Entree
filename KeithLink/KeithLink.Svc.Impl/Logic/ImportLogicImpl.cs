@@ -652,6 +652,8 @@ namespace KeithLink.Svc.Impl.Logic
         {
             List<CustomInventoryItem> returnValue = new List<CustomInventoryItem>();
 
+            var rows = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
+
             int itemNumberColumn = 0;
             int nameColumn = -1;
             int brandColumn = -1;
@@ -662,59 +664,82 @@ namespace KeithLink.Svc.Impl.Logic
             int casePriceColumn = -1;
             int packagePriceColumn = -1;
             int labelColumn = -1;
-            //See if we can determine which columns the item number and label exist
-            var header = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Take(1).Select(i => i.Split(delimiter).ToList()).FirstOrDefault();
-            int colCount = 0;
-            foreach (var col in header)
+
+            var header = rows.Take(1)
+                             .Select(i => i.Split(delimiter).ToList())
+                             .FirstOrDefault();
+            if(header != null)
             {
-                string replaced = col.Replace("\"", string.Empty);
-                if (replaced.Equals("itemid", StringComparison.CurrentCultureIgnoreCase))
-                    itemNumberColumn = colCount;
-                else if (replaced.Equals("name", StringComparison.CurrentCultureIgnoreCase))
-                    nameColumn = colCount;
-                else if (replaced.Equals("brand", StringComparison.CurrentCultureIgnoreCase))
-                    brandColumn = colCount;
-                else if (replaced.Equals("supplier", StringComparison.CurrentCultureIgnoreCase))
-                    supplierColumn = colCount;
-                else if (replaced.Equals("pack", StringComparison.CurrentCultureIgnoreCase))
-                    packColumn = colCount;
-                else if (replaced.Equals("size", StringComparison.CurrentCultureIgnoreCase))
-                    sizeColumn = colCount;
-                else if (replaced.Equals("each(t or f)", StringComparison.CurrentCultureIgnoreCase))
-                    eachColumn = colCount;
-                else if (replaced.Equals("caseprice", StringComparison.CurrentCultureIgnoreCase))
-                    casePriceColumn = colCount;
-                else if (replaced.Equals("packageprice", StringComparison.CurrentCultureIgnoreCase))
-                    packagePriceColumn = colCount;
-                else if (replaced.Equals("label", StringComparison.CurrentCultureIgnoreCase))
-                    labelColumn = colCount;
-                colCount++;
+                int colCount = 0;
+                foreach (var col in header)
+                {
+                    string replaced = col.Replace("\"", string.Empty);
+                    if (replaced.Equals("itemid", StringComparison.CurrentCultureIgnoreCase))
+                        itemNumberColumn = colCount;
+                    else if (replaced.Equals("name", StringComparison.CurrentCultureIgnoreCase))
+                        nameColumn = colCount;
+                    else if (replaced.Equals("brand", StringComparison.CurrentCultureIgnoreCase))
+                        brandColumn = colCount;
+                    else if (replaced.Equals("supplier", StringComparison.CurrentCultureIgnoreCase))
+                        supplierColumn = colCount;
+                    else if (replaced.Equals("pack", StringComparison.CurrentCultureIgnoreCase))
+                        packColumn = colCount;
+                    else if (replaced.Equals("size", StringComparison.CurrentCultureIgnoreCase))
+                        sizeColumn = colCount;
+                    else if (replaced.Equals("each(t or f)", StringComparison.CurrentCultureIgnoreCase))
+                        eachColumn = colCount;
+                    else if (replaced.Equals("caseprice", StringComparison.CurrentCultureIgnoreCase))
+                        casePriceColumn = colCount;
+                    else if (replaced.Equals("packageprice", StringComparison.CurrentCultureIgnoreCase))
+                        packagePriceColumn = colCount;
+                    else if (replaced.Equals("label", StringComparison.CurrentCultureIgnoreCase))
+                        labelColumn = colCount;
+                    colCount++;
+                }
+            }
+            else
+            {
+                throw new ApplicationException("Problem with header row. Template should be used.");
             }
 
-            var rows = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Skip(1);
-            returnValue = rows
-                        .Where(line => !String.IsNullOrWhiteSpace(line))
-                        .Select(i => i.Split(delimiter))
-                        .Select(l => new CustomInventoryItem()
-                        {
-                            CustomerNumber = catalogInfo.CustomerId,
-                            BranchId = catalogInfo.BranchId,
-                            ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
-                            Name = l[nameColumn].Replace("\"", string.Empty),
-                            Brand = l[brandColumn].Replace("\"", string.Empty),
-                            Label = l[labelColumn].Replace("\"", string.Empty),
-                            Supplier = l[supplierColumn].Replace("\"", string.Empty),
-                            Pack = l[packColumn].Replace("\"", string.Empty),
-                            Size = l[sizeColumn].Replace("\"", string.Empty),
-                            Each = ((l[eachColumn].Replace("\"", string.Empty).Equals
-                                ("t", StringComparison.CurrentCultureIgnoreCase)) ? true : false),
-                            CasePrice = (l[casePriceColumn].Replace("\"", string.Empty).Length > 0) ?
-                                decimal.Parse(l[casePriceColumn].Replace("\"", string.Empty)) : 0,
-                            PackagePrice = (l[packagePriceColumn].Replace("\"", string.Empty).Length > 0) ?
-                                decimal.Parse(l[packagePriceColumn].Replace("\"", string.Empty)) : 0
-                        })
-                        .Where(x => !String.IsNullOrEmpty(x.ItemNumber))
-                        .ToList();
+            var data = rows.Skip(1);
+            if(data == null)
+            {
+                throw new ApplicationException("Need to include custom inventory items to add.");
+            }
+            else
+            {
+                try
+                {
+                    returnValue = data
+                                .Where(line => !String.IsNullOrWhiteSpace(line))
+                                .Select(i => i.Split(delimiter))
+                                .Select(l => new CustomInventoryItem()
+                                {
+                                    CustomerNumber = catalogInfo.CustomerId,
+                                    BranchId = catalogInfo.BranchId,
+                                    ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
+                                    Name = l[nameColumn].Replace("\"", string.Empty),
+                                    Brand = l[brandColumn].Replace("\"", string.Empty),
+                                    Label = l[labelColumn].Replace("\"", string.Empty),
+                                    Supplier = l[supplierColumn].Replace("\"", string.Empty),
+                                    Pack = l[packColumn].Replace("\"", string.Empty),
+                                    Size = l[sizeColumn].Replace("\"", string.Empty),
+                                    Each = ((l[eachColumn].Replace("\"", string.Empty).Equals
+                                        ("t", StringComparison.CurrentCultureIgnoreCase)) ? true : false),
+                                    CasePrice = (l[casePriceColumn].Replace("\"", string.Empty).Length > 0) ?
+                                        decimal.Parse(l[casePriceColumn].Replace("\"", string.Empty)) : 0,
+                                    PackagePrice = (l[packagePriceColumn].Replace("\"", string.Empty).Length > 0) ?
+                                        decimal.Parse(l[packagePriceColumn].Replace("\"", string.Empty)) : 0
+                                })
+                                .Where(x => !String.IsNullOrEmpty(x.ItemNumber))
+                                .ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException(ex.InnerException.Message);
+                }
+            }
 
             return returnValue;
         }
