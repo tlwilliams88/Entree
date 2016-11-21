@@ -16,7 +16,7 @@ ALTER TABLE [List].[CustomInventoryItems] ADD Label nvarchar(150)  NULL
 GO
 
 -- Custom type for passing an array of bigints into stored procedures
-CREATE TYPE BigIntList AS TABLE (Id bigint NOT NULL PRIMARY KEY)
+CREATE TYPE dbo.BigIntList AS TABLE (Id bigint NOT NULL PRIMARY KEY)
 
 GO
 -- Stored Procedure for batch deleting custom inventory items
