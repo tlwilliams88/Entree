@@ -15,17 +15,21 @@ namespace KeithLink.Svc.Impl.Repository.Templates
     {
         public Stream Get(TemplateRequestModel templateRequest)
         {
-            Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
-            if (templateRequest.Name != null)
+            Stream strm = null;
+            if(templateRequest != null)
             {
-                if (templateRequest.Name.Equals("importcustominventory", StringComparison.CurrentCultureIgnoreCase) && 
-                    templateRequest.Format.Equals("csv", StringComparison.CurrentCultureIgnoreCase))
+                Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+                if (templateRequest.Name != null)
                 {
-                    return assembly.GetManifestResourceStream
-                        ("KeithLink.Svc.Impl.Templates.importcustominventory.csv");
+                    if (templateRequest.Name.Equals("importcustominventory", StringComparison.CurrentCultureIgnoreCase) &&
+                        templateRequest.Format.Equals("csv", StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        strm = assembly.GetManifestResourceStream
+                                 ("KeithLink.Svc.Impl.Templates.importcustominventory.csv");
+                    }
                 }
             }
-            return null;
+            return strm;
         }
     }
 }
