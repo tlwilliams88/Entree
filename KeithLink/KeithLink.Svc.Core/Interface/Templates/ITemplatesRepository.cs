@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Template;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Templates
 {
     public interface ITemplatesRepository
     {
-        Stream Get(string name);
+        Stream Get(TemplateRequestModel templateRequest);
     }
 }
