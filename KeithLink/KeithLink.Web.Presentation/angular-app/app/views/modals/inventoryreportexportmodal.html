@@ -13,16 +13,20 @@
           ng-model="exportFormat"
           name="exportFormat" 
           id="exportFormat"
-          required></select>
+          required>
+        </select>
       </div>
     </div>
   </form>
   <span ng-if="selectedFormat == 'pdf'">
     <div>
-      <label><input type="checkbox" ng-model="options.category"/> Total By Contract Category</label>
+      <label><input type="checkbox" ng-model="options.category" ng-disabled="options.groupBySupplier == true"/> Total By Contract Category</label>
     </div>
     <div>
-      <label><input type="checkbox" ng-model="options.groupByLabel"/> Group By Label</label>
+      <label><input type="checkbox" ng-model="options.groupByLabel" ng-disabled="options.groupBySupplier == true"/> Group By Label</label>
+    </div>
+    <div>
+      <label><input type="checkbox" ng-model="options.groupBySupplier" ng-change="options.category = false; options.groupByLabel = false"/> Group By Supplier</label>
     </div>
   </span>
 </div>
