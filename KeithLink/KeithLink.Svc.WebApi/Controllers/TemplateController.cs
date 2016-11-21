@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Interface.Templates;
+using KeithLink.Svc.Core.Models.Template;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,18 +26,22 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// Get a "static" template file
         /// </summary>
-        /// <param name="name">the name of the template</param>
-        /// <returns></returns>
-        [HttpGet]
-        [ApiKeyedRoute("template/{name}")]
-        public HttpResponseMessage Get(string name)
+        [HttpPost]
+        [ApiKeyedRoute("template")]
+        public HttpResponseMessage Get(TemplateRequestModel trequest)
         {
             HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-            result.Content = new StreamContent(_templatesRepo.Get(name));
+            result.Content = new StreamContent(_templatesRepo.Get(trequest));
             result.Content.Headers.ContentDisposition = 
                 new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-
-            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+            if(trequest.Format != null)
+            {
+                if (trequest.Format.Equals("csv", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/csv");
+                }
+                // according to RFC-7231 do no send MIME type for unknown data
+            }
 
             return result;
         }
