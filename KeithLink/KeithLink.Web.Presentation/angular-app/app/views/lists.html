@@ -90,7 +90,7 @@
       Cancel
     </button>
   
-    <div class="btn-group" dropdown is-open="status.listactions" ng-if="!isCustomInventoryList">
+    <div class="btn-group" dropdown is-open="status.listactions">
       <a class="btn btn-lg btn-default dropdown-toggle">
         List Actions <span class="caret text-dark"></span>
       </a>
@@ -443,7 +443,7 @@
                 onStop: 'setIsDragging(false)'}" 
               id="listsTableRows"
               class="highlightRows"
-              ng-click="shiftSelectOtherRows($event, item)"
+              ng-click="shiftSelectOtherRows($event, item, $index)"
               ng-show="!isCustomInventoryList"
               ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">                
            
