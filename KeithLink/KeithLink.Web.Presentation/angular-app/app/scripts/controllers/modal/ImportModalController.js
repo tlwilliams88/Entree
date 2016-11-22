@@ -40,8 +40,8 @@ angular.module('bekApp')
         filetype: 'csv'
       }
 
-      ListService.importNonBEKListItems(file, options).then(function() {
-        goToImportedPage('menu.lists.items', {listId: 'nonbeklist'});
+      ListService.importNonBEKListItems(file, options).then(function(data) {
+        goToImportedPage('menu.lists.items', { listId: 'nonBEKList' });
       });
     } else {
       ListService.importList(file, options).then(function(data) {

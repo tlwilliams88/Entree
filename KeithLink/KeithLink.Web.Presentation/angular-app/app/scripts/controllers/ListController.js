@@ -570,6 +570,7 @@ angular.module('bekApp')
       if($scope.isCustomInventoryList){
         var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true, id: ''});
         ListService.deleteCustomInventoryItems(itemsToDelete).then(function(response) {
+          $scope.forms.listForm.$setPristine();
           $scope.selectedList.items = response.items;
         });
       } else {
