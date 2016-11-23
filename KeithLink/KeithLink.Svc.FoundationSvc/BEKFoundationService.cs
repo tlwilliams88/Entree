@@ -134,7 +134,13 @@ namespace KeithLink.Svc.FoundationSvc
                 PurchaseOrder po = GetPurchaseOrder(userId, cartId);
 
                 PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
-                pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+                pipeLineHelper.RunPipeline(og: po, 
+                                           transacted: true, 
+                                           loggingEnabled: Configuration.EnableLoggingPipeline, 
+                                           pipelineName: "Checkout", 
+                                           pipelinePath: string.Format
+                                               ("{0}\\pipelines\\checkout.pcf", 
+                                                HttpContext.Current.Server.MapPath(".")));
 
                 po.TrackingNumber = GetNextControlNumber();
                 po.Status = "Submitted";
@@ -178,7 +184,13 @@ namespace KeithLink.Svc.FoundationSvc
                 }
 
                 PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
-                pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+                pipeLineHelper.RunPipeline(og: basket, 
+                                           transacted: true, 
+                                           loggingEnabled: Configuration.EnableLoggingPipeline, 
+                                           pipelineName: "Checkout", 
+                                           pipelinePath: string.Format
+                                               ("{0}\\pipelines\\checkout.pcf", 
+                                                HttpContext.Current.Server.MapPath(".")));
 
                 basket.TrackingNumber = GetNextControlNumber();
                 basket["OriginalOrderNumber"] = basket.TrackingNumber;
@@ -245,7 +257,13 @@ namespace KeithLink.Svc.FoundationSvc
                 }
 
                 PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
-                pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+                pipeLineHelper.RunPipeline(og: po,
+                                           transacted: true,
+                                           loggingEnabled: false,
+                                           pipelineName: "Checkout",
+                                           pipelinePath: string.Format
+                                               ("{0}\\pipelines\\checkout.pcf", 
+                                                HttpContext.Current.Server.MapPath(".")));
 
                 po.Save();
                 return po.TrackingNumber;
