@@ -473,6 +473,20 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return RetrievePagedResults(paging, searchTerm, whereClause, searchType);
         }
 
+        public PagedResults<Customer> GetPagedCustomersForBranches(PagingModel paging, List<string> branches, string searchTerm, CustomerSearchType searchType)
+        {
+            List<string> branchList = new List<string>();
+
+            foreach (string branch in branches)
+            {
+                branchList.Add(string.Format("'{0}'", branch));
+            }
+
+            var whereClause = string.Format("WHERE u_organization_type = '0' AND u_branch_number IN ({0})", String.Join(",", branchList));
+
+            return RetrievePagedResults(paging, searchTerm, whereClause, searchType);
+        }
+
         /// <summary>
         /// Search for customers that belong to the specified DSM
         /// </summary>
