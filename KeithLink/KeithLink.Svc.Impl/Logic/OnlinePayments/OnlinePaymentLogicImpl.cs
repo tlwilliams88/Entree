@@ -667,9 +667,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             _queue.PublishToDirectedExchange(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
                                   Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, 
                                   Configuration.RabbitMQExchangeNotificationV2, Constants.RABBITMQ_NOTIFICATION_PAYMENTNOTIFICATION_ROUTEKEY);
-
-            // To be safe; reset all cacheitems in the invoice headers group upon paying invoices
-            _cacheRepo.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
         }
 
         public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
