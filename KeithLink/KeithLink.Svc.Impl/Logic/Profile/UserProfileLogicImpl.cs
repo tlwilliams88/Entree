@@ -567,7 +567,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || ((user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) || user.RoleName.Equals(Constants.ROLE_NAME_MARKETING)) && user.BranchId != Constants.BRANCH_GOF))
                 {
-                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms, searchType);
+                    if (user.BranchId.Equals(Constants.BRANCH_FLR, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        List<string> branches = new List<string>();
+
+                        branches.Add(user.BranchId);
+                        branches.Add(Constants.BRANCH_FAR);
+
+                        returnValue = _customerRepo.GetPagedCustomersForBranches(paging, branches, searchTerms, searchType);
+                    } else
+                    {
+                        returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms, searchType);
+                    }
 
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || ((user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) || user.RoleName.Equals(Constants.ROLE_NAME_MARKETING)) && user.BranchId == Constants.BRANCH_GOF))
