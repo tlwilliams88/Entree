@@ -390,11 +390,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             catch { }
         }
 
-        private string GetInvoiceHeadersCacheKey(FilterInfo customerFilter, FilterInfo statusFilter)
-        {
-            return String.Format("InvoiceHeaders_{0}_{1}", JsonConvert.SerializeObject(customerFilter), JsonConvert.SerializeObject(statusFilter));
-        }
-
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(
             PagingModel paging,
             List<Core.Models.Profile.Customer> customers,
@@ -402,21 +397,13 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             out List<EFInvoice.InvoiceHeader> kpayInvoices)
         {
             FilterInfo customerFilter = BuildCustomerFilter(customers);
-            List<EFInvoice.InvoiceHeader> cachedInvoiceHeaders = _cacheRepo.GetItem<List<EFInvoice.InvoiceHeader>>
-                (CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetInvoiceHeadersCacheKey(customerFilter, statusFilter));
-            if(cachedInvoiceHeaders == null)
-            {
-                kpayInvoices = _invoiceRepo.ReadAllHeaders()
-                                               .AsQueryable()
-                                               .Filter(customerFilter, null)
-                                               .Filter(statusFilter, null)
-                                               .ToList();
-                _cacheRepo.AddItem<List<EFInvoice.InvoiceHeader>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
-                    GetInvoiceHeadersCacheKey(customerFilter, statusFilter), TimeSpan.FromHours(2), kpayInvoices);
-            }else
-            {
-                kpayInvoices = cachedInvoiceHeaders;
-            }
+
+            kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                       .AsQueryable()
+                                       .Filter(customerFilter, null)
+                                       .Filter(statusFilter, null)
+                                       .ToList();
+
             PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
                                                                    .AsQueryable<InvoiceModel>()
                                                                    .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
@@ -680,9 +667,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             _queue.PublishToDirectedExchange(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
                                   Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, 
                                   Configuration.RabbitMQExchangeNotificationV2, Constants.RABBITMQ_NOTIFICATION_PAYMENTNOTIFICATION_ROUTEKEY);
-
-            // To be safe; reset all cacheitems in the invoice headers group upon paying invoices
-            _cacheRepo.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
         }
 
         public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
