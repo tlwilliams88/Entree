@@ -288,7 +288,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 #else
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-            builder.RegisterType<GenericSubscriptionQueueRepositoryImpl>().As<IGenericSubsriptionQueueRepository>();
+            builder.RegisterType<GenericSubscriptionQueueRepositoryImpl>().As<IGenericSubscriptionQueueRepository>();
 #endif
 
             AddDatabaseDependencies(builder, type);
