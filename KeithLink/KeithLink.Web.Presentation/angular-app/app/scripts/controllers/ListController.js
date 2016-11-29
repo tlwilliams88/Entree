@@ -791,7 +791,7 @@ angular.module('bekApp')
           if(item.editLabel && item.isEditing){
             item.label = item.editLabel;
           }
-        })
+        });
       ListService.saveCustomInventoryList(itemsToSave).then(function(resp){
         $scope.selectedList = resp;
         $scope.isCustomInventoryList = true;
@@ -805,7 +805,7 @@ angular.module('bekApp')
       } else {
         ListService.deleteCustomInventoryItem(listitem.id).then(function(){
           $scope.getCustomInventoryList();
-        })
+        });
       }
 
     };
@@ -839,7 +839,7 @@ angular.module('bekApp')
         controller: 'ExportModalController',
         resolve: {
           location: function() {
-            return {category:'Lists', action:'Export List'}
+            return {category:'Lists', action:'Export List'};
           },
           headerText: function () {
             return 'List ' + $scope.selectedList.name;

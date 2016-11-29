@@ -31,7 +31,7 @@ angular.module('bekApp')
             $scope.piecesCount = $scope.piecesCount + parseInt(item.quantity);
           }          
         });
-    };
+    }
  
     // redirect to url with correct parameters
     var basketId;
@@ -572,7 +572,7 @@ angular.module('bekApp')
       if(($scope.addToOrderForm.$dirty || $scope.tempCartName) && $scope.addToOrderForm.$valid){
         $scope.saveAndRetainQuantity().then(function(){
           redirect(listId, cart);
-        })      
+        }); 
       } else if($scope.addToOrderForm.$valid) {
         redirect(listId, cart);
       } else {
@@ -644,7 +644,7 @@ angular.module('bekApp')
           currentPage: $scope.retainedPage});
       });
  
-    };
+    }
  
     $scope.unsavedChangesConfirmation = function(){
       if($scope.addToOrderForm.$dirty){
@@ -807,7 +807,7 @@ angular.module('bekApp')
               duplicateItem.forEach(function(duplicateitem){
                 duplicateitem.quantity = '';
                 duplicateitem.extPrice = 0.00;
-              })
+              });
 
               $scope.lastDuplicateItem.quantity = itemInCart.quantity;
               $scope.lastDuplicateItem.extprice = PricingService.getPriceForItem($scope.lastDuplicateItem);
@@ -823,7 +823,7 @@ angular.module('bekApp')
             listitem.extPrice = 0.00;
           }
 
-        })
+        });
       } else {
 
         $scope.selectedList.items.forEach(function(listitem){
@@ -831,7 +831,7 @@ angular.module('bekApp')
             listitem.quantity = '';
             listitem.extPrice = 0.00;
           }
-        })
+        });
 
       }
     };

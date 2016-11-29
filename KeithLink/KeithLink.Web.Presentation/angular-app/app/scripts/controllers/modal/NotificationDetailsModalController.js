@@ -20,31 +20,31 @@ angular.module('bekApp')
   };
 
   $scope.printNotificationModal =  function () {
-    var originalNotification = document.getElementById("printThis - " + notification.id),
+    var originalNotification = document.getElementById('printThis - ' + notification.id),
         printNotification;
 
     printElement(originalNotification);
     
-    printNotification = document.querySelector("#printSection");
+    printNotification = document.querySelector('#printSection');
     
     window.print();
 
-    document.querySelector("#printSection").remove();
+    document.querySelector('#printSection').remove();
   };
 
   function printElement(elem) {
       var domClone = elem.cloneNode(true),
-          $printSection = document.getElementById("printSection");
+          $printSection = document.getElementById('printSection');
       
       if (!$printSection) {
-          var $printSection = document.createElement("div");
-          $printSection.id = "printSection";
+          var $printSection = document.createElement('div');
+          $printSection.id = 'printSection';
           document.body.appendChild($printSection);
       }
 
       $(document.body).addClass('NotificationPrinting');
       
-      $printSection.innerHTML = "";
+      $printSection.innerHTML = '';
       
       $printSection.appendChild(domClone);
   }

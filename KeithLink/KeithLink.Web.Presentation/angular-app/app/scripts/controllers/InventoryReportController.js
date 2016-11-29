@@ -199,7 +199,7 @@ angular.module('bekApp')
               $scope.addRow(item);
             });          
             $scope.sortTable('position', true);
-          })
+          });
         } else {
             ListService.getListWithItems(listId).then(function(listFound) {
             $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';

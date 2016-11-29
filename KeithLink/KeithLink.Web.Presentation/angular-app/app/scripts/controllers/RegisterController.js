@@ -61,7 +61,7 @@ angular.module('bekApp')
   };
 
   $scope.checkForInternalEmail = function(email) {    
-    if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === "@benekeith.com"){
+    if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === '@benekeith.com'){
       $scope.isInternalEmail = true;
       $scope.$apply(); // Needed to use $apply to update view
     }else{

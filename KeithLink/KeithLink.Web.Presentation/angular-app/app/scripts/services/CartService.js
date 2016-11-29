@@ -386,7 +386,7 @@ angular.module('bekApp')
             var dates = data.successResponse;
             if(dates.shipdates.length > 0){
             var cutoffDate = DateService.momentObject(dates.shipdates[0].cutoffdatetime).format();
-            var now = DateService.momentObject().tz("America/Chicago").format();
+            var now = DateService.momentObject().tz('America/Chicago').format();
 
             var invalidSelectedDate = (now > cutoffDate) ? true : false;
             if(invalidSelectedDate){

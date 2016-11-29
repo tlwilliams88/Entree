@@ -487,7 +487,7 @@ angular.module('bekApp')
         controller: 'ExportModalController',
         resolve: {
           location: function() {
-            return {category:'Cart', action:'Export Cart'}
+            return {category:'Cart', action:'Export Cart'};
           },
           headerText: function () {
             return 'Orders';

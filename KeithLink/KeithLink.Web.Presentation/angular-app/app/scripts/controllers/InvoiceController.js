@@ -12,7 +12,6 @@ angular.module('bekApp')
 
   var currentUserSelectedContext = {};
   var customers = [];
-  $scope.selectedFilterViewName;
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
   $scope.areAllSelected = false;

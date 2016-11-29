@@ -9,5 +9,5 @@ angular.module('bekApp')
                 scope.$emit('repeat-ended');
             }
         }
-    }
+    };
 });

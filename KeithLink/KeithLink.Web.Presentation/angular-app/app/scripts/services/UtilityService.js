@@ -25,7 +25,7 @@ angular.module('bekApp')
       generateName: function(nameText, collection) {
         var namesList = [];
         //Select the numeric portion of the name. Can be numeric indicator for lists or datetime of creation for carts
-        var number = (nameText === "New List") ? 0 : DateService.momentObject().format(Constants.dateFormat.monthDayYearTimeDashes);
+        var number = (nameText === 'New List') ? 0 : DateService.momentObject().format(Constants.dateFormat.monthDayYearTimeDashes);
 
         angular.forEach(collection, function(item) {
           namesList.push(item.name);
@@ -36,7 +36,7 @@ angular.module('bekApp')
         while (isNameUsed) {
           duplicates++;
           //Increment indicator for lists or increment indicator and append to date for carts
-          tempNumber = (nameText === "New List") ? duplicates : number + ' - '+duplicates;
+          tempNumber = (nameText === 'New List') ? duplicates : number + ' - ' + duplicates;
           isNameUsed = isUsedName(namesList, nameText, tempNumber);
         }
         return nameText + ' ' + tempNumber;

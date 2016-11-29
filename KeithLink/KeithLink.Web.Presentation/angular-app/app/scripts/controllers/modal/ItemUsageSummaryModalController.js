@@ -10,7 +10,7 @@ angular.module('bekApp')
       $scope.item = item;
        // used to determine if the item has order history in the view
       $scope.orderHistory =[];
-      $scope.month = {date:'',number:''}
+      $scope.month = {date:'',number:''};
       var i = 0;
         for (var key in item.orderhistory) {
 	        if (item.orderhistory.hasOwnProperty(key)) {

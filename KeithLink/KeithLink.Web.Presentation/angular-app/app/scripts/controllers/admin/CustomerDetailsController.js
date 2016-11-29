@@ -40,7 +40,7 @@ angular.module('bekApp')
         $scope.preferencesForm.$setPristine();
         $scope.canEditNotifications = false;
       });
-    })
+    });
   };
 
   $scope.restoreDefaults = function (customerNumber, branchId) {
