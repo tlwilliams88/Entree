@@ -13,7 +13,7 @@ angular.module('bekApp')
         if(scope.$modelValue || scope.$modelValue === undefined){
 
              var cutoffDate = DateService.momentObject(viewValue).format();             
-             var now = DateService.momentObject().tz("America/Chicago").format();
+             var now = DateService.momentObject().tz('America/Chicago').format();
 
           if (now < cutoffDate) {
             

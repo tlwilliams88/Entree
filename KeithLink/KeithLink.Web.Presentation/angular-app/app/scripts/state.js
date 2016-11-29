@@ -111,7 +111,7 @@ angular.module('bekApp')
     .state('menu.catalog.home', {
       url: '',
       templateUrl: function($stateParams) {
-          if ($stateParams.catalogType == "UNFI") {
+          if ($stateParams.catalogType == 'UNFI') {
               return 'views/unfi-catalog.html';
           } else {
               return 'views/catalog.html';
@@ -225,7 +225,7 @@ angular.module('bekApp')
              ListService.getParamsObject(params, 'lists').then(function(storedParams){
              $stateParams.sortingParams = storedParams;
              params = storedParams;
-            })
+            });
           }
           if(listIdtoBeUsed == 'nonbeklist'){
             return ListService.getCustomInventoryList();
@@ -392,7 +392,7 @@ angular.module('bekApp')
               ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
                 $stateParams.sortingParams = storedParams; 
                 params = storedParams;
-              })
+              });
             }   
          
           return ListService.getList(validListId, params);
