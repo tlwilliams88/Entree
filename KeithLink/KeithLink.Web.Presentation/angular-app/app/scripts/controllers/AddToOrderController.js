@@ -17,6 +17,9 @@ angular.module('bekApp')
         if(!$scope.tempCartName){
           $scope.saveAndRetainQuantity();
         } else {
+          if($scope.combinedItems){
+            $scope.selectedCart.items = $scope.combinedItems;
+          }
           $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
         }
  
