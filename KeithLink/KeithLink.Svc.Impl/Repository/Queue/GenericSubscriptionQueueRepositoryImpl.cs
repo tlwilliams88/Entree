@@ -74,7 +74,7 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
 
                         while (_processing == true && _restartProcessing == false)
                         {
-                            // If there was an exception from Rabbit and the channel closes, re-subscribe.
+                            // If there was an exception from Rabbit and the channel closes, mark it to re-subscribe.
                             if (channel.CloseReason != null)
                             {
                                 _restartProcessing = true;
@@ -95,7 +95,7 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
                     }
                 }
             }
-            catch(Exception ex)
+            catch(Exception ex) // if connection was closed while processing; we see an exception here
             {
                 _logger.WriteErrorLog("GenericSubscriptionQueueRepositoryImpl_StartProcessing", ex);
             }
