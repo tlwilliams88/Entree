@@ -151,10 +151,22 @@ namespace KeithLink.Svc.FoundationSvc
 			PipelineExecutionResult res;
 			PipelineInfo pipeInfo = CreatePipelineInfo(pipelineName);
 
-			pipeline = new CommerceServer.Core.Runtime.Pipelines.OrderPipeline(pipelineName, pipelinePath, loggingEnabled, pipelineName + ".log", transacted);
+            // we attribute the pipeline's run with a log name and it needs to be the absolute path
+            // also, it will overwrite the log if that file exists, so we add the orderform's name to provide some
+            // sort of scheme that won't overwrite every log
+            string pipelineLog = string.Format("{0}\\log\\{1}_{2}.log", 
+                                               pipelinePath.Substring(0, pipelinePath.LastIndexOf("\\")),
+                                               og.OrderForms[0].ParentOrderGroup.Name,
+                                               pipelineName);
+			pipeline = 
+                new CommerceServer.Core.Runtime.Pipelines.OrderPipeline(name: pipelineName, 
+                                                                        pipelineConfigPath: pipelinePath, 
+                                                                        loggingEnabled: loggingEnabled, 
+                                                                        logPath: pipelineLog, 
+                                                                        transactional: transacted);
 			res = og.RunPipeline(pipeInfo, pipeline);
 
-			CheckPipelineResultAndPrintWarnings(og, res);
+            CheckPipelineResultAndPrintWarnings(og, res);
 
 			//Calling dispose on PipelineInfo to release any unmanaged resources
 			pipeInfo.Dispose();
