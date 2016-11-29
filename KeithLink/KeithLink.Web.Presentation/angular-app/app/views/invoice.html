@@ -249,7 +249,7 @@
                     <span ng-if="userCanPayInvoice">
                       <span style="padding-right:10px;">Scheduled Date:</span> 
                       <a 
-                        ng-class="{'no-display-icon' : ((invoice.statusdescription === 'Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)))}" 
+                        ng-class="{'no-display' : ((invoice.statusdescription === 'Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)))}" 
                         ng-if="invoice.userCanPayInvoice && !invoice.showDatePicker && !isInternalAccountAdminUser"
                         ng-mouseenter="invoice.showDatePicker=true"
                         class="icon-calendar large-icon text-right margin-right-10">

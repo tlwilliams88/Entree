@@ -99,8 +99,8 @@ angular.module('bekApp')
         lastSingleClick,
         selectionList;
 
-    $scope.shiftSelectOtherRows = function(evt, item){
-      selectionList = $scope.selectedList.items.slice($scope.startingPoint, $scope.selectedList.items.length);
+    $scope.shiftSelectOtherRows = function(evt, item, index){
+      selectionList = $scope.selectedList.items.slice(0, $scope.selectedList.items.length);
       if (evt.shiftKey) {
         $scope.rangeSelected = true;
         if (lastSingleClick != undefined) {
@@ -569,7 +569,10 @@ angular.module('bekApp')
 
       if($scope.isCustomInventoryList){
         var itemsToDelete = $filter('filter')($scope.selectedList.items, {isSelected: true, id: ''});
-        ListService.deleteCustomInventoryItems(itemsToDelete);
+        ListService.deleteCustomInventoryItems(itemsToDelete).then(function(response) {
+          $scope.forms.listForm.$setPristine();
+          $scope.selectedList.items = response.items;
+        });
       } else {
         $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
           if(item.isSelected){
@@ -670,7 +673,12 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', custominventoryitemid: '0'});
+      if($scope.isCustomInventoryList){
+        return $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
+      } else {
+        return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', catalog_id:'!CUSTOM'});
+      }
+      
     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
@@ -698,7 +706,7 @@ angular.module('bekApp')
       if($scope.selectedList.iscustominventory){
         $scope.startingPoint = 0;
       } 
-      angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint) , function(item, index) {
+      angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.selectedList.items.length) , function(item, index) {
         if (item.itemnumber) {      
           item.isSelected = !allSelected;
         }

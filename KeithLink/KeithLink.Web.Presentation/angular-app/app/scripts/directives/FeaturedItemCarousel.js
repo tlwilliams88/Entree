@@ -31,9 +31,12 @@ angular.module('bekApp')
           return 'views/directives/featureditemcarousel.html';
         // }
       },
-      link: function(scope, elem, attr) {
+      link: function(scope, elem, attr, MarketingService) {
         scope.openExternalLink = $rootScope.openExternalLink;
         scope.isCatalog = attr.catalog == 'true' ? true : false;
+        scope.storePromoItemInformation = function(targeturltext, id){
+          MarketingService.storeMarketingUserInteractionInformation(targeturltext, id);
+        };
       }
     };
 

@@ -283,6 +283,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             userPushNotificationDevice.ProviderToken = deviceRegistrationModel.ProviderToken;
             userPushNotificationDevice.ProviderEndpointId = _pushNotificationMessageProvider.RegisterRecipient(userPushNotificationDevice);
+            userPushNotificationDevice.Enabled = true;
 
             _userPushNotificationDeviceRepository.CreateOrUpdate(userPushNotificationDevice);
             _uow.SaveChanges();
