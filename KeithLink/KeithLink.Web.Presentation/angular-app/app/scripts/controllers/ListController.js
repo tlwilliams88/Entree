@@ -673,7 +673,12 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', custominventoryitemid: '0'});
+      if($scope.isCustomInventoryList){
+        return $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
+      } else {
+        return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', catalog_id:'!CUSTOM'});
+      }
+      
     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
