@@ -392,18 +392,16 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(
             PagingModel paging,
-            List<Core.Models.Profile.Customer> customers,
+            List<Core.Models.Profile.Customer> customers, // customers will always be a list with 1 customer
             FilterInfo statusFilter,
             out List<EFInvoice.InvoiceHeader> kpayInvoices)
         {
             FilterInfo customerFilter = BuildCustomerFilter(customers);
-
             kpayInvoices = _invoiceRepo.ReadAllHeaders()
-                                       .AsQueryable()
-                                       .Filter(customerFilter, null)
-                                       .Filter(statusFilter, null)
-                                       .ToList();
-
+                                           .AsQueryable()
+                                           .Filter(customerFilter, null)
+                                           .Filter(statusFilter, null)
+                                           .ToList();
             PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
                                                                    .AsQueryable<InvoiceModel>()
                                                                    .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
@@ -423,7 +421,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 GetInvoicePONumber(invoice);
 
                 // To help the UI, we pull in the bank accounts that can be used to pay an invoice here.
-                invoice.Banks = GetAllBankAccounts(new UserSelectedContext() { BranchId=invoice.BranchId, CustomerId=invoice.CustomerNumber });
+                invoice.Banks = GetAllBankAccounts(new UserSelectedContext() { BranchId = invoice.BranchId, CustomerId = invoice.CustomerNumber });
             }
 
             if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
@@ -447,8 +445,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 pagedInvoices.TotalResults = pagedInvoices.Results.Count;
             }
 
-            if ((paging != null) && 
-                (paging.Sort != null) && 
+            if ((paging != null) &&
+                (paging.Sort != null) &&
                 (paging.Sort.Count == 1) &&
                 (paging.Sort[0].Field.Equals
                     (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
@@ -623,7 +621,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 throw new ApplicationException("Payments failed validation");
             }
 
-
             foreach (var payment in payments)
             {
                 var testInvoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
@@ -634,7 +631,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
                 if (!payment.PaymentDate.HasValue) { payment.PaymentDate = DateTime.Now; }
                 payment.ConfirmationId = (int)confId;
-                payment.UserName = emailAddress;
 
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
                 {
