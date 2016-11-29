@@ -15,6 +15,10 @@ namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IListLogic {
         long? AddItem(UserProfile user, UserSelectedContext catalogInfo, long listId, ListItemModel item);
 
+        long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, long listId, long customInventoryItemId);
+
+        List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<long> customInventoryItemIds);
+
         ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
 
         void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote);

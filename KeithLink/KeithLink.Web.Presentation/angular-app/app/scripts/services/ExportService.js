@@ -165,12 +165,12 @@ angular.module('bekApp')
           });
       },
 
-      exportInventoryValueReport: function(format, items, totalByCategory) {
-        if(totalByCategory){
+      exportInventoryValueReport: function(format, items, category) {
+        if(category){
           var options = {
             format: format,
             data: items,
-            groupby: 'category'
+            groupby: category
           };
         } else {
           var options = {
@@ -182,6 +182,12 @@ angular.module('bekApp')
         return $http.post('/report/inventoryvalue', options, { responseType: 'arraybuffer' }).success(function(data, status, headers) {
           downloadFile(data, status, headers, options.format, '/report/inventoryvalue');
         });
+      },
+
+      downloadNonBEKTemplate: function(url, body) {
+        return $http.post(url, body, { responseType: 'arraybuffer' }).then(function(resp) {
+          downloadFile(resp.data, resp.status, resp.headers, 'csv', '/template');
+        })
       },
 
       print: function(printPromise) {

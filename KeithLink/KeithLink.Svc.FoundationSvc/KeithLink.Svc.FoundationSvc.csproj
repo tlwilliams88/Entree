@@ -217,6 +217,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="BEKFoundationService.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BasketQueryPoHelper.cs" />
     <Compile Include="Extensions\OrganizationAddressesLoader.cs" />

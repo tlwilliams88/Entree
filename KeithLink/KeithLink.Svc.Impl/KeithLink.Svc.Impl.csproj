@@ -152,6 +152,10 @@
       <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.Web.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Dapper, Version=1.50.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.2\lib\net45\Dapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DocumentFormat.OpenXml">
       <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
     </Reference>
@@ -278,12 +282,14 @@
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="Helpers\ContractInformationHelper.cs" />
+    <Compile Include="Helpers\CustomInventoryHelper.cs" />
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\OrderSubmissionHelper.cs" />
     <Compile Include="Helpers\ProfileHelper.cs" />
     <Compile Include="Helpers\StopWatchHelper.cs" />
     <Compile Include="Helpers\UserContextEqualityComparer.cs" />
+    <Compile Include="Logic\ApplicationHealth\ApplicationHealthLogicImpl.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
@@ -357,6 +363,7 @@
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
     <Compile Include="Repository\Customers\InternalUserAccessRepository.cs" />
+    <Compile Include="Repository\DataConnection\DapperDatabaseConnection.cs" />
     <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.cs" />
     <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.Designer.cs">
       <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
@@ -390,11 +397,11 @@
     <Compile Include="Repository\EF\Migrations\201607291615377_Create additional index on user message.Designer.cs">
       <DependentUpon>201607291615377_Create additional index on user message.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.cs" />
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.Designer.cs">
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericSubscriptionQueueRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
@@ -831,6 +838,7 @@
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
+    <Compile Include="Repository\Templates\TemplatesRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
@@ -873,6 +881,10 @@
     <Compile Include="Tasks\LimitedConcurrencyLevelTaskScheduler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\InventoryValuationBySupplier.rdlc" />
+    <EmbeddedResource Include="Reports\InventoryValuationByCategory.rdlc" />
+    <EmbeddedResource Include="Reports\InventoryValuationByContractCategoryThenLabel.rdlc" />
+    <EmbeddedResource Include="Reports\InventoryValuationByLabel.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByContractCategory.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">
       <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
@@ -1031,6 +1043,7 @@
     </None>
     <None Include="Service References\com.benekeith.ShipDateService\shipdate.wsdl" />
     <None Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
+    <EmbeddedResource Include="Templates\importcustominventory.csv" />
     <None Include="Unity.config" />
     <None Include="Web.config">
       <SubType>Designer</SubType>

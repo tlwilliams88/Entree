@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Logic.ContentManagement {
         {
             _audit.WriteToAuditLog(
                 Common.Core.Enumerations.AuditType.MarketingCampaignClicked, 
-                user.UserName,
+                user.EmailAddress,
                 string.Format("customer {0}, campaign {1}", JsonConvert.SerializeObject(context), JsonConvert.SerializeObject(clicked))
                 );
             return true;

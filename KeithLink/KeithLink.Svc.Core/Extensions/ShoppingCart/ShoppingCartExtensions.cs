@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Extensions.ShoppingCart {
                 n.ItemNumber = i.ItemNumber;
                 n.Name = i.Name;
                 n.Brand = i.Brand;
-                n.Category = i.CategoryName;
+                n.Category = i.ItemClass;
                 n.PackSize = i.PackSize;
                 if (i.Notes != null) {
                     n.Notes = i.Notes;

@@ -1606,6 +1606,7 @@
             <TablixMember />
           </TablixMembers>
         </TablixRowHierarchy>
+        <KeepTogether>true</KeepTogether>
         <DataSetName>DataSet1</DataSetName>
         <Top>1.82986in</Top>
         <Height>1.25in</Height>
@@ -1639,7 +1640,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Category</Value>
+                              <Value>Contract Category</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>

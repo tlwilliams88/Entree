@@ -222,13 +222,14 @@
     <None Include="Scripts\v1.4.1.sql" />
     <None Include="Scripts\v1.5.0.sql" />
     <None Include="Scripts\v1.6.0.sql" />
-    <Build Include="ETL\Stored Procedures\PurgeInternalUserAccess.sql" />
     <None Include="Scripts\v1.11.0.sql" />
     <None Include="Scripts\matt.local.configuration.sql" />
     <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.Beta.sql" />
     <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.Production.sql" />
     <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.local.sql" />
     <None Include="Scripts\v1.11 Change Configuration.AppSettings.Bootstrap.QA.sql" />
+    <None Include="Scripts\v1.12.0-up.sql" />
+    <None Include="Scripts\v1.12.0-down.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CommerceServer\BEK_Commerce_profiles_v1.4.1.dacpac" />

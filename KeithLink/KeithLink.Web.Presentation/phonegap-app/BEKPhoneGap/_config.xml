@@ -30,21 +30,21 @@
     <allow-intent href="tel:*" />
 
     <!--Push Plugin -->
-    <plugin name="phonegap-plugin-push" spec="1.5.3" source="npm">
+<!--     <plugin name="phonegap-plugin-push" spec="1.5.3" source="npm">
         <param name="SENDER_ID" value="1013977805145" />
-    </plugin>
+    </plugin> -->
 
     <!-- Used http://ticons.fokkezb.nl/ to generate icons and splash screens -->
 
     <!-- Icons -->
     <icon src="www/icon.png" />
     <platform name="android">
-        <icon src="www/res/icon/android/icon-36-ldpi.png"     gap:density="ldpi"  />
-        <icon src="www/res/icon/android/icon-48-mdpi.png"     gap:density="mdpi"  />
-        <icon src="www/res/icon/android/icon-72-hdpi.png"     gap:density="hdpi"  />
-        <icon src="www/res/icon/android/icon-96-xhdpi.png"    gap:density="xhdpi" />
-        <icon src="www/res/icon/android/icon-144-xxhdpi.png"  gap:density="xxhdpi" />
-        <icon src="www/res/icon/android/icon-192-xxxhdpi.png" gap:density="xxxhdpi" />
+        <icon src="www/res/icon/android/icon-36-ldpi.png"  density="ldpi"  />
+        <icon src="www/res/icon/android/icon-48-mdpi.png"  density="mdpi"  />
+        <icon src="www/res/icon/android/icon-72-hdpi.png"  density="hdpi"  />
+        <icon src="www/res/icon/android/icon-96-xhdpi.png" density="xhdpi" />
+        <icon src="www/res/icon/android/icon-144-xxhdpi.png" density="xxhdpi" />
+        <icon src="www/res/icon/android/icon-192-xxxhdpi.png" density="xxxhdpi" />
     </platform>
     <platform name="ios">
         <!-- iOS 8.0+ -->

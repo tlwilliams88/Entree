@@ -48,6 +48,9 @@ angular.module('bekApp')
           } else if (LocalStorage.getTempBranch()) {
             LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
           }
+        }],
+        mandatoryMessages: ['NotificationService', function(NotificationService) {
+          return NotificationService.mandatoryMessages;
         }]
       }
     })
@@ -73,7 +76,8 @@ angular.module('bekApp')
           return BranchService.getBranches();
         }]
       }
-    })        .state('menu.applicationsettings', {
+    })        
+    .state('menu.applicationsettings', {
       url: '/applicationsettings/',
       templateUrl: 'views/applicationsettings.html',
       controller: 'ApplicationSettingsController',
@@ -195,7 +199,7 @@ angular.module('bekApp')
           var params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'};
    
           ListService.lists.forEach(function(list){
-            if(last && list.listid === last.listId){
+            if(last && last.listId && list.listid === last.listId.listid){
                stillExists = true;
                var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
                if(last.timeset < timeoutDate){         
@@ -205,14 +209,14 @@ angular.module('bekApp')
           });
 
           var listIdtoBeUsed = '';
-          if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
+          if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
              last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
              LocalStorage.setLastList(last);
-             listIdtoBeUsed = last.listId;
+             listIdtoBeUsed = last.listId.listid ? last.listId.listid : last.listId;
           }
           else{
              LocalStorage.setLastList({});
-             listIdtoBeUsed = validListId
+             listIdtoBeUsed = validListId;
            }
 
           var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
@@ -222,8 +226,12 @@ angular.module('bekApp')
              $stateParams.sortingParams = storedParams;
              params = storedParams;
             })
-          } 
+          }
+          if(listIdtoBeUsed == 'nonbeklist'){
+            return ListService.getCustomInventoryList();
+          } else {
             return ListService.getList(listIdtoBeUsed, params);
+            }
         
         }]
       }
@@ -603,7 +611,12 @@ angular.module('bekApp')
       controller: 'CustomerGroupDashboardController',
       data: {
         authorize: 'canViewCustomerGroupDashboard'
-      }
+      },
+      resolve : {
+        currentUserProfile : ['UserProfileService', function(UserProfileService){
+        return UserProfileService.getCurrentUserProfile();
+      }]
+      } 
     })
     .state('menu.admin.customergroup', {
       url: 'customergroup/',

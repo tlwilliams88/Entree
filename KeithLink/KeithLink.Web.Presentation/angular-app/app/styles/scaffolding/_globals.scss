@@ -109,7 +109,7 @@ html, body {
   visibility: hidden;
 }
 
-.no-display-icon{
+.no-display{
   display: none;
 }
 
@@ -131,4 +131,12 @@ html, body {
 
 .block-display {
   display:block;
+}
+
+.padding-left-15 {
+  padding-left:15px;
+}
+
+.padding-left-10 {
+  padding-left: 10px;
 }

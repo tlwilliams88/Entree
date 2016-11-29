@@ -9,25 +9,27 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       $filter,
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService // bek custom services
+      CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
+      mandatoryMessages
     ) {
 
   $scope.$state = $state;
   $scope.isMobile = UtilityService.isMobileDevice();
   $scope.isMobileApp = ENV.mobileApp;
-  $scope.mandatoryMessages = NotificationService.mandatoryMessages;
+  $scope.mandatoryMessages = mandatoryMessages;
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
-  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
+  $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
+  $scope.systemUpdates = NotificationService.systemUpdates;
 
   OrderService.getChangeOrders().then(function(resp){
     $scope.changeOrders = resp;
@@ -39,6 +41,7 @@ angular.module('bekApp')
   $scope.messageText = 'Hello world!';
   $scope.displayGlobalMessage = true;
   $scope.userProfile = userProfile;
+  $scope.isBEKSysAdmin = userProfile.rolename == 'beksysadmin' ? true : false;
   refreshAccessPermissions($scope.userProfile);
 
   // Application version for use on sidebar menu
@@ -46,9 +49,9 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
  
-  $scope.webVersionNum = '1.11.0';
-  $scope.androidVersionNum = '1.11.0';
-  $scope.iOSVersionNum = '1.11.0';
+  $scope.webVersionNum = '1.12.0';
+  $scope.androidVersionNum = '1.12.0';
+  $scope.iOSVersionNum = '1.12.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
@@ -85,7 +88,7 @@ angular.module('bekApp')
     if($modal){
       $modalStack.dismissAll();
     }
-  }
+  };
   //Check stored settings. If they exist, update local storage, if not, clear out local storage values.
    ApplicationSettingsService.getApplicationSettings('').then(function(settings){
       if(settings.length > 0){
@@ -99,7 +102,7 @@ angular.module('bekApp')
           if(setting.key === 'defaultSearchView'){
             LocalStorage.setDefaultView(setting.value);
           }
-        })
+        });
       }
       else{
           LocalStorage.setPageSize('');
@@ -136,15 +139,15 @@ angular.module('bekApp')
   };
 
   $scope.departments = [
-    { "value": '', "text": 'All'},
-    { "value": '1', "text": 'Produce'},
-    { "value": '2', "text": 'Frozen'},
-    { "value": '3', "text": 'Frozen Meat'},
-    { "value": '4', "text": 'Grocery'},
-    { "value": '5', "text": 'Boxed Beef'},
-    { "value": '6', "text": 'Dairy'},
-    { "value": '7', "text": 'Non-Food'},
-    { "value": '8', "text": 'Rest. Supply'}];
+    { 'value': '', 'text': 'All'},
+    { 'value': '1', 'text': 'Produce'},
+    { 'value': '2', 'text': 'Frozen'},
+    { 'value': '3', 'text': 'Frozen Meat'},
+    { 'value': '4', 'text': 'Grocery'},
+    { 'value': '5', 'text': 'Boxed Beef'},
+    { 'value': '6', 'text': 'Dairy'},
+    { 'value': '7', 'text': 'Non-Food'},
+    { 'value': '8', 'text': 'Rest. Supply'}];
 
 
   $scope.selectDepartment = function(dept){
@@ -248,13 +251,17 @@ angular.module('bekApp')
         }
       }
     });
-     $scope.dismissNotification(notification);
+    $scope.dismissNotification(notification);
   };
 
   $scope.dismissNotification = function(notification) {
     var messageRead = $scope.mandatoryMessages.slice(0,1);
     NotificationService.updateUnreadMessages(messageRead);
-    $scope.mandatoryMessages.splice(0,1);
+    if(notification.label == 'System Update'){
+      $scope.systemUpdates = [];
+    } else {
+      $scope.mandatoryMessages.splice(0,1);
+    }
   };
 
   $scope.goToAdminLandingPage = function() {
@@ -385,9 +392,9 @@ angular.module('bekApp')
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
     $scope.canViewMarketing = AccessService.canViewMarketing();
-	$scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
-	$scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
+    $scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
+    $scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
     $scope.canRunReports = AccessService.canRunReports();
-	$scope.isSysAdmin = AccessService.isSysAdmin();
+    $scope.isSysAdmin = AccessService.isSysAdmin();
   }
 }]);

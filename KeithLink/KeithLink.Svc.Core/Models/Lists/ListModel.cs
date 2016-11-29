@@ -57,7 +57,10 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember(Name = "isrecommended")]
 		public bool IsRecommended { get; set; }
-		
+
+        [DataMember(Name = "iscustominventory")]
+        public bool IsCustomInventory { get; set; }
+
         public string BranchId { get; set; }
 
 		[DataMember]
@@ -140,7 +143,9 @@ namespace KeithLink.Svc.Core.Models.Lists
                         NonStock = item.NonStock,
                         StorageTemp = item.StorageTemp,
                         IsSpecialtyCatalog = item.IsSpecialtyCatalog,
-                        Unfi = item.Unfi
+                        Unfi = item.Unfi,
+                        Supplier = item.Supplier,
+                        CustomInventoryItemId = item.CustomInventoryItemId,
 					});
 				}
 

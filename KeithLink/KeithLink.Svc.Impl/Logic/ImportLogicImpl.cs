@@ -20,6 +20,7 @@ using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Enumerations.List;
 using System.IO;
+using KeithLink.Svc.Core.Models.EF;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -28,6 +29,7 @@ namespace KeithLink.Svc.Impl.Logic
         #region attributes
         private IListLogic listServiceRepository;
         private ICatalogLogic catalogLogic;
+        private ICustomInventoryItemsRepository _customInventoryRepo;
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
         private IPriceLogic priceLogic;
@@ -44,13 +46,16 @@ namespace KeithLink.Svc.Impl.Logic
         #endregion
 
         #region ctor
-        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic)
+        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, 
+            IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic,
+            ICustomInventoryItemsRepository customInventoryRepo)
         {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
             this.eventLogRepository = eventLogRepository;
             this.shoppingCartLogic = shoppingCartLogic;
             this.priceLogic = priceLogic;
+            _customInventoryRepo = customInventoryRepo;
 
             _errors = new StringBuilder();
             _warnings = new StringBuilder();
@@ -573,6 +578,172 @@ namespace KeithLink.Svc.Impl.Logic
         {
             _warnings.AppendLine(warning);
         }
+        public CustomInventoryImportModel ImportCustomInventory
+            (UserProfile user, UserSelectedContext catalogInfo, CustomInventoryImportFileModel file)
+        {
+            try
+            {
+                var importReturn = new CustomInventoryImportModel();
+
+                List<CustomInventoryItem> items = parseListDelimited(file, CSV_DELIMITER, user, catalogInfo);
+
+                _customInventoryRepo.SaveRange(items);
+                importReturn.Success = true;
+
+                return importReturn;
+            }
+            catch (Exception ex)
+            {
+                eventLogRepository.WriteErrorLog
+                    (string.Format("Custom Inventory Import Error for Customer {0}", catalogInfo.CustomerId), ex);
+                SendErrorEmail(file, ex);
+
+
+                return new CustomInventoryImportModel()
+                {
+                    Success = false,
+                    ErrorMessage = "An error has occurred while processing the import file"
+                };
+            }
+        }
+
+        private void SendErrorEmail(CustomInventoryImportFileModel file, Exception ex)
+        {
+            try
+            {
+                var errorMessage = string.Format
+                    ("File Import error.\n\nImport Options:\nSelected Format: {0}\nSkip First Line: {1}\nFile Name:{2}", 
+                     file.FileFormat, 
+                     file.IgnoreFirstLine, 
+                     file.FileName);
+
+                System.Net.Mime.ContentType ct = null;
+                System.Net.Mail.Attachment attach = null;
+
+                switch (file.FileFormat)
+                {
+                    case FileFormat.Excel:
+                        file.Stream.Seek(0, System.IO.SeekOrigin.Begin);
+                        ct = new System.Net.Mime.ContentType("application/msexcel");
+                        attach = new System.Net.Mail.Attachment(file.Stream, ct);
+                        attach.ContentDisposition.FileName = file.FileName;
+                        break;
+                    default:
+                        ct = new System.Net.Mime.ContentType(System.Net.Mime.MediaTypeNames.Text.Plain);
+                        var stringBytes = System.Text.Encoding.UTF8.GetBytes(file.Contents);
+                        var memStream = new MemoryStream();
+                        memStream.Write(stringBytes, 0, stringBytes.Length);
+                        memStream.Seek(0, SeekOrigin.Begin);
+                        attach = new System.Net.Mail.Attachment(memStream, ct);
+                        attach.ContentDisposition.FileName = file.FileName;
+                        break;
+                }
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, errorMessage, "File Import Error", attach);
+            }
+            catch (Exception emailEx)
+            {
+                eventLogRepository.WriteErrorLog("Error sending Import failure email", emailEx);
+            }
+        }
+
+        private List<CustomInventoryItem> parseListDelimited
+            (CustomInventoryImportFileModel file, char delimiter, UserProfile user, UserSelectedContext catalogInfo)
+        {
+            List<CustomInventoryItem> returnValue = new List<CustomInventoryItem>();
+
+            var rows = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
+
+            int itemNumberColumn = 0;
+            int nameColumn = -1;
+            int brandColumn = -1;
+            int supplierColumn = -1;
+            int packColumn = -1;
+            int sizeColumn = -1;
+            int eachColumn = -1;
+            int casePriceColumn = -1;
+            int packagePriceColumn = -1;
+            int labelColumn = -1;
+
+            var header = rows.Take(1)
+                             .Select(i => i.Split(delimiter).ToList())
+                             .FirstOrDefault();
+            if(header != null)
+            {
+                int colCount = 0;
+                foreach (var col in header)
+                {
+                    string replaced = col.Replace("\"", string.Empty);
+                    if (replaced.Equals("itemid", StringComparison.CurrentCultureIgnoreCase))
+                        itemNumberColumn = colCount;
+                    else if (replaced.Equals("name", StringComparison.CurrentCultureIgnoreCase))
+                        nameColumn = colCount;
+                    else if (replaced.Equals("brand", StringComparison.CurrentCultureIgnoreCase))
+                        brandColumn = colCount;
+                    else if (replaced.Equals("supplier", StringComparison.CurrentCultureIgnoreCase))
+                        supplierColumn = colCount;
+                    else if (replaced.Equals("pack", StringComparison.CurrentCultureIgnoreCase))
+                        packColumn = colCount;
+                    else if (replaced.Equals("size", StringComparison.CurrentCultureIgnoreCase))
+                        sizeColumn = colCount;
+                    else if (replaced.Equals("each(t or f)", StringComparison.CurrentCultureIgnoreCase))
+                        eachColumn = colCount;
+                    else if (replaced.Equals("caseprice", StringComparison.CurrentCultureIgnoreCase))
+                        casePriceColumn = colCount;
+                    else if (replaced.Equals("packageprice", StringComparison.CurrentCultureIgnoreCase))
+                        packagePriceColumn = colCount;
+                    else if (replaced.Equals("label", StringComparison.CurrentCultureIgnoreCase))
+                        labelColumn = colCount;
+                    colCount++;
+                }
+            }
+            else
+            {
+                throw new ApplicationException("Problem with header row. Template should be used.");
+            }
+
+            var data = rows.Skip(1);
+            if(data == null)
+            {
+                throw new ApplicationException("Need to include custom inventory items to add.");
+            }
+            else
+            {
+                try
+                {
+                    returnValue = data
+                                .Where(line => !String.IsNullOrWhiteSpace(line))
+                                .Select(i => i.Split(delimiter))
+                                .Select(l => new CustomInventoryItem()
+                                {
+                                    CustomerNumber = catalogInfo.CustomerId,
+                                    BranchId = catalogInfo.BranchId,
+                                    ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
+                                    Name = l[nameColumn].Replace("\"", string.Empty),
+                                    Brand = l[brandColumn].Replace("\"", string.Empty),
+                                    Label = l[labelColumn].Replace("\"", string.Empty),
+                                    Supplier = l[supplierColumn].Replace("\"", string.Empty),
+                                    Pack = l[packColumn].Replace("\"", string.Empty),
+                                    Size = l[sizeColumn].Replace("\"", string.Empty),
+                                    Each = ((l[eachColumn].Replace("\"", string.Empty).Equals
+                                        ("t", StringComparison.CurrentCultureIgnoreCase)) ? true : false),
+                                    CasePrice = (l[casePriceColumn].Replace("\"", string.Empty).Length > 0) ?
+                                        decimal.Parse(l[casePriceColumn].Replace("\"", string.Empty)) : 0,
+                                    PackagePrice = (l[packagePriceColumn].Replace("\"", string.Empty).Length > 0) ?
+                                        decimal.Parse(l[packagePriceColumn].Replace("\"", string.Empty)) : 0
+                                })
+                                .Where(x => !String.IsNullOrEmpty(x.ItemNumber))
+                                .ToList();
+                }
+                catch (Exception ex)
+                {
+                    throw new ApplicationException(ex.InnerException.Message);
+                }
+            }
+
+            return returnValue;
+        }
+
         #endregion
     }
 }

@@ -178,8 +178,10 @@
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
+    <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
+    <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
     <Compile Include="Interface\Common\IGenericSubsriptionQueueRepository.cs" />
     <Compile Include="Interface\Configurations\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
@@ -234,6 +236,8 @@
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
     <Compile Include="Interface\Invoices\ITermLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
+    <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
+    <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
     <Compile Include="Interface\Lists\IFavoriteLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
@@ -287,6 +291,9 @@
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
     <Compile Include="Interface\SiteCatalog\IExternalImageProcessorUnfi.cs" />
     <Compile Include="Interface\SpecialOrders\ISpecialOrderDBContext.cs" />
+    <Compile Include="Interface\Templates\ITemplatesRepository.cs" />
+    <Compile Include="Models\ApplicationHealth\QueuesToCheckModel.cs" />
+    <Compile Include="Models\ApplicationHealth\QueueToCheckModel.cs" />
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExternalCatalog.cs" />
@@ -300,6 +307,7 @@
     <Compile Include="Models\Customers\EF\InternalUserAccess.cs" />
     <Compile Include="Models\Customers\EF\ItemHistory.cs" />
     <Compile Include="Models\Customers\ItemHistoryModel.cs" />
+    <Compile Include="Models\EF\CustomInventoryItem .cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
@@ -313,8 +321,12 @@
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowDocumentReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ImageNowViewQueryReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
+    <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
+    <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
     <Compile Include="Models\Lists\InHistoryReturnModel.cs" />
     <Compile Include="Models\Lists\ListCopyResultModel.cs" />
+    <Compile Include="Models\Lists\CustomInventoryImportModel.cs" />
+    <Compile Include="Models\Lists\CustomInventoryImportFileModel.cs" />
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
@@ -580,6 +592,7 @@
     <Compile Include="Models\SpecialOrders\EF\RequestHeader.cs" />
     <Compile Include="Models\SpecialOrders\EF\RequestItem.cs" />
     <Compile Include="Models\SpecialOrders\SpecialOrderResponseModel.cs" />
+    <Compile Include="Models\Template\TemplateRequestModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Lists\ListModel.cs" />
   </ItemGroup>

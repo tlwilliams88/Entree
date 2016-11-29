@@ -317,6 +317,113 @@ angular.module('bekApp')
         },
 
         /********************
+        CUSTOM INVENTORY LIST
+        ********************/
+
+        getCustomInventoryList: function() {
+          return $http.get('/custominventory').then(function(response){
+            var customInventory = response.data.successResponse;
+
+            customInventory.iscustominventory = true;
+            customInventory.name = 'Non BEK Items';
+
+            updateListPermissions(customInventory);
+
+            return customInventory;
+          });
+        },
+
+        addNewItemFromCustomInventoryList: function(listitem) {
+          return $http.post('/custominventoryitem', listitem).then(function(response){
+            var customInventoryItems = response.data.successResponse.items;
+
+            return customInventoryItems;
+          })
+        },
+
+        addNewItemsFromCustomInventoryList: function(listid, listitems) {
+          var itemsToAdd = [];
+
+          listitems.forEach(function(item){
+            itemsToAdd.push(item.id);
+          })
+
+          return $http.post('/list/'+ listid + '/custominventoryitem', itemsToAdd).then(function() {
+            toaster.pop('success', null, 'Successfully added items to list.');
+          }, function(error) {
+            toaster.pop('error', null, 'Error adding items to list.');
+          });
+        },
+
+        saveCustomInventoryList: function(listitems) {
+          return $http.post('/custominventory', listitems).then(function(response){
+            var customInventory = response.data.successResponse;
+            toaster.pop('success', null, 'Successfully saved Non BEK Items list.');
+
+            customInventory.iscustominventory = true;
+            customInventory.name = 'Non BEK Items';
+
+            updateListPermissions(customInventory);
+
+            return customInventory;
+            
+          }, function(error) {
+            toaster.pop('error', null, 'Error saving Non BEK Items list.');
+          });
+        },
+
+        deleteCustomInventoryItem: function(listitem) {
+          return $http.delete('/custominventory/' + listitem).then(function(response){
+            toaster.pop('success', null, 'Successfully deleted item from list.');
+            return response.data.successResponse;
+          }, function(error) {
+            toaster.pop('error', null, 'Error deleting item to list.');
+          });
+        },
+
+        deleteCustomInventoryItems: function(listitems) {
+          return $http.post('/custominventory/delete', listitems).then(function(response){
+            toaster.pop('success', null, 'Successfully deleted items from list.');
+            return response.data.successResponse;
+          }, function(error) {
+            toaster.pop('error', null, 'Error deleting items from list');
+          });
+        },
+
+        importNonBEKListItems: function(file, options) {
+          var deferred = $q.defer();
+
+          $upload.upload({
+            url: '/import/custominventory',
+            method: 'POST',
+            data: { options: options },
+            file: file,
+          }).then(function(response) {
+            var data = response.data.successResponse;
+
+            if (response.data.isSuccess && data.success) {
+
+              // display messages
+              if (data.warningmsg) {
+                toaster.pop('warning', null, data.warningmsg);
+              } else {
+                toaster.pop('success', null, 'Successfully imported items to Non-BEK Items list.');
+              }
+
+              deferred.resolve(data);
+            } else {
+              var errorMessage = response.data.errorMessage;
+              if(data && data.errormsg){
+                toaster.pop('error', null, data.errormsg);
+                errorMessage = data.errormsg;
+              }
+              deferred.reject(errorMessage);
+            }
+          })
+          return deferred.promise;
+        },
+
+        /********************
         EXPORT
         ********************/
 
@@ -607,7 +714,8 @@ angular.module('bekApp')
               itemnumber: item.itemnumber,
               each: item.each,
               catalog_id: item.catalog_id,
-              category: item.category
+              category: item.category,
+              label: item.label
             });
           });
 

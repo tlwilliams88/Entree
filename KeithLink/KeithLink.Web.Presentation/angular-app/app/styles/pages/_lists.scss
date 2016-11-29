@@ -54,6 +54,10 @@
   }
 }
 
+.hidden-icon, .back-to-top {
+  visibility: hidden;
+}
+
 // trash can button
 .btn-trash {
   margin-top: 10px;
@@ -188,4 +192,34 @@
 
 .max-width-20 {
   max-width:20px;
+}
+
+@media (max-width: $screen-sm-max) {
+  .back-to-top {
+    width: 70px;
+    height: 60px;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .back-to-top {
+    width: 61px;
+    height: 60px;
+  }
+}
+
+.back-to-top {
+  visibility: hidden;
+  margin: 0;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+  font-size: 45px;
+}
+
+.inactive-option {
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.4;
 }

@@ -32,6 +32,7 @@ namespace KeithLink.Svc.Core
 
         public const string CATALOG_BEK = "BEK";
         public const string CATALOG_UNFI = "UNFI";
+        public const string CATALOG_CUSTOMINVENTORY = "CUSTOM";
 
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
         public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
@@ -373,5 +374,19 @@ namespace KeithLink.Svc.Core
             "https://exchange.ix-one.net/services/ImageHandler.aspx?FileName={0}&Type={1}&Size=MEDIUM";
         public const string IXONE_PRODUCTIMAGE_PREFERREDTYPE = "JPG";
         public const string IXONE_PRODUCTIMAGE_BACKUPTYPE = "PNG";
+
+        // message templates
+        public const string MESSAGE_TEMPLATE_PAYMENTCONFIRMATION = "PaymentConfirmation";
+        public const string MESSAGE_TEMPLATE_PAYMENTDETAIL = "PaymentConfirmationDetail";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTCONFIRMATION = "MultiPaymentConfirmation";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTHEADER = "MultiPaymentConfirmationCustomerHeader";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL1 = "MultiPaymentConfirmationCustomerFirstRowDetail";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL2 = "MultiPaymentConfirmationCustomerNextRowsDetail";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTDETAIL3 = "MultiPaymentConfirmationCustomerAltNextRowsDetail";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERACCOUNT = "MultiPaymentConfirmationCustomerFooterAccount";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERCUSTOMER = "MultiPaymentConfirmationCustomerFooterCustomer";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERGRAND = "MultiPaymentConfirmationCustomerFooterGrand";
+        public const string MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTEREND = "MultiPaymentConfirmationCustomerFooterEnd";
+
     }
 }

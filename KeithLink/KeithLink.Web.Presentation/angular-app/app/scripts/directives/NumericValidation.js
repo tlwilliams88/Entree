@@ -36,7 +36,7 @@ angular.module('bekApp')
           }
 
         var truncatedVal ='';
-        var allowTwoDecimals = (attrs.id === 'inventoryRep' || attrs.id==="parlevel"  || attrs.id==="onHand" || (attrs.id && attrs.id.indexOf('defaultElement') != -1))
+        var allowTwoDecimals = (attrs.id === 'inventoryRep' || attrs.id==='parlevel'  || attrs.id==='onHand' || attrs.id == 'casePrice' || attrs.id == 'packagePrice' || (attrs.id && attrs.id.indexOf('defaultElement') != -1))
         if (allowTwoDecimals) {
           //allows for 2 decimal places
           truncatedVal = truncateViewValue(2,viewValue);
@@ -46,13 +46,18 @@ angular.module('bekApp')
           scope.checkRegex = directive.REGEXP.test(truncatedVal);
         }
         //set validity
-        if (!truncatedVal || scope.checkRegex ) {
-          ctrl.$setValidity('numericValidation', true);
-          return parseFloat(truncatedVal);
-        } else {
-          ctrl.$setValidity('numericValidation', false);
-          return undefined;
-        }
+
+          if (!truncatedVal || scope.checkRegex ) {
+            ctrl.$setValidity('numericValidation', true);
+            if(attrs.id == 'casePrice' || attrs.id == 'packagePrice'){
+              return truncatedVal;
+            } else {
+              return parseFloat(truncatedVal);
+            }
+          } else {
+            ctrl.$setValidity('numericValidation', false);
+            return undefined;
+          }
       }
 
       function truncateViewValue(limit,viewVal){

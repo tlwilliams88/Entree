@@ -154,6 +154,8 @@
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />
     <Compile Include="Logic\InternalSrv\InternalMarketingPreferenceLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalOnlinePaymentLogicTests.cs" />
+    <Compile Include="Logic\Lists\CustomInventory\Logic_ListLogicImpl_CustomInventory_AddItem.cs" />
+    <Compile Include="Logic\Lists\CustomInventory\Logic_ListLogicImpl_CustomInventory_Constant.cs" />
     <Compile Include="Logic\NoCacheRepositoryImpl.cs" />
     <Compile Include="Logic\Order\InternalOrderHistoryLogicTests.cs" />
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
@@ -164,6 +166,7 @@
     <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
     <Compile Include="Logic\Dsr\DsrLogicTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
+    <Compile Include="Repositories\Lists\CustomInventoryItemsRepositoryTests.cs" />
     <Compile Include="Repositories\Mock\AuditLogEntry.cs" />
     <Compile Include="Repositories\Mock\AuditLogRepositoryMock.cs" />
     <Compile Include="Repositories\Mock\BasketRepositoryMock.cs" />

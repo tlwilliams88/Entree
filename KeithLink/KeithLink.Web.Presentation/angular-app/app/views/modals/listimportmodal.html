@@ -1,5 +1,6 @@
  <div class="modal-header">
-    <h3 class="modal-title">Import a New List</h3>
+    <h3 class="modal-title" ng-if="listType == 'StandardList'">Import a New List</h3>
+    <h3 class="modal-title" ng-if="nonBEKList">Import items to Non-BEK Items List</h3>
 </div>
 <div class="modal-body">
 
@@ -7,12 +8,15 @@
         <div class="form-group">
             <label for="file" class="col-sm-4 control-label">File:</label>
             <div class="col-sm-8">
-                <label class="btn btn-default" for="importFile">Choose File</label>
-                {{files[0].name}}  
-                <input style="display:none;" type="file" id="importFile" name="importFile" ng-file-select="onFileSelect($files)">
+                <span>
+                    <label class="btn btn-default" for="importFile">Choose File</label>
+                    {{files[0].name}}  
+                    <input style="display:none;" type="file" id="importFile" name="importFile" ng-file-select="onFileSelect($files)">
+                </span>
+                <a class="vertical-align-middle" ng-show="nonBEKList" ng-click="downloadNonBEKTemplate()">DOWNLOAD TEMPLATE</a>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-if="!nonBEKList">
             <label for="ignoreFirstLine" class="col-sm-4 control-label checkbox-line">Ignore First Line:</label>
             <div class="col-sm-8">
                 <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirstline">
@@ -21,7 +25,8 @@
         <div class="form-group">
             <label for="fileFormat" class="col-sm-4 control-label">File Format:</label>
             <div class="col-sm-8">
-                <select class="style-select" name="fileFormat" required ng-model="options.fileformat">
+                <label for="fileFormat" class="control-label" ng-if="nonBEKList">CSV</label>
+                <select class="style-select" name="fileFormat" required ng-model="options.fileformat" ng-if="!nonBEKList">
                     <option value="0">CSV</option>
                     <option value="1">Tab</option>
                     <option value="2">Excel</option>
@@ -31,9 +36,10 @@
     </form>
 
 </div>
- <p class="text-red text-left" style="padding-left:15px;" ng-show="invalidType">This is an incompatible file type. Please choose a file with one of the following extensions: .xls .xlsx .csv .txt.</p>
- <p class="text-left" style="padding-left:15px;" ng-show="!invalidType">Please choose a file with one of the following extensions: .xls, .xlsx, .csv, or .txt.</p>
-<div class="modal-footer" style="white-space:nowrap; ">
+ <p class="text-red text-left padding-left-15" ng-show="invalidType">This is an incompatible file type. Please choose a file with one of the following extensions: .xls .xlsx .csv .txt.</p>
+ <p class="text-left padding-left-15" ng-show="!invalidType" ng-if="!nonBEKList">Please choose a file with one of the following extensions: .xls, .xlsx, .csv, or .txt.</p>
+  <p class="text-left padding-left-15" ng-show="!invalidType" ng-if="nonBEKList">Please download the provided csv template using the link above.</br >  Once your items are entered into the template you may upload the file to complete the import.</br >  If you already have the file ready you can upload at any time.</p>
+<div class="modal-footer nowrap">
     <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
     <button class="btn-lg btn btn-primary" ng-disabled = "invalidType" ng-click="startListUpload(options)">Import</button>
     <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
