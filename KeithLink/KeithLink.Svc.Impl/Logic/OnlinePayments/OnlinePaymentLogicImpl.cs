@@ -318,7 +318,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 { // if there is a statusFilter append the daterange to it, it was working before but pulling back all
                   // the invoices for the month and later filtering just the ones with a certain status
                   // this just optimizes it so we pull back the right ones at the start
-                    statusFilter.Condition = "||";
+                    statusFilter.Condition = "&&";
                     statusFilter.Filters = new List<FilterInfo>();
                     statusFilter.Filters.Add(BuildStatusFilter(paging.DateRange));
                 }
