@@ -53,14 +53,7 @@ angular.module('bekApp')
         });
         return $scope.totalCost;
       });
-  }
-
-  // $scope.goToItemDetails = function (item) {
-  //     ProductService.selectedProduct = item;
-  //     $state.go('menu.catalog.products.details', {
-  //         itemNumber: item.itemnumber
-  //     });
-  // };
+  };
 
   $scope.openInventoryModal = function() {
     var modalInstance = $modal.open({
@@ -116,7 +109,7 @@ angular.module('bekApp')
       controller: 'ExportModalController',
       resolve: {
         location: function() {
-          return {category:'Reports', action:'Export Item Usage'}
+          return {category:'Reports', action:'Export Item Usage'};
         },
         headerText: function() {
           return 'Item Usage';

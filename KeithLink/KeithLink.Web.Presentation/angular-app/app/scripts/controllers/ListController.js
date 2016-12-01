@@ -673,7 +673,12 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', custominventoryitemid: '0'});
+      if($scope.isCustomInventoryList){
+        return $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
+      } else {
+        return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', catalog_id:'!CUSTOM'});
+      }
+      
     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
@@ -791,7 +796,7 @@ angular.module('bekApp')
           if(item.editLabel && item.isEditing){
             item.label = item.editLabel;
           }
-        })
+        });
       ListService.saveCustomInventoryList(itemsToSave).then(function(resp){
         $scope.selectedList = resp;
         $scope.isCustomInventoryList = true;
@@ -805,7 +810,7 @@ angular.module('bekApp')
       } else {
         ListService.deleteCustomInventoryItem(listitem.id).then(function(){
           $scope.getCustomInventoryList();
-        })
+        });
       }
 
     };
@@ -839,7 +844,7 @@ angular.module('bekApp')
         controller: 'ExportModalController',
         resolve: {
           location: function() {
-            return {category:'Lists', action:'Export List'}
+            return {category:'Lists', action:'Export List'};
           },
           headerText: function () {
             return 'List ' + $scope.selectedList.name;

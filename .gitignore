@@ -197,7 +197,10 @@ node_modules/
 /KeithLink/KeithLink.Web.Presentation/app/
 /KeithLink/KeithLink.Web.Presentation/angular-app/app/newrelic/newrelic.js
 /KeithLink/KeithLink.Web.Presentation/angular-app/app/scripts/configenv.js
-/KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap
+/KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap/build
+/KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap/www
+/KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap/node_modules
+/KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap/.sass-cache
 
 #Ignore Log Files
 grunt_log.txt

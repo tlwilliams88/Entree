@@ -25,9 +25,9 @@ angular.module('bekApp')
     if(order.items && order.items.length > 0){
       order.items.forEach(function(item){
         pieceCount = pieceCount + item.quantityordered;
-      })
+      });
     }
-    order.piececount = pieceCount   
+    order.piececount = pieceCount;
   }
 
   $scope.setOrder = function(order){
@@ -39,10 +39,10 @@ angular.module('bekApp')
       $scope.order = $scope.filterDeletedItems(order);
     }
     if(order.relatedordernumbers && $scope.getRelatedOrder){
-      $scope.getOrder(order.relatedordernumbers)      
+      $scope.getOrder(order.relatedordernumbers);    
       $scope.getRelatedOrder = false;
     }
-  }
+  };
 
   $scope.getRelatedOrder = true;
   $scope.setOrder(order);
@@ -54,7 +54,7 @@ angular.module('bekApp')
       controller: 'ExportModalController',
       resolve: {
         location: function() {
-          return {category:'Orders', action:'Export Order Items'}
+          return {category:'Orders', action:'Export Order Items'};
         },
         headerText: function () {
           return 'Order #' + order.ordernumber;

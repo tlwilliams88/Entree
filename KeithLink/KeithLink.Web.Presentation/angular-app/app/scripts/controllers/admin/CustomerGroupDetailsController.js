@@ -23,7 +23,7 @@ angular.module('bekApp')
         processingCreateCustomerGroup = false;
       });
     }
-  }
+  };
 
 
 }]);

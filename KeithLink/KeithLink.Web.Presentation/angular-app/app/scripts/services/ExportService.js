@@ -187,7 +187,7 @@ angular.module('bekApp')
       downloadNonBEKTemplate: function(url, body) {
         return $http.post(url, body, { responseType: 'arraybuffer' }).then(function(resp) {
           downloadFile(resp.data, resp.status, resp.headers, 'csv', '/template');
-        })
+        });
       },
 
       print: function(printPromise) {

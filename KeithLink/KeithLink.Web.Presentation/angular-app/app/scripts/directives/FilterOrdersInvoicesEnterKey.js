@@ -7,7 +7,7 @@
 angular.module('bekApp')
 .directive('enterKeyFilter', function(){
     return function (scope, element, attrs) {
-        element.bind("keydown keypress keyup", function (event) {
+        element.bind('keydown keypress keyup', function (event) {
             if(event.which === 13) {
                 scope.$apply(function (){
                     scope.$eval(attrs.enterKeyFilter);

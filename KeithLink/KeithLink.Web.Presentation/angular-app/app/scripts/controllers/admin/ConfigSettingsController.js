@@ -13,16 +13,16 @@ angular.module('bekApp')
                 if(setting.key == settingKey){
                     setting.newvalue = setting.value;
                 }
-            })
+            });
             $scope.configSettingsForm.$setDirty();
-        }
+        };
 
         $scope.setSettingsVerified = function(setting){
             if(!$scope.isverified){
                 $scope.isverified = !$scope.isverified;
             }
             setting.isverified = !setting.isverified;
-        }
+        };
 
         $scope.saveConfig = function(settings){
             if($scope.configSettingsForm.$dirty){
@@ -33,7 +33,7 @@ angular.module('bekApp')
                         setting.value = setting.newvalue;
                         settingValues.push(setting);
                     }
-                })
+                });
 
                 if(settingValues.length > 0){ // Don't make PUT call if there are no new values
                     ConfigSettingsService.saveAppSettings(settingValues).then(function(resp){
@@ -41,7 +41,7 @@ angular.module('bekApp')
                             if(setting.newvalue && resp){
                                 setting.newvalue = '';
                             }
-                        })
+                        });
                         if(resp && settingValues.length){
                             $scope.displayMessage('success', 'Successfully saved config settings');
                             $scope.configSettingsForm.$setPristine();
@@ -57,5 +57,5 @@ angular.module('bekApp')
                 return;
             }
 
-        }
+        };
   }]);

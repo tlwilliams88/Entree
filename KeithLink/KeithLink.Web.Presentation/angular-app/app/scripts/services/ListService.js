@@ -292,11 +292,11 @@ angular.module('bekApp')
               list.items = list.items.results;
               list.items.forEach(function(item){
                 if(item.onhand < 0.01){
-                  item.onhand = ''
+                  item.onhand = '';
                 } else if(item.quantity < 1){
-                    item.quantity = ''
+                    item.quantity = '';
                 }
-              })
+              });
 
               // get calculated fields
               PricingService.updateCaculatedFields(list.items);
@@ -338,7 +338,7 @@ angular.module('bekApp')
             var customInventoryItems = response.data.successResponse.items;
 
             return customInventoryItems;
-          })
+          });
         },
 
         addNewItemsFromCustomInventoryList: function(listid, listitems) {
@@ -346,7 +346,7 @@ angular.module('bekApp')
 
           listitems.forEach(function(item){
             itemsToAdd.push(item.id);
-          })
+          });
 
           return $http.post('/list/'+ listid + '/custominventoryitem', itemsToAdd).then(function() {
             toaster.pop('success', null, 'Successfully added items to list.');
@@ -419,7 +419,7 @@ angular.module('bekApp')
               }
               deferred.reject(errorMessage);
             }
-          })
+          });
           return deferred.promise;
         },
 

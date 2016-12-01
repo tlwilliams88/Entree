@@ -314,7 +314,18 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
             if ((paging != null) && (paging.DateRange != null))
             {
-                statusFilter = BuildStatusFilter(paging.DateRange);
+                if (statusFilter != null)
+                { // if there is a statusFilter append the daterange to it, it was working before but pulling back all
+                  // the invoices for the month and later filtering just the ones with a certain status
+                  // this just optimizes it so we pull back the right ones at the start
+                    statusFilter.Condition = "&&";
+                    statusFilter.Filters = new List<FilterInfo>();
+                    statusFilter.Filters.Add(BuildStatusFilter(paging.DateRange));
+                }
+                else
+                {
+                    statusFilter = BuildStatusFilter(paging.DateRange);
+                }
             }
 
             InvoiceHeaderReturnModel retInvoiceHeaders = new InvoiceHeaderReturnModel();
@@ -390,33 +401,18 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             catch { }
         }
 
-        private string GetInvoiceHeadersCacheKey(FilterInfo customerFilter, FilterInfo statusFilter)
-        {
-            return String.Format("InvoiceHeaders_{0}_{1}", JsonConvert.SerializeObject(customerFilter), JsonConvert.SerializeObject(statusFilter));
-        }
-
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(
             PagingModel paging,
-            List<Core.Models.Profile.Customer> customers,
+            List<Core.Models.Profile.Customer> customers, // customers will always be a list with 1 customer
             FilterInfo statusFilter,
             out List<EFInvoice.InvoiceHeader> kpayInvoices)
         {
             FilterInfo customerFilter = BuildCustomerFilter(customers);
-            List<EFInvoice.InvoiceHeader> cachedInvoiceHeaders = _cacheRepo.GetItem<List<EFInvoice.InvoiceHeader>>
-                (CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetInvoiceHeadersCacheKey(customerFilter, statusFilter));
-            if(cachedInvoiceHeaders == null)
-            {
-                kpayInvoices = _invoiceRepo.ReadAllHeaders()
-                                               .AsQueryable()
-                                               .Filter(customerFilter, null)
-                                               .Filter(statusFilter, null)
-                                               .ToList();
-                _cacheRepo.AddItem<List<EFInvoice.InvoiceHeader>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
-                    GetInvoiceHeadersCacheKey(customerFilter, statusFilter), TimeSpan.FromHours(2), kpayInvoices);
-            }else
-            {
-                kpayInvoices = cachedInvoiceHeaders;
-            }
+            kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                           .AsQueryable()
+                                           .Filter(customerFilter, null)
+                                           .Filter(statusFilter, null)
+                                           .ToList();
             PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
                                                                    .AsQueryable<InvoiceModel>()
                                                                    .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
@@ -436,7 +432,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 GetInvoicePONumber(invoice);
 
                 // To help the UI, we pull in the bank accounts that can be used to pay an invoice here.
-                invoice.Banks = GetAllBankAccounts(new UserSelectedContext() { BranchId=invoice.BranchId, CustomerId=invoice.CustomerNumber });
+                invoice.Banks = GetAllBankAccounts(new UserSelectedContext() { BranchId = invoice.BranchId, CustomerId = invoice.CustomerNumber });
             }
 
             if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
@@ -460,8 +456,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 pagedInvoices.TotalResults = pagedInvoices.Results.Count;
             }
 
-            if ((paging != null) && 
-                (paging.Sort != null) && 
+            if ((paging != null) &&
+                (paging.Sort != null) &&
                 (paging.Sort.Count == 1) &&
                 (paging.Sort[0].Field.Equals
                     (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
@@ -636,7 +632,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 throw new ApplicationException("Payments failed validation");
             }
 
-
             foreach (var payment in payments)
             {
                 var testInvoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
@@ -647,7 +642,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
                 if (!payment.PaymentDate.HasValue) { payment.PaymentDate = DateTime.Now; }
                 payment.ConfirmationId = (int)confId;
-                payment.UserName = emailAddress;
 
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
                 {
@@ -675,14 +669,12 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             notification.BranchId = userContext.BranchId;
             notification.CustomerNumber = userContext.CustomerId;
             notification.Payments = payments;
+            notification.SubmittedBy = emailAddress;
 
             // write the payment notification to Rabbit MQ
             _queue.PublishToDirectedExchange(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
                                   Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, 
                                   Configuration.RabbitMQExchangeNotificationV2, Constants.RABBITMQ_NOTIFICATION_PAYMENTNOTIFICATION_ROUTEKEY);
-
-            // To be safe; reset all cacheitems in the invoice headers group upon paying invoices
-            _cacheRepo.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
         }
 
         public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)

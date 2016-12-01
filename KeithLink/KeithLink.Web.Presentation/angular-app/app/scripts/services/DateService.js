@@ -37,7 +37,7 @@ angular.module('bekApp')
           date = '';
         }
         if(typeof date === 'object'){
-          date = moment(date).format(Constants.dateFormat.yearMonthDayDashes)
+          date = moment(date).format(Constants.dateFormat.yearMonthDayDashes);
         }
         var timezone = (date.length > 10);
 
@@ -49,7 +49,7 @@ angular.module('bekApp')
         }
 
        if(TZ){
-        return moment.tz(date,formatString,TZ)
+        return moment.tz(date,formatString,TZ);
        }
         else if(date){
           return moment(date,formatString);

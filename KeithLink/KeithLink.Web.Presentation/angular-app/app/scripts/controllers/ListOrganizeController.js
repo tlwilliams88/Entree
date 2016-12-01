@@ -19,8 +19,8 @@ angular.module('bekApp')
       //index 0 is assigned to the dummy row used for drag-to-reorder functionality
       item.editPosition = index;
       item.position = index;
-    })
-  };
+    });
+  }
 
   function setList(list) {
     $scope.list = list;
@@ -99,8 +99,8 @@ angular.module('bekApp')
         item.position--;
         item.editPosition = item.position;
       }
-    })
-  }
+    });
+  };
 
   $scope.changePosition = function(items, movedItem, removeNullValue) {
     if(movedItem.position === '0' || !movedItem.position){

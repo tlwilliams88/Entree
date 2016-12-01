@@ -66,7 +66,9 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
                     using (IModel channel = c.CreateModel())
                     {
                         EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
-                        channel.BasicQos(0, 1, false); // Set up fair dispatch to control messageReceived buffer.
+                        channel.BasicQos(prefetchSize: 0, 
+                                         prefetchCount: 1, 
+                                         global: false); // Set up fair dispatch to control messageReceived buffer.
 
                         consumer.Received += MessageReceived;
 
