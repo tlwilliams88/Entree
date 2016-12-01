@@ -182,7 +182,7 @@
     <Compile Include="Extensions\LinqSortHelpers.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
     <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
-    <Compile Include="Interface\Common\IGenericSubsriptionQueueRepository.cs" />
+    <Compile Include="Interface\Common\IGenericSubscriptionQueueRepository.cs" />
     <Compile Include="Interface\Configurations\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\PagingHelper.cs" />

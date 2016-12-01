@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
     {
         #region attributes
         private IGenericQueueRepository genericeQueueRepository;
-        private IGenericSubsriptionQueueRepository genericSubscriptionQueue;
+        private IGenericSubscriptionQueueRepository genericSubscriptionQueue;
         private IOrderConversionLogic _conversionLogic;
         private IEventLogRepository _log;
         private ISocketListenerRepository _socket;
@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region constructor
         public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IGenericQueueRepository internalMessagingLogic, 
-                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, IGenericSubsriptionQueueRepository subscriptionQueue) {
+                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, IGenericSubscriptionQueueRepository subscriptionQueue) {
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             this.genericeQueueRepository = internalMessagingLogic;
@@ -265,9 +265,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _log.WriteInformationLog("Subscribing to confirmation queue");
 
-            this.queueListenerTask = Task.Factory.StartNew(() => genericSubscriptionQueue.Subscribe(config, Configuration.RabbitMQQueueConfirmation),
-                CancellationToken.None, TaskCreationOptions.DenyChildAttach,
-                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_CONFIRMATIONS));
+            this.queueListenerTask = Task.Factory.StartNew
+                (() => genericSubscriptionQueue.Subscribe(config, Configuration.RabbitMQQueueConfirmation));
         }
 
         public void UnsubscribeFromQueue() {

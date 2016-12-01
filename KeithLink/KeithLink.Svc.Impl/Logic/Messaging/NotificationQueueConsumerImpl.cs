@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private bool consumingMessages = false;
 
         private readonly IGenericQueueRepository genericQueueRepository;
-        private readonly IGenericSubsriptionQueueRepository genericSubscriptionQueue;
+        private readonly IGenericSubscriptionQueueRepository genericSubscriptionQueue;
         private readonly IEventLogRepository eventLogRepository;
         Func<NotificationType, INotificationHandler> notificationHandlerFactory;
 
@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         #region constructor
         public NotificationQueueConsumerImpl(IEventLogRepository eventLogRepository, IGenericQueueRepository genericQueueRepository,
             Func<NotificationType, INotificationHandler> notificationHandlerFactory, IUnitOfWork unitOfWork, 
-            IGenericSubsriptionQueueRepository genericSubscriptionQueue) {
+            IGenericSubscriptionQueueRepository genericSubscriptionQueue) {
 
             this.eventLogRepository = eventLogRepository;
             this.genericQueueRepository = genericQueueRepository;
@@ -141,28 +141,32 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             eventLogRepository.WriteInformationLog(string.Format("Subscribing to notification queue: {0}",  queue));
 
-            this.listenForQueueMessagesTask = Task.Factory.StartNew(() => genericSubscriptionQueue.Subscribe(config, queue),
-                CancellationToken.None, TaskCreationOptions.DenyChildAttach,
-                new LimitedConcurrencyLevelTaskScheduler(Constants.LIMITEDCONCURRENCYTASK_NOTIFICATIONS));
+            this.listenForQueueMessagesTask = Task.Factory.StartNew
+                (() => genericSubscriptionQueue.Subscribe(config, queue));
         }
 
         public void Unsubscribe() {
             genericSubscriptionQueue.Unsubscribe();
         }
 
-        private void GenericSubscriptionQueue_MessageReceived(RabbitMQ.Client.IBasicConsumer sender, RabbitMQ.Client.Events.BasicDeliverEventArgs args) {
+        private void GenericSubscriptionQueue_MessageReceived
+            (RabbitMQ.Client.IBasicConsumer sender, RabbitMQ.Client.Events.BasicDeliverEventArgs args) {
             RabbitMQ.Client.Events.EventingBasicConsumer consumer = (RabbitMQ.Client.Events.EventingBasicConsumer)sender;
 
             try {
-                BaseNotification notification = NotificationExtension.Deserialize(Encoding.ASCII.GetString(args.Body));
+                // don't reprocess items that have been processed
+                if(genericSubscriptionQueue.GetLastProcessedUndelivered() != args.DeliveryTag)
+                {
+                    BaseNotification notification = NotificationExtension.Deserialize(Encoding.ASCII.GetString(args.Body));
 
-                eventLogRepository.WriteInformationLog("Processing notification type: {NotificationType}. Data: {QueueMessage}".Inject(new { QueueMessage = notification.ToJson(), NotificationType = notification.NotificationType.ToString() }));
+                    eventLogRepository.WriteInformationLog("Processing notification type: {NotificationType}. Data: {QueueMessage}".Inject(new { QueueMessage = notification.ToJson(), NotificationType = notification.NotificationType.ToString() }));
 
-                var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
-                handler.ProcessNotification(notification);
+                    var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
+                    handler.ProcessNotification(notification);
 
-                // Always clear the context at the end of a transaction
-                _uow.ClearContext();
+                    // Always clear the context at the end of a transaction
+                    _uow.ClearContext();
+                }
 
                 genericSubscriptionQueue.Ack(consumer, args.DeliveryTag);
             } catch (QueueDataError<string> serializationEx)  {

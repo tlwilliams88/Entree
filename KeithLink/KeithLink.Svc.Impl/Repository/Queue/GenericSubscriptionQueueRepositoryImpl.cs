@@ -13,7 +13,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 namespace KeithLink.Svc.Impl.Repository.Queue {
-    public class GenericSubscriptionQueueRepositoryImpl : IGenericSubsriptionQueueRepository {
+    public class GenericSubscriptionQueueRepositoryImpl : IGenericSubscriptionQueueRepository {
         #region attributes
         private ConnectionFactory _connection;
         private string _queue;
@@ -21,6 +21,7 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
         private bool _processing;
         private bool _restartProcessing;
         private bool _shutdown;
+        private ulong _lastProcessedUndelivered;
 
         private IEventLogRepository _logger;
 
@@ -58,32 +59,47 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
         }
 
         private void StartProcessing() {
-            using (IConnection c = _connection.CreateConnection()) {
-                using (IModel channel = c.CreateModel()) {
-                    EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
+            try
+            {
+                using (IConnection c = _connection.CreateConnection())
+                {
+                    using (IModel channel = c.CreateModel())
+                    {
+                        EventingBasicConsumer consumer = new EventingBasicConsumer(channel);
+                        channel.BasicQos(prefetchSize: 0, 
+                                         prefetchCount: 1, 
+                                         global: false); // Set up fair dispatch to control messageReceived buffer.
 
-                    consumer.Received += MessageReceived;
+                        consumer.Received += MessageReceived;
 
-                    string consumerTag = channel.BasicConsume(_queue, false, String.Format("{0}-{1}", Configuration.ApplicationName, _queue), consumer);
+                        string consumerTag = channel.BasicConsume(_queue, false, String.Format("{0}-{1}", Configuration.ApplicationName, _queue), consumer);
 
-                    while (_processing == true && _restartProcessing == false) {
-                        // If there was an exception from Rabbit and the channel closes, re-subscribe.
-                        if (channel.CloseReason != null) {
-                            _restartProcessing = true;
-                            break;
+                        while (_processing == true && _restartProcessing == false)
+                        {
+                            // If there was an exception from Rabbit and the channel closes, mark it to re-subscribe.
+                            if (channel.CloseReason != null)
+                            {
+                                _restartProcessing = true;
+                                break;
+                            }
+
+                            System.Threading.Thread.Sleep(2000);
                         }
 
-                        System.Threading.Thread.Sleep(2000);
-                    }
+                        consumer.Received -= MessageReceived;
 
-                    consumer.Received -= MessageReceived;
-
-                    if (channel.IsOpen) {
-                        consumer.Model.BasicCancel(consumerTag);
-                        channel.Close();
-                        c.Close();
+                        if (channel.IsOpen)
+                        {
+                            consumer.Model.BasicCancel(consumerTag);
+                            channel.Close();
+                            c.Close();
+                        }
                     }
                 }
+            }
+            catch(Exception ex) // if connection was closed while processing; we see an exception here
+            {
+                _logger.WriteErrorLog("GenericSubscriptionQueueRepositoryImpl_StartProcessing", ex);
             }
 
             if (_processing == false) {
@@ -98,7 +114,17 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
         public void Ack(EventingBasicConsumer consumer, ulong deliveryTag) {
             if (consumer.Model.IsOpen) {
                 consumer.Model.BasicAck(deliveryTag, false);
+                _lastProcessedUndelivered = 0;
             }
+            else
+            {
+                _lastProcessedUndelivered = deliveryTag;
+            }
+        }
+
+        public ulong GetLastProcessedUndelivered()
+        {
+            return _lastProcessedUndelivered;
         }
 
         public void Nack(EventingBasicConsumer consumer, ulong deliveryTag) {
