@@ -10,9 +10,10 @@
 }
 .context-menu {
   display: none;
-  z-index: 2;
+  z-index: 3;
   font-family: 'Open Sans', sans-serif;
   position: absolute;
+  margin: -120px 0 0 0;
 
   &.open {
     display: block;
@@ -65,6 +66,11 @@
 }
 
 .context-menu__in-list {
+ position: relative;   
+  .context-menu {    
+    right: 80%;    
+    margin-top: -10px;   
+  }
   .dropdown-menu {
     left: -250px;
       .btn{
@@ -74,10 +80,13 @@
   }
 }
 
+.reposition-dropdown{
+  margin: -60px 0 0 0;
+}
+
 .context-menu-dropdown{
-  width:auto;
+  max-height:180px;
   max-width:300px;
-  max-height: 180px;
   overflow-y: auto;
   overflow-x:hidden;
 }
