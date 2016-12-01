@@ -369,7 +369,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                                                            .ToList();
 
                 bool complexPayment = customerCtxs.Count > 1;
-                string payerEmail = confirmation.Payments.Select(p => p.UserName).FirstOrDefault();
+                string payerEmail = confirmation.SubmittedBy;
                 Recipient payerRecipient = null;
 
                 foreach (UserSelectedContext customerCtx in customerCtxs) {

@@ -669,6 +669,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             notification.BranchId = userContext.BranchId;
             notification.CustomerNumber = userContext.CustomerId;
             notification.Payments = payments;
+            notification.SubmittedBy = emailAddress;
 
             // write the payment notification to Rabbit MQ
             _queue.PublishToDirectedExchange(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
