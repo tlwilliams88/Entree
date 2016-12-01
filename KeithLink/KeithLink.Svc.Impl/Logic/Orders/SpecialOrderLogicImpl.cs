@@ -22,6 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Threading;
 using KeithLink.Svc.Impl.Tasks;
+using KeithLink.Svc.Core.Exceptions.Queue;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class SpecialOrderLogicImpl : ISpecialOrderLogic {
@@ -33,25 +34,32 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEventLogRepository _log;
         private readonly IGenericQueueRepository _queue;
+        private readonly IGenericSubscriptionQueueRepository _genericSubscriptionQueue;
 
         private bool _keepListening;
         private Task _queueTask;
         #endregion
 
         #region ctor
-        public SpecialOrderLogicImpl(IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, 
+        public SpecialOrderLogicImpl(IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue,
+                                     IGenericSubscriptionQueueRepository genericSubscriptionQueue,
                                      IOrderHistoryDetailRepository detailRepo, IOrderHistoryHeaderRepsitory headerRepo) {
             _unitOfWork = unitOfWork;
             _log = log;
             _queue = queue;
+            _genericSubscriptionQueue = genericSubscriptionQueue;
             _keepListening = true;
             _headerRepo = headerRepo;
             _detailRepo = detailRepo;
+
+            // subscribe to event to receive message through subscription
+            _genericSubscriptionQueue.MessageReceived += GenericSubscriptionQueue_MessageReceived;
         }
         #endregion
 
         #region methods
         // queue listener methods
+        #region polling
         public void ListenForQueueMessages() {
             _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask(),
                 CancellationToken.None, TaskCreationOptions.DenyChildAttach, 
@@ -85,6 +93,77 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 }
             }
         }
+
+        private string ReadOrderFromQueue()
+        {
+            return _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
+                                           Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueSpecialOrderUpdateRequests);
+        }
+
+        public void StopListening()
+        {
+            _keepListening = false;
+
+            if (_queueTask != null && _queueTask.Status == TaskStatus.Running)
+            {
+                _queueTask.Wait();
+            }
+            if (_queueTask != null)
+            {
+                //_log.WriteWarningLog(string.Format("SpecialOrderLogicImpl._queueTask.status = {0:G}", _queueTask.Status));
+            }
+        }
+        #endregion
+
+        #region subscription
+        public void SubscribeToQueue()
+        {
+            RabbitMQ.Client.ConnectionFactory config = new RabbitMQ.Client.ConnectionFactory();
+            config.HostName = Configuration.RabbitMQConfirmationServer;
+            config.UserName = Configuration.RabbitMQUserNameConsumer;
+            config.Password = Configuration.RabbitMQUserPasswordConsumer;
+            config.VirtualHost = Configuration.RabbitMQVHostConfirmation;
+
+            _log.WriteInformationLog
+                (string.Format("Subscribing to special order updates queue: {0}", 
+                    Configuration.RabbitMQQueueSpecialOrderUpdateRequests));
+
+            this._queueTask = Task.Factory.StartNew
+                (() => _genericSubscriptionQueue.Subscribe(config, Configuration.RabbitMQQueueSpecialOrderUpdateRequests));
+        }
+
+        public void Unsubscribe()
+        {
+            _genericSubscriptionQueue.Unsubscribe();
+        }
+
+        private void GenericSubscriptionQueue_MessageReceived
+            (RabbitMQ.Client.IBasicConsumer sender, RabbitMQ.Client.Events.BasicDeliverEventArgs args)
+        {
+            RabbitMQ.Client.Events.EventingBasicConsumer consumer = (RabbitMQ.Client.Events.EventingBasicConsumer)sender;
+
+            try
+            {
+                // don't reprocess items that have been processed
+                if (_genericSubscriptionQueue.GetLastProcessedUndelivered() != args.DeliveryTag)
+                {
+                    string rawOrder = Encoding.ASCII.GetString(args.Body);
+
+                    ProcessSpecialOrderItemUpdate(rawOrder);
+                }
+
+                _genericSubscriptionQueue.Ack(consumer, args.DeliveryTag);
+            }
+            catch (QueueDataError<string> serializationEx)
+            {
+                _log.WriteErrorLog("Serializing problem with special order update.", serializationEx);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Unhandled error processing special order update.", ex);
+            }
+        }
+        #endregion
 
         private static string CreateTestSample() {
             SpecialOrderResponseModel specialorder = new SpecialOrderResponseModel();
@@ -216,22 +295,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             _unitOfWork.SaveChanges();
         }
 
-        private string ReadOrderFromQueue() {
-            return _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
-                                           Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueSpecialOrderUpdateRequests);
-        }
-
-        public void StopListening() {
-            _keepListening = false;
-
-            if(_queueTask != null && _queueTask.Status == TaskStatus.Running) {
-                _queueTask.Wait();
-            }
-            if (_queueTask != null)
-            {
-                //_log.WriteWarningLog(string.Format("SpecialOrderLogicImpl._queueTask.status = {0:G}", _queueTask.Status));
-            }
-        }
         #endregion
     }
 }

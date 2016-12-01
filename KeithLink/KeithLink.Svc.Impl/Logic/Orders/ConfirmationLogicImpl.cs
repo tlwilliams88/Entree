@@ -263,7 +263,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             config.Password = Configuration.RabbitMQUserPasswordConsumer;
             config.VirtualHost = Configuration.RabbitMQVHostConfirmation;
 
-            _log.WriteInformationLog("Subscribing to confirmation queue");
+            _log.WriteInformationLog
+                (string.Format("Subscribing to confirmation queue: {0}", Configuration.RabbitMQQueueConfirmation));
 
             this.queueListenerTask = Task.Factory.StartNew
                 (() => genericSubscriptionQueue.Subscribe(config, Configuration.RabbitMQQueueConfirmation));
