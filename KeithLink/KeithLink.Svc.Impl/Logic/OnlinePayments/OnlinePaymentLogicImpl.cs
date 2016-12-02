@@ -401,47 +401,64 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             catch { }
         }
 
+        private string CustomerInvoiceHeadersListCacheKey(Core.Models.Profile.Customer customer, FilterInfo statusFilter)
+        {
+             return String.Format("InvoiceHeadersList_{0}_{1}_{2}", 
+                                  customer.CustomerId,
+                                  customer.CustomerBranch, 
+                                  JsonConvert.SerializeObject(statusFilter));
+        }
+
+        private string InvoiceModelCacheKey(InvoiceModel invoice)
+        {
+            return String.Format("InvoiceHeader_{0}",
+                                 invoice.Id);
+        }
+
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(
             PagingModel paging,
             List<Core.Models.Profile.Customer> customers, // customers will always be a list with 1 customer
             FilterInfo statusFilter,
             out List<EFInvoice.InvoiceHeader> kpayInvoices)
         {
-            FilterInfo customerFilter = BuildCustomerFilter(customers);
-            kpayInvoices = _invoiceRepo.ReadAllHeaders()
-                                           .AsQueryable()
-                                           .Filter(customerFilter, null)
-                                           .Filter(statusFilter, null)
-                                           .ToList();
-            PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
-                                                                   .AsQueryable<InvoiceModel>()
-                                                                   .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
-            foreach (var invoice in pagedInvoices.Results)
+            kpayInvoices = GetEFInvoiceHeaders(customers, statusFilter);
+
+            PagedResults<InvoiceModel> pagedInvoices = GetPagedInvoices(paging, customers, kpayInvoices);
+
+            ApplyAfterMarketFiltersToPagedInvoicesAndCounts(paging, pagedInvoices);
+
+            ApplySortingToPagedInvoices(paging, pagedInvoices);
+
+            return pagedInvoices;
+        }
+
+        private void ApplySortingToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            if ((paging != null) &&
+                (paging.Sort != null) &&
+                (paging.Sort.Count == 1) &&
+                (paging.Sort[0].Field.Equals
+                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
             {
-                AddInvoiceLink(invoice);
-
-                MapCustomerInfoToInvoice(invoice);
-
-                if (invoice.Status == InvoiceStatus.Pending)
+                if (paging.Sort[0].Order.Equals
+                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    GetPendingTransactionForInvoice(customers, invoice);
+                    pagedInvoices.Results = pagedInvoices.Results
+                                                         .OrderBy(i => i.InvoiceAmount)
+                                                         .ToList();
                 }
-
-                GetInvoiceTransactions(invoice);
-
-                GetInvoicePONumber(invoice);
-
-                // To help the UI, we pull in the bank accounts that can be used to pay an invoice here.
-                invoice.Banks = GetAllBankAccounts(new UserSelectedContext() { BranchId = invoice.BranchId, CustomerId = invoice.CustomerNumber });
+                else
+                {
+                    pagedInvoices.Results = pagedInvoices.Results
+                                                         .OrderByDescending(i => i.InvoiceAmount)
+                                                         .ToList();
+                }
             }
+        }
 
-            if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
-                && (paging.Filter.Filters.Count > 0)
-                && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
-            {
-                ApplyCreditMemoFilter(paging, pagedInvoices);
-                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
-            }
+        private void ApplyAfterMarketFiltersToPagedInvoicesAndCounts(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            ApplyCreditMemoFilterToPagedInvoices(paging, pagedInvoices);
 
             if ((paging != null) && (paging.Search != null))
             {
@@ -456,30 +473,120 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 pagedInvoices.TotalResults = pagedInvoices.Results.Count;
             }
 
-            if ((paging != null) &&
-                (paging.Sort != null) &&
-                (paging.Sort.Count == 1) &&
-                (paging.Sort[0].Field.Equals
-                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
+            pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
+        }
+
+        private void ApplyCreditMemoFilterToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
+                && (paging.Filter.Filters.Count > 0)
+                && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
             {
-                if(paging.Sort[0].Order.Equals
-                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING, StringComparison.CurrentCultureIgnoreCase))
+                ApplyCreditMemoFilter(paging, pagedInvoices);
+                pagedInvoices.TotalResults = pagedInvoices.Results.Count;
+            }
+        }
+
+        private PagedResults<InvoiceModel> GetPagedInvoices(PagingModel paging, List<Core.Models.Profile.Customer> customers, List<EFInvoice.InvoiceHeader> kpayInvoices)
+        {
+            PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
+                                                                   .AsQueryable<InvoiceModel>()
+                                                                   .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
+            DecorateInvoiceModels(customers, pagedInvoices);
+            return pagedInvoices;
+        }
+
+        private List<EFInvoice.InvoiceHeader> GetEFInvoiceHeaders(List<Core.Models.Profile.Customer> customers, FilterInfo statusFilter)
+        {
+            List<EFInvoice.InvoiceHeader> kpayInvoices;
+            FilterInfo customerFilter = BuildCustomerFilter(customers);
+            List<EFInvoice.InvoiceHeader> cachedInvoiceHeaders = _cacheRepo.GetItem<List<EFInvoice.InvoiceHeader>>
+              (CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CustomerInvoiceHeadersListCacheKey(customers[0], statusFilter));
+            if (cachedInvoiceHeaders == null)
+            {
+                kpayInvoices = _invoiceRepo.ReadAllHeaders()
+                                           .AsQueryable()
+                                           .Filter(customerFilter, null)
+                                           .Filter(statusFilter, null)
+                                           .ToList();
+                _cacheRepo.AddItem<List<EFInvoice.InvoiceHeader>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
+                    CustomerInvoiceHeadersListCacheKey(customers[0], statusFilter), TimeSpan.FromHours(2),
+                    kpayInvoices);
+            }
+            else
+            {
+                kpayInvoices = cachedInvoiceHeaders;
+            }
+            //kpayInvoices = _invoiceRepo.ReadAllHeaders()
+            //                               .AsQueryable()
+            //                               .Filter(customerFilter, null)
+            //                               .Filter(statusFilter, null)
+            //                               .ToList();
+
+            return kpayInvoices;
+        }
+
+        private void DecorateInvoiceModels(List<Core.Models.Profile.Customer> customers, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            foreach (var invoice in pagedInvoices.Results)
+            {
+                InvoiceModel cachedInvoice = _cacheRepo.GetItem<InvoiceModel>
+                  (CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, InvoiceModelCacheKey(invoice));
+
+                if (cachedInvoice == null)
                 {
-                    pagedInvoices.Results = pagedInvoices.Results
-                                                         .OrderBy(i => i.InvoiceAmount)
-                                                         .ToList();
+                    DecorateNewInvoiceModel(customers, invoice);
+
+                    _cacheRepo.AddItem<InvoiceModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
+                        InvoiceModelCacheKey(invoice), TimeSpan.FromHours(2),
+                        invoice);
                 }
                 else
                 {
-                    pagedInvoices.Results = pagedInvoices.Results
-                                                         .OrderByDescending(i => i.InvoiceAmount)
-                                                         .ToList();
+                    RestoreCachedInvoiceModel(invoice, cachedInvoice);
                 }
             }
+        }
 
-            pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
+        private void RestoreCachedInvoiceModel(InvoiceModel invoice, InvoiceModel cachedInvoice)
+        {
+            // add link
+            invoice.InvoiceLink = cachedInvoice.InvoiceLink;
+            // map customer info
+            invoice.CustomerCity = cachedInvoice.CustomerCity;
+            invoice.CustomerPostalCode = cachedInvoice.CustomerPostalCode;
+            invoice.CustomerRegionCode = cachedInvoice.CustomerRegionCode;
+            invoice.CustomerStreetAddress = cachedInvoice.CustomerRegionCode;
+            // get pending transaction
+            invoice.PendingTransaction = cachedInvoice.PendingTransaction;
+            // get transactions
+            invoice.InvoiceAmount = cachedInvoice.InvoiceAmount;
+            invoice.HasCreditMemos = cachedInvoice.HasCreditMemos;
+            // get po number
+            invoice.PONumber = cachedInvoice.PONumber;
+            // get banks
+            invoice.Banks = cachedInvoice.Banks;
+        }
 
-            return pagedInvoices;
+        private void DecorateNewInvoiceModel(List<Core.Models.Profile.Customer> customers, InvoiceModel invoice)
+        {
+            AddInvoiceLink(invoice);
+
+            MapCustomerInfoToInvoice(invoice);
+
+            if (invoice.Status == InvoiceStatus.Pending)
+            {
+                GetPendingTransactionForInvoice(customers, invoice);
+            }
+
+            GetInvoiceTransactions(invoice);
+
+            GetInvoicePONumber(invoice);
+
+            // To help the UI, we pull in the bank accounts that can be used to pay an invoice here.
+            invoice.Banks = GetAllBankAccounts
+                (new UserSelectedContext() { BranchId = invoice.BranchId, CustomerId = invoice.CustomerNumber });
         }
 
         private void AddInvoiceLink(InvoiceModel invoice)
@@ -618,6 +725,9 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
         {
+            // To be safe; reset all cacheitems in the invoice headers group upon paying invoices
+            _cacheRepo.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
+
             _kpaylog.Write(emailAddress, string.Format("Paying invoices for customer ({0}-{1})", userContext.BranchId, userContext.CustomerId));
 
             var confId = _invoiceRepo.GetNextConfirmationId();
