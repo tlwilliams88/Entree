@@ -12,7 +12,6 @@ angular.module('bekApp')
 
   var currentUserSelectedContext = {};
   var customers = [];
-  $scope.selectedFilterViewName;
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
   $scope.areAllSelected = false;
@@ -619,7 +618,7 @@ angular.module('bekApp')
       angular.forEach($scope.invoices, function (customer, index) {
         customer.selected = !customer.selected;
         angular.forEach(customer.invoices.results, function(invoice, index){
-          if(invoice.userCanPayInvoice){
+          if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
             invoice.isSelected = customer.selected;
             if (invoice.amountdue != 0) {
               $scope.selectInvoice(invoice, invoice.isSelected);
@@ -630,7 +629,7 @@ angular.module('bekApp')
     }else{
       $event.stopPropagation();
       customer.invoices.results.forEach(function(invoice){
-        if(invoice.userCanPayInvoice){
+        if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
           invoice.isSelected = customer.selected;
           if (invoice.amountdue != 0) {
             $scope.selectInvoice(invoice, invoice.isSelected);
