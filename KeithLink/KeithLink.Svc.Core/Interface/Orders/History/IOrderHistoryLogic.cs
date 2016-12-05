@@ -13,15 +13,19 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
         void ListenForMainFrameCalls();
 
-        void ListenForQueueMessages();
-
         OrderHistoryFileReturn ParseMainframeFile(string rawFlatFile);
 
         void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder);
 
         string SetLostOrder(string trackingNumber);
 
+        void ListenForQueueMessages();
+
         void StopListening();
+
+        void SubscribeToQueue();
+
+        void Unsubscribe();
 
         void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
     }

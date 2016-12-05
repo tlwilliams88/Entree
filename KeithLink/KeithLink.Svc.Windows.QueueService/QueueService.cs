@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             InitializePushMessageConsumerThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
-            InitializeCheckLostOrdersTimer();
+            //InitializeCheckLostOrdersTimer();// moved to monitor service
             InitializeSpecialOrderUpdateThread();
         }
 
@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TerminateOrderUpdateThread();
             TerminateNotificationsThreads();
             TerminatePushMessageConsumerThread();
-            TerminateCheckLostOrdersTimer();
+            //TerminateCheckLostOrdersTimer();// moved to monitor service
             TerminateSpecialOrderUpdateThread();
 
             _log.WriteInformationLog( "Service stopped" );
@@ -179,26 +179,32 @@ namespace KeithLink.Svc.Windows.QueueService {
         {
             pushMessagesScope = container.BeginLifetimeScope();
             _pushmessageConsumer = pushMessagesScope.Resolve<IPushMessageConsumer>();
-            _pushmessageConsumer.ListenForQueueMessages();
+            _pushmessageConsumer.SubscribeToQueue();
+            //_pushmessageConsumer.ListenForQueueMessages();
         }
 
         private void InitializeOrderUpdateThread() {
             orderHistoryScope = container.BeginLifetimeScope();
             _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
-            _orderHistoryLogic.ListenForQueueMessages();
+            _orderHistoryLogic.SubscribeToQueue();
+            //_orderHistoryLogic.ListenForQueueMessages();
         }
 
         private void InitializeSpecialOrderUpdateThread()
         {
             specialOrderScope = container.BeginLifetimeScope();
             _specialOrderLogic = specialOrderScope.Resolve<ISpecialOrderLogic>();
-            _specialOrderLogic.ListenForQueueMessages();
+            _specialOrderLogic.SubscribeToQueue();
+            //_specialOrderLogic.ListenForQueueMessages();
         }
 
         private void TerminateSpecialOrderUpdateThread()
         {
             if (_specialOrderLogic != null)
-                _specialOrderLogic.StopListening();
+            {
+                _specialOrderLogic.Unsubscribe();
+                //_specialOrderLogic.StopListening();
+            }
 
             if (specialOrderScope != null)
                 specialOrderScope.Dispose();
@@ -217,7 +223,10 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void TerminateOrderUpdateThread() {
             if (_orderHistoryLogic != null)
-                _orderHistoryLogic.StopListening();
+            {
+                _orderHistoryLogic.Unsubscribe();
+                //_orderHistoryLogic.StopListening();
+            }
 
             if (orderHistoryScope != null)
                 orderHistoryScope.Dispose();
@@ -252,7 +261,10 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void TerminatePushMessageConsumerThread()
         {
             if (_pushmessageConsumer != null)
-                _pushmessageConsumer.Stop();
+            {
+                _pushmessageConsumer.Unsubscribe();
+                //_pushmessageConsumer.Stop();
+            }
 
             if (pushMessagesScope != null)
                 pushMessagesScope.Dispose();
