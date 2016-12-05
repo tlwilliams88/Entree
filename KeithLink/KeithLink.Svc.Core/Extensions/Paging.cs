@@ -269,6 +269,43 @@ namespace KeithLink.Svc.Core.Extensions
 			}
 		}
 
-		#endregion
-	}
+        #endregion
+
+        #region NullCheck
+
+        public static bool ISNOTNULLANDHASSORT(this PagingModel paging)
+        {
+            if ((paging != null) &&
+                (paging.Sort != null) &&
+                (paging.Sort.Count > 0))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool ISNOTNULLANDHASSEARCH(this PagingModel paging)
+        {
+            if ((paging != null) &&
+                (paging.Search != null))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool ISNOTNULLANDHASNESTEDFILTERS(this PagingModel paging)
+        {
+            if ((paging != null) && 
+                (paging.Filter != null) && 
+                (paging.Filter.Filters != null) && 
+                (paging.Filter.Filters.Count > 0))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
+    }
 }
