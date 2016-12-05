@@ -285,7 +285,8 @@
                 <li 
                   ng-click="addItemsToList(list)" 
                   ng-repeat="list in lists | sortLists track by list.listid" 
-                  ng-if="(list.permissions.canAddItems && selectedList.listid !== list.listid && !list.permissions.specialDisplay)">
+                  ng-if="(list.permissions.canAddItems && selectedList.listid !== list.listid && !list.permissions.specialDisplay)"
+                  ng-hide="!list.permissions.canAddNonBEKItems && isCustomInventoryList">
                   <a href="">{{list.name}}</a>
                 </li>
                 <li ng-click="createListFromMultiSelect()"><a>Create New List...</a></li>

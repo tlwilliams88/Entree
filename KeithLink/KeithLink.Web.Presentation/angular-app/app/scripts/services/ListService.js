@@ -48,6 +48,7 @@ angular.module('bekApp')
           permissions.canAddItems = true;
           permissions.specialDisplay = true;
           permissions.canReorderItems = true;
+          permissions.canAddNonBEKItems = false;
 
         // CONTRACT, WORKSHEET / HISTORY
          } else if (list.is_contract_list || list.isworksheet) {
@@ -79,6 +80,7 @@ angular.module('bekApp')
           permissions.canDeleteItems = true;
           permissions.canDeleteList = true;
           permissions.canReorderItems = true;
+          permissions.canAddNonBEKItems = false;
 
         // MANDATORY -- only editable by internal users
         } else if (list.ismandatory) {
@@ -90,6 +92,7 @@ angular.module('bekApp')
           permissions.canDeleteItems = true;
           permissions.canEditParlevel = true;
           permissions.canDeleteList = true;
+          permissions.canAddNonBEKItems = false;
 
         // REMINDER
         } else if (list.isreminder) {
@@ -97,6 +100,7 @@ angular.module('bekApp')
           permissions.canAddItems = true;
           permissions.canDeleteItems = true;
           permissions.canReorderItems = true;
+          permissions.canAddNonBEKItems = false;
         
         // CUSTOM LISTS (only these can be shared/copied)
         } else {
@@ -106,7 +110,8 @@ angular.module('bekApp')
             // permissions.canEditList = true;
             permissions.canSeeLabels = true;
             permissions.canSeeParlevel = true;
-            // permissions.canEditParlevel = true;            
+            // permissions.canEditParlevel = true;
+            permissions.canAddNonBEKItems = false;         
 
           // OWNER OF LIST
           } else {
@@ -122,6 +127,7 @@ angular.module('bekApp')
             permissions.canShareList = true;
             permissions.canCopyList = true;
             permissions.canReorderItems = true;
+            permissions.canAddNonBEKItems = true;
           }
         }
 
@@ -137,6 +143,7 @@ angular.module('bekApp')
           permissions.canEditParlevel = false;
           permissions.canShareList = false;
           permissions.canCopyList = false;
+          permissions.canAddNonBEKItems = false;
         }
 
         list.permissions = permissions;        
