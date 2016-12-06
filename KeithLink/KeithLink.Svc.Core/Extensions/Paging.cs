@@ -273,7 +273,7 @@ namespace KeithLink.Svc.Core.Extensions
 
         #region NullCheck
 
-        public static bool ISNOTNULLANDHASSORT(this PagingModel paging)
+        public static bool IsNotNullAndHasSort(this PagingModel paging)
         {
             if ((paging != null) &&
                 (paging.Sort != null) &&
@@ -284,7 +284,7 @@ namespace KeithLink.Svc.Core.Extensions
             return false;
         }
 
-        public static bool ISNOTNULLANDHASSEARCH(this PagingModel paging)
+        public static bool IsNotNullAndHasSearch(this PagingModel paging)
         {
             if ((paging != null) &&
                 (paging.Search != null))
@@ -294,7 +294,17 @@ namespace KeithLink.Svc.Core.Extensions
             return false;
         }
 
-        public static bool ISNOTNULLANDHASNESTEDFILTERS(this PagingModel paging)
+        public static bool IsNotNullAndHasDateRange(this PagingModel paging)
+        {
+            if ((paging != null) &&
+                (paging.DateRange != null))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsNotNullAndHasNestedFilters(this PagingModel paging)
         {
             if ((paging != null) && 
                 (paging.Filter != null) && 

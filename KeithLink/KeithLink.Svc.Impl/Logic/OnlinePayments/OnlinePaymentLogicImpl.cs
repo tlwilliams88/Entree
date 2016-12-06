@@ -313,7 +313,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
             FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
 
-            if ((paging != null) && (paging.DateRange != null))
+            if (paging.IsNotNullAndHasDateRange())
             {
                 if (statusFilter != null)
                 { // if there is a statusFilter append the daterange to it, it was working before but pulling back all
@@ -435,7 +435,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private void ApplySortingToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
         {
-            if ((paging.ISNOTNULLANDHASSORT()) &&
+            if ((paging.IsNotNullAndHasSort()) &&
                 (paging.Sort[0].Field.Equals
                     (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
             {
@@ -459,7 +459,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         {
             ApplyCreditMemoFilterToPagedInvoices(paging, pagedInvoices);
 
-            if (paging.ISNOTNULLANDHASSEARCH())
+            if (paging.IsNotNullAndHasSearch())
             {
                 if (paging.Search.Field == Constants.INVOICEREQUESTFILTER_PONUMBER_FIELDKEY)
                 {
@@ -477,7 +477,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private void ApplyCreditMemoFilterToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
         {
-            if ((paging.ISNOTNULLANDHASNESTEDFILTERS()) && 
+            if ((paging.IsNotNullAndHasNestedFilters()) && 
                 (paging.Filter.Filters.Where
                     (f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
             {
