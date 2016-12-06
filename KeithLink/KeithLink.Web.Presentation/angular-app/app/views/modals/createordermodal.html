@@ -113,17 +113,19 @@
     </div>
 
     <!-- ORDER BY QUICKADD -->
-    <div id="quickadd" class="tab-pane quickAddOrder">
-      <form name="quickAddForm" class="style-validation-errors">
-        <p class="text-green" >
-        <span ng-if="enableSubmit && !isChangeOrder && !existingCart">All item numbers are valid. Click Create Cart</span>
-        <span ng-if="enableSubmit && isChangeOrder || enableSubmit && existingCart">All item numbers are valid.</span>
-        </p>
-        <p class="text-red" ng-if="!enableSubmit && !duplicateItemsExist">You must enter all valid item numbers before you can create the cart</p>
-        <p class="text-red" ng-if="!enableSubmit && duplicateItemsExist">Duplicate items entered.  Please combine quantity.</p>
-        <p class="text-red" ng-if="invalidValue">Please enter a quantity no greater than 999</p>
+    <div id="quickadd" class="tab-pane quickAddOrder" style="margin-top:-15px; border-bottom: 1px solid #c3bc9c">
+      <form name="quickAddForm" class="style-validation-errors" style="height:325px; overflow-y: auto;">
+        <span style="padding: 1px">
+          <p class="margin-left-5 text-green" ng-if="enableSubmit">
+            <span ng-if="enableSubmit && !isChangeOrder && !existingCart">All item numbers are valid. Click Create Cart</span>
+            <span ng-if="enableSubmit && isChangeOrder || enableSubmit && existingCart">All item numbers are valid.</span>
+          </p>
+          <p class="text-red margin-left-5" ng-if="!enableSubmit && !duplicateItemsExist">You must enter all valid item numbers before you can create the cart</p>
+          <p class="text-red margin-left-5" ng-if="!enableSubmit && duplicateItemsExist">Duplicate items entered.  Please combine quantity.</p>
+          <p class="text-red margin-left-5" ng-if="invalidValue">Please enter a quantity no greater than 999</p>
+        </span>
 
-        <table class="table table-border" navigate-quick-add>
+        <table class="table table-border" style="margin-bottom: 0px !important;" navigate-quick-add>
           <thead>
             <tr>
               <th>Item #</th>
@@ -242,8 +244,7 @@
   </p>
   <div 
   ng-if="quickAddIsOpen" 
-  class="text-right margin-bottom-10" 
-  style="margin-top:-20px; margin-right:15px;">
+  class="text-right margin-bottom-10 margin-right-15">
     <button 
     type="button" 
     class="btn btn-primary btn-lg" 
@@ -254,14 +255,12 @@
   <span 
   ng-if="importIsOpen">
     <p 
-    class="text-red text-left" 
-    style="padding-left:15px;" 
+    class="text-red text-left padding-left-15"
     ng-show="invalidType">
     This is an incompatible file type. Please choose a file with one of the following extensions: .xls .xlsx .csv .txt.
     </p>
     <p 
-    class="text-left" 
-    style="padding-left:15px;" 
+    class="text-left padding-left-15" 
     ng-show="!invalidType">
     Please choose a file with one of the following extensions: .xls, .xlsx, .csv, or .txt.
     </p>
