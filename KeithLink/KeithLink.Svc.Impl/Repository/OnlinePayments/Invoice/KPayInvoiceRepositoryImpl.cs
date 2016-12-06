@@ -8,6 +8,9 @@ using System.Linq;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF;
 using System.Data;
 using System.Linq.Expressions;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Extensions;
+using System.Transactions;
 
 namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
     public class KPayInvoiceRepositoryImpl : IKPayInvoiceRepository {
@@ -128,9 +131,30 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
             return this._dbContext.InvoiceHeaders;
         }
 
-		#endregion
+        public List<Core.Models.OnlinePayments.Invoice.EF.InvoiceHeader> ReadFilteredHeaders
+            (FilterInfo customerFilter, FilterInfo statusFilter)
+        {
+            List<Core.Models.OnlinePayments.Invoice.EF.InvoiceHeader> headers = null;
+            // "read uncommitted" transaction 
+            using (var txn = new TransactionScope(
+                TransactionScopeOption.Required,
+                new TransactionOptions
+                {
+                    IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted
+                }
+            ))
+            {
+                headers = this._dbContext.InvoiceHeaders
+                                                 .AsQueryable()
+                                                 .Filter(customerFilter, null)
+                                                 .Filter(statusFilter, null)
+                                                 .ToList();
+            }
+            return headers;
+        }
+        #endregion
 
 
-		
-	}
+
+    }
 }

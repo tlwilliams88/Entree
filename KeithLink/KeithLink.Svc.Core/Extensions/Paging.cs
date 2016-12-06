@@ -269,6 +269,53 @@ namespace KeithLink.Svc.Core.Extensions
 			}
 		}
 
-		#endregion
-	}
+        #endregion
+
+        #region NullCheck
+
+        public static bool IsNotNullAndHasSort(this PagingModel paging)
+        {
+            if ((paging != null) &&
+                (paging.Sort != null) &&
+                (paging.Sort.Count > 0))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsNotNullAndHasSearch(this PagingModel paging)
+        {
+            if ((paging != null) &&
+                (paging.Search != null))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsNotNullAndHasDateRange(this PagingModel paging)
+        {
+            if ((paging != null) &&
+                (paging.DateRange != null))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public static bool IsNotNullAndHasNestedFilters(this PagingModel paging)
+        {
+            if ((paging != null) && 
+                (paging.Filter != null) && 
+                (paging.Filter.Filters != null) && 
+                (paging.Filter.Filters.Count > 0))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
+    }
 }
