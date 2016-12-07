@@ -104,6 +104,11 @@ angular.module('bekApp')
 
   $scope.selectedInvoiceFilter = $scope.invoiceFilters[0];
 
+  if(!InvoiceService.selectedFilterView){
+    $scope.selectedFilterView = InvoiceService.selectedFilterView = $scope.filterViews[0];
+    $scope.selectedFilterViewName = $scope.selectedFilterView.name;
+  }
+
   $scope.selectInvoiceFilter = function(filter){
     $scope.selectedInvoiceFilter = [{
       name:filter.name,
@@ -146,11 +151,6 @@ angular.module('bekApp')
     stopLoading,
     startLoading
   );
-
-  if(!InvoiceService.selectedFilterView){
-    $scope.selectedFilterView = InvoiceService.selectedFilterView = $scope.filterViews[0];
-  }
-  retrieveFilter();
 
   // Fixes dropdown touch issue on mobile
   $('body').on('click', '.dateRangeDropdown', function (e) { 
@@ -252,7 +252,9 @@ angular.module('bekApp')
       $scope.selectedFilterView = InvoiceService.selectedFilterView;
       }
     }
+    $scope.selectedFilterViewName = $scope.selectedFilterView.name;
   }
+  retrieveFilter();
 
   function appendInvoices(data) {
     $scope.invoices = $scope.invoices.concat(data.pagedresults.results);
