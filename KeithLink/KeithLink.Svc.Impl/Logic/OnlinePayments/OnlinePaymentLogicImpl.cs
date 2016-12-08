@@ -395,7 +395,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 ci.HasPayableInvoices = clist.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0;
                 ci.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
             }
-            catch { }
+            catch(Exception ex)
+            {
+                _log.WriteErrorLog("OnlinePaymentLogicImpl_MapInvoicesToCustomer", ex);
+            }
         }
 
         private string CustomerInvoiceHeadersListCacheKey(Core.Models.Profile.Customer customer, FilterInfo statusFilter)
