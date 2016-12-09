@@ -268,25 +268,6 @@
             <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
 
           </span>
-            <input
-              type="text" 
-              class="form-control pull-right hidden-sm hidden-xs"
-              style="max-width:200px; border-radius: 4px;"
-              ng-show="selectedList.permissions.canAddItems"
-              ng-model="listItemNumber"
-              placeholder="Item Number"
-              integer
-              allowleadingzeroes='true'/>
-            <span class="input-group-btn">
-              <button 
-                type="submit" 
-                class="btn btn-primary hidden-sm hidden-xs"
-                ng-show="selectedList.permissions.canAddItems"
-                ng-disabled="!listItemNumber"
-                ng-click="addItemByItemNumber(listItemNumber)">
-                Add Item
-              </button>
-            </span>
         </div>
       </form>
 
@@ -425,15 +406,11 @@
                 <span>{{selectedList.permissions.alternativeFieldHeader}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header text-center" ng-if="selectedList.permissions.alternativeFieldHeader2" ng-click="sortList(selectedList.permissions.alternativeFieldName2,sort[0].order)">
-                <span>{{selectedList.permissions.alternativeFieldHeader2}}
-                <span sort-icons field="selectedList.permissions.alternativeFieldName2" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
-              </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
                 <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               </th>
-              <th class="hidden-mobile-visible-print" ng-if="(!selectedList.read_only)">
+              <th class="hidden-mobile-visible-print">
                   Each
               </th>
               <th ng-if="canSeePrices" class="hidden-mobile-visible-print">
@@ -523,10 +500,6 @@
               <td id="{{item[selectedList.permissions.alternativeFieldName]}}" ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
                 {{item[selectedList.permissions.alternativeFieldName]}}
               </td>
-              <td id="{{item[selectedList.permissions.alternativeFieldName2]}}" ng-if="selectedList.permissions.alternativeFieldName2" class="hidden-xs hidden-sm text-center">
-                {{item[selectedList.permissions.alternativeFieldName2]}}
-              </td>
-              <!-- Label -->
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag" ng-class="{'bek-drag-handle': !item.custominventoryitemid}" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
@@ -556,13 +529,13 @@
               <td class="visible-print label-col" ng-if="(selectedList.permissions.canSeeLabels)">
                 {{item.label}}
               </td>
-              <td class="input-col hidden-mobile-visible-print max-width-20" ng-if="!selectedList.read_only">
+              <td class="input-col hidden-mobile-visible-print max-width-20">
               <ng-form name="eachForm" ng-click="$event.stopPropagation()" ng-if="item.hasPackagePrice">
-                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each"/>
+                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice || selectedList.name == 'History'" ng-model="item.each" id="each" name="each"/>
                 <label for="each"></label>
               </ng-form>
               </td>
-              <td ng-if="(item.packageprice || item.caseprice) && canSeePrices" class="hidden-mobile-visible-print" >
+              <td ng-if="(item.packageprice || item.caseprice) && canSeePrices" class="hidden-mobile-visible-print">
                 {{item.each ? item.packageprice : item.caseprice | currency}}
                 <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
               </td>
