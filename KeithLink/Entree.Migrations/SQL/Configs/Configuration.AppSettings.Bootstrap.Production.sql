@@ -154,8 +154,6 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Setti
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Settings', 'LogSystemPerformanceWithErrors', 'true', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Settings', 'CacheServerEndpoints', 'http://bekkecpas1:5006,http://bekkecpas2:5006', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Settings', 'EntreeSiteURL', 'https://shop.benekeith.com', 0)
-INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Queue Service Functions', 'CheckLostOrders', 'true|BEKKECPAS1', 0)
-INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Queue Service Functions', 'CheckLostOrdersStatus', 'Submitted', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceMakeKDOELogFiles', 'true', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogPath', 'c:\test\entree\kdoefiles', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogPre', 'rb', 0)
