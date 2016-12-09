@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList',
-   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService',
+   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
-     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService) {
+     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService) {
 
     if(originalList.name == 'Non BEK Items'){
       originalList.listid = 'nonbeklist';
@@ -464,7 +464,7 @@ angular.module('bekApp')
     **********/
 
     var processingSaveList = false;
-    $scope.saveList = function(list) {
+    $scope.saveList = function(list, addingItem) {
       var params = {
           from: $scope.rangeStart - 1,
           size: $scope.pagingPageSize,
@@ -487,7 +487,7 @@ angular.module('bekApp')
 
        listPagingModel.resetPaging();
 
-        return ListService.updateList(updatedList, false, params)
+        return ListService.updateList(updatedList, false, params, addingItem)
           .then(resetPage).finally(function() {
             processingSaveList = false;
           });
@@ -538,13 +538,13 @@ angular.module('bekApp')
       $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
       var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
       angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
-      if(!item.isdeleted){
-          item.position = newPosition;
-          item.editPosition = newPosition;
-          newPosition += 1;
-      }
+        if(!item.isdeleted){
+            item.position = newPosition;
+            item.editPosition = newPosition;
+            newPosition += 1;
+        }
       });
-     }
+    }
 
     /**********
     DELETE ITEMS
@@ -585,6 +585,7 @@ angular.module('bekApp')
       $scope.selectedList.allSelected = false;
       updateItemPositions();
       $scope.forms.listForm.$setDirty();
+      $scope.isDeletingItem = false;
     };
 
     /**********
@@ -653,6 +654,25 @@ angular.module('bekApp')
           };
       $scope.selectedList.items.push(item);
     };
+
+    $scope.addItemByItemNumber = function(itemNumber) {
+      $scope.successMessage = '';
+      $scope.errorMessage = '';
+
+      blockUI.start().then(function(){
+        ProductService.getProductDetails(itemNumber).then(function(item) {
+          ListService.addItem($scope.selectedList.listid, item).then(function(data){
+            $scope.saveList($scope.selectedList, true);
+            $scope.listItemNumber = '';
+            $scope.displayMessage('success', 'Successfully added item to list.');
+          }, function() {
+            $scope.displayMessage('error', 'Error adding item to list.');
+          });
+        });
+      });
+    };
+
+
 
     /********************
     PARLEVEL

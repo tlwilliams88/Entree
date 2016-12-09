@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
-    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -38,7 +38,7 @@ angular.module('bekApp')
       canCopyList
       */
 
-      function updateListPermissions(list) {
+      function updateListPermissions(list, isInternalUser) {
         var permissions = {};
 
         // FAVORITES
@@ -84,15 +84,22 @@ angular.module('bekApp')
 
         // MANDATORY -- only editable by internal users
         } else if (list.ismandatory) {
+          if(isInternalUser){
+            permissions.canDeleteList = true;
+            permissions.canAddItems = true;
+            permissions.canEditList = true;
+            permissions.canDeleteItems = true;
+            permissions.canEditParlevel = true;
+          } else {
+            permissions.canDeleteList = false;
+            permissions.canAddItems = false;
+            permissions.canEditList = false;
+            permissions.canDeleteItems = false;
+            permissions.canEditParlevel = false;
+          }
           permissions.canSeeParlevel = true;
           permissions.alternativeParHeader = 'Required Qty';
-          permissions.canDeleteList = true;
-          permissions.canAddItems = true;
-          permissions.canEditList = true;
-          permissions.canDeleteItems = true;
-          permissions.canEditParlevel = true;
-          permissions.canDeleteList = true;
-          permissions.canAddNonBEKItems = false;
+
 
         // REMINDER
         } else if (list.isreminder) {
@@ -155,6 +162,7 @@ angular.module('bekApp')
 
         lists: [],
         labels: [],
+        userProfile: {},
 
         updateListPermissions: updateListPermissions,
 
@@ -250,6 +258,7 @@ angular.module('bekApp')
         // accepts listId (guid)
         // returns list object
         getListWithItems: function(listId, params) {
+          Service.userProfile = UserProfileService.getCurrentUserProfile();
           if (!params) {
             params = {
               includePrice: true
@@ -277,7 +286,15 @@ angular.module('bekApp')
 
         // accepts listId (guid), paging params
         // returns paged list object
-        getList: function(listId, params) {         
+        getList: function(listId, params) {
+            UserProfileService.getCurrentUserProfile().then(function(profile){
+              if(profile.emailaddress.indexOf('@benekeith.com') !== -1) {
+                Service.isInternalUser = true;
+              } else {
+                Service.isInternalUser = false;
+              }
+              
+            })
 
             if (!params) {
               var pageSize = LocalStorage.getPageSize();             
@@ -307,7 +324,7 @@ angular.module('bekApp')
 
               // get calculated fields
               PricingService.updateCaculatedFields(list.items);
-              updateListPermissions(list);
+              updateListPermissions(list, Service.isInternalUser);
 
               Service.updateCache(list);
 
@@ -591,7 +608,7 @@ angular.module('bekApp')
 
         // accepts list object
         // returns promise and updated list object
-        updateList: function(list, getEntireList, params) {
+        updateList: function(list, getEntireList, params, addingItem) {
           list.message = 'Saving list...';
 
           return List.update(null, list).$promise.then(function(response) {
@@ -612,11 +629,15 @@ angular.module('bekApp')
             }
 
             return promise.then(function(list) {
-              toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
+              if(!addingItem){
+                toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
+              }
               return list;
             });
           }, function(error) {
-            toaster.pop('error', null, 'Error saving list ' + list.name + '.');
+            if(!addingItem){
+              toaster.pop('error', null, 'Error saving list ' + list.name + '.');
+            }
             return $q.reject(error);
           });
         },

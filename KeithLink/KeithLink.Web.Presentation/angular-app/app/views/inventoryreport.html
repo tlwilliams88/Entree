@@ -108,8 +108,13 @@
         <p class="text-green margin-right-25" ng-show="successMessage">{{successMessage}}</p>
         <p class="text-red margin-right-25" ng-show="errorMessage">{{errorMessage}}</p>     
         <button type="submit" class="btn btn-primary btn-lg margin-right-25 float-right margin-bottom-6"  ng-disabled="!itemNumber"  ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
-        <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg  margin-bottom-6 float-right">        
-
+        <input 
+          type="text" 
+          placeholder="Item Number" 
+          ng-model="itemNumber" 
+          class="item-number-input form-control input-lg  margin-bottom-6 float-right"
+          integer 
+          allowleadingzeroes='true'/>        
         <div class=" btn-group hidden-print padding-right-25" dropdown is-open="status.listactions" style="text-align:right max-width:100px !important;">
           <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
             <div ng-if="!listsLoading">Add Items from List <span class="icon-arrow-down6"></span></div>
