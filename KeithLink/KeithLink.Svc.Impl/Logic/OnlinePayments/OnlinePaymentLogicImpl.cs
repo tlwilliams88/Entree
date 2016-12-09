@@ -455,6 +455,13 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 "GetInvoicesForCustomer - DecorateInvoiceModels");
 #endif
 
+            ApplyAfterMarketFiltersToPagedInvoicesAndCounts(paging, pagedInvoices);
+#if DEBUG
+            if (gettiming)
+                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
+                "GetInvoicesForCustomer - ApplyAfterMarketFiltersToPagedInvoicesAndCounts");
+#endif
+
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count();
 #if DEBUG
             if (gettiming)
@@ -489,8 +496,6 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private void ApplyAfterMarketFiltersToPagedInvoicesAndCounts(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
         {
-            ApplyCreditMemoFilterToPagedInvoices(paging, pagedInvoices);
-
             if (paging.IsNotNullAndHasSearch())
             {
                 if (paging.Search.Field == Constants.INVOICEREQUESTFILTER_PONUMBER_FIELDKEY)
@@ -500,6 +505,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 else if (paging.Search.Field == Constants.INVOICEREQUESTFILTER_TYPEDESCRIPTION_FIELDKEY)
                 {
                     ApplyTypeDescriptionFilter(paging, pagedInvoices);
+                }
+                else if (paging.Search.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY)
+                {
+                    ApplyCreditMemoFilter(paging, pagedInvoices);
                 }
                 pagedInvoices.TotalResults = pagedInvoices.Results.Count;
             }
@@ -613,6 +622,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             invoice.PONumber = cachedInvoice.PONumber;
             // get banks
             invoice.Banks = cachedInvoice.Banks;
+            // check for credit memos and get invoice amount
+            GetInvoiceTransactions(invoice);
         }
 
         private void DecorateNewInvoiceModel(List<Core.Models.Profile.Customer> customers, InvoiceModel invoice)
@@ -681,15 +692,10 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private void ApplyCreditMemoFilter(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
         {
-            var filter = paging.Filter.Filters
-                .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).FirstOrDefault();
-            if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase))
+            if (paging.Search.Value.Equals
+                (Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase))
             {
                 pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos).ToList();
-            }
-            else if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM, StringComparison.CurrentCultureIgnoreCase))
-            {
-                pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
             }
         }
 

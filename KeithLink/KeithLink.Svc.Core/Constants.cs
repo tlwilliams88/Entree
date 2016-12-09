@@ -303,9 +303,8 @@ namespace KeithLink.Svc.Core
         // invoice transaction types and requests
         public const string INVOICETRANSACTIONTYPE_INITIALINVOICE = "IN ";
         public const string INVOICETRANSACTIONTYPE_CREDITMEMO = "CM ";
-        public const string INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY = "creditmemo";
-        public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY = "only";
-        public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM = "none";
+        public const string INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY = "hascreditmemos";
+        public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY = "true";
         public const string INVOICEREQUESTFILTER_INVOICENUMBER_FIELDKEY = "invoicenumber";
         public const string INVOICEREQUESTFILTER_PONUMBER_FIELDKEY = "ponumber";
         public const string INVOICEREQUESTFILTER_TYPEDESCRIPTION_FIELDKEY = "typedescription";
