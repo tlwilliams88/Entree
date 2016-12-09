@@ -58,12 +58,6 @@ angular.module('bekApp')
             //History has one: read-only Each.
             permissions.alternativeFieldName = 'category';
             permissions.alternativeFieldHeader = 'Contract Category';
-            permissions.alternativeFieldName2 = 'eachString';
-            permissions.alternativeFieldHeader2 = 'Each';
-          }
-          else{
-            permissions.alternativeFieldName = 'eachString'; 
-            permissions.alternativeFieldHeader = 'Each';
           }
 
           if (list.items) {
