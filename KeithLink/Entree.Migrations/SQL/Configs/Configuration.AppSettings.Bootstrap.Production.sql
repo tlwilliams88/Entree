@@ -176,6 +176,53 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Se
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleX', '250', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleY', '250', 0)
 
+-- Monitor Service Entries
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrders', 'true', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrdersStatus', 'Submitted', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckQueueHealth', 'true', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToCheck', '{targets:[
+{"server":"prodrmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_eta",
+ "queue":"notifications_eta",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100},
+{"server":"prodrmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_hasnews",
+ "queue":"notifications_hasnews",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100},
+{"server":"prodrmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_orderconfirmations",
+ "queue":"notifications_orderconfirmations",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100},
+{"server":"prodrmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_paymentconfirmation",
+ "queue":"notifications_paymentconfirmation",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100}
+{"server":"prodrmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_push_messages",
+ "queue":"notifications_push_messages",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100}
+]}', 'Monitor Service Functions', 0)
+
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])
 WHEN MATCHED THEN
