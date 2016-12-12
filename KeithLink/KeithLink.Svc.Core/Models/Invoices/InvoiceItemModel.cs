@@ -26,7 +26,10 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "quantityordered")]
 		[Description("# Ordereed")]
 		public int? QuantityOrdered { get; set; }
-		[DataMember(Name = "quantityshipped")]
+        [DataMember(Name = "each")]
+        [Description("Each")]
+        public bool Each { get; set; }
+        [DataMember(Name = "quantityshipped")]
 		[Description("# Shipped")]
 		public int? QuantityShipped { get; set; }
 		[DataMember(Name = "catchweight")]
