@@ -207,21 +207,26 @@
     <Content Include="newrelic.config">
       <SubType>Designer</SubType>
       <TransformOnBuild>true</TransformOnBuild>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="extension.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="newrelic.Beta.config">
       <DependentUpon>newrelic.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="newrelic.Release.config">
       <DependentUpon>newrelic.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="newrelic.Test.config">
       <DependentUpon>newrelic.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config">
       <DependentUpon>newrelic.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
   </ItemGroup>
