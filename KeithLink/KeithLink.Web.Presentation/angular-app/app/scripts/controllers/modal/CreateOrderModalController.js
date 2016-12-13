@@ -76,6 +76,7 @@ angular.module('bekApp')
         cart.type = 'QuickAdd';
       }
       cart.listid = $scope.selectedList.listid;
+      ListService.setLastOrderList(cart.listid, cart.id);
       $modalInstance.close(cart);
       $scope.displayMessage('success', 'Successfully created new cart.');
     }, function(error) {

@@ -904,8 +904,43 @@ angular.module('bekApp')
             });
             return newList.newlistid;
           });
+        },
+
+        /*******************
+        SET LAST ORDER LIST
+        *******************/
+        setLastOrderList: function(listId, cart){
+          var cartId = cart,
+              timeset = DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
+              orderList = {
+                listId: listId,
+                cartId: cartId,
+                timeset: timeset
+              },
+              allSets = [],
+              allSets = LocalStorage.getLastOrderList();
+            if(!allSets || (allSets[0] && !allSets[0].timeset)){
+              allSets = [];
+            }
+     
+            var matchFound = false;
+            if(orderList.cartId !== 'New'){
+              allSets.forEach(function(set){
+                if(set.cartId === orderList.cartId){
+                  set.listId = orderList.listId;
+                  set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
+                  matchFound = true;
+                }
+              });
+              if(!matchFound){
+                allSets.push(orderList);
+              }
+            }
+
+          LocalStorage.setLastOrderList(allSets);
+          }
         }
-      };
+
 
       return Service;
 
