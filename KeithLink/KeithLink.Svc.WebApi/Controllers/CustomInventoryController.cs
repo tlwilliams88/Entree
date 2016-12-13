@@ -21,6 +21,9 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Authorize]
     public class CustomInventoryController : BaseController
     {
@@ -36,10 +39,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region constructor
         /// <summary>
-        /// Constructor
+        /// 
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="customInventoryRepo"></param>
+        /// <param name="logger"></param>
+        /// <param name="cache"></param>
         public CustomInventoryController(IUserProfileLogic profileLogic, ICustomInventoryItemsRepository customInventoryRepo, IEventLogRepository logger, ICacheRepository cache) : base(profileLogic) {
             _customInventoryRepo = customInventoryRepo;
             _cache = cache;

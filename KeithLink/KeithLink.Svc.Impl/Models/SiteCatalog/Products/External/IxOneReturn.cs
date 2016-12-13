@@ -58,13 +58,12 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Products.External
                     foreach (string filename in product.Filenames)
                     {
 
-                        string thisName = null;
                         int trial = 0;
                         try
                         {
                             GetItem(best, filename, Constants.IXONE_PRODUCTIMAGE_PREFERREDTYPE);
                         }
-                        catch (Exception ex)
+                        catch// (Exception ex)
                         {
                             trial++;
                             if (trial == 1)

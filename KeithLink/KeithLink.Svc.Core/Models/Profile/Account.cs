@@ -42,6 +42,11 @@ namespace KeithLink.Svc.Core.Models.Profile
         {
             return obj.GetHashCode();
         }
+
+        public override int GetHashCode()
+        {
+            return this.GetHashCode();
+        }
     }
 
     public class AccountAddUserModel

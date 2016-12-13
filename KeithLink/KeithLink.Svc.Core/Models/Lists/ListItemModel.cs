@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 
         [DataMember(Name = "packsize")]
         [Description("Pack/Size")]
-        public string PackSize { get; set; }
+        public new string PackSize { get; set; }
 
         [DataMember(Name = "storagetemp", EmitDefaultValue = false)]
         public string StorageTemp { get; set; }
@@ -74,7 +74,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         public ItemHistoryModel ItemStatistics { get; set; }
 
         [DataMember(Name = "catalog_id")]
-        public string CatalogId { get; set; }
+        public new string CatalogId { get; set; }
 
         [DataMember(Name = "custominventoryitemid")]
         public long CustomInventoryItemId { get; set; }

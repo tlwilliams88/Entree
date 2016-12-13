@@ -55,7 +55,7 @@ namespace KeithLink.Common.Impl.Email {
                 {
                     mailServer.Send(msg);
                 }
-                catch (Exception ex)
+                catch// (Exception ex)
                 {
                    //TODO:  add event log error message
                 }

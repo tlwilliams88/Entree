@@ -15,6 +15,9 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	[Authorize]
     public class ImportController : BaseController {
         #region attributes
@@ -23,6 +26,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="profileLogic"></param>
+        /// <param name="importLogic"></param>
+        /// <param name="logRepo"></param>
         public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo)
 			: base(profileLogic)
 		{

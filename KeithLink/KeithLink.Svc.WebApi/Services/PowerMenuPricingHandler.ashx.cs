@@ -31,6 +31,9 @@ namespace KeithLink.Svc.WebApi.Services {
         #endregion
 
         #region ctor
+        /// <summary>
+        /// 
+        /// </summary>
         public PowerMenuPricingHandler() {
             _scope = GlobalConfiguration.Configuration.DependencyResolver.BeginScope();
         }
@@ -169,6 +172,9 @@ namespace KeithLink.Svc.WebApi.Services {
         #endregion
 
         #region properties
+        /// <summary>
+        /// 
+        /// </summary>
         public bool IsReusable {
             get {
                 return false;

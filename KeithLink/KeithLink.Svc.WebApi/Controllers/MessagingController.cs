@@ -26,10 +26,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region ctor
         /// <summary>
-        /// ctor
+        /// 
         /// </summary>
         /// <param name="profileLogic"></param>
-        /// <param name="messagingServiceRepository"></param>
+        /// <param name="messagingLogic"></param>
+        /// <param name="logRepo"></param>
 		public MessagingController(IUserProfileLogic profileLogic, IMessagingLogic messagingLogic, IEventLogRepository logRepo)
 			: base(profileLogic) {
             _msgLogic = messagingLogic;

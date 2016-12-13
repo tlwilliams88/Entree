@@ -30,7 +30,6 @@ namespace KeithLink.Svc.Windows.MonitorService
 
         private IOrderHistoryLogic _orderHistoryLogic;
         private IApplicationHealthLogic _appHealthLogic;
-        private IEventLogRepository _log;
         private IEmailClient _emailClient;
 
         private Timer _generalTimer;

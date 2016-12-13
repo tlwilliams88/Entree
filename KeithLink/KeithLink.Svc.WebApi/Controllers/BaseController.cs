@@ -25,6 +25,9 @@ using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
 	[RequireHttps]
 	[GlobalExceptionFilterAttribute]
 	[AddCustomHeaderAttribute]
@@ -36,6 +39,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="UserProfileLogic"></param>
         public BaseController(IUserProfileLogic UserProfileLogic)
         {
             _profileLogic = UserProfileLogic;
@@ -43,6 +50,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="controllerContext"></param>
         protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
         {
             try
@@ -122,6 +133,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="model"></param>
+        /// <param name="exportRequest"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
 		public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest, UserSelectedContext context) where T : class, IExportableModel
 		{
 			var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
@@ -150,6 +169,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region properties
+        /// <summary>
+        /// 
+        /// </summary>
         public UserProfile AuthenticatedUser
         {
 			get
@@ -161,6 +183,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 			}
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
 		public UserSelectedContext SelectedUserContext { get; set; }
 		
         #endregion

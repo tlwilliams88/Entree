@@ -21,11 +21,11 @@ namespace KeithLink.Svc.Core.Models.Reports
 
         [DataMember(Name = "itemnumber")]
 		[Description("Item")]
-        public string ItemNumber { get; set; }
+        public new string ItemNumber { get; set; }
 
         [DataMember(Name = "name")]
 		[Description("Name")]
-        public string Name { get; set; }
+        public new string Name { get; set; }
 
         [DataMember(Name = "class")]
         [Description("Category")]
@@ -44,10 +44,10 @@ namespace KeithLink.Svc.Core.Models.Reports
 
         [DataMember(Name = "packsize")]
 		[Description("Pack/Size")]
-        public string PackSize { get; set; }
+        public new string PackSize { get; set; }
 
-        public string Pack { get; set; }
-        public string Size { get; set; }
+        public new string Pack { get; set; }
+        public new string Size { get; set; }
         [DataMember(Name = "each")]
 		[Description("Each")]
         public string Each { get; set; }

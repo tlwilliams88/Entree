@@ -15,7 +15,6 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
     [TestClass]
     public class SiteCatalogLogicTests
     {
-        private SiteCatalogLogicImpl _logic;
 
         #region constructor
         public SiteCatalogLogicTests()

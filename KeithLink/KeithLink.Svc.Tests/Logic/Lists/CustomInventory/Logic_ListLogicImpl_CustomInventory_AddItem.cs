@@ -15,11 +15,7 @@ namespace KeithLink.Svc.Test.Logic.Lists.CustomInventory
     [TestClass]
     public class Logic_ListLogicImpl_CustomInventory_AddItem
     {
-        private Mock<IUnitOfWork> uow = null;
-        private Mock<IListRepository> listrepo = null;
-        private Mock<ICacheRepository> cache = null;
         private Core.Models.EF.List retList = null;
-        private ListItemModel li = null;
         [TestInitialize]
         public void Init()
         {

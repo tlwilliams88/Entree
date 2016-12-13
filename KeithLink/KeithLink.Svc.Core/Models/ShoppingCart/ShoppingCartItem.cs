@@ -24,13 +24,13 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
         public int Position { get; set; }
 
         [DataMember(Name = "packsize")]
-		public string PackSize { get; set; }
+		public new string PackSize { get; set; }
 
         [DataMember(Name = "name")]
-		public string Name { get; set; }
+		public new string Name { get; set; }
 
 		[DataMember(Name ="notes")]
-		public string Notes { get; set; }
+		public new string Notes { get; set; }
 
         [DataMember( Name = "label" )]
         public string Label { get; set; }

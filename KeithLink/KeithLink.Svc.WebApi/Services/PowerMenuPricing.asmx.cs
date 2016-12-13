@@ -17,24 +17,45 @@ using System.Web.Services;
 using System.Web.Services.Protocols;
 
 namespace KeithLink.Svc.WebApi.Services {
+    /// <summary>
+    /// 
+    /// </summary>
     public class AuthHeader : SoapHeader {
+        /// <summary>
+        /// 
+        /// </summary>
         public string UserName { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public string Password { get; set; }
     }
 
     // per Josh's request, we are making the namespace match that of the request from PowerMenu
+    /// <summary>
+    /// 
+    /// </summary>
     [WebService(Namespace = "http://HawkeyeFoodservice.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     public class PowerMenuPricing : System.Web.Services.WebService {
         #region attributes
+        /// <summary>
+        /// 
+        /// </summary>
         public AuthHeader header;
+        /// <summary>
+        /// 
+        /// </summary>
         public SoapUnknownHeader[] unknownHeaders;
 
         private IDependencyScope _scope;
         #endregion
 
         #region ctor
+        /// <summary>
+        /// 
+        /// </summary>
         public PowerMenuPricing() {
             _scope = GlobalConfiguration.Configuration.DependencyResolver.BeginScope();
         }

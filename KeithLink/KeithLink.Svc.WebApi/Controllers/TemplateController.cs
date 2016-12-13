@@ -9,6 +9,9 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class TemplateController : ApiController
     {
         #region attributes
@@ -16,6 +19,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="templatesRepo"></param>
         public TemplateController(ITemplatesRepository templatesRepo)
         {
             _templatesRepo = templatesRepo;

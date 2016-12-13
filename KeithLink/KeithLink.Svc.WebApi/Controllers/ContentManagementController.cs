@@ -14,6 +14,9 @@ using System.Web.Http.Cors;
 using System.Dynamic;
 
 namespace KeithLink.Svc.WebApi.Controllers {
+    /// <summary>
+    /// 
+    /// </summary>
     public class ContentManagementController : BaseController {
         #region attributes
         private readonly IContentManagementLogic _logic;
@@ -21,6 +24,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         #endregion
 
         #region ctor
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="profileLogic"></param>
+        /// <param name="cmsLogic"></param>
+        /// <param name="logRepo"></param>
         public ContentManagementController(IUserProfileLogic profileLogic, IContentManagementLogic cmsLogic, IEventLogRepository logRepo) : base(profileLogic) {
             _logic = cmsLogic;
             _log = logRepo;
