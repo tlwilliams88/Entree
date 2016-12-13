@@ -20,12 +20,16 @@ angular.module('bekApp')
 
           // check if user is Order entry customer to determine which branch/context to select
           if (AccessService.isOrderEntryCustomer()) {
-            var userSelectedContext = {
-              id: profile.defaultcustomer !== null ? profile.defaultcustomer.customerNumber : '',
-              text: profile.defaultcustomer !== null ? profile.defaultcustomer.displayname : '',
-              customer: profile.defaultcustomer
-            };
-            LocalStorage.setSelectedCustomerInfo(userSelectedContext);
+            var currentCustomer = LocalStorage.getCurrentCustomer();
+            if(currentCustomer == null){
+              var userSelectedContext = {
+                id: profile.defaultcustomer !== null ? profile.defaultcustomer.customerNumber : '',
+                text: profile.defaultcustomer !== null ? profile.defaultcustomer.displayname : '',
+                customer: profile.defaultcustomer
+              };
+            
+              LocalStorage.setSelectedCustomerInfo(userSelectedContext);
+            }
 
           } else {
             LocalStorage.setSelectedBranchInfo(profile.branchid || 'FDF'); // default to DFW branch
