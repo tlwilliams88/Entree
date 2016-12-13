@@ -23,6 +23,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             retVal.Name = value.Name;
             retVal.Description = value.Description;
             retVal.PackSize = value.PackSize;
+            retVal.Each = value.Each;
             retVal.Brand = value.BrandExtendedDescription;
             retVal.BrandExtendedDescription = value.BrandExtendedDescription;
             retVal.ReplacedItem = value.ReplacedItem;
