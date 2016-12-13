@@ -593,37 +593,11 @@ angular.module('bekApp')
       } else {
         cartId = cart.id;
       }
-      var timeset = DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-      var orderList ={
-          listId: listId,
-          cartId: cartId,
-          timeset: timeset
-          };
-      var allSets = [];
-          allSets = LocalStorage.getLastOrderList();
-        if(!allSets || (allSets[0] && !allSets[0].timeset)){
-          allSets = [];
-        }
- 
-        var matchFound = false;
-        if(orderList.cartId !== 'New'){
-          allSets.forEach(function(set){
-            if(set.cartId === orderList.cartId){
-              set.listId = orderList.listId;
-              set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-              matchFound = true;
-            }
-          });
-          if(!matchFound){
-            allSets.push(orderList);
-          }
-        }
+      ListService.setLastOrderList(listId, cartId);
        var searchTerm = '';
         if($scope.orderSearchTerm && $scope.creatingCart){
          searchTerm = $scope.orderSearchTerm;
         }
- 
-        LocalStorage.setLastOrderList(allSets);
  
       var sameListItems= [];
       if($scope.selectedList && listId === $scope.selectedList.listid){

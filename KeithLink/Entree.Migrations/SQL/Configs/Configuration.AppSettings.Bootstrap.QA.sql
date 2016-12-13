@@ -154,8 +154,6 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Setti
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Settings', 'LogSystemPerformanceWithErrors', 'true', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Settings', 'CacheServerEndpoints', 'http://corpkecqas1:5006,http://corpkecqas2:5006', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Misc Settings', 'EntreeSiteURL', 'https://shopqa.benekeith.com', 0)
-INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Queue Service Functions', 'CheckLostOrders', 'true|CORPKECQAS2', 0)
-INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Queue Service Functions', 'CheckLostOrdersStatus', 'Submitted', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceMakeKDOELogFiles', 'true', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogPath', 'c:\test\entree\kdoefiles', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Order Service Functions', 'OrderServiceKDOELogPre', 'rb', 0)
@@ -175,6 +173,54 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Se
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesRepo', '\\bekmain\CMIS-IFDA_Repository\ProductImages\Channels\IX-One', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleX', '250', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleY', '250', 0)
+
+
+-- Monitor Service Entries
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrders', 'true', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrdersStatus', 'Submitted', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckQueueHealth', 'true', 'Monitor Service Functions', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToCheck', '{targets:[
+{"server":"qarmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_eta",
+ "queue":"notifications_eta",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100},
+{"server":"qarmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_hasnews",
+ "queue":"notifications_hasnews",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100},
+{"server":"qarmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_orderconfirmations",
+ "queue":"notifications_orderconfirmations",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100},
+{"server":"qarmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_paymentconfirmation",
+ "queue":"notifications_paymentconfirmation",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100}
+{"server":"qarmq.benekeith.com",
+ "username":"notifyclnt",
+ "password":"notifypassclnt",
+ "virtualhost":"notifications_notify",
+ "logicalname":"notifications_push_messages",
+ "queue":"notifications_push_messages",
+ "minimumconsumerswarningthreshold":2,
+ "maximummessageswarningthreshold":100}
+]}', 'Monitor Service Functions', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])

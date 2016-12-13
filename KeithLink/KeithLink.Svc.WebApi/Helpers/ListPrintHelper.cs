@@ -122,21 +122,21 @@ namespace KeithLink.Svc.WebApi.Helpers
         { // Choose different Report for different columns ; grouping doesn't change column widths so no different name
             if (customer != null)
             {
-                if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes))
+                if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
-                else if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                else if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
-                else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
-                else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes))
+                else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
             }
             return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
@@ -156,7 +156,7 @@ namespace KeithLink.Svc.WebApi.Helpers
                 groupbylabel = true;
             }
             parameters[3] = new ReportParameter("GroupByLabel", (groupbylabel).ToString());
-            parameters[4] = new ReportParameter("ShowPrices", customer.CanViewPricing.ToString());
+            parameters[4] = new ReportParameter("ShowPrices", options.ShowPrices.ToString());
             return parameters;
         }
 

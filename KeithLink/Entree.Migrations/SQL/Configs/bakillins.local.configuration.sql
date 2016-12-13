@@ -197,8 +197,15 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListed
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrders', 'true', 'Monitor Service Functions', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckLostOrdersStatus', 'Submitted', 'Monitor Service Functions', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckQueueHealth', 'true', 'Monitor Service Functions', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToCheck', '{targets:[
-{"server":"qarmq.benekeith.com","username":"orderclnt","password":"ordpassclnt","virtualhost":"orders_statusnotification","logicalname":"order_update","queue":"matt_orders_updates","minimumconsumerswarningthreshold":2,"maximummessageswarningthreshold":1}
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToCheck', '
+{targets:[{"server":"qarmq.benekeith.com",
+          "username":"orderclnt",
+		  "password":"ordpassclnt",
+		  "virtualhost":"orders_statusnotification",
+		  "logicalname":"order_update",
+		  "queue":"matt_orders_updates",
+		  "minimumconsumerswarningthreshold":2,
+		  "maximummessageswarningthreshold":1}
 ]}', 'Monitor Service Functions', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
