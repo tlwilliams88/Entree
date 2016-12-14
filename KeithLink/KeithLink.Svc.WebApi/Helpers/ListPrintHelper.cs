@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Extensions;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Customers.EF;
@@ -7,6 +8,7 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using Microsoft.Reporting.WinForms;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -33,7 +35,7 @@ namespace KeithLink.Svc.WebApi.Helpers
         /// <param name="_profileLogic"></param>
         /// <returns></returns>
         public static Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext,
-            UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic)
+            UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic, IEventLogRepository _elRepo)
         {
             if (!string.IsNullOrEmpty(options.Paging.Terms))
             {
@@ -57,7 +59,7 @@ namespace KeithLink.Svc.WebApi.Helpers
                 options.Paging.Sort = new List<SortInfo>();
             }
 
-            ListModel list = _listLogic.ReadList(userProfile, userContext, listId, true);
+            ListModel list = _listLogic.ReadList(userProfile, userContext, listId, options.ShowPrices);
 
             if (list == null)
                 return null;
@@ -89,7 +91,8 @@ namespace KeithLink.Svc.WebApi.Helpers
             string rptName = ChooseReportFromOptions(options, userContext, customer);
             Stream rdlcStream = assembly.GetManifestResourceStream(rptName);
             rv.LocalReport.LoadReportDefinition(rdlcStream);
-            rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
+            rv.LocalReport.SetParameters
+                (MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile, customer, _listLogic);
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
@@ -170,7 +173,7 @@ namespace KeithLink.Svc.WebApi.Helpers
             foreach (ListItemReportModel item in printModel.Items)
             {
                 var itemInfo = itemHash.Where(i => i.ItemNumber == item.ItemNumber).FirstOrDefault();
-                if ((customer != null) && (customer.CanViewPricing))
+                if ((customer != null) && (options.ShowPrices))
                 {
                     StringBuilder priceInfo = new StringBuilder();
                     if (itemInfo != null)
