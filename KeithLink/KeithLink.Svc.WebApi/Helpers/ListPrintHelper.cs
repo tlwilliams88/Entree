@@ -163,7 +163,7 @@ namespace KeithLink.Svc.WebApi.Helpers
             foreach (ListItemReportModel item in printModel.Items)
             {
                 var itemInfo = itemHash.Where(i => i.ItemNumber == item.ItemNumber).FirstOrDefault();
-                if ((customer != null) && (customer.CanViewPricing))
+                if ((customer != null) && (options.ShowPrices))
                 {
                     StringBuilder priceInfo = new StringBuilder();
                     if (itemInfo != null)
