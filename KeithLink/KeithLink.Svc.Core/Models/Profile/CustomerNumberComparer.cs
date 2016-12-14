@@ -18,5 +18,10 @@ namespace KeithLink.Svc.Core.Models.Profile {
         public override int GetHashCode( Customer obj ) {
             return int.Parse( obj.CustomerNumber );
         }
+
+        public override int GetHashCode()
+        {
+            return this.GetHashCode();
+        }
     }
 }

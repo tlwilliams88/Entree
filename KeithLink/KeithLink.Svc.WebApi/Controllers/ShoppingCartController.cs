@@ -44,9 +44,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         /// <param name="shoppingCartLogic"></param>
         /// <param name="profileLogic"></param>
-        /// <param name="orderServiceRepository"></param>
         /// <param name="logRepo"></param>
         /// <param name="userActiveCartLogic"></param>
+        /// <param name="exportSettingsLogic"></param>
         public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, 
                                       IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic) : base(profileLogic) {
             _activeCartLogic = userActiveCartLogic;
@@ -251,7 +251,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
 		[ApiKeyedRoute("cart/quickadd")]
-		public new Models.OperationReturnModel<QuickAddReturnModel> QuickAddCart(List<QuickAddItemModel> items)
+		public Models.OperationReturnModel<QuickAddReturnModel> QuickAddCart(List<QuickAddItemModel> items)
 		{
             Models.OperationReturnModel<QuickAddReturnModel> retVal = new Models.OperationReturnModel<QuickAddReturnModel>();
             try

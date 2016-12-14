@@ -12,8 +12,15 @@ using System.Reflection;
 [assembly: OwinStartup(typeof(KeithLink.Svc.WebApi.Startup))]
 namespace KeithLink.Svc.WebApi
 {
+    /// <summary>
+    /// OwinStartup
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Configuration for OwinStartup
+        /// </summary>
+        /// <param name="app"></param>
         public void Configuration(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
@@ -62,7 +69,11 @@ namespace KeithLink.Svc.WebApi
             app.UseOAuthAuthorizationServer(serverOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
-        
+
+        /// <summary>
+        /// GetXmlCommentsPath for OwinStartup
+        /// </summary>
+        /// <returns></returns>
         protected static string GetXmlCommentsPath()
 		{
 			return System.String.Format(@"{0}\bin\KeithLink.Svc.WebApi.XML", System.AppDomain.CurrentDomain.BaseDirectory);

@@ -41,8 +41,6 @@ namespace KeithLink.Svc.Impl.Repository.Reports
             } catch (Exception ex) {
                 throw;
             }
-
-            return null;
 		}
 	}
 }

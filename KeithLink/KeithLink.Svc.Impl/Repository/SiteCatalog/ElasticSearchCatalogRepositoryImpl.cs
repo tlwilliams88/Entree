@@ -900,7 +900,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 {
                     p.CaseCube = oProd._source.icube;
                 }
-                catch (Exception e)
+                catch// (Exception e)
                 {
                     p.CaseCube = "";
                 }

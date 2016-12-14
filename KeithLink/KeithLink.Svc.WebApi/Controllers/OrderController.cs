@@ -23,6 +23,9 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// OrderController
+    /// </summary>
 	[Authorize]
     public class OrderController : BaseController {
         #region attributes
@@ -38,6 +41,18 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="shoppingCartLogic"></param>
+        /// <param name="orderLogic"></param>
+        /// <param name="shipDayRepo"></param>
+        /// <param name="historyRequestLogic"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="exportSettingsLogic"></param>
+        /// <param name="logRepo"></param>
+        /// <param name="historyHeaderRepository"></param>
+        /// <param name="orderHistoryLogic"></param>
         public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo,
 							   IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
                                IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory historyHeaderRepository, IOrderHistoryLogic orderHistoryLogic) : base(profileLogic) {
@@ -53,11 +68,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
-        [HttpGet]
-        [ApiKeyedRoute("order/issubmitted/{orderNumber}")]
         /// <summary>
         /// Endpoint for checking whether a changeorder is in progress
-        /// </summary>        
+        /// </summary>
+        /// <param name="ordernumber"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("order/issubmitted/{orderNumber}")]
         public Models.OperationReturnModel<bool> IsSubmitted(string ordernumber)
         {
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();

@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public string LineNumber { get; set; }
 		[DataMember(Name="itemnumber")]
 		[Description("Item #")]
-		public string ItemNumber { get; set; }
+		public new string ItemNumber { get; set; }
 		[DataMember(Name = "quantityordered")]
 		[Description("# Ordereed")]
 		public int? QuantityOrdered { get; set; }
@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public string ClassCode { get; set; }
 		[DataMember(Name = "packsize")]
 		[Description("Pack/Size")]
-		public string PackSize { get; set; }
+		public new string PackSize { get; set; }
 
 		
 		public string InvoiceNumber { get; set; }

@@ -30,7 +30,6 @@ namespace KeithLink.Svc.Windows.QueueService {
         private INotificationQueueConsumer _hasNewsQueueConsumer;
         private INotificationQueueConsumer _paymentConfirmationQueueConsumer;
         private INotificationQueueConsumer _ETAQueueConsumer;
-        private INotificationQueueConsumer _notificationQueueConsumer;
         private IPushMessageConsumer _pushmessageConsumer;
         private IEventLogRepository _log;
         private IEmailClient _emailClient;
@@ -45,7 +44,6 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope notificationEtaScope;
         private ILifetimeScope pushMessagesScope;
 
-        private Task lostOrdersTask;
         private static bool _checkLostOrdersProcessing;
         private Timer _checkLostOrdersTimer;
 
@@ -273,9 +271,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void TerminateCheckLostOrdersTimer() {
             if (_checkLostOrdersTimer != null) {
                 _checkLostOrdersTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
-                if(lostOrdersTask != null) lostOrdersTask.Wait();
             }
-            //if (lostOrdersTask != null) _log.WriteWarningLog(string.Format("QueueService.lostOrdersTask.status = {0:G}", lostOrdersTask.Status));
         }
 
         private void ProcessCheckLostOrdersMinuteTick( object state ) {

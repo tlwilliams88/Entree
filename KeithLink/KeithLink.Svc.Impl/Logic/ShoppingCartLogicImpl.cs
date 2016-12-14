@@ -535,7 +535,7 @@ namespace KeithLink.Svc.Impl.Logic
                     OrderSubmissionHelper.StartOrderBlock(cartId, orderNumber, _cache);
                     OrderSubmissionHelper.StartOrderBlock(newCartId, orderNumber, _cache);
                 }
-                catch (Exception e)
+                catch// (Exception e)
                 {
                     continue;
                 }

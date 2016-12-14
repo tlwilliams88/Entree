@@ -153,50 +153,50 @@
     <Build Include="ETL\Functions\ConcatBranchesForItem.sql" />
     <Build Include="ETL\Functions\initcap.sql" />
     <Build Include="dbo\Stored Procedures\spCreateAuditLogEntry.sql" />
-    <Build Include="Orders\Stored Procedures\usp_GetNextControlNumber.sql" />
-    <Build Include="Orders\Stored Procedures\usp_GetLastFiveOrdersForItem.sql" />
-    <Build Include="ETL\Stored Procedures\ProcessBEKItemNumbersForUNFIByVendorId.sql">
+    <None Include="Orders\Stored Procedures\usp_GetNextControlNumber.sql" />
+    <None Include="Orders\Stored Procedures\usp_GetLastFiveOrdersForItem.sql" />
+    <None Include="ETL\Stored Procedures\ProcessBEKItemNumbersForUNFIByVendorId.sql">
       <AnsiNulls>Off</AnsiNulls>
       <QuotedIdentifier>Off</QuotedIdentifier>
-    </Build>
-    <Build Include="ETL\Stored Procedures\ReadUNFItemsByWarehouse.sql" />
-    <Build Include="ETL\Stored Procedures\ReadUNFISubCategories.sql" />
-    <Build Include="ETL\Stored Procedures\ReadUNFIProducts.sql" />
-    <Build Include="ETL\Stored Procedures\ReadUNFIDistinctWarehouses.sql" />
-    <Build Include="ETL\Stored Procedures\ReadUNFICategories.sql" />
-    <Build Include="ETL\Stored Procedures\ReadAverageItemUsage.sql" />
-    <Build Include="ETL\Stored Procedures\PurgeOrderHistory_AppData.sql" />
-    <Build Include="ETL\Stored Procedures\ProcessWorksheetList.sql">
+    </None>
+    <None Include="ETL\Stored Procedures\ReadUNFItemsByWarehouse.sql" />
+    <None Include="ETL\Stored Procedures\ReadUNFISubCategories.sql" />
+    <None Include="ETL\Stored Procedures\ReadUNFIProducts.sql" />
+    <None Include="ETL\Stored Procedures\ReadUNFIDistinctWarehouses.sql" />
+    <None Include="ETL\Stored Procedures\ReadUNFICategories.sql" />
+    <None Include="ETL\Stored Procedures\ReadAverageItemUsage.sql" />
+    <None Include="ETL\Stored Procedures\PurgeOrderHistory_AppData.sql" />
+    <None Include="ETL\Stored Procedures\ProcessWorksheetList.sql">
       <AnsiNulls>Off</AnsiNulls>
       <QuotedIdentifier>Off</QuotedIdentifier>
-    </Build>
-    <Build Include="ETL\Stored Procedures\ProcessContractItemList.sql">
+    </None>
+    <None Include="ETL\Stored Procedures\ProcessContractItemList.sql">
       <AnsiNulls>Off</AnsiNulls>
       <QuotedIdentifier>Off</QuotedIdentifier>
-    </Build>
-    <Build Include="ETL\Stored Procedures\LoadOrgsAndAddressesToCS.sql" />
-    <Build Include="ETL\Stored Procedures\LoadOrganizationsToCS.sql" />
-    <Build Include="ETL\Stored Procedures\LoadAddressesToCS.sql" />
-    <Build Include="ETL\Stored Procedures\ReadDsrInfo.sql" />
-    <Build Include="ETL\Stored Procedures\ReadDsrImage.sql" />
-    <Build Include="ETL\Stored Procedures\ReadWorksheetItems.sql" />
-    <Build Include="ETL\Stored Procedures\ReadCSUsers.sql" />
-    <Build Include="ETL\Stored Procedures\ReadContractItems.sql" />
-    <Build Include="ETL\Stored Procedures\ReadCustomers.sql">
+    </None>
+    <None Include="ETL\Stored Procedures\LoadOrgsAndAddressesToCS.sql" />
+    <None Include="ETL\Stored Procedures\LoadOrganizationsToCS.sql" />
+    <None Include="ETL\Stored Procedures\LoadAddressesToCS.sql" />
+    <None Include="ETL\Stored Procedures\ReadDsrInfo.sql" />
+    <None Include="ETL\Stored Procedures\ReadDsrImage.sql" />
+    <None Include="ETL\Stored Procedures\ReadWorksheetItems.sql" />
+    <None Include="ETL\Stored Procedures\ReadCSUsers.sql" />
+    <None Include="ETL\Stored Procedures\ReadContractItems.sql" />
+    <None Include="ETL\Stored Procedures\ReadCustomers.sql">
       <AnsiNulls>Off</AnsiNulls>
       <QuotedIdentifier>Off</QuotedIdentifier>
-    </Build>
-    <Build Include="ETL\Stored Procedures\ReadProprietaryItems.sql" />
-    <Build Include="ETL\Stored Procedures\ReadBrandControlLabels.sql" />
-    <Build Include="ETL\Stored Procedures\ReadSubCategories.sql" />
-    <Build Include="ETL\Stored Procedures\ReadParentCategories.sql" />
-    <Build Include="ETL\Stored Procedures\ReadItemsByBranch.sql" />
-    <Build Include="ETL\Stored Procedures\ReadItemGS1Data.sql" />
-    <Build Include="ETL\Stored Procedures\ReadFullItemData.sql" />
-    <Build Include="ETL\Stored Procedures\ReadBranches.sql" />
-    <Build Include="ETL\Stored Procedures\ProcessStagedInvoices.sql" />
-    <Build Include="ETL\Stored Procedures\ProcessItemHistoryData.sql" />
-    <Build Include="ETL\Stored Procedures\ReadInvoices.sql" />
+    </None>
+    <None Include="ETL\Stored Procedures\ReadProprietaryItems.sql" />
+    <None Include="ETL\Stored Procedures\ReadBrandControlLabels.sql" />
+    <None Include="ETL\Stored Procedures\ReadSubCategories.sql" />
+    <None Include="ETL\Stored Procedures\ReadParentCategories.sql" />
+    <None Include="ETL\Stored Procedures\ReadItemsByBranch.sql" />
+    <None Include="ETL\Stored Procedures\ReadItemGS1Data.sql" />
+    <None Include="ETL\Stored Procedures\ReadFullItemData.sql" />
+    <None Include="ETL\Stored Procedures\ReadBranches.sql" />
+    <None Include="ETL\Stored Procedures\ProcessStagedInvoices.sql" />
+    <None Include="ETL\Stored Procedures\ProcessItemHistoryData.sql" />
+    <None Include="ETL\Stored Procedures\ReadInvoices.sql" />
     <Build Include="Configuration\Stored Procedures\SaveAppSetting.sql" />
     <Build Include="Configuration\Stored Procedures\GetAppSetting.sql" />
     <Build Include="Configuration\Stored Procedures\CheckAppSettingsForChange.sql" />

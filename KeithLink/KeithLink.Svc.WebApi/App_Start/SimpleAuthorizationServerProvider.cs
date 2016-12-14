@@ -24,7 +24,6 @@ namespace KeithLink.Svc.WebApi
     public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
         #region attributes
-        Core.Interface.Profile.IUserProfileRepository _userRepo;
         #endregion
 
         #region methods / functions

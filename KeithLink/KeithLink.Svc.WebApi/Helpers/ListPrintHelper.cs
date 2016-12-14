@@ -19,8 +19,21 @@ using System.Web;
 
 namespace KeithLink.Svc.WebApi.Helpers
 {
+    /// <summary>
+    /// ListPrintHelper
+    /// </summary>
     public class ListPrintHelper
     {
+        /// <summary>
+        /// BuildReportFromList in ListPrintHelper
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="listId"></param>
+        /// <param name="userContext"></param>
+        /// <param name="userProfile"></param>
+        /// <param name="_listLogic"></param>
+        /// <param name="_profileLogic"></param>
+        /// <returns></returns>
         public static Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext,
             UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic, IEventLogRepository _elRepo)
         {

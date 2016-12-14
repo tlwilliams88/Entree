@@ -7,8 +7,15 @@ using System.Web.Http.Filters;
 
 namespace KeithLink.Svc.WebApi.Attribute
 {
+    /// <summary>
+    /// AddCustomHeaderAttribute
+    /// </summary>
 	public class AddCustomHeaderAttribute : ActionFilterAttribute
 	{
+        /// <summary>
+        /// OnActionExecuted for AddCustomHeaderAttribute
+        /// </summary>
+        /// <param name="actionExecutedContext"></param>
 		public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
 		{
 			if(Configuration.AddServerNameToHeader)
