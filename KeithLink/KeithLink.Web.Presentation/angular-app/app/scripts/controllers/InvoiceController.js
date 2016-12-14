@@ -308,7 +308,7 @@ angular.module('bekApp')
     $scope.searchFilter = {
         field: filter,
         value: input
-    }
+    };
 
     if(input && filter == 'hascreditmemos') {
       var invoiceFilterInput = document.getElementById('invoiceFilterInput');
@@ -368,18 +368,18 @@ angular.module('bekApp')
       invoicesFilter = [{
         filterFields: statusfilter,
         search: $scope.searchFilter
-      }]
+      }];
     } else if(searchfilter && datefilter && statusfilter.filter != undefined){
       invoicesFilter = [{
         daterange: statusfilter.daterange,
         filter: statusfilter.filter,
         search: $scope.searchFilter
-      }]
+      }];
     } else if(searchfilter && datefilter && statusfilter.filter == undefined){
       invoicesFilter = [{
         daterange: statusfilter.daterange,
         search: $scope.searchFilter
-      }]
+      }];
     }
 
     loadFilteredInvoices(invoicesFilter[0]);
