@@ -288,7 +288,7 @@ angular.module('bekApp')
                 Service.isInternalUser = false;
               }
               
-            })
+            });
 
             if (!params) {
               var pageSize = LocalStorage.getPageSize();             
@@ -940,7 +940,7 @@ angular.module('bekApp')
 
           LocalStorage.setLastOrderList(allSets);
           }
-        }
+        };
 
 
       return Service;
