@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Extensions;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Customers.EF;
@@ -7,6 +8,7 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using Microsoft.Reporting.WinForms;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +22,7 @@ namespace KeithLink.Svc.WebApi.Helpers
     public class ListPrintHelper
     {
         public static Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext,
-            UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic)
+            UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic, IEventLogRepository _elRepo)
         {
             if (!string.IsNullOrEmpty(options.Paging.Terms))
             {
@@ -44,7 +46,8 @@ namespace KeithLink.Svc.WebApi.Helpers
                 options.Paging.Sort = new List<SortInfo>();
             }
 
-            ListModel list = _listLogic.ReadList(userProfile, userContext, listId, true);
+            ListModel list = _listLogic.ReadList(userProfile, userContext, listId, options.ShowPrices);
+            _elRepo.WriteInformationLog(string.Format("BuildReportFromList {0}", JsonConvert.SerializeObject(list)));
 
             if (list == null)
                 return null;
