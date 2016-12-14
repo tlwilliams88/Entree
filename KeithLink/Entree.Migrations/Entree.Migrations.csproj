@@ -47,7 +47,8 @@
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
-    <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column.cs" />
+    <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
+    <Compile Include="Migrations\v1.12\v1.12.0_UpdateProcessContractItemList.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
