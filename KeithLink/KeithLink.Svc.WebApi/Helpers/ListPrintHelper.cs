@@ -79,8 +79,11 @@ namespace KeithLink.Svc.WebApi.Helpers
             string rptName = ChooseReportFromOptions(options, userContext, customer);
             Stream rdlcStream = assembly.GetManifestResourceStream(rptName);
             rv.LocalReport.LoadReportDefinition(rdlcStream);
-            rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
+            rv.LocalReport.SetParameters
+                (MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile, customer, _listLogic);
+            _elRepo.WriteInformationLog
+                (string.Format("BuildReportFromList_reportdata {0}", JsonConvert.SerializeObject(printModel.Items)));
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
             Stream stream = new MemoryStream(bytes);
