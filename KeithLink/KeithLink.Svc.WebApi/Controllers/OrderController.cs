@@ -24,7 +24,7 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
-    /// 
+    /// OrderController
     /// </summary>
 	[Authorize]
     public class OrderController : BaseController {
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region ctor
         /// <summary>
-        /// 
+        /// ctor
         /// </summary>
         /// <param name="shoppingCartLogic"></param>
         /// <param name="orderLogic"></param>

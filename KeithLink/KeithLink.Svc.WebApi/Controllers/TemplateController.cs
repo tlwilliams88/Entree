@@ -10,7 +10,7 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
-    /// 
+    /// TemplateController
     /// </summary>
     public class TemplateController : ApiController
     {
@@ -20,7 +20,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region ctor
         /// <summary>
-        /// 
+        /// ctor
         /// </summary>
         /// <param name="templatesRepo"></param>
         public TemplateController(ITemplatesRepository templatesRepo)

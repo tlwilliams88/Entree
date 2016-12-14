@@ -32,7 +32,7 @@ namespace KeithLink.Svc.WebApi.Services {
 
         #region ctor
         /// <summary>
-        /// 
+        /// ctor
         /// </summary>
         public PowerMenuPricingHandler() {
             _scope = GlobalConfiguration.Configuration.DependencyResolver.BeginScope();
@@ -173,7 +173,7 @@ namespace KeithLink.Svc.WebApi.Services {
 
         #region properties
         /// <summary>
-        /// 
+        /// IsReusable
         /// </summary>
         public bool IsReusable {
             get {

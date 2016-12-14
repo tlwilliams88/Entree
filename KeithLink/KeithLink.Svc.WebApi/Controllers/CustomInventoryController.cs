@@ -22,7 +22,7 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
-    /// 
+    /// CustomInventoryController
     /// </summary>
     [Authorize]
     public class CustomInventoryController : BaseController
@@ -39,7 +39,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region constructor
         /// <summary>
-        /// 
+        /// constructor
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="customInventoryRepo"></param>

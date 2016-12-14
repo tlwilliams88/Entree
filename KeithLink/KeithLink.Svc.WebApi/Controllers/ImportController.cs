@@ -16,7 +16,7 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
-    /// 
+    /// ImportController
     /// </summary>
 	[Authorize]
     public class ImportController : BaseController {
@@ -27,7 +27,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region ctor
         /// <summary>
-        /// 
+        /// constructor
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="importLogic"></param>

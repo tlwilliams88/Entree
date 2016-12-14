@@ -18,15 +18,15 @@ using System.Web.Services.Protocols;
 
 namespace KeithLink.Svc.WebApi.Services {
     /// <summary>
-    /// 
+    /// AuthHeader
     /// </summary>
     public class AuthHeader : SoapHeader {
         /// <summary>
-        /// 
+        /// UserName
         /// </summary>
         public string UserName { get; set; }
         /// <summary>
-        /// 
+        /// Password
         /// </summary>
         public string Password { get; set; }
     }
@@ -41,11 +41,11 @@ namespace KeithLink.Svc.WebApi.Services {
     public class PowerMenuPricing : System.Web.Services.WebService {
         #region attributes
         /// <summary>
-        /// 
+        /// PowerMenuPricing:header
         /// </summary>
         public AuthHeader header;
         /// <summary>
-        /// 
+        /// PowerMenuPricing:unknownHeaders
         /// </summary>
         public SoapUnknownHeader[] unknownHeaders;
 
@@ -54,7 +54,7 @@ namespace KeithLink.Svc.WebApi.Services {
 
         #region ctor
         /// <summary>
-        /// 
+        /// ctor
         /// </summary>
         public PowerMenuPricing() {
             _scope = GlobalConfiguration.Configuration.DependencyResolver.BeginScope();

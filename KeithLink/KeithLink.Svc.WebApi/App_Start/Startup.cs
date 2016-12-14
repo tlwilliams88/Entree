@@ -13,12 +13,12 @@ using System.Reflection;
 namespace KeithLink.Svc.WebApi
 {
     /// <summary>
-    /// 
+    /// OwinStartup
     /// </summary>
     public class Startup
     {
         /// <summary>
-        /// 
+        /// Configuration for OwinStartup
         /// </summary>
         /// <param name="app"></param>
         public void Configuration(IAppBuilder app)
@@ -69,9 +69,9 @@ namespace KeithLink.Svc.WebApi
             app.UseOAuthAuthorizationServer(serverOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
-        
+
         /// <summary>
-        /// 
+        /// GetXmlCommentsPath for OwinStartup
         /// </summary>
         /// <returns></returns>
         protected static string GetXmlCommentsPath()

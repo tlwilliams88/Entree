@@ -20,12 +20,12 @@ using System.Web;
 namespace KeithLink.Svc.WebApi.Helpers
 {
     /// <summary>
-    /// 
+    /// ListPrintHelper
     /// </summary>
     public class ListPrintHelper
     {
         /// <summary>
-        /// 
+        /// BuildReportFromList in ListPrintHelper
         /// </summary>
         /// <param name="options"></param>
         /// <param name="listId"></param>

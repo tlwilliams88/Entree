@@ -29,7 +29,7 @@ using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
-    /// 
+    /// CatalogController
     /// </summary>
 	[Authorize]
     public class CatalogController : BaseController {
@@ -41,7 +41,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         #region ctor
         /// <summary>
-        /// 
+        /// constructor
         /// </summary>
         /// <param name="catalogLogic"></param>
         /// <param name="profileLogic"></param>
@@ -161,7 +161,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         }
 
         /// <summary>
-        /// 
+        /// GetProductsSearchBrand
         /// </summary>
         /// <param name="catalogType"></param>
         /// <param name="brandName"></param>

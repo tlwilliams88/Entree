@@ -15,7 +15,7 @@ using System.Dynamic;
 
 namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
-    /// 
+    /// ContentManagementController
     /// </summary>
     public class ContentManagementController : BaseController {
         #region attributes
@@ -25,7 +25,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         #region ctor
         /// <summary>
-        /// 
+        /// constructor
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="cmsLogic"></param>

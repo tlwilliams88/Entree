@@ -22,7 +22,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region ctor
         /// <summary>
-        /// 
+        /// ctor
         /// </summary>
         /// <param name="listLogic"></param>
         /// <param name="profileLogic"></param>

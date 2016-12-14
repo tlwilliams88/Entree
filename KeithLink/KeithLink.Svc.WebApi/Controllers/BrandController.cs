@@ -26,7 +26,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region ctor
         /// <summary>
-        /// 
+        /// constructor
         /// </summary>
         /// <param name="brandRepository"></param>
         /// <param name="profileLogic"></param>

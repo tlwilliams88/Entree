@@ -26,7 +26,7 @@ using KeithLink.Svc.Core;
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
-    /// 
+    /// BaseController
     /// </summary>
 	[RequireHttps]
 	[GlobalExceptionFilterAttribute]
@@ -40,7 +40,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region ctor
         /// <summary>
-        /// 
+        /// constructor
         /// </summary>
         /// <param name="UserProfileLogic"></param>
         public BaseController(IUserProfileLogic UserProfileLogic)
@@ -51,7 +51,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region methods
         /// <summary>
-        /// 
+        /// Initialize for BaseController
         /// </summary>
         /// <param name="controllerContext"></param>
         protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
@@ -134,7 +134,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
-        /// 
+        /// ExportModel in BaseController
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="model"></param>
@@ -170,7 +170,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region properties
         /// <summary>
-        /// 
+        /// AuthenticatedUser in BaseController
         /// </summary>
         public UserProfile AuthenticatedUser
         {
@@ -184,7 +184,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
-        /// 
+        /// SelectedUserContext in BaseController
         /// </summary>
 		public UserSelectedContext SelectedUserContext { get; set; }
 		
