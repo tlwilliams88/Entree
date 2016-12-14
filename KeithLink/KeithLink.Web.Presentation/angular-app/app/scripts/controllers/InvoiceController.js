@@ -31,7 +31,7 @@ angular.module('bekApp')
  
   $scope.currDate = DateService.momentObject().format(Constants.dateFormat.yearMonthDayDashes);
 
-  if(DateService.momentObject().utc().format(Constants.dateFormat.hourMinuteSecond) < 190000){
+  if(DateService.momentObject().utc().format(Constants.dateFormat.hourMinuteSecond) < 200000){
     $scope.mindate = DateService.momentObject($scope.currDate);
   }
   else{
