@@ -1,4 +1,4 @@
-/* Branch Supporots */
+﻿/* Branch Supporots */
 SET IDENTITY_INSERT [BranchSupport].[BranchSupports] ON 
 
 INSERT [BranchSupport].[BranchSupports] ([Id], [BranchName], [BranchId], [SupportPhoneNumber], [TollFreeNumber], [Email], [CreatedUtc], [ModifiedUtc]) VALUES (1, N'Amarillo', N'FAM', N'8064684555', N'8006589790x4555', N'Fam-dis-mis@benekeith.com', CAST(N'2015-01-23 15:12:34.963' AS DateTime), CAST(N'2015-03-01 02:02:13.653' AS DateTime))
