@@ -830,14 +830,14 @@ angular.module('bekApp')
     });
   };
 
-  var processingPayInvoices = false;
+  $scope.processingPayInvoices = false;
   $scope.payInvoices = function () {
-    if (!processingPayInvoices) {
+    if (!$scope.processingPayInvoices) {
       $scope.errorMessage = '';
-      processingPayInvoices = true;
+      $scope.processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices($scope.invoices, function(payments){
         payments = $scope.defaultDates(payments);
-        processingPayInvoices = false;
+        $scope.processingPayInvoices = false;
         InvoiceService.checkTotals(payments).then(function(resp) {
           if(resp.successResponse.isvalid){  
             $scope.errorMessage = '';
@@ -851,7 +851,7 @@ angular.module('bekApp')
             });
           } else{
             $scope.displayValidationError(resp);          
-            processingPayInvoices = false;
+            $scope.processingPayInvoices = false;
           }    
         });
         $scope.openInvoiceConfirmation(payments);
