@@ -98,10 +98,16 @@
     <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v1.12.0\v1.12.0-ProcessContractItemList-down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.0\v1.12.0-ProcessContractItemList-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-up.sql">
