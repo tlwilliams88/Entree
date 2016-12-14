@@ -34,7 +34,7 @@ angular.module('bekApp')
       CartService.getCartHeaders().then(function(cartHeaders){
         $scope.cartHeaders = cartHeaders;
       });
-    });
+    })
 
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;

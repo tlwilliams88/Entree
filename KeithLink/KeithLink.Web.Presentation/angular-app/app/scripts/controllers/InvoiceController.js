@@ -31,7 +31,7 @@ angular.module('bekApp')
  
   $scope.currDate = DateService.momentObject().format(Constants.dateFormat.yearMonthDayDashes);
 
-  if(DateService.momentObject().utc().format(Constants.dateFormat.hourMinuteSecond) < 200000){
+  if(DateService.momentObject().utc().format(Constants.dateFormat.hourMinuteSecond) < 190000){
     $scope.mindate = DateService.momentObject($scope.currDate);
   }
   else{
@@ -308,7 +308,7 @@ angular.module('bekApp')
     $scope.searchFilter = {
         field: filter,
         value: input
-    };
+    }
 
     if(input && filter == 'hascreditmemos') {
       var invoiceFilterInput = document.getElementById('invoiceFilterInput');
@@ -368,18 +368,18 @@ angular.module('bekApp')
       invoicesFilter = [{
         filterFields: statusfilter,
         search: $scope.searchFilter
-      }];
+      }]
     } else if(searchfilter && datefilter && statusfilter.filter != undefined){
       invoicesFilter = [{
         daterange: statusfilter.daterange,
         filter: statusfilter.filter,
         search: $scope.searchFilter
-      }];
+      }]
     } else if(searchfilter && datefilter && statusfilter.filter == undefined){
       invoicesFilter = [{
         daterange: statusfilter.daterange,
         search: $scope.searchFilter
-      }];
+      }]
     }
 
     loadFilteredInvoices(invoicesFilter[0]);
@@ -830,14 +830,14 @@ angular.module('bekApp')
     });
   };
 
-  $scope.processingPayInvoices = false;
+  var processingPayInvoices = false;
   $scope.payInvoices = function () {
-    if (!$scope.processingPayInvoices) {
+    if (!processingPayInvoices) {
       $scope.errorMessage = '';
-      $scope.processingPayInvoices = true;
+      processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices($scope.invoices, function(payments){
         payments = $scope.defaultDates(payments);
-        $scope.processingPayInvoices = false;
+        processingPayInvoices = false;
         InvoiceService.checkTotals(payments).then(function(resp) {
           if(resp.successResponse.isvalid){  
             $scope.errorMessage = '';
@@ -851,7 +851,7 @@ angular.module('bekApp')
             });
           } else{
             $scope.displayValidationError(resp);          
-            $scope.processingPayInvoices = false;
+            processingPayInvoices = false;
           }    
         });
         $scope.openInvoiceConfirmation(payments);
