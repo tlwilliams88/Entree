@@ -13,7 +13,7 @@ angular.module('bekApp')
 	    }, function(error) {
 			$scope.displayMessage('error', error);
 	    }).finally(function () {
-	        processingPayInvoices = false;
+	        $scope.processingPayInvoices = false;
 	    });
 	};
 
