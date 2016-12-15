@@ -30,6 +30,7 @@ namespace KeithLink.Svc.Windows.MonitorService
 
         private IOrderHistoryLogic _orderHistoryLogic;
         private IApplicationHealthLogic _appHealthLogic;
+        private IEventLogRepository _log;
         private IEmailClient _emailClient;
 
         private Timer _generalTimer;
@@ -48,6 +49,8 @@ namespace KeithLink.Svc.Windows.MonitorService
 
         protected override void OnStart(string[] args)
         {
+            _log = _container.Resolve<IEventLogRepository>();
+            _log.WriteInformationLog("Service starting");
             InitializeGeneralTimer();
         }
         
