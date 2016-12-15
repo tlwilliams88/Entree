@@ -65,10 +65,35 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-		/// <summary>
-		/// Mark a message as read by the user
-		/// </summary>
-		[HttpPut]
+        /// <summary>
+        /// Request to forward a usermessage 
+        /// </summary>
+        /// <param name="forwardrequest"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("messaging/usermessage/forward")]
+        public Models.OperationReturnModel<bool> forwardusermessage(ForwardUserMessageModel forwardrequest)
+        {
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                retVal.SuccessResponse = _msgLogic.ForwardUserMessage(this.AuthenticatedUser, forwardrequest);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("usermessages", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// Mark a message as read by the user
+        /// </summary>
+        [HttpPut]
         [ApiKeyedRoute("messaging/usermessages/markasread")]
         public Models.OperationReturnModel<bool> UpdateReadMessages()
         {

@@ -333,6 +333,7 @@
     <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
+    <Compile Include="Models\Messaging\ForwardUserMessageModel.cs" />
     <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
     <Compile Include="Models\Messaging\Queue\PushMessage.cs" />
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />

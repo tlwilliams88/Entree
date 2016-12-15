@@ -24,11 +24,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.Email;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class MessagingLogicImpl : IMessagingLogic {
         #region attributes
         private readonly IUnitOfWork _uow;
+        private readonly IEmailClient _emailClient;
         private readonly IUserMessageRepository _userMessageRepository;
         private readonly IUserMessagingPreferenceRepository _userMessagingPreferenceRepository;
         private readonly IUserPushNotificationDeviceRepository _userPushNotificationDeviceRepository;
@@ -43,10 +45,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         public MessagingLogicImpl(IUnitOfWork unitOfWork, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
                                   IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
                                   IPushNotificationMessageProvider pushNotificationMessageProvider, ICustomerRepository custRepo,
-                                  IUserProfileRepository userProfileRepository) {
+                                  IUserProfileRepository userProfileRepository, IEmailClient emailClient) {
             _log = eventLogRepository;
             _pushNotificationMessageProvider = pushNotificationMessageProvider;
             _uow = unitOfWork;
+            _emailClient = emailClient;
             _userMessageRepository = userMessageRepository;
             _userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             //_userProfileLogic = userProfileLogic;
@@ -243,6 +246,34 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             var userMessages = _userMessageRepository.ReadUserMessagesPaged(user, paging.Size, paging.From).ToList();
 
             return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
+        }
+
+        public bool ForwardUserMessage(UserProfile requester, ForwardUserMessageModel forwardrequest)
+        {
+            UserMessage userMessage = _userMessageRepository.ReadById(forwardrequest.Id);
+
+            try
+            {
+                string body = string.Format("<p style='align:center;'>Forwarded by {0}</p><hr/>" +
+                                            "<p>{1}</p><hr/>{2}", 
+                                            requester.EmailAddress,
+                                            forwardrequest.Message, 
+                                            userMessage.Body);
+
+                _emailClient.SendEmail
+                    (new List<string>() { forwardrequest.EmailAddress },
+                     null,
+                     null,
+                     userMessage.Subject,
+                     body,
+                     true);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ForwardUserMessage: Error sending email", ex);
+            }
+
+            return true;
         }
 
         public List<UserMessageModel> ReadUserMessages(UserProfile user) {
