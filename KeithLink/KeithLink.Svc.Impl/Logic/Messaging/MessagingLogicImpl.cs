@@ -25,6 +25,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Models.Configuration;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class MessagingLogicImpl : IMessagingLogic {
@@ -39,13 +41,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         //private readonly IUserProfileLogic _userProfileLogic; //makes circular depend.
         private readonly ICustomerRepository _custRepo;
         private readonly IUserProfileRepository _userRepo;
+        private readonly IMessageTemplateLogic _messageTemplateLogic;
+
+        private const string MESSAGE_TEMPLATE_FORWARDUSERMESSAGE = "ForwardUserMessage";
         #endregion
 
         #region ctor
         public MessagingLogicImpl(IUnitOfWork unitOfWork, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
                                   IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
                                   IPushNotificationMessageProvider pushNotificationMessageProvider, ICustomerRepository custRepo,
-                                  IUserProfileRepository userProfileRepository, IEmailClient emailClient) {
+                                  IUserProfileRepository userProfileRepository, IEmailClient emailClient,
+                                  IMessageTemplateLogic messageTemplateLogic) {
             _log = eventLogRepository;
             _pushNotificationMessageProvider = pushNotificationMessageProvider;
             _uow = unitOfWork;
@@ -56,6 +62,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             _custRepo = custRepo;
             _userRepo = userProfileRepository;
             _userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
+            _messageTemplateLogic = messageTemplateLogic;
         }
         #endregion
 
@@ -251,14 +258,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         public bool ForwardUserMessage(UserProfile requester, ForwardUserMessageModel forwardrequest)
         {
             UserMessage userMessage = _userMessageRepository.ReadById(forwardrequest.Id);
+            MessageTemplateModel forwardTemplate =
+                _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_FORWARDUSERMESSAGE);
 
             try
             {
-                string body = string.Format("<p style='align:center;'>Forwarded by {0}</p><hr/>" +
-                                            "<p>{1}</p><hr/>{2}", 
-                                            requester.EmailAddress,
-                                            forwardrequest.Message, 
-                                            userMessage.Body);
+                string body = forwardTemplate.Body.Inject
+                    (new {
+                        UserEmail = requester.EmailAddress,
+                        ForwardMessage = forwardrequest.Message,
+                        ForwardBody = userMessage.Body
+                    });
 
                 _emailClient.SendEmail
                     (new List<string>() { forwardrequest.EmailAddress },
