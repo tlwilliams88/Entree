@@ -66,6 +66,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Label = "Invoice #" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "TypeDescription", Label = "Type" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "StatusDescription", Label = "Status" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceDate", Label = "Invoice Date" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "DueDate", Label = "Due Date" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Amount", Label = "Amount" });
                     return options;
