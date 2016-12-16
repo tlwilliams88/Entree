@@ -266,7 +266,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 string body = forwardTemplate.Body.Inject
                     (new {
                         UserEmail = requester.EmailAddress,
-                        ForwardMessage = forwardrequest.Message,
                         ForwardBody = userMessage.Body
                     });
 
