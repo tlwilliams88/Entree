@@ -316,7 +316,7 @@
           <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
           <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
 
-          <div ng-show="promoItems.length > 0 && !loadingPromoItems">
+          <div ng-if="promoItems.length > 0 && !loadingPromoItems">
 
             <div class="col-xs-12">
               <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>

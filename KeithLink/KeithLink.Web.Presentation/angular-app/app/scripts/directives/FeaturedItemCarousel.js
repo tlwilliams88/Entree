@@ -14,7 +14,7 @@
  * <div featured-item-carousel items="items" link="'menu.catalog.products.details({ itemNumber : item.itemnumber })'"></div>
  */
 angular.module('bekApp')
-  .directive('featuredItemCarousel', ['$rootScope', function ($rootScope) {
+  .directive('featuredItemCarousel', ['$rootScope', 'MarketingService', function ($rootScope, MarketingService) {
     
     return {
       restrict: 'A',
@@ -31,7 +31,7 @@ angular.module('bekApp')
           return 'views/directives/featureditemcarousel.html';
         // }
       },
-      link: function(scope, elem, attr, MarketingService) {
+      link: function(scope, elem, attr) {
         scope.openExternalLink = $rootScope.openExternalLink;
         scope.isCatalog = attr.catalog == 'true' ? true : false;
         scope.storePromoItemInformation = function(targeturltext, id){
