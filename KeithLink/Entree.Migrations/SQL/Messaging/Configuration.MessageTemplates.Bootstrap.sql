@@ -280,8 +280,9 @@ You recently changed your password for Ben E. Keith''s Entrée system. If you fe
 Temporary password: {password}
 Url: {url}', getdate(), getdate(), 0)
 INSERT INTO @Templates
-VALUES ('ForwardUserMessage', '', 0, '<p style="align:center;">Forwarded by {UserEmail}</p><hr/>" +
-                                            "<p>{ForwardMessage}</p><hr/>{ForwardBody}', getdate(), getdate(), 0)
+VALUES ('ForwardUserMessage', '', 1, 
+'<p style="text-align:center;">Forwarded by {UserEmail}</p><hr/>
+<p>{ForwardMessage}</p><hr/>{ForwardBody}', getdate(), getdate(), 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates] A
 USING @Templates B ON (A.[TemplateKey] = B.[TemplateKey])
