@@ -29,7 +29,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             Parallel.ForEach(recipients, (recipient) => {
                 try {
-                    emailClient.SendEmail(new List<string>() { recipient.ProviderEndpoint }, null, null, message.MessageSubject, message.MessageBody, message.BodyIsHtml);
+                    emailClient.SendEmail
+                        (new List<string>() { recipient.ProviderEndpoint }, 
+                         null, 
+                         null, 
+                         message.MessageSubject, 
+                         message.MessageBody, 
+                         message.BodyIsHtml);
                 } catch(Exception ex) {
                     eventLogRepository.WriteErrorLog("EmailMessageProvider: Error sending email", ex);
                 }
