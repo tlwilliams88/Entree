@@ -10,6 +10,11 @@ angular.module('bekApp')
       markAsRead: {
         url: '/messaging/usermessages/markasread',
         method: 'PUT'
+      },
+
+      forwardNotification: {
+        url: '/messaging/usermessage/forward',
+        method: 'POST'
       }
       
     });
