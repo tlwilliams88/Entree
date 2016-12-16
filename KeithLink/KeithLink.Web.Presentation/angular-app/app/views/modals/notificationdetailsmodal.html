@@ -33,6 +33,21 @@
     ng-click="printNotificationModal()">
     Print
   </button>
+  <button 
+    class="btn btn-lg btn-primary pull-right hidden-xs"
+    ng-click="emailNotification(notification.id, sendToEmailAddress)"
+    ng-disabled="!sendToEmailAddress">
+    Email
+  </button>
+  <input
+    type="text"
+    pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}"
+    class="form-control pull-right hidden-xs margin-top-5"
+    style="max-width:200px;"
+    placeholder="Enter Email Address"
+    ng-model="sendToEmailAddress"
+    required
+  />
 <!--   <a 
     class="btn btn-lg btn-primary pull-right"
     type="button"
