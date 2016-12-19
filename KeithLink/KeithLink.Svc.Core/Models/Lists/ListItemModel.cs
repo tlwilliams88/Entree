@@ -76,6 +76,15 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "catalog_id")]
         public string CatalogId { get; set; }
 
+        [DataMember(Name = "custominventoryitemid")]
+        public long CustomInventoryItemId { get; set; }
+
+        /// <summary>
+        /// This is for custom inventory specifically
+        /// </summary>
+        [DataMember(Name = "supplier")]
+        public string Supplier { get; set; }
+        
         #endregion
 
         #region functions

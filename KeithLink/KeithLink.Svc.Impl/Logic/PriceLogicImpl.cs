@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Cache;
+﻿using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
@@ -76,12 +77,16 @@ namespace KeithLink.Svc.Impl.Logic
             newProductList = new List<Product>();
 
             foreach (Product currentProduct in fullList) {
-                Price tempPrice = _priceCacheRepository.GetItem<Price>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, 
-                                                                       GetCacheKey(branchId, customerNumber, currentProduct.ItemNumber));
-                if (tempPrice == null) {
-                    newProductList.Add(currentProduct);
-                } else {
-                    cachedList.Add(tempPrice);
+                // don't get prices for currentProducts that reference custominventory items
+                if (currentProduct.CatalogId == null || currentProduct.CatalogId.Equals(Constants.CATALOG_CUSTOMINVENTORY, StringComparison.CurrentCultureIgnoreCase) == false) {
+                    Price tempPrice = _priceCacheRepository.GetItem<Price>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
+                                                                           GetCacheKey(branchId, customerNumber, currentProduct.ItemNumber));
+                    if (tempPrice == null) {
+                        newProductList.Add(currentProduct);
+                    }
+                    else {
+                        cachedList.Add(tempPrice);
+                    }
                 }
             }
         }

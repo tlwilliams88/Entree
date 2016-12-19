@@ -1,0 +1,1 @@
+﻿& ..\..\..\packages\FluentMigrator.Tools.1.6.2\tools\AnyCPU\40\Migrate.exe /verbose "1" /conn "Data Source=bekkecbdb1;Initial Catalog=BEK_Commerce_AppData;User Id=migration;Password=dfSD*(^14%" /assembly "Entree.Migrations.dll" /provider sqlserver2012 /output /outputFilename "v1.12.0-migrations.sql" /preview

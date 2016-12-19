@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ImportModalController', ['$scope', '$analytics', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders',
-  function ($scope, $analytics, $modalInstance, $state, ListService, CartService, customListHeaders) {
+.controller('ImportModalController', ['$scope', '$analytics', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders', 'listType', 'ExportService',
+  function ($scope, $analytics, $modalInstance, $state, ListService, CartService, customListHeaders, listType, ExportService) {
 
   $scope.customListHeaders = customListHeaders;
+
+  $scope.nonBEKList = listType == 'CustomInventory' ? true : false;
   
   $scope.upload = [];
   $scope.files = [];
@@ -33,9 +35,30 @@ angular.module('bekApp')
   $scope.startListUpload = function(options) {
     var file = $scope.files[0];
     $analytics.eventTrack('Import List', {category: 'Lists'});
-    ListService.importList(file, options).then(function(data) {
-      goToImportedPage('menu.lists.items', { listId: data.listid });
-    });
+    if($scope.nonBEKList){
+      var options = {
+        filetype: 'csv'
+      }
+
+      ListService.importNonBEKListItems(file, options).then(function(data) {
+        goToImportedPage('menu.lists.items', { listId: 'nonBEKList' });
+      });
+    } else {
+      ListService.importList(file, options).then(function(data) {
+        goToImportedPage('menu.lists.items', { listId: data.listid });
+      });
+    }
+
+  };
+
+  $scope.downloadNonBEKTemplate = function() {
+    $analytics.eventTrack('Import List', {category: 'Lists'});
+    var body = {
+      name: 'importcustominventory',
+      format: 'csv'
+    }
+
+    ExportService.downloadNonBEKTemplate('/template', body);
   };
 
 

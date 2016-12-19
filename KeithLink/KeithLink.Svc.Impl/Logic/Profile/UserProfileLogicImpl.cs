@@ -512,7 +512,29 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 searchTerms = "";
 
             if (!string.IsNullOrEmpty(account))
-                return _customerRepo.GetPagedCustomersForAccount(paging, searchTerms, account.ToGuid().ToCommerceServerFormat(), searchType);
+            {
+                Core.Models.Paging.PagedResults<Customer> list = _customerRepo.
+                    GetPagedCustomersForAccount(paging, 
+                                                searchTerms, 
+                                                account.ToGuid().ToCommerceServerFormat(), 
+                                                searchType);
+
+                // if external account, only show the customers this user has access to
+                if (list.Results != null && list.Results.Count > 0 && user.IsInternalUser == false)
+                {
+                    List<string> mycust = _customerRepo.GetCustomersForUser(user.UserId)
+                                                       .Select(myc => myc.CustomerNumber)
+                                                       .ToList();
+                    if (mycust != null)
+                    {
+                        list.Results = list.Results
+                                             .Where(c => mycust.Contains(c.CustomerNumber))
+                                             .ToList();
+                    }
+                }
+
+                return list;
+            }
 
             if (ProfileHelper.IsInternalAddress(user.EmailAddress))
             {
@@ -545,7 +567,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || ((user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) || user.RoleName.Equals(Constants.ROLE_NAME_MARKETING)) && user.BranchId != Constants.BRANCH_GOF))
                 {
-                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms, searchType);
+                    if (user.BranchId.Equals(Constants.BRANCH_FLR, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        List<string> branches = new List<string>();
+
+                        branches.Add(user.BranchId);
+                        branches.Add(Constants.BRANCH_FAR);
+
+                        returnValue = _customerRepo.GetPagedCustomersForBranches(paging, branches, searchTerms, searchType);
+                    } else
+                    {
+                        returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms, searchType);
+                    }
 
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || ((user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) || user.RoleName.Equals(Constants.ROLE_NAME_MARKETING)) && user.BranchId == Constants.BRANCH_GOF))
@@ -789,8 +822,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					cust.CanMessage = false;
 			}
 
+            // if external account, only show the customers this user has access to
+            if (user.IsInternalUser == false)
+            {
+                List<string> mycust = _customerRepo.GetCustomersForUser(user.UserId)
+                                                   .Select(myc => myc.CustomerNumber)
+                                                   .ToList();
+                if(mycust != null && acct.Customers != null)
+                {
+                    acct.Customers = acct.Customers
+                                         .Where(c => mycust.Contains(c.CustomerNumber))
+                                         .ToList();
+                }
+            }
 
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
+
             acct.CustomerUsers = new List<UserProfile>();
             foreach (Customer c in acct.Customers) {
 				var users = _csProfile.GetUsersForCustomerOrAccount(c.CustomerId);
@@ -811,12 +858,29 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 									.ToList();
 
 			foreach (var up in acct.AdminUsers)
-				up.RoleName = GetUserRole(up.EmailAddress);
-
-            foreach (var up in acct.CustomerUsers)
+            {
                 up.RoleName = GetUserRole(up.EmailAddress);
 
-			
+                // an external user can only edit the adminuser if it is himself
+                if(user.IsInternalUser == false && up.UserId == user.UserId)
+                {
+                    up.CanEdit = true;
+                }
+                else if(user.IsInternalUser)
+                {
+                    up.CanEdit = true;
+                }
+            }
+
+            foreach (var up in acct.CustomerUsers)
+            {
+                up.RoleName = GetUserRole(up.EmailAddress);
+
+                // the customerusers are always editable
+                up.CanEdit = true;
+            }
+
+
 
 
             return acct;
@@ -1893,6 +1957,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 Permits.Invoices.CanView = true;
             }
             else if (Constants.ROLE_NAME_DSR.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
+            {
+                Permits.Invoices.CanView = true;
+            }
+            else if (Constants.ROLE_NAME_DSM.IndexOf(role, StringComparison.InvariantCultureIgnoreCase) > -1)
             {
                 Permits.Invoices.CanView = true;
             }

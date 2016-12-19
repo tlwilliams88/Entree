@@ -92,6 +92,10 @@ using Autofac.Features.Indexed;
 using System;
 using KeithLink.Svc.Core.Enumerations.Dependencies;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
+using KeithLink.Svc.Core.Interface.ApplicationHealth;
+using KeithLink.Svc.Impl.Logic.ApplicationHealth;
+using KeithLink.Svc.Impl.Repository.Templates;
+using KeithLink.Svc.Core.Interface.Templates;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -138,6 +142,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
+            builder.RegisterType<CustomInventoryItemsRepositoryImpl>().As<ICustomInventoryItemsRepository>();
 
             // marketing
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
@@ -173,6 +178,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
+            builder.RegisterType<ApplicationHealthLogicImpl>().As<IApplicationHealthLogic>();
+            builder.RegisterType<TemplatesRepositoryImpl>().As<ITemplatesRepository>();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
@@ -331,6 +338,11 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // cache
             builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
             builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+        }
+
+        internal static void AddOtherMonitorServiceDependencies(ContainerBuilder builder)
+        {
+            builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
         }
 
         internal static void AddOtherQueueServiceDependencies(ContainerBuilder builder)

@@ -20,6 +20,8 @@ namespace KeithLink.Svc.Core.Models.Reports
         public string Category { get; set; }
         [DataMember(Name = "category")]
         public string ContractCategory { get; set; }
+        [DataMember(Name = "supplier")]
+        public string Supplier { get; set; }
         [DataMember(Name = "quantity")]
         public decimal Quantity { get; set; }
         [DataMember(Name = "price")]
@@ -34,5 +36,8 @@ namespace KeithLink.Svc.Core.Models.Reports
         public string Size { get; set; }
         [DataMember(Name = "label")]
         public string Label { get; set; }
+        // Grouping is a groupby used internally for the case where they want to
+        // group by contract category then label (if there is no contract category)
+        public string Grouping { get; set; }
     }
 }

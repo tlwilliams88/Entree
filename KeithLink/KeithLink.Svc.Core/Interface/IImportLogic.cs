@@ -14,5 +14,7 @@ namespace KeithLink.Svc.Core.Interface
 	{
 		ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file);
         OrderImportModel ImportOrder( UserProfile user, UserSelectedContext catalogInfo, OrderImportFileModel file );
-	}
+        CustomInventoryImportModel ImportCustomInventory
+            (UserProfile user, UserSelectedContext catalogInfo, CustomInventoryImportFileModel file);
+    }
 }

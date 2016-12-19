@@ -15,6 +15,8 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue {
         #region properties
         [DataMember(Name = "payments")]
         public List<PaymentTransactionModel> Payments { get; set; }
+        [DataMember(Name = "submittedby")]
+        public string SubmittedBy { get; set; }
         #endregion
     }
 }

@@ -203,9 +203,11 @@ namespace KeithLink.Svc.Impl
         private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
         private const string KEY_UNFI_WHITELIST_BRANCHES = "UNFIWhitelistBranches";
 
-        // Queue Service Functions
-        private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
-        private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
+        // Monitor Service Functions
+        private const string KEY_MONITOR_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
+        private const string KEY_MONITOR_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
+        private const string KEY_MONITOR_SERVICE_CHECKQUEUEHEALTH = "CheckQueueHealth";
+        private const string KEY_MONITOR_SERVICE_CHECKQUEUEHEALTH_WHICH = "QueuesToCheck";
 
         // Catalog Service Functions
         private const string KEY_CATALOG_SERVICE_UNFIIMAGES_PROCESSTIME = "CatalogServiceUnfiImagesProcessTime";
@@ -1484,11 +1486,12 @@ namespace KeithLink.Svc.Impl
                 return GetCommaSeparatedValues(val);
             }
         }
+
         public static string CheckLostOrders
         {
             get
             {
-                return DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MONITOR_SERVICE_CHECKLOSTORDERS, string.Empty);
             }
         }
 
@@ -1496,8 +1499,24 @@ namespace KeithLink.Svc.Impl
         {
             get
             {
-                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_MONITOR_SERVICE_CHECKLOSTORDERS_STATUS, string.Empty);
                 return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static string CheckQueueHealth
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MONITOR_SERVICE_CHECKQUEUEHEALTH, string.Empty);
+            }
+        }
+
+        public static string QueuesToCheck
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MONITOR_SERVICE_CHECKQUEUEHEALTH_WHICH, string.Empty);
             }
         }
 

@@ -34,6 +34,11 @@ namespace KeithLink.Svc.Impl.Repository.Queue
         {
 
         }
+
+        public QueueDeclareOk PassivelyDeclareQueue(string server, string username, string password, string virtualHost, string queue)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -12,7 +12,6 @@ angular.module('bekApp')
 
   var currentUserSelectedContext = {};
   var customers = [];
-  $scope.selectedFilterViewName;
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
   $scope.areAllSelected = false;
@@ -89,12 +88,6 @@ angular.module('bekApp')
     filterFields: [{
       field: 'statusdescription',
       value: 'Past Due'
-    }]
-  }, {
-    name: 'Paid Invoices',
-    filterFields: [{
-      field: 'statusdescription',
-      value: 'Paid'
     }]
   }];
 
@@ -317,7 +310,7 @@ angular.module('bekApp')
         customer.invoices.results = $filter('filter')(customer.invoices.results, {hascreditmemos: true});
         customer.invoices.totalResults = customer.invoices.results.length;
       });
-    } else if(input && filter == "invoicenumber") {
+    } else if(input && filter == 'invoicenumber') {
       invoicesFilter = [{
         filter: {
           field: filter,
@@ -325,7 +318,7 @@ angular.module('bekApp')
         }
       }];
       loadFilteredInvoices(invoicesFilter[0]);
-    } else if(input && filter != "invoicenumber") {
+    } else if(input && filter != 'invoicenumber') {
       invoicesFilter = [{
         search: {
           field: filter,
@@ -372,13 +365,27 @@ angular.module('bekApp')
     if($scope.selectedFilterViewName === filterView && !rangeYear){
       return;
     } else if(rangeYear) {
-      var dateFilterView = [{
+      var dateFilterView;
+      dateFilterView = [{
         name: 'Invoices By Month',
         daterange: {
           field: 'yearmonth',
           value: rangeYear + ',' + ($scope.dateRangeMonths.indexOf(rangeMonth) + 1)
         }
       }];
+
+      if(filterView == 'Paid Date Range'){
+        dateFilterView = [{
+          filter: {
+            field: 'statusdescription',
+            value: 'Paid'
+          },
+          daterange: {
+          field: 'yearmonth',
+          value: rangeYear + ',' + ($scope.dateRangeMonths.indexOf(rangeMonth) + 1)
+        }
+        }];
+      }
 
       if($scope.selectedFilterViewName == dateFilterView){
         return;
@@ -611,7 +618,7 @@ angular.module('bekApp')
       angular.forEach($scope.invoices, function (customer, index) {
         customer.selected = !customer.selected;
         angular.forEach(customer.invoices.results, function(invoice, index){
-          if(invoice.userCanPayInvoice){
+          if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
             invoice.isSelected = customer.selected;
             if (invoice.amountdue != 0) {
               $scope.selectInvoice(invoice, invoice.isSelected);
@@ -622,7 +629,7 @@ angular.module('bekApp')
     }else{
       $event.stopPropagation();
       customer.invoices.results.forEach(function(invoice){
-        if(invoice.userCanPayInvoice){
+        if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
           invoice.isSelected = customer.selected;
           if (invoice.amountdue != 0) {
             $scope.selectInvoice(invoice, invoice.isSelected);
