@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Core.Models.ApplicationHealth
         public string VirtualHost { get; set; }
         public string LogicalName { get; set; }
         public string Queue { get; set; }
-        public int MaximumMessagesWarningThreshold { get; set; }
-        public int MinimumConsumersWarningThreshold { get; set; }
+        public string MaximumMessagesWarningThreshold { get; set; }
+        public string MinimumConsumersWarningThreshold { get; set; }
     }
 }
