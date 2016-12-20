@@ -34,6 +34,7 @@
               <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF" Name="EntityFramework.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF_SqlServer" Name="EntityFramework.SqlServer.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.SqlServer.dll" KeyPath="no" Vital="yes"/>
+              <File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_DLL" Name="KeithLink.Common.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_PDB" Name="KeithLink.Common.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Impl_DLL" Name="KeithLink.Common.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.dll" KeyPath="no" Vital="yes"/>
@@ -44,6 +45,8 @@
               <File Id="KeithLink_Svc_Impl_PDB" Name="KeithLink.Svc.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.pdb" KeyPath="no" Vital="yes"/>
               <File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
               <File Id="NewRelic_Api_Client" Name="NewRelic.Api.Agent.dll" DiskId="1" Source="$(var.SourcePath)\NewRelic.Api.Agent.dll" KeyPath="no" Vital="yes"/>
+              <File Id="NewRelic_Config" Name="newrelic.config" DiskId="1" Source="$(var.SourcePath)\newrelic.config" KeyPath="no" Vital="yes"/>
+              <File Id="Nest" Name="Nest.dll" DiskId="1" Source="$(var.SourcePath)\Nest.dll" KeyPath="no" Vital="yes"/>
               <File Id="RabbitMQ_Client" Name="RabbitMQ.Client.dll" DiskId="1" Source="$(var.SourcePath)\RabbitMQ.Client.dll" KeyPath="no" Vital="yes"/>
               <File Id="RestSharp" Name="RestSharp.dll" DiskId="1" Source="$(var.SourcePath)\RestSharp.dll" KeyPath="no" Vital="yes"/>
               <File Id="Service_EXE" Name="KeithLink.Svc.Windows.MonitorService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.MonitorService.exe" KeyPath="yes" Vital="yes"/>

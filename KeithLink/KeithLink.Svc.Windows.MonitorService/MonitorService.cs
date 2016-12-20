@@ -56,6 +56,7 @@ namespace KeithLink.Svc.Windows.MonitorService
         
         protected override void OnStop()
         {
+            _log.WriteInformationLog("Service stopping");
             TerminateGeneralTimer();
         }
 
@@ -127,6 +128,7 @@ namespace KeithLink.Svc.Windows.MonitorService
 
                 _lostOrdersScope = _container.BeginLifetimeScope();
                 _orderHistoryLogic = _lostOrdersScope.Resolve<IOrderHistoryLogic>();
+                //_log.WriteInformationLog("ProcessCheckLostOrders");
                 subject = _orderHistoryLogic.CheckForLostOrders(out body);
 
                 StringBuilder sbMsgBody = new StringBuilder();
@@ -177,6 +179,7 @@ namespace KeithLink.Svc.Windows.MonitorService
             {
                 _queueCheckScope = _container.BeginLifetimeScope();
                 _appHealthLogic = _queueCheckScope.Resolve<IApplicationHealthLogic>();
+                //_log.WriteInformationLog("ProcessCheckQueueHealth");
                 _appHealthLogic.CheckQueueProperties();
             }
             catch (Exception ex)

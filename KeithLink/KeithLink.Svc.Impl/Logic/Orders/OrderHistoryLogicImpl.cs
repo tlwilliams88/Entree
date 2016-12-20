@@ -192,6 +192,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public string CheckForLostOrders(out string sBody) {
+            _log.WriteInformationLog("CheckForLostOrders");
             StringBuilder sbMsgSubject = new StringBuilder();
             StringBuilder sbMsgBody = new StringBuilder();
             List<string> statuses = Configuration.CheckLostOrdersStatus;
