@@ -24,11 +24,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Models.Configuration;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class MessagingLogicImpl : IMessagingLogic {
         #region attributes
         private readonly IUnitOfWork _uow;
+        private readonly IEmailClient _emailClient;
         private readonly IUserMessageRepository _userMessageRepository;
         private readonly IUserMessagingPreferenceRepository _userMessagingPreferenceRepository;
         private readonly IUserPushNotificationDeviceRepository _userPushNotificationDeviceRepository;
@@ -37,22 +41,28 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         //private readonly IUserProfileLogic _userProfileLogic; //makes circular depend.
         private readonly ICustomerRepository _custRepo;
         private readonly IUserProfileRepository _userRepo;
+        private readonly IMessageTemplateLogic _messageTemplateLogic;
+
+        private const string MESSAGE_TEMPLATE_FORWARDUSERMESSAGE = "ForwardUserMessage";
         #endregion
 
         #region ctor
         public MessagingLogicImpl(IUnitOfWork unitOfWork, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
                                   IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
                                   IPushNotificationMessageProvider pushNotificationMessageProvider, ICustomerRepository custRepo,
-                                  IUserProfileRepository userProfileRepository) {
+                                  IUserProfileRepository userProfileRepository, IEmailClient emailClient,
+                                  IMessageTemplateLogic messageTemplateLogic) {
             _log = eventLogRepository;
             _pushNotificationMessageProvider = pushNotificationMessageProvider;
             _uow = unitOfWork;
+            _emailClient = emailClient;
             _userMessageRepository = userMessageRepository;
             _userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             //_userProfileLogic = userProfileLogic;
             _custRepo = custRepo;
             _userRepo = userProfileRepository;
             _userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
+            _messageTemplateLogic = messageTemplateLogic;
         }
         #endregion
 
@@ -243,6 +253,36 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             var userMessages = _userMessageRepository.ReadUserMessagesPaged(user, paging.Size, paging.From).ToList();
 
             return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
+        }
+
+        public bool ForwardUserMessage(UserProfile requester, ForwardUserMessageModel forwardrequest)
+        {
+            UserMessage userMessage = _userMessageRepository.ReadById(forwardrequest.Id);
+            MessageTemplateModel forwardTemplate =
+                _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_FORWARDUSERMESSAGE);
+
+            try
+            {
+                string body = forwardTemplate.Body.Inject
+                    (new {
+                        UserEmail = requester.EmailAddress,
+                        ForwardBody = userMessage.Body
+                    });
+
+                _emailClient.SendEmail
+                    (new List<string>() { forwardrequest.EmailAddress },
+                     null,
+                     null,
+                     userMessage.Subject,
+                     body,
+                     true);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ForwardUserMessage: Error sending email", ex);
+            }
+
+            return true;
         }
 
         public List<UserMessageModel> ReadUserMessages(UserProfile user) {

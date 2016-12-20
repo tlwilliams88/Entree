@@ -38,7 +38,7 @@ angular.module('bekApp')
     if($scope.nonBEKList){
       var options = {
         filetype: 'csv'
-      }
+      };
 
       ListService.importNonBEKListItems(file, options).then(function(data) {
         goToImportedPage('menu.lists.items', { listId: 'nonBEKList' });
@@ -56,7 +56,7 @@ angular.module('bekApp')
     var body = {
       name: 'importcustominventory',
       format: 'csv'
-    }
+    };
 
     ExportService.downloadNonBEKTemplate('/template', body);
   };

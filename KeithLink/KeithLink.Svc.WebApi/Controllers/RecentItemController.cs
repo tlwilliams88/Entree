@@ -24,8 +24,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// ctor
         /// </summary>
-        /// <param name="listServiceRepository"></param>
+        /// <param name="listLogic"></param>
         /// <param name="profileLogic"></param>
+        /// <param name="logRepo"></param>
         public RecentItemController(IListLogic listLogic,  IUserProfileLogic profileLogic, IEventLogRepository logRepo)  : base(profileLogic) {
             _repo = listLogic;
             _log = logRepo;

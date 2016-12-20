@@ -15,8 +15,6 @@ namespace KeithLink.Svc.Windows.AccessService {
         #region attributes
         private IContainer _container;
 
-        private IKbitRequestLogic _kbitLogic;
-        private IPowerMenuLogic _pmLogic;
         private IEventLogRepository _log;
         private IAccessRequestLogic _requestLogic;
         #endregion

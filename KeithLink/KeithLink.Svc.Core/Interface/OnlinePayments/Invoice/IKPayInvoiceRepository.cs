@@ -4,6 +4,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
     public interface IKPayInvoiceRepository {
@@ -30,5 +31,8 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
         IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll();
 
         IEnumerable<Core.Models.OnlinePayments.Invoice.EF.InvoiceHeader> ReadAllHeaders();
+
+        List<Core.Models.OnlinePayments.Invoice.EF.InvoiceHeader> ReadFilteredHeaders
+            (FilterInfo customerFilter, FilterInfo statusFilter);
     }
 }

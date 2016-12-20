@@ -7,23 +7,65 @@ using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.WebApi.Models
 {
+    /// <summary>
+    /// UserProfileModel
+    /// </summary>
     public class UserProfileModel
     {
+        /// <summary>
+        /// UserId
+        /// </summary>
         public string UserId { get; set; }
+        /// <summary>
+        /// Email
+        /// </summary>
         public string Email { get; set;}
-		public string FirstName { get; set; }
-		public string LastName { get; set; }
-		public string CustomerName { get; set; }
-		public string PhoneNumber { get; set; }
-		public string Password { get; set; }
+        /// <summary>
+        /// FirstName
+        /// </summary>
+        public string FirstName { get; set; }
+        /// <summary>
+        /// LastName
+        /// </summary>
+        public string LastName { get; set; }
+        /// <summary>
+        /// CustomerName
+        /// </summary>
+        public string CustomerName { get; set; }
+        /// <summary>
+        /// PhoneNumber
+        /// </summary>
+        public string PhoneNumber { get; set; }
+        /// <summary>
+        /// Password
+        /// </summary>
+        public string Password { get; set; }
+        /// <summary>
+        /// Address
+        /// </summary>
         public string Address { get; set; }
-		public string Role { get; set; }
+        /// <summary>
+        /// Role
+        /// </summary>
+        public string Role { get; set; }
+        /// <summary>
+        /// Permissions
+        /// </summary>
         [JsonIgnore]
         public List<string> Permissions { get; set; }
+        /// <summary>
+        /// Permit
+        /// </summary>
         [DataMember(Name = "permit")]
         public UserPermissionsModel Permit { get; set; }
 
+        /// <summary>
+        /// BranchId
+        /// </summary>
         public string BranchId { get; set; }
+        /// <summary>
+        /// Customers
+        /// </summary>
         public List<Customer> Customers { get; set; }
     }
 }

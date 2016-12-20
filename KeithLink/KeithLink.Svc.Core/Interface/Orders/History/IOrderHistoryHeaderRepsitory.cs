@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
         List<OrderHistoryHeader> GetLastFiveOrdersByItem(string branchId, string customerNumber, string itemNumber);
         IEnumerable<OrderHistoryHeader> ReadByConfirmationNumber(string confirmationNumber, string orderSource);
         IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber);
-		string ReadLatestOrderDate(UserSelectedContext catalogInfo);
+        IEnumerable<OrderHistoryHeader> ReadForInvoiceHeader(string branchId, string invoiceNumber);
+        string ReadLatestOrderDate(UserSelectedContext catalogInfo);
     }
 }

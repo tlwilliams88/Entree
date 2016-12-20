@@ -42,6 +42,7 @@ using System.Collections.Concurrent;
 using KeithLink.Svc.Core;
 using System.Threading;
 using KeithLink.Svc.Impl.Tasks;
+using KeithLink.Svc.Core.Exceptions.Queue;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -59,6 +60,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IEventLogRepository _log;
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly IGenericQueueRepository _queue;
+        private readonly IGenericSubscriptionQueueRepository _genericSubscriptionQueue;
         private readonly ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -70,9 +72,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         public OrderHistoryLogicImpl(IOrderHistoryHeaderRepsitory headerRepo, IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, 
                                      ICatalogLogic catalogLogic, IOrderHistoryDetailRepository detailRepo, IUnitOfWork unitOfWork, 
                                      IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, 
-                                     ICustomerRepository customerRepository, ISocketListenerRepository socket) {
+                                     ICustomerRepository customerRepository, ISocketListenerRepository socket,
+                                     IGenericSubscriptionQueueRepository genericSubscriptionQueue) {
             _log = log;
             _queue = queue;
+            _genericSubscriptionQueue = genericSubscriptionQueue;
             _socket = socket;
 
             _headerRepo = headerRepo;
@@ -91,6 +95,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             _socket.WaitingConnection       += SocketWaitingConnection;
             _socket.BeginningFileReceipt    += SocketBeginningFileReceipt;
             _socket.ErrorEncountered        += SocketExceptionEncountered;
+
+            // subscribe to event to receive message through subscription
+            _genericSubscriptionQueue.MessageReceived += GenericSubscriptionQueue_MessageReceived;
         }
         #endregion
 
@@ -429,7 +436,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         public void ListenForMainFrameCalls() {
             _socket.Listen(Configuration.MainframOrderHistoryListeningPort);
         }
-
+        
+        #region polling
         public void ListenForQueueMessages() {
             _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask(),
                 CancellationToken.None, TaskCreationOptions.DenyChildAttach,
@@ -443,23 +451,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 try {
                     var rawOrder = ReadOrderFromQueue();
 
-                    while(_keepListening && !string.IsNullOrEmpty(rawOrder)) {
-                        OrderHistoryFile historyFile = new OrderHistoryFile();
-
-                        historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
-
-                        _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
-
-                        Create(historyFile, false);
-                        _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
-
-                        Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
+                    while(_keepListening && !string.IsNullOrEmpty(rawOrder))
+                    {
+                        ProcessOrder(rawOrder);
 
                         // to make sure we do not pull an order off the queue without processing it
                         // check to make sure we can still process before pulling off the queue
-                        if(_keepListening) {
+                        if (_keepListening)
+                        {
                             rawOrder = ReadOrderFromQueue();
-                        } else {
+                        }
+                        else
+                        {
                             rawOrder = null;
                         }
                     }
@@ -469,6 +472,80 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }
             }
+        }
+
+        private string ReadOrderFromQueue()
+        {
+            return
+                KeithLink.Svc.Impl.Helpers.Retry.Do<string>
+                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
+                Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates),
+                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
+        }
+        #endregion
+
+        #region subscription
+        public void SubscribeToQueue()
+        {
+            RabbitMQ.Client.ConnectionFactory config = new RabbitMQ.Client.ConnectionFactory();
+            config.HostName = Configuration.RabbitMQConfirmationServer;
+            config.UserName = Configuration.RabbitMQUserNameConsumer;
+            config.Password = Configuration.RabbitMQUserPasswordConsumer;
+            config.VirtualHost = Configuration.RabbitMQVHostConfirmation;
+
+            _log.WriteInformationLog
+                (string.Format("Subscribing to order updates queue: {0}", Configuration.RabbitMQQueueHourlyUpdates));
+
+            this._queueTask = Task.Factory.StartNew
+                (() => _genericSubscriptionQueue.Subscribe(config, Configuration.RabbitMQQueueHourlyUpdates));
+        }
+
+        public void Unsubscribe()
+        {
+            _genericSubscriptionQueue.Unsubscribe();
+        }
+
+        private void GenericSubscriptionQueue_MessageReceived
+            (RabbitMQ.Client.IBasicConsumer sender, RabbitMQ.Client.Events.BasicDeliverEventArgs args)
+        {
+            RabbitMQ.Client.Events.EventingBasicConsumer consumer = (RabbitMQ.Client.Events.EventingBasicConsumer)sender;
+
+            try
+            {
+                // don't reprocess items that have been processed
+                if (_genericSubscriptionQueue.GetLastProcessedUndelivered() != args.DeliveryTag)
+                {
+                    string rawOrder = Encoding.ASCII.GetString(args.Body);
+
+                    ProcessOrder(rawOrder);
+                }
+
+                _genericSubscriptionQueue.Ack(consumer, args.DeliveryTag);
+            }
+            catch (QueueDataError<string> serializationEx)
+            {
+                _log.WriteErrorLog("Serializing problem with order update.", serializationEx);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Unhandled error processing order update.", ex);
+            }
+        }
+
+        #endregion
+
+        private void ProcessOrder(string rawOrder)
+        {
+            OrderHistoryFile historyFile = new OrderHistoryFile();
+
+            historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
+
+            _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
+
+            Create(historyFile, false);
+            _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
+
+            Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
         }
 
         /// <summary>
@@ -589,14 +666,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
 
             return retVal;
-        }
-
-        private string ReadOrderFromQueue() {
-            return
-                KeithLink.Svc.Impl.Helpers.Retry.Do<string>
-                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
-                Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates),
-                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
         }
 
         private void RemoveEmptyPurchaseOrder() { }

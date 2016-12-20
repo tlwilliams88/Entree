@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
-    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -38,7 +38,7 @@ angular.module('bekApp')
       canCopyList
       */
 
-      function updateListPermissions(list) {
+      function updateListPermissions(list, isInternalUser) {
         var permissions = {};
 
         // FAVORITES
@@ -58,12 +58,6 @@ angular.module('bekApp')
             //History has one: read-only Each.
             permissions.alternativeFieldName = 'category';
             permissions.alternativeFieldHeader = 'Contract Category';
-            permissions.alternativeFieldName2 = 'eachString';
-            permissions.alternativeFieldHeader2 = 'Each';
-          }
-          else{
-            permissions.alternativeFieldName = 'eachString'; 
-            permissions.alternativeFieldHeader = 'Each';
           }
 
           if (list.items) {
@@ -84,15 +78,22 @@ angular.module('bekApp')
 
         // MANDATORY -- only editable by internal users
         } else if (list.ismandatory) {
+          if(isInternalUser){
+            permissions.canDeleteList = true;
+            permissions.canAddItems = true;
+            permissions.canEditList = true;
+            permissions.canDeleteItems = true;
+            permissions.canEditParlevel = true;
+          } else {
+            permissions.canDeleteList = false;
+            permissions.canAddItems = false;
+            permissions.canEditList = false;
+            permissions.canDeleteItems = false;
+            permissions.canEditParlevel = false;
+          }
           permissions.canSeeParlevel = true;
           permissions.alternativeParHeader = 'Required Qty';
-          permissions.canDeleteList = true;
-          permissions.canAddItems = true;
-          permissions.canEditList = true;
-          permissions.canDeleteItems = true;
-          permissions.canEditParlevel = true;
-          permissions.canDeleteList = true;
-          permissions.canAddNonBEKItems = false;
+
 
         // REMINDER
         } else if (list.isreminder) {
@@ -155,6 +156,7 @@ angular.module('bekApp')
 
         lists: [],
         labels: [],
+        userProfile: {},
 
         updateListPermissions: updateListPermissions,
 
@@ -250,6 +252,7 @@ angular.module('bekApp')
         // accepts listId (guid)
         // returns list object
         getListWithItems: function(listId, params) {
+          Service.userProfile = UserProfileService.getCurrentUserProfile();
           if (!params) {
             params = {
               includePrice: true
@@ -277,7 +280,15 @@ angular.module('bekApp')
 
         // accepts listId (guid), paging params
         // returns paged list object
-        getList: function(listId, params) {         
+        getList: function(listId, params) {
+            UserProfileService.getCurrentUserProfile().then(function(profile){
+              if(profile.emailaddress.indexOf('@benekeith.com') !== -1) {
+                Service.isInternalUser = true;
+              } else {
+                Service.isInternalUser = false;
+              }
+              
+            });
 
             if (!params) {
               var pageSize = LocalStorage.getPageSize();             
@@ -299,15 +310,15 @@ angular.module('bekApp')
               list.items = list.items.results;
               list.items.forEach(function(item){
                 if(item.onhand < 0.01){
-                  item.onhand = ''
+                  item.onhand = '';
                 } else if(item.quantity < 1){
-                    item.quantity = ''
+                    item.quantity = '';
                 }
-              })
+              });
 
               // get calculated fields
               PricingService.updateCaculatedFields(list.items);
-              updateListPermissions(list);
+              updateListPermissions(list, Service.isInternalUser);
 
               Service.updateCache(list);
 
@@ -345,7 +356,7 @@ angular.module('bekApp')
             var customInventoryItems = response.data.successResponse.items;
 
             return customInventoryItems;
-          })
+          });
         },
 
         addNewItemsFromCustomInventoryList: function(listid, listitems) {
@@ -353,7 +364,7 @@ angular.module('bekApp')
 
           listitems.forEach(function(item){
             itemsToAdd.push(item.id);
-          })
+          });
 
           return $http.post('/list/'+ listid + '/custominventoryitem', itemsToAdd).then(function() {
             toaster.pop('success', null, 'Successfully added items to list.');
@@ -426,7 +437,7 @@ angular.module('bekApp')
               }
               deferred.reject(errorMessage);
             }
-          })
+          });
           return deferred.promise;
         },
 
@@ -453,13 +464,14 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(listId, landscape, showparvalues, options, shownotes) {
+        printList: function(listId, landscape, showparvalues, options, shownotes, prices) {
 
             var printparams = {
               landscape: landscape,
               showparvalues: showparvalues,
               shownotes: shownotes,
-              paging: options
+              paging: options,
+              showprices: prices
             };
 
 
@@ -591,7 +603,7 @@ angular.module('bekApp')
 
         // accepts list object
         // returns promise and updated list object
-        updateList: function(list, getEntireList, params) {
+        updateList: function(list, getEntireList, params, addingItem) {
           list.message = 'Saving list...';
 
           return List.update(null, list).$promise.then(function(response) {
@@ -612,11 +624,15 @@ angular.module('bekApp')
             }
 
             return promise.then(function(list) {
-              toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
+              if(!addingItem){
+                toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
+              }
               return list;
             });
           }, function(error) {
-            toaster.pop('error', null, 'Error saving list ' + list.name + '.');
+            if(!addingItem){
+              toaster.pop('error', null, 'Error saving list ' + list.name + '.');
+            }
             return $q.reject(error);
           });
         },
@@ -889,8 +905,43 @@ angular.module('bekApp')
             });
             return newList.newlistid;
           });
-        }
-      };
+        },
+
+        /*******************
+        SET LAST ORDER LIST
+        *******************/
+        setLastOrderList: function(listId, cart){
+          var cartId = cart,
+              timeset = DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
+              orderList = {
+                listId: listId,
+                cartId: cartId,
+                timeset: timeset
+              },
+              allSets = [],
+              allSets = LocalStorage.getLastOrderList();
+            if(!allSets || (allSets[0] && !allSets[0].timeset)){
+              allSets = [];
+            }
+     
+            var matchFound = false;
+            if(orderList.cartId !== 'New'){
+              allSets.forEach(function(set){
+                if(set.cartId === orderList.cartId){
+                  set.listId = orderList.listId;
+                  set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
+                  matchFound = true;
+                }
+              });
+              if(!matchFound){
+                allSets.push(orderList);
+              }
+            }
+
+          LocalStorage.setLastOrderList(allSets);
+          }
+        };
+
 
       return Service;
 

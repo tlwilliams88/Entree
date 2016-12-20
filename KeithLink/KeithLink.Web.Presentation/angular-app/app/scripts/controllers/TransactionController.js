@@ -99,7 +99,7 @@ angular.module('bekApp')
       controller: 'ExportModalController',
       resolve: {        
         location: function() {
-          return {category:'Transactions', action:'Export Pending Transactions'}
+          return {category:'Transactions', action:'Export Pending Transactions'};
         },
         headerText: function () {
           return 'Transactions';

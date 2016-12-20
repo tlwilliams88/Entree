@@ -19,5 +19,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         public bool ShowParValues { get; set; }
         [DataMember(Name = "shownotes")]
         public bool ShowNotes { get; set; }
+        [DataMember(Name = "showprices")]
+        public bool ShowPrices { get; set; }
     }
 }

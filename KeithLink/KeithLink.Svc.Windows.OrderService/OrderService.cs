@@ -46,7 +46,6 @@ namespace KeithLink.Svc.Windows.OrderService
 
         private Thread _confirmationThread;
         private Thread _historyResponseThread;
-        private Thread _historyCreatedWriterThread;
         private Timer _historyRequestTimer;
         private Timer _orderUpdateTimer;
         private Timer _queueTimer;

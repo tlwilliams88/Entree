@@ -150,6 +150,9 @@
     <div class="invoiceoptions">
       <div class="row">
         <div class="col-sm-12 col-xs-12">
+          <div ng-if="selectedFilterViewName != 'Open Invoices'" >
+            <a class="hidden-print text-large btn-link max-width-100px" ng-click="selectFilterView(filterViews[0]);"><span class="icon-arrow-left6"></span> Back</a>
+          </div>
           <div class="hidden-print" ng-if="isMobile"> 
             <p>Find: </p>
             <div class="btn-group" style="max-width:500px;">
@@ -173,14 +176,14 @@
           </div>
           <div>
             <span ng-if="totalInvoices > 0" class="pull-left credit-memo-toggle hidden-print">
-              <input type="checkbox" ng-click="filterInvoices(invoiceFilter = !invoiceFilter)"> Invoices with Credit Memos
+              <input type="checkbox" id="invoiceHasCreditMemos" ng-click="filterInvoices('hascreditmemos', toggleCreditMemos)" ng-model="toggleCreditMemos" ng-disabled="hasCreditMemosDisabled"> Invoices with Credit Memos
             </span>
             <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="pull-left selectallinvoices credit-memo-toggle hidden-print">
               <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="selectAll('selectAllInvoices')"> Select All Invoices
             </span>
-          <div>
-            <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-right-xs pull-left-xxs">Total: {{totalPaymentAmount() | currency}}</span>
-          </div>
+            <div>
+              <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-right-xs pull-left-xxs">Total: {{totalPaymentAmount() | currency}}</span>
+            </div>
           </div>
           <div ng-if="totalInvoices > 0" class="pull-right">
             <span class="btn-group pull-right-lg pull-right-md pull-right-sm pull-left-xs xs-right-5" ng-if="totalInvoices > 0 && !isInternalUser">

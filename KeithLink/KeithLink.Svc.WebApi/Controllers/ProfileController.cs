@@ -47,6 +47,20 @@ namespace KeithLink.Svc.WebApi.Controllers
 		#endregion
 
 		#region ctor
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="customerContainerRepo"></param>
+        /// <param name="logRepo"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="avatarRepository"></param>
+        /// <param name="customerADRepo"></param>
+        /// <param name="passwordResetService"></param>
+        /// <param name="dsrAliasLogic"></param>
+        /// <param name="marketingPreferencesLogic"></param>
+        /// <param name="exportSettingsLogic"></param>
+        /// <param name="settingsLogic"></param>
+        /// <param name="customerRepository"></param>
 		public ProfileController(ICustomerContainerRepository customerContainerRepo, IEventLogRepository logRepo, IUserProfileLogic profileLogic, 
                                  IAvatarRepository avatarRepository, ICustomerDomainRepository customerADRepo, IPasswordResetLogic passwordResetService, 
                                  IDsrAliasLogic dsrAliasLogic, IMarketingPreferencesLogic marketingPreferencesLogic, IExportSettingLogic exportSettingsLogic, 
@@ -1120,11 +1134,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-        // <summary>
+        /// <summary>
         /// Export marketing info to CSV, TAB, or Excel
         /// </summary>
-        /// <param name="from">Registered from date</param>
-        /// <param name="to">Registered to date</param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
+        /// <param name="exportRequest"></param>
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("profile/export/marketinginfo")]

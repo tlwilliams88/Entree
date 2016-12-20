@@ -12,7 +12,7 @@ angular.module('bekApp')
   if(cart) {
     $scope.existingCart = true;
     $scope.isChangeOrder = cart.hasOwnProperty('ordernumber') ? true : false;
-  };
+  }
 
   $scope.addRow = function() {
     $scope.quickAddItems.push({
@@ -32,7 +32,7 @@ angular.module('bekApp')
     return $filter('filter')( items, function(item) {
       return item.quantity > 0 && item.itemnumber && item.itemnumber.length > 0; 
     });
-  };
+  }
 
   $scope.validateItems = function(items) {
     $scope.isValidating = true;

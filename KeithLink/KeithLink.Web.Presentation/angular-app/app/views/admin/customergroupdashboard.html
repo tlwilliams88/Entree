@@ -110,9 +110,9 @@
           </p>
           <p class="text-red" ng-show="canMoveUser">
             This user exists and has access to another customer group. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and move the user to this customer group.
-          </p>                
+          </p>  
           
-          <input type="email" class="form-control" required placeholder="Enter email address" name = "newUserEmail" ng-model="addNewUserEmail"/>
+          <input type="email" class="form-control" required placeholder="Enter email address" name = "newUserEmail" ng-model="addNewUserEmail" internal-email-invalid/>
           <button  type="submit" ng-disabled="addNewCustomerUserForm.$invalid" class="btn btn-primary" ng-click="addCustomerUser(addNewUserEmail)">Add Customer User</button>
         </div>
       </div>

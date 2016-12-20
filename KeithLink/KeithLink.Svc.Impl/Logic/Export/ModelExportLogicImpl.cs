@@ -259,7 +259,6 @@ namespace KeithLink.Svc.Impl.Logic.Export
         private SheetData WriteDataTableToExcelWorksheet()
         {
             SheetData sheetData = new DocumentFormat.OpenXml.Spreadsheet.SheetData();
-            string cellValue = "";
 
             //  Create a Header Row in our Excel file, containing one header for each Column of data in our DataTable.
             //

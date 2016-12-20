@@ -48,7 +48,7 @@ angular.module('bekApp')
           });
 
           setColumnHeaderSizes();
-        };
+        }
 
         function setColumnHeaderSizes() {
           if (clonedHeader.is('tr')) {
@@ -70,7 +70,7 @@ angular.module('bekApp')
           if ( scrollTop > contentTop ) {
             if (!clonedHeader){
               createClone();    
-              clonedHeader.css({ "visibility": "visible"});
+              clonedHeader.css({ 'visibility': 'visible'});
             }
             
             if ( scrollTop < contentBottom && scrollTop > contentBottom - clonedHeader.outerHeight(false) ){
@@ -98,13 +98,13 @@ angular.module('bekApp')
                 visibility: 'visible'
               });
             }
-          };
-        };
+          }
+        }
 
-        scrollableContainer.scroll(determineVisibility).trigger( "scroll" );
+        scrollableContainer.scroll(determineVisibility).trigger( 'scroll' );
         scrollableContainer.resize(determineVisibility);
-        w.scroll(determineVisibility).trigger( "scroll" );
+        w.scroll(determineVisibility).trigger( 'scroll' );
         w.resize(determineVisibility);
       }
-    }
+    };
 }]);

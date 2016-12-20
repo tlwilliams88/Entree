@@ -11,8 +11,12 @@ namespace KeithLink.Svc.Core.Interface.Messaging
     {
         void ListenForQueueMessages();
 
-        bool ProcessIncomingPushMessage(PushMessage pushmessage);
-
         void Stop();
+
+        void SubscribeToQueue();
+
+        void Unsubscribe();
+
+        bool ProcessIncomingPushMessage(PushMessage pushmessage);
     }
 }

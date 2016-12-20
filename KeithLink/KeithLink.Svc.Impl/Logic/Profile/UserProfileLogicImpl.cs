@@ -1714,13 +1714,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         public bool UpdateAccount(UserProfile updatedBy, Guid accountId, string name, List<Customer> customers, List<UserProfile> users) {
+            Account acct = GetAccount(updatedBy, accountId);
             List<Customer> existingCustomers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
             List<UserProfile> existingUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
 
-            IEnumerable<Guid> customersToAdd = customers.Select(c => c.CustomerId).Except(existingCustomers.Select(c => c.CustomerId));
-            IEnumerable<Guid> customersToDelete = existingCustomers.Select(c => c.CustomerId).Except(customers.Select(c => c.CustomerId));
-            IEnumerable<Guid> usersToAdd = users.Select(u => u.UserId).Except(existingUsers.Select(u => u.UserId));
-            IEnumerable<Guid> usersToDelete = existingUsers.Select(u => u.UserId).Except(users.Select(u => u.UserId));
+            IEnumerable<Guid> customersToAdd = customers.Select(c => c.CustomerId)
+                                                        .Except(existingCustomers.Select(c => c.CustomerId));
+            IEnumerable<Guid> customersToDelete = existingCustomers.Select(c => c.CustomerId)
+                                                                   .Except(customers.Select(c => c.CustomerId));
+            IEnumerable<Guid> usersToAdd = users.Select(u => u.UserId)
+                                                .Except(existingUsers.Select(u => u.UserId));
+            IEnumerable<Guid> usersToDelete = existingUsers.Select(u => u.UserId)
+                                                           .Except(users.Select(u => u.UserId));
 
             //First make sure the customer is not already a member of an account
             foreach (Guid custId in customersToAdd) {
@@ -1735,7 +1740,26 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             foreach (Guid g in customersToAdd)
                 _accountRepo.AddCustomerToAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in customersToDelete)
+            {
                 _accountRepo.RemoveCustomerFromAccount(updatedBy.EmailAddress, accountId, g);
+                foreach (UserProfile user in acct.CustomerUsers)
+                {
+                    //remove customer from user profile if it exists
+                    List<Customer> custProfiles = _customerRepo.GetCustomersForUser(user.UserId);
+                    Customer custProfile = custProfiles.Where(c => c.CustomerId == g).FirstOrDefault();
+                    if (custProfile != null)
+                    {
+                        _customerRepo.RemoveUserFromCustomer(updatedBy.EmailAddress, g, user.UserId);
+                    }
+                    //remove customer access from user
+                    List<InternalUserAccess> custIAs = _internalUserAccessRepo.GetAllCustomersForUser(user.EmailAddress);
+                    InternalUserAccess custIA = custIAs.Where(ia => ia.CustomerId == g).FirstOrDefault();
+                    if (custIA != null)
+                    {
+                        _internalUserAccessRepo.Delete(custIA);
+                    }
+                }
+            }
             foreach (Guid g in usersToAdd)
                 _accountRepo.AddUserToAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in usersToDelete)

@@ -37,6 +37,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="profileLogic"></param>
         /// <param name="exportSettingsLogic"></param>
         /// <param name="inventoryValuationReportLogic"></param>
+        /// <param name="logRepo"></param>
         public ReportController(IReportLogic reportLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
                                 IInventoryValuationReportLogic inventoryValuationReportLogic, IEventLogRepository logRepo) 
             : base(profileLogic) {

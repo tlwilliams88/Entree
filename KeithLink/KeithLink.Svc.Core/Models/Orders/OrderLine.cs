@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         public string CatalogType { get; set; }
 
         [DataMember(Name = "catalog_id")]
-        public string CatalogId { get; set; }
+        public new string CatalogId { get; set; }
 
         [DataMember(Name = "linenumber")]
         public int LineNumber { get; set; }
@@ -92,7 +92,6 @@ namespace KeithLink.Svc.Core.Models.Orders
             set { _quantityOrders = value; }
         }
 
-        private int _quantityShipped;
         [DataMember(Name = "quantityshipped")]
         [Description("# Shipped")]
         public int QantityShipped { get; set; }

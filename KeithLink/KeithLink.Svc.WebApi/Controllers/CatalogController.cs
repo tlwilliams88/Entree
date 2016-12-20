@@ -28,6 +28,9 @@ using System.IO;
 using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers {
+    /// <summary>
+    /// CatalogController
+    /// </summary>
 	[Authorize]
     public class CatalogController : BaseController {
         #region attributes
@@ -37,6 +40,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
         #endregion
 
         #region ctor
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="catalogLogic"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="exportSettingsLogic"></param>
+        /// <param name="elRepo"></param>
         public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
             IEventLogRepository elRepo) : base(profileLogic) {
             _catalogLogic = catalogLogic;
@@ -150,6 +160,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return ret;
         }
 
+        /// <summary>
+        /// GetProductsSearchBrand
+        /// </summary>
+        /// <param name="catalogType"></param>
+        /// <param name="brandName"></param>
+        /// <param name="searchModel"></param>
+        /// <param name="searchTerms"></param>
+        /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/{catalogType}/search/brand/{brandName}/products")]
         public OperationReturnModel<ProductsReturn> GetProductsSearchBrand(string catalogType, string brandName, [FromUri] SearchInputModel searchModel, [FromUri] string searchTerms = null)
@@ -361,6 +379,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <summary>
         /// Export products for a Category
         /// </summary>
+        /// <param name="catalogType">Catalog Type</param>
         /// <param name="categoryId">Category Id</param>
         /// <param name="searchModel"></param>
         /// <param name="exportRequest">Export options</param>

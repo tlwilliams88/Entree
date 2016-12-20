@@ -745,7 +745,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             HttpResponseMessage ret;
             try
             {
-                Stream stream = ListPrintHelper.BuildReportFromList(options, listId, this.SelectedUserContext, this.AuthenticatedUser, _listLogic, _profileLogic);
+                Stream stream = ListPrintHelper.BuildReportFromList
+                    (options, listId, this.SelectedUserContext, this.AuthenticatedUser, _listLogic, _profileLogic, _elRepo);
 
                 if (stream == null)
                     return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };

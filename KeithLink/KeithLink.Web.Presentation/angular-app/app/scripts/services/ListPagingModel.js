@@ -97,7 +97,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
     sortListItems: function(sort) {
       this.pageIndex = 0;
       this.sort = sort;
-      ListService.sortObject = sort
+      ListService.sortObject = sort;
       this.loadList();
     },
 

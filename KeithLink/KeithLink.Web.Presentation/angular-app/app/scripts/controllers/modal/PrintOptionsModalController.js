@@ -36,7 +36,7 @@ angular.module('bekApp')
     ListService.printBarcodes(list.listid);
   };
 
-  $scope.printList = function(list, landscape, showparvalues, groupLabels, shownotes) {
+  $scope.printList = function(list, landscape, showparvalues, groupLabels, shownotes, prices) {
     if(groupLabels){
       pagingModelOptions= { 
               sort: [{
@@ -51,7 +51,7 @@ angular.module('bekApp')
     }
     if(!$scope.printingOrder){
       $analytics.eventTrack('Print List', {  category: 'Lists', label: 'Print Page' });
-      ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions, shownotes);
+      ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions, shownotes, prices);
     }
     else{
       $analytics.eventTrack('Print Order', {  category: 'Add To Order'});
