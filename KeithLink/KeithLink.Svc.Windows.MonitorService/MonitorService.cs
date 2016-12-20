@@ -88,7 +88,7 @@ namespace KeithLink.Svc.Windows.MonitorService
             if (_checkingLostOrders == false &&
                 (DateTime.Now.Hour < 1 | 
                 DateTime.Now.Hour > 5) && 
-                DateTime.Now.Minute % 10 == 0 && 
+                DateTime.Now.Minute == 0 && 
                 DoCheckLostOrders())
             {
                 ProcessCheckLostOrders();
