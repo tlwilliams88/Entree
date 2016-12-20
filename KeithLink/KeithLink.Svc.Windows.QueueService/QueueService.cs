@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             InitializePushMessageConsumerThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
-            InitializeCheckLostOrdersTimer();
+            //InitializeCheckLostOrdersTimer();
             InitializeSpecialOrderUpdateThread();
         }
 
@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TerminateOrderUpdateThread();
             TerminateNotificationsThreads();
             TerminatePushMessageConsumerThread();
-            TerminateCheckLostOrdersTimer();
+            //TerminateCheckLostOrdersTimer();
             TerminateSpecialOrderUpdateThread();
 
             _log.WriteInformationLog( "Service stopped" );
