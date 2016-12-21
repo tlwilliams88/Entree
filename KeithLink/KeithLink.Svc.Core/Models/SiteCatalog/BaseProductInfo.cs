@@ -231,5 +231,17 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "specialtyitemcost")]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public decimal SpecialtyItemCost { get; set; }
+
+        [DataMember(Name ="marketing_name")]
+        public string MarketingName { get; set; }
+
+        [DataMember(Name ="marketing_description")]
+        public string MarketingDescription { get; set; }
+
+        [DataMember(Name = "marketing_brand")]
+        public string MarketingBrand { get; set; }
+
+        [DataMember(Name ="marketing_manufacturer")]
+        public string MarketingManufacturer { get; set; }
     }
 }

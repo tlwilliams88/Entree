@@ -182,8 +182,13 @@ namespace KeithLink.Svc.InternalSvc
             return true;
         }
 
+        public bool ProcessUNFICatalogData() {
+            Task.Factory.StartNew(() => categoryLogic.ImportUNFICatalog()).ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
-		public bool ProcessUNFIElasticSearchData()
+            return true;
+        }
+
+        public bool ProcessUNFIElasticSearchData()
 		{
 			Task.Factory.StartNew(() => _esItemImportLogic.ImportUNFIItems()).ContinueWith((t) =>
 			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
@@ -192,17 +197,6 @@ namespace KeithLink.Svc.InternalSvc
 			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 			return true;
 		}
-
         #endregion
-
-
-
-		public bool ProcessUNFICatalogData()
-		{
-			Task.Factory.StartNew(() => categoryLogic.ImportUNFICatalog()).ContinueWith((t) =>
-			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-
-			return true;
-		}
 	}
 }
