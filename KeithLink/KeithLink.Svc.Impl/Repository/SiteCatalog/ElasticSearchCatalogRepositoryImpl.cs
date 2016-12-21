@@ -853,6 +853,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.SellSheet = oProd._source.sellsheet;
             p.ChildNutrition = oProd._source.childnutrition;
             p.NonStock = oProd._source.nonstock;
+            p.MarketingBrand = oProd._source.marketingbrand;
+            p.MarketingDescription = oProd._source.marketingdescription;
+            p.MarketingManufacturer = oProd._source.marketingmanufacturer;
+            p.MarketingName = oProd._source.marketingname;
             if (oProd._source.nutritional != null)
             {
                 Nutritional nutritional = new Nutritional();

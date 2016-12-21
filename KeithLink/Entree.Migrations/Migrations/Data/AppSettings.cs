@@ -20,7 +20,7 @@ namespace Entree.Migrations.Data {
             _specificConfigurationsToRun.Add("CORPMISDEV2A", @"SQL\Configs\matt.local.configuration.sql");
 
             // Jeremy
-            _specificConfigurationsToRun.Add("CORPMISDEV2B", @"SQL\Configs\Configuration.Boostrap.local.sql");
+            _specificConfigurationsToRun.Add("CORPMISDEV2A", @"SQL\Configs\jeremy.local.configuration.sql");
 
             // Brett
             _specificConfigurationsToRun.Add("CORPMISDEV2H", @"SQL\Configs\bakillins.local.configuration.sql");

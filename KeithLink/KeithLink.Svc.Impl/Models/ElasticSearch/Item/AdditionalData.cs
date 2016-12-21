@@ -229,8 +229,19 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty( "stockedinbranches" )]
         public string StockedInBranches { get; set; }
 
+        // PDM specific properties
+        [JsonProperty("marketing_brand")]
+        public string MarketingBrand { get; set; }
+        [JsonProperty("marketing_description")]
+        public string MarketingDescription { get; set; }
+        [JsonProperty("marketing_manufacturer")]
+        public string MarketingManufacturer { get; set; }
+        [JsonProperty("marketing_name")]
+        public string MarketingName { get; set; }
+        [JsonProperty("marketing_name_not_analyzed")]
+        public string MarketingNameNotAnalyzed { get; set; }
+        [JsonProperty("marketing_name_ngram_analyzed")]
+        public string MarketingNameNgramAnalyzed { get; set; }
+
     }
-
-	
-
 }

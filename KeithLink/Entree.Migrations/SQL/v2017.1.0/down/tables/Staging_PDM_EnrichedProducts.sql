@@ -1,0 +1,1 @@
+﻿DROP TABLE [ETL].[Staging_PDM_EnrichedProducts];

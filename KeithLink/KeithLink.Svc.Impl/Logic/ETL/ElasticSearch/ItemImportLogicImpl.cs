@@ -321,7 +321,29 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                                 }
                             }
                         },
+                        marketingdescription = new {
+                            type = "string",
+                            fields = new {
+                                english = new {
+                                    type = "string",
+                                    analyzer = "english"
+                                }
+                            }
+                        },
                         name = new {
+                            type = "string",
+                            fields = new {
+                                english = new {
+                                    type = "string",
+                                    analyzer = "english"
+                                },
+                                ngram = new {
+                                    type = "string",
+                                    analyzer = "ngram_analyzer"
+                                }
+                            }
+                        },
+                        marketingname = new {
                             type = "string",
                             fields = new {
                                 english = new {
@@ -376,7 +398,10 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         },
                         name_not_analyzed = new { type = "string", index = "not_analyzed" },
                         name_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
+                        marketingname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        marketingname_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
                         mfrname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        marketingmanufacturer_not_analyzed = new { type = "string", index = "not_analyzed" },
                         preferreditemcode = new { type = "string", index = "not_analyzed" },
                         status1_not_analyzed = new { type = "string", index = "not_analyzed" },
                         nutritional = new {
@@ -497,6 +522,12 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.ItemClass = row.GetString("Class");
             data.ItemType = row.GetString("ItemType");
             data.Kosher = row.GetString("Kosher");
+            //data.MarketingBrand = row.GetString("MarketingBrand");
+            //data.MarketingDescription = row.GetString("MarketingDescription");
+            //data.MarketingManufacturer = row.GetString("MarketingManufacturer");
+            //data.MarketingName = row.GetString("MarketingName");
+            //data.MarketingNameNgramAnalyzed = row.GetString("MarketingName");
+            //data.MarketingNameNotAnalyzed = row.GetString("MarketingName");
             data.MfrName = row.GetString("MfrName");
             data.MfrNameNotAnalyzed = row.GetString("MfrName");
             data.MfrNumber = row.GetString("MfrNumber");
@@ -526,8 +557,6 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			data.NonStock = row.GetString("NonStock");
             data.TempZone = row.GetString("TempZone");
             data.CatchWeight = row.GetString("HowPrice") == "3";
-            // TODO: Find out why this is commented out
-			//data.IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId"));
             data.IsProprietary = row.GetString("ItemType").Equals("P") ? true : false;
 			data.ProprietaryCustomers = BuildProprietaryCustomerList(row.GetString("ItemId"), proprietaryItems);
             data.AverageWeight = (row.GetDouble("FPNetWt") > 0 ? row.GetDouble("FPNetWt") / 100 : (row.GetDouble("GrossWt") > 0 ? row.GetDouble("GrossWt") / 100 : 0));
