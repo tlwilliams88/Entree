@@ -238,7 +238,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name ="marketing_description")]
         public string MarketingDescription { get; set; }
 
-        [DataMember(Name = "markeitng_brand")]
+        [DataMember(Name = "marketing_brand")]
         public string MarketingBrand { get; set; }
 
         [DataMember(Name ="marketing_manufacturer")]
