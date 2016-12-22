@@ -93,7 +93,7 @@ namespace KeithLink.Common.Impl
 
         public static string SmtpServerAddress
         {
-            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_SERVERNAME, string.Empty); }
+            get { return GetValue(KEY_SMTP_SERVERNAME, string.Empty); }
         }
         #endregion
     }
