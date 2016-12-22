@@ -33,24 +33,19 @@ angular.module('bekApp')
           element.find('div.btn-group-vertical').removeAttr('style');
         }
 
-        if ($scope.isOrderEntryCustomer) {
-
           ListService.getListHeaders().then(function(lists) {
             $scope.lists = lists;
           });
 
-          if ($scope.canCreateOrders) {
-            CartService.getShipDates(); // needed if user creates a cart using the context menu
-            
-            CartService.getCartHeaders().then(function(carts) {
-              $scope.carts = carts;
-            });
+          CartService.getShipDates(); // needed if user creates a cart using the context menu
+          
+          CartService.getCartHeaders().then(function(carts) {
+            $scope.carts = carts;
+          });
 
-            OrderService.getChangeOrders().then(function(orders) {
-              $scope.changeOrders = orders;
-            });
-          }
-        }
+          OrderService.getChangeOrders().then(function(orders) {
+            $scope.changeOrders = orders;
+          });
 
       };
 

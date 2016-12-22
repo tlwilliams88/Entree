@@ -34,8 +34,19 @@ angular.module('bekApp')
   OrderService.getChangeOrders().then(function(resp){
     $scope.changeOrders = resp;
   });
- 
 
+  $scope.$on('CartCreatedFromContextMenu', function() {
+    CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.carts = cartHeaders;
+    });
+  });
+
+  $scope.$on('ListCreatedFromContextMenu', function() {
+    ListService.getListHeaders().then(function(lists) {
+      $scope.lists = lists;
+    });
+  });
+ 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
   $scope.messageText = 'Hello world!';

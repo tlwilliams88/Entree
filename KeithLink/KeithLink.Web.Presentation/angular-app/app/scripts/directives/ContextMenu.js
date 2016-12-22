@@ -78,6 +78,7 @@ angular.module('bekApp')
           ListService.createList(item),
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
+          $rootScope.$broadcast('ListCreatedFromContextMenu');
           closeModal();
         });
       };
