@@ -95,6 +95,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 var gsData = _stagingRepository.ReadGSDataForItems();
 
+                var pdmDict = BuildPDMDictionary();
                 var itemNutritions = BuildNutritionDictionary(gsData);
                 var itemDiet = BuildDietDictionary(gsData);
                 var itemAllergens = BuildAllergenDictionary(gsData);
@@ -102,7 +103,14 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens, proprietaryItems));
+                    PdmEnrichedItem pdmItem = null;
+
+                    if(pdmDict.ContainsKey(row.GetString("ItemId"))) {
+                        pdmItem = pdmDict[row.GetString("ItemId")];
+                    }
+
+                    products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, 
+                                                           itemAllergens, proprietaryItems, pdmItem));
                 };
 
                 int totalProcessed = 0;
@@ -260,6 +268,25 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             }
 
             return itemNutritions;
+        }
+
+        private Dictionary<string, PdmEnrichedItem> BuildPDMDictionary() {
+            DataTable items = _stagingRepository.ReadPDMDataForItems();
+
+            return items.AsEnumerable()
+                        .Select(i => new PdmEnrichedItem {
+                            Brand          = i.Field<string>("brand"),
+                            CreatedBy      = i.Field<string>("CreatedBy"),
+                            CreatedUTC     = i.Field<DateTime>("CreatedUTC"),
+                            Desription     = i.Field<string>("Description"),
+                            ItemNumber     = i.Field<string>("ItemNumber"),
+                            Manufacturer   = i.Field<string>("Manufacturer"),
+                            ModifiedUTC    = i.Field<DateTime>("ModifiedUTC"),
+                            Name           = i.Field<string>("Name"),
+                            Status         = i.Field<string>("Status"),
+                            UpdatedBy      = i.Field<string>("UpdatedBy")
+                        })
+                        .ToDictionary(i => i.ItemNumber);
         }
 
         /// <summary>
@@ -479,7 +506,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         /// <returns></returns>
         private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, 
                                                      Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, 
-                                                     Dictionary<string, List<string>> proprietaryItems) {
+                                                     Dictionary<string, List<string>> proprietaryItems, PdmEnrichedItem pdmData) {
             NutritionalInformation nutInfo = new NutritionalInformation();
             nutInfo.BrandOwner = row.GetString("BrandOwner");
             nutInfo.CountryOfOrigin = row.GetString("CountryOfOrigin");
@@ -522,12 +549,14 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.ItemClass = row.GetString("Class");
             data.ItemType = row.GetString("ItemType");
             data.Kosher = row.GetString("Kosher");
-            //data.MarketingBrand = row.GetString("MarketingBrand");
-            //data.MarketingDescription = row.GetString("MarketingDescription");
-            //data.MarketingManufacturer = row.GetString("MarketingManufacturer");
-            //data.MarketingName = row.GetString("MarketingName");
-            //data.MarketingNameNgramAnalyzed = row.GetString("MarketingName");
-            //data.MarketingNameNotAnalyzed = row.GetString("MarketingName");
+            if(pdmData != null) {
+                data.MarketingBrand = pdmData.Brand;
+                data.MarketingDescription = pdmData.Desription;
+                data.MarketingManufacturer = pdmData.Manufacturer;
+                data.MarketingName = pdmData.Name;
+                data.MarketingNameNgramAnalyzed = pdmData.Name;
+                data.MarketingNameNotAnalyzed = pdmData.Name;
+            }
             data.MfrName = row.GetString("MfrName");
             data.MfrNameNotAnalyzed = row.GetString("MfrName");
             data.MfrNumber = row.GetString("MfrNumber");

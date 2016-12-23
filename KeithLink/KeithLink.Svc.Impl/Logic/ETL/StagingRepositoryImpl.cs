@@ -333,6 +333,10 @@ namespace KeithLink.Svc.Impl.ETL
             return gsData;
         }
 
+        public DataTable ReadPDMDataForItems() {
+            return PopulateDataTable("[ETL].[ReadPDMData]");
+        }
+
         /// <summary>
         /// Read items
         /// </summary>

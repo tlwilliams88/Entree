@@ -19,7 +19,8 @@ namespace KeithLink.Svc.Core.Interface.ETL
 		DataTable ReadUnfiSubCategories();
         DataTable ReadFullItemForElasticSearch();
         DataSet ReadGSDataForItems();
-		DataTable ReadProprietaryItems();
+        DataTable ReadPDMDataForItems();
+        DataTable ReadProprietaryItems();
         DataTable ReadCustomers();
         DataTable ReadCSUsers();
         DataTable ReadContractItems(string customerNumber, string divisionName, string contractNumber);
