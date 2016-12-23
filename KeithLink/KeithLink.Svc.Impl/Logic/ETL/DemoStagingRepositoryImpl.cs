@@ -128,7 +128,11 @@ namespace KeithLink.Svc.Impl.ETL
 			return gsData;
 		}
 
-		public DataTable ReadProprietaryItems()
+        public DataTable ReadPDMDataForItems() {
+            return PopulateDataTable("[ETL].[ReadPDMData]");
+        }
+
+        public DataTable ReadProprietaryItems()
 		{
 			return PopulateDataTable("[ETL].[ReadProprietaryItems]");
 		}

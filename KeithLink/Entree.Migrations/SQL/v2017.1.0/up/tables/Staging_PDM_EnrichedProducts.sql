@@ -6,7 +6,7 @@
 	[Brand]			NVARCHAR(40),
 	[Manufacturer]	NVARCHAR(40),
 	[Name]			NVARCHAR(50),
-	[CreatedBy]		VARCHAR(256)	NOT NULL,
-	[UpdatedBy]		VARCHAR(256)	NOT NULL,
+	[CreatedBy]		VARCHAR(256),
+	[UpdatedBy]		VARCHAR(256),
 	[Description]	NVARCHAR(1000)
 )
