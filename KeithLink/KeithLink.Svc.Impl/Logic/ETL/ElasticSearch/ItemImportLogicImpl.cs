@@ -338,6 +338,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         categoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
                         parentcategoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
                         brand_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        marketingbrand_not_analyzed = new { type = "string", index = "not_analyzed" },
                         brand_description_not_analyzed = new { type = "string", index = "not_analyzed" },
                         description = new {
                             type = "string",
@@ -551,8 +552,10 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.Kosher = row.GetString("Kosher");
             if(pdmData != null) {
                 data.MarketingBrand = pdmData.Brand;
+                data.MarketingBrandNotAnalyzed = pdmData.Brand;
                 data.MarketingDescription = pdmData.Desription;
                 data.MarketingManufacturer = pdmData.Manufacturer;
+                data.MarketingManufacturerNotAnalyzed = pdmData.Manufacturer;
                 data.MarketingName = pdmData.Name;
                 data.MarketingNameNgramAnalyzed = pdmData.Name;
                 data.MarketingNameNotAnalyzed = pdmData.Name;

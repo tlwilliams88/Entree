@@ -232,10 +232,14 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         // PDM specific properties
         [JsonProperty("marketing_brand")]
         public string MarketingBrand { get; set; }
+        [JsonProperty("marketing_brand_not_analyzed")]
+        public string MarketingBrandNotAnalyzed { get; set; }
         [JsonProperty("marketing_description")]
         public string MarketingDescription { get; set; }
         [JsonProperty("marketing_manufacturer")]
         public string MarketingManufacturer { get; set; }
+        [JsonProperty("marketing_manufacturer_not_analyzed")]
+        public string MarketingManufacturerNotAnalyzed { get; set; }
         [JsonProperty("marketing_name")]
         public string MarketingName { get; set; }
         [JsonProperty("marketing_name_not_analyzed")]
