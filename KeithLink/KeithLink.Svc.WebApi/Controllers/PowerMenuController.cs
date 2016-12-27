@@ -65,9 +65,9 @@ namespace KeithLink.Svc.WebApi.Controllers
                 po = (VendorPurchaseOrderRequest)serializer.Deserialize(rdr);
             }
 
-            returnValue.Headers.Location = new Uri("http://shopqa.benekeith.com");
+            returnValue.Headers.Location = new Uri(KeithLink.Svc.Impl.Configuration.PresentationUrl);
 
-            returnValue.StatusCode = HttpStatusCode.OK;
+            returnValue.StatusCode = HttpStatusCode.Redirect;
             return returnValue;
         }
 
