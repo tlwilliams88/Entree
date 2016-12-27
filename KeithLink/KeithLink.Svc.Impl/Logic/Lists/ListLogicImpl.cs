@@ -1191,22 +1191,31 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                             long Id, 
                                             Core.Models.Paging.PagingModel paging)
         {
-            ListModel returnList = null;
+            ListModel returnList = GetListModel(user, catalogInfo, Id);
 
-            ListModel cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME, 
-                                                             CACHE_PREFIX, 
-                                                             CACHE_NAME, 
-                                                             string.Format("UserList_{0}", Id));
+            MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
+
+            PagedListModel pagedList = ToPagedList(paging, returnList);
+
+            LookupPrices(user, pagedList.Items.Results, catalogInfo);
+
+            return pagedList;
+        }
+
+        private ListModel GetListModel(UserProfile user,
+                                       UserSelectedContext catalogInfo,
+                                       long Id)
+        {
+            ListModel returnList = null;
+            ListModel cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME,
+                                                 CACHE_PREFIX,
+                                                 CACHE_NAME,
+                                                 string.Format("UserList_{0}", Id));
             if (cachedList != null)
             {
                 ListModel cachedReturnList = cachedList.ShallowCopy();
 
-                List sharedlist = _listRepo.Read(l => l.Id.Equals(Id)).FirstOrDefault();
-
-                cachedReturnList.IsSharing = sharedlist.Shares.Any() &&
-                                             sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
-                                             sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
-                cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+                RefreshSharingProps(catalogInfo, Id, cachedReturnList);
 
                 returnList = cachedReturnList.ShallowCopy();
             }
@@ -1219,29 +1228,42 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     return null;
                 ListModel tempList = list.ToListModel(catalogInfo);
 
-                LookupProductDetails(user, tempList, catalogInfo);
+                FillOutListModelItems(user, catalogInfo, tempList);
 
-                Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
-
-                if (contractdictionary.Count > 0)
-                {
-                    tempList.Items.ForEach
-                        (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
-                                               (contractdictionary, itm));
-                }
-
-                _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
+                _cache.AddItem<ListModel>(CACHE_GROUPNAME,
+                                          CACHE_PREFIX,
+                                          CACHE_NAME,
+                                          string.Format("UserList_{0}", Id),
+                                          TimeSpan.FromHours(2),
+                                          tempList);
 
                 returnList = tempList.ShallowCopy();
             }
+            return returnList;
+        }
 
-            MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
+        private void FillOutListModelItems(UserProfile user, UserSelectedContext catalogInfo, ListModel tempList)
+        {
+            LookupProductDetails(user, tempList, catalogInfo);
 
-            PagedListModel pagedList = ToPagedList(paging, returnList);
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
-            LookupPrices(user, pagedList.Items.Results, catalogInfo);
+            if (contractdictionary.Count > 0)
+            {
+                tempList.Items.ForEach
+                    (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
+                                           (contractdictionary, itm));
+            }
+        }
 
-            return pagedList;
+        private void RefreshSharingProps(UserSelectedContext catalogInfo, long Id, ListModel cachedReturnList)
+        {
+            List sharedlist = _listRepo.Read(l => l.Id.Equals(Id)).FirstOrDefault();
+
+            cachedReturnList.IsSharing = sharedlist.Shares.Any() &&
+                                         sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
+                                         sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
+            cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
         }
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
