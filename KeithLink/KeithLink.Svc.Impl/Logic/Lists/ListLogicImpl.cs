@@ -1256,14 +1256,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
         }
 
-        private void RefreshSharingProps(UserSelectedContext catalogInfo, long Id, ListModel cachedReturnList)
+        private void RefreshSharingProps(UserSelectedContext catalogInfo, long Id, ListModel list)
         {
             List sharedlist = _listRepo.Read(l => l.Id.Equals(Id)).FirstOrDefault();
 
-            cachedReturnList.IsSharing = sharedlist.Shares.Any() &&
+            list.IsSharing = sharedlist.Shares.Any() &&
                                          sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
                                          sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
-            cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+            list.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
         }
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
