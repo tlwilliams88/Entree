@@ -1186,53 +1186,58 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         //    }
         //}
 
-        public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
+        public PagedListModel ReadPagedList(UserProfile user, 
+                                            UserSelectedContext catalogInfo, 
+                                            long Id, 
+                                            Core.Models.Paging.PagingModel paging)
         {
-            var cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
+            ListModel returnList = null;
+
+            ListModel cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME, 
+                                                             CACHE_PREFIX, 
+                                                             CACHE_NAME, 
+                                                             string.Format("UserList_{0}", Id));
             if (cachedList != null)
             {
-                var cachedReturnList = cachedList.ShallowCopy();
+                ListModel cachedReturnList = cachedList.ShallowCopy();
 
-                MarkFavoritesAndAddNotes(user, cachedReturnList, catalogInfo);
-
-                var sharedlist = _listRepo.Read(l => l.Id.Equals(Id)).FirstOrDefault();
+                List sharedlist = _listRepo.Read(l => l.Id.Equals(Id)).FirstOrDefault();
 
                 cachedReturnList.IsSharing = sharedlist.Shares.Any() &&
                                              sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
                                              sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
                 cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
-                var cachedPagedList = ToPagedList(paging, cachedReturnList);
-
-                LookupPrices(user, cachedPagedList.Items.Results, catalogInfo);
-
-                return cachedPagedList;
+                returnList = cachedReturnList.ShallowCopy();
             }
-
-            var list = _listRepo.Read(l => l.Id.Equals(Id), l => l.Items)
-                                .FirstOrDefault(); // Not returned catalog ID here
-
-
-            if (list == null)
-                return null;
-            var tempList = list.ToListModel(catalogInfo);
-
-            LookupProductDetails(user, tempList, catalogInfo);
-
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
-
-            foreach (var itm in tempList.Items)
+            else
             {
-                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+                List list = _listRepo.Read(l => l.Id.Equals(Id), l => l.Items)
+                                    .FirstOrDefault(); // Not returned catalog ID here
+
+                if (list == null)
+                    return null;
+                ListModel tempList = list.ToListModel(catalogInfo);
+
+                LookupProductDetails(user, tempList, catalogInfo);
+
+                Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+
+                if (contractdictionary.Count > 0)
+                {
+                    tempList.Items.ForEach
+                        (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
+                                               (contractdictionary, itm));
+                }
+
+                _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
+
+                returnList = tempList.ShallowCopy();
             }
-
-            _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
-
-            var returnList = tempList.ShallowCopy();
 
             MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
 
-            var pagedList = ToPagedList(paging, returnList);
+            PagedListModel pagedList = ToPagedList(paging, returnList);
 
             LookupPrices(user, pagedList.Items.Results, catalogInfo);
 
