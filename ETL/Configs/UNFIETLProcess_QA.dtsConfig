@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<DTSConfiguration>
+	<DTSConfigurationHeading>
+		<DTSConfigurationFileInfo GeneratedBy="WIN2012BEK\Administrator" GeneratedFromPackageName="UNFIETLProcess_QA" GeneratedFromPackageID="{E5041196-C8C8-44AC-B692-EAC5E6694D2F}" GeneratedDate="10/8/2015 9:39:27 AM"/>
+	</DTSConfigurationHeading>
+  <!-- Interface File Path (used to build archive path) -->
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::ETLProcess_UnfiDir].Properties[Value]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\ECOM\UNFI\Inbound\</ConfiguredValue>
+  </Configuration>
+
+  <!-- BEK VendorId -->
+  <Configuration ConfiguredType="Property" Path="\Package.Variables[User::ItemLookupVendorId].Properties[Value]" ValueType="String">
+    <ConfiguredValue>038956</ConfiguredValue>
+  </Configuration>
+
+  <!-- Interface File -->
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_UNFI].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\ECOM\UNFI\Inbound\bek_prods.txt</ConfiguredValue>
+  </Configuration>
+
+  <!-- Web Service -->
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLService].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>http://corpkecqas1:9876/ETLService.svc?wsdl</ConfiguredValue>
+  </Configuration>
+
+  <!-- Database Connections -->
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>Data Source=corpkecqdb1.bekco.com;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>
+  </Configuration>
+
+</DTSConfiguration>
