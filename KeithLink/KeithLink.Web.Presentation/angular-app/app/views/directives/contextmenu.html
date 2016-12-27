@@ -17,7 +17,7 @@
       </button>
       <ul class="dropdown-menu context-menu-dropdown" role="menu">
         <div class="btn-group-vertical" style="margin-top: 150px;">
-          <button type="button" class="btn btn-default" ng-repeat="cart in ::carts | orderBy: ['name']" ng-click="addItemToCart(cart.name, cart.id, item)">{{::cart.name}}</button>
+          <button type="button" class="btn btn-default" ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.name, cart.id, item)">{{cart.name}}</button>
           <button type="button" class="btn btn-default" analytics-on analytics-category="Orders" analytics-event="Create Order" analytics-label="From Context Menu" ng-click="createCartWithItem(item)">New Cart...</button>
         </div>
       </ul>
@@ -30,7 +30,7 @@
       </button>
       <ul class="dropdown-menu context-menu-dropdown reposition-dropdown" role="menu">
         <div class="btn-group-vertical" style="margin-top: 150px;">
-          <button ng-repeat="list in ::lists | sortLists" ng-if="::list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.name, list.listid, item, selectedList)">{{::list.name}}</button>
+          <button ng-repeat="list in lists | sortLists" ng-if="::list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.name, list.listid, item, selectedList)">{{list.name}}</button>
           <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>
@@ -43,7 +43,7 @@
       </button>
       <ul class="dropdown-menu context-menu-dropdown reposition-dropdown" role="menu">
         <div class="btn-group-vertical" style="margin-top: 150px;">
-          <button ng-repeat="order in ::changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{::order.invoicenumber}}</button>
+          <button ng-repeat="order in changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{order.invoicenumber}}</button>
         </div>
       </ul>
     </div>
