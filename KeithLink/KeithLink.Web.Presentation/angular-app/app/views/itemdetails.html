@@ -20,12 +20,16 @@
       <div class="item-details__main-info pull-left">
         <h3 class="item-name">
           <span favorite-item-click-handlers favorite-icons></span>
-          {{::item.name}}
+          <span ng-if="!item.marketing_name">{{::item.name}}</span>
+          <span ng-if="item.marketing_name">{{::item.marketing_name}}</span>
           <span class="item-details__icons" item-icons="item"></span>
         </h3>
         <div>
-          <div ng-if="item.description" class="main-info__description">
+          <div ng-if="item.description && !item.marketing_description" class="main-info__description">
             <strong>Description:</strong> {{::item.description}}
+          </div>
+          <div ng-if="item.marketing_description" class="main-info__description">
+            <strong>Description:</strong> {{::item.marketing_description}}
           </div>
           <div>
             <span><strong>Item #</strong> {{item.itemnumber}} | </span>
@@ -38,7 +42,7 @@
             <span ng-if="item.packsize !== null"><strong>Pack/Size:</strong> {{::item.packsize}}</span>
           </div>
           <div>
-            <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> {{::item.brand_extended_description}}</span>
+            <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> <span ng-if="!item.marketing_brand">{{::item.brand_extended_description}}</span><span ng-if="item.marketing_brand">{{::item.marketing_brand}}</span></span>
           </div>
           <div>
             <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{::item.upc}}</span>
@@ -127,7 +131,7 @@
                 </tr> -->
                 <tr class="even">
                   <td>Manufacturer</td>
-                  <td>{{item.manufacturer_name}}</td>
+                  <td><span ng-if="!item.marketing_manufacturer">{{item.manufacturer_name}}</span><span ng-if="item.marketing_manufacturer">{{item.marketing_manufacturer}}</span></td>
                 </tr>
                 <tr class="odd">
                   <td>Manufacturer Brand</td>
