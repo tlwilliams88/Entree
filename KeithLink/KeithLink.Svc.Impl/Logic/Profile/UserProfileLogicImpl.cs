@@ -1001,7 +1001,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                         }
                     }
                 }
-            } catch (Exception ex) {
+            } catch {
                 _eventLog.WriteErrorLog( string.Format( "Error retrieving internal users for {0} - {1}", customerNumber, branchId ) );
             }
 

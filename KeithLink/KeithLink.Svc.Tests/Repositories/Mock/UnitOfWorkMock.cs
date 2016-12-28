@@ -167,9 +167,9 @@ namespace KeithLink.Svc.Test.Mock
 									.And(x => x.Type = Core.Enumerations.List.ListType.Custom)
 								.TheFirst(1)
 									.With(x => x.Id = 1)
-								.WhereRandom(1)
+								.Random(1)
 									.With(x => x.Type = Core.Enumerations.List.ListType.Notes)
-								.WhereRandom(1)
+								.Random(1)
 									.With(x => x.Type = Core.Enumerations.List.ListType.Favorite)
 								.Build()
 								.AsQueryable();
@@ -185,14 +185,14 @@ namespace KeithLink.Svc.Test.Mock
 					items = Builder<ListItem>.CreateListOfSize(5)
 					.All()
 					.Do(x => x.ItemNumber = PossibleItems[(int)x.Id])
-					.Have(l => l.ParentList = list)
+					.With(l => l.ParentList = list)
 					.Build();
 				}
 				else
 					items = Builder<ListItem>.CreateListOfSize(15)
 					   .All()
 					   .Do(x => x.ItemNumber = Pick<string>.RandomItemFrom(PossibleItems))
-					   .Have(l => l.ParentList = list)
+					   .With(l => l.ParentList = list)
 					   .Build();
 
 				foreach (var item in items)

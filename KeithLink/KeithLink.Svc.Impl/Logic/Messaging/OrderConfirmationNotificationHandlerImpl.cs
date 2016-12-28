@@ -48,7 +48,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private readonly IMessageTemplateLogic _messageTemplateLogic;
         IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
-        private readonly IDsrLogic dsrLogic;
         private IOrderLogic _orderLogic;
         #endregion
 
