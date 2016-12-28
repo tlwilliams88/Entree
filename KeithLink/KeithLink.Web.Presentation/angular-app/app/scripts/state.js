@@ -34,10 +34,10 @@ angular.module('bekApp')
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
       resolve: {
-        branches: ['BranchService', function(BranchService) {
+        branches: ['BranchService', 'localStorageService', function(BranchService, localStorageService) {
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
-          return BranchService.getBranches();
+          return localStorageService.get('branches');
         }],
         userProfile: ['SessionService', function(SessionService) {
           return SessionService.userProfile;
@@ -72,8 +72,8 @@ angular.module('bekApp')
         authorize: 'isLoggedIn'
       },
       resolve: {
-        branches: ['BranchService', function(BranchService) {
-          return BranchService.getBranches();
+        branches: ['BranchService', 'localStorageService', function(BranchService, localStorageService) {
+          return localStorageService.get('branches');
         }]
       }
     })        
