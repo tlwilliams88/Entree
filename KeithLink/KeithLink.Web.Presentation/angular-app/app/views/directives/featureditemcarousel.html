@@ -2,7 +2,7 @@
 <div ng-if="!isCatalog" class="featured-item-mobile hidden-lg">
   <span class="carousel-index">{{carouselIndex + 1}} / {{itemList.length}}</span>
   <ul rn-carousel rn-carousel-buffered rn-carousel-auto-slide="8" rn-carousel-easing rn-carousel-duration="900" rn-carousel-index="carouselIndex" class="featured-item-carousel">
-    <li ng-repeat="item in itemList">
+    <li ng-repeat="item in itemList | orderBy:'-'">
       <div ng-include="template"></div>
     </li>
     <div class="rn-carousel-controls">
@@ -38,7 +38,7 @@
 <div ng-if="!isCatalog" class="visible-lg">
   <span class="carousel-index">{{carouselIndex + 1}} / {{itemList.length}}</span>
   <ul rn-carousel rn-carousel-controls-allow-loop rn-carousel-auto-slide="8" rn-carousel-easing rn-carousel-duration="900" rn-carousel-index="carouselIndex" style="background:transparent" class="featured-item-carousel-web">
-    <li ng-repeat="item in itemList">
+    <li ng-repeat="item in itemList | orderBy:'-'">
       <div ng-include="template"></div>
     </li>
     <div class="rn-carousel-controls">
