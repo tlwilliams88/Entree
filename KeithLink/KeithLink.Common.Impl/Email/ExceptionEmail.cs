@@ -5,15 +5,22 @@ using System.Text;
 namespace KeithLink.Common.Impl.Email {
     public static class ExceptionEmail {
         #region attributes
-        private const string EMAIL_FAILURE_SUBJECT = "Exception encountered in KeithLink Order Service";
+        private const string EMAIL_FAILURE_SUBJECT = "Exception encountered in ";
         private static DateTime delayFilterRabbitMQ;
         #endregion
 
-        public static void Send(Exception currentExcpetion, string additionalMessage = null, string subject = null, Attachment attach = null) {
+        public static void Send(Exception currentExcpetion, 
+                                string additionalMessage = null, 
+                                string subject = null, 
+                                Attachment attach = null) {
             using (MailMessage msg = new MailMessage()) {
                 msg.To.Add(Configuration.FailureEmailAddress);
                 msg.From = new MailAddress(Configuration.FromEmailAddress);
-				msg.Subject = string.Format("{0} Exception: {1}", ConfigurationHelper.GetActiveConfiguration(), string.IsNullOrEmpty(subject) ? EMAIL_FAILURE_SUBJECT : subject);
+				msg.Subject = string.Format("{0} Exception: {1}", 
+                                            ConfigurationHelper.GetActiveConfiguration(), 
+                                            string.IsNullOrEmpty(subject) ? 
+                                                EMAIL_FAILURE_SUBJECT + Configuration.ApplicationName : 
+                                                subject);
                 msg.Priority = MailPriority.High;
 
 				if (attach != null)
