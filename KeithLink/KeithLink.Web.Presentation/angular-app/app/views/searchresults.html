@@ -403,29 +403,32 @@
                 <div class="pull-left-xs inline-block-display">
                   <div>
                     <div>
-                    <div class="block-display">
-                      <a style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
-                      <span ng-if="isOrderEntryCustomer" class="large-icon" favorite-icons></span>
+                      <div class="block-display">
+                        <a style="margin-top:5px; margin-bottom:0;" ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+                        <span ng-if="isOrderEntryCustomer" class="large-icon" favorite-icons></span>
+                      </div>
+                      <h5 class="block-display"> 
+                        <span ng-if="item.brand_extended_description && !item.marketing_brand"><a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })"><a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+                          {{item.brand_extended_description}}</a>
+                        </span>
+                        <span ng-if="!item.brand_extended_description && !item.marketing_brand">{{item.brand}}</span>
+                        <span ng-if="item.marketing_brand">{{item.marketing_brand}}</span>
+                      </h5>
+                      <h3 class="block-display">
+                        <a ng-click="goToItemDetails(item)" ng-if="!item.marketing_name">{{item.name}} </a>
+                        <a ng-click="goToItemDetails(item)" ng-if="item.marketing_name">{{item.marketing_name}} </a>
+                        <span class="nowrap small-icon" item-icons></span>
+                      </h3>
                     </div>
-                    <h3 class="block-display">
-                      <a ng-click="goToItemDetails(item)">{{item.name}} </a>
-                      <span class="nowrap small-icon" item-icons></span>
-                    </h3>
-                    <h5 class="block-display"> 
-                    <span ng-if="item.brand_extended_description"> by <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })"><a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
-                      {{item.brand_extended_description}}</a>
-                    </span>
-                    <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
+                    <h5>
+                      Manufacturer: <span ng-if="!item.marketing_manufacturer">{{item.manufacturer_name}}</span><span ng-if="item.marketing_manufacturer">{{item.marketing_manufacturer}}</span>
                     </h5>
-                    </div>
+                    <h5>
+                      {{item.packsize}}
+                    </h5>
                     <h6>
-                      Manufacturer: {{item.manufacturer_name}}
-                    </h6>
-                    <h6>
-                      {{item.description}}
-                    </h6>
-                    <h6>
-                      Pack/Size: {{item.packsize}}
+                      <span ng-if="item.description && !item.marketing_description">{{item.description}}</span>
+                      <span ng-if="item.marketing_description">{{item.marketing_description}}</span>
                     </h6>
                     <h6 class="input-col" ng-if="canSeePrices">
                       <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
@@ -433,12 +436,12 @@
                         <label for="each"></label>
                       </ng-form>
                     </h6>
+                    <h5 ng-if="canSeePrices">
+                      <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}} <span ng-if="item.caseonly">/ case</span></span>
+                      <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                    </h5>
                     <h6 ng-if="canSeePrices">
                       <span ng-if="hasPrice(item.unitprice)">Portion Cost: {{item.unitprice | currency}}</span>
-                    </h6>
-                    <h6 ng-if="canSeePrices">
-                      <span ng-if="hasCasePrice(item)">Price: {{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
-                      <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                     </h6>
                     <span>
                       <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" class="hidden-print">
