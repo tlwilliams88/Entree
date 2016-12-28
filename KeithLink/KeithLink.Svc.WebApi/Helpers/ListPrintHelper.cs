@@ -33,6 +33,7 @@ namespace KeithLink.Svc.WebApi.Helpers
         /// <param name="userProfile"></param>
         /// <param name="_listLogic"></param>
         /// <param name="_profileLogic"></param>
+        /// <param name="_elRepo"></param>
         /// <returns></returns>
         public static Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext,
             UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic, IEventLogRepository _elRepo)

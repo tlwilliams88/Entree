@@ -25,8 +25,6 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #region attributes
         private const string Language = "en-US";
-        // ItemSpec_NonStock is not being used, remove it?
-		private readonly string ItemSpec_NonStock = "NonStock";
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
 		private readonly string ItemSpec_CNDoc = "CNDoc";

@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.Reports
                     .ToList();
 
 			    return query.Select(o => o.ToOrderLine("o")).ToList();
-            } catch (Exception ex) {
+            } catch {
                 throw;
             }
 		}
