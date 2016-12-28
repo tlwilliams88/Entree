@@ -311,7 +311,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<Division>> ret = new OperationReturnModel<List<Division>>();
             try
             {
-                ret.SuccessResponse = _catalogLogic.GetDivisions();
+                // for some reason the unfi catalogs are present in the divisions, to suppress them in this list 
+                // we squelch the ones with no matching branchsupport
+                ret.SuccessResponse = _catalogLogic.GetDivisions().Where(d => d.BranchSupport != null).ToList();
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
