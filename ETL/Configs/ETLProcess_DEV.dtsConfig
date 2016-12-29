@@ -5,6 +5,29 @@
     <DTSConfigurationFileInfo GeneratedBy="BEKCO\mdjoiner" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="8/4/2014 11:09:35 AM"/>
   </DTSConfigurationHeading>
 
+  <!-- 
+      # Using this config
+      
+      ## File names
+        
+        Local Development : ETLProcess_DEV.dtsConfig
+        Dev Server        : ETLProcess_DEV.dtsConfig
+        QA Server         : ETLProcess_QA.dtsConfig
+        Beta Server       : ETLProcess_BETA.dtsConfig
+        Production Server : ETLProcess_RELEASE.dtsConfig
+      
+      ## Local testing
+      
+        Files Locations:
+          
+            Local         : \\bekkecoct1\sys-scr-inetoe$\ftpdata\test\entree\
+            Dev           : \\bekkecocp1\sys-scr\inetoe$\ftpdata\prod\entree\
+            QA            : \\bekkecocp1\sys-scr\inetoe$\ftpdata\prod\entree\
+            Beta          : \\bekkecocp1\sys-scr\inetoe$\ftpdata\prod\entree\
+            Production    : \\bekkecocp1\sys-scr\inetoe$\ftpdata\prod\entree\
+  
+  -->
+
   <!-- Processing Folder -->
   <Configuration ConfiguredType="Property" Path="\Package.Variables[User::ETLProcess_KeithComDir].Properties[Value]" ValueType="String">
     <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\</ConfiguredValue>

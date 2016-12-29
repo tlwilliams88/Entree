@@ -13,49 +13,49 @@
   <DeploymentModelSpecificContent>
     <Manifest>
       <DTSPackages>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="-1">
+          <Name>Corpmisdev2A.dtsx</Name>
+          <FullPath>Corpmisdev2A.dtsx</FullPath>
+          <References />
+        </DtsPackage>
+        <DtsPackage FormatVersion="8">
           <Name>ETLProcess_BETA.dtsx</Name>
           <FullPath>ETLProcess_BETA.dtsx</FullPath>
           <References />
         </DtsPackage>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="8">
           <Name>ETLProcess_DEV.dtsx</Name>
           <FullPath>ETLProcess_DEV.dtsx</FullPath>
           <References />
         </DtsPackage>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="8">
           <Name>ETLProcess_QA.dtsx</Name>
           <FullPath>ETLProcess_QA.dtsx</FullPath>
           <References />
         </DtsPackage>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="8">
           <Name>ETLProcess_RELEASE.dtsx</Name>
           <FullPath>ETLProcess_RELEASE.dtsx</FullPath>
           <References />
         </DtsPackage>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="8">
           <Name>UNFIETLProcess_BETA.dtsx</Name>
           <FullPath>UNFIETLProcess_BETA.dtsx</FullPath>
           <References />
         </DtsPackage>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="8">
           <Name>UNFIETLProcess_DEV.dtsx</Name>
           <FullPath>UNFIETLProcess_DEV.dtsx</FullPath>
           <References />
         </DtsPackage>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="8">
           <Name>UNFIETLProcess_QA.dtsx</Name>
           <FullPath>UNFIETLProcess_QA.dtsx</FullPath>
           <References />
         </DtsPackage>
-        <DtsPackage FormatVersion="6">
+        <DtsPackage FormatVersion="8">
           <Name>UNFIETLProcess_RELEASE.dtsx</Name>
           <FullPath>UNFIETLProcess_RELEASE.dtsx</FullPath>
-          <References />
-        </DtsPackage>
-        <DtsPackage FormatVersion="6">
-          <Name>Corpmisdev2A.dtsx</Name>
-          <FullPath>Corpmisdev2A.dtsx</FullPath>
           <References />
         </DtsPackage>
       </DTSPackages>
@@ -72,7 +72,7 @@
         <ConnectionProviderMappings />
         <ConnectionSecurityMappings />
         <DatabaseStorageLocations />
-        <TargetServerVersion>SQLServer2012</TargetServerVersion>
+        <TargetServerVersion>SQLServer2014</TargetServerVersion>
         <ParameterConfigurationValues />
       </Options>
     </Configuration>
