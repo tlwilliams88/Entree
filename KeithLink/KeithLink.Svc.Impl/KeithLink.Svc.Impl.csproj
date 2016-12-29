@@ -287,7 +287,7 @@
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\OrderSubmissionHelper.cs" />
     <Compile Include="Helpers\ProfileHelper.cs" />
-    <Compile Include="Helpers\StopWatchHelper.cs" />
+    <Compile Include="Helpers\EntreeStopWatchHelper.cs" />
     <Compile Include="Helpers\UserContextEqualityComparer.cs" />
     <Compile Include="Logic\ApplicationHealth\ApplicationHealthLogicImpl.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />

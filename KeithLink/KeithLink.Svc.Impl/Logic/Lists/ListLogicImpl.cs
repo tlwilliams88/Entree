@@ -1186,37 +1186,18 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                             long Id, 
                                             Core.Models.Paging.PagingModel paging)
         {
-#if DEBUG
-            bool gettiming = false;
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
-#endif
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             ListModel returnList = GetListModel(user, catalogInfo, Id);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "ReadPagedList - GetListModel");
-#endif
+            stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
             MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "ReadPagedList - MarkFavoritesAndAddNotes");
-#endif
+            stopWatch.Read(_log, "ReadPagedList - MarkFavoritesAndAddNotes");
 
             PagedListModel pagedList = ToPagedList(paging, returnList);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "ReadPagedList - ToPagedList");
-#endif
+            stopWatch.Read(_log, "ReadPagedList - ToPagedList");
 
             LookupPrices(user, pagedList.Items.Results, catalogInfo);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "ReadPagedList - LookupPrices");
-#endif
+            stopWatch.Read(_log, "ReadPagedList - LookupPrices");
 
             return pagedList;
         }
@@ -1225,63 +1206,38 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                        UserSelectedContext catalogInfo,
                                        long Id)
         {
-#if DEBUG
-            bool gettiming = false;
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
-#endif
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             ListModel returnList = null;
             ListModel cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME,
                                                  CACHE_PREFIX,
                                                  CACHE_NAME,
                                                  string.Format("UserList_{0}", Id));
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "GetListModel - GetItem");
-#endif
+            stopWatch.Read(_log, "GetListModel - GetItem");
+
             if (cachedList != null)
             {
                 ListModel cachedReturnList = cachedList.ShallowCopy();
+                stopWatch.Read(_log, "GetListModel - ShallowCopy");
 
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "GetListModel - ShallowCopy");
-#endif
                 RefreshSharingProps(catalogInfo, Id, cachedReturnList);
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "GetListModel - RefreshSharingProps");
-#endif
+                stopWatch.Read(_log, "GetListModel - RefreshSharingProps");
 
                 returnList = cachedReturnList.ShallowCopy();
+                stopWatch.Read(_log, "GetListModel - ShallowCopy");
             }
             else
             {
                 List list = _listRepo.Read(l => l.Id.Equals(Id), l => l.Items)
                                     .FirstOrDefault(); // Not returned catalog ID here
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "GetListModel - _listRepo.Read");
-#endif
+                stopWatch.Read(_log, "GetListModel - _listRepo.Read");
 
                 if (list == null)
                     return null;
                 ListModel tempList = list.ToListModel(catalogInfo);
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "GetListModel - ToListModel");
-#endif
+                stopWatch.Read(_log, "GetListModel - ToListModel");
 
                 FillOutListModelItems(user, catalogInfo, tempList);
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "GetListModel - FillOutListModelItems");
-#endif
+                stopWatch.Read(_log, "GetListModel - FillOutListModelItems");
 
                 _cache.AddItem<ListModel>(CACHE_GROUPNAME,
                                           CACHE_PREFIX,
@@ -1289,11 +1245,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                           string.Format("UserList_{0}", Id),
                                           TimeSpan.FromHours(2),
                                           tempList);
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "GetListModel - AddItem");
-#endif
+                stopWatch.Read(_log, "GetListModel - AddItem");
 
                 returnList = tempList.ShallowCopy();
             }
@@ -1302,34 +1254,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         private void FillOutListModelItems(UserProfile user, UserSelectedContext catalogInfo, ListModel tempList)
         {
-#if DEBUG
-            bool gettiming = false;
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
-#endif
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             LookupProductDetails(user, tempList, catalogInfo);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "FillOutListModelItems - LookupProductDetails");
-#endif
+            stopWatch.Read(_log, "FillOutListModelItems - LookupProductDetails");
 
             Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "FillOutListModelItems - GetContractInformation");
-#endif
+            stopWatch.Read(_log, "FillOutListModelItems - GetContractInformation");
 
             if (contractdictionary.Count > 0)
             {
                 tempList.Items.ForEach
                     (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
                                            (contractdictionary, itm));
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "FillOutListModelItems - AddContractInformationIfInContract");
-#endif
+                stopWatch.Read(_log, "FillOutListModelItems - AddContractInformationIfInContract");
             }
         }
 
