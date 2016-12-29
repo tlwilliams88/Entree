@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "Entree.ETL\KeithLink.ETL.dtproj", "{C59A7457-0EAF-4A10-9634-B26335AF49A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comparisons", "Comparisons", "{299BE63A-7788-4105-A84A-5057D36B8D78}"
