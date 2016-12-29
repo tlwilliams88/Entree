@@ -8,7 +8,7 @@
          </div>     
             <div style="text-align:center; margin-top:30px;" class="form-group">           
                 <label for="username">Email Address</label>                
-                <input  id="username" ng-trim focus-me required name="username" type="text" class="register-input form-control" ng-model="loginInfo.username">
+                <input  id="username" ng-trim focus-me required name="username" type="email" class="register-input form-control" ng-model="loginInfo.username">
                  <span ng-show="loginForm.username.$error.required && loginForm.username.$dirty" class="text-red">Email is required</span></br>               
                 <label for="password">Password</label>               
                 <input  id="password" required name="password" type="password" class="register-input form-control " ng-model="loginInfo.password">
@@ -57,13 +57,13 @@
             <label for="username">Email Address</label>
             <span ng-show="registrationForm.username.$error.required && registrationForm.username.$dirty" class="text-red">Email is required</span>
             <span ng-show="registrationForm.username.$error.internalEmailInvalid" class="text-red">You cannot register with an internal benekeith.com email address</span>
-            <input required ng-trim internal-email-invalid class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
+            <input required ng-trim internal-email-invalid class="form-control" type="email" id="username" name="username" ng-model="registerUser.email">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmUsername">Confirm Email</label>
             <span ng-show="registrationForm.confirmUsername.$error.matchInput && registrationForm.confirmUsername.$dirty" class="text-red">Emails do not match</span>
             <span ng-show="registrationForm.confirmUsername.$error.required && registrationForm.confirmUsername.$dirty" class="text-red">Email confirmation is required</span>
-            <input required ng-trim class="form-control" type="text" id="confirmUsername" name="confirmUsername" ng-model="registerUser.confirmEmail" match-input="registerUser.email">
+            <input required ng-trim class="form-control" type="email" id="confirmUsername" name="confirmUsername" ng-model="registerUser.confirmEmail" match-input="registerUser.email">
           </div>
         </div>
         <div class="row">
