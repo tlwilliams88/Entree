@@ -421,53 +421,26 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             FilterInfo statusFilter,
             out List<EFInvoice.InvoiceHeader> kpayInvoices)
         {
-#if DEBUG
-            bool gettiming = false;
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
-#endif
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             FilterInfo customerFilter = BuildCustomerFilter(customers);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "GetInvoicesForCustomer - BuildCustomerFilter");
-#endif
+            stopWatch.Read(_log, "GetInvoicesForCustomer - BuildCustomerFilter");
 
             kpayInvoices = _invoiceRepo.ReadFilteredHeaders(customerFilter, statusFilter);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "GetInvoicesForCustomer - ReadFilteredHeaders");
-#endif
+            stopWatch.Read(_log, "GetInvoicesForCustomer - ReadFilteredHeaders");
 
             PagedResults<InvoiceModel> pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First()))
                                                                    .AsQueryable<InvoiceModel>()
                                                                    .GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "GetInvoicesForCustomer - GetPagedResults");
-#endif
+            stopWatch.Read(_log, "GetInvoicesForCustomer - GetPagedResults");
 
             DecorateInvoiceModels(customers, pagedInvoices);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "GetInvoicesForCustomer - DecorateInvoiceModels");
-#endif
+            stopWatch.Read(_log, "GetInvoicesForCustomer - DecorateInvoiceModels");
 
             ApplyAfterMarketFiltersToPagedInvoicesAndCounts(paging, pagedInvoices);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "GetInvoicesForCustomer - ApplyAfterMarketFiltersToPagedInvoicesAndCounts");
-#endif
+            stopWatch.Read(_log, "GetInvoicesForCustomer - ApplyAfterMarketFiltersToPagedInvoicesAndCounts");
 
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count();
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "GetInvoicesForCustomer - Count Total Invoices");
-#endif
+            stopWatch.Read(_log, "GetInvoicesForCustomer - Count Total Invoices");
 
             return pagedInvoices;
         }
@@ -560,46 +533,27 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private void DecorateInvoiceModels(List<Core.Models.Profile.Customer> customers, PagedResults<InvoiceModel> pagedInvoices)
         {
-#if DEBUG
-            bool gettiming = false;
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
-#endif
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             foreach (var invoice in pagedInvoices.Results)
             {
                 InvoiceModel cachedInvoice = _cacheRepo.GetItem<InvoiceModel>
                   (CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, InvoiceModelCacheKey(invoice));
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "GetInvoicesForCustomer - GetCachedInvoice");
-#endif
+                stopWatch.Read(_log, "GetInvoicesForCustomer - GetCachedInvoice");
 
                 if (cachedInvoice == null)
                 {
                     DecorateNewInvoiceModel(customers, invoice);
-#if DEBUG
-                    if (gettiming)
-                        EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                        "GetInvoicesForCustomer - DecorateNewInvoiceModel");
-#endif
+                    stopWatch.Read(_log, "GetInvoicesForCustomer - DecorateNewInvoiceModel");
 
                     _cacheRepo.AddItem<InvoiceModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME,
                         InvoiceModelCacheKey(invoice), TimeSpan.FromMinutes(10),
                         invoice);
-#if DEBUG
-                    if (gettiming)
-                        EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                        "GetInvoicesForCustomer - Add To Cache");
-#endif
+                    stopWatch.Read(_log, "GetInvoicesForCustomer - Add To Cache");
                 }
                 else
                 {
                     RestoreCachedInvoiceModel(invoice, cachedInvoice);
-#if DEBUG
-                    if (gettiming)
-                        EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                        "GetInvoicesForCustomer - RestoreCachedInvoiceModel");
-#endif
+                    stopWatch.Read(_log, "GetInvoicesForCustomer - RestoreCachedInvoiceModel");
                 }
             }
         }
@@ -628,56 +582,29 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private void DecorateNewInvoiceModel(List<Core.Models.Profile.Customer> customers, InvoiceModel invoice)
         {
-#if DEBUG
-            bool gettiming = false;
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
-#endif
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             AddInvoiceLink(invoice);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "DecorateNewInvoiceModel - AddInvoiceLink");
-#endif
+            stopWatch.Read(_log, "DecorateNewInvoiceModel - AddInvoiceLink");
 
             MapCustomerInfoToInvoice(invoice);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "DecorateNewInvoiceModel - MapCustomerInfoToInvoice");
-#endif
+            stopWatch.Read(_log, "DecorateNewInvoiceModel - MapCustomerInfoToInvoice");
 
             if (invoice.Status == InvoiceStatus.Pending)
             {
                 GetPendingTransactionForInvoice(customers, invoice);
-#if DEBUG
-                if (gettiming)
-                    EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                    "DecorateNewInvoiceModel - GetPendingTransactionForInvoice");
-#endif
+                stopWatch.Read(_log, "DecorateNewInvoiceModel - GetPendingTransactionForInvoice");
             }
 
             GetInvoiceTransactions(invoice);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "DecorateNewInvoiceModel - GetInvoiceTransactions");
-#endif
+            stopWatch.Read(_log, "DecorateNewInvoiceModel - GetInvoiceTransactions");
 
             GetInvoicePONumber(invoice);
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "DecorateNewInvoiceModel - GetInvoicePONumber");
-#endif
+            stopWatch.Read(_log, "DecorateNewInvoiceModel - GetInvoicePONumber");
 
             // To help the UI, we pull in the bank accounts that can be used to pay an invoice here.
             invoice.Banks = GetAllBankAccounts
                 (new UserSelectedContext() { BranchId = invoice.BranchId, CustomerId = invoice.CustomerNumber });
-#if DEBUG
-            if (gettiming)
-                EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log,
-                "DecorateNewInvoiceModel - GetAllBankAccounts");
-#endif
+            stopWatch.Read(_log, "DecorateNewInvoiceModel - GetAllBankAccounts");
         }
 
         private void AddInvoiceLink(InvoiceModel invoice)

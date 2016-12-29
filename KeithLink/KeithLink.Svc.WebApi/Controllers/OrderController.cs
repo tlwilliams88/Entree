@@ -150,11 +150,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<PagedResults<Order>> retVal = new Models.OperationReturnModel<PagedResults<Order>>();
             try
             {
-                //System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch();
+                System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
                 var results = _orderLogic.GetPagedOrders(AuthenticatedUser.UserId, SelectedUserContext, paging);
-                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "PagedOrders POST - Total time to retrieve pagedOrders");
+                stopWatch.Read(_log, "PagedOrders POST - Total time to retrieve pagedOrders");
                 _orderLogic.UpdateOrdersForSecurity(AuthenticatedUser, results.Results);
-                //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "PagedOrders POST - Total time to update orders for security");
+                stopWatch.Read(_log, "PagedOrders POST - Total time to update orders for security");
                 retVal.SuccessResponse = results;
                 retVal.IsSuccess = true;
             }
