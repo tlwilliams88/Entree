@@ -78,6 +78,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public bool IsProprietary { get; set; }
 
+        public string ProprietaryCustomers { get; set; }
+
         [DataMember(Name = "orderhistory")]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public Dictionary<string, int> OrderHistory { get; set; }

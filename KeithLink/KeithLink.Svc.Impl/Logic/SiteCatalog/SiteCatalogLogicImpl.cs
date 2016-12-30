@@ -118,11 +118,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
 
-                prod.CasePrice = p.CasePrice.ToString();
-                prod.CasePriceNumeric = p.CasePrice;
-                prod.PackagePrice = p.PackagePrice.ToString();
-                prod.PackagePriceNumeric = p.PackagePrice;
-                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                    prod.CasePrice = p.CasePrice.ToString();
+                    prod.CasePriceNumeric = p.CasePrice;
+                    prod.PackagePrice = p.PackagePrice.ToString();
+                    prod.PackagePriceNumeric = p.PackagePrice;
+                    prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                //}
             }
 
             if ((searchModel.SField == "caseprice" || searchModel.SField == "unitprice") && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
@@ -430,6 +431,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, searchModel);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
+
             GetAdditionalProductInfo(profile, ret, catalogInfo);
             return ret;
         }

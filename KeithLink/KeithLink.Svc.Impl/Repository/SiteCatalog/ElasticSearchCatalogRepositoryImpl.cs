@@ -844,6 +844,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CaseOnly = oProd._source.caseonly == "Y";
             p.TempZone = oProd._source.temp_zone;
             p.IsProprietary = oProd._source.isproprietary;
+            p.ProprietaryCustomers = oProd._source.proprietarycustomers;
             p.CatchWeight = oProd._source.catchweight;
             p.AverageWeight = oProd._source.averageweight;
             p.CasePriceNumeric = oProd._source.caseprice != null ? oProd._source.caseprice : 0.00;
