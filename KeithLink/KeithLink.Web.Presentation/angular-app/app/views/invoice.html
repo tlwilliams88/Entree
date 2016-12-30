@@ -234,7 +234,7 @@
                     <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
                     <h5>{{::invoice.typedescription}}</h5>
                     <h5 ng-if="invoice.pendingtransaction.confirmationid">Confirmation ID: {{::invoice.pendingtransaction.confirmationid}}</h5>
-                    <h5>Status: <span ng-class="{'highlight-text-late': (invoice.statusdescription == 'Past Due'), 'highlight-text-paid': (invoice.statusdescription == 'Paid') }" >{{::invoice.statusdescription}}</span></h5>
+                    <h5><span ng-if="invoice.statusdescription != 'Payment Pending'">Status: <span ng-class="{'highlight-text-late': (invoice.statusdescription == 'Past Due'), 'highlight-text-paid': (invoice.statusdescription == 'Paid') }" >{{::invoice.statusdescription}}</span></span><span ng-if="invoice.statusdescription == 'Payment Pending'">Current Status: <span class="highlight-text-late">Processing Payment</span></span></h5>
                     <h5 ng-if="invoice.pendingtransaction.submittedby">Submitted By: {{::invoice.pendingtransaction.submittedby}}</h5>
                     <h5 ng-if="invoice.pendingtransaction.submittedon">Submitted On: {{::invoice.pendingtransaction.submittedon | formatDateWithTimezone}}</h5>
                   </div>
