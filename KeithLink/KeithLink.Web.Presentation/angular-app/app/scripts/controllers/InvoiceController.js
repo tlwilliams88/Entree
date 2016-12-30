@@ -823,7 +823,7 @@ angular.module('bekApp')
     modalInstance.result.then(function(){
         if(modalInstance.result.$$state.value){
           $scope.invoiceForm.$setPristine();
-          $scope.selectFilterView($scope.filterViews[1]);
+          $scope.selectFilterView($scope.filterViews[0]);
         }else{
           return;
         }
