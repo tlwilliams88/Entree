@@ -79,6 +79,9 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "custominventoryitemid")]
         public long CustomInventoryItemId { get; set; }
 
+        // not exported
+        public string ProprietaryCustomers { get; set; }
+
         /// <summary>
         /// This is for custom inventory specifically
         /// </summary>
