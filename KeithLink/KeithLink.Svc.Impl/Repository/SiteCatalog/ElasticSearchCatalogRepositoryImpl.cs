@@ -857,6 +857,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.MarketingDescription = oProd._source.marketing_description;
             p.MarketingManufacturer = oProd._source.marketing_manufacturer;
             p.MarketingName = oProd._source.marketing_name;
+            p.Status1 = oProd._source.status1;
             if (oProd._source.nutritional != null)
             {
                 Nutritional nutritional = new Nutritional();
