@@ -34,10 +34,43 @@
   }
 }
 
-@media (max-width: $screen-md-max) {
+@media (max-width: $screen-md-max) AND (min-width: $screen-sm-max) {
   .orderFromListDropdown {
     width:78%; 
     margin-left:16px;
+  }
+}
+
+@media (max-width: $screen-sm-max){
+  .orderFromListDropdown {
+    width:75%;
+  }
+
+  .createOrderModalCustomer {
+    padding-left:25px !important;
+  }
+}
+
+@media (max-width: $screen-sm-max) and (orientation:portrait){
+  .orderFromListDropdown {
+    margin-left: 12px;
+  }
+  .createOrderModalRemoveField {
+    display:none;
+  }
+  .margin-top-5-portrait {
+    margin-top: 5px;
+  }
+}
+
+@media (max-width: $screen-sm-max) and (orientation:landscape){
+  .orderFromListDropdown {
+    margin-left: 38px;
+  }
+  .padding-left-8-orderModal {
+    margin: auto;
+    width: 50%;
+    padding: 0 10px 0 10px;
   }
 }
 
