@@ -29,6 +29,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string NonStock { get; set; }
 
+
+        [DataMember(Name = "status1")]
+        public string Status1 { get; set; }
+
         [DataMember(Name = "caseprice", EmitDefaultValue = false)]
         [Description("Price")]
         public string CasePrice
