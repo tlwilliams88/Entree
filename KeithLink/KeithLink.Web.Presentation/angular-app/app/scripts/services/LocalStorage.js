@@ -139,6 +139,14 @@ angular.module('bekApp')
       
       setDefaultView: function(view) {
         localStorageService.set(Constants.localStorage.defaultView, view);
+      },
+
+      setDefaultUserName: function(username) {
+        localStorageService.set(Constants.localStorage.userName, username);
+      },
+
+      getDefaultUserName: function() {
+        localStorageService.get(Constants.localStorage.userName);
       }
 
     };

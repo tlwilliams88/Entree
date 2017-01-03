@@ -82,8 +82,8 @@ angular
     }
   };  
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService) {
  
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -102,6 +102,10 @@ angular
   $rootScope.openExternalLink = function(url) {
     window.open(url, '_system');
   };
+
+  // ENV.currentusername = localStorageService.get('currentUserName');
+
+  ENV.username = localStorageService.get('userName');
  
   /**********
   $stateChangeStart
