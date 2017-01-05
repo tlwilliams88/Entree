@@ -8,13 +8,13 @@ using KeithLink.Svc.Core.Interface.ElasticSearch;
 
 namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
-    public class ItemUpdate : IESItem
+    public class ItemInsert : IESItem
     {
-        public RootData update { get; set; }
+        public RootData index { get; set; }
 
         public string ToJson()
         {
-            return string.Format("{0}\n{1}\n", JsonConvert.SerializeObject(this), JsonConvert.SerializeObject(this.update.data));
+            return string.Format("{0}\n{1}\n", JsonConvert.SerializeObject(this), JsonConvert.SerializeObject(this.index.data));
         }
     }
 }

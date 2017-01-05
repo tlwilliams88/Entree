@@ -88,12 +88,13 @@ namespace KeithLink.Svc.Impl.ETL
 			return PopulateDataTable("[ETL].[ReadUNFISubCategories]");
 		}
 
-		public DataTable ReadFullItemForElasticSearch()
+		public DataTable ReadFullItemForElasticSearch(string branchId)
 		{
-			return PopulateDataTable("[ETL].[ReadFullItemData]");
-		}
+            return PopulateDataTable("[ETL].[ReadFullItemData]",
+                                     new List<SqlParameter>() { new SqlParameter("@BranchId", branchId) });
+        }
 
-		private DataTable PopulateDataTable(string sql)
+        private DataTable PopulateDataTable(string sql)
 		{
 			var dataTable = new DataTable();
 			using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
@@ -110,7 +111,38 @@ namespace KeithLink.Svc.Impl.ETL
 			return dataTable;
 		}
 
-		public DataSet ReadGSDataForItems()
+        /// <summary>
+        /// Helper function to populate datatable that accepts parameters
+        /// </summary>
+        /// <param name="procedure"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        private DataTable PopulateDataTable(string procedure, List<SqlParameter> parameters)
+        {
+            DataTable dataTable = new DataTable();
+
+            using (var conn = new SqlConnection(Configuration.BEKDBConnectionString))
+            {
+                using (var cmd = new SqlCommand(procedure, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    foreach (SqlParameter p in parameters)
+                    {
+                        cmd.Parameters.Add(p);
+                    }
+
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }
+            }
+
+            return dataTable;
+        }
+
+        public DataSet ReadGSDataForItems()
 		{
 			var gsData = new DataSet();
 

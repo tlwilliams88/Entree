@@ -151,6 +151,7 @@
     <Compile Include="Extensions\InvoiceExtensionsTest.cs" />
     <Compile Include="Helpers\PricingHelperTests.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImplTests.cs" />
+    <Compile Include="Logic\ETL\ItemImportLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />
     <Compile Include="Logic\InternalSrv\InternalMarketingPreferenceLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalOnlinePaymentLogicTests.cs" />
