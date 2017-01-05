@@ -1,10 +1,11 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Cart;
 
-using KeithLink.Svc.Core.Models.Orders.PowerMenu;
-using KeithLink.Svc.Core.Models.Orders;
-using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.PowerMenu.Order;
+
+using KeithLink.Svc.Core.Extensions.PowerMenu;
 
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic;
@@ -30,7 +31,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region attributes 
         private readonly IEventLogRepository _log;
-        private readonly IOrderLogic _orderLogic;
+        private readonly IShoppingCartService _cartService;
         #endregion
 
         /// <summary>
@@ -38,10 +39,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="log"></param>
-        public PowerMenuController(IUserProfileLogic profileLogic, IEventLogRepository log, IOrderLogic orderLogic) : base(profileLogic)
+        public PowerMenuController(IUserProfileLogic profileLogic, IEventLogRepository log,
+            IShoppingCartService cartService) : base(profileLogic)
         {
             _log = log;
-            _orderLogic = orderLogic;
+            _cartService = cartService;
         }
 
         /// <summary>
@@ -57,7 +59,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             payload = WebUtility.UrlDecode(payload.Replace("xml=", ""));
 
             XmlSerializer serializer = new XmlSerializer(typeof(VendorPurchaseOrderRequest));
-
             VendorPurchaseOrderRequest po;
 
             using (XmlReader rdr = XmlReader.Create(new StringReader(payload)))
@@ -65,11 +66,13 @@ namespace KeithLink.Svc.WebApi.Controllers
                 po = (VendorPurchaseOrderRequest)serializer.Deserialize(rdr);
             }
 
-            returnValue.Headers.Location = new Uri(KeithLink.Svc.Impl.Configuration.PresentationUrl);
+            Guid newCart = _cartService.ImportFromPowerMenu(po);
 
+            string redirectTo = string.Format("{0}/#/cart/{1}", KeithLink.Svc.Impl.Configuration.PresentationUrl, newCart);
+            returnValue.Headers.Location = new Uri(redirectTo);
             returnValue.StatusCode = HttpStatusCode.Redirect;
+
             return returnValue;
         }
-
     }
 }

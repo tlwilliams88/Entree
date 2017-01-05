@@ -40,6 +40,8 @@ using KeithLink.Svc.Core.Interface.SingleSignOn;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SpecialOrders;
 
+using KeithLink.Svc.Impl.Service.ShoppingCart;
+
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Configurations;
@@ -290,6 +292,12 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
             builder.RegisterType<GenericSubscriptionQueueRepositoryImpl>().As<IGenericSubscriptionQueueRepository>();
 #endif
+
+
+            // Services
+
+            // Shopping Cart
+            builder.RegisterType<ShoppingCartServiceImpl>().As<IShoppingCartService>();
 
             AddDatabaseDependencies(builder, type);
         }
