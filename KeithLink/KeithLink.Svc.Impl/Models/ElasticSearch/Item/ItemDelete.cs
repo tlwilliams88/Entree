@@ -10,11 +10,11 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
     public class ItemDelete : IESItem
     {
-        public RootData index { get; set; }
+        public RootData delete { get; set; }
 
         public string ToJson()
         {
-            return string.Format("{0}\n{1}\n", JsonConvert.SerializeObject(this), JsonConvert.SerializeObject(this.index.data));
+            return string.Format("{0}\n", JsonConvert.SerializeObject(this));
         }
     }
 }

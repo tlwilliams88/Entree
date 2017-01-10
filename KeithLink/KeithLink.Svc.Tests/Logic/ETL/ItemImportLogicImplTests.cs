@@ -27,7 +27,16 @@ namespace KeithLink.Svc.Test.Logic.ETL
         [TestMethod]
         public void ItemImportLogic_ImportItems()
         {
-            //_itemImportLogic.ImportItems();
+            _itemImportLogic.ImportItems();
+        }
+
+        /// <summary>
+        /// Unit test used to kick of the ImportUnfiItems process
+        /// </summary>
+        [TestMethod]
+        public void ItemImportLogic_ImportUNFIItems()
+        {
+            _itemImportLogic.ImportUNFIItems();
         }
     }
 }

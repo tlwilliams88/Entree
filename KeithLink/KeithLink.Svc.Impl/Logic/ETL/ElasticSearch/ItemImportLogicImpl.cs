@@ -137,8 +137,9 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         foreach(string toDelete in ESItems)
                         {
                             ItemDelete del = new ItemDelete();
-                            del.index = new RootData();
-                            del.index._id = toDelete;
+                            del.delete = new RootData();
+                            del.delete._id = toDelete;
+                            del.delete._index = row.GetString("BranchId").ToLower();
                             products.Add(del);
                         }
 
@@ -186,28 +187,45 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 				DateTime start = DateTime.Now;
 				_eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import UNFI items to ES {0}", start.ToString()));
 
-				var items = _stagingRepository.ReadUNFIItems();
+                var warehouses = _stagingRepository.ReadDistinctUNFIWarehouses();
 
+				var products = new BlockingCollection<IESItem>();
 
-				var products = new BlockingCollection<ItemInsert>();
+                var items = _stagingRepository.ReadUNFIItems();
 
-				foreach (DataRow row in items.Rows)
+                foreach (var warehouse in warehouses)
 				{
-					products.Add(PopulateUNFIElasticSearchItem(row));
-				};
-
-				var indexes = products.Select(p => p.index._index).Distinct().ToList();
-
-				foreach (var index in indexes)
-				{
-					if (!_elasticSearchRepository.CheckIfIndexExist(index))
+					if (!_elasticSearchRepository.CheckIfIndexExist(string.Format("unfi_{0}", warehouse)))
 					{
-						_elasticSearchRepository.CreateEmptyIndex(index);
-						_elasticSearchRepository.MapProductProperties(index, GetProductMapping());
+						_elasticSearchRepository.CreateEmptyIndex(string.Format("unfi_{0}", warehouse));
+						_elasticSearchRepository.MapProductProperties(string.Format("unfi_{0}", warehouse), GetProductMapping());
 					}
-				}
-				
-				int totalProcessed = 0;
+
+                    List<string> ESItems =
+                        _elasticSearchRepository.ReadListOfProductsByBranch
+                            (string.Format("unfi_{0}", warehouse));
+
+                    foreach (DataRow row in items.Rows)
+                    {
+                        if (row.GetString("WarehouseNumber").Equals(warehouse))
+                        {
+                            products.Add(PopulateUNFIElasticSearchItem(row, ESItems));
+                        }
+
+                        ESItems.Remove(row.GetString("ProductNumber"));
+                    };
+
+                    foreach (string toDelete in ESItems)
+                    {
+                        ItemDelete del = new ItemDelete();
+                        del.delete = new RootData();
+                        del.delete._id = toDelete;
+                        del.delete._index = string.Format("unfi_{0}", warehouse);
+                        products.Add(del);
+                    }
+                }
+
+                int totalProcessed = 0;
 
 				while (totalProcessed < products.Count)
 				{
@@ -641,18 +659,18 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             if (existingItems.Contains(row.GetString("ItemId")))
             {
                 ItemUpdate item = new ItemUpdate();
-                item.update = index;
+                item.index = index;
 
-                item.update.data.ItemSpecification = new List<string>();
+                item.index.data.ItemSpecification = new List<string>();
 
-                if (item.update.data.ReplacementItem != "000000")
-                    item.update.data.ItemSpecification.Add(ItemSpec_ReplacementItem);
-                if (item.update.data.ReplacedItem != "000000")
-                    item.update.data.ItemSpecification.Add(ItemSpec_Replaced);
-                if (item.update.data.ChildNutrition.Equals("y", StringComparison.CurrentCultureIgnoreCase))
-                    item.update.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
-                if (item.update.data.SellSheet.Equals("y", StringComparison.CurrentCultureIgnoreCase))
-                    item.update.data.ItemSpecification.Add(ItemSpec_SellSheet_FriendlyName);
+                if (item.index.data.ReplacementItem != "000000")
+                    item.index.data.ItemSpecification.Add(ItemSpec_ReplacementItem);
+                if (item.index.data.ReplacedItem != "000000")
+                    item.index.data.ItemSpecification.Add(ItemSpec_Replaced);
+                if (item.index.data.ChildNutrition.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                    item.index.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
+                if (item.index.data.SellSheet.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                    item.index.data.ItemSpecification.Add(ItemSpec_SellSheet_FriendlyName);
 
                 return item;
             }
@@ -680,7 +698,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         }
 
 
-		private ItemInsert PopulateUNFIElasticSearchItem(DataRow row)
+		private IESItem PopulateUNFIElasticSearchItem(DataRow row, List<string> existingItems)
 		{
 
 			var data = new AdditionalData()
@@ -740,9 +758,19 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			index._index = string.Format("unfi_{0}", data.WarehouseNumber);
 			index.data = data;
 
-			ItemInsert item = new ItemInsert();
-			item.index = index;
-			return item;
+            if (existingItems.Contains(data.MfrItemNumber.ToString()))
+            {
+                ItemUpdate item = new ItemUpdate();
+                item.index = index;
+                return item;
+            }
+            else
+            {
+                ItemInsert item = new ItemInsert();
+                item.index = index;
+                return item;
+            }
+            return null;
 		}
         #endregion
 
