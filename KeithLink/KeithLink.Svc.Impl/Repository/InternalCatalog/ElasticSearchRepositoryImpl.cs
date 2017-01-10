@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 
         public void Create(string json)
         {
-            var request = new RestRequest("_bulk?pretty", Method.POST);
+            var request = new RestRequest("_bulk", Method.POST);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
             var response = client.Execute(request);
         }
