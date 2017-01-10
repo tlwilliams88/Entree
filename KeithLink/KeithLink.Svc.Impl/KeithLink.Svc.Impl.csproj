@@ -352,6 +352,7 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemBase.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemDelete.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
     <Compile Include="Models\ETL\PdmEnrichedItem.cs" />
