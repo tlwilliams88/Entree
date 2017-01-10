@@ -27,7 +27,8 @@ namespace KeithLink.Svc.Test.Logic.ETL
         [TestMethod]
         public void ItemImportLogic_ImportItems()
         {
-            _itemImportLogic.ImportItems();
+            // we don't want to start a load of items when the tests are evaluated normally
+            //_itemImportLogic.ImportItems();
         }
 
         /// <summary>
@@ -36,7 +37,8 @@ namespace KeithLink.Svc.Test.Logic.ETL
         [TestMethod]
         public void ItemImportLogic_ImportUNFIItems()
         {
-            _itemImportLogic.ImportUNFIItems();
+            // we don't want to start a load of items when the tests are evaluated normally
+            //_itemImportLogic.ImportUNFIItems();
         }
     }
 }
