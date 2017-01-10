@@ -8,9 +8,9 @@ using KeithLink.Svc.Core.Interface.ElasticSearch;
 
 namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
-    public class ItemUpdate : IESItem
+    public class ItemInsert : IESItem
     {
-        public RootData index { get; set; } // the variable name of the rootdata object equates to the action; index will handle both create or update
+        public RootData index { get; set; }
 
         public string ToJson()
         {

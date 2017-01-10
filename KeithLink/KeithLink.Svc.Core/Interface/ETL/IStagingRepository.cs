@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Core.Interface.ETL
         DataTable ReadParentCategories();
 		DataTable ReadUnfiCategories();
 		DataTable ReadUnfiSubCategories();
-        DataTable ReadFullItemForElasticSearch();
+        DataTable ReadFullItemForElasticSearch(string branchId);
         DataSet ReadGSDataForItems();
         DataTable ReadPDMDataForItems();
         DataTable ReadProprietaryItems();

@@ -352,6 +352,8 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemDelete.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
     <Compile Include="Models\ETL\PdmEnrichedItem.cs" />
     <Compile Include="Models\SiteCatalog\Products\External\IxOneProduct.cs" />
     <Compile Include="Models\SiteCatalog\Products\External\IxOneReturn.cs" />
@@ -758,7 +760,7 @@
     <Compile Include="Models\ElasticSearch\Item\Allergen.cs" />
     <Compile Include="Models\ElasticSearch\Item\Diet.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemNutrition.cs" />
-    <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemInsert.cs" />
     <Compile Include="Models\ElasticSearch\Item\NutritionalInformation.cs" />
     <Compile Include="Models\ElasticSearch\Item\RootData.cs" />
     <Compile Include="Models\ETL\CatalogExport.cs" />

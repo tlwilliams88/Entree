@@ -190,6 +190,7 @@
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\Configurations\IExportSettingLogic.cs" />
     <Compile Include="Interface\Customers\IInternalUserAccessRepository.cs" />
+    <Compile Include="Interface\ElasticSearch\IESItem.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
@@ -311,6 +312,7 @@
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\ElasticSearch\ESItem.cs" />
     <Compile Include="Models\Invoices\CustomerWithInvoices.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\Base64Image.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowPageReturnModel.cs" />
