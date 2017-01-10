@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         private int _quantity;
         [DataMember(Name = "quantity")]
-        [Description("# Requested")]
+        [Description("# Confirmed")]
         public int Quantity
         {
             get { if (IsDeleted) return 0; return _quantity; }
