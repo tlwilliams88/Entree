@@ -50,6 +50,7 @@
     <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_UpdateProcessContractItemList.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
+    <Compile Include="Migrations\v2017.1.0\Migration7.cs" />
     <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -120,7 +121,9 @@
     </Content>
     <Content Include="SQL\v2017.1.0\down\stored procedures\ReadPDMData.sql" />
     <Content Include="SQL\v2017.1.0\down\tables\Staging_PDM_EnrichedProducts.sql" />
+    <Content Include="SQL\v2017.1.0\up\stored procedures\ETL.ProcessContractItemList.sql" />
     <Content Include="SQL\v2017.1.0\up\stored procedures\ReadPDMData.sql" />
+    <Content Include="SQL\v2017.1.0\down\stored procedures\ETL.ProcessContractItemList.sql" />
     <Content Include="SQL\v2017.1.0\up\tables\Staging_PDM_EnrichedProducts.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
