@@ -471,9 +471,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (!string.IsNullOrEmpty(sortField)) {
                 ExpandoObject sortObject = new ExpandoObject();
                 (sortObject as IDictionary<string, object>).Add(sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
+                (sortObject as IDictionary<string, object>).Add("cases", "desc");
                 return sortObject;
             } else {
-                return new {_score = "desc" };
+                ExpandoObject sortObject = new ExpandoObject();
+                (sortObject as IDictionary<string, object>).Add("_score", "desc");
+                (sortObject as IDictionary<string, object>).Add("cases", "desc");
+                return sortObject;
             }
         }
         
