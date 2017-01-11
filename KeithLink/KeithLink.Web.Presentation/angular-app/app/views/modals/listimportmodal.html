@@ -1,5 +1,5 @@
  <div class="modal-header">
-    <h3 class="modal-title" ng-if="listType == 'StandardList'">Import a New List</h3>
+    <h3 class="modal-title" ng-if="!nonBEKList">Import a New List</h3>
     <h3 class="modal-title" ng-if="nonBEKList">Import items to Non-BEK Items List</h3>
 </div>
 <div class="modal-body">
@@ -16,7 +16,7 @@
                 <a class="vertical-align-middle" ng-show="nonBEKList" ng-click="downloadNonBEKTemplate()">DOWNLOAD TEMPLATE</a>
             </div>
         </div>
-        <div class="form-group" ng-if="!nonBEKList">
+        <div class="form-group" ng-show="!nonBEKList">
             <label for="ignoreFirstLine" class="col-sm-4 control-label checkbox-line">Ignore First Line:</label>
             <div class="col-sm-8">
                 <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirstline">
@@ -26,7 +26,7 @@
             <label for="fileFormat" class="col-sm-4 control-label">File Format:</label>
             <div class="col-sm-8">
                 <label for="fileFormat" class="control-label" ng-if="nonBEKList">CSV</label>
-                <select class="style-select" name="fileFormat" required ng-model="options.fileformat" ng-if="!nonBEKList">
+                <select class="style-select" name="fileFormat" required ng-model="options.fileformat" ng-show="!nonBEKList">
                     <option value="0">CSV</option>
                     <option value="1">Tab</option>
                     <option value="2">Excel</option>
