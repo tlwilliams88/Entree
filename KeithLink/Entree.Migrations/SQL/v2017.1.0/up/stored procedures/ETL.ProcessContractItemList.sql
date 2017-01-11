@@ -44,6 +44,12 @@ DECLARE @DeletedItems TABLE
 	CategoryDescription varchar(100),
 	BidLineNumber int
 )
+DECLARE @ChangedItems TABLE
+(
+	ItemNumber varchar(10),
+	CategoryDescription varchar(100),
+	BidLineNumber int
+)
 
 --DECLARE Cursor for all contracts
 DECLARE contract_Cursor CURSOR FAST_FORWARD FOR
@@ -156,14 +162,20 @@ BEGIN
 				
 			--Print N'@CurrentBidNumber = ' + @CurrentBidNumber
 			--Print N'@existingListId = ' + str(@existingListId)
-			--update category on already existing lineitem itemnumbers
-			update li
-				set li.Category=bd.CategoryDescription, li.Position = bd.BidLineNumber
-				from List.ListItems as li
-				inner join etl.Staging_BidContractDetail bd
-					on LTRIM(rtrim(bd.itemnumber))=li.ItemNumber
-				where li.ParentList_Id = @existingListId
-	
+			-- add rows to the temp changeditems table only for those items that need to be in this customer list
+			INSERT INTO @ChangedItems (ItemNumber, CategoryDescription, BidLineNumber)
+			SELECT 
+				d.ItemNumber, 
+				CategoryDescription,
+				BidLineNumber
+			FROM
+				@TempContractItems d
+			WHERE 
+				NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
+							WHERE li.ItemNumber = LTRIM(RTRIM(d.ItemNumber)) AND li.Category = d.CategoryDescription AND li.ParentList_Id = @existingListId)
+				OR NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
+							WHERE li.ItemNumber = LTRIM(RTRIM(d.ItemNumber)) AND li.Position = d.BidLineNumber AND li.ParentList_Id = @existingListId)
+
 			--Find new items to be added
 			INSERT INTO @AddedItems (ItemNumber, Each, CategoryDescription, BidLineNumber)
 			SELECT 
@@ -339,6 +351,14 @@ BEGIN
 						@DeletedItems
 				END				
 			
+			IF EXISTS(SELECT 'x' FROM @ChangedItems) -- update the items from the temporary table after processing each customers list
+				BEGIN
+					UPDATE LI
+					  SET LI.Category=CI.CategoryDescription, LI.Position=CI.BidLineNumber
+					  FROM [BEK_Commerce_AppData].[List].[ListItems] AS LI
+					  INNER JOIN @ChangedItems AS CI ON LI.ItemNumber = CI.ItemNumber
+					  WHERE LI.ParentList_Id = @existingListId
+				END				
 
 		END
 
@@ -349,6 +369,7 @@ cont:
 	SET @existingDeletedListId = null
 	DELETE FROM @AddedItems
 	DELETE FROM @DeletedItems
+	DELETE FROM @ChangedItems -- clear temporary table at the end of each customers list
 	SET @rowCount = @rowCount +1
 	FETCH NEXT FROM contract_Cursor INTO @customerId, @contractNumber, @branchID
 END
@@ -356,12 +377,3 @@ END
 close contract_Cursor
 DEALLOCATE contract_Cursor
 END
-		p.[Manufacturer],
-		p.[Description],
-		p.[CreatedBy],
-		p.[CreatedUTC],
-		p.[UpdatedBy],
-		p.[ModifiedUTC]
-	FROM
-		[ETL].[Staging_PDM_EnrichedProducts] p
-GO
