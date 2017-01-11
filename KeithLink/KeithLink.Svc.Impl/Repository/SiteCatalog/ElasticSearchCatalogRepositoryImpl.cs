@@ -468,6 +468,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         }
         
         private static dynamic BuildSort(string sortField, string sortDir) {
+            // In BuildSort, cases desc is always added as a secondary sort to shuffle items with higher inventory to the front,
+            // when the primary sort is equal
             if (!string.IsNullOrEmpty(sortField)) {
                 ExpandoObject sortObject = new ExpandoObject();
                 (sortObject as IDictionary<string, object>).Add(sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
