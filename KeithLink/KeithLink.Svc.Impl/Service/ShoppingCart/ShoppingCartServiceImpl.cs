@@ -51,7 +51,12 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
 
             // Get the customer information needed
             List<Customer> customers = _customerRepo.GetCustomersForUser(user.UserId);
-            Customer customer = customers.Distinct().Where(x => x.CustomerNumber.Equals(powerMenuRequest.Order.OrderHeader.CustomerNumber)).FirstOrDefault();
+            Customer customer = customers.Distinct()
+                .Where(x => 
+                    x.CustomerNumber.Equals(powerMenuRequest.Order.OrderHeader.CustomerNumber) &&
+                    x.IsPowerMenu.Equals(true)
+                )
+                .FirstOrDefault();
 
             // Set the selected user context
             UserSelectedContext context = new UserSelectedContext();
@@ -60,7 +65,7 @@ namespace KeithLink.Svc.Impl.Service.ShoppingCart
 
             // Build the generated cart
             newCart.BranchId = customer.CustomerBranch;
-            newCart.PONumber = string.Format("eMenuManage Order ", powerMenuRequest.Order.OrderHeader.PurchaseOrderNumber);
+            newCart.PONumber = string.Format("eMenuManage Order {0} ", powerMenuRequest.Order.OrderHeader.PurchaseOrderNumber);
             newCart.Name = string.Format("eMenuManage Order - {0}", DateTime.Now.ToString());
 
             List<ShoppingCartItem> shoppingCartItems = powerMenuRequest.Order.OrderItem.ToShoppingCartItems(context.BranchId.ToLower());
