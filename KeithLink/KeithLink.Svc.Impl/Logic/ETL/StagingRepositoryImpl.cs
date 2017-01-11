@@ -305,10 +305,12 @@ namespace KeithLink.Svc.Impl.ETL
         /// <summary>
         /// Read full item for ElasticSearch
         /// </summary>
+        /// <param name="branchId">the specific branch to load</param>
         /// <returns></returns>
-        public DataTable ReadFullItemForElasticSearch()
+        public DataTable ReadFullItemForElasticSearch(string branchId)
         {
-            return PopulateDataTable("[ETL].[ReadFullItemData]");
+            return PopulateDataTable("[ETL].[ReadFullItemData]", 
+                                     new List<SqlParameter>() { new SqlParameter("@BranchId", branchId) });
         }
 
         /// <summary>

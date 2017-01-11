@@ -8,7 +8,7 @@ using KeithLink.Svc.Core.Interface.ElasticSearch;
 
 namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
-    public class ItemUpdate : ItemBase, IESItem
+    public class ItemInsert : ItemBase, IESItem
     {
     }
 }
