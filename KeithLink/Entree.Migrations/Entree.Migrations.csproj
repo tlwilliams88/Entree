@@ -44,7 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\2017.3\Migration8.cs" />
+    <Compile Include="Migrations\2017.2\Migration8.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
@@ -55,8 +55,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SQL\2017.3\down\tables\" />
-    <Folder Include="SQL\2017.3\up\tables\" />
+    <Folder Include="SQL\2017.2\down\tables\" />
+    <Folder Include="SQL\2017.2\up\tables\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BetaScriptGenerate.ps1">
@@ -74,8 +74,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SQL\2017.3\down\stored procedures\ETL.ReadFullItemData.sql" />
-    <Content Include="SQL\2017.3\up\stored procedures\ETL.ReadFullItemData.sql" />
+    <Content Include="SQL\2017.2\down\stored procedures\ETL.ReadFullItemData.sql" />
+    <Content Include="SQL\2017.2\up\stored procedures\ETL.ReadFullItemData.sql" />
     <Content Include="SQL\Configs\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
