@@ -878,6 +878,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\ShoppingCart\ShoppingCartServiceImpl.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Tasks\LimitedConcurrencyLevelTaskScheduler.cs" />
   </ItemGroup>
