@@ -9,7 +9,7 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.PowerMenu.Order
 {
-    public partial class OrderItem
+    public class OrderItem
     {
         public int CustomerLineSequenceNumber { get; set; }
         public string VendorProductNumber { get; set; }
