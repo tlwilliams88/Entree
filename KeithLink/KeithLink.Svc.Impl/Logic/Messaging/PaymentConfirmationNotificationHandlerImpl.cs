@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 NotifHeader = header.ToString(),
                 ConfirmationId = confirmationId,
-                BankAccount = bank.AccountNumber + " - " + bank.Name,
+                BankAccount = (bank != null && bank.Name != null && bank.AccountNumber != null) ?bank.AccountNumber + " - " + bank.Name:"UNDEFBANK",
                 PaymentDetailLines = orderDetails.ToString(),
                 TotalPayments = payments.Sum(p => p.PaymentAmount)
             });
@@ -228,8 +228,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTHEADER);
             orderDetails.Append(headerTemplate.Body.Inject(new
             {
-                BankName = bankUsed.Name,
-                AccountNumber = bankUsed.AccountNumber
+                BankName = (bankUsed != null && bankUsed.Name != null) ? bankUsed.Name : "UNDEFBANKNAME",
+                AccountNumber = (bankUsed != null && bankUsed.AccountNumber != null) ? bankUsed.AccountNumber : "UNDEFNUMBER"
             }));
         }
 
@@ -313,8 +313,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERACCOUNT);
             orderDetails.Append(footerAccountTemplate.Body.Inject(new
             {
-                BankName = bankUsed.Name,
-                AccountNumber = bankUsed.AccountNumber,
+                BankName = (bankUsed != null && bankUsed.Name != null) ? bankUsed.Name : "UNDEFBANKNAME",
+                AccountNumber = (bankUsed != null && bankUsed.AccountNumber != null) ? bankUsed.AccountNumber : "UNDEFNUMBER",
                 AccountSum = paymentSum
             }));
         }
@@ -370,7 +370,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                 bool complexPayment = customerCtxs.Count > 1;
                 string payerEmail = confirmation.SubmittedBy;
-                Recipient payerRecipient = null;
+                List<Recipient> payerRecipient = null;
 
                 foreach (UserSelectedContext customerCtx in customerCtxs) {
                     // load up recipients, customer and message
@@ -397,7 +397,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                         if (recipients != null && recipients.Count > 0) {
                             if (complexPayment) // mask out payeremail recipient from the regular recipients
                             {
-                                payerRecipient = recipients.Where(r => r.UserEmail == payerEmail).FirstOrDefault();
+                                payerRecipient = recipients.Where(r => r.UserEmail == payerEmail).ToList();
                                 recipients = recipients.Where(r => r.UserEmail != payerEmail).ToList();
                             }
 
@@ -411,9 +411,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                 if (complexPayment && payerRecipient != null)
                 {
-                    List<Recipient> recips = new List<Recipient>();
-                    recips.Add(payerRecipient);
-                    SendMessage(recips,
+                    SendMessage(payerRecipient,
                         GetEmailMessageForMultipleAccountSummaryNotification(confirmation.Payments, customerCtxs));
                 }
             }
