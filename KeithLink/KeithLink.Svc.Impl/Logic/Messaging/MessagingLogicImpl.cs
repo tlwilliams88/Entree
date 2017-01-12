@@ -252,6 +252,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         public PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging) {
             var userMessages = _userMessageRepository.ReadUserMessagesPaged(user, paging.Size, paging.From).ToList();
 
+            paging.From = null; // we do a skip and take reading from the EF
+            paging.Size = null; // so we null those so as not to do the skip and take again in the getpage
+
             return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
         }
 
