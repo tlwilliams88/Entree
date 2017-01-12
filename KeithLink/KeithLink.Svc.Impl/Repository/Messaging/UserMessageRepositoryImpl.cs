@@ -37,5 +37,10 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             return this.Entities.Count(a => (a.UserId == userId && a.MessageReadUtc.Equals(null)));
         }
 
+        public int GetMessagesCount(Guid userId)
+        {
+            return this.Entities.Where(a => (a.UserId == userId)).Count();
+        }
+
     }
 }
