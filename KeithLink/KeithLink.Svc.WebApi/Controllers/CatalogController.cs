@@ -5,6 +5,7 @@ using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Marketing;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
@@ -31,16 +32,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
 	[Authorize]
     public class CatalogController : BaseController {
         #region attributes
+        private readonly ICatalogCampaignService _campaignService;
         private readonly ICatalogLogic _catalogLogic;
 		private readonly IExportSettingLogic _exportSettingRepository;
         private readonly IEventLogRepository _elRepo;
         #endregion
 
         #region ctor
-        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
-            IEventLogRepository elRepo) : base(profileLogic) {
+        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, 
+            IExportSettingLogic exportSettingsLogic, IEventLogRepository elRepo, ICatalogCampaignService campaignService) : base(profileLogic) {
+
+            _campaignService = campaignService;
             _catalogLogic = catalogLogic;
 			_exportSettingRepository = exportSettingsLogic;
+
             this._elRepo = elRepo;
         }
         #endregion
@@ -280,6 +285,31 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _elRepo.WriteErrorLog("GetProductsSearch", ex);
             }
             return ret;
+        }
+
+        /// <summary>
+        /// Return list of products attached to a promotional catalog campaign
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("catalog/campaign/{id}")]
+        public OperationReturnModel<ProductsReturn> GetCampaignProducts([FromUri] int id)
+        {
+            OperationReturnModel<ProductsReturn> returnValue = new OperationReturnModel<ProductsReturn>();
+            try
+            {
+                ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(id, this.SelectedUserContext.BranchId);
+                returnValue.SuccessResponse = prods;
+                returnValue.IsSuccess = true;
+            } catch (Exception ex)
+            {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetCampaignProducts", ex);
+            }
+
+            return returnValue;
         }
 
         /// <summary>
