@@ -24,6 +24,16 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Test|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Test\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
@@ -91,11 +101,23 @@
     <None Include="App.Debug.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
+    <None Include="App.Test.config">
+      <DependentUpon>App.config</DependentUpon>
+    </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
     </None>
     <None Include="newrelic.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="newrelic.Debug.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
+    <None Include="newrelic.Test.config">
+      <DependentUpon>newrelic.config</DependentUpon>
+    </None>
+    <None Include="newrelic.Release.config">
+      <DependentUpon>newrelic.config</DependentUpon>
     </None>
     <None Include="packages.config" />
   </ItemGroup>
@@ -152,5 +174,9 @@
     </PropertyGroup>
     <!--Publish copies the untransformed App.config to deployment directory so overwrite it-->
     <Copy Condition="Exists('$(DeployedConfig)')" SourceFiles="$(IntermediateOutputPath)$(TargetFileName).config" DestinationFiles="$(DeployedConfig)" />
+  </Target>
+  <Target Name="AfterBuild" Condition="Exists('newrelic.$(Configuration).config')">
+    <!--Generate transformed config in the output directory-->
+    <TransformXml Source="newrelic.config" Destination="$(OutputPath)newrelic.config" Transform="newrelic.$(Configuration).config" />
   </Target>
 </Project>
