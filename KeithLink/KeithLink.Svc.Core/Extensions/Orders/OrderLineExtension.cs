@@ -1,5 +1,4 @@
-﻿using KeithLink.Svc.Core.Helpers;
-using KeithLink.Svc.Core.Models.Invoices;
+﻿using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.Orders;
 
 using System;
