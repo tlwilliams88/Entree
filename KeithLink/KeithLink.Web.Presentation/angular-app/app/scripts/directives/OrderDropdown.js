@@ -10,8 +10,9 @@ angular.module('bekApp')
       isDisabled: '='
     },
     templateUrl: 'views/directives/orderdropdown.html',
-    controller: ['$scope', '$modal', '$state', 'ApplicationSettingsService', 'UtilityService', 'LocalStorage', 'ListService', 'CartService', function($scope, $modal, $state, ApplicationSettingsService, UtilityService, LocalStorage, ListService, CartService){
+    controller: ['$scope', '$stateParams', '$modal', '$state', 'ApplicationSettingsService', 'UtilityService', 'LocalStorage', 'ListService', 'CartService', function($scope, $stateParams, $modal, $state, ApplicationSettingsService, UtilityService, LocalStorage, ListService, CartService){
 
+      $scope.isHomePage = $stateParams.isHomePage;
       $scope.isMobile = UtilityService.isMobileDevice();
       var currentCustomer = LocalStorage.getCurrentCustomer(),
           shipDates = CartService.getShipDates(),

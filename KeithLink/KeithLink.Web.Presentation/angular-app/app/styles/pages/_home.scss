@@ -1,3 +1,25 @@
+.row.page-header-bar-home {
+  background-color: $color-purple;
+}
+
+@media (max-width:1269px) {
+  .max-width-1269 {
+    display: none;
+  }
+}
+
+@media (max-width:1003px) {
+  .max-width-1003 {
+    display: none;
+  }
+}
+
+@media (max-width:1003px) AND (min-width:400px) {
+  .max-width-1003-min-width-400px {
+    display: inline-block;
+  }
+}
+
 // Account Balance
 .balance__term--amount {
   @include make-xs-column(6);

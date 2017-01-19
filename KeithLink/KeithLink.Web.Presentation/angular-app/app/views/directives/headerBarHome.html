@@ -1,0 +1,29 @@
+<div>
+	<div class="row page-header-bar-home" style="height:60px;">
+		<div ng-transclude=""></div>
+		<div>
+			{{message}}
+		</div>
+	</div>
+	<div ng-if="mandatoryMessages.length > 0"
+		class="row hidden-print mandatory-message">
+
+		<div class="mandatory-div mandatory-message__date">
+		 {{mandatoryMessages[0].messagecreated | formatDateWithTimezone}}
+		</div>
+
+		<div class="mandatory-div mandatory-message__subject">
+		 {{mandatoryMessages[0].subject}}:
+		</div>
+
+		<div class="mandatory-div mandatory-message__body ">
+		 {{mandatoryMessages[0].body}}
+		</div>
+
+		<div ng-click="showNotification(mandatoryMessages[0])"  class="mandatory-message__links">  <a>View Details </a></div>
+		<div ng-click="dismissNotification(mandatoryMessages[0])"  class="mandatory-message__links"><a>Dismiss </a></div>
+
+	</div>
+	<div ng-if="systemUpdates.length > 0" ng-init="showNotification(systemUpdates[0])">
+	</div>
+</div>
