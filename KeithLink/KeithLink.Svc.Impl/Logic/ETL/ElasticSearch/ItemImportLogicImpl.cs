@@ -109,7 +109,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                     products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, 
                                                            itemAllergens, proprietaryItems, pdmItem));
-                };
+                }
 
                 int totalProcessed = 0;
 

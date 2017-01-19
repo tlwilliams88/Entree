@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="10/6/2015 9:39:48 AM"
@@ -13,7 +13,7 @@
   DTS:ObjectName="UNFIETLProcess_QA"
   DTS:PackageType="5"
   DTS:VersionBuild="86"
-  DTS:VersionGUID="{647F10C8-DFD2-45A8-8BE0-52FFC2D10F83}">
+  DTS:VersionGUID="{D44DC2F9-E638-408D-962E-CA22FCD4F4D5}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">8</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\UNFI\bek_prods.txt">
+          DTS:ConnectionString="\\bekkecoct1\s$\inetOE\ftpdata\test\unfi\bek_prods.txt">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnType="Delimited"
@@ -395,17 +395,17 @@
       DTS:ObjectName="HTTP_ETLService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://corpkecqas1.bekco.com:9876/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://corpkecqas1.bekco.com:9876/ETLService.svc?wsdl">
+            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABc4KHaWYtgAalmSagfR2q1AAAAAASAAACgAAAAEAAAANMqs1G9x0YPY4oUkSzdH9sIAAAAouScFFEYiwsUAAAAr+SRjcJB9M5deSNMab5E+4yPaBk</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAOeD7OAmmx2OnGmFNjiG6mAAAAAASAAACgAAAAEAAAAJ/4YrBrVnDPqNPLmrXPooYIAAAAoOff7o7bBtwUAAAABl+c5ePZeQX0qlLPOkHJH2phSFA</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC/k1paTpYPg7mvhpacdssSAAAAAASAAACgAAAAEAAAADwB05F9+RHwYAljfyzuXP4IAAAArXIodAXOKhUUAAAAxI4SPwc4YEIupe2uZdugozXfDVc</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAApZg/NHjE1y3XVKhKUT0zJAAAAAASAAACgAAAAEAAAAEvrknahiavCnWlJOd8Ju38IAAAA0TMx1Hqn3MQUAAAAoaaodxFh4Gy0RZBY/nZVIktDbls</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -427,12 +427,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpkecqdb1;User Id=ecom;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADzm5+hp3Jw1VNysC+r+nCrAAAAAASAAACgAAAAEAAAANm3UZMAzIlylMOSYBEAcs0YAAAA7EyduK+0J+OCP2YPR/bx+j7WuoIwRs96FAAAABN5Yz6i4SwZZX3/+GG9O918TwX+</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -707,7 +702,7 @@
           DTS:ExecutableType="Microsoft.WebServiceTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Proces Catalog Data"
-          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; Â© 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:LoggingOptions
@@ -749,7 +744,7 @@
           DTS:ExecutableType="Microsoft.WebServiceTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
-          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; Â© 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
           DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:LoggingOptions
@@ -1431,7 +1426,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:ExecutableType="Microsoft.SendMailTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
-      DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; Â© 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
       DTS:ThreadHint="2">
       <DTS:Variables />
       <DTS:LoggingOptions
@@ -3472,7 +3467,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Staging Table"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; Â© 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:LoggingOptions
@@ -3491,7 +3486,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:ExecutableType="Microsoft.ExecuteSQLTask"
           DTS:LocaleID="-1"
           DTS:ObjectName="Update UNFI Item Numbers from BEK stocked items"
-          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; Â© 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
           DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:LoggingOptions
