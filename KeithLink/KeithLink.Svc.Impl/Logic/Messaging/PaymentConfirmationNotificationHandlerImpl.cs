@@ -65,6 +65,20 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
+        private string GetBankName(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
+        {
+            string name = "undefined";
+            if (cb != null && cb.Name != null) { name = cb.Name; }
+            return name;
+        }
+
+        private string GetBankAccountNumber(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
+        {
+            string number = "undefined";
+            if (cb != null && cb.AccountNumber != null) { number = cb.AccountNumber; }
+            return number;
+        }
+
         private Message GetEmailMessageForNotification(List<PaymentTransactionModel> payments, Core.Models.Profile.Customer customer)
         {
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(Constants.MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
@@ -99,7 +113,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 NotifHeader = header.ToString(),
                 ConfirmationId = confirmationId,
-                BankAccount = (bank != null && bank.Name != null && bank.AccountNumber != null) ?bank.AccountNumber + " - " + bank.Name:"UNDEFBANK",
+                BankAccount = GetBankAccountNumber(bank) + " - " + GetBankName(bank),
                 PaymentDetailLines = orderDetails.ToString(),
                 TotalPayments = payments.Sum(p => p.PaymentAmount)
             });
@@ -228,8 +242,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTHEADER);
             orderDetails.Append(headerTemplate.Body.Inject(new
             {
-                BankName = (bankUsed != null && bankUsed.Name != null) ? bankUsed.Name : "UNDEFBANKNAME",
-                AccountNumber = (bankUsed != null && bankUsed.AccountNumber != null) ? bankUsed.AccountNumber : "UNDEFNUMBER"
+                BankName = GetBankName(bankUsed),
+                AccountNumber = GetBankAccountNumber(bankUsed)
             }));
         }
 
@@ -313,8 +327,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERACCOUNT);
             orderDetails.Append(footerAccountTemplate.Body.Inject(new
             {
-                BankName = (bankUsed != null && bankUsed.Name != null) ? bankUsed.Name : "UNDEFBANKNAME",
-                AccountNumber = (bankUsed != null && bankUsed.AccountNumber != null) ? bankUsed.AccountNumber : "UNDEFNUMBER",
+                BankName = GetBankName(bankUsed),
+                AccountNumber = GetBankAccountNumber(bankUsed),
                 AccountSum = paymentSum
             }));
         }
