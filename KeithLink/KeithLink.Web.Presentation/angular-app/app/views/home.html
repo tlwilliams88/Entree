@@ -2,29 +2,33 @@
 <div page-header-bar-home>
   <div header-message>
     <div>
-      <div class="pull-left max-width-1269 max-width-1003-min-width-400px background-color-white" style="height: 60px; width:200px;">
+      <div class="pull-left max-width-1269 max-width-1003-min-width-400px max-width-991px max-width-763px background-color-white" style="height: 60px; width:200px;">
         <img class="hand-pointer max-width-1269 max-width-1003-min-width-400px" style="height: auto; max-width: 100%; width: auto\9; margin-top: 3px;" ng-src="images/KeithKitchenEssentials_100px 2.png" ui-sref="menu.campaign({ type: 'campaign', campaign_id: 1 })"/>
       </div>
-      <span style="margin-top: 8px; margin-left:8px; display: inline-block; display: -webkit-inline-box;">
-        <span class="hidden-xs hidden-sm max-width-1003"><a class="color-white" ui-sref="menu.campaign({ type: 'campaign', campaign_id: 1 })" style="font-size: 14px; padding-left: 10px;"><span class="hidden-xs hidden-sm">Click Here to</span> Order From The Keith's Kitchen Essentials Catalog!</a></span>
-        <span class="hidden-xs hidden-sm max-width-1003" style="color: #F7B834; font-size: 28px; padding-right: 10px; padding-left: 10px;">|</span>
-        <span class="hidden-xs hidden-sm max-width-1003" ><a class="color-white" style="font-size: 14px;" href="http://www.benekeith.com/food/products/keith-kitchen-essentials" target="_blank">More Info...</a></span>
+      <span class="margin-top-5-max-width-564px" style="margin-top: 8px; margin-left:8px; display: inline-block; display: -webkit-inline-box;">
+        <a class="color-white max-width-1003 max-width-991px" ui-sref="menu.campaign({ type: 'campaign', campaign_id: 1 })" style="font-size: 14px; padding-left: 10px;">Click Here to order Equipment and Supplies!</a>
+        <span class="max-width-991px" style="color: #F7B834; font-size: 28px; padding-right: 10px; padding-left: 10px;">|</span>
+        <span ><a class="color-white max-width-991px margin-left-10-max-width-564px" style="font-size: 14px;" href="http://www.benekeith.com/food/products/keith-kitchen-essentials" ng-click="window.open('http://www.benekeith.com/food/products/keith-kitchen-essentials', '_system')" target="_blank">Click here to view 2017 Catalog</a></span>
       </span>
     </div>
   </div>
-  <order-dropdown style="margin:10px 10px;" is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
-  <div header-buttons>
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
+  <div class="background-color-white pull-right hidden-xs hidden-sm hidden-print" style="height: 60px; width:250px;">
+    <order-dropdown style="margin:10px 10px;" is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
+    <div header-buttons>
+      <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
+    </div>
   </div>
 </div>
 
 <!-- <div page-header-bar>
   <div header-message>
     <span class="hidden-xs hidden-sm">Welcome Back </span>{{::userProfile.displayname}}<span class="hidden-xs hidden-sm">!</span>
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
+    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-xs hidden-sm hidden-print hidden-md hidden-lg pull-right"></order-dropdown>
   </div>
-  <div header-buttons>
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
+  <div class="pull-right hidden-xs hidden-sm hidden-print">
+    <div header-buttons>
+      <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
+    </div>
   </div>
 </div> -->
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->

@@ -9,8 +9,6 @@
   @include header-bar($color-white, 10px);
   position: relative;
  
-  @include arrow('bottom','left', 10px, $color-white, $color-border, 1px);
- 
   .page-header-bar__message {
     font-size: 25px;
     font-weight: 300;
@@ -61,8 +59,6 @@
 .page-header-bar-home {
   position: relative;
  
-  @include arrow('bottom','left', 10px, #400099, $color-border, 1px);
- 
   .page-header-bar__message {
     display: inline-block;
   }
@@ -89,7 +85,6 @@
     .icon-truck {
       font-size: 26px;
       margin-top: 10px;
-      color: $color-white !important;
     }
     .badge {
       top: -10px;
