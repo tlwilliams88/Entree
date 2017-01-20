@@ -9,7 +9,7 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -17,7 +17,8 @@ angular.module('bekApp')
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
       CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
-      mandatoryMessages
+      mandatoryMessages,
+      localStorageService
     ) {
 
   $scope.$state = $state;
@@ -30,6 +31,7 @@ angular.module('bekApp')
   $scope.branches = branches;
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
+  ENV.username = localStorageService.get('userName');
 
   OrderService.getChangeOrders().then(function(resp){
     $scope.changeOrders = resp;
@@ -47,6 +49,7 @@ angular.module('bekApp')
     });
   });
  
+
   // global notification at the top of all pages
   // TODO: Global messaging backend?
   $scope.messageText = 'Hello world!';
