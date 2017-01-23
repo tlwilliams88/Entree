@@ -1202,7 +1202,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             LookupPrices(user, pagedList.Items.Results, catalogInfo);
             stopWatch.Read(_log, "ReadPagedList - LookupPrices");
 
-            if(pagedList.Type == ListType.Contract)
+            if(pagedList.Type == ListType.Contract && Configuration.ContractListDeleteBlockPrices)
             {
                 Parallel.ForEach(pagedList.Items.Results, listItem =>
                 {
