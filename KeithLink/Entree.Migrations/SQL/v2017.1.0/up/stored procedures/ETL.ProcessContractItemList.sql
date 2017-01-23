@@ -93,7 +93,7 @@ BEGIN
 					,source.Each
 					,source.BranchId
 					,source.Tomorrow)
-		WHEN NOT MATCHED BY SOURCE AND target.ToDate < DATEADD(day, -13, GETDATE())
+		WHEN NOT MATCHED BY SOURCE
 			THEN -- DELETE Item
 				DELETE
 		WHEN MATCHED
