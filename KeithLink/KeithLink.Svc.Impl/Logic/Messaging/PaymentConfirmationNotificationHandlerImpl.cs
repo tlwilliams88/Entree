@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #region methods
         private string GetBankName(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
         {
-            string name = "undefined";
+            string name = Constants.BANK_RESOLVE_UNDEFINED;
             if (cb != null && cb.Name != null) { name = cb.Name; }
             return name;
         }
@@ -113,7 +113,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 NotifHeader = header.ToString(),
                 ConfirmationId = confirmationId,
-                BankAccount = GetBankAccountNumber(bank) + " - " + GetBankName(bank),
+                BankAccount = string.Format("{0} - {1}", GetBankAccountNumber(bank), GetBankName(bank)),
                 PaymentDetailLines = orderDetails.ToString(),
                 TotalPayments = payments.Sum(p => p.PaymentAmount)
             });
