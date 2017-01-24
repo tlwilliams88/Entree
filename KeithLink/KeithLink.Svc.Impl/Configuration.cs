@@ -276,7 +276,7 @@ namespace KeithLink.Svc.Impl
         {
             get
             {
-                string check = DBAppSettingsRepositoryImpl.GetValue(KEY_CONTRACTLISTCHANGE_PRICEBLOCKDELETED, "False");
+                string check = DBAppSettingsRepositoryImpl.GetValue(KEY_CONTRACTLISTCHANGE_PRICEBLOCKDELETED, "True");
                 return bool.Parse(check);
             }
         }
