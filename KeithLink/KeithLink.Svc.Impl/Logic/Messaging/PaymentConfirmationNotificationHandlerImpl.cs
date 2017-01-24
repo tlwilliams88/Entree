@@ -74,7 +74,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private string GetBankAccountNumber(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
         {
-            string number = "undefined";
+            string number = Constants.BANK_RESOLVE_UNDEFINED;
             if (cb != null && cb.AccountNumber != null) { number = cb.AccountNumber; }
             return number;
         }
