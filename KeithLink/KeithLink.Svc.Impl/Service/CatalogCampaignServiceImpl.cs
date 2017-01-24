@@ -15,14 +15,14 @@ namespace KeithLink.Svc.Impl.Service
     public class CatalogCampaignServiceImpl : ICatalogCampaignService
     {
         #region attributes
-        private readonly ICatalogLogic _catalogLogic;
+        private readonly ICatalogRepository _catalogRepository;
         private readonly ICatalogCampaignLogic _campaignLogic;
         #endregion
 
         #region constructor
-        public CatalogCampaignServiceImpl(ICatalogLogic catalogLogic, ICatalogCampaignLogic campaignLogic)
+        public CatalogCampaignServiceImpl(ICatalogRepository catalogRepository, ICatalogCampaignLogic campaignLogic)
         {
-            _catalogLogic = catalogLogic;
+            _catalogRepository = catalogRepository;
             _campaignLogic = campaignLogic;
         }
         #endregion
@@ -30,11 +30,11 @@ namespace KeithLink.Svc.Impl.Service
         #region functions
 
         #region get
-        public ProductsReturn GetCatalogCampaignProducts(int campaignId, string branch)
+        public ProductsReturn GetCatalogCampaignProducts(int campaignId, string branch, SearchInputModel model)
         {
             CatalogCampaignReturnModel campaign = _campaignLogic.GetCampaign(campaignId);
 
-            return _catalogLogic.GetProductsByIds(branch, campaign.Items.Select(x => x.ItemNumber).ToList());
+            return _catalogRepository.GetProductsByItemNumbers(branch, campaign.Items.Select(x => x.ItemNumber).ToList(), model);
         }
         #endregion
 
