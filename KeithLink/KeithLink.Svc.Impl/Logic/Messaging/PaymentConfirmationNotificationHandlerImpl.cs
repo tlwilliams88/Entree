@@ -42,6 +42,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private readonly IMessageTemplateLogic _messageTemplateLogic;
         private readonly IKPayInvoiceRepository _invoiceRepo;
         private readonly ICustomerBankRepository _bankRepo;
+
+        public const string BANK_RESOLVE_UNDEFINED = "undefined";
         #endregion
 
         #region ctor
@@ -67,14 +69,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #region methods
         private string GetBankName(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
         {
-            string name = Constants.BANK_RESOLVE_UNDEFINED;
+            string name = BANK_RESOLVE_UNDEFINED;
             if (cb != null && cb.Name != null) { name = cb.Name; }
             return name;
         }
 
         private string GetBankAccountNumber(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
         {
-            string number = Constants.BANK_RESOLVE_UNDEFINED;
+            string number = BANK_RESOLVE_UNDEFINED;
             if (cb != null && cb.AccountNumber != null) { number = cb.AccountNumber; }
             return number;
         }
