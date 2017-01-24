@@ -294,12 +294,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/campaign/{id}")]
-        public OperationReturnModel<ProductsReturn> GetCampaignProducts([FromUri] int id)
+        public OperationReturnModel<ProductsReturn> GetCampaignProducts(int id, [FromUri] SearchInputModel searchModel)
         {
             OperationReturnModel<ProductsReturn> returnValue = new OperationReturnModel<ProductsReturn>();
             try
             {
-                ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(id, this.SelectedUserContext.BranchId);
+                ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(id, this.SelectedUserContext.BranchId, searchModel);
                 returnValue.SuccessResponse = prods;
                 returnValue.IsSuccess = true;
             } catch (Exception ex)
