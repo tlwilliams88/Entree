@@ -100,7 +100,7 @@ angular.module('bekApp')
           return url;
         },
 
-        searchCatalog: function(type, id, catalogType, params, department) {
+        searchCatalog: function(type, id, catalogType, params, department, campaign_id) {
           if(type === 'search'){
 
             var dept = (params.dept === '') ? 'All' : params.dept;
@@ -109,7 +109,13 @@ angular.module('bekApp')
             $analytics.eventTrack('Search Terms', {  category: 'Search', label: id });
           }
 
-          var url = Service.getSearchUrl(type, id, catalogType);
+          var url;
+          if(!campaign_id){
+            url = Service.getSearchUrl(type, id, catalogType);
+          } else {
+            url = '/catalog/campaign/' + campaign_id;
+          }
+          
           
           var config = {
             params: params
@@ -125,7 +131,7 @@ angular.module('bekApp')
               var data = response.data.successResponse;
 
               // convert nonstock data structure to match other itemspecs
-              if (data.facets.nonstock && data.facets.nonstock.length > 0) {
+              if (data.facets && data.facets.nonstock && data.facets.nonstock.length > 0) {
                 data.facets.nonstock.forEach(function(nonstockItem) {
                   if (nonstockItem.name === 'y') {
                     data.facets.itemspecs.push({

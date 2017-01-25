@@ -290,6 +290,7 @@
     <Compile Include="Helpers\StopWatchHelper.cs" />
     <Compile Include="Helpers\UserContextEqualityComparer.cs" />
     <Compile Include="Logic\ApplicationHealth\ApplicationHealthLogicImpl.cs" />
+    <Compile Include="Logic\CatalogCampaignLogicImpl.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
@@ -402,6 +403,8 @@
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
+    <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
+    <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericSubscriptionQueueRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
@@ -877,6 +880,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\CatalogCampaignServiceImpl.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Tasks\LimitedConcurrencyLevelTaskScheduler.cs" />
   </ItemGroup>

@@ -64,7 +64,9 @@ angular.module('bekApp')
     } else {
         if ($state.params.catalogType == "UNFI"){
             $scope.pageTitle = "Natural and Organic";
-        } else {
+        } else if($state.params.campaign_id == "1") {
+          $scope.pageTitle = "Keith Kitchen Essentials";
+      } else {
             $scope.pageTitle = "Specialty Catalog";
         }
     }
@@ -215,7 +217,7 @@ angular.module('bekApp')
       }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
-      ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
+      ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName, $stateParams.campaign_id).then(function(data){
         $scope.products = data.products;
         if($scope.toggleView){
           resetPage($scope.products, true);
@@ -554,7 +556,7 @@ angular.module('bekApp')
       // }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id);
     }
 
     //Load list of products and block UI with message
@@ -583,7 +585,7 @@ angular.module('bekApp')
         } else {
           $scope.setStartAndEndPoints($scope.products);
         }
-        if($scope.aggregateCount !==0 || $scope.noFiltersSelected){
+        if($scope.facets && $scope.aggregateCount !==0 || $scope.noFiltersSelected){
           updateFacetCount($scope.facets.brands, data.facets.brands);
           updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
           updateFacetCount($scope.facets.dietary, data.facets.dietary);

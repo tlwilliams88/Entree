@@ -175,6 +175,8 @@ angular.module('bekApp')
   // listens for state change event to restore selectedUserContext
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
+    $rootScope.isHomePage = false;
+
     // if users is viewing all customers
     // change selected user context back to the one stored in LocalStorage here
     if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && $scope.selectedUserContext && !$scope.selectedUserContext.id) {
