@@ -177,6 +177,9 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Se
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleX', '250', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleY', '250', 0)
 
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
+
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])
 WHEN MATCHED THEN

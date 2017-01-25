@@ -208,6 +208,9 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToChe
 		  "maximummessageswarningthreshold":1}
 ]}', 'Monitor Service Functions', 0)
 
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
+
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])
 WHEN MATCHED THEN
