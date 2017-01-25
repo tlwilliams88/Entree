@@ -162,7 +162,7 @@ namespace KeithLink.Svc.Core.Extensions {
                 InvoiceDate = invoice.InvoiceDate,
                 Items = invoice.Items == null ? null : invoice.Items.Select(i =>
                     new KeithLink.Svc.Core.Models.EF.InvoiceItem() {
-                        CatchWeightCode = i.CatchWeightCode,
+                        CatchWeightCode = i.CatchWeight,
                         ExtCatchWeight = i.ExtCatchWeight,
                         ExtSalesNet = i.ExtSalesNet,
                         ItemPrice = i.ItemPrice,
@@ -192,9 +192,9 @@ namespace KeithLink.Svc.Core.Extensions {
                 Status = invoice.Status,
                 TypeDescription = EnumUtils<InvoiceType>.GetDescription(invoice.Type, ""),
                 Items = headerOnly ? new List<InvoiceItemModel>() : invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
+                    CatchWeight = i.CatchWeightCode,
                     CatchWeightCode = i.CatchWeightCode,
                     ExtCatchWeight = i.ExtCatchWeight.HasValue ? i.ExtCatchWeight.Value : 0,
-                    ExtSalesNet = i.ExtSalesNet.HasValue ? i.ExtSalesNet.Value : 0,
                     ItemPrice = i.ItemPrice.HasValue ? i.ItemPrice.Value : 0,
                     QuantityOrdered = i.QuantityOrdered.HasValue ? i.QuantityOrdered.Value : 0,
                     QuantityShipped = i.QuantityShipped.HasValue ? i.QuantityShipped.Value : 0,
@@ -211,7 +211,7 @@ namespace KeithLink.Svc.Core.Extensions {
         public static InvoiceItem ToEFInvoiceItem(this InvoiceItemModel item) {
             return new KeithLink.Svc.Core.Models.EF.InvoiceItem() {
                 Id = item.Id,
-                CatchWeightCode = item.CatchWeightCode,
+                CatchWeightCode = item.CatchWeight,
                 ExtCatchWeight = item.ExtCatchWeight,
                 ExtSalesNet = item.ExtSalesNet,
                 ItemPrice = item.ItemPrice,

@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.ModelExport;
+﻿using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
@@ -41,7 +42,13 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public decimal? ItemPrice { get; set; }
 		[DataMember(Name = "salesnet")]
 		[Description("Ext Price")]
-		public decimal? ExtSalesNet { get; set; }
+		public decimal? ExtSalesNet
+        {
+            get
+            {
+                return (decimal)PricingHelper.GetFixedPrice(QuantityShipped.Value, (double)ItemPrice, CatchWeight, (double)ExtCatchWeight);
+            }
+        }
 		[DataMember(Name = "classcode")]
 		public string ClassCode { get; set; }
 		[DataMember(Name = "packsize")]
