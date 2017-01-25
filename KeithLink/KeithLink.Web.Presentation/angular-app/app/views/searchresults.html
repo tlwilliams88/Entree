@@ -412,8 +412,11 @@
                       <span class="nowrap small-icon" item-icons></span>
                     </h3>
                     <h5 class="block-display"> 
-                    <span ng-if="item.brand_extended_description"> by <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })"><a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+                    <span ng-if="item.brand_extended_description && $state.params.catalogType"> by <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })"><a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
                       {{item.brand_extended_description}}</a>
+                    </span>
+                    <span ng-if="!$state.params.catalogType"> by 
+                      {{item.brand_extended_description}}
                     </span>
                     <span ng-if="!item.brand_extended_description">{{item.brand}}</span>
                     </h5>

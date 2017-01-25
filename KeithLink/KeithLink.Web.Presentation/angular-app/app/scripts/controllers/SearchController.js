@@ -547,7 +547,7 @@ angular.module('bekApp')
       }
 
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
-      if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
+      if($scope.sortField === 'itemnumber' && $state.params.catalogType && $state.params.catalogType != 'BEK'){
         $scope.sortField  = '';
       }
 
