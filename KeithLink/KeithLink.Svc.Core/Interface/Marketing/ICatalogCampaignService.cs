@@ -11,6 +11,6 @@ namespace KeithLink.Svc.Core.Interface.Marketing
 {
     public interface ICatalogCampaignService
     {
-        ProductsReturn GetCatalogCampaignProducts(int campaignId, string branch, SearchInputModel searchModel);
+        ProductsReturn GetCatalogCampaignProducts(int campaignId, UserSelectedContext context, SearchInputModel searchModel, UserProfile profile);
     }
 }
