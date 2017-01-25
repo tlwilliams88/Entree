@@ -42,12 +42,27 @@ namespace KeithLink.Svc.Core.Helpers {
             return total;
         }
 
-        public static double GetFixedPrice(int qty, double sellPrice, bool catchWeight, double shippedWeight)
+        /// <summary>
+        /// This gets pricing for what we assume is a past or fixed item
+        /// </summary>
+        /// <param name="qty"></param>
+        /// <param name="sellPrice"></param>
+        /// <param name="catchWeight"></param>
+        /// <param name="shippedWeight"></param>
+        /// <returns></returns>
+        public static double GetFixedPrice(int qty, double sellPrice, bool catchWeight, double shippedWeight, double averageWeight)
         {
             double total = 0;
             if (catchWeight)
             {
-                total = shippedWeight * sellPrice;
+                if(shippedWeight > 0)
+                {
+                    total = shippedWeight * sellPrice;
+                }
+                else
+                {
+                    total = averageWeight * sellPrice;
+                }
             }
             else
             {
