@@ -128,8 +128,14 @@
   }
 }
 
-@media screen and (min-width: 423px) {
+@media (min-width: 423px) {
   .show-small-icon-422px {
+    display: none;
+  }
+}
+
+@media (max-width: 350px) {
+  .show-small-icon-350px {
     display: none;
   }
 }

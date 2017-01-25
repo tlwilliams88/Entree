@@ -149,6 +149,10 @@ html, body {
   padding-right: 10px;
 }
 
+.padding-right-5 {
+  padding-right: 5px;
+}
+
 .highlightRows:nth-of-type(odd) {
   background-color: $color-white !important;
 }
@@ -158,9 +162,13 @@ html, body {
 }
 
 .padding-left-15 {
-  padding-left:15px;
+  padding-left: 15px;
 }
 
 .padding-left-10 {
   padding-left: 10px;
+}
+
+.padding-left-5 {
+  padding-left: 5px;
 }
