@@ -162,7 +162,7 @@ namespace KeithLink.Svc.Core.Extensions {
                 InvoiceDate = invoice.InvoiceDate,
                 Items = invoice.Items == null ? null : invoice.Items.Select(i =>
                     new KeithLink.Svc.Core.Models.EF.InvoiceItem() {
-                        CatchWeightCode = i.CatchWeight,
+                        CatchWeightCode = i.CatchWeight, // there is some weirdness from the first implementation; why did they create this CatchWeightCode?
                         ExtCatchWeight = i.ExtCatchWeight,
                         ExtSalesNet = i.ExtSalesNet,
                         ItemPrice = i.ItemPrice,
@@ -192,7 +192,7 @@ namespace KeithLink.Svc.Core.Extensions {
                 Status = invoice.Status,
                 TypeDescription = EnumUtils<InvoiceType>.GetDescription(invoice.Type, ""),
                 Items = headerOnly ? new List<InvoiceItemModel>() : invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
-                    CatchWeight = i.CatchWeightCode,
+                    CatchWeight = i.CatchWeightCode, // there is some weirdness from the first implementation; why did they create this CatchWeightCode?
                     CatchWeightCode = i.CatchWeightCode,
                     ExtCatchWeight = i.ExtCatchWeight.HasValue ? i.ExtCatchWeight.Value : 0,
                     ItemPrice = i.ItemPrice.HasValue ? i.ItemPrice.Value : 0,
