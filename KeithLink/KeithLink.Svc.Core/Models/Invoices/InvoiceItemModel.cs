@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
         {
             get
             {
-                return (decimal)PricingHelper.GetFixedPrice(QuantityShipped.Value, (double)ItemPrice, CatchWeight, (double)ExtCatchWeight);
+                return (decimal)PricingHelper.GetFixedPrice(QuantityShipped.Value, (double)ItemPrice, CatchWeight, (double)ExtCatchWeight, AverageWeight);
             }
         }
 		[DataMember(Name = "classcode")]
