@@ -650,10 +650,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 size = searchModel.Size,
                 query = new
                 {
-                    ids = new
+                    @bool = new
                     {
-                        type = "product",
-                        values = ids                    }
+                        filter = new
+                        {
+                            terms = new
+                            {
+                                itemnumber = ids
+                            }
+                        },
+                        must = BuildFacetsFilter(searchModel.Facets)
+                    },
                 },
                 sort = BuildSort(searchModel.SField, searchModel.SDir),
                 aggregations = ElasticSearchAggregations
