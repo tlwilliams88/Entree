@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Models.Marketing
     public class CatalogCampaignHeader
     {
         public Int64 Id { get; set; }
+        public string Uri { get; set; }
         public string Description { get; set; }
         public bool Active { get; set; }
         public DateTime StartDate { get; set; }

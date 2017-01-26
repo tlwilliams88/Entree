@@ -10,6 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Marketing
 {
     public interface ICatalogCampaignItemRepository
     {
-        List<CatalogCampaignItem> GetByCampaign(int campaignId);
+        List<CatalogCampaignItem> GetByCampaign(Int64 campaignId);
     }
 }

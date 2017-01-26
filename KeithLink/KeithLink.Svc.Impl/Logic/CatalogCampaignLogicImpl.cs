@@ -38,6 +38,16 @@ namespace KeithLink.Svc.Impl.Logic
 
             return returnValue;
         }
+
+        public CatalogCampaignReturnModel GetCampaignByUri(string uri)
+        {
+            CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
+            returnValue = _campaignHeaderRepo.GetByUri(uri).ToModel();
+            returnValue.Items = _campaignItemRepo.GetByCampaign(returnValue.Id);
+
+            return returnValue;
+        }
+
         #endregion
 
         #endregion

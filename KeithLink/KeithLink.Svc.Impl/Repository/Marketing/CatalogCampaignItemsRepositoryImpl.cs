@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
         #endregion
 
         #region get
-        public List<CatalogCampaignItem> GetByCampaign(int campaignId)
+        public List<CatalogCampaignItem> GetByCampaign(Int64 campaignId)
         {
             return Read<CatalogCampaignItem>(new CommandDefinition(
                 COMMAND_GET_BY_CAMPAIGN,

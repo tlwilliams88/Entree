@@ -290,17 +290,17 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <summary>
         /// Return list of products attached to a promotional catalog campaign
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="campaignUri"></param>
         /// <param name="searchModel"></param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/campaign/{id}")]
-        public OperationReturnModel<ProductsReturn> GetCampaignProducts(int id, [FromUri] SearchInputModel searchModel)
+        [ApiKeyedRoute("catalog/campaign/{campaignUri}")]
+        public OperationReturnModel<ProductsReturn> GetCampaignProducts(string campaignUri, [FromUri] SearchInputModel searchModel)
         {
             OperationReturnModel<ProductsReturn> returnValue = new OperationReturnModel<ProductsReturn>();
             try
             {
-                ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(id, this.SelectedUserContext, searchModel, this.AuthenticatedUser);
+                ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(campaignUri, this.SelectedUserContext, searchModel, this.AuthenticatedUser);
                 returnValue.SuccessResponse = prods;
                 returnValue.IsSuccess = true;
             } catch (Exception ex)
