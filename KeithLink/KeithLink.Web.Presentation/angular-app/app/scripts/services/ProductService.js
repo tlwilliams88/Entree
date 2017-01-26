@@ -25,7 +25,16 @@ angular.module('bekApp')
       }
 
       var Service = {
-        selectedProduct: {}, 
+        selectedProduct: {},
+
+        getCampaignDetails: function(campaignId) {
+          var campaignDetails;
+
+          return $http.get('/catalog/campaign/' + campaignId + '/info').then(function(resp){
+            campaignDetails = resp.data.successResponse;
+            return campaignDetails;
+          })
+        },
 
         getFacets: function(brands, manufacturers, dietary, itemspecs, temp_zone, parentcategories, subcategories) {
           var facets = [];

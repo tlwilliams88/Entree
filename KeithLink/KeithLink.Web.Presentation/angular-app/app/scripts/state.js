@@ -115,6 +115,11 @@ angular.module('bekApp')
       controller: 'SearchController',
       data: {
         authorize: 'canBrowseCatalog'
+      },
+      resolve: {
+        campaignInfo: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
+          return ProductService.getCampaignDetails($stateParams.campaign_id);
+        }]
       }
     })
 

@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage', 'SessionService',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
@@ -18,7 +18,8 @@ angular.module('bekApp')
       ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, // bek custom services
       blockUI,
       LocalStorage,
-      SessionService
+      SessionService,
+      campaignInfo
     ) {
 
     // clear keyword search term at top of the page
@@ -64,8 +65,8 @@ angular.module('bekApp')
     } else {
         if ($state.params.catalogType == "UNFI"){
             $scope.pageTitle = "Natural and Organic";
-        } else if($state.params.campaign_id == "1") {
-          $scope.pageTitle = "Keith Kitchen Essentials";
+        } else if($state.params.campaign_id) {
+          $scope.pageTitle = campaignInfo.description;
       } else {
             $scope.pageTitle = "Specialty Catalog";
         }
