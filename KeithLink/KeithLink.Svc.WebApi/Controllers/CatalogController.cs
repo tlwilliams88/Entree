@@ -10,6 +10,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.Marketing;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
@@ -33,6 +34,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
     public class CatalogController : BaseController {
         #region attributes
         private readonly ICatalogCampaignService _campaignService;
+        private readonly ICatalogCampaignLogic _campaignLogic;
         private readonly ICatalogLogic _catalogLogic;
 		private readonly IExportSettingLogic _exportSettingRepository;
         private readonly IEventLogRepository _elRepo;
@@ -40,8 +42,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
         #region ctor
         public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, 
-            IExportSettingLogic exportSettingsLogic, IEventLogRepository elRepo, ICatalogCampaignService campaignService) : base(profileLogic) {
+            IExportSettingLogic exportSettingsLogic, IEventLogRepository elRepo, ICatalogCampaignService campaignService,
+            ICatalogCampaignLogic campaignLogic) : base(profileLogic) {
 
+            _campaignLogic = campaignLogic;
             _campaignService = campaignService;
             _catalogLogic = catalogLogic;
 			_exportSettingRepository = exportSettingsLogic;
@@ -308,6 +312,30 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 returnValue.IsSuccess = false;
                 returnValue.ErrorMessage = ex.Message;
                 _elRepo.WriteErrorLog("GetCampaignProducts", ex);
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the campaign header details
+        /// </summary>
+        /// <param name="campaignUri"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("catalog/campaign/{campaignUri}/info")]
+        public OperationReturnModel<CatalogCampaignHeader> GetCampaignHeader(string campaignUri)
+        {
+            OperationReturnModel<CatalogCampaignHeader> returnValue = new OperationReturnModel<CatalogCampaignHeader>();
+            try
+            {
+                returnValue.SuccessResponse = _campaignLogic.GetCampaignByUri(campaignUri, false);
+                returnValue.IsSuccess = true;
+            } catch (Exception ex)
+            {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetCampaignHeader", ex);
             }
 
             return returnValue;

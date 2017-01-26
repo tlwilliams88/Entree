@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Marketing
 {
     public interface ICatalogCampaignLogic
     {
-        CatalogCampaignReturnModel GetCampaign(int id);
-        CatalogCampaignReturnModel GetCampaignByUri(string uri);
+        CatalogCampaignReturnModel GetCampaign(int id, bool includeItems = true);
+        CatalogCampaignReturnModel GetCampaignByUri(string uri, bool includeItems = true);
     }
 }

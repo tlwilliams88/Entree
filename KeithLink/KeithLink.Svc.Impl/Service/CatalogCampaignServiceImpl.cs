@@ -37,6 +37,7 @@ namespace KeithLink.Svc.Impl.Service
 
             return _catalogLogic.GetProductsByItemNumbers(context, campaign.Items.Select(x => x.ItemNumber).ToList(), model, profile);
         }
+
         #endregion
 
         #endregion

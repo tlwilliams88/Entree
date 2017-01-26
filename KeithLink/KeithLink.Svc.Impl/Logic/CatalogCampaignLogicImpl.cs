@@ -30,20 +30,28 @@ namespace KeithLink.Svc.Impl.Logic
         #region functions
 
         #region get
-        public CatalogCampaignReturnModel GetCampaign(int id)
+        public CatalogCampaignReturnModel GetCampaign(int id, bool includeItems = true)
         {
             CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
             returnValue = _campaignHeaderRepo.GetHeader(id).ToModel();
-            returnValue.Items = _campaignItemRepo.GetByCampaign(id);
+
+            if (includeItems)
+            {
+                returnValue.Items = _campaignItemRepo.GetByCampaign(id);
+            }
 
             return returnValue;
         }
 
-        public CatalogCampaignReturnModel GetCampaignByUri(string uri)
+        public CatalogCampaignReturnModel GetCampaignByUri(string uri, bool includeItems = true)
         {
             CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
             returnValue = _campaignHeaderRepo.GetByUri(uri).ToModel();
-            returnValue.Items = _campaignItemRepo.GetByCampaign(returnValue.Id);
+
+            if (includeItems)
+            {
+                returnValue.Items = _campaignItemRepo.GetByCampaign(returnValue.Id);
+            }
 
             return returnValue;
         }
