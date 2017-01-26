@@ -19,6 +19,8 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
         #region attributes
         private const string COMMAND_GET_ONE = "Marketing.GetCatalogCampaignHeader";
         private const string COMMAND_GET_ALL = "Marketing.GetAllCatalogCampaignHeader";
+
+        private const string COMMAND_GET_BY_URI = "Marketing.GetCatalogCampaignHeaderByUri";
         #endregion
 
         #region constructor
@@ -34,6 +36,15 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
             return ReadOne<CatalogCampaignHeader>(new CommandDefinition(
                 COMMAND_GET_ONE, 
                 new { @id = id }, 
+                commandType: CommandType.StoredProcedure
+            ));
+        }
+
+        public CatalogCampaignHeader GetByUri(string uri)
+        {
+            return ReadOne<CatalogCampaignHeader>(new CommandDefinition(
+                COMMAND_GET_BY_URI,
+                new { @Uri = uri },
                 commandType: CommandType.StoredProcedure
             ));
         }
