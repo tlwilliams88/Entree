@@ -31,12 +31,13 @@ namespace KeithLink.Svc.Impl.Service
         #region functions
 
         #region get
-        public ProductsReturn GetCatalogCampaignProducts(int campaignId, UserSelectedContext context, SearchInputModel model, UserProfile profile)
+        public ProductsReturn GetCatalogCampaignProducts(string campaignUri, UserSelectedContext context, SearchInputModel model, UserProfile profile)
         {
-            CatalogCampaignReturnModel campaign = _campaignLogic.GetCampaign(campaignId);
+            CatalogCampaignReturnModel campaign = _campaignLogic.GetCampaignByUri(campaignUri);
 
             return _catalogLogic.GetProductsByItemNumbers(context, campaign.Items.Select(x => x.ItemNumber).ToList(), model, profile);
         }
+
         #endregion
 
         #endregion

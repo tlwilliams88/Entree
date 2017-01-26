@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Marketing
     public interface ICatalogCampaignHeaderRepository
     {
         CatalogCampaignHeader GetHeader(int id);
+        CatalogCampaignHeader GetByUri(string uri);
         List<CatalogCampaignHeader> GetAll();
     }
 }

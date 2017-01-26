@@ -14,6 +14,7 @@ namespace KeithLink.Svc.Core.Extensions.Marketing
         {
             CatalogCampaignReturnModel to = new CatalogCampaignReturnModel();
             to.Id = from.Id;
+            to.Uri = from.Uri;
             to.Description = from.Description;
             to.Active = from.Active;
             to.StartDate = from.StartDate;
