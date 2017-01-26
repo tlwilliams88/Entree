@@ -49,9 +49,27 @@
   }
 }
 
-@media(max-width:763px) {
+@media (max-width:763px) {
   .max-width-763px {
     display: none;
+  }
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+  .display-icon-landscape {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 550px) and (orientation: landscape) {
+  .hide-icon-landscape {
+    display: none;
+  }
+}
+
+@media (max-width:1007px) {
+  .max-width-1006px {
+    width: 243px !important;
   }
 }
 
