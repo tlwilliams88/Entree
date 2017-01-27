@@ -444,7 +444,7 @@
           </thead>
 
           <tbody 
-              ng-class="{ 'item-selected': item.isSelected }" 
+              ng-class="{ 'item-selected': item.isSelected, 'border-left-orange': item.custominventoryitemid, 'border-left-green': item.delta == 'newly added' && selectedList.is_contract_list, 'border-left-red': item.delta == 'newly deleted' && selectedList.is_contract_list }"
               fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}"
               data-product="{{item}}" 
               data-drag="dragEnabled" 
@@ -460,8 +460,7 @@
               id="listsTableRows"
               class="highlightRows"
               ng-click="shiftSelectOtherRows($event, item, $index)"
-              ng-show="!isCustomInventoryList"
-              ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">                
+              ng-show="!isCustomInventoryList">                
            
             <tr>
               <td class="hidden-drag" ng-class="{'bek-drag-handle': !item.custominventoryitemid}">
