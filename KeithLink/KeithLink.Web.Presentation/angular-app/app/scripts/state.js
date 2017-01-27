@@ -162,6 +162,11 @@ angular.module('bekApp')
       controller: 'SearchController',
       data: {
         authorize: 'canBrowseCatalog'
+      },
+      resolve: {
+        campaignInfo: [ function() {
+          return false
+        }]
       }
     })
     .state('menu.catalog.products.brand', {
