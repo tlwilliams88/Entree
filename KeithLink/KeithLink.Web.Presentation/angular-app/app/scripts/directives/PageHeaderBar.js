@@ -26,6 +26,14 @@ angular.module('bekApp')
       templateUrl: 'views/directives/headerBar.html'
     };
   })
+  .directive('pageHeaderBarHome', function() {
+    return {
+      restrict: 'A',
+      replace : true,
+      transclude: 'element',
+      templateUrl: 'views/directives/headerBarHome.html'
+    };
+  })
   .directive('headerMessage', function() {
     return {
       restrict: 'A',

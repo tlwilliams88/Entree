@@ -1,3 +1,99 @@
+// Used for Event Header(ex. E&S Catalog)
+
+.row.page-header-bar-home {
+  background-color: $color-purple;
+}
+
+@media (max-width:360px) {
+  .margin-top-5-max-width-360px {
+    margin-top: -5px !important;
+  }
+  .margin-left-10-max-width-564px {
+    margin-left: 10px !important;
+  }
+}
+
+@media (max-width:1269px) {
+  .max-width-1269 {
+    display: none;
+  }
+}
+
+@media (max-width:1015px) and (min-width:627px) {
+  .max-width-1015 {
+    display: none;
+  }
+}
+
+@media (max-width:10000px) and (min-width:1092px) {
+  .max-width {
+    display: inline-block;
+  }
+}
+
+@media (max-width:891px) and (min-width:696px) {
+  .max-width-891 {
+    display: inline-block;
+  }
+}
+
+@media (max-width:1003px) {
+  .max-width-1003-min-width-400px {
+    display: inline-block;
+  }
+}
+
+@media (max-width:991px) {
+  .max-width-991px {
+    display: inline-block;
+  }
+}
+
+@media (max-width:763px) {
+  .max-width-763px {
+    display: none;
+  }
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+  .display-icon-landscape {
+    display: inline-block;
+  }
+}
+
+@media (max-width: 550px) and (orientation: landscape) {
+  .hide-icon-landscape {
+    display: none;
+  }
+}
+
+@media (max-width:1007px) {
+  .max-width-1006px {
+    width: 243px !important;
+  }
+}
+
+@media(min-width:992px) {
+  .btn-primary-homepage {
+    background-color: #489ecf;
+    padding: 10px 12px;
+    font-size: 14px;
+    line-height: 1.33;
+    border-radius: 4px;
+  }
+}
+
+@media(max-width:991px) {
+  .btn-mobile-homepage {
+    background-color: #9E987E;
+    padding: 5px 10px;
+    font-size: 11px;
+    line-height: 1.5;
+    border-radius: 3px;
+    margin-top: -5px;
+  }
+}
+
 // Account Balance
 .balance__term--amount {
   @include make-xs-column(6);
