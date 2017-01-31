@@ -193,7 +193,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 				QuantityShipped = value.ShippedQuantity,
 				QuantityOrdered = value.OrderQuantity,
 				LineNumber = value.LineNumber.ToString(),
-				ExtSalesNet = value.ShippedQuantity * value.SellPrice,
+                CatchWeight = value.CatchWeight,
+                CatchWeightCode = value.CatchWeight,
+                ExtCatchWeight = value.TotalShippedWeight
 			};
 		}
         #endregion

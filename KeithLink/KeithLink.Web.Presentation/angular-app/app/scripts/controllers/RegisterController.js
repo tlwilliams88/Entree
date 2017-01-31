@@ -8,18 +8,31 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
-    function ($scope, $state, ENV, toaster, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService', 'LocalStorage', 'Constants', '$window', 'localStorageService',
+    function ($scope, $state, ENV, toaster, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService, LocalStorage, Constants, $window, localStorageService) {
 
   $scope.isMobileApp = ENV.mobileApp;
-
-    $scope.signUpBool = false;
-    $scope.isInternalEmail = false;
+  $scope.signUpBool = false;
+  $scope.isInternalEmail = false;
+  $scope.defaultUserName = ENV.username;
+  $scope.saveUserName = $scope.defaultUserName ? true : false;
 
   // gets prepopulated login info for dev environment
-  $scope.loginInfo = {
-    username: ENV.username,
-    password: ENV.password
+  if(ENV.username) {
+    $scope.loginInfo = {
+      username: $scope.defaultUserName,
+      password: ''
+    };
+  } else {
+    $scope.loginInfo = {
+      username: '',
+      password: ''
+    };
+  }
+
+  $scope.setSavingUserName = function(username) {
+    $scope.saveUserName = !$scope.saveUserName;
+    $scope.enteredUserName = username;
   };
 
   BranchService.getBranches().then(function(branches) {
@@ -28,6 +41,12 @@ angular.module('bekApp')
 
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
+
+    if($scope.saveUserName){
+      LocalStorage.setDefaultUserName(loginInfo.username);
+    } else {
+      LocalStorage.setDefaultUserName('');
+    }
     
     AuthenticationService.login(loginInfo.username, loginInfo.password)
       .then(UserProfileService.getCurrentUserProfile)
@@ -61,7 +80,7 @@ angular.module('bekApp')
   };
 
   $scope.checkForInternalEmail = function(email) {    
-    if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === '@benekeith.com'){
+    if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === "@benekeith.com"){
       $scope.isInternalEmail = true;
       $scope.$apply(); // Needed to use $apply to update view
     }else{
