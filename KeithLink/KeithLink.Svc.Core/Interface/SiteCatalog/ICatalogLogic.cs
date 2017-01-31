@@ -28,6 +28,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 
         ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids);
 
+        ProductsReturn GetProductsByItemNumbers(UserSelectedContext context, List<string> ids, SearchInputModel searchModel, UserProfile profile);
         ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
 
 
