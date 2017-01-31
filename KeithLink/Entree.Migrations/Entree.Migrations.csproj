@@ -47,6 +47,8 @@
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
+    <Compile Include="Migrations\v1.12.2_es_catalog\Migration10.cs" />
+    <Compile Include="Migrations\v1.12.2_es_catalog\Migration9.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_UpdateProcessContractItemList.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
@@ -112,6 +114,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.2\down\Migration10-ES_Catalog_uri_name-down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.2\down\Migration9-ES_Catalog_schema-down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.2\up\Migration10-ES_Catalog_uri_name-up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.2\up\Migration9-ES_Catalog_schema-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

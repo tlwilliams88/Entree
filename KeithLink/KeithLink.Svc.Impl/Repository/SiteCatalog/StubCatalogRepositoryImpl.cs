@@ -81,6 +81,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			throw new NotImplementedException();
 		}
 
+		public ProductsReturn GetProductsByItemNumbers(string branch, List<string> ids, SearchInputModel model = null)
+		{
+			throw new NotImplementedException();
+		}
 
 		public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel)
 		{

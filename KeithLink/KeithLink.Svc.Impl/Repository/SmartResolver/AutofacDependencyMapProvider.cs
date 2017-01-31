@@ -23,6 +23,7 @@ using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Marketing;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
@@ -39,6 +40,8 @@ using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Interface.SingleSignOn;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SpecialOrders;
+
+using KeithLink.Svc.Impl.Service;
 
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Logic;
@@ -69,6 +72,7 @@ using KeithLink.Svc.Impl.Repository.Email;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using KeithLink.Svc.Impl.Repository.Lists;
+using KeithLink.Svc.Impl.Repository.Marketing;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
@@ -118,6 +122,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>().InstancePerRequest();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
+
+            // catalog campaign
+            builder.RegisterType<CatalogCampaignHeaderRepositoryImpl>().As<ICatalogCampaignHeaderRepository>();
+            builder.RegisterType<CatalogCampaignItemsRepositoryImpl>().As<ICatalogCampaignItemRepository>();
 
             // customer
             builder.RegisterType<AccountRepository>().As<IAccountRepository>();
@@ -208,6 +216,9 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
             builder.RegisterType<UnfiImageProcessing>().As<IExternalImageProcessorUnfi>();
 
+            // catalog campaign
+            builder.RegisterType<CatalogCampaignLogicImpl>().As<ICatalogCampaignLogic>();
+
             // customer
             builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
 
@@ -282,6 +293,16 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
             builder.RegisterType<ReportLogic>().As<IReportLogic>();
 
+            ///////////////////////////////////////////////////////////////////////////////
+            // Service Classes
+            ///////////////////////////////////////////////////////////////////////////////
+
+            // catalog campaign
+            builder.RegisterType<CatalogCampaignServiceImpl>().As<ICatalogCampaignService>();
+
+            ///////////////////////////////////////////////////////////////////////////////
+            // Environment Specific Classes
+            ///////////////////////////////////////////////////////////////////////////////
 #if DEMO
 			builder.RegisterType<DemoExternalUserDomainRepositoryImpl>().As<ICustomerDomainRepository>();
 			builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();

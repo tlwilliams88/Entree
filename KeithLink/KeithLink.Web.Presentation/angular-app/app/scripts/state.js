@@ -11,7 +11,9 @@ angular.module('bekApp')
   */
 
   $stateProvider
-    // register
+    /**********
+    REGISTER
+    **********/
     .state('register', {
       url: '/register/',
       templateUrl: 'views/register.html',
@@ -51,17 +53,27 @@ angular.module('bekApp')
         }],
         mandatoryMessages: ['NotificationService', function(NotificationService) {
           return NotificationService.mandatoryMessages;
+        }],
+        isHomePage: ['$stateParams', function($stateParams) {
+          return $stateParams.isHomePage = false;
         }]
       }
     })
-    // /home
+    /**********
+    HOME
+    **********/
     .state('menu.home', {
       url: '/home/',
       templateUrl: 'views/home.html',
       controller: 'HomeController',
       data: {
         authorize: 'isOrderEntryCustomer',
-        saveCarts: true
+        saveCarts: true,
+      },
+      resolve: {
+        isHomePage: ['$stateParams', function($stateParams) {
+          return $stateParams.isHomePage = true;
+        }]
       }
     })
     .state('menu.userprofile', {
@@ -91,6 +103,23 @@ angular.module('bekApp')
       controller: 'NotificationsController',
       data: {
         authorize: 'isOrderEntryCustomer'
+      }
+    })
+
+    /**********
+    CAMPAIGN CATALOG
+    **********/
+    .state('menu.campaign', {
+      url: '/catalog/campaign/:campaign_id',
+      templateUrl: 'views/searchresults.html',
+      controller: 'SearchController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      },
+      resolve: {
+        campaignInfo: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
+          return ProductService.getCampaignDetails($stateParams.campaign_id);
+        }]
       }
     })
 
@@ -133,6 +162,11 @@ angular.module('bekApp')
       controller: 'SearchController',
       data: {
         authorize: 'canBrowseCatalog'
+      },
+      resolve: {
+        campaignInfo: [ function() {
+          return false
+        }]
       }
     })
     .state('menu.catalog.products.brand', {

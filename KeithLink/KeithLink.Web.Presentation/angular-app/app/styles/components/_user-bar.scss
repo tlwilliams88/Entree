@@ -61,7 +61,6 @@
   .logo-mobile {
     height: 50px;
     padding: 5px 0;
-    display: inline-block;
 
     &.logo-margin-left {
       margin-left: 45px;
@@ -119,6 +118,24 @@
 
 @media (max-width: $screen-sm-max) {
   .hide-searchbar {
+    display: none;
+  }
+}
+
+@media (max-width: 423px) {
+  .hide-icon-423px {
+    display: none;
+  }
+}
+
+@media (min-width: 423px) {
+  .show-small-icon-422px {
+    display: none;
+  }
+}
+
+@media (max-width: 350px) {
+  .show-small-icon-350px {
     display: none;
   }
 }

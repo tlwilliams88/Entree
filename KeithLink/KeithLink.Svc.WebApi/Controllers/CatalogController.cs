@@ -5,10 +5,12 @@ using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Marketing;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.Marketing;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
@@ -31,16 +33,23 @@ namespace KeithLink.Svc.WebApi.Controllers {
 	[Authorize]
     public class CatalogController : BaseController {
         #region attributes
+        private readonly ICatalogCampaignService _campaignService;
+        private readonly ICatalogCampaignLogic _campaignLogic;
         private readonly ICatalogLogic _catalogLogic;
 		private readonly IExportSettingLogic _exportSettingRepository;
         private readonly IEventLogRepository _elRepo;
         #endregion
 
         #region ctor
-        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
-            IEventLogRepository elRepo) : base(profileLogic) {
+        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, 
+            IExportSettingLogic exportSettingsLogic, IEventLogRepository elRepo, ICatalogCampaignService campaignService,
+            ICatalogCampaignLogic campaignLogic) : base(profileLogic) {
+
+            _campaignLogic = campaignLogic;
+            _campaignService = campaignService;
             _catalogLogic = catalogLogic;
 			_exportSettingRepository = exportSettingsLogic;
+
             this._elRepo = elRepo;
         }
         #endregion
@@ -280,6 +289,56 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _elRepo.WriteErrorLog("GetProductsSearch", ex);
             }
             return ret;
+        }
+
+        /// <summary>
+        /// Return list of products attached to a promotional catalog campaign
+        /// </summary>
+        /// <param name="campaignUri"></param>
+        /// <param name="searchModel"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("catalog/campaign/{campaignUri}")]
+        public OperationReturnModel<ProductsReturn> GetCampaignProducts(string campaignUri, [FromUri] SearchInputModel searchModel)
+        {
+            OperationReturnModel<ProductsReturn> returnValue = new OperationReturnModel<ProductsReturn>();
+            try
+            {
+                ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(campaignUri, this.SelectedUserContext, searchModel, this.AuthenticatedUser);
+                returnValue.SuccessResponse = prods;
+                returnValue.IsSuccess = true;
+            } catch (Exception ex)
+            {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetCampaignProducts", ex);
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get the campaign header details
+        /// </summary>
+        /// <param name="campaignUri"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("catalog/campaign/{campaignUri}/info")]
+        public OperationReturnModel<CatalogCampaignHeader> GetCampaignHeader(string campaignUri)
+        {
+            OperationReturnModel<CatalogCampaignHeader> returnValue = new OperationReturnModel<CatalogCampaignHeader>();
+            try
+            {
+                returnValue.SuccessResponse = _campaignLogic.GetCampaignByUri(campaignUri, false);
+                returnValue.IsSuccess = true;
+            } catch (Exception ex)
+            {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetCampaignHeader", ex);
+            }
+
+            return returnValue;
         }
 
         /// <summary>

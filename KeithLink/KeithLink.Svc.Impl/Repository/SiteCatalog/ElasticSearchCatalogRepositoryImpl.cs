@@ -629,7 +629,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
 			var productList = String.Join(" OR ", ids);
-			var query = @"{
+            var query = @"{
 						""from"" : 0, ""size"" : 5000,
 						""query"":{
 						""query_string"" : {
@@ -639,8 +639,38 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 							}
 						}}";
 
+            return GetProductsFromElasticSearch(branch, false, query);
+        }
 
-			return GetProductsFromElasticSearch(branch, false, query);
+        public ProductsReturn GetProductsByItemNumbers(string branch, List<string> ids, SearchInputModel searchModel)
+        {
+            var q = new
+            {
+                from = searchModel.From,
+                size = searchModel.Size,
+                query = new
+                {
+                    @bool = new
+                    {
+                        filter = new
+                        {
+                            terms = new
+                            {
+                                itemnumber = ids
+                            }
+                        },
+                        must = BuildFacetsFilter(searchModel.Facets)
+                    },
+                },
+                sort = BuildSort(searchModel.SField, searchModel.SDir),
+                aggregations = ElasticSearchAggregations
+            };
+
+            string query = Newtonsoft.Json.JsonConvert.SerializeObject(q);
+
+            ProductsReturn returnValue = GetProductsFromElasticSearch(branch, false, query);
+
+            return returnValue;
         }
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {

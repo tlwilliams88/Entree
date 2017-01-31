@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage', 'SessionService',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
@@ -18,7 +18,8 @@ angular.module('bekApp')
       ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, // bek custom services
       blockUI,
       LocalStorage,
-      SessionService
+      SessionService,
+      campaignInfo
     ) {
 
     // clear keyword search term at top of the page
@@ -64,7 +65,9 @@ angular.module('bekApp')
     } else {
         if ($state.params.catalogType == "UNFI"){
             $scope.pageTitle = "Natural and Organic";
-        } else {
+        } else if($state.params.campaign_id) {
+          $scope.pageTitle = campaignInfo.description;
+      } else {
             $scope.pageTitle = "Specialty Catalog";
         }
     }
@@ -215,7 +218,7 @@ angular.module('bekApp')
       }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
-      ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName).then(function(data){
+      ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName, $stateParams.campaign_id).then(function(data){
         $scope.products = data.products;
         if($scope.toggleView){
           resetPage($scope.products, true);
@@ -545,7 +548,7 @@ angular.module('bekApp')
       }
 
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
-      if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
+      if($scope.sortField === 'itemnumber' && $state.params.catalogType && $state.params.catalogType != 'BEK'){
         $scope.sortField  = '';
       }
 
@@ -554,7 +557,7 @@ angular.module('bekApp')
       // }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id);
     }
 
     //Load list of products and block UI with message
@@ -583,7 +586,7 @@ angular.module('bekApp')
         } else {
           $scope.setStartAndEndPoints($scope.products);
         }
-        if($scope.aggregateCount !==0 || $scope.noFiltersSelected){
+        if($scope.facets && $scope.aggregateCount !==0 || $scope.noFiltersSelected){
           updateFacetCount($scope.facets.brands, data.facets.brands);
           updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
           updateFacetCount($scope.facets.dietary, data.facets.dietary);
