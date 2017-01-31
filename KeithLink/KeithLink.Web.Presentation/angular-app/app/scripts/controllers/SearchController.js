@@ -69,19 +69,12 @@ angular.module('bekApp')
     if ($state.params.catalogType == 'BEK') {
         $scope.pageTitle = 'Product Catalog';
     } else {
-<<<<<<< HEAD
-        if ($state.params.catalogType == 'UNFI'){
-            $scope.pageTitle = 'Natural and Organic';
-        } else {
-            $scope.pageTitle = 'Specialty Catalog';
-=======
         if ($state.params.catalogType == "UNFI"){
             $scope.pageTitle = "Natural and Organic";
         } else if($state.params.campaign_id) {
           $scope.pageTitle = campaignInfo.description;
       } else {
             $scope.pageTitle = "Specialty Catalog";
->>>>>>> master
         }
     }
 

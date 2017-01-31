@@ -184,18 +184,15 @@ angular.module('bekApp')
         authorize: 'canBrowseCatalog'
       },
       resolve: {
-<<<<<<< HEAD
         security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
           var customerRecord = LocalStorage.getCurrentCustomer();
 
           if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
             return $q.reject('Customer Cannot View UNFI Items.');
           }
-
-=======
+        }],
         campaignInfo: [ function() {
           return false
->>>>>>> master
         }]
       }
     })
