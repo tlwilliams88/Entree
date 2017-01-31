@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Invoices;
+﻿using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.Orders;
 
 using System;
@@ -22,6 +23,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             retVal.Name = value.Name;
             retVal.Description = value.Description;
             retVal.PackSize = value.PackSize;
+            retVal.Pack = value.Pack;
             retVal.Each = value.Each;
             retVal.Brand = value.BrandExtendedDescription;
             retVal.BrandExtendedDescription = value.BrandExtendedDescription;
@@ -43,14 +45,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             retVal.ManufacturerNumber = value.ManufacturerNumber;
             retVal.Nutritional = value.Nutritional;
             retVal.ExtCatchWeight = value.TotalShippedWeight;
-            if (retVal.CatchWeight)
-            {
-                retVal.ExtSalesNet = retVal.ExtCatchWeight * retVal.ItemPrice;
-            }
-            else
-            {
-                retVal.ExtSalesNet = retVal.QuantityShipped * retVal.ItemPrice;
-            }
 
             return retVal;
         }

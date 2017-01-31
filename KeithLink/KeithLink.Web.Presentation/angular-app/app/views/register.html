@@ -2,34 +2,42 @@
   <div class="col-md-10 col-md-offset-1 col-xs-12">
 
     <div  ng-if="!signUpBool" class="row register-header">    
-    <form novalidate name="loginForm" class="login-form style-validation-errors text-center">
-         <div class="col-md-12" style="margin-bottom:30px;">
-            <img src="images/bek-logo.png" alt="logo"/>
-         </div>     
-            <div style="text-align:center; margin-top:30px;" class="form-group">           
-                <label for="username">Email Address</label>                
-                <input  id="username" ng-trim focus-me required name="username" type="email" class="register-input form-control" ng-model="loginInfo.username">
-                 <span ng-show="loginForm.username.$error.required && loginForm.username.$dirty" class="text-red">Email is required</span></br>               
-                <label for="password">Password</label>               
-                <input  id="password" required name="password" type="password" class="register-input form-control " ng-model="loginInfo.password">
-                 <span  ng-show="loginForm.password.$error.required && loginForm.password.$dirty"class="text-red">Password is required</span>          
-                 <div class="col-xs-12 col-sm-12" style="margin-bottom:10px;">
-                   <button ng-disabled="loginForm.$invalid" class="btn-primary btn login-btn"  type="submit" ng-click="login(loginInfo)">Login</button>
-                 </div>        
-            <div style="text-align:center; word-wrap:break-word;" class="col-sm-12 col-xs-12 text-red">
-               <div ng-show="loginErrorMessage.length">
-                {{loginErrorMessage}}        
-               </div>
-               <a ng-if="!isInternalEmail" ng-confirm-click="{{'Request a password reset for the following email: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" >
-                  <strong>Forgot Password?</strong>
-               </a>
-               <span ng-if="isInternalEmail">
-                <strong class="text-red">The Forgot Password link is for non-Ben E. Keith users.  Please use your network password to log in.  Contact your local I.T. support if you need assistance.</strong>
-               </span>
+      <form novalidate name="loginForm" class="login-form style-validation-errors text-center">
+        <div class="col-md-12" style="margin-bottom:30px;">
+          <img src="images/bek-logo.png" alt="logo"/>
+        </div>     
+        <div style="text-align:center; margin-top:30px;" class="form-group">           
+          <label for="username">Email Address</label>
+          <span style="display:inline;">             
+            <input  id="username"  ng-trim focus-me required name="username" type="text" class="register-input form-control" ng-model="loginInfo.username"/>
+            <div class="form-check hand" ng-if="isMobileApp">
+              <label class="form-check-label">
+              <input type="checkbox" class="form-check-input" style="padding-top:10px;" ng-change="setSavingUserName(loginInfo.username)" ng-model="saveUserName" ng-checked="loginInfo.username == defaultUserName && saveUserName">
+              Save Username
+              </label>
             </div>
+          </span>
+          <span ng-show="loginForm.username.$error.required && loginForm.username.$dirty" class="text-red">Email is required</span></br>               
+          <label for="password">Password</label>               
+          <input  id="password" required name="password" type="password" class="register-input form-control " ng-model="loginInfo.password" />
+          <span  ng-show="loginForm.password.$error.required && loginForm.password.$dirty" class="text-red">Password is required</span>          
+          <div class="col-xs-12 col-sm-12" style="margin-bottom:10px;">
+            <button ng-disabled="loginForm.$invalid" class="btn-primary btn login-btn"  type="submit" ng-click="login(loginInfo)">Login</button>
+          </div>    
+          <div style="text-align:center; word-wrap:break-word;" class="col-sm-12 col-xs-12 text-red">
+            <div ng-show="loginErrorMessage.length">
+            {{loginErrorMessage}}        
+            </div>
+            <a ng-if="!isInternalEmail" ng-confirm-click="{{'Request a password reset for the following email: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" >
+              <strong>Forgot Password?</strong>
+            </a>
+            <span ng-if="isInternalEmail">
+              <strong class="text-red">The Forgot Password link is for non-Ben E. Keith users.  Please use your network password to log in.  Contact your local I.T. support if you need assistance.</strong>
+            </span>
+          </div>
         </div>
-    </form>
-  </div>
+      </form>
+    </div>
 
     <div class="register-body sub-content">
 
@@ -57,13 +65,13 @@
             <label for="username">Email Address</label>
             <span ng-show="registrationForm.username.$error.required && registrationForm.username.$dirty" class="text-red">Email is required</span>
             <span ng-show="registrationForm.username.$error.internalEmailInvalid" class="text-red">You cannot register with an internal benekeith.com email address</span>
-            <input required ng-trim internal-email-invalid class="form-control" type="email" id="username" name="username" ng-model="registerUser.email">
+            <input required ng-trim internal-email-invalid class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmUsername">Confirm Email</label>
             <span ng-show="registrationForm.confirmUsername.$error.matchInput && registrationForm.confirmUsername.$dirty" class="text-red">Emails do not match</span>
             <span ng-show="registrationForm.confirmUsername.$error.required && registrationForm.confirmUsername.$dirty" class="text-red">Email confirmation is required</span>
-            <input required ng-trim class="form-control" type="email" id="confirmUsername" name="confirmUsername" ng-model="registerUser.confirmEmail" match-input="registerUser.email">
+            <input required ng-trim class="form-control" type="text" id="confirmUsername" name="confirmUsername" ng-model="registerUser.confirmEmail" match-input="registerUser.email">
           </div>
         </div>
         <div class="row">

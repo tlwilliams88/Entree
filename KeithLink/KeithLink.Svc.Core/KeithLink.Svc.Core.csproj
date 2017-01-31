@@ -180,6 +180,7 @@
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
+    <Compile Include="Extensions\Marketing\CatalogCampaignHeaderExtensions.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
     <Compile Include="Extensions\PowerMenu\PowerMenuExtensions.cs" />
     <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
@@ -246,6 +247,10 @@
     <Compile Include="Interface\Lists\IListLogic.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Lists\INoteLogic.cs" />
+    <Compile Include="Interface\Marketing\ICatalogCampaignHeaderRepository.cs" />
+    <Compile Include="Interface\Marketing\ICatalogCampaignItemRepository.cs" />
+    <Compile Include="Interface\Marketing\ICatalogCampaignLogic.cs" />
+    <Compile Include="Interface\Marketing\ICatalogCampaignService.cs" />
     <Compile Include="Interface\Messaging\IMessagingLogic.cs" />
     <Compile Include="Interface\Messaging\IPushMessageConsumer.cs" />
     <Compile Include="Interface\Messaging\IPushMessageProvider.cs" />
@@ -338,6 +343,9 @@
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
     <Compile Include="Models\Messaging\ForwardUserMessageModel.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignHeader.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignItem.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignReturnModel.cs" />
     <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
     <Compile Include="Models\Messaging\Queue\PushMessage.cs" />
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />

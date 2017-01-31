@@ -16,7 +16,8 @@ angular.module('bekApp')
       lastOrderList: 'lastOrderList',
       pageSize: 'pageSize',
       defaultSort: 'defaultSort',
-      defaultView: 'defaultView'
+      defaultView: 'defaultView',
+      userName: 'userName'
     },
 
     offlineLocalStorage: {

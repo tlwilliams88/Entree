@@ -595,6 +595,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return products;
         }
 
+        public ProductsReturn GetProductsByItemNumbers(UserSelectedContext context, List<string> itemNumbers, SearchInputModel searchModel, UserProfile profile)
+        {
+            ProductsReturn returnValue = new ProductsReturn() { Products = new List<Product>() };
+
+            returnValue = _catalogRepository.GetProductsByItemNumbers(context.BranchId, itemNumbers, searchModel);
+
+            AddPricingInfo(returnValue, context, searchModel);
+            GetAdditionalProductInfo(profile, returnValue, context);
+
+            return returnValue;
+        }
+
         public ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids) {
             int totalProcessed = 0;
             var products = new ProductsReturn() { Products = new List<Product>() };

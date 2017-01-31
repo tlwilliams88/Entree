@@ -1,3 +1,11 @@
+.background-color-white {
+  background-color: $color-white;
+}
+
+.color-white {
+  color: $color-white;
+}
+
 // must have for infinite scroll
 html, body {
   height: 100%;
@@ -65,6 +73,10 @@ html, body {
   margin-left:5px !important;
 }
 
+.margin-left-8 {
+  margin-left: 8px;
+}
+
 .margin-left-10 {
   margin-left: 10px !important;
 }
@@ -85,20 +97,28 @@ html, body {
   margin-right:15px;
 }
 
+.margin-top-3 {
+  margin-top: 3px;
+}
+
 .margin-top-5 {
   margin-top: 5px;
+}
+
+.margin-top-8 {
+  margin-top: 8px;
 }
 
 .margin-top-10 {
   margin-top: 10px !important;
 }
 
-.margin-bottom-10 {
-  margin-bottom: 10px !important;
-}
-
 .margin-top-25 {
   margin-top: 25px;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px !important;
 }
 
 .max-width-100Per {
@@ -125,6 +145,14 @@ html, body {
   padding-right: 15px;
 }
 
+.padding-right-10 {
+  padding-right: 10px;
+}
+
+.padding-right-5 {
+  padding-right: 5px;
+}
+
 .highlightRows:nth-of-type(odd) {
   background-color: $color-white !important;
 }
@@ -134,11 +162,15 @@ html, body {
 }
 
 .padding-left-15 {
-  padding-left:15px;
+  padding-left: 15px;
 }
 
 .padding-left-10 {
   padding-left: 10px;
+}
+
+.padding-left-5 {
+  padding-left: 5px;
 }
 
 .border-left-orange {
@@ -151,4 +183,4 @@ html, body {
 
 .border-left-red {
   border-left: 3px solid $color-red;
-}
+
