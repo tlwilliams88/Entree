@@ -32,7 +32,7 @@ BEGIN
 		WHERE 
 			NOT EXISTS (
 				SELECT 
-					*
+					'x'
 					FROM [BEK_Commerce_AppData].[List].[Lists]
 					WHERE [CustomerId] = LTRIM(RTRIM(cb.[CustomerNumber]))
 						AND [BranchId] = LTRIM(RTRIM(cb.[DivisionNumber]))
@@ -72,7 +72,7 @@ BEGIN
 			WHERE
 				NOT EXISTS (
 					SELECT
-						*
+						'x'
 						FROM [BEK_Commerce_AppData].[List].[ListItems] li
 						WHERE li.ParentList_Id = l.Id 
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
@@ -83,7 +83,7 @@ BEGIN
 	WHERE 
 		NOT EXISTS (
 			SELECT
-				*
+				'x'
 				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
 				INNER JOIN 
 					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
