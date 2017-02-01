@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListOrganizeController', ['$scope', '$filter', '$timeout', 'list', 'ListService', 'UtilityService',
-    function($scope, $filter, $timeout, list, ListService, UtilityService) {
+  .controller('ListOrganizeController', ['$scope', '$filter', '$timeout', 'list', 'ListService', 'UtilityService', 'blockUI',
+    function($scope, $filter, $timeout, list, ListService, UtilityService, blockUI) {
 
   var orderBy = $filter('orderBy');
   $scope.isMobileDevice = UtilityService.isMobileDevice();
@@ -33,6 +33,7 @@ angular.module('bekApp')
     $scope.sortField = 'position';
     $scope.sortDescending = false;
     $scope.list.items = orderBy($scope.list.items, $scope.sortField, $scope.sortDescending);
+    blockUI.stop();
   }
 
   setList(list);
@@ -153,12 +154,14 @@ angular.module('bekApp')
         list.items.splice(0, 1);
       }
 
-      ListService.updateList(list, true).then(function(updatedList) {
-        $scope.organizeListForm.$setPristine();
-        setList(updatedList);
-      }).finally(function() {
-        processingSaveList = false;
-      });
+      blockUI.start('Saving List...').then(function(){
+        ListService.updateList(list, true).then(function(updatedList) {
+          $scope.organizeListForm.$setPristine();
+          setList(updatedList);
+        }).finally(function() {
+          processingSaveList = false;
+        });
+      })
     }
   };
 

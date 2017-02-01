@@ -251,8 +251,9 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getListWithItems: function(listId, params) {
-          Service.userProfile = UserProfileService.getCurrentUserProfile();
+        getListWithItems: function(listId, params, displayMessage) {
+          var savingOrLoadingItems = displayMessage ? displayMessage : 'Loading Items...';
+          Service.userProfile = UserProfileService.getCurrentUserProfile(savingOrLoadingItems);
           if (!params) {
             params = {
               includePrice: true
@@ -604,7 +605,6 @@ angular.module('bekApp')
         // accepts list object
         // returns promise and updated list object
         updateList: function(list, getEntireList, params, addingItem) {
-          list.message = 'Saving list...';
 
           return List.update(null, list).$promise.then(function(response) {
             var list = response.successResponse;
@@ -618,11 +618,10 @@ angular.module('bekApp')
 
             var promise;
             if (getEntireList) {
-              promise = Service.getListWithItems(list.listid, { includePrice: false });
+              promise = Service.getListWithItems(list.listid, { includePrice: false }, 'Saving List...');
             } else {
               promise = Service.getList(list.listid, params);
             }
-
             return promise.then(function(list) {
               if(!addingItem){
                 toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
