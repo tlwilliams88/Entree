@@ -78,6 +78,47 @@ BEGIN
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
+	UPDATE
+		[BEK_Commerce_AppData].[List].[ListItems]
+		SET 
+			Position = CAST(bcd.BidLineNumber as int) 
+			, Category = LTRIM(RTRIM(bcd.CategoryDescription))
+			, ToDate = DATEADD(day, 1, GETDATE())
+		FROM 
+			[BEK_Commerce_AppData].[List].[ListItems] li
+		INNER JOIN 
+			[BEK_Commerce_AppData].List.Lists l
+			ON l.Id = li.ParentList_Id and l.Type = 2
+		INNER JOIN
+			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
+			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
+		INNER JOIN 
+			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			ON cb.BidNumber=bcd.BidNumber 
+				AND cb.DivisionNumber = bcd.DivisionNumber
+				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+
+	UPDATE
+		[BEK_Commerce_AppData].[List].[ListItems]
+		SET 
+			ToDate = DATEADD(day, -14, GETDATE())
+		FROM 
+			[BEK_Commerce_AppData].[List].[ListItems] li
+		INNER JOIN 
+			[BEK_Commerce_AppData].List.Lists l
+			ON l.Id = li.ParentList_Id and l.Type = 2
+		LEFT OUTER JOIN
+			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
+			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
+		LEFT OUTER JOIN 
+			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			ON cb.BidNumber=bcd.BidNumber 
+				AND cb.DivisionNumber = bcd.DivisionNumber
+				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+		WHERE bcd.ItemNumber is null and li.ToDate is null
+
 	DELETE
 		FROM [BEK_Commerce_AppData].[List].[ListItems]
 	WHERE 
@@ -99,24 +140,4 @@ BEGIN
 			)
 			AND ToDate < DATEADD(day, -13, GETDATE())
 
-	UPDATE
-		[BEK_Commerce_AppData].[List].[ListItems]
-		SET 
-			Position = CAST(bcd.BidLineNumber as int) 
-			, Category = LTRIM(RTRIM(bcd.CategoryDescription))
-			, ToDate = DATEADD(day, 1, GETDATE())
-		FROM 
-			[BEK_Commerce_AppData].[List].[ListItems] li
-		INNER JOIN 
-			[BEK_Commerce_AppData].List.Lists l
-			ON l.Id = li.ParentList_Id and l.Type = 2
-		INNER JOIN
-			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
-			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
-			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
-		INNER JOIN 
-			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
-			ON cb.BidNumber=bcd.BidNumber 
-				AND cb.DivisionNumber = bcd.DivisionNumber
-				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 END
