@@ -119,7 +119,7 @@ BEGIN
 				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 		WHERE bcd.ItemNumber is null and li.ToDate is null
 
-	DELETE
+	DELETE TOP (50000)
 		FROM [BEK_Commerce_AppData].[List].[ListItems]
 	WHERE 
 		NOT EXISTS (
