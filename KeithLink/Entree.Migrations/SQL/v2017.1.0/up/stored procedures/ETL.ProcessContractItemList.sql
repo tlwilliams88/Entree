@@ -121,6 +121,10 @@ BEGIN
 
 	DELETE TOP (50000)
 		FROM [BEK_Commerce_AppData].[List].[ListItems]
+		FROM [BEK_Commerce_AppData].[List].[ListItems] li
+			INNER JOIN [BEK_Commerce_AppData].[List].[Lists] l
+			ON li.ParentList_Id = l.Id
+			AND l.[Type] = 2
 	WHERE 
 		NOT EXISTS (
 			SELECT
@@ -133,8 +137,8 @@ BEGIN
 					[BEK_Commerce_AppData].List.Lists l
 					ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
 				WHERE
-					ltrim(rtrim(ItemNumber)) = [BEK_Commerce_AppData].[List].[ListItems].ItemNumber
-					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = [BEK_Commerce_AppData].[List].[ListItems].Each
+					ltrim(rtrim(ItemNumber)) = li.ItemNumber
+					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = li.Each
 					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerId 
 					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
 			)
