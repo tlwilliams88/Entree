@@ -346,13 +346,17 @@
           </ul>
          </div>
 
+        <div class="col-md-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px;" style="margin-left: 10px; margin-right: 10px;">
+          <img src="images/bek-logo.png" style="max-width:100%"  alt="logo" />
+        </div>
+
         <div class="col-md-3 hidden-xs hidden-sm"  ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
           <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
           <div ui-select2="customerSelectOptions" ng-if="::isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
           </div>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-4">
           <form name="universalSearchForm" novalidate ng-if="::canBrowseCatalog">
             <div class="input-group input-group-lg">
                <div dropdown is-open="openScope" class="input-group-btn">
@@ -371,10 +375,10 @@
           </form>
         </div>
 
-        <div class="col-md-3 hidden-sm hidden-xs text-right nowrap pull-right" style="margin-left:none; padding-left:none;">
-          <div>
+        <div class="hidden-sm hidden-xs text-right nowrap pull-right" style="margin-left:none; padding-left:none; padding-right: 20px;">
+
             <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent">
-              <span class="icon-bell"></span>
+              <span class="icon-bell" style="color: #489ecf;"></span>
               <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
             <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
@@ -397,7 +401,7 @@
               </div>
               <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
             </div>
-          </div>
+
         </div>
 
       </div>
