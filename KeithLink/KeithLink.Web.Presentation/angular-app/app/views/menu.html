@@ -10,9 +10,14 @@
 <!-- End CSS -->
 
 <div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" class="sidebar-menu-wrapper">
+  <span class="hidden-xs hidden-sm" style="border-left: 1px solid #2a2621; height: 100%; z-index: 10002; position:absolute;" ng-class="'hidden-icon': isSidebarOpen = true"> 
+  <div ng-class="'hidden-icon': isSidebarOpen = true" ng-mouseenter="isSidebarOpen = true" ng-swipe-right="isSidebarOpen = true" ng-click="isSidebarOpen = true" style="width:35px; height:100px; margin-top: 350px; margin-left: -10px; background-color: #2a2621; border-radius: 10%; padding-top: 40px; padding-left: 15px; opacity: .8; position: fixed;">
+    <span class="icon-uniE6DA"></span>
+  </div>
+  </span>
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
+  <div class="sidebar hidden-print" ng-mouseleave="isSidebarOpen = false" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
@@ -185,7 +190,7 @@
               Invoices
             </li>
           </button>
-            <span ng-if="!canViewInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
+            <span ng-if="!canViewInvoices" tooltip="View and pay invoices. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -272,7 +277,7 @@
         <span id='iOS' ng-if="iOS">Version: {{iOSVersionNum}}</span>
         <span id='Android' ng-if="Android">Version: {{androidVersionNum}}</span>
       </div>
-      <span style="display:block;">Copyright 2016 Ben E. Keith</span>
+      <span style="display:block;">Copyright 2017 Ben E. Keith</span>
       <a href="http://www.benekeith.com" target="blank">benekeith.com</a>
     </div>
   </div> <!-- end Desktop Sidebar -->
@@ -359,7 +364,6 @@
 
               <input required ng-minlength="3" name="universalSearchForm.userBar.universalSearchTerm" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword" validate-input>
               <span class="input-group-btn">
-                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: departmentNum, deptName: department[0].text })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>

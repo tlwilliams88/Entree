@@ -174,9 +174,21 @@
 }
 
 @media (max-width: 1135px) {
-.drop-column{ 
-  display:none !important;
+  .drop-column{ 
+    display:none !important;
+  }
 }
+
+@media (max-width: 5000px) and (min-width: 1136px) {
+  .display-column {
+    display:none !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .drop-column-mobile {
+    display:none !important;
+  }
 }
 
 .label-col {
