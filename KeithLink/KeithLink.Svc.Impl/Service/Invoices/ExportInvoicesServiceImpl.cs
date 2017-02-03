@@ -37,6 +37,7 @@ namespace KeithLink.Svc.Impl.Service.Invoices
         /// <param name="orderLogic"></param>
         /// <param name="listRepo"></param>
         /// <param name="cache"></param>
+        /// <param name="invLogic"></param>
         public ExportInvoicesServiceImpl(IExportSettingLogic exportLogic, IOrderLogic orderLogic, IListRepository listRepo,
                                          ICacheRepository cache, IOnlinePaymentsLogic invLogic)
         {
