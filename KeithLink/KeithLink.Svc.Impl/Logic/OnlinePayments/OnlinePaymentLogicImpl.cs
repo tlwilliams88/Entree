@@ -92,6 +92,15 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         #endregion
 
         #region methods
+        public InvoiceItemModel AssignContractCategory
+            (Dictionary<string, string> contractdictionary, InvoiceItemModel item)
+        {
+            string itmcategory = ContractInformationHelper.AddContractInformationIfInContract
+                (contractdictionary, item.ItemNumber);
+            item.Category = itmcategory;
+            return item;
+        }
+
         private FilterInfo BuildCustomerFilter(List<Core.Models.Profile.Customer> customers)
         {
             FilterInfo filter = new FilterInfo();

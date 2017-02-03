@@ -3,6 +3,7 @@ using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.ModelExport;
@@ -24,6 +25,7 @@ namespace KeithLink.Svc.Impl.Service.Invoices
         private readonly ICacheRepository _cache;
         private readonly IExportSettingLogic _exportLogic;
         private readonly IOrderLogic _orderLogic;
+        private readonly IOnlinePaymentsLogic _invLogic;
         private readonly IListRepository _listRepo;
         #endregion
 
@@ -36,10 +38,11 @@ namespace KeithLink.Svc.Impl.Service.Invoices
         /// <param name="listRepo"></param>
         /// <param name="cache"></param>
         public ExportInvoicesServiceImpl(IExportSettingLogic exportLogic, IOrderLogic orderLogic, IListRepository listRepo,
-                                         ICacheRepository cache)
+                                         ICacheRepository cache, IOnlinePaymentsLogic invLogic)
         {
             _exportLogic = exportLogic;
             _orderLogic = orderLogic;
+            _invLogic = invLogic;
             _listRepo = listRepo;
             _cache = cache;
         }
@@ -63,17 +66,9 @@ namespace KeithLink.Svc.Impl.Service.Invoices
 
             Dictionary<string, string> contractdictionary = 
                 ContractInformationHelper.GetContractInformation(context, _listRepo, _cache);
-            items = items.Select(i => AssignContractCategory(contractdictionary, i)).ToList();
+            items = items.Select(i => _invLogic.AssignContractCategory(contractdictionary, i)).ToList();
 
             return items;
-        }
-
-        private InvoiceItemModel AssignContractCategory(Dictionary<string, string> contractdictionary, InvoiceItemModel item)
-        {
-            string itmcategory = ContractInformationHelper.AddContractInformationIfInContract
-                (contractdictionary, item.ItemNumber);
-            item.Category = itmcategory;
-            return item;
         }
         #endregion
     }
