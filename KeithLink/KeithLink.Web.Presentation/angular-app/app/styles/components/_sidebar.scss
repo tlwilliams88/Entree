@@ -10,7 +10,7 @@ $sidebar-nav__background--selected: #2a2621;
 $sidebar-nav__text--selected: $color-white;
 
 .sidebar {
-  color: #FFFFFF;
+  color: $color-white;
   font-size: 13px;
   position: absolute;
   top: 0;
