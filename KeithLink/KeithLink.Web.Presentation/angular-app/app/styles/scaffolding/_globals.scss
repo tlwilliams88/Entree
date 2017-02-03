@@ -26,9 +26,18 @@ html, body {
 }
 
 // div to the right of the sidebar, located in menu.html
-.main-content {
-  width: calc(100% - 175px);
-  margin-left: $sidebar-width;
+@media (max-width: $screen-sm-max){
+  .main-content {
+    width: calc(100% - 175px);
+    margin-left: $sidebar-width;
+  }
+}
+
+@media (max-width: 50000px) and (min-width: $screen-sm-max){
+  .main-content {
+    width: 100.8%;
+    padding-left: 12px;
+  }
 }
 
 // wraps menu child states, located in menu.html

@@ -212,7 +212,6 @@ $sidebar-nav__text--selected: $color-white;
     top:-30px;
 }
 
-@media (max-width: $screen-sm-max) {
   .sidebar {
     width: 250px;
     position: absolute;
@@ -249,4 +248,3 @@ $sidebar-nav__text--selected: $color-white;
       }
     }
   }
-}
