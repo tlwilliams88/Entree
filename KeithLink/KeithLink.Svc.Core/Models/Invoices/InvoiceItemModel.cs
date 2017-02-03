@@ -58,8 +58,10 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		
 		public string InvoiceNumber { get; set; }
 
+        [Description("Contract Category")]
+        public string Category { get; set; }
 
-		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
+        public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();
 
