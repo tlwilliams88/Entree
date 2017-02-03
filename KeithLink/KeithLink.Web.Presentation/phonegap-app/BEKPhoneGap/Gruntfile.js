@@ -25,7 +25,7 @@ module.exports = function(grunt) {
           'https://github.com/apache/cordova-plugin-whitelist.git'
           // ,'https://github.com/brodysoft/Cordova-SQLitePlugin.git'
         ],
-        maxBuffer: 500,
+        maxBuffer: 5000,
         platforms: ['ios', 'android'],
         config: {
           template: '_config.xml',

@@ -10,7 +10,7 @@ $sidebar-nav__background--selected: #2a2621;
 $sidebar-nav__text--selected: $color-white;
 
 .sidebar {
-  color: $sidebar__text;
+  color: #FFFFFF;
   font-size: 13px;
   position: absolute;
   top: 0;
@@ -66,7 +66,6 @@ $sidebar-nav__text--selected: $color-white;
       font-family: $font-family-base;
       letter-spacing: 1px;
       padding: 14px $padding__size;
-      color: $sidebar--text;
       cursor: pointer;
       border-bottom: 1px solid $sidebar-nav__border;
       font-weight: 400;
@@ -76,6 +75,7 @@ $sidebar-nav__text--selected: $color-white;
       // menu icons
       .sidebar-nav__icon {
         width: 35px;
+        color: $sidebar--text;
         display: inline-block;
         text-align: center;
         font-size: 16px;
@@ -213,7 +213,7 @@ $sidebar-nav__text--selected: $color-white;
 }
 
   .sidebar {
-    width: 250px;
+    width: 225px;
     position: absolute;
     left: -200px;
     background-image: none;
@@ -233,16 +233,13 @@ $sidebar-nav__text--selected: $color-white;
       background-color: $sidebar__background--dark;
     }
     .sidebar-dsr {
-      text-align: left;
       background-color: transparent;
 
       .contact-info-wrapper {
-        display: inline-block;
         vertical-align: middle;
-        margin-left: 5px;
 
         .contact-info {
-          margin-top: 0;
+          margin-top: 5px;
           margin-bottom: 0;
         }
       }
