@@ -32,7 +32,7 @@ BEGIN
 		WHERE 
 			NOT EXISTS (
 				SELECT 
-					*
+					'x'
 					FROM [BEK_Commerce_AppData].[List].[Lists]
 					WHERE [CustomerId] = LTRIM(RTRIM(cb.[CustomerNumber]))
 						AND [BranchId] = LTRIM(RTRIM(cb.[DivisionNumber]))
@@ -72,32 +72,11 @@ BEGIN
 			WHERE
 				NOT EXISTS (
 					SELECT
-						*
+						'x'
 						FROM [BEK_Commerce_AppData].[List].[ListItems] li
 						WHERE li.ParentList_Id = l.Id 
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
-
-	DELETE
-		FROM [BEK_Commerce_AppData].[List].[ListItems]
-	WHERE 
-		NOT EXISTS (
-			SELECT
-				*
-				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
-				INNER JOIN 
-					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
-					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
-				INNER JOIN 
-					[BEK_Commerce_AppData].List.Lists l
-					ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
-				WHERE
-					ltrim(rtrim(ItemNumber)) = [BEK_Commerce_AppData].[List].[ListItems].ItemNumber
-					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = [BEK_Commerce_AppData].[List].[ListItems].Each
-					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerId 
-					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
-			)
-			AND ToDate < DATEADD(day, -13, GETDATE())
 
 	UPDATE
 		[BEK_Commerce_AppData].[List].[ListItems]
@@ -119,4 +98,50 @@ BEGIN
 			ON cb.BidNumber=bcd.BidNumber 
 				AND cb.DivisionNumber = bcd.DivisionNumber
 				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+
+	UPDATE
+		[BEK_Commerce_AppData].[List].[ListItems]
+		SET 
+			ToDate = DATEADD(day, -14, GETDATE())
+		FROM 
+			[BEK_Commerce_AppData].[List].[ListItems] li
+		INNER JOIN 
+			[BEK_Commerce_AppData].List.Lists l
+			ON l.Id = li.ParentList_Id and l.Type = 2
+		LEFT OUTER JOIN
+			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
+			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
+		LEFT OUTER JOIN 
+			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			ON cb.BidNumber=bcd.BidNumber 
+				AND cb.DivisionNumber = bcd.DivisionNumber
+				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+		WHERE bcd.ItemNumber is null and li.ToDate is null
+
+	DELETE TOP (50000)
+		FROM [BEK_Commerce_AppData].[List].[ListItems]
+		FROM [BEK_Commerce_AppData].[List].[ListItems] li
+			INNER JOIN [BEK_Commerce_AppData].[List].[Lists] l
+			ON li.ParentList_Id = l.Id
+			AND l.[Type] = 2
+	WHERE 
+		NOT EXISTS (
+			SELECT
+				'x'
+				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				INNER JOIN 
+					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+				INNER JOIN 
+					[BEK_Commerce_AppData].List.Lists l
+					ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
+				WHERE
+					ltrim(rtrim(ItemNumber)) = li.ItemNumber
+					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = li.Each
+					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerId 
+					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
+			)
+			AND ToDate < DATEADD(day, -13, GETDATE())
+
 END
