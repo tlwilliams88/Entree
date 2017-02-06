@@ -881,6 +881,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\Invoices\ExportInvoicesServiceImpl.cs" />
     <Compile Include="Service\ShoppingCart\ShoppingCartServiceImpl.cs" />
     <Compile Include="Service\CatalogCampaignServiceImpl.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
