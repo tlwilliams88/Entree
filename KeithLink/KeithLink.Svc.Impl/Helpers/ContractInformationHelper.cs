@@ -56,17 +56,22 @@ namespace KeithLink.Svc.Impl.Helpers
 
         public static string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
         {
+            return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
+        }
+
+        public static string AddContractInformationIfInContract
+            (Dictionary<string, string> contractdictionary, string itemNumber)
+        {
             string itmcategory = null;
             if (contractdictionary.Count > 0)
             {
-                if (contractdictionary.ContainsKey(item.ItemNumber))
+                if (contractdictionary.ContainsKey(itemNumber))
                 {
-                    itmcategory = contractdictionary[item.ItemNumber];
+                    itmcategory = contractdictionary[itemNumber];
                 }
             }
 
             return itmcategory;
         }
-
     }
 }
