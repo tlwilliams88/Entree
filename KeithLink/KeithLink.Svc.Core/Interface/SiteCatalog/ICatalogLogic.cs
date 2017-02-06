@@ -16,21 +16,17 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 
         List<Division> GetDivisions();
 
-        ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
-
         Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType);
 
         Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile);
-
-        ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile);
 
         ProductsReturn GetProductsByIds(string branch, List<string> ids);
 
         ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids);
 
         ProductsReturn GetProductsByItemNumbers(UserSelectedContext context, List<string> ids, SearchInputModel searchModel, UserProfile profile);
-        ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
 
+        ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
 
         //Catalog Methods
         string GetBranchId(string bekBranchId, string catalogType);
@@ -45,6 +41,9 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 
         string GetCatalogTypeFromCatalogId(string catalogId);
 
+        string GetCategoryName(string category, SearchInputModel searchModel);
+
+        void AddProductImageInfo(Product ret);
 
         Dictionary<string, int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
     }
