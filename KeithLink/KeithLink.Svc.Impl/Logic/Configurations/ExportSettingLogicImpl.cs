@@ -115,9 +115,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             options.Fields.Add(new ExportModelConfiguration() { Field = "PackagePrice", Label = "Pack Price" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Category", Label = "Contract Category" });
-            options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryId", Label = "Category" });
-            options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryName", Label = "Category Desc" });
-            options.Fields.Add(new ExportModelConfiguration() { Field = "ItemClass", Label = "Class" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "ItemClass", Label = "Category" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "VendorItemNumber", Label = "Vendor Item #" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "UPC", Label = "UPC" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Cases", Label = "Cases" });
@@ -143,9 +141,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                         options.Fields.Add(new ExportModelConfiguration() { Field = "parlevel", Label = "Par" });
                         break;
                     case ListType.Contract:
-                    case ListType.ContractItemsAdded:
-                    case ListType.ContractItemsDeleted:
-                        options.Fields.Add(new ExportModelConfiguration() { Field = "Category", Label = "Category" });
+                        options.Fields.Add(new ExportModelConfiguration() { Field = "Category", Label = "Contract Category" });
                         options.Fields.Add(new ExportModelConfiguration() { Field = "label", Label = "Label" });
                         break;
                     default:
