@@ -39,7 +39,7 @@ angular.module('bekApp')
     return function(dateTime, formatString) {
       // use default format string if none is provided
       if (!formatString) {
-        formatString = 'ddd,  M-d-YY';
+        formatString = 'ddd,  M-D-YY';
       }
 
       return getFormattedDateTime(dateTime, formatString);
