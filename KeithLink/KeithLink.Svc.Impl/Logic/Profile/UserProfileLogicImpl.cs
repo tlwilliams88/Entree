@@ -643,34 +643,29 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                     userBranch = GetBranchFromOU(adUser.GetOrganizationalunit());
 
-                    if (internalUserRoles.Intersect(Configuration.BekSysAdminRoles).Count() > 0) {
+                    if (internalUserRoles.Intersect(Configuration.BekSysAdminRoles, StringComparer.InvariantCultureIgnoreCase).Count() > 0) {
                         userRole = Constants.ROLE_NAME_SYSADMIN;
                         isPowerMenuAdmin = true;
-                    } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
+                    } else if (internalUserRoles.Intersect(Constants.MIS_ROLES, StringComparer.InvariantCultureIgnoreCase).Count() > 0) {
                         userRole = Constants.ROLE_NAME_BRANCHIS;
                         isPowerMenuAdmin = true;
-                        //userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-                    } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0) {
+                    } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES, StringComparer.InvariantCultureIgnoreCase).Count() > 0) {
                         userRole = Constants.ROLE_NAME_POWERUSER;
-                        //userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-                    } else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0) {
+                    } else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES, StringComparer.InvariantCultureIgnoreCase).Count() > 0) {
                         userRole = Constants.ROLE_NAME_MARKETING;
-                        //userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-                    } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
-                        dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
+                    } else if (internalUserRoles.Intersect(Constants.DSM_ROLES, StringComparer.InvariantCultureIgnoreCase).Count() > 0) {
+                        dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES, StringComparer.InvariantCultureIgnoreCase).FirstOrDefault().ToString();
                         userRole = Constants.ROLE_NAME_DSM;
-                        //userBranch = dsmRole.Substring(0, 3);
-                        //dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+
                         if (adUser.Description.Length == 3) {
                             dsmNumber = adUser.Description.Substring(1, 2);
                         } else if (adUser.Description.Length == 2) {
                             dsmNumber = adUser.Description;
                         }
-                    } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
-                        dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
+                    } else if (internalUserRoles.Intersect(Constants.DSR_ROLES, StringComparer.InvariantCultureIgnoreCase).Count() > 0) {
+                        dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES, StringComparer.InvariantCultureIgnoreCase).FirstOrDefault().ToString();
                         userRole = Constants.ROLE_NAME_DSR;
                         dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
-                        //userBranch = dsrRole.Substring(0, 3);
                     } else {
                         userRole = Constants.ROLE_NAME_GUEST;
                     }
@@ -712,7 +707,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 retVal.DSMRole = dsmRole;
                 retVal.DSRNumber = dsrNumber;
                 retVal.DSMNumber = dsmNumber;
-                //retVal.UserCustomers = userCustomers;
                 retVal.ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id));
                 retVal.UserName = adUser.SamAccountName;
                 retVal.UserNameToken = tokenBase64;

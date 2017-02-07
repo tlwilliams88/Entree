@@ -218,11 +218,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     if (g.ToLower().IndexOf(",ou=") >= 3)
                     {
                         string groupName = g.Substring(3, g.ToLower().IndexOf(",ou=") - 3).ToLower(); // get group name from fully qualified AD string
-                        foreach (string s in groupNames)
-                        {
-                            if (groupName.Equals(s, StringComparison.InvariantCultureIgnoreCase))
-                                returnValue.Add(s);
-                        }
+
+                        if(groupNames.Contains(groupName, StringComparer.InvariantCultureIgnoreCase)) { returnValue.Add(groupName); }
                     }
                 }
             }
