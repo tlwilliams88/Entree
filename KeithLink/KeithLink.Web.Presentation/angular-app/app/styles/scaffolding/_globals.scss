@@ -163,8 +163,8 @@ html, body {
   padding-right: 5px;
 }
 
-.highlightRows:nth-of-type(odd) {
-  background-color: $color-white !important;
+.highlightRows:nth-of-type(even) {
+  background-color: #F3F1EB !important;
 }
 
 .block-display {
