@@ -196,6 +196,9 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WebNowUrl',
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsers', 'tcfox,jwames,pabrandt,mdjoiner,jdhughes,corp-ssa-entreadmin,dmderusha,bakillins,jmmills,meiacomini', 'WhiteList: must be lowercase', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsersEnforced', 'false', 'WhiteList', 0)
 
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
+
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])
 WHEN MATCHED THEN

@@ -231,6 +231,9 @@ namespace KeithLink.Svc.Impl
         // Export Settings
         private const string KEY_EXPORT_ADDTITLE = "ExportAddTitle";
         private const string KEY_EXPORT_ADDCUSTOMER = "ExportAddCustomer";
+
+        //Contract List Changes
+        private const string KEY_CONTRACTLISTCHANGE_PRICEBLOCKDELETED = "ContractListDeleteBlockPrices";
         #endregion
 
         #region methods
@@ -269,6 +272,15 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+        public static bool ContractListDeleteBlockPrices
+        {
+            get
+            {
+                string check = DBAppSettingsRepositoryImpl.GetValue(KEY_CONTRACTLISTCHANGE_PRICEBLOCKDELETED, "True");
+                return bool.Parse(check);
+            }
+        }
+
         public static List<string> ExportAddCustomer
         {
             get

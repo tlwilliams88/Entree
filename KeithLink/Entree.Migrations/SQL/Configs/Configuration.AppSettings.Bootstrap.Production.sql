@@ -50,6 +50,7 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Se
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'DefaultCategoryReturnSize', '2000', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'DefaultProductReturnSize', '500', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'MaxSortByPriceItemCount', '200', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchBatchSize', '500', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchAggregations', 'categories:categoryname_not_analyzed,brands:brand_description_not_analyzed,allergens:nutritional.allergen.contains,dietary:nutritional.diet.diettype,itemspecs:itemspecification,nonstock:nonstock,mfrname:mfrname_not_analyzed,temp_zone:temp_zone', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchTermSearchFields', 'name_not_analyzed^5,name.english^4,description.english,categoryname,brand,mfrname,mfrnumber,name_ngram_analyzed', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchDigitSearchFields', 'upc.ngram,gtin.ngram,itemnumber.ngram^5,mfrnumber.ngram^3', 0)
@@ -253,6 +254,9 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToChe
   "maximummessageswarningthreshold":"100"}
  ]
 }', 'Monitor Service Functions', 0)
+
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])

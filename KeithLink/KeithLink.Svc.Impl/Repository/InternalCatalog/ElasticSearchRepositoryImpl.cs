@@ -1,4 +1,8 @@
-﻿using KeithLink.Svc.Core.Interface.InternalCatalog;
+﻿using Elasticsearch.Net;
+using KeithLink.Svc.Core.Interface.InternalCatalog;
+using KeithLink.Svc.Core.Models.ElasticSearch.Item;
+using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -7,6 +11,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
+    /// <summary>
+    /// Specific implementation for dealing with the elasticsearch api
+    /// </summary>
     public class ElasticSearchRepositoryImpl: IElasticSearchRepository {
         #region attributes
         private RestClient client;
@@ -31,7 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
         {
             var request = new RestRequest("_bulk", Method.POST);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
-            client.Execute(request);
+            var response = client.Execute(request);
         }
 
         public void CreateEmptyIndex(string branchId) {
@@ -98,7 +105,96 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 			var request = new RestRequest(branchId, Method.DELETE);
 			client.Execute(request);
 		}
-		
+
+        private dynamic BuildBranchMetaQuery(int size)
+        {
+            return new
+            {
+                size = size,
+                query = new
+                {
+                    match_all = new { }
+                },
+                fields = new string[0]
+            };
+        }
+
+        private dynamic BuildScrollQuery(string scrollName, string scrollId)
+        {
+            return new
+            {
+                scroll = scrollName,
+                scroll_id = scrollId
+            };
+        }
+
+        private ElasticsearchClient GetElasticsearchClient()
+        {
+            var node = new Uri(Configuration.ElasticSearchURL);
+            var config = new Elasticsearch.Net.Connection.ConnectionConfiguration(node);
+            var client = new ElasticsearchClient(config);
+            return client;
+        }
+
+        /// <summary>
+        /// Method for reading all the meta information from the documents within product type within the specified branch
+        /// and return a list of the string ids of those documents
+        /// </summary>
+        /// <param name="branchId"></param>
+        /// <returns></returns>
+        public List<string> ReadListOfProductsByBranch(string branchId)
+        {
+            int elasticSearchCursor = 0;
+
+            string json = JsonConvert.SerializeObject(BuildBranchMetaQuery(Configuration.ElasticSearchBatchSize));
+
+            string scroll = "1m"; //the scroll api is used to read a large dataset, this is the scroll name
+
+            var request = new RestRequest(string.Format("{0}/product/_search?scroll={1}", branchId, scroll), Method.POST);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            var res = client.Execute(request);
+            DynamicDictionary dd = JsonConvert.DeserializeObject<DynamicDictionary>(res.Content);
+
+            int totalproducts = dd["hits"]["total"];
+
+            string scrollid = dd["_scroll_id"]; //this scroll id is read in the first time and then is passed into subsequent calls
+
+            dynamic Ids = dd["hits"]["hits"];
+
+            List<string> existing = new List<string>();
+
+            foreach(var Id in Ids)
+            {
+                existing.Add(Id._id.ToString());
+            }
+
+            elasticSearchCursor += Configuration.ElasticSearchBatchSize;
+
+            while (elasticSearchCursor < totalproducts)
+            {
+                json = JsonConvert.SerializeObject(BuildScrollQuery(scroll, scrollid));
+
+                request = new RestRequest("_search/scroll", Method.POST);
+                request.AddParameter("application/json", json, ParameterType.RequestBody);
+                res = client.Execute(request);
+                dd = JsonConvert.DeserializeObject<DynamicDictionary>(res.Content);
+
+                Ids = dd["hits"]["hits"];
+
+                foreach (var Id in Ids)
+                {
+                    if(Id != null && Id._id != null && existing.Contains(Id._id.ToString()) == false)
+                    {
+                        existing.Add(Id._id.ToString());
+                    }
+                }
+
+                elasticSearchCursor += Configuration.ElasticSearchBatchSize;
+            }
+
+            return existing;
+        }
+
         public void MapProductProperties(string branchId, string json)
 		{
 			var request = new RestRequest(string.Format("{0}/product/_mapping", branchId), Method.POST);

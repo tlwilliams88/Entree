@@ -35,6 +35,7 @@ namespace KeithLink.Svc.Impl.Repository.PowerMenu {
 
                     if (response.StatusCode.Equals( System.Net.HttpStatusCode.OK ) || response.StatusCode.Equals( System.Net.HttpStatusCode.NoContent )) {
                         returnValue = true;
+                        _log.WriteInformationLog(string.Format("PowerMenu response: {0}", response.Content.ReadAsStringAsync().Result));
                     } else {
                         _log.WriteErrorLog( String.Format( "Error communicating with powermenu service request: {0} - HttpResposne: {1}", request, response.StatusCode ) );
                         throw new Exception( "There was an error communicating with the powermenu service" );

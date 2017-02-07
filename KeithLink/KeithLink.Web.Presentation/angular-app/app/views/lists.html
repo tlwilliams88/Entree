@@ -411,13 +411,14 @@
               <th class="sort-col-header drop-column" ng-click="sortList('itemclass',sort[0].order)">
                 <span>Category <span sort-icons field="'itemclass'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
+              <th class="display-column drop-column-mobile"></th>
               <th ng-if="listHasCustomItems" class="sort-col-header drop-column" ng-click="sortList('supplier',sort[0].order)">
                 <span>Supplier <span sort-icons field="'supplier'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
               </th>
-              <th class="sort-col-header drop-column" ng-click="sortList('notes',sort[0].order)">
+              <th class="sort-col-header drop-column hidden-sm hidden-xs" ng-click="sortList('notes',sort[0].order)">
                 <span>Notes <span sort-icons field="'notes'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>          
               <th class="hidden-mobile-visible-print"></th>
@@ -444,7 +445,7 @@
           </thead>
 
           <tbody 
-              ng-class="{ 'item-selected': item.isSelected }" 
+              ng-class="{ 'item-selected': item.isSelected, 'border-left-orange': item.custominventoryitemid, 'border-left-green': item.delta == 'newly added' && selectedList.is_contract_list, 'border-left-red': item.delta == 'newly deleted' && selectedList.is_contract_list }"
               fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}"
               data-product="{{item}}" 
               data-drag="dragEnabled" 
@@ -460,8 +461,7 @@
               id="listsTableRows"
               class="highlightRows"
               ng-click="shiftSelectOtherRows($event, item, $index)"
-              ng-show="!isCustomInventoryList"
-              ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">                
+              ng-show="!isCustomInventoryList">                
            
             <tr>
               <td class="hidden-drag" ng-class="{'bek-drag-handle': !item.custominventoryitemid}">

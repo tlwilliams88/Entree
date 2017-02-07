@@ -250,9 +250,18 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         }
 
         public PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging) {
+
             var userMessages = _userMessageRepository.ReadUserMessagesPaged(user, paging.Size, paging.From).ToList();
 
-            return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
+            paging.From = null; // we do a skip and take reading from the EF so we null the from so as not to do the skip again in the getpage
+
+            var ret = userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>()
+                                                                      .GetPage<UserMessageModel>(paging, "MessageCreated");
+
+            // this was added to get the full # of messages available for the frontend infinite scroll plugin to do its thing
+            ret.TotalResults = _userMessageRepository.GetMessagesCount(user.UserId);
+
+            return ret;
         }
 
         public bool ForwardUserMessage(UserProfile requester, ForwardUserMessageModel forwardrequest)

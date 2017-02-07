@@ -44,9 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\2017.2\Migration8.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
+    <Compile Include="Migrations\v1.12.2_es_catalog\Migration10.cs" />
+    <Compile Include="Migrations\v1.12.2_es_catalog\Migration9.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_UpdateProcessContractItemList.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
@@ -54,7 +57,10 @@
     <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SQL\2017.2\down\tables\" />
+    <Folder Include="SQL\2017.2\up\tables\" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="BetaScriptGenerate.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -71,6 +77,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQL\2017.2\down\stored procedures\ETL.ReadFullItemData.sql" />
+    <Content Include="SQL\2017.2\up\stored procedures\ETL.ReadFullItemData.sql" />
     <Content Include="SQL\Configs\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -125,6 +133,18 @@
     <Content Include="SQL\v2017.1.0\up\stored procedures\ReadPDMData.sql" />
     <Content Include="SQL\v2017.1.0\down\stored procedures\ETL.ProcessContractItemList.sql" />
     <Content Include="SQL\v2017.1.0\up\tables\Staging_PDM_EnrichedProducts.sql" />
+    <Content Include="SQL\v1.12.2\down\Migration10-ES_Catalog_uri_name-down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.2\down\Migration9-ES_Catalog_schema-down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.2\up\Migration10-ES_Catalog_uri_name-up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v1.12.2\up\Migration9-ES_Catalog_schema-up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

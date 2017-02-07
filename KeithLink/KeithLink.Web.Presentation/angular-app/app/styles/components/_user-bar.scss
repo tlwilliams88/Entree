@@ -1,7 +1,8 @@
 .user-bar {
   font-weight: 300;
+  background-image: url('../images/Registration-BG.jpg');
 
-  @include header-bar($background, 15px);
+  @include header-bar(#373029, 15px);
 
   .user-bar__notification {
     font-size: 25px;
@@ -19,10 +20,11 @@
   .user-info {
     .user-info__name {
       font-size: 14px;
+      color: $color-white;
     }
 
     .user-info__job-title {
-      color: $color-font-light;
+      color: $color-white;
     }
 
     .user-info__menu {
@@ -53,7 +55,7 @@
 }
 
 .user-bar-mobile {
-  background-color: $background;
+  background-image: url('../images/Registration-BG.jpg');
   border-bottom: 1px solid $color-border;
 
   text-align: center;
@@ -61,7 +63,6 @@
   .logo-mobile {
     height: 50px;
     padding: 5px 0;
-    display: inline-block;
 
     &.logo-margin-left {
       margin-left: 45px;
@@ -119,6 +120,24 @@
 
 @media (max-width: $screen-sm-max) {
   .hide-searchbar {
+    display: none;
+  }
+}
+
+@media (max-width: 423px) {
+  .hide-icon-423px {
+    display: none;
+  }
+}
+
+@media (min-width: 423px) {
+  .show-small-icon-422px {
+    display: none;
+  }
+}
+
+@media (max-width: 376px) {
+  .show-small-icon-375px {
     display: none;
   }
 }

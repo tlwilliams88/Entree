@@ -48,6 +48,7 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'WhiteList:
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'WhiteList', 'WhiteListedBekUsersEnforced', 'false', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchURL', 'http://shopdev.benekeith.com:9200', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'DefaultCategoryReturnSize', '2000', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchBatchSize', '500', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'DefaultProductReturnSize', '500', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'MaxSortByPriceItemCount', '200', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Elastic Search Settings', 'ElasticSearchAggregations', 'parentcategories:parentcategoryname_not_analyzed,categories:categoryname_not_analyzed,brands:brand_description_not_analyzed,allergens:contains,dietary:diettype,itemspecs:itemspecification,nonstock:nonstock,mfrname:mfrname_not_analyzed,temp_zone:temp_zone', 0)
@@ -175,6 +176,9 @@ INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Se
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesRepo', '\\bekmain\CMIS-IFDA_Repository\ProductImages\Channels\IX-One', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleX', '250', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Catalog Service Entries', 'CatalogServiceUnfiImagesScaleY', '250', 0)
+
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])
