@@ -10,6 +10,7 @@
 html, body {
   height: 100%;
   font-weight: 600;
+  background-color: #FFF;
 }
 
 // highest level container, located in index.html
@@ -23,7 +24,6 @@ html, body {
 .sidebar-menu-wrapper {
   min-height: 100%;
   position: relative;
-  background-image: url('../images/Textured-BG.jpg');
 }
 
 // div to the right of the sidebar, located in menu.html
@@ -163,8 +163,8 @@ html, body {
   padding-right: 5px;
 }
 
-.highlightRows:nth-of-type(odd) {
-  background-color: $color-white !important;
+.highlightRows:nth-of-type(even) {
+  background-color: #F3F1EB !important;
 }
 
 .block-display {
