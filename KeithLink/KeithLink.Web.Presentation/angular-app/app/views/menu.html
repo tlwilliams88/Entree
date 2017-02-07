@@ -11,8 +11,8 @@
 
 <div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" class="sidebar-menu-wrapper">
   <span class="hidden-xs hidden-sm" style="border-left: 1px solid #2a2621; height: 100%; z-index: 10002; position:absolute;"> 
-  <div ng-mouseenter="isSidebarOpen = true" ng-swipe-right="isSidebarOpen = true" ng-click="isSidebarOpen = true" style="width:35px; height:100px; margin-top: 350px; margin-left: -10px; background-color: #2a2621; border-radius: 10%; padding-top: 40px; padding-left: 15px; opacity: .8; position: fixed;">
-    <span class="icon-uniE6DA"></span>
+  <div ng-mouseenter="isSidebarOpen = true" ng-swipe-right="isSidebarOpen = true" ng-click="isSidebarOpen = true" style="width:35px; height:100px; margin-top: 350px; margin-left: -10px; background-color: #2a2621; border-radius: 10%; padding-top: 40px; padding-left: 14px; opacity: .8; position: fixed; color: #FFF;">
+    <span class="icon-verticallist2 large-icon"></span>
   </div>
   </span>
 
@@ -329,8 +329,8 @@
 
           </li>
         </ul>
-        <img src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" />
-        <img src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px show-small-icon-350px" />
+        <img src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.home" />
+        <img src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px show-small-icon-350px" ui-sref="menu.home" />
       </div>
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print">
       <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
@@ -347,7 +347,7 @@
          </div>
 
         <div class="col-md-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px;" style="margin-left: 10px; margin-right: 10px;">
-          <img src="images/bek-logo.png" style="max-width:100%"  alt="logo" />
+          <img class="hand-pointer" src="images/bek-logo.png" style="max-width:100%"  alt="logo" ui-sref="menu.home" />
         </div>
 
         <div class="col-md-3 hidden-xs hidden-sm"  ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">

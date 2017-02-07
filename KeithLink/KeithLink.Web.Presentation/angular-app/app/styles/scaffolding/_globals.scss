@@ -10,6 +10,7 @@
 html, body {
   height: 100%;
   font-weight: 600;
+  background-color: #FFF;
 }
 
 // highest level container, located in index.html
@@ -23,7 +24,6 @@ html, body {
 .sidebar-menu-wrapper {
   min-height: 100%;
   position: relative;
-  background-image: url('../images/Textured-BG.jpg');
 }
 
 // div to the right of the sidebar, located in menu.html
