@@ -17,7 +17,7 @@
   </span>
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print" ng-mouseleave="isSidebarOpen = false" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
+  <div class="sidebar hidden-print" ng-mouseleave="isSidebarOpen = false" ng-class="{'open': isSidebarOpen}" style="z-index:10002; position:fixed;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
