@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
                 double total = 0;
 
                 if (this.ItemDeleted == false
-                        && this.ItemStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE,
+                    && this.ItemStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE,
                                                        StringComparison.CurrentCultureIgnoreCase) == false)
                 {
                     total = PricingHelper.GetFixedPrice(ShippedQuantity, SellPrice, CatchWeight, TotalShippedWeight, AverageWeight);
