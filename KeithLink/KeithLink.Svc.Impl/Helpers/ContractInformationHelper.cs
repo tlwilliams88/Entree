@@ -36,7 +36,9 @@ namespace KeithLink.Svc.Impl.Helpers
                 if (contract != null)
                 {
                     contractdictionary = contract.Items
-                                                 .ToDictionary(li => li.ItemNumber, li => li.Category.Trim());
+                                                 .GroupBy(li => li.ItemNumber, StringComparer.CurrentCultureIgnoreCase)
+                                                 .ToDictionary(g => g.Key, 
+                                                               g => g.First().Category.Trim());
                 }
                 cache.AddItem<Dictionary<string, string>>(CACHE_GROUPNAME,
                                                            CACHE_PREFIX,
