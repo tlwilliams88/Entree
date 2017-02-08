@@ -40,6 +40,45 @@ angular.module('bekApp')
     $scope.showRowOptionsDropdown = false;
     $scope.forms = {};
     $scope.isCustomInventoryList = originalList.iscustominventory ? true : false;
+    $scope.selectedFilterParameter = 'Filter By...';
+
+    $scope.availableFilterParameters = [
+      {
+        name: 'Recently Added Items',
+        filter: {
+          field: 'delta',
+          value: 'newly added'
+        }
+      },
+      {
+        name: 'Recently Deleted Items',
+        filter: {
+          field: 'delta',
+          value: 'newly deleted'
+        }
+      },
+      {
+        name: 'Recently Added/Deleted Items',
+        filter: {
+          condition: 'or',
+          filter:[{
+            field: 'delta',
+            value: 'newly added'
+          },
+          {
+            field: 'delta',
+            value: 'newly deleted'
+          }]
+        }
+      }
+    ];
+
+    $scope.selectFilterParameter = function(filterparameter) {
+      $scope.selectedFilterParameter = filterparameter.name;
+      $scope.selectedFilter = filterparameter.filter;
+
+      $scope.filterItems();
+    };
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -356,9 +395,14 @@ angular.module('bekApp')
     **********/
 
     $scope.filterItems = function(searchTerm) {
-      if($scope.unsavedChangesConfirmation()){
+      if($scope.unsavedChangesConfirmation() && searchTerm){
         $scope.initPagingValues(true);
         listPagingModel.filterListItems(searchTerm);
+      } else if($scope.unsavedChangesConfirmation() && $scope.selectedFilter) {
+        $scope.initPagingValues(true);
+        listPagingModel.filterListItemsByMultipleFields($scope.selectedFilter);
+      } else {
+        listPagingModel.filterListItems();
       }
     };
     
@@ -906,9 +950,14 @@ angular.module('bekApp')
       });
     };
 
-    $scope.clearFilter = function(){
+    $scope.clearFilter = function(clearSearch){
       if($scope.unsavedChangesConfirmation()){
-        $scope.listSearchTerm = '';
+        if(clearSearch){
+          $scope.listSearchTerm = '';
+        }
+        
+        $scope.selectedFilterParameter = 'Filter By...';
+        $scope.selectedFilter = '';
         $scope.filterItems( $scope.listSearchTerm );       
       }    
     };
