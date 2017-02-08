@@ -1,14 +1,14 @@
-<div class="hidden-xs hidden-sm hidden-print page-header-bar__actions">
+<div class="hidden-xs hidden-sm hidden-print page-header-bar__actions" style="display:inline-flex;">
 
   <div ng-transclude="" class="page-header__buttons">
 
   </div>
   
   <div class="page-header__orders" ng-if="isOrderEntryCustomer && canCreateOrders">
-    <div class="btn-group" dropdown is-open="status.cartisopen">
+    <div class="btn-group" dropdown is-open="status.cartisopen" style="font-size: 24px; margin-top: 5px;">
       <button class="badge-parent btn-no-style dropdown-toggle">
         <span title="Carts" class="text-blue icon-truck"></span>
-        <span ng-if="cartHeaders && cartHeaders.length > 0" class="badge">{{cartHeaders.length}}</span>
+        <span ng-if="cartHeaders && cartHeaders.length > 0" class="badge" style="margin-top: -10px; margin-left: -5px;">{{cartHeaders.length}}</span>
       </button>
       <ul class="dropdown-menu truck-dropdown">
         <li class="heading"><h3>Current Carts</h3></li>
@@ -23,7 +23,7 @@
             <br>            
             Cart Total: {{cart.subtotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="margin-left: -45px;">View Cart</a>
             <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })">Continue Shopping</a>
           </div>
         </li>
@@ -44,7 +44,7 @@
             <br>
             Change Order Total: {{changeOrder.ordertotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })">View Change Order</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="margin-left: -45px;">View Change Order</a>
             <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber })">Continue Shopping</a>
           </div>
         </li>

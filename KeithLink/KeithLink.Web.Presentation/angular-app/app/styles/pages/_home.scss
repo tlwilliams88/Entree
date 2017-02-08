@@ -144,7 +144,6 @@
     position: relative;
     @include arrow('left','top', 5px, $color-white, $color-border, 1px);
     margin-top: 15px;
-    border-radius: 3px;
     letter-spacing: 1px;
     background-color: $color-white;
     border: 1px solid $color-border;
@@ -206,7 +205,6 @@ $order-col__background: #f1efe5;
   background-color: $color-white;
   border: 1px solid $color-border;
   margin-top: 10px;
-  box-shadow: 0px 0px 5px #c3bc9c;
  
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
@@ -243,9 +241,9 @@ $order-col__background: #f1efe5;
  
 .view-all {
   border: 1px solid $color-border;
-  border-radius: 0 0 4px 4px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 20px;
   background-color: $color-white;
 }
  

@@ -5,7 +5,7 @@
     Save</button>
     <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" ng-click="verifySettings = !verifySettings" ng-disabled="configSettingsForm.$invalid || configSettingsForm.$pristine"  ng-show="!verifySettings">Verify</button>
   </div>
-  <div header-buttons>
+  <div class="pull-right margin-right-10">
     <label ng-if="configSettingsForm.$dirty && !configSettingsForm.$invalid" class="text-red pull-right-sm" 
       style="padding:10px 20px 0 0;">
       Please verify your changes below by checking the checkbox

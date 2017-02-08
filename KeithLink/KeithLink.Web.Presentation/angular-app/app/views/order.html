@@ -5,11 +5,10 @@
       <br>Updates</button>
 
   </div>
-  <div header-buttons>
+  <div class="pull-right margin-right-10">
     <button type="button" ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
     <a title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></a>
     <a title="Export" ng-click="openExportModal()" class="btn btn-icon-right btn-default"><span class="icon-export"></span></a>
-    <order-dropdown class="hidden-print" is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1"></order-dropdown>
   </div>
 </div>
 <div class="page-content">
