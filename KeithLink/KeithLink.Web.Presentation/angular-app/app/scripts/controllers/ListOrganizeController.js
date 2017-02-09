@@ -23,7 +23,7 @@ angular.module('bekApp')
   }
 
   function setList(list) {
-    $scope.list = list;
+    $scope.list = list ? list : $scope.list;
     $scope.list.items.forEach(function(item) {
       item.editPosition = item.position;
       item.positionStarting = item.editPosition;
@@ -157,7 +157,7 @@ angular.module('bekApp')
       blockUI.start('Saving List...').then(function(){
         ListService.updateList(list, true).then(function(updatedList) {
           $scope.organizeListForm.$setPristine();
-          setList(updatedList);
+          setList();
         }).finally(function() {
           processingSaveList = false;
         });
