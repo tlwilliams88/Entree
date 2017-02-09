@@ -76,21 +76,19 @@
 @media(min-width:992px) {
   .btn-primary-homepage {
     background-color: #489ecf;
-    padding: 10px 12px;
-    font-size: 14px;
-    line-height: 1.33;
-    border-radius: 4px;
   }
 }
 
 @media(max-width:991px) {
   .btn-mobile-homepage {
     background-color: #9E987E;
-    padding: 5px 10px;
-    font-size: 11px;
-    line-height: 1.5;
-    border-radius: 3px;
+    font-size: 8px;
+    margin-right: -12px;
     margin-top: -5px;
+  }
+
+  .btn-small-mobile-truck {
+    font-size: 23px;
   }
 }
 

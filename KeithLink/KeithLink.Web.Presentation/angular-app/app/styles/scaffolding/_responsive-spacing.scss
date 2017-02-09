@@ -1,12 +1,37 @@
 @media (max-width: $screen-xs-max) {
-  .padding-top-xs {
-    padding-top: 20px;
-  }
+  	.padding-top-xs {
+    	padding-top: 20px;
+  	}
 }
+
 @media (max-width: $screen-sm-max) {
-  .padding-top-sm {
-    padding-top: 20px;
-  }
+  	.padding-top-sm {
+    	padding-top: 20px;
+  	}
+}
+
+@media only screen and (max-device-width: 1200px) {
+	.width-22 {
+    	width: 22%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.width-22 {
+    	width: 30%;
+	}
+}
+
+@media (max-width: 1072px) {
+	.width-22 {
+		width: 20%;
+	}
+}
+
+@media (max-width: 1000px) {
+	.width-22 {
+    	width: 100%;
+	}
 }
 
 .padding-left-15 {
