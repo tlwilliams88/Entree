@@ -1,10 +1,115 @@
 @media (max-width: $screen-xs-max) {
-  .padding-top-xs {
-    padding-top: 20px;
-  }
+  	.padding-top-xs {
+    	padding-top: 20px;
+  	}
 }
+
 @media (max-width: $screen-sm-max) {
-  .padding-top-sm {
-    padding-top: 20px;
-  }
+  	.padding-top-sm {
+    	padding-top: 20px;
+  	}
+}
+
+@media only screen and (max-device-width: 1200px) {
+	.width-22 {
+    	width: 22%;
+	}
+}
+
+@media (min-width: 1200px) {
+	.width-22 {
+    	width: 30%;
+	}
+}
+
+@media (max-width: 1072px) {
+	.width-22 {
+		width: 20%;
+	}
+}
+
+@media (max-width: 1000px) {
+	.width-22 {
+    	width: 100%;
+	}
+}
+
+.padding-left-15 {
+  padding-left: 15px;
+}
+
+.padding-left-10 {
+  padding-left: 10px;
+}
+
+.padding-left-5 {
+  padding-left: 5px;
+}
+
+.padding-right-15 {
+  padding-right: 15px;
+}
+
+.padding-right-10 {
+  padding-right: 10px;
+}
+
+.padding-right-5 {
+  padding-right: 5px;
+}
+
+.margin-left-5 {
+  margin-left:5px !important;
+}
+
+.margin-left-8 {
+  margin-left: 8px;
+}
+
+.margin-left-10 {
+  margin-left: 10px !important;
+}
+
+.margin-left-15 {
+  margin-left:15px;
+}
+
+.margin-left-55 {
+  margin-left:55px;
+}
+
+.margin-right-5 {
+  margin-right: 5px !important;
+}
+
+.margin-right-10 {
+  margin-right: 10px !important;
+}
+
+.margin-right-15 {
+  margin-right:15px;
+}
+
+.margin-top-3 {
+  margin-top: 3px;
+}
+
+.margin-top-5 {
+  margin-top: 5px;
+}
+
+.margin-top-8 {
+  margin-top: 8px;
+}
+
+.margin-top-10 {
+  margin-top: 10px !important;
+}
+
+.margin-top-25 {
+  margin-top: 25px;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px !important;
 }

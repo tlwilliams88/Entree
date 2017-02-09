@@ -10,14 +10,16 @@
 <!-- End CSS -->
 
 <div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" class="sidebar-menu-wrapper">
-  <span class="hidden-xs hidden-sm" style="border-left: 1px solid #2a2621; height: 100%; z-index: 10002; position:absolute;"> 
+<!--   <span class="hidden-xs hidden-sm" style="border-left: 1px solid #2a2621; height: 100%; z-index: 10002; position:absolute;"> 
   <div ng-mouseenter="isSidebarOpen = true" ng-swipe-right="isSidebarOpen = true" ng-click="isSidebarOpen = true" style="width:35px; height:100px; margin-top: 350px; margin-left: -10px; background-color: #2a2621; border-radius: 10%; padding-top: 40px; padding-left: 14px; opacity: .8; position: fixed; color: #FFF;">
     <span class="icon-verticallist2 large-icon"></span>
   </div>
-  </span>
+  </span> -->
+
+  <div class="menu-overlay" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print" ng-mouseleave="isSidebarOpen = false" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
+  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:10002; position:fixed;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
@@ -282,8 +284,6 @@
     </div>
   </div> <!-- end Desktop Sidebar -->
 
-  <div class="mobile-menu-overlay hidden-md hidden-lg" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
-
   <div class="row main-content">
     <div class="col-sm-12">
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
@@ -298,7 +298,7 @@
           </li>
           <li class="mobile-menu-item" ng-if="canCreateOrders">
 
-            <div class="btn-group" dropdown is-open="status.cartisopenmobile" style="  margin-top: -2px;margin-bottom: -3px;">
+            <div class="btn-group btn-small-mobile-truck" dropdown is-open="status.cartisopenmobile" style="margin-top: -2px; margin-bottom: -3px;">
               <button class="badge-parent btn-no-style dropdown-toggle" style="padding: 0;">
                 <span title="Carts" class="icon-truck"></span>
               </button>
@@ -346,17 +346,18 @@
           </ul>
          </div>
 
-        <div class="col-md-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px;" style="margin-left: 10px; margin-right: 10px;">
+        <div class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px;">
+          <a ng-click="isSidebarOpen = !isSidebarOpen" style="margin-right: 10px; margin-top: 5px; font-size: 28px;"><span class="icon-list2"></span></a>
           <img class="hand-pointer" src="images/bek-logo.png" style="max-width:100%"  alt="logo" ui-sref="menu.home" />
         </div>
 
-        <div class="col-md-3 hidden-xs hidden-sm"  ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
+        <div class="col-xs-2 hidden-xs hidden-sm" style="margin-top: 5px; padding-left: 5px;" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
           <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
           <div ui-select2="customerSelectOptions" ng-if="::isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-3 col-lg-4 width-22" style="margin-top: 5px; padding-right: 5px; padding-left: 5px;">
           <form name="universalSearchForm" novalidate ng-if="::canBrowseCatalog">
             <div class="input-group input-group-lg">
                <div dropdown is-open="openScope" class="input-group-btn">
@@ -367,40 +368,53 @@
                 </div><!-- /btn-group -->
 
               <input required ng-minlength="3" name="universalSearchForm.userBar.universalSearchTerm" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword" validate-input>
-              <span class="input-group-btn">
+              <span class="input-group-btn" style="background-color: #FDFDFD;">
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: departmentNum, deptName: department[0].text })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>
             <div style="margin-left: 60px;" ng-if="universalSearchForm.$error.searchInputInvalid"><p class="text-red">Invalid Input. No special characters allowed in search terms.</p></div>
           </form>
         </div>
+<!--           <div class="pull-right hidden-xs hidden-sm hidden-print" style="height: 60px; width:260px;">
+    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right margin-top-10 margin-right-10"></order-dropdown>
+    <div header-buttons>
+      <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
+    </div>
+  </div> -->
 
-        <div class="hidden-sm hidden-xs text-right nowrap pull-right" style="margin-left:none; padding-left:none; padding-right: 20px;">
+        <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10" style="margin-left:none; padding-left:none; display:inline-flex; margin-top: 3px; margin-right: 5px;">
 
-            <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent">
-              <span class="icon-bell" style="color: #489ecf;"></span>
-              <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
-            </span></a>
-            <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
-              <div class="person-info__section person-info__details">
-                <span class="user-info__name">{{userProfile.displayname}}</span>
-                <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
-                <span ng-if="userProfile.displayRole === 'approver'" class="user-info__job-title">Buyer</span>
-                <span ng-if="userProfile.displayRole === 'buyer'" class="user-info__job-title">Shopper</span>
-                <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                  <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
-                  <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
-                  <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>               
-                  <a class="feedback-link" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><button class="btn btn-lg btn-default feedback-btn">Send Feedback</button> </a>
-                  <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
-                  <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
-                </div>
-              </div>
-              <div class="person-info__section">
-                <span class="icon-arrow-down5 color-white"></span>
-              </div>
-              <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
+          <div style="display: inline-flex; width: 200px;">
+            <div header-buttons>
+              <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2" style="display: inline-flex; margin-top: 8px;" ng-class="{'margin-left-55': !canCreateOrders}"></order-dropdown>
             </div>
+          </div>
+
+          <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent" style="padding-right: 15px; margin-top: 5px; margin-left: 5px;">
+            <span class="icon-bell" style="color: #489ecf;"></span>
+            <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
+          </span></a>
+          <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
+            <div class="person-info__section person-info__details">
+              <span class="user-info__name">{{userProfile.displayname}}</span>
+              <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
+              <span ng-if="userProfile.displayRole === 'approver'" class="user-info__job-title">Buyer</span>
+              <span ng-if="userProfile.displayRole === 'buyer'" class="user-info__job-title">Shopper</span>
+              <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
+                <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
+                <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
+                <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>               
+                <a class="feedback-link" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><button class="btn btn-lg btn-default feedback-btn">Send Feedback</button> </a>
+                <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
+                <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
+              </div>
+            </div>
+            <div class="person-info__section">
+              <span class="icon-arrow-down5 color-white"></span>
+            </div>
+            <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
+          </div>
 
         </div>
 
