@@ -118,17 +118,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             throw new NotImplementedException();
         }
 
-        public void AddSpecialFiltersToFacets(ExpandoObject facets, string count = null)
-        {
-            throw new NotImplementedException();
-        }
-
         public ProductsReturn GetProductNumbersBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel)
         {
             throw new NotImplementedException();
         }
 
         public ProductsReturn GetHouseProductNumbersByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSpecialFiltersToFacets(ExpandoObject facets, string countDeviated = null, string countRecentOrdered = null)
         {
             throw new NotImplementedException();
         }

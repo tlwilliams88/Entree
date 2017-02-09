@@ -391,5 +391,10 @@ namespace KeithLink.Svc.Core
         public const string MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERGRAND = "MultiPaymentConfirmationCustomerFooterGrand";
         public const string MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTEREND = "MultiPaymentConfirmationCustomerFooterEnd";
 
+        // message templates
+        public const string SPECIALFILTERS_FACET = "specialfilters";
+        public const string SPECIALFILTERS_UNDETERMINEDCOUNT = "?";
+        public const string SPECIALFILTER_DEVIATEDPRICES = "deviatedprices";
+        public const string SPECIALFILTER_RECENTLYORDERED = "recentlyordered";
     }
 }

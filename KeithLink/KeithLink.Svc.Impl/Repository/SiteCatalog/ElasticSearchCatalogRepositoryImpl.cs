@@ -1045,16 +1045,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return facets;
         }
 
-        public void AddSpecialFiltersToFacets(ExpandoObject facets, string count = null)
+        public void AddSpecialFiltersToFacets(ExpandoObject facets
+                                              , string countDeviated = null
+                                              , string countRecentOrdered = null)
         {
             List<ExpandoObject> specialFilters = new List<ExpandoObject>();
-            {
-                dynamic filter = new ExpandoObject();
-                filter.count = (count != null) ? count : "?";
-                filter.name = "deviatedprices";
-                specialFilters.Add(filter);
-            }
-            (facets as IDictionary<string, object>).Add("specialfilters", specialFilters);
+            AddSpecalFilter(specialFilters, Constants.SPECIALFILTER_DEVIATEDPRICES, countDeviated);
+            AddSpecalFilter(specialFilters, Constants.SPECIALFILTER_RECENTLYORDERED, countRecentOrdered);
+            (facets as IDictionary<string, object>).Add(Constants.SPECIALFILTERS_FACET, specialFilters);
+        }
+
+        private static void AddSpecalFilter(List<ExpandoObject> specialFilters, string name, string count)
+        {
+            dynamic filter = new ExpandoObject();
+            filter.count = (count != null) ? count : Constants.SPECIALFILTERS_UNDETERMINEDCOUNT;
+            filter.name = name;
+            specialFilters.Add(filter);
         }
 
         private void CorrelateCategoriesToParentCatories(ExpandoObject facets)

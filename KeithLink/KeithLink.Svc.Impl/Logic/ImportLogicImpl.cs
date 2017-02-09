@@ -29,6 +29,7 @@ namespace KeithLink.Svc.Impl.Logic
         #region attributes
         private IListLogic listServiceRepository;
         private ICatalogLogic catalogLogic;
+        private readonly ISiteCatalogService _catalogService;
         private ICustomInventoryItemsRepository _customInventoryRepo;
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
@@ -48,10 +49,11 @@ namespace KeithLink.Svc.Impl.Logic
         #region ctor
         public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, 
             IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic,
-            ICustomInventoryItemsRepository customInventoryRepo)
+            ICustomInventoryItemsRepository customInventoryRepo, ISiteCatalogService catalogService)
         {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
+            _catalogService = catalogService;
             this.eventLogRepository = eventLogRepository;
             this.shoppingCartLogic = shoppingCartLogic;
             this.priceLogic = priceLogic;
@@ -557,7 +559,7 @@ namespace KeithLink.Svc.Impl.Logic
 
             upc = upc.Replace("\"", "");
 
-            ProductsReturn products = catalogLogic.GetProductsBySearch(catalogInfo, upc, new SearchInputModel() { From = 0, Size = 10, SField = "upc" }, user);
+            ProductsReturn products = _catalogService.GetProductsBySearch(catalogInfo, upc, new SearchInputModel() { From = 0, Size = 10, SField = "upc" }, user);
             foreach (Product p in products.Products)
             {
                 if (p.UPC == upc)

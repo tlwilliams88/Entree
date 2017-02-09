@@ -298,6 +298,7 @@
     <Compile Include="Interface\SingleSignOn\IKbitRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
     <Compile Include="Interface\SiteCatalog\IExternalImageProcessorUnfi.cs" />
+    <Compile Include="Interface\SiteCatalog\ISiteCatalogService.cs" />
     <Compile Include="Interface\SpecialOrders\ISpecialOrderDBContext.cs" />
     <Compile Include="Interface\Templates\ITemplatesRepository.cs" />
     <Compile Include="Models\ApplicationHealth\QueuesToCheckModel.cs" />
