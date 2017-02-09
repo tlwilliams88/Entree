@@ -420,8 +420,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private string InvoiceModelCacheKey(InvoiceModel invoice)
         {
-            return String.Format("InvoiceHeader_{0}",
-                                 invoice.Id);
+            return String.Format("InvoiceHeader_{0}_{1}",
+                                 invoice.InvoiceNumber, invoice.CustomerNumber);
         }
 
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(
