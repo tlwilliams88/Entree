@@ -17,12 +17,17 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
             {
                 double total = 0;
 
-                if (this.ItemDeleted == false
-                    && this.ItemStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE,
-                                                       StringComparison.CurrentCultureIgnoreCase) == false)
+                try // this is called when we first save the cart as order; we don't need a value then
+                    // and it throws an exception if we even call the pricinghelper
                 {
-                    total = PricingHelper.GetFixedPrice(ShippedQuantity, SellPrice, CatchWeight, TotalShippedWeight, AverageWeight);
+                    if (this.ItemDeleted == false
+                        && this.ItemStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE,
+                                                           StringComparison.CurrentCultureIgnoreCase) == false)
+                    {
+                        total = PricingHelper.GetFixedPrice(ShippedQuantity, SellPrice, CatchWeight, TotalShippedWeight, AverageWeight);
+                    }
                 }
+                catch { }
 
                 return total;
             }
