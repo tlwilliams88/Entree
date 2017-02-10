@@ -1,6 +1,7 @@
 .user-bar {
   font-weight: 300;
-  background-image: url('../images/Registration-BG.jpg');
+  background-image: url('../images/Background_Header.jpg');
+  background-position: 200px;
 
   @include header-bar(#373029, 15px);
 
