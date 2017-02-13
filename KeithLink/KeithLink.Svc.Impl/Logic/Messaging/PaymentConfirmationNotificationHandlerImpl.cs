@@ -42,6 +42,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private readonly IMessageTemplateLogic _messageTemplateLogic;
         private readonly IKPayInvoiceRepository _invoiceRepo;
         private readonly ICustomerBankRepository _bankRepo;
+
+        public const string BANK_RESOLVE_UNDEFINED = "undefined";
         #endregion
 
         #region ctor
@@ -99,7 +101,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 NotifHeader = header.ToString(),
                 ConfirmationId = confirmationId,
-                BankAccount = bank.AccountNumber + " - " + bank.Name,
+                BankAccount = GetBankAccountNumber(bank) + " - " + GetBankName(bank),
                 PaymentDetailLines = orderDetails.ToString(),
                 TotalPayments = payments.Sum(p => p.PaymentAmount)
             });
@@ -228,8 +230,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTHEADER);
             orderDetails.Append(headerTemplate.Body.Inject(new
             {
-                BankName = bankUsed.Name,
-                AccountNumber = bankUsed.AccountNumber
+                BankName = GetBankName(bankUsed),
+                AccountNumber = GetBankAccountNumber(bankUsed)
             }));
         }
 
@@ -313,8 +315,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 (Constants.MESSAGE_TEMPLATE_MULTI_PAYMENTFOOTERACCOUNT);
             orderDetails.Append(footerAccountTemplate.Body.Inject(new
             {
-                BankName = bankUsed.Name,
-                AccountNumber = bankUsed.AccountNumber,
+                BankName = GetBankName(bankUsed),
+                AccountNumber = GetBankAccountNumber(bankUsed),
                 AccountSum = paymentSum
             }));
         }
@@ -420,6 +422,26 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             catch (Exception ex) {
                 throw new Core.Exceptions.Queue.QueueDataError<BaseNotification>(notification, "PaymentConfirmation:ProcessNotification", "Sending PaymentConfirmation notification", "An error occured processing a payment confirmation", ex);
             }
+        }
+
+        private string GetBankName(Core.Models.OnlinePayments.Customer.EF.CustomerBank bank)
+        {
+            string ret = BANK_RESOLVE_UNDEFINED;
+            if (bank != null && bank.Name != null)
+            {
+                ret = bank.Name;
+            }
+            return ret;
+        }
+
+        private string GetBankAccountNumber(Core.Models.OnlinePayments.Customer.EF.CustomerBank bank)
+        {
+            string ret = BANK_RESOLVE_UNDEFINED;
+            if (bank != null && bank.AccountNumber != null)
+            {
+                ret = bank.Name;
+            }
+            return ret;
         }
 
         //public void ProcessNotificationForExternalUsers(BaseNotification notification)
