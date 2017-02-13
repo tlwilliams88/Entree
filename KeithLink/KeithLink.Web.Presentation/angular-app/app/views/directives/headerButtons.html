@@ -23,7 +23,7 @@
             <br>            
             Cart Total: {{cart.subtotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="margin-left: -45px;">View Cart</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="display: table;">View Cart</a>
             <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })">Continue Shopping</a>
           </div>
         </li>
@@ -44,7 +44,7 @@
             <br>
             Change Order Total: {{changeOrder.ordertotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="margin-left: -45px;">View Change Order</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;">View Change Order</a>
             <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber })">Continue Shopping</a>
           </div>
         </li>
