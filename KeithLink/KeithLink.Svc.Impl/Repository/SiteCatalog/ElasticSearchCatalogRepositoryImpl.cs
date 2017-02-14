@@ -1050,16 +1050,23 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                                               , string countRecentOrdered = null)
         {
             List<ExpandoObject> specialFilters = new List<ExpandoObject>();
-            AddSpecalFilter(specialFilters, Constants.SPECIALFILTER_DEVIATEDPRICES, countDeviated);
-            AddSpecalFilter(specialFilters, Constants.SPECIALFILTER_RECENTLYORDERED, countRecentOrdered);
+            AddSpecalFilter(specialFilters, 
+                            Constants.SPECIALFILTER_DEVIATEDPRICES,
+                            Constants.SPECIALFILTER_DEVIATEDPRICES_DESCRIPTION,
+                            countDeviated);
+            AddSpecalFilter(specialFilters, 
+                            Constants.SPECIALFILTER_PREVIOUSORDERED,
+                            Constants.SPECIALFILTER_PREVIOUSORDERED_DESCRIPTION,
+                            countRecentOrdered);
             (facets as IDictionary<string, object>).Add(Constants.SPECIALFILTERS_FACET, specialFilters);
         }
 
-        private static void AddSpecalFilter(List<ExpandoObject> specialFilters, string name, string count)
+        private static void AddSpecalFilter(List<ExpandoObject> specialFilters, string name, string desc, string count)
         {
             dynamic filter = new ExpandoObject();
             filter.count = (count != null) ? count : Constants.SPECIALFILTERS_UNDETERMINEDCOUNT;
             filter.name = name;
+            filter.desc = desc;
             specialFilters.Add(filter);
         }
 

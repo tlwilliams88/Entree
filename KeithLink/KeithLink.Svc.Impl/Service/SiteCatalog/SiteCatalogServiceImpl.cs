@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             {
                 ret = GetDeviatedPriceProductsByCategory(catalogInfo, searchModel, categoryName, newCatalog);
             }
-            else if (specialFilters.Contains(Constants.SPECIALFILTER_RECENTLYORDERED))
+            else if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
             {
                 ret = GetRecentlyOrderedProductsByCategory(catalogInfo, searchModel, categoryName, newCatalog, profile);
             }
@@ -126,7 +126,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             // add facet for specialfilters to return and set count to number of products
             ret.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, ret.Products.Count().ToString());
+            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, null, ret.Products.Count().ToString());
 
             return ret;
         }
@@ -182,11 +182,11 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                              }
                                                             );
             }
-            else if (specialFilters.Contains("deviatedprices"))
+            else if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
             {
                 ret = GetDeviatedPriceProductsBySearch(catalogInfo, search, searchModel, tempCatalogInfo);
             }
-            else if (specialFilters.Contains("recentlyordered"))
+            else if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
             {
                 ret = GetRecentlyOrderedProductsBySearch(catalogInfo, search, searchModel, tempCatalogInfo, profile);
             }
@@ -235,7 +235,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             // add facet for specialfilters to return and set count to number of products
             ret.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, ret.Products.Count().ToString());
+            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, null, ret.Products.Count().ToString());
             return ret;
         }
         #endregion
@@ -253,9 +253,13 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
-            else if (specialFilters.Contains("deviatedprices"))
+            else if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
             {
                 returnValue = GetDeviatedPriceHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
+            }
+            else if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
+            {
+                returnValue = GetRecentlyOrderedHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel, profile);
             }
             else
             {
@@ -295,7 +299,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             // add facet for specialfilters to return and set count to number of products
             returnValue.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(returnValue.Facets, returnValue.Products.Count().ToString());
+            _catalogRepository.AddSpecialFiltersToFacets(returnValue.Facets, null, returnValue.Products.Count().ToString());
             return returnValue;
         }
         #endregion
