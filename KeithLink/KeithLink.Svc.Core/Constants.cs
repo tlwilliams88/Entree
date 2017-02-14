@@ -395,6 +395,8 @@ namespace KeithLink.Svc.Core
         public const string SPECIALFILTERS_FACET = "specialfilters";
         public const string SPECIALFILTERS_UNDETERMINEDCOUNT = "?";
         public const string SPECIALFILTER_DEVIATEDPRICES = "deviatedprices";
-        public const string SPECIALFILTER_RECENTLYORDERED = "recentlyordered";
+        public const string SPECIALFILTER_DEVIATEDPRICES_DESCRIPTION = "Deviated Prices";
+        public const string SPECIALFILTER_PREVIOUSORDERED = "previousordered";
+        public const string SPECIALFILTER_PREVIOUSORDERED_DESCRIPTION = "Previously Ordered";
     }
 }
