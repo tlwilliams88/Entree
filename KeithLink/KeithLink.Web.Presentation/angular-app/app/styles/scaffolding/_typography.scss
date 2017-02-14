@@ -41,14 +41,6 @@ a:hover {
   text-decoration: none;
 }
 
-button {
-  font-weight: 600 !important;
-}
-
-div {
-  font-weight: 600;
-}
-
 .text-red { color: $color-red; }
 .text-green { color: $color-green; }
 .text-white { color: $color-white; }
@@ -69,15 +61,6 @@ div {
   font-size: 14px;
 }
 
-:-moz-placeholder {
-    font-weight: bold;
-}
-::-webkit-input-placeholder {
-    font-weight: bold;
-}
-::-moz-placeholder {
-    font-weight: bold;
-}
-:-ms-input-placeholder {
-    font-weight: bold;
+.primary-button-opacity {
+  opacity: .8;
 }

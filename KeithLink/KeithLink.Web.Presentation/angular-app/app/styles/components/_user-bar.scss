@@ -2,8 +2,7 @@
   font-weight: 300;
   background-image: url('../images/Background_Header.jpg');
   background-position: 200px;
-
-  @include header-bar(#373029, 15px);
+  padding: 15px;
 
   .user-bar__notification {
     font-size: 25px;
@@ -56,8 +55,7 @@
 }
 
 .user-bar-mobile {
-  background-image: url('../images/Registration-BG.jpg');
-  border-bottom: 1px solid $color-border;
+  background-image: url('../images/Background_Header.jpg');
 
   text-align: center;
 

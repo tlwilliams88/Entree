@@ -19,7 +19,7 @@
   <div class="menu-overlay" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:10002; position:fixed;">
+  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
@@ -324,6 +324,22 @@
                     <a ui-sref="menu.order" class="btn btn-primary">View All Carts</a>
                   </div>
                 </li>
+                <li class="heading"><h3>Current Change Orders</h3></li>
+                <li class="cart" ng-repeat="changeOrder in changeOrders | orderBy:'createddate':true | limitTo: 2">
+                  <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
+                  <div class="cart-dropdown__info">
+                    <strong>{{changeOrder.invoicenumber}}</strong>
+                    <br>
+                    Ship Date: {{changeOrder.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
+                    <br>
+                    Item Count: {{(changeOrder.itemcount || 0) + (changeOrder.itemcount === 1 ? ' Item' : ' Items')}}
+                    <br>
+                    Change Order Total: {{changeOrder.ordertotal | currency}}
+                    <br>
+                    <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;">View Change Order</a>
+                    <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber })">Continue Shopping</a>
+                  </div>
+                </li>
               </ul>
             </div>
 
@@ -346,7 +362,7 @@
           </ul>
          </div>
 
-        <div class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px;">
+        <div class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
           <a ng-click="isSidebarOpen = !isSidebarOpen" style="margin-right: 10px; margin-top: 5px; font-size: 28px;"><span class="icon-list2"></span></a>
           <img class="hand-pointer" src="images/bek-logo.png" style="max-width:100%"  alt="logo" ui-sref="menu.home" />
         </div>
@@ -368,7 +384,7 @@
                 </div><!-- /btn-group -->
 
               <input required ng-minlength="3" name="universalSearchForm.userBar.universalSearchTerm" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword" validate-input>
-              <span class="input-group-btn" style="background-color: #FDFDFD;">
+              <span class="input-group-btn" style="background-color: #F3F1EB; border-radius: 4px;">
                 <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: departmentNum, deptName: department[0].text })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
@@ -385,14 +401,14 @@
 
         <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10" style="margin-left:none; padding-left:none; display:inline-flex; margin-top: 3px; margin-right: 5px;">
 
-          <div style="display: inline-flex; width: 200px;">
+          <div class="mobile-margin-right-15 desktop-margin-right-10" style="display: inline-flex; width: 200px;">
             <div header-buttons>
-              <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2" style="display: inline-flex; margin-top: 8px;" ng-class="{'margin-left-55': !canCreateOrders}"></order-dropdown>
+              <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2" style="display: inline-flex; margin-top: 8px;" class="mobile-margin-right-15" ng-class="{'margin-left-55': !canCreateOrders}"></order-dropdown>
             </div>
           </div>
 
           <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent" style="padding-right: 15px; margin-top: 5px; margin-left: 5px;">
-            <span class="icon-bell" style="color: #489ecf;"></span>
+            <span class="icon-bell text-blue primary-button-opacity" style="color: #489ecf;"></span>
             <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
           </span></a>
           <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">

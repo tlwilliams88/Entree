@@ -14,7 +14,17 @@
 	.width-22 {
     	width: 22%;
 	}
+
+	.mobile-margin-right-15 {
+		margin-right: -15px;
+	}
 }
+
+@media (min-width:1281px) { 
+	.desktop-margin-right-10 {
+		margin-right: 10px;
+	}
+ }
 
 @media (min-width: 1200px) {
 	.width-22 {
@@ -25,6 +35,12 @@
 @media (max-width: 1072px) {
 	.width-22 {
 		width: 20%;
+	}
+}
+
+@media only screen and (max-device-width: 1072px) {
+	.width-22 {
+		width: 24%;
 	}
 }
 
@@ -88,6 +104,10 @@
 
 .margin-right-15 {
   margin-right:15px;
+}
+
+.margin-right-18 {
+  margin-right:18px;
 }
 
 .margin-top-3 {

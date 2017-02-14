@@ -9,8 +9,12 @@
 // must have for infinite scroll
 html, body {
   height: 100%;
-  font-weight: 600;
   background-color: #FDFDFD;
+  font-family: helvetica;
+}
+
+td {
+  font-size: 13px;
 }
 
 // highest level container, located in index.html
