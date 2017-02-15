@@ -948,8 +948,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             {
                 products.Add(new Product() { ItemNumber = oProd._id, CatalogId = oProd._index });
             }
+            ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
 
-            return new ProductsReturn() { Products = products, Count = products.Count };
+            return new ProductsReturn() { Products = products, Facets = facets, Count = products.Count };
         }
 
         private int GetCountProductFromElasticSearch(string branch, bool listonly, string searchBody, object searchBodyD = null)
@@ -1061,13 +1062,194 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             (facets as IDictionary<string, object>).Add(Constants.SPECIALFILTERS_FACET, specialFilters);
         }
 
-        private static void AddSpecalFilter(List<ExpandoObject> specialFilters, string name, string desc, string count)
+        private void AddSpecalFilter(List<ExpandoObject> specialFilters, string name, string desc, string count)
         {
             dynamic filter = new ExpandoObject();
             filter.count = (count != null) ? count : Constants.SPECIALFILTERS_UNDETERMINEDCOUNT;
             filter.name = name;
             filter.desc = desc;
             specialFilters.Add(filter);
+        }
+
+        public void RecalculateFacets(ProductsReturn ret, List<string> specialFilters)
+        {
+            IDictionary<string, object> dict = ret.Facets as IDictionary<string, object>;
+            foreach (var oFacet in dict)
+            {
+                string name = oFacet.Key;
+                if (name.Equals("parentcategories", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcParentCategories(oFacet.Value as List<ExpandoObject>, ret);
+                }
+                else if (name.Equals("brands", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcFacet(oFacet.Value as List<ExpandoObject>, ret, "brand");
+                }
+                else if (name.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcFacet(oFacet.Value as List<ExpandoObject>, ret, "categories");
+                }
+                else if (name.Equals("mfrname", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcFacet(oFacet.Value as List<ExpandoObject>, ret, "mfrname");
+                }
+                else if (name.Equals("dietary", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcDietary(oFacet.Value as List<ExpandoObject>, ret);
+                }
+                else if (name.Equals("nonstock", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcFacet(oFacet.Value as List<ExpandoObject>, ret, "nonstock");
+                }
+                else if (name.Equals("itemspecs", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcItemspecs(oFacet.Value as List<ExpandoObject>, ret);
+                }
+                else if (name.Equals("allergens", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcAllergens(oFacet.Value as List<ExpandoObject>, ret);
+                }
+                else if (name.Equals("specialfilters", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    RecalcSpecialFilters(oFacet.Value as List<ExpandoObject>, ret, specialFilters);
+                }
+                else
+                {
+                    ResetFacet(oFacet.Value as List<ExpandoObject>);
+                }
+            }
+        }
+
+        private void RecalcParentCategories(List<ExpandoObject> list, ProductsReturn ret)
+        {
+            foreach (var pFacet in list)
+            {
+                IDictionary<string, object> dict = pFacet as IDictionary<string, object>;
+                dict["count"] = ret.Products.Where(p => p.ItemClass == dict["name"].ToString()).Count();
+                RecalcFacet(dict["categories"] as List<ExpandoObject>, ret, "categories");
+            }
+        }
+
+        private void RecalcFacet(List<ExpandoObject> list, ProductsReturn ret, string field)
+        {
+            foreach (var pFacet in list)
+            {
+                IDictionary<string, object> dict = pFacet as IDictionary<string, object>;
+                Func<Product, bool> where = p => p.BrandExtendedDescription == dict["name"].ToString();
+                if(field.Equals("brand", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.BrandExtendedDescription == dict["name"].ToString();
+                }
+                else if (field.Equals("categories", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.CategoryName == dict["name"].ToString();
+                }
+                else if (field.Equals("mfrname", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.ManufacturerName == dict["name"].ToString();
+                }
+                else if (field.Equals("nonstock", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.NonStock == dict["name"].ToString();
+                }
+                dict["count"] = ret.Products.Where(where).Count();
+            }
+        }
+
+        private void RecalcDietary(List<ExpandoObject> list, ProductsReturn ret)
+        {
+            foreach (var pFacet in list)
+            {
+                IDictionary<string, object> dict = pFacet as IDictionary<string, object>;
+                Func<Product, bool> where = null;
+                if (dict["name"].ToString().Equals("vegan", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.Nutritional.Diets.Contains("vegan");
+                }
+                else if (dict["name"].ToString().Equals("kosher", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.Nutritional.Diets.Contains("kosher");
+                }
+                else if (dict["name"].ToString().Equals("organic", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.Nutritional.Diets.Contains("organic");
+                }
+                else if (dict["name"].ToString().Equals("halal", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.Nutritional.Diets.Contains("halal");
+                }
+                dict["count"] = ret.Products
+                                   .Where(where).Count();
+            }
+        }
+
+        private void RecalcItemspecs(List<ExpandoObject> list, ProductsReturn ret)
+        {
+            foreach (var pFacet in list)
+            {
+                IDictionary<string, object> dict = pFacet as IDictionary<string, object>;
+                Func<Product, bool> where = null;
+                if (dict["name"].ToString().Equals("sellsheet", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.SellSheet == "Y";
+                }
+                else if (dict["name"].ToString().Equals("itembeingreplaced", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.ReplacedItem != "000000";
+                }
+                else if (dict["name"].ToString().Equals("replacementitem", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    where = p => p.ReplacementItem != "000000";
+                }
+                dict["count"] = (where != null) ? ret.Products.Where(where).Count() : 0;
+            }
+        }
+
+        private void RecalcAllergens(List<ExpandoObject> list, ProductsReturn ret)
+        {
+            foreach (var pFacet in list)
+            {
+                IDictionary<string, object> dict = pFacet as IDictionary<string, object>;
+                Func<Product, bool> where = p => p.Nutritional != null && 
+                                                 p.Nutritional.Allergens != null && 
+                                                 p.Nutritional.Allergens.freefrom != null && 
+                                                 p.Nutritional.Allergens.freefrom
+                                                                        .Contains(dict["name"].ToString());
+                dict["count"] = ret.Products.Where(where).Count();
+            }
+        }
+
+        private void RecalcSpecialFilters(List<ExpandoObject> list, ProductsReturn ret, List<string> specialFilters)
+        {
+            foreach (var pFacet in list)
+            {
+                IDictionary<string, object> dict = pFacet as IDictionary<string, object>;
+                if (dict["name"].ToString()
+                    .Equals(Constants.SPECIALFILTER_DEVIATEDPRICES, StringComparison.CurrentCultureIgnoreCase) && 
+                    specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
+                {
+                    dict["count"] = ret.TotalCount;
+                }
+                else if (dict["name"].ToString()
+                    .Equals(Constants.SPECIALFILTER_PREVIOUSORDERED, StringComparison.CurrentCultureIgnoreCase) &&
+                    specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
+                {
+                    dict["count"] = ret.TotalCount;
+                }
+                else
+                {
+                    dict["count"] = 0;
+                }
+            }
+        }
+
+        private void ResetFacet(List<ExpandoObject> list)
+        {
+            foreach (var pFacet in list)
+            {
+                IDictionary<string, object> sdict = pFacet as IDictionary<string, object>;
+                sdict["count"] = 0;
+            }
         }
 
         private void CorrelateCategoriesToParentCatories(ExpandoObject facets)
@@ -1226,6 +1408,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             nutritional.Width = oProd._source.nutritional.width;
             nutritional.DietInfo = new List<Diet>();
             nutritional.Allergens = new Allergen();
+            nutritional.Diets = new List<string>();
             if (oProd._source.nutritional.allergen != null)
             {
                 GetListOnlyNutritionalAllergenProperties(oProd, nutritional);
@@ -1241,6 +1424,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 foreach (var diet in oProd._source.nutritional.diet)
                 {
                     Diet d = new Diet() { DietType = diet.diettype, Value = diet.value };
+                    nutritional.Diets.Add(diet.diettype);
                     nutritional.DietInfo.Add(d);
                 }
             }
@@ -1269,7 +1453,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             {
                 nutritional.Allergens.freefrom = new List<string>();
                 foreach (var ff in oProd._source.nutritional.allergen.freefrom)
-                    nutritional.Allergens.freefrom.Add(ff);
+                    nutritional.Allergens.freefrom.Add(((string)ff).ToLower());
             }
 
             if (oProd._source.nutritional.allergen.contains != null)
@@ -1377,6 +1561,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (oProd._source.nutritional != null)
             {
                 Nutritional nutritional = new Nutritional();
+                nutritional.Diets = new List<string>();
+                if(oProd._source.nutritional.diet != null)
+                {
+                    var diets = oProd._source.nutritional.diet;
+                    foreach (var diet in diets)
+                    {
+                        nutritional.Diets.Add(diet["diettype"]);
+                    }
+                }
                 nutritional.ServingSize = oProd._source.nutritional.servingsize;
                 nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
                 p.Nutritional = nutritional;
