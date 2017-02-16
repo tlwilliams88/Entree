@@ -21,6 +21,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 		ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
         int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel);
         List<string> SeekSpecialFilters(string facetFilters);
+        void RecalculateFacets(ProductsReturn ret, List<string> specialFilters);
         void AddSpecialFiltersToFacets(ExpandoObject facets, string countDeviated = null, string countRecentOrdered = null);
         ProductsReturn GetProductNumbersBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
     }

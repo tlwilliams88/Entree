@@ -50,6 +50,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [Serializable]
     public class Nutritional
     {
+        [DataMember(Name = "diets")]
+        public List<string> Diets { get; set; }
+
         [DataMember(Name = "brandowner")]
         public string BrandOwner { get; set; }
         [DataMember(Name = "countryoforigin")]

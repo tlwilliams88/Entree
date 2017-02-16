@@ -121,14 +121,16 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             FilterPreviouslyOrderedProducts(catalogInfo, profile, ret);
 
             // now go back and fill out the rest of the product information on those with deviated prices
-            ret = _catalogRepository.GetProductsByIds(newCatalog.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
-            GetPreviouslyOrderedProductInfo(profile, ret, catalogInfo);
+            ProductsReturn filtered = _catalogRepository.GetProductsByIds
+                (newCatalog.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
+            GetPreviouslyOrderedProductInfo(profile, filtered, catalogInfo);
 
             // add facet for specialfilters to return and set count to number of products
-            ret.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, null, ret.Products.Count().ToString());
+            filtered.Facets = ret.Facets;
+            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
+            _catalogRepository.RecalculateFacets(filtered, specialFilters);
 
-            return ret;
+            return filtered;
         }
 
         private ProductsReturn GetDeviatedPriceProductsByCategory(UserSelectedContext catalogInfo,
@@ -143,13 +145,14 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             FilterDeviatedPriceProducts(ret, catalogInfo);
 
             // now go back and fill out the rest of the product information on those with deviated prices
-            ret = _catalogRepository.GetProductsByIds(newCatalog.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
+            ProductsReturn filtered = _catalogRepository.GetProductsByIds(newCatalog.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
 
             // add facet for specialfilters to return and set count to number of products
-            ret.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, ret.Products.Count().ToString());
+            filtered.Facets = ret.Facets;
+            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
+            _catalogRepository.RecalculateFacets(filtered, specialFilters);
 
-            return ret;
+            return filtered;
         }
         #endregion
 
@@ -210,14 +213,19 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private ProductsReturn GetDeviatedPriceProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserSelectedContext tempCatalogInfo)
         {
             ProductsReturn ret = _catalogRepository.GetProductNumbersBySearch(tempCatalogInfo, search, searchModel);
+            
             // filter out just those with deviated prices
             FilterDeviatedPriceProducts(ret, catalogInfo);
+
             // now go back and fill out the rest of the product information on those with deviated prices
-            ret = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
+            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
+
             // add facet for specialfilters to return and set count to number of products
-            ret.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, ret.Products.Count().ToString());
-            return ret;
+            filtered.Facets = ret.Facets;
+            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
+            _catalogRepository.RecalculateFacets(filtered, specialFilters);
+
+            return filtered;
         }
 
         private ProductsReturn GetRecentlyOrderedProductsBySearch(UserSelectedContext catalogInfo, 
@@ -231,12 +239,14 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             FilterPreviouslyOrderedProducts(catalogInfo, profile, ret);
 
             // now go back and fill out the rest of the product information on those that are recently ordered
-            ret = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
+            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
 
             // add facet for specialfilters to return and set count to number of products
-            ret.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, null, ret.Products.Count().ToString());
-            return ret;
+            filtered.Facets = ret.Facets;
+            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
+            _catalogRepository.RecalculateFacets(filtered, specialFilters);
+
+            return filtered;
         }
         #endregion
 
@@ -275,14 +285,19 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private ProductsReturn GetDeviatedPriceHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel)
         {
             ProductsReturn returnValue = _catalogRepository.GetHouseProductNumbersByBranch(catalogInfo, brandControlLabel, searchModel);
+
             // filter out just those with deviated prices
             FilterDeviatedPriceProducts(returnValue, catalogInfo);
+
             // now go back and fill out the rest of the product information on those with deviated prices
-            returnValue = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, returnValue.Products.Select(p => p.ItemNumber).ToList());
+            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, returnValue.Products.Select(p => p.ItemNumber).ToList());
+
             // add facet for specialfilters to return and set count to number of products
-            returnValue.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(returnValue.Facets, returnValue.Products.Count().ToString());
-            return returnValue;
+            filtered.Facets = returnValue.Facets;
+            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
+            _catalogRepository.RecalculateFacets(filtered, specialFilters);
+
+            return filtered;
         }
 
         private ProductsReturn GetRecentlyOrderedHouseProductsByBranch(UserSelectedContext catalogInfo, 
@@ -295,12 +310,14 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             FilterPreviouslyOrderedProducts(catalogInfo, profile, returnValue);
 
             // now go back and fill out the rest of the product information on those with deviated prices
-            returnValue = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, returnValue.Products.Select(p => p.ItemNumber).ToList());
+            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, returnValue.Products.Select(p => p.ItemNumber).ToList());
 
             // add facet for specialfilters to return and set count to number of products
-            returnValue.Facets = new System.Dynamic.ExpandoObject();
-            _catalogRepository.AddSpecialFiltersToFacets(returnValue.Facets, null, returnValue.Products.Count().ToString());
-            return returnValue;
+            filtered.Facets = returnValue.Facets;
+            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
+            _catalogRepository.RecalculateFacets(filtered, specialFilters);
+
+            return filtered;
         }
         #endregion
 

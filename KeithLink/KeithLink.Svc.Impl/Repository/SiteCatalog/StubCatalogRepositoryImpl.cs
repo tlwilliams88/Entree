@@ -132,5 +132,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             throw new NotImplementedException();
         }
+
+        public void RecalculateFacets(ProductsReturn ret, List<string> specialFilters)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
