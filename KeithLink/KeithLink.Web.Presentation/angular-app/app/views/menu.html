@@ -9,7 +9,7 @@
 .goog-text-highlight{ background-color: transparent !important; border: none !important; box-shadow: none !important;}></style>
 <!-- End CSS -->
 
-<div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" class="sidebar-menu-wrapper">
+<div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" ng-swipe-disable-mouse class="sidebar-menu-wrapper">
 <!--   <span class="hidden-xs hidden-sm" style="border-left: 1px solid #2a2621; height: 100%; z-index: 10002; position:absolute;"> 
   <div ng-mouseenter="isSidebarOpen = true" ng-swipe-right="isSidebarOpen = true" ng-click="isSidebarOpen = true" style="width:35px; height:100px; margin-top: 350px; margin-left: -10px; background-color: #2a2621; border-radius: 10%; padding-top: 40px; padding-left: 14px; opacity: .8; position: fixed; color: #FFF;">
     <span class="icon-verticallist2 large-icon"></span>
@@ -363,7 +363,7 @@
          </div>
 
         <div class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
-          <a ng-click="isSidebarOpen = !isSidebarOpen" style="margin-right: 10px; margin-top: 5px; font-size: 28px;"><span class="icon-list2"></span></a>
+          <a ng-click="isSidebarOpen = !isSidebarOpen" style="margin-right: 10px; margin-top: 5px; font-size: 28px;"><span class="icon-list2 user-bar-menu"></span></a>
           <img class="hand-pointer" src="images/bek-logo.png" style="max-width:100%"  alt="logo" ui-sref="menu.home" />
         </div>
 
