@@ -123,7 +123,6 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             // now go back and fill out the rest of the product information on those with deviated prices
             ProductsReturn filtered = _catalogRepository.GetProductsByIds
                 (newCatalog.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
-            GetPreviouslyOrderedProductInfo(profile, filtered, catalogInfo);
 
             // add facet for specialfilters to return and set count to number of products
             filtered.Facets = ret.Facets;
@@ -458,7 +457,6 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                     prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                             .FirstOrDefault()
                                             .InHistory;
-                    _catalogLogic.AddProductImageInfo(prod);
                 });
             }
         }
