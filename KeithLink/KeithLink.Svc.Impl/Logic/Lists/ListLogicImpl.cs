@@ -789,8 +789,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             Dictionary<string, Price> priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
 
-            //Parallel.ForEach(listItems, listItem =>
-            foreach (var listItem in listItems)
+            Parallel.ForEach(listItems, listItem =>
             {
                 var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
                 if (price != null)
@@ -799,8 +798,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     listItem.CasePrice = price.CasePrice.ToString();
                     listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
                 }
-            };
-            //)
+            });
         }
 
         private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
