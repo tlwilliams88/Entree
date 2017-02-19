@@ -239,6 +239,12 @@ angular.module('bekApp')
       }
     };
 
+    Service.updateProgramAccess = function(email, program) {
+      var url = '/profile/' + email + '/access/' + program + '?edit=1';
+
+      grantAccess(url);
+    };
+
 
     return Service;
 
