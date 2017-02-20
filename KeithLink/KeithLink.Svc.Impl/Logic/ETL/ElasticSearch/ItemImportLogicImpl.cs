@@ -293,14 +293,14 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         /// <param name="itemNumber"></param>
         /// <param name="proprietaryItems"></param>
         /// <returns></returns>
-        private string BuildProprietaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems)
+        private string BuildProprietaryCustomerList(string key, Dictionary<string, List<string>> proprietaryItems)
 		{
-			if (!proprietaryItems.ContainsKey(itemNumber))
+			if (!proprietaryItems.ContainsKey(key))
 				return null;
 
 			var sbCustomerList = new StringBuilder();
 
-			foreach (var customer in proprietaryItems[itemNumber])
+			foreach (var customer in proprietaryItems[key])
 				sbCustomerList.AppendFormat("{0} ", customer);
 
 			return sbCustomerList.ToString();
@@ -318,12 +318,13 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
 			foreach (DataRow row in propItemData.Rows)
 			{
-				if (proprietaryItems.ContainsKey(row.GetString("ItemNumber")))
+                string key = string.Format("{0}-{1}", row.GetString("ItemNumber"), row.GetString("DivisionNumber"));
+                if (proprietaryItems.ContainsKey(key))
 				{
-					proprietaryItems[row.GetString("ItemNumber")].Add(row.GetString("CustomerNumber"));
+					proprietaryItems[key].Add(row.GetString("CustomerNumber"));
 				}
 				else
-					proprietaryItems.Add(row.GetString("ItemNumber"), new List<string>() { row.GetString("CustomerNumber") });
+					proprietaryItems.Add(key, new List<string>() { row.GetString("CustomerNumber") });
 			}
 
 			return proprietaryItems;
@@ -588,7 +589,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.TempZone = row.GetString("TempZone");
             data.CatchWeight = row.GetString("HowPrice") == "3";
             data.IsProprietary = row.GetString("ItemType").Equals("P") ? true : false;
-			data.ProprietaryCustomers = BuildProprietaryCustomerList(row.GetString("ItemId"), proprietaryItems);
+            string key = string.Format("{0}-{1}", row.GetString("ItemId"), row.GetString("BranchId"));
+            data.ProprietaryCustomers = BuildProprietaryCustomerList(key, proprietaryItems);
             data.AverageWeight = (row.GetDouble("FPNetWt") > 0 ? row.GetDouble("FPNetWt") / 100 : (row.GetDouble("GrossWt") > 0 ? row.GetDouble("GrossWt") / 100 : 0));
             data.Nutritional = nutInfo;
 
