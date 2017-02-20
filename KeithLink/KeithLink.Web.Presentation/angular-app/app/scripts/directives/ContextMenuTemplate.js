@@ -11,8 +11,8 @@ angular.module('bekApp')
         modalElement: null
       };
     })
-.directive('contextMenuTemplate', [ '$modal', '$document', '$timeout', 'ContextMenuService', 'UtilityService',
-  function($modal, $document, $timeout, ContextMenuService, UtilityService){
+.directive('contextMenuTemplate', [ '$modal', '$document', '$timeout', 'ContextMenuService', 'UtilityService', 'CartService', 'OrderService', 'ListService',
+  function($modal, $document, $timeout, ContextMenuService, UtilityService, CartService, OrderService, ListService){
   
   return {
     replace: true,
@@ -32,6 +32,20 @@ angular.module('bekApp')
         } else {
           element.find('div.btn-group-vertical').removeAttr('style');
         }
+
+          ListService.getListHeaders().then(function(lists) {
+            $scope.lists = lists;
+          });
+
+          CartService.getShipDates(); // needed if user creates a cart using the context menu
+          
+          CartService.getCartHeaders().then(function(carts) {
+            $scope.carts = carts;
+          });
+
+          OrderService.getChangeOrders().then(function(orders) {
+            $scope.changeOrders = orders;
+          });
 
       };
 

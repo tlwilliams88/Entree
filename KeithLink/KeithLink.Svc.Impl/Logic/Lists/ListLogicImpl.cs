@@ -805,20 +805,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             if (list.Items == null || list.Items.Count == 0)
                 return;
-            int totalProcessed = 0;
             ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
-            while (totalProcessed < list.Items.Count)
             {
-                var batch = list.Items.Skip(totalProcessed)
-                                      .Take(50)
-                                      .Select(i => i.ItemNumber)
+                var batch = list.Items.Select(i => i.ItemNumber)
                                       .ToList();
 
                 var tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
                 products.Products.AddRange(tempProducts.Products);
-                totalProcessed += 50;
             }
 
             //Dictionary<string, Core.Models.Lists.CustomInventoryItemReturnModel> customInventory = null;
@@ -873,6 +868,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                         listItem.ReplacedItem = prod.ReplacedItem;
                         listItem.ReplacementItem = prod.ReplacementItem;
                         listItem.NonStock = prod.NonStock;
+                        listItem.ProprietaryCustomers = prod.ProprietaryCustomers;
                         listItem.ChildNutrition = prod.ChildNutrition;
                         listItem.SellSheet = prod.SellSheet;
                         listItem.CatchWeight = prod.CatchWeight;
@@ -1186,57 +1182,103 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         //    }
         //}
 
-        public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
+        public PagedListModel ReadPagedList(UserProfile user, 
+                                            UserSelectedContext catalogInfo, 
+                                            long Id, 
+                                            Core.Models.Paging.PagingModel paging)
         {
-            var cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
-            if (cachedList != null)
-            {
-                var cachedReturnList = cachedList.ShallowCopy();
-
-                MarkFavoritesAndAddNotes(user, cachedReturnList, catalogInfo);
-
-                var sharedlist = _listRepo.Read(l => l.Id.Equals(Id)).FirstOrDefault();
-
-                cachedReturnList.IsSharing = sharedlist.Shares.Any() &&
-                                             sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
-                                             sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
-                cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
-
-                var cachedPagedList = ToPagedList(paging, cachedReturnList);
-
-                LookupPrices(user, cachedPagedList.Items.Results, catalogInfo);
-
-                return cachedPagedList;
-            }
-
-            var list = _listRepo.Read(l => l.Id.Equals(Id), l => l.Items)
-                                .FirstOrDefault(); // Not returned catalog ID here
-
-
-            if (list == null)
-                return null;
-            var tempList = list.ToListModel(catalogInfo);
-
-            LookupProductDetails(user, tempList, catalogInfo);
-
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
-
-            foreach (var itm in tempList.Items)
-            {
-                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
-            }
-
-            _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
-
-            var returnList = tempList.ShallowCopy();
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
+            ListModel returnList = GetListModel(user, catalogInfo, Id);
+            stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
             MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
+            stopWatch.Read(_log, "ReadPagedList - MarkFavoritesAndAddNotes");
 
-            var pagedList = ToPagedList(paging, returnList);
+            PagedListModel pagedList = ToPagedList(paging, returnList);
+            stopWatch.Read(_log, "ReadPagedList - ToPagedList");
 
             LookupPrices(user, pagedList.Items.Results, catalogInfo);
+            stopWatch.Read(_log, "ReadPagedList - LookupPrices");
 
             return pagedList;
+        }
+
+        private ListModel GetListModel(UserProfile user,
+                                       UserSelectedContext catalogInfo,
+                                       long Id)
+        {
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
+            ListModel returnList = null;
+            ListModel cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME,
+                                                 CACHE_PREFIX,
+                                                 CACHE_NAME,
+                                                 string.Format("UserList_{0}", Id));
+            stopWatch.Read(_log, "GetListModel - GetItem");
+
+            if (cachedList != null)
+            {
+                ListModel cachedReturnList = cachedList.ShallowCopy();
+                stopWatch.Read(_log, "GetListModel - ShallowCopy");
+
+                RefreshSharingProps(catalogInfo, Id, cachedReturnList);
+                stopWatch.Read(_log, "GetListModel - RefreshSharingProps");
+
+                returnList = cachedReturnList.ShallowCopy();
+                stopWatch.Read(_log, "GetListModel - ShallowCopy");
+            }
+            else
+            {
+                List list = _listRepo.Read(l => l.Id.Equals(Id), l => l.Items)
+                                    .FirstOrDefault(); // Not returned catalog ID here
+                stopWatch.Read(_log, "GetListModel - _listRepo.Read");
+
+                if (list == null)
+                    return null;
+                ListModel tempList = list.ToListModel(catalogInfo);
+                stopWatch.Read(_log, "GetListModel - ToListModel");
+
+                FillOutListModelItems(user, catalogInfo, tempList);
+                stopWatch.Read(_log, "GetListModel - FillOutListModelItems");
+
+                _cache.AddItem<ListModel>(CACHE_GROUPNAME,
+                                          CACHE_PREFIX,
+                                          CACHE_NAME,
+                                          string.Format("UserList_{0}", Id),
+                                          TimeSpan.FromHours(2),
+                                          tempList);
+                stopWatch.Read(_log, "GetListModel - AddItem");
+
+                returnList = tempList.ShallowCopy();
+            }
+            return returnList;
+        }
+
+        private void FillOutListModelItems(UserProfile user, UserSelectedContext catalogInfo, ListModel tempList)
+        {
+            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
+            LookupProductDetails(user, tempList, catalogInfo);
+            stopWatch.Read(_log, "FillOutListModelItems - LookupProductDetails");
+
+            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+            stopWatch.Read(_log, "FillOutListModelItems - GetContractInformation");
+
+            if (contractdictionary.Count > 0)
+            {
+                tempList.Items.ForEach
+                    (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
+                                           (contractdictionary, itm));
+                stopWatch.Read(_log, "FillOutListModelItems - AddContractInformationIfInContract");
+            }
+        }
+
+        private void RefreshSharingProps(UserSelectedContext catalogInfo, long Id, ListModel list)
+        {
+            List sharedlist = _listRepo.Read(l => l.Id.Equals(Id)).FirstOrDefault();
+
+            list.IsSharing = sharedlist.Shares.Any() &&
+                                         sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
+                                         sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
+            list.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
         }
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)

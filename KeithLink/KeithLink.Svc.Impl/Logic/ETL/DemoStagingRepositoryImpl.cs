@@ -128,7 +128,11 @@ namespace KeithLink.Svc.Impl.ETL
 			return gsData;
 		}
 
-		public DataTable ReadProprietaryItems()
+        public DataTable ReadPDMDataForItems() {
+            return PopulateDataTable("[ETL].[ReadPDMData]");
+        }
+
+        public DataTable ReadProprietaryItems()
 		{
 			return PopulateDataTable("[ETL].[ReadProprietaryItems]");
 		}
@@ -344,7 +348,7 @@ namespace KeithLink.Svc.Impl.ETL
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch// (Exception ex)
             {
                 //eventLog.WriteErrorLog(String.Format("Etl:  Error updating profile object. {0} {1}", ex.Message, ex.StackTrace));
                 return false;
@@ -418,7 +422,7 @@ namespace KeithLink.Svc.Impl.ETL
 				}
 				return returnList;
 			}
-			catch (Exception ex)
+			catch// (Exception ex)
 			{
 				return returnList;
 			}

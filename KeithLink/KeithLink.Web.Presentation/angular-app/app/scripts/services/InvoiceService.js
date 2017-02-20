@@ -34,7 +34,7 @@ angular.module('bekApp')
           invoiceNumber: invoiceNumber
         }).$promise.then(function(resp){
           return resp.successResponse;
-        })
+        });
       },
 
       getInvoiceImage: function(invoiceNumber, customerNumber, branchId) {

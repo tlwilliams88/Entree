@@ -42,6 +42,7 @@ using System.Collections.Concurrent;
 using KeithLink.Svc.Core;
 using System.Threading;
 using KeithLink.Svc.Impl.Tasks;
+using KeithLink.Svc.Core.Exceptions.Queue;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -59,6 +60,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IEventLogRepository _log;
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly IGenericQueueRepository _queue;
+        private readonly IGenericSubscriptionQueueRepository _genericSubscriptionQueue;
         private readonly ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
 
@@ -70,9 +72,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         public OrderHistoryLogicImpl(IOrderHistoryHeaderRepsitory headerRepo, IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, 
                                      ICatalogLogic catalogLogic, IOrderHistoryDetailRepository detailRepo, IUnitOfWork unitOfWork, 
                                      IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, 
-                                     ICustomerRepository customerRepository, ISocketListenerRepository socket) {
+                                     ICustomerRepository customerRepository, ISocketListenerRepository socket,
+                                     IGenericSubscriptionQueueRepository genericSubscriptionQueue) {
             _log = log;
             _queue = queue;
+            _genericSubscriptionQueue = genericSubscriptionQueue;
             _socket = socket;
 
             _headerRepo = headerRepo;
@@ -91,6 +95,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             _socket.WaitingConnection       += SocketWaitingConnection;
             _socket.BeginningFileReceipt    += SocketBeginningFileReceipt;
             _socket.ErrorEncountered        += SocketExceptionEncountered;
+
+            // subscribe to event to receive message through subscription
+            _genericSubscriptionQueue.MessageReceived += GenericSubscriptionQueue_MessageReceived;
         }
         #endregion
 
@@ -224,6 +231,45 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         private void Create(OrderHistoryFile currentFile, bool isSpecialOrder)
         {
+            EF.OrderHistoryHeader header = GetHeaderAndMergeCurrentFile(currentFile, isSpecialOrder);
+
+            bool hasSpecialItems = false;
+
+            foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
+            {
+                if (string.IsNullOrWhiteSpace(currentDetail.SpecialOrderHeaderId))
+                {
+                    hasSpecialItems = true;
+                }
+
+                DetermineDetailOnOrder(isSpecialOrder, header, currentDetail);
+            }
+            RecalcOrderSubtotal(currentFile, header);
+
+            _headerRepo.CreateOrUpdate(header);
+            
+            if (hasSpecialItems)
+            {
+                RemoveSpecialOrderItemsFromHistory(header);
+            }
+        }
+
+        private void DetermineDetailOnOrder(bool isSpecialOrder, EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail)
+        {
+            EF.OrderHistoryDetail detail = SeekMatchingDetail(header, currentDetail);
+
+            if (detail == null)
+            {
+                AddNewDetailToOrder(isSpecialOrder, header, currentDetail);
+            }
+            else
+            {
+                detail = MergeWithCurrentOrderDetail(isSpecialOrder, header, currentDetail, detail);
+            }
+        }
+
+        private EF.OrderHistoryHeader GetHeaderAndMergeCurrentFile(OrderHistoryFile currentFile, bool isSpecialOrder)
+        {
             // add retry helper logic to attempt to resolve race conflict
             EF.OrderHistoryHeader header = KeithLink.Svc.Impl.Helpers.Retry.Do<EF.OrderHistoryHeader>
                 (() => FindHeader(currentFile),
@@ -239,55 +285,73 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
 
-            bool hasSpecialItems = false;
+            return header;
+        }
 
-            foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
+        private EF.OrderHistoryDetail SeekMatchingDetail(EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail)
+        {
+            EF.OrderHistoryDetail detail = null;
+
+            if (header.OrderDetails != null && header.OrderDetails.Count > 0)
             {
-                if (string.IsNullOrWhiteSpace(currentDetail.SpecialOrderHeaderId))
-                {
-                    hasSpecialItems = true;
-                }
-
-                EF.OrderHistoryDetail detail = null;
-
-                if (header.OrderDetails != null && header.OrderDetails.Count > 0)
-                {
-                    detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
-                }
-
-                if (detail == null)
-                {
-                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
-                    tempDetail.BranchId = header.BranchId;
-                    tempDetail.InvoiceNumber = header.InvoiceNumber;
-                    tempDetail.OrderHistoryHeader = header;
-
-                    if (isSpecialOrder)
-                    {
-                        tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
-                    }
-
-                    header.OrderDetails.Add(tempDetail);
-                }
-                else
-                {
-                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
-
-                    detail.BranchId = header.BranchId;
-                    detail.InvoiceNumber = header.InvoiceNumber;
-                    if (isSpecialOrder)
-                    {
-                        detail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
-                    }
-                }
+                detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
             }
 
-            _headerRepo.CreateOrUpdate(header);
+            return detail;
+        }
 
-            if (hasSpecialItems)
+        private EF.OrderHistoryDetail MergeWithCurrentOrderDetail
+            (bool isSpecialOrder, EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail, EF.OrderHistoryDetail detail)
+        {
+            currentDetail.MergeWithEntityFrameworkModel(ref detail);
+
+            detail.BranchId = header.BranchId;
+            detail.InvoiceNumber = header.InvoiceNumber;
+            if (isSpecialOrder)
             {
-                RemoveSpecialOrderItemsFromHistory(header);
+                detail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
             }
+
+            return detail;
+        }
+
+        private void AddNewDetailToOrder(bool isSpecialOrder, EF.OrderHistoryHeader header, OrderHistoryDetail currentDetail)
+        {
+            EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
+            tempDetail.BranchId = header.BranchId;
+            tempDetail.InvoiceNumber = header.InvoiceNumber;
+            tempDetail.OrderHistoryHeader = header;
+
+            if (isSpecialOrder)
+            {
+                tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
+            }
+
+            header.OrderDetails.Add(tempDetail);
+        }
+
+        private void LookupAverageWeightOnDetails(OrderHistoryFile currentFile)
+        {
+            var products = _catalogLogic.GetProductsByIds(currentFile.Header.BranchId,
+                                                          currentFile.Details.Select(l => l.ItemNumber.Trim()).Distinct().ToList());
+
+            var productDict = products.Products.ToDictionary(p => p.ItemNumber);
+
+            Parallel.ForEach(currentFile.Details, item => {
+                var prod = productDict.ContainsKey(item.ItemNumber.Trim()) ? productDict[item.ItemNumber.Trim()] : null;
+                if (prod != null)
+                {
+                    item.AverageWeight = prod.AverageWeight;
+                }
+            });
+
+        }
+
+        private void RecalcOrderSubtotal(OrderHistoryFile currentFile, EF.OrderHistoryHeader header)
+        {
+            // since we keep an ordersubtotal in the header, we need to recalibrate it (especially for catchweight items) when processing order updates
+            LookupAverageWeightOnDetails(currentFile);
+            header.OrderSubtotal = (decimal)currentFile.Details.Sum(i => i.LineTotal);
         }
 
         private EF.OrderHistoryHeader FindHeader(OrderHistoryFile currentFile)
@@ -429,7 +493,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         public void ListenForMainFrameCalls() {
             _socket.Listen(Configuration.MainframOrderHistoryListeningPort);
         }
-
+        
+        #region polling
         public void ListenForQueueMessages() {
             _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask(),
                 CancellationToken.None, TaskCreationOptions.DenyChildAttach,
@@ -443,23 +508,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 try {
                     var rawOrder = ReadOrderFromQueue();
 
-                    while(_keepListening && !string.IsNullOrEmpty(rawOrder)) {
-                        OrderHistoryFile historyFile = new OrderHistoryFile();
-
-                        historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
-
-                        _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
-
-                        Create(historyFile, false);
-                        _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
-
-                        Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
+                    while(_keepListening && !string.IsNullOrEmpty(rawOrder))
+                    {
+                        ProcessOrder(rawOrder);
 
                         // to make sure we do not pull an order off the queue without processing it
                         // check to make sure we can still process before pulling off the queue
-                        if(_keepListening) {
+                        if (_keepListening)
+                        {
                             rawOrder = ReadOrderFromQueue();
-                        } else {
+                        }
+                        else
+                        {
                             rawOrder = null;
                         }
                     }
@@ -471,50 +531,151 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
         }
 
+        private string ReadOrderFromQueue()
+        {
+            return
+                KeithLink.Svc.Impl.Helpers.Retry.Do<string>
+                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
+                Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates),
+                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
+        }
+        #endregion
+
+        #region subscription
+        public void SubscribeToQueue()
+        {
+            RabbitMQ.Client.ConnectionFactory config = new RabbitMQ.Client.ConnectionFactory();
+            config.HostName = Configuration.RabbitMQConfirmationServer;
+            config.UserName = Configuration.RabbitMQUserNameConsumer;
+            config.Password = Configuration.RabbitMQUserPasswordConsumer;
+            config.VirtualHost = Configuration.RabbitMQVHostConfirmation;
+
+            _log.WriteInformationLog
+                (string.Format("Subscribing to order updates queue: {0}", Configuration.RabbitMQQueueHourlyUpdates));
+
+            this._queueTask = Task.Factory.StartNew
+                (() => _genericSubscriptionQueue.Subscribe(config, Configuration.RabbitMQQueueHourlyUpdates));
+        }
+
+        public void Unsubscribe()
+        {
+            _genericSubscriptionQueue.Unsubscribe();
+        }
+
+        private void GenericSubscriptionQueue_MessageReceived
+            (RabbitMQ.Client.IBasicConsumer sender, RabbitMQ.Client.Events.BasicDeliverEventArgs args)
+        {
+            RabbitMQ.Client.Events.EventingBasicConsumer consumer = (RabbitMQ.Client.Events.EventingBasicConsumer)sender;
+
+            try
+            {
+                // don't reprocess items that have been processed
+                if (_genericSubscriptionQueue.GetLastProcessedUndelivered() != args.DeliveryTag)
+                {
+                    string rawOrder = Encoding.ASCII.GetString(args.Body);
+
+                    ProcessOrder(rawOrder);
+                }
+
+                _genericSubscriptionQueue.Ack(consumer, args.DeliveryTag);
+            }
+            catch (QueueDataError<string> serializationEx)
+            {
+                _log.WriteErrorLog("Serializing problem with order update.", serializationEx);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Unhandled error processing order update.", ex);
+            }
+        }
+
+        #endregion
+
+        private void ProcessOrder(string rawOrder)
+        {
+            OrderHistoryFile historyFile = new OrderHistoryFile();
+
+            historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
+
+            _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
+
+            Create(historyFile, false);
+            _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
+
+            Retry.Do<int>(() => _unitOfWork.SaveChangesAndClearContext(), TimeSpan.FromSeconds(5), 5);
+        }
+
         /// <summary>
         /// Parse an array of strings as a file
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
-        private OrderHistoryFileReturn ParseFile(string[] data) {
+        private OrderHistoryFileReturn ParseFile(string[] data)
+        {
             OrderHistoryFileReturn retVal = new OrderHistoryFileReturn();
 
             OrderHistoryFile currentFile = null;
 
-            for(int i = 0; i < data.Length; i++) {
-                if(data[i].Contains("END###")) { break; }
+            for (int i = 0; i < data.Length; i++)
+            {
+                if (data[i].Contains("END###")) { break; }
 
-                switch(data[i].Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH)) {
-                    case "H":
-                        if(currentFile != null) {
-                            currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
-                                                              where detail.ItemStatus != string.Empty
-                                                              select true).FirstOrDefault();
-                            currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
-                                                              where detail.FutureItem == true
-                                                              select true).FirstOrDefault();
-                            retVal.Files.Add(currentFile);
-                        }
-
-                        currentFile = new OrderHistoryFile();
-
-                        currentFile.Header.Parse(data[i]);
-                        break;
-                    case "D":
-                        if(currentFile != null) {
-                            OrderHistoryDetail orderDetail = new OrderHistoryDetail();
-                            orderDetail.Parse(data[i]);
-
-                            currentFile.Details.Add(orderDetail);
-                        }
-                        break;
-                    default:
-                        break;
-                }
+                currentFile = ParseLineToOrderHistoryFile(data, retVal, currentFile, i);
 
             } // end of for loop
 
-            if(currentFile != null) {
+            SetErrorStatusAndFutureItemsOnFile(retVal, currentFile);
+
+            return retVal;
+        }
+
+        private OrderHistoryFile ParseLineToOrderHistoryFile(string[] data, OrderHistoryFileReturn retVal, OrderHistoryFile currentFile, int i)
+        {
+            switch (data[i].Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH))
+            {
+                case "H":
+                    currentFile = ParseNewOrderHistoryFileFromHeaderData(data, retVal, currentFile, i);
+                    break;
+                case "D":
+                    AddOrderDetailFromParsedData(data, currentFile, i);
+                    break;
+                default:
+                    break;
+            }
+
+            return currentFile;
+        }
+
+        private void SetErrorStatusAndFutureItemsOnFile(OrderHistoryFileReturn retVal, OrderHistoryFile currentFile)
+        {
+            if (currentFile != null)
+            {
+                currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
+                                                  where detail.ItemStatus != string.Empty
+                                                  select true).FirstOrDefault();
+                currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
+                                                  where detail.FutureItem == true
+                                                  select true).FirstOrDefault();
+                retVal.Files.Add(currentFile);
+            }
+        }
+
+        private void AddOrderDetailFromParsedData(string[] data, OrderHistoryFile currentFile, int i)
+        {
+            if (currentFile != null)
+            {
+                OrderHistoryDetail orderDetail = new OrderHistoryDetail();
+                orderDetail.Parse(data[i]);
+
+                currentFile.Details.Add(orderDetail);
+            }
+        }
+
+        private OrderHistoryFile ParseNewOrderHistoryFileFromHeaderData
+            (string[] data, OrderHistoryFileReturn retVal, OrderHistoryFile currentFile, int i)
+        {
+            if (currentFile != null)
+            {
                 currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
                                                   where detail.ItemStatus != string.Empty
                                                   select true).FirstOrDefault();
@@ -524,7 +685,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 retVal.Files.Add(currentFile);
             }
 
-            return retVal;
+            currentFile = new OrderHistoryFile();
+
+            currentFile.Header.Parse(data[i]);
+            return currentFile;
         }
 
         public OrderHistoryFileReturn ParseMainframeFile(string filePath) {
@@ -538,38 +702,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                     switch(data.Substring(RECORDTYPE_STARTPOS, RECORDTYPE_LENGTH)) {
                         case "H":
-                            if(currentFile != null) {
-                                currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
-                                                                  where detail.ItemStatus != string.Empty
-                                                                  select true).FirstOrDefault();
-                                currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
-                                                                  where detail.FutureItem == true
-                                                                  select true).FirstOrDefault();
-                                retVal.Files.Add(currentFile);
-                            }
-
-                            currentFile = new OrderHistoryFile();
-
-                            // check for length of header record to make sure there is data
-                            if(data.Trim().Length > 1) {
-                                try {
-                                    currentFile.Header.Parse(data);
-                                    currentFile.ValidHeader = true;
-                                } catch {
-                                    currentFile.ValidHeader = false;
-                                }
-                            } else {
-                                currentFile.ValidHeader = false;
-                            }
-
+                            currentFile = CreateOrderHistoryFileFromHeaderLine(retVal, currentFile, data);
                             break;
                         case "D":
-                            if(currentFile != null) {
-                                OrderHistoryDetail orderDetail = new OrderHistoryDetail();
-                                orderDetail.Parse(data);
-
-                                currentFile.Details.Add(orderDetail);
-                            }
+                            AddOrderHistoryDetailFromDetailLine(currentFile, data);
                             break;
                         default:
                             break;
@@ -591,12 +727,51 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             return retVal;
         }
 
-        private string ReadOrderFromQueue() {
-            return
-                KeithLink.Svc.Impl.Helpers.Retry.Do<string>
-                (() => _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
-                Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates),
-                TimeSpan.FromSeconds(1), Constants.QUEUE_REPO_RETRY_COUNT);
+        private void AddOrderHistoryDetailFromDetailLine(OrderHistoryFile currentFile, string data)
+        {
+            if (currentFile != null)
+            {
+                OrderHistoryDetail orderDetail = new OrderHistoryDetail();
+                orderDetail.Parse(data);
+
+                currentFile.Details.Add(orderDetail);
+            }
+        }
+
+        private OrderHistoryFile CreateOrderHistoryFileFromHeaderLine(OrderHistoryFileReturn retVal, OrderHistoryFile currentFile, string data)
+        {
+            if (currentFile != null)
+            {
+                currentFile.Header.ErrorStatus = (from OrderHistoryDetail detail in currentFile.Details
+                                                  where detail.ItemStatus != string.Empty
+                                                  select true).FirstOrDefault();
+                currentFile.Header.FutureItems = (from OrderHistoryDetail detail in currentFile.Details
+                                                  where detail.FutureItem == true
+                                                  select true).FirstOrDefault();
+                retVal.Files.Add(currentFile);
+            }
+
+            currentFile = new OrderHistoryFile();
+
+            // check for length of header record to make sure there is data
+            if (data.Trim().Length > 1)
+            {
+                try
+                {
+                    currentFile.Header.Parse(data);
+                    currentFile.ValidHeader = true;
+                }
+                catch
+                {
+                    currentFile.ValidHeader = false;
+                }
+            }
+            else
+            {
+                currentFile.ValidHeader = false;
+            }
+
+            return currentFile;
         }
 
         private void RemoveEmptyPurchaseOrder() { }

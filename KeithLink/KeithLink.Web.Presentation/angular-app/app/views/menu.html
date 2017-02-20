@@ -357,12 +357,13 @@
                   </ul>
                 </div><!-- /btn-group -->
 
-              <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
+              <input required ng-minlength="3" name="universalSearchForm.userBar.universalSearchTerm" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword" validate-input>
               <span class="input-group-btn">
-                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: departmentNum, deptName: department[0].text })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: departmentNum, deptName: department[0].text })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>
+            <div style="margin-left: 60px;" ng-if="universalSearchForm.$error.searchInputInvalid"><p class="text-red">Invalid Input. No special characters allowed in search terms.</p></div>
           </form>
         </div>
 

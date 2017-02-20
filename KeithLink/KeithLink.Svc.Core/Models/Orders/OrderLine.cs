@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         public string CatalogType { get; set; }
 
         [DataMember(Name = "catalog_id")]
-        public string CatalogId { get; set; }
+        public new string CatalogId { get; set; }
 
         [DataMember(Name = "linenumber")]
         public int LineNumber { get; set; }
@@ -31,36 +31,33 @@ namespace KeithLink.Svc.Core.Models.Orders
         {
             get
             {
-                if (this.IsDeleted)
-                    return 0;
+                double total = 0;
 
-                if (this.CatchWeight)
+                if (this.IsDeleted == false)
                 {
-                    if (!string.IsNullOrEmpty(this.OrderStatus) && this.OrderStatus.Equals("i", StringComparison.CurrentCultureIgnoreCase) && this.TotalShippedWeight > 0)
-                        return (double)this.TotalShippedWeight * this.Price;
-                    else
+                    if (!string.IsNullOrEmpty(this.OrderStatus) 
+                        && this.OrderStatus.Equals("i", StringComparison.CurrentCultureIgnoreCase))
+                        total = PricingHelper.GetFixedPrice(QantityShipped, Price, CatchWeight, (double)TotalShippedWeight, AverageWeight);
+                    else if(Pack != null)
                     {
-                        if (this.Each) //package catchweight
-                        {
-                            return PricingHelper.GetCatchweightPriceForPackage(QantityShipped, int.Parse(Pack), AverageWeight, Price);
-                        }
-                        else //case catchweight
-                        {
-                            return PricingHelper.GetCatchweightPriceForCase(QantityShipped, AverageWeight, Price);
-                        }
+                        total = PricingHelper.GetPrice(QantityShipped, 
+                                                       Price, 
+                                                       Price, 
+                                                       Each, 
+                                                       CatchWeight, 
+                                                       AverageWeight, 
+                                                       (Pack != null) ? int.Parse(Pack) : 0);
                     }
                 }
-                else
-                {
-                    return this.QantityShipped * this.Price;
-                }
+
+                return total;
             }
             set { }
         }
 
         private int _quantity;
         [DataMember(Name = "quantity")]
-        [Description("# Requested")]
+        [Description("# Confirmed")]
         public int Quantity
         {
             get { if (IsDeleted) return 0; return _quantity; }
@@ -92,7 +89,6 @@ namespace KeithLink.Svc.Core.Models.Orders
             set { _quantityOrders = value; }
         }
 
-        private int _quantityShipped;
         [DataMember(Name = "quantityshipped")]
         [Description("# Shipped")]
         public int QantityShipped { get; set; }

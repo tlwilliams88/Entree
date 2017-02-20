@@ -287,7 +287,7 @@
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\OrderSubmissionHelper.cs" />
     <Compile Include="Helpers\ProfileHelper.cs" />
-    <Compile Include="Helpers\StopWatchHelper.cs" />
+    <Compile Include="Helpers\EntreeStopWatchHelper.cs" />
     <Compile Include="Helpers\UserContextEqualityComparer.cs" />
     <Compile Include="Logic\ApplicationHealth\ApplicationHealthLogicImpl.cs" />
     <Compile Include="Logic\CatalogCampaignLogicImpl.cs" />
@@ -353,6 +353,7 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
+    <Compile Include="Models\ETL\PdmEnrichedItem.cs" />
     <Compile Include="Models\SiteCatalog\Products\External\IxOneProduct.cs" />
     <Compile Include="Models\SiteCatalog\Products\External\IxOneReturn.cs" />
     <Compile Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.Designer.cs">
@@ -880,6 +881,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\Invoices\ExportInvoicesServiceImpl.cs" />
+    <Compile Include="Service\ShoppingCart\ShoppingCartServiceImpl.cs" />
     <Compile Include="Service\CatalogCampaignServiceImpl.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="Tasks\LimitedConcurrencyLevelTaskScheduler.cs" />

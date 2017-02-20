@@ -34,9 +34,10 @@ namespace KeithLink.Svc.Core.Extensions
 
         public static UserMessageModel ToUserMessageModel(this UserMessage userMessage)
         {
+            // replace switch |LOGO| with blank space, if it's in this message in the body
             return new UserMessageModel()
             {
-                Body = userMessage.Body,
+                Body = userMessage.Body.Replace("|LOGO|", "&nbsp;"),
                 MessageRead = userMessage.MessageReadUtc.HasValue ? DateTime.SpecifyKind(userMessage.MessageReadUtc.Value.ToLocalTime(), DateTimeKind.Unspecified) : userMessage.MessageReadUtc,
                 NotificationType = userMessage.NotificationType,
                 CustomerNumber = userMessage.CustomerNumber,

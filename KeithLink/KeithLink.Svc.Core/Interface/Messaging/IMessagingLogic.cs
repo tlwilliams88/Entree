@@ -22,6 +22,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging {
 
         PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
 
+        bool ForwardUserMessage(UserProfile requester, ForwardUserMessageModel forwardrequest);
+
         List<UserMessageModel> ReadUserMessages(UserProfile user);
 
         bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);

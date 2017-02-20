@@ -50,8 +50,9 @@
     <Compile Include="Migrations\v1.12.2_es_catalog\Migration10.cs" />
     <Compile Include="Migrations\v1.12.2_es_catalog\Migration9.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
-    <Compile Include="Migrations\v1.12\v1.12.0_UpdateProcessContractItemList.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
+    <Compile Include="Migrations\v2017.1.0\Migration7.cs" />
+    <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />
@@ -86,6 +87,9 @@
     <Content Include="SQL\Configs\Configuration.AppSettings.Bootstrap.QA.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\Configs\jeremy.local.configuration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SQL\Configs\matt.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -101,21 +105,21 @@
     <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL\v1.12.0\v1.12.0-ProcessContractItemList-down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL\v1.12.0\v1.12.0-ProcessContractItemList-up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="SQL\v1.12.0\v1.12.0-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v2017.1.0\down\stored procedures\ReadPDMData.sql" />
+    <Content Include="SQL\v2017.1.0\down\tables\Staging_PDM_EnrichedProducts.sql" />
+    <Content Include="SQL\v2017.1.0\up\stored procedures\ETL.ProcessContractItemList.sql" />
+    <Content Include="SQL\v2017.1.0\up\stored procedures\ReadPDMData.sql" />
+    <Content Include="SQL\v2017.1.0\down\stored procedures\ETL.ProcessContractItemList.sql" />
+    <Content Include="SQL\v2017.1.0\up\tables\Staging_PDM_EnrichedProducts.sql" />
     <Content Include="SQL\v1.12.2\down\Migration10-ES_Catalog_uri_name-down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -130,6 +134,9 @@
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY "$(ProjectDir)SQL" "$(TargetDir)SQL" /E /Y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

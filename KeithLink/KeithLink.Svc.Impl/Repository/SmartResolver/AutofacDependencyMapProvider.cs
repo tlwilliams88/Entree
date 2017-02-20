@@ -41,6 +41,7 @@ using KeithLink.Svc.Core.Interface.SingleSignOn;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SpecialOrders;
 
+using KeithLink.Svc.Impl.Service.ShoppingCart;
 using KeithLink.Svc.Impl.Service;
 
 using KeithLink.Svc.Impl.ETL;
@@ -100,6 +101,7 @@ using KeithLink.Svc.Core.Interface.ApplicationHealth;
 using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 using KeithLink.Svc.Impl.Repository.Templates;
 using KeithLink.Svc.Core.Interface.Templates;
+using KeithLink.Svc.Impl.Service.Invoices;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -300,6 +302,9 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // catalog campaign
             builder.RegisterType<CatalogCampaignServiceImpl>().As<ICatalogCampaignService>();
 
+            // invoices
+            builder.RegisterType<ExportInvoicesServiceImpl>().As<IExportInvoicesService>();
+
             ///////////////////////////////////////////////////////////////////////////////
             // Environment Specific Classes
             ///////////////////////////////////////////////////////////////////////////////
@@ -309,8 +314,14 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 #else
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-            builder.RegisterType<GenericSubscriptionQueueRepositoryImpl>().As<IGenericSubsriptionQueueRepository>();
+            builder.RegisterType<GenericSubscriptionQueueRepositoryImpl>().As<IGenericSubscriptionQueueRepository>();
 #endif
+
+
+            // Services
+
+            // Shopping Cart
+            builder.RegisterType<ShoppingCartServiceImpl>().As<IShoppingCartService>();
 
             AddDatabaseDependencies(builder, type);
         }

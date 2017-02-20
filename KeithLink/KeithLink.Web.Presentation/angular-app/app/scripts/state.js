@@ -36,10 +36,10 @@ angular.module('bekApp')
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
       resolve: {
-        branches: ['BranchService', function(BranchService) {
+        branches: ['BranchService', 'localStorageService', function(BranchService, localStorageService) {
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
-          return BranchService.getBranches();
+          return localStorageService.get('branches');
         }],
         userProfile: ['SessionService', function(SessionService) {
           return SessionService.userProfile;
@@ -84,8 +84,8 @@ angular.module('bekApp')
         authorize: 'isLoggedIn'
       },
       resolve: {
-        branches: ['BranchService', function(BranchService) {
-          return BranchService.getBranches();
+        branches: ['BranchService', 'localStorageService', function(BranchService, localStorageService) {
+          return localStorageService.get('branches');
         }]
       }
     })        
@@ -140,7 +140,7 @@ angular.module('bekApp')
     .state('menu.catalog.home', {
       url: '',
       templateUrl: function($stateParams) {
-          if ($stateParams.catalogType == "UNFI") {
+          if ($stateParams.catalogType == 'UNFI') {
               return 'views/unfi-catalog.html';
           } else {
               return 'views/catalog.html';
@@ -149,12 +149,32 @@ angular.module('bekApp')
       controller: 'CatalogController',
       data: {
         authorize: 'canBrowseCatalog'
+      },
+      resolve: {
+        security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
+          var customerRecord = LocalStorage.getCurrentCustomer();
+
+          if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
+            return $q.reject('Customer Cannot View UNFI Catalog.');
+          }
+
+        }]
       }
     })
     .state('menu.catalog.products', {
       abstract: true,
       url: 'products/',
-      template: '<div ui-view=""></div>'
+      template: '<div ui-view=""></div>',
+      resolve: {
+        security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
+          var customerRecord = LocalStorage.getCurrentCustomer();
+
+          if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
+            return $q.reject('Customer Cannot View UNFI Items.');
+          }
+
+        }]
+      }
     })
     .state('menu.catalog.products.list', {
       url: ':type/:id/:dept/:deptName/?brands',
@@ -164,6 +184,13 @@ angular.module('bekApp')
         authorize: 'canBrowseCatalog'
       },
       resolve: {
+        security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
+          var customerRecord = LocalStorage.getCurrentCustomer();
+
+          if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
+            return $q.reject('Customer Cannot View UNFI Items.');
+          }
+        }],
         campaignInfo: [ function() {
           return false
         }]
@@ -175,6 +202,16 @@ angular.module('bekApp')
       controller: 'SearchController',
       data: {
         authorize: 'canBrowseCatalog'
+      },
+      resolve: {
+        security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
+          var customerRecord = LocalStorage.getCurrentCustomer();
+
+          if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
+            return $q.reject('Customer Cannot View UNFI Items.');
+          }
+
+        }]
       }
     })
     .state('menu.catalog.products.details', {
@@ -187,7 +224,17 @@ angular.module('bekApp')
       resolve: {
         item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
           return ProductService.getProductDetails($stateParams.itemNumber, $stateParams.catalogType);
+        }],
+
+        security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
+          var customerRecord = LocalStorage.getCurrentCustomer();
+
+          if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
+            return $q.reject('Customer Cannot View UNFI Items.');
+          }
+
         }]
+
       }
     })
 
@@ -259,7 +306,7 @@ angular.module('bekApp')
              ListService.getParamsObject(params, 'lists').then(function(storedParams){
              $stateParams.sortingParams = storedParams;
              params = storedParams;
-            })
+            });
           }
           if(listIdtoBeUsed == 'nonbeklist'){
             return ListService.getCustomInventoryList();
@@ -426,7 +473,7 @@ angular.module('bekApp')
               ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
                 $stateParams.sortingParams = storedParams; 
                 params = storedParams;
-              })
+              });
             }   
          
           return ListService.getList(validListId, params);
@@ -703,7 +750,7 @@ angular.module('bekApp')
 
   $stateProvider
     .state('menu.configsettings', {
-      url: '/configsettings/',
+      url: '/configsettings',
       templateUrl: 'views/admin/configsettings.html',
       controller: 'ConfigSettingsController',
       resolve: {

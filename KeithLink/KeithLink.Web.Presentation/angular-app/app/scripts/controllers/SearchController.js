@@ -31,6 +31,12 @@ angular.module('bekApp')
       $scope.cartHeaders = cartHeaders;
     });
 
+    $scope.$on('CartCreatedFromContextMenu', function() {
+      CartService.getCartHeaders().then(function(cartHeaders){
+        $scope.cartHeaders = cartHeaders;
+      });
+    });
+
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
     $scope.hasCasePrice = PricingService.hasCasePrice;
@@ -60,8 +66,8 @@ angular.module('bekApp')
     $scope.categoryIsOpen = false;
 
     $scope.hideMobileFilters = true;
-    if ($state.params.catalogType == "BEK") {
-        $scope.pageTitle = "Product Catalog";
+    if ($state.params.catalogType == 'BEK') {
+        $scope.pageTitle = 'Product Catalog';
     } else {
         if ($state.params.catalogType == "UNFI"){
             $scope.pageTitle = "Natural and Organic";
@@ -121,7 +127,7 @@ angular.module('bekApp')
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
       $scope.itemCountOffset = 0;
-    }
+    };
 
     $scope.initPagingValues();
 
@@ -136,7 +142,7 @@ angular.module('bekApp')
       LocalStorage.setDefaultView(selectedview);
 
       ApplicationSettingsService.saveApplicationSettings(selectedSearchView);
-    }
+    };
 
     $scope.blockUIAndChangePage = function(page, toggleView){
         $scope.startingPoint = 0;
@@ -152,10 +158,10 @@ angular.module('bekApp')
 
         $(document).ready(function(){
           $(document.activeElement).blur();
-          $("html, body").animate({ scrollTop: 0 }, 500);
-        })
+          $('html, body').animate({ scrollTop: 0 }, 500);
+        });
 
-        return blockUI.start("Loading Products...").then(function(){
+        return blockUI.start('Loading Products...').then(function(){
 
           if(visited.length > 0){
             $timeout(function() {
@@ -167,11 +173,11 @@ angular.module('bekApp')
               $scope.pageChanged(page, visited);
           }
 
-        })
+        });
 
-    }
+    };
 
-     $scope.setStartAndEndPoints = function(page){
+    $scope.setStartAndEndPoints = function(page){
       var foundStartPoint = false;
         page.forEach(function(item, index){
           if(page && item.itemnumber === page[0].itemnumber){
@@ -179,7 +185,7 @@ angular.module('bekApp')
             $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
             foundStartPoint = true;
           }
-        })
+        });
 
         if(!foundStartPoint){
           appendProducts(page);
@@ -188,7 +194,7 @@ angular.module('bekApp')
         //automatically (deleting all items on page/saving) the event will fire twice and two loading overlays will be generated.
         blockUI.stop();
         blockUI.stop();
-     }
+     };
     
      $scope.pageChanged = function(pages, visited) {
       var facets;
@@ -201,9 +207,8 @@ angular.module('bekApp')
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
       $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
       $scope.setRange();
-      $scope.aggregateCount;
       
-      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length + $scope.facets.parentcategories.selected.length + $scope.facets.subcategories.selected.length)
+      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length + $scope.facets.parentcategories.selected.length + $scope.facets.subcategories.selected.length);
 
       if($scope.aggregateCount !== 0){
         facets = ProductService.getFacets(
@@ -214,7 +219,7 @@ angular.module('bekApp')
           $scope.facets.temp_zone.selected,
           $scope.facets.parentcategories.selected,
           $scope.facets.subcategories.selected
-        )
+        );
       }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
@@ -225,7 +230,7 @@ angular.module('bekApp')
         }
       blockUI.stop();
       blockUI.stop();
-      })
+      });
      };
 
     $scope.setRange = function(){
@@ -238,7 +243,7 @@ angular.module('bekApp')
           $scope.rangeEnd ++;
         }
       }
-    }
+    };
 
     function resetPage(results, initialPageLoad) {
       $scope.initPagingValues();
@@ -255,7 +260,7 @@ angular.module('bekApp')
         $scope.visitedPages.push({page: 1, items: $scope.products, deletedCount: 0});
       }
       $scope.setRange();
-    };
+    }
 
     function appendProducts(results) {
       $scope.visitedPages.push({page: $scope.currentPage, items: results, deletedCount: 0});
@@ -273,7 +278,7 @@ angular.module('bekApp')
       else{
        $scope.setStartAndEndPoints(results);
       }
-    };
+    }
 
     function startLoading() {
       $scope.loadingResults = true;
@@ -531,9 +536,8 @@ angular.module('bekApp')
       var facets;
       $scope.userProfile = SessionService.userProfile;
       $scope.currentCustomer = LocalStorage.getCurrentCustomer();
-      $scope.aggregateCount;
       
-      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length + $scope.facets.parentcategories.selected.length + $scope.facets.subcategories.selected.length)
+      $scope.aggregateCount = ($scope.facets.brands.selected.length + $scope.facets.itemspecs.selected.length + $scope.facets.dietary.selected.length + $scope.facets.mfrname.selected.length + $scope.facets.temp_zone.selected.length + $scope.facets.parentcategories.selected.length + $scope.facets.subcategories.selected.length);
 
       if($scope.aggregateCount !== 0){
         facets = ProductService.getFacets(
@@ -544,17 +548,13 @@ angular.module('bekApp')
           $scope.facets.temp_zone.selected,
           $scope.facets.parentcategories.selected,
           $scope.facets.subcategories.selected
-        )
+        );
       }
 
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
       if($scope.sortField === 'itemnumber' && $state.params.catalogType && $state.params.catalogType != 'BEK'){
         $scope.sortField  = '';
       }
-
-      // if(!$scope.startingResult){
-      //   $scope.startingResult = 0;
-      // }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id);
@@ -563,7 +563,7 @@ angular.module('bekApp')
     //Load list of products and block UI with message
     function loadProducts(appendResults, fromFunction) {
       startLoading();
-      return blockUI.start("Loading Products...").then(function(){
+      return blockUI.start('Loading Products...').then(function(){
         return getData().then(function(data) {
         var page = 1;
         $scope.products = data.products;
@@ -603,7 +603,7 @@ angular.module('bekApp')
         delete $scope.searchMessage;
         
         return data.facets;
-        })
+        });
       }, function(error) {
         $scope.searchMessage = 'Error loading products.';
       }).finally(function() {
@@ -622,7 +622,7 @@ angular.module('bekApp')
 
         facets.available.forEach(function(facet){
 
-          var facetName = $filter('filter') (data, {name: facet.name})
+          var facetName = $filter('filter') (data, {name: facet.name});
           facet.count = 0;
 
           if(facetName.length > 0 && facet.name){
@@ -631,7 +631,7 @@ angular.module('bekApp')
 
           }
 
-        })
+        });
 
       }
 
@@ -642,7 +642,7 @@ angular.module('bekApp')
 
       if (categories && categories.available){
         categories.available.forEach(function(category){
-          var facetName = $filter('filter')(data, {name: category.name})
+          var facetName = $filter('filter')(data, {name: category.name});
           category.count = 0;
 
           if (facetName && facetName.length > 0 && category.name){
@@ -650,17 +650,17 @@ angular.module('bekApp')
 
             if (facetName[0].categories.length){
               category.categories.forEach(function(subcategory){
-                  var foundSubcategory = $filter('filter')(facetName[0].categories, {name: subcategory.name})
+                  var foundSubcategory = $filter('filter')(facetName[0].categories, {name: subcategory.name});
 
                   if (foundSubcategory.length){
                     subcategory.count = foundSubcategory[0].count;
                   } else {
                     subcategory.count = 0;
                   }
-              })
+              });
             }
           }
-        })
+        });
       }
       $scope.noFiltersSelected = false;
     }
@@ -675,7 +675,7 @@ angular.module('bekApp')
       $scope.facets.subcategories.selected = [];
       loadProducts().then(refreshFacets);
       $scope.noFiltersSelected = true;
-    }
+    };
 
     function refreshFacets(facets) {
       var selectedCategory;
@@ -703,9 +703,9 @@ angular.module('bekApp')
 
               }
 
-            })
+            });
 
-          })
+          });
 
         }
 
@@ -779,12 +779,12 @@ angular.module('bekApp')
         } else if (parametername == 'Price High to Low') {
           $scope.sortDirection = 'desc';
         } else {
-          $scope.sortDirection = 'asc'
+          $scope.sortDirection = 'asc';
         }
 
         loadProducts('', 'sorting');
       }
-    }
+    };
 
     $scope.sortParameters = [{
       name: 'Relevance',
@@ -819,7 +819,7 @@ angular.module('bekApp')
         subCategories.css('display','block');
       }
 
-    }
+    };
 
     $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory, index) {
       $scope.startingPoint = 0;
@@ -851,13 +851,13 @@ angular.module('bekApp')
             unSelectedCategory = $scope.facets.subcategories.selected.indexOf(category.name);
 
             if ($scope.facets.parentcategories.selected.length > 0 && unSelectedCategory > -1){
-              $scope.facets.subcategories.selected.splice(unSelectedCategory, 1) // Removes only specific sub-categories associated with category
+              $scope.facets.subcategories.selected.splice(unSelectedCategory, 1); // Removes only specific sub-categories associated with category
             } else if ($scope.facets.parentcategories.selected.length == 0) {
               $scope.facets.subcategories.selected = []; // Removes all remaining sub-categories for last remaining category
 
             }
 
-          })
+          });
 
           facetList.splice(idx, 1);
         } else { // All other aggregates are un-selected here
@@ -915,7 +915,7 @@ angular.module('bekApp')
             parentCategorySelected[0].categories.forEach(function(category){
               category.isSelected = isSelected;
               $scope.facets.subcategories.selected.push(category.name);
-            })
+            });
           }
         }
       }
@@ -936,7 +936,7 @@ angular.module('bekApp')
         controller: 'ExportModalController',
         resolve: {
           location: function() {
-            return {category:'Search', action:'Export Search Results'}
+            return {category:'Search', action:'Export Search Results'};
           },
           headerText: function () {
             return 'Product Catalog (limited to 500 items)';
@@ -969,13 +969,13 @@ angular.module('bekApp')
 
     $scope.bekCatalogSwitch = function () {
         //change state to unfi
-        $state.go($state.current,{catalogType: "BEK"}, {reload: true});
-    }
+        $state.go($state.current,{catalogType: 'BEK'}, {reload: true});
+    };
 
     $scope.unfiCatalogSwitch = function () {
         //change state to unfi
-        $state.go($state.current,{catalogType: "UNFI"}, {reload: true});
-    }
+        $state.go($state.current,{catalogType: 'UNFI'}, {reload: true});
+    };
     // INIT
     loadProducts().then(refreshFacets);
 

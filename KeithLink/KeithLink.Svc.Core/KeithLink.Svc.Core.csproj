@@ -182,8 +182,10 @@
     <Compile Include="Extensions\LinqSortHelpers.cs" />
     <Compile Include="Extensions\Marketing\CatalogCampaignHeaderExtensions.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
+    <Compile Include="Extensions\PowerMenu\PowerMenuExtensions.cs" />
     <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
-    <Compile Include="Interface\Common\IGenericSubsriptionQueueRepository.cs" />
+    <Compile Include="Interface\Cart\IShoppingCartService.cs" />
+    <Compile Include="Interface\Common\IGenericSubscriptionQueueRepository.cs" />
     <Compile Include="Interface\Configurations\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\PagingHelper.cs" />
@@ -233,6 +235,7 @@
     <Compile Include="Interface\ETL\ElasticSearch\IItemImport.cs" />
     <Compile Include="Interface\ETL\IListsImportLogic.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
+    <Compile Include="Interface\Invoices\IExportInvoicesService.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
     <Compile Include="Interface\Invoices\ITermLogic.cs" />
@@ -338,6 +341,7 @@
     <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
+    <Compile Include="Models\Messaging\ForwardUserMessageModel.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignHeader.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignItem.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignReturnModel.cs" />
@@ -346,6 +350,11 @@
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
+    <Compile Include="Models\PowerMenu\Order\LoginModel.cs" />
+    <Compile Include="Models\PowerMenu\Order\OrderHeaderModel.cs" />
+    <Compile Include="Models\PowerMenu\Order\OrderItemModel.cs" />
+    <Compile Include="Models\PowerMenu\Order\OrderModel.cs" />
+    <Compile Include="Models\PowerMenu\Order\VendorPurchaseOrderRequest.cs" />
     <Compile Include="Models\Orders\SaveOrderReturn.cs" />
     <Compile Include="Models\Orders\OrderTotalByMonth.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />

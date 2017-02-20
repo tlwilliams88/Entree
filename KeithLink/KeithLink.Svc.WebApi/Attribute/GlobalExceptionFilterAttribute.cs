@@ -15,11 +15,17 @@ using Newtonsoft.Json;
 
 namespace KeithLink.Svc.WebApi.Attribute
 {
+    /// <summary>
+    /// GlobalExceptionFilterAttribute
+    /// </summary>
 	public class GlobalExceptionFilterAttribute : ExceptionFilterAttribute 
 	{
 		private IEventLogRepository eventLogRepository;
 
-
+        /// <summary>
+        /// OnException in GlobalExceptionFilterAttribute
+        /// </summary>
+        /// <param name="actionExecutedContext"></param>
         public override void OnException(HttpActionExecutedContext actionExecutedContext)
         {
             eventLogRepository = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IEventLogRepository)) as IEventLogRepository;

@@ -9,5 +9,9 @@ namespace KeithLink.Svc.Core.Interface.Orders {
         void ListenForQueueMessages();
 
         void StopListening();
+
+        void SubscribeToQueue();
+
+        void Unsubscribe();
     }
 }

@@ -34,7 +34,7 @@ angular.module('bekApp')
             $scope.piecesCount = $scope.piecesCount + parseInt(item.quantity);
           }          
         });
-    };
+    }
  
     // redirect to url with correct parameters
     var basketId;
@@ -575,7 +575,7 @@ angular.module('bekApp')
       if(($scope.addToOrderForm.$dirty || $scope.tempCartName) && $scope.addToOrderForm.$valid){
         $scope.saveAndRetainQuantity().then(function(){
           redirect(listId, cart);
-        })      
+        }); 
       } else if($scope.addToOrderForm.$valid) {
         redirect(listId, cart);
       } else {
@@ -593,37 +593,11 @@ angular.module('bekApp')
       } else {
         cartId = cart.id;
       }
-      var timeset = DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-      var orderList ={
-          listId: listId,
-          cartId: cartId,
-          timeset: timeset
-          };
-      var allSets = [];
-          allSets = LocalStorage.getLastOrderList();
-        if(!allSets || (allSets[0] && !allSets[0].timeset)){
-          allSets = [];
-        }
- 
-        var matchFound = false;
-        if(orderList.cartId !== 'New'){
-          allSets.forEach(function(set){
-            if(set.cartId === orderList.cartId){
-              set.listId = orderList.listId;
-              set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-              matchFound = true;
-            }
-          });
-          if(!matchFound){
-            allSets.push(orderList);
-          }
-        }
+      ListService.setLastOrderList(listId, cartId);
        var searchTerm = '';
         if($scope.orderSearchTerm && $scope.creatingCart){
          searchTerm = $scope.orderSearchTerm;
         }
- 
-        LocalStorage.setLastOrderList(allSets);
  
       var sameListItems= [];
       if($scope.selectedList && listId === $scope.selectedList.listid){
@@ -647,7 +621,7 @@ angular.module('bekApp')
           currentPage: $scope.retainedPage});
       });
  
-    };
+    }
  
     $scope.unsavedChangesConfirmation = function(){
       if($scope.addToOrderForm.$dirty){
@@ -810,7 +784,7 @@ angular.module('bekApp')
               duplicateItem.forEach(function(duplicateitem){
                 duplicateitem.quantity = '';
                 duplicateitem.extPrice = 0.00;
-              })
+              });
 
               $scope.lastDuplicateItem.quantity = itemInCart.quantity;
               $scope.lastDuplicateItem.extprice = PricingService.getPriceForItem($scope.lastDuplicateItem);
@@ -826,7 +800,7 @@ angular.module('bekApp')
             listitem.extPrice = 0.00;
           }
 
-        })
+        });
       } else {
 
         $scope.selectedList.items.forEach(function(listitem){
@@ -834,7 +808,7 @@ angular.module('bekApp')
             listitem.quantity = '';
             listitem.extPrice = 0.00;
           }
-        })
+        });
 
       }
     };
@@ -967,7 +941,7 @@ angular.module('bekApp')
       var invalidItemFound = false;
  
       updatedCart.items.forEach(function(cartitem){
-        if (!cartitem.extPrice && !(cartitem.extPrice > 0) && !(cartitem.quantity === 0 && cartitem.status && cartitem.status.toUpperCase() === 'OUT OF STOCK')){
+        if (!cartitem.extPrice && !(cartitem.extPrice > 0) && !((cartitem.quantity === 0 || cartitem.quantity == '') && cartitem.status && cartitem.status.toUpperCase() === 'OUT OF STOCK')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Cannot create cart. Item ' + cartitem.itemnumber +' is invalid.  Please contact DSR for more information.');
         }

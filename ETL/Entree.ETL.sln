@@ -1,26 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "KeithLink.ETL.dtproj", "{C59A7457-0EAF-4A10-9634-B26335AF49A5}"
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "Entree.ETL\KeithLink.ETL.dtproj", "{C59A7457-0EAF-4A10-9634-B26335AF49A5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Comparisons", "Comparisons", "{299BE63A-7788-4105-A84A-5057D36B8D78}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configs", "Configs", "{AB1C0360-9CF1-45E0-8DA9-DF8AE405F217}"
 	ProjectSection(SolutionItems) = preProject
-		..\Configs\ETLProcess_BETA.dtsConfig = ..\Configs\ETLProcess_BETA.dtsConfig
-		..\Configs\ETLProcess_DEV.dtsConfig = ..\Configs\ETLProcess_DEV.dtsConfig
-		..\Configs\ETLProcess_LOCAL.dtsConfig = ..\Configs\ETLProcess_LOCAL.dtsConfig
-		..\Configs\ETLProcess_QA.dtsConfig = ..\Configs\ETLProcess_QA.dtsConfig
-		..\Configs\ETLProcess_RELEASE.dtsConfig = ..\Configs\ETLProcess_RELEASE.dtsConfig
-		..\Configs\UNFIETLProcess_LOCAL.dtsConfig = ..\Configs\UNFIETLProcess_LOCAL.dtsConfig
+		Configs\ETLProcess_BETA.dtsConfig = Configs\ETLProcess_BETA.dtsConfig
+		Configs\ETLProcess_DEV.dtsConfig = Configs\ETLProcess_DEV.dtsConfig
+		Configs\ETLProcess_LOCAL.dtsConfig = Configs\ETLProcess_LOCAL.dtsConfig
+		Configs\ETLProcess_QA.dtsConfig = Configs\ETLProcess_QA.dtsConfig
+		Configs\ETLProcess_RELEASE.dtsConfig = Configs\ETLProcess_RELEASE.dtsConfig
+		Configs\UNFIETLProcess_LOCAL.dtsConfig = Configs\UNFIETLProcess_LOCAL.dtsConfig
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WSDL", "WSDL", "{31CC8F08-AD2C-4348-BF22-B6A8042AD22C}"
 	ProjectSection(SolutionItems) = preProject
-		..\WSDL\ETLProcess_BETA.dtsConfig = ..\WSDL\ETLProcess_BETA.dtsConfig
-		..\WSDL\ETLProcess_RELEASE.dtsConfig = ..\WSDL\ETLProcess_RELEASE.dtsConfig
-		..\WSDL\UNFIETLProcess_BETA.dtsConfig = ..\WSDL\UNFIETLProcess_BETA.dtsConfig
-		..\WSDL\UNFIETLProcess_Release.dtsConfig = ..\WSDL\UNFIETLProcess_Release.dtsConfig
+		WSDL\ETLProcess_BETA.dtsConfig = WSDL\ETLProcess_BETA.dtsConfig
+		WSDL\ETLProcess_RELEASE.dtsConfig = WSDL\ETLProcess_RELEASE.dtsConfig
+		WSDL\UNFIETLProcess_BETA.dtsConfig = WSDL\UNFIETLProcess_BETA.dtsConfig
+		WSDL\UNFIETLProcess_Release.dtsConfig = WSDL\UNFIETLProcess_Release.dtsConfig
 	EndProjectSection
 EndProject
 Global

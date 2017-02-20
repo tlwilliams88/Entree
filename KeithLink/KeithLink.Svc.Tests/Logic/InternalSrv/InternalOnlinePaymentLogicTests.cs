@@ -11,7 +11,6 @@ namespace KeithLink.Svc.Test.Logic.InternalSrv {
     [TestClass]
     public class InternalOnlinePaymentLogicTests {
         #region attributes
-        private readonly IOnlinePaymentsLogic _logic;		 
         #endregion
 
         #region ctor

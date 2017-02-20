@@ -52,7 +52,13 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
         }
 
         public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
-            return Entities.Include(d => d.OrderDetails).Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
+            return Entities.Include(d => d.OrderDetails)
+                           .Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
+        }
+
+        public IEnumerable<OrderHistoryHeader> ReadForInvoiceHeader(string branchId, string invoiceNumber)
+        {
+            return Entities.Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
         }
 
         public string ReadLatestOrderDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {

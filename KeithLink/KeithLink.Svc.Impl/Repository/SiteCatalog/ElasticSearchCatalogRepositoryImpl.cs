@@ -874,6 +874,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CaseOnly = oProd._source.caseonly == "Y";
             p.TempZone = oProd._source.temp_zone;
             p.IsProprietary = oProd._source.isproprietary;
+            p.ProprietaryCustomers = oProd._source.proprietarycustomers;
             p.CatchWeight = oProd._source.catchweight;
             p.AverageWeight = oProd._source.averageweight;
             p.CasePriceNumeric = oProd._source.caseprice != null ? oProd._source.caseprice : 0.00;
@@ -883,6 +884,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.SellSheet = oProd._source.sellsheet;
             p.ChildNutrition = oProd._source.childnutrition;
             p.NonStock = oProd._source.nonstock;
+            p.MarketingBrand = oProd._source.marketing_brand;
+            p.MarketingDescription = oProd._source.marketing_description;
+            p.MarketingManufacturer = oProd._source.marketing_manufacturer;
+            p.MarketingName = oProd._source.marketing_name;
+            p.Status1 = oProd._source.status1;
             if (oProd._source.nutritional != null)
             {
                 Nutritional nutritional = new Nutritional();
@@ -930,7 +936,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 {
                     p.CaseCube = oProd._source.icube;
                 }
-                catch (Exception e)
+                catch// (Exception e)
                 {
                     p.CaseCube = "";
                 }

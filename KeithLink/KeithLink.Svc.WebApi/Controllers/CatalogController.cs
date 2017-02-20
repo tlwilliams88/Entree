@@ -30,6 +30,9 @@ using System.IO;
 using KeithLink.Common.Core.Interfaces.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers {
+    /// <summary>
+    /// CatalogController
+    /// </summary>
 	[Authorize]
     public class CatalogController : BaseController {
         #region attributes
@@ -41,6 +44,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
         #endregion
 
         #region ctor
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="catalogLogic"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="exportSettingsLogic"></param>
+        /// <param name="elRepo"></param>
+        /// <param name="campaignService"></param>
+        /// <param name="campaignLogic"></param>
         public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, 
             IExportSettingLogic exportSettingsLogic, IEventLogRepository elRepo, ICatalogCampaignService campaignService,
             ICatalogCampaignLogic campaignLogic) : base(profileLogic) {
@@ -48,7 +60,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             _campaignLogic = campaignLogic;
             _campaignService = campaignService;
             _catalogLogic = catalogLogic;
-			_exportSettingRepository = exportSettingsLogic;
+            _exportSettingRepository = exportSettingsLogic;
 
             this._elRepo = elRepo;
         }
@@ -159,6 +171,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return ret;
         }
 
+        /// <summary>
+        /// GetProductsSearchBrand
+        /// </summary>
+        /// <param name="catalogType"></param>
+        /// <param name="brandName"></param>
+        /// <param name="searchModel"></param>
+        /// <param name="searchTerms"></param>
+        /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/{catalogType}/search/brand/{brandName}/products")]
         public OperationReturnModel<ProductsReturn> GetProductsSearchBrand(string catalogType, string brandName, [FromUri] SearchInputModel searchModel, [FromUri] string searchTerms = null)
@@ -352,7 +372,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<Division>> ret = new OperationReturnModel<List<Division>>();
             try
             {
-                ret.SuccessResponse = _catalogLogic.GetDivisions();
+                // for some reason the unfi catalogs are present in the divisions, to suppress them in this list 
+                // we squelch the ones with no matching branchsupport
+                ret.SuccessResponse = _catalogLogic.GetDivisions().Where(d => d.BranchSupport != null).ToList();
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
@@ -420,6 +442,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <summary>
         /// Export products for a Category
         /// </summary>
+        /// <param name="catalogType">Catalog Type</param>
         /// <param name="categoryId">Category Id</param>
         /// <param name="searchModel"></param>
         /// <param name="exportRequest">Export options</param>

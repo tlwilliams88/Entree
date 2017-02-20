@@ -118,11 +118,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
 
-                prod.CasePrice = p.CasePrice.ToString();
-                prod.CasePriceNumeric = p.CasePrice;
-                prod.PackagePrice = p.PackagePrice.ToString();
-                prod.PackagePriceNumeric = p.PackagePrice;
-                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                    prod.CasePrice = p.CasePrice.ToString();
+                    prod.CasePriceNumeric = p.CasePrice;
+                    prod.PackagePrice = p.PackagePrice.ToString();
+                    prod.PackagePriceNumeric = p.PackagePrice;
+                    prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                //}
             }
 
             if ((searchModel.SField == "caseprice" || searchModel.SField == "unitprice") && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
@@ -424,13 +425,21 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             var newCatalog = new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType) };
 
             // special handling for price sorting
-            if (searchModel.SField == "caseprice")
-                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+            if (searchModel.SField == "caseprice") // we have to block caseprice from the searchModel used in es
+                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = searchModel.Size });
             else
                 ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, searchModel);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
+
             GetAdditionalProductInfo(profile, ret, catalogInfo);
+
+            // special handling for price sorting - handle the pricesort
+            if (searchModel.SField == "caseprice" && searchModel.SDir == "asc")
+                ret.Products = ret.Products.OrderBy(p => p.CasePriceNumeric).ToList();
+            else if (searchModel.SField == "caseprice" && searchModel.SDir == "desc")
+                ret.Products = ret.Products.OrderByDescending(p => p.CasePriceNumeric).ToList();
+
             return ret;
         }
 

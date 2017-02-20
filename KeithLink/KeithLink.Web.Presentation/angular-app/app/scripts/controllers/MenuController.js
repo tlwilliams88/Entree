@@ -9,7 +9,7 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -17,7 +17,8 @@ angular.module('bekApp')
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
       CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
-      mandatoryMessages
+      mandatoryMessages,
+      localStorageService
     ) {
 
   $scope.$state = $state;
@@ -30,9 +31,22 @@ angular.module('bekApp')
   $scope.branches = branches;
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
+  ENV.username = localStorageService.get('userName');
 
   OrderService.getChangeOrders().then(function(resp){
     $scope.changeOrders = resp;
+  });
+
+  $scope.$on('CartCreatedFromContextMenu', function() {
+    CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.carts = cartHeaders;
+    });
+  });
+
+  $scope.$on('ListCreatedFromContextMenu', function() {
+    ListService.getListHeaders().then(function(lists) {
+      $scope.lists = lists;
+    });
   });
  
 
@@ -49,9 +63,9 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
  
-  $scope.webVersionNum = '1.12.0';
-  $scope.androidVersionNum = '1.12.0';
-  $scope.iOSVersionNum = '1.12.0';
+  $scope.webVersionNum = '2017.1.0';
+  $scope.androidVersionNum = '2017.1.0';
+  $scope.iOSVersionNum = '2017.1.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;

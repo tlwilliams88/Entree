@@ -13,9 +13,8 @@ angular.module('bekApp')
           
     element.bind('focus', function (event) {
             $('.ATOrowHighlight').removeClass('ATOrowHighlight');
-            //angular.element(attributes.$$element[0].closest('tr')).addClass('ATOrowHighlight');
-            $(event.target).parents("tr").addClass('ATOrowHighlight');
-        })
+            $(event.target).parents('tr').addClass('ATOrowHighlight');
+        });
       }
-    }
+    };
 }]);

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListOrganizeController', ['$scope', '$filter', '$timeout', 'list', 'ListService', 'UtilityService',
-    function($scope, $filter, $timeout, list, ListService, UtilityService) {
+  .controller('ListOrganizeController', ['$scope', '$filter', '$timeout', 'list', 'ListService', 'UtilityService', 'blockUI',
+    function($scope, $filter, $timeout, list, ListService, UtilityService, blockUI) {
 
   var orderBy = $filter('orderBy');
   $scope.isMobileDevice = UtilityService.isMobileDevice();
@@ -19,11 +19,11 @@ angular.module('bekApp')
       //index 0 is assigned to the dummy row used for drag-to-reorder functionality
       item.editPosition = index;
       item.position = index;
-    })
-  };
+    });
+  }
 
   function setList(list) {
-    $scope.list = list;
+    $scope.list = list ? list : $scope.list;
     $scope.list.items.forEach(function(item) {
       item.editPosition = item.position;
       item.positionStarting = item.editPosition;
@@ -33,6 +33,7 @@ angular.module('bekApp')
     $scope.sortField = 'position';
     $scope.sortDescending = false;
     $scope.list.items = orderBy($scope.list.items, $scope.sortField, $scope.sortDescending);
+    blockUI.stop();
   }
 
   setList(list);
@@ -99,8 +100,8 @@ angular.module('bekApp')
         item.position--;
         item.editPosition = item.position;
       }
-    })
-  }
+    });
+  };
 
   $scope.changePosition = function(items, movedItem, removeNullValue) {
     if(movedItem.position === '0' || !movedItem.position){
@@ -153,12 +154,14 @@ angular.module('bekApp')
         list.items.splice(0, 1);
       }
 
-      ListService.updateList(list, true).then(function(updatedList) {
-        $scope.organizeListForm.$setPristine();
-        setList(updatedList);
-      }).finally(function() {
-        processingSaveList = false;
-      });
+      blockUI.start('Saving List...').then(function(){
+        ListService.updateList(list, true).then(function(updatedList) {
+          $scope.organizeListForm.$setPristine();
+          setList();
+        }).finally(function() {
+          processingSaveList = false;
+        });
+      })
     }
   };
 

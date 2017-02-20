@@ -35,6 +35,12 @@ namespace KeithLink.Svc.Impl.Helpers
                                          .FirstOrDefault();
                 if (contract != null)
                 {
+                    // When we apply contract categories to other lists, on contracts that have the same itemnumber 
+                    // for case and package lines have the same itemnumber twice.So the dictionary blows up trying 
+                    // to put the two entries for the same itemnumber in...
+                    // The dictionary just applies the category to that same item used in other lists. So the only 
+                    // negative is if they specify the itemnumber/case as being in a different category than the 
+                    // item /package combination. Nothing changes in how it is used in an order or anything.
                     contractdictionary = contract.Items
                                                  .GroupBy(li => li.ItemNumber, StringComparer.CurrentCultureIgnoreCase)
                                                  .ToDictionary(g => g.Key, 
@@ -58,17 +64,22 @@ namespace KeithLink.Svc.Impl.Helpers
 
         public static string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
         {
+            return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
+        }
+
+        public static string AddContractInformationIfInContract
+            (Dictionary<string, string> contractdictionary, string itemNumber)
+        {
             string itmcategory = null;
             if (contractdictionary.Count > 0)
             {
-                if (contractdictionary.ContainsKey(item.ItemNumber))
+                if (contractdictionary.ContainsKey(itemNumber))
                 {
-                    itmcategory = contractdictionary[item.ItemNumber];
+                    itmcategory = contractdictionary[itemNumber];
                 }
             }
 
             return itmcategory;
         }
-
     }
 }

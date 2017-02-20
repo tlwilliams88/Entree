@@ -49,7 +49,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public OperationReturnModel<bool> RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key) {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
             try {
-                _elRepo.WriteInformationLog("cache/RefreshCacheItem called");
+                //_elRepo.WriteInformationLog("cache/RefreshCacheItem called");
                 cacheRepository.RefreshCacheItem(cacheGroupName, cachePrefix, cacheName, key);
                 ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
             } catch(Exception ex) {
@@ -71,7 +71,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public OperationReturnModel<bool> RefreshCache(string cacheGroupName, string cachePrefix, string cacheName) {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
             try {
-                _elRepo.WriteInformationLog("cache/RefreshCache called");
+                //_elRepo.WriteInformationLog("cache/RefreshCache called");
                 cacheRepository.RefreshCache(cacheGroupName, cachePrefix, cacheName);
                 ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
             } catch(Exception ex) {

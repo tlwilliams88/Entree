@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.ModelExport;
+﻿using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
@@ -22,11 +23,14 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public string LineNumber { get; set; }
 		[DataMember(Name="itemnumber")]
 		[Description("Item #")]
-		public string ItemNumber { get; set; }
+		public new string ItemNumber { get; set; }
 		[DataMember(Name = "quantityordered")]
 		[Description("# Ordereed")]
 		public int? QuantityOrdered { get; set; }
-		[DataMember(Name = "quantityshipped")]
+        [DataMember(Name = "each")]
+        [Description("Each")]
+        public bool Each { get; set; }
+        [DataMember(Name = "quantityshipped")]
 		[Description("# Shipped")]
 		public int? QuantityShipped { get; set; }
 		[DataMember(Name = "catchweight")]
@@ -38,18 +42,26 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public decimal? ItemPrice { get; set; }
 		[DataMember(Name = "salesnet")]
 		[Description("Ext Price")]
-		public decimal? ExtSalesNet { get; set; }
+		public decimal? ExtSalesNet
+        {
+            get
+            {
+                return (decimal)PricingHelper.GetFixedPrice(QuantityShipped.Value, (double)ItemPrice, CatchWeight, (double)ExtCatchWeight, AverageWeight);
+            }
+        }
 		[DataMember(Name = "classcode")]
 		public string ClassCode { get; set; }
 		[DataMember(Name = "packsize")]
 		[Description("Pack/Size")]
-		public string PackSize { get; set; }
+		public new string PackSize { get; set; }
 
 		
 		public string InvoiceNumber { get; set; }
 
+        [Description("Contract Category")]
+        public string Category { get; set; }
 
-		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
+        public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();
 

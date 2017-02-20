@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Helpers;
 using System;
 using System.Runtime.Serialization;
 
@@ -9,6 +10,29 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         [DataMember()]
         public int LineNumber { get; set; }
 
+        [DataMember(Name = "linetotal")]
+        public double LineTotal
+        {
+            get
+            {
+                double total = 0;
+
+                try // this is called when we first save the cart as order; we don't need a value then
+                    // and it throws an exception if we even call the pricinghelper
+                {
+                    if (this.ItemDeleted == false
+                        && this.ItemStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE,
+                                                           StringComparison.CurrentCultureIgnoreCase) == false)
+                    {
+                        total = PricingHelper.GetFixedPrice(ShippedQuantity, SellPrice, CatchWeight, TotalShippedWeight, AverageWeight);
+                    }
+                }
+                catch { }
+
+                return total;
+            }
+            set { }
+        }
         [DataMember()]
         public string ItemNumber { get; set; }
 
@@ -47,6 +71,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
 
         [DataMember()]
         public double TotalShippedWeight { get; set; }
+
+        [DataMember()]
+        public double AverageWeight { get; set; }
 
         [DataMember()]
         public string Source { get; set; }

@@ -30,7 +30,6 @@ namespace KeithLink.Svc.Windows.QueueService {
         private INotificationQueueConsumer _hasNewsQueueConsumer;
         private INotificationQueueConsumer _paymentConfirmationQueueConsumer;
         private INotificationQueueConsumer _ETAQueueConsumer;
-        private INotificationQueueConsumer _notificationQueueConsumer;
         private IPushMessageConsumer _pushmessageConsumer;
         private IEventLogRepository _log;
         private IEmailClient _emailClient;
@@ -45,7 +44,6 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope notificationEtaScope;
         private ILifetimeScope pushMessagesScope;
 
-        private Task lostOrdersTask;
         private static bool _checkLostOrdersProcessing;
         private Timer _checkLostOrdersTimer;
 
@@ -99,7 +97,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             InitializePushMessageConsumerThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
-            //InitializeCheckLostOrdersTimer();
+            //InitializeCheckLostOrdersTimer();// moved to monitor service
             InitializeSpecialOrderUpdateThread();
         }
 
@@ -110,7 +108,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TerminateOrderUpdateThread();
             TerminateNotificationsThreads();
             TerminatePushMessageConsumerThread();
-            //TerminateCheckLostOrdersTimer();
+            //TerminateCheckLostOrdersTimer();// moved to monitor service
             TerminateSpecialOrderUpdateThread();
 
             _log.WriteInformationLog( "Service stopped" );
@@ -120,8 +118,8 @@ namespace KeithLink.Svc.Windows.QueueService {
             confirmationScope = container.BeginLifetimeScope();
 
             _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
-            //_confirmationLogic.SubscribeToQueue();
-            _confirmationLogic.ListenForQueueMessages();
+            _confirmationLogic.SubscribeToQueue();
+            //_confirmationLogic.ListenForQueueMessages();
         }
         
         private void InitializeNotificationsThreads()
@@ -141,8 +139,8 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _ETAQueueConsumer = notificationEtaScope.Resolve<INotificationQueueConsumer>();
             _ETAQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueETA;
-            //_ETAQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueETA);
-            _ETAQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _ETAQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueETA);
+            //_ETAQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void StartHasNewsNotifications()
@@ -151,8 +149,8 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _hasNewsQueueConsumer = notificationHasNewsScope.Resolve<INotificationQueueConsumer>();
             _hasNewsQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueHasNews;
-            //_hasNewsQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueHasNews);
-            _hasNewsQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _hasNewsQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueHasNews);
+            //_hasNewsQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void StartOrderNotifications()
@@ -161,8 +159,8 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _orderConfirmationQueueConsumer = notificationOrderConfirmationScope.Resolve<INotificationQueueConsumer>();
             _orderConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueOrderConfirmation;
-            //_orderConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueOrderConfirmation);
-            _orderConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _orderConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueOrderConfirmation);
+            //_orderConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void StartPaymentNotifications()
@@ -171,34 +169,40 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _paymentConfirmationQueueConsumer = notificationPaymentConfirmationScope.Resolve<INotificationQueueConsumer>();
             _paymentConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueuePaymentConfirmation;
-            //_paymentConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueuePaymentConfirmation);
-            _paymentConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            _paymentConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueuePaymentConfirmation);
+            //_paymentConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void InitializePushMessageConsumerThread()
         {
             pushMessagesScope = container.BeginLifetimeScope();
             _pushmessageConsumer = pushMessagesScope.Resolve<IPushMessageConsumer>();
-            _pushmessageConsumer.ListenForQueueMessages();
+            _pushmessageConsumer.SubscribeToQueue();
+            //_pushmessageConsumer.ListenForQueueMessages();
         }
 
         private void InitializeOrderUpdateThread() {
             orderHistoryScope = container.BeginLifetimeScope();
             _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
-            _orderHistoryLogic.ListenForQueueMessages();
+            _orderHistoryLogic.SubscribeToQueue();
+            //_orderHistoryLogic.ListenForQueueMessages();
         }
 
         private void InitializeSpecialOrderUpdateThread()
         {
             specialOrderScope = container.BeginLifetimeScope();
             _specialOrderLogic = specialOrderScope.Resolve<ISpecialOrderLogic>();
-            _specialOrderLogic.ListenForQueueMessages();
+            _specialOrderLogic.SubscribeToQueue();
+            //_specialOrderLogic.ListenForQueueMessages();
         }
 
         private void TerminateSpecialOrderUpdateThread()
         {
             if (_specialOrderLogic != null)
-                _specialOrderLogic.StopListening();
+            {
+                _specialOrderLogic.Unsubscribe();
+                //_specialOrderLogic.StopListening();
+            }
 
             if (specialOrderScope != null)
                 specialOrderScope.Dispose();
@@ -207,14 +211,20 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void TerminateConfirmationThread()
         {
             if (_confirmationLogic != null)
+            {
                 _confirmationLogic.UnsubscribeFromQueue();
+                //_confirmationLogic.Stop();
+            }
             if (confirmationScope != null)
                 confirmationScope.Dispose();
         }
 
         private void TerminateOrderUpdateThread() {
             if (_orderHistoryLogic != null)
-                _orderHistoryLogic.StopListening();
+            {
+                _orderHistoryLogic.Unsubscribe();
+                //_orderHistoryLogic.StopListening();
+            }
 
             if (orderHistoryScope != null)
                 orderHistoryScope.Dispose();
@@ -249,7 +259,10 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void TerminatePushMessageConsumerThread()
         {
             if (_pushmessageConsumer != null)
-                _pushmessageConsumer.Stop();
+            {
+                _pushmessageConsumer.Unsubscribe();
+                //_pushmessageConsumer.Stop();
+            }
 
             if (pushMessagesScope != null)
                 pushMessagesScope.Dispose();
@@ -258,9 +271,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void TerminateCheckLostOrdersTimer() {
             if (_checkLostOrdersTimer != null) {
                 _checkLostOrdersTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
-                if(lostOrdersTask != null) lostOrdersTask.Wait();
             }
-            //if (lostOrdersTask != null) _log.WriteWarningLog(string.Format("QueueService.lostOrdersTask.status = {0:G}", lostOrdersTask.Status));
         }
 
         private void ProcessCheckLostOrdersMinuteTick( object state ) {

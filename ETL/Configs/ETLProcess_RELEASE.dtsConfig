@@ -62,7 +62,7 @@
 		<ConfiguredValue>Data Source=bekcpsql;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_Log].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>Data Source=beksqlisp12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>
+		<ConfiguredValue>Data Source=beksqlisp14;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_PRODCAT].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>Data Source=bekscsql,5000;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>

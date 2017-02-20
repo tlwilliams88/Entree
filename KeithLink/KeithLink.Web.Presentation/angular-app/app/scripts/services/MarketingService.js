@@ -49,7 +49,7 @@ angular.module('bekApp')
       var data = {
           targeturltext: targeturltext,
           id: id
-      }
+      };
       return $http.post('/cms/promoitems', data);
     }
   };

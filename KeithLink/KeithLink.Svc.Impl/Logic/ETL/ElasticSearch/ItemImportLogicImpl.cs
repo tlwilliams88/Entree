@@ -25,8 +25,6 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #region attributes
         private const string Language = "en-US";
-        // ItemSpec_NonStock is not being used, remove it?
-		private readonly string ItemSpec_NonStock = "NonStock";
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
 		private readonly string ItemSpec_CNDoc = "CNDoc";
@@ -95,6 +93,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 var gsData = _stagingRepository.ReadGSDataForItems();
 
+                var pdmDict = BuildPDMDictionary();
                 var itemNutritions = BuildNutritionDictionary(gsData);
                 var itemDiet = BuildDietDictionary(gsData);
                 var itemAllergens = BuildAllergenDictionary(gsData);
@@ -102,7 +101,14 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens, proprietaryItems));
+                    PdmEnrichedItem pdmItem = null;
+
+                    if(pdmDict.ContainsKey(row.GetString("ItemId"))) {
+                        pdmItem = pdmDict[row.GetString("ItemId")];
+                    }
+
+                    products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, 
+                                                           itemAllergens, proprietaryItems, pdmItem));
                 };
 
                 int totalProcessed = 0;
@@ -262,6 +268,25 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             return itemNutritions;
         }
 
+        private Dictionary<string, PdmEnrichedItem> BuildPDMDictionary() {
+            DataTable items = _stagingRepository.ReadPDMDataForItems();
+
+            return items.AsEnumerable()
+                        .Select(i => new PdmEnrichedItem {
+                            Brand          = i.Field<string>("brand"),
+                            CreatedBy      = i.Field<string>("CreatedBy"),
+                            CreatedUTC     = i.Field<DateTime>("CreatedUTC"),
+                            Desription     = i.Field<string>("Description"),
+                            ItemNumber     = i.Field<string>("ItemNumber"),
+                            Manufacturer   = i.Field<string>("Manufacturer"),
+                            ModifiedUTC    = i.Field<DateTime>("ModifiedUTC"),
+                            Name           = i.Field<string>("Name"),
+                            Status         = i.Field<string>("Status"),
+                            UpdatedBy      = i.Field<string>("UpdatedBy")
+                        })
+                        .ToDictionary(i => i.ItemNumber);
+        }
+
         /// <summary>
         /// Builds a list of proprietary customers
         /// </summary>
@@ -311,6 +336,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         categoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
                         parentcategoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
                         brand_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        marketingbrand_not_analyzed = new { type = "string", index = "not_analyzed" },
                         brand_description_not_analyzed = new { type = "string", index = "not_analyzed" },
                         description = new {
                             type = "string",
@@ -321,7 +347,29 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                                 }
                             }
                         },
+                        marketingdescription = new {
+                            type = "string",
+                            fields = new {
+                                english = new {
+                                    type = "string",
+                                    analyzer = "english"
+                                }
+                            }
+                        },
                         name = new {
+                            type = "string",
+                            fields = new {
+                                english = new {
+                                    type = "string",
+                                    analyzer = "english"
+                                },
+                                ngram = new {
+                                    type = "string",
+                                    analyzer = "ngram_analyzer"
+                                }
+                            }
+                        },
+                        marketingname = new {
                             type = "string",
                             fields = new {
                                 english = new {
@@ -376,7 +424,10 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         },
                         name_not_analyzed = new { type = "string", index = "not_analyzed" },
                         name_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
+                        marketingname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        marketingname_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
                         mfrname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        marketingmanufacturer_not_analyzed = new { type = "string", index = "not_analyzed" },
                         preferreditemcode = new { type = "string", index = "not_analyzed" },
                         status1_not_analyzed = new { type = "string", index = "not_analyzed" },
                         nutritional = new {
@@ -454,7 +505,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         /// <returns></returns>
         private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, 
                                                      Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, 
-                                                     Dictionary<string, List<string>> proprietaryItems) {
+                                                     Dictionary<string, List<string>> proprietaryItems, PdmEnrichedItem pdmData) {
             NutritionalInformation nutInfo = new NutritionalInformation();
             nutInfo.BrandOwner = row.GetString("BrandOwner");
             nutInfo.CountryOfOrigin = row.GetString("CountryOfOrigin");
@@ -497,6 +548,16 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.ItemClass = row.GetString("Class");
             data.ItemType = row.GetString("ItemType");
             data.Kosher = row.GetString("Kosher");
+            if(pdmData != null) {
+                data.MarketingBrand = pdmData.Brand;
+                data.MarketingBrandNotAnalyzed = pdmData.Brand;
+                data.MarketingDescription = pdmData.Desription;
+                data.MarketingManufacturer = pdmData.Manufacturer;
+                data.MarketingManufacturerNotAnalyzed = pdmData.Manufacturer;
+                data.MarketingName = pdmData.Name;
+                data.MarketingNameNgramAnalyzed = pdmData.Name;
+                data.MarketingNameNotAnalyzed = pdmData.Name;
+            }
             data.MfrName = row.GetString("MfrName");
             data.MfrNameNotAnalyzed = row.GetString("MfrName");
             data.MfrNumber = row.GetString("MfrNumber");
@@ -526,8 +587,6 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			data.NonStock = row.GetString("NonStock");
             data.TempZone = row.GetString("TempZone");
             data.CatchWeight = row.GetString("HowPrice") == "3";
-            // TODO: Find out why this is commented out
-			//data.IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId"));
             data.IsProprietary = row.GetString("ItemType").Equals("P") ? true : false;
 			data.ProprietaryCustomers = BuildProprietaryCustomerList(row.GetString("ItemId"), proprietaryItems);
             data.AverageWeight = (row.GetDouble("FPNetWt") > 0 ? row.GetDouble("FPNetWt") / 100 : (row.GetDouble("GrossWt") > 0 ? row.GetDouble("GrossWt") / 100 : 0));

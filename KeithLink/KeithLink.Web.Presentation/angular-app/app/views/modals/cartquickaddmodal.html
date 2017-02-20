@@ -4,7 +4,7 @@
 <div class="modal-body">
   <p class="text-red" ng-if="quickAddForm.itemNumber.$error.fcsaNumber">Cart has some invalid item numbers. These items will be excluded when the order is submitted.</p>
 
-  <form name="quickAddForm" class="style-validation-errors">
+  <form name="quickAddForm" class="style-validation-errors margin-bottom-10" style="height:450px; overflow-y: auto;">
     <p class="text-green" >
     <span ng-if="enableSubmit && !isChangeOrder && !existingCart">All item numbers are valid. Click Create Cart</span>
     <span ng-if="enableSubmit && isChangeOrder || enableSubmit && existingCart">All item numbers are valid.</span>
@@ -12,7 +12,7 @@
     <p class="text-red" ng-if="!enableSubmit">You must enter all valid item numbers before you can create the cart</p>
     <p class="text-red" ng-if="invalidValue">Please enter a quantity no greater than 999</p>
 
-    <table class="table table-border" navigate-quick-add>
+    <table class="table table-border" navigate-quick-add style="margin-bottom: 0px !important;">
       <thead>
         <tr>
           <th>Item #</th>

@@ -14,18 +14,22 @@ angular.module('bekApp')
     var Service = {
 
       // gets and sets current user profile
-      getCurrentUserProfile: function() {
-        return Service.getUserProfile().then(function (profile) {
+      getCurrentUserProfile: function(displayMessage) {
+        return Service.getUserProfile(null, displayMessage).then(function (profile) {
           SessionService.userProfile = profile;
 
           // check if user is Order entry customer to determine which branch/context to select
           if (AccessService.isOrderEntryCustomer()) {
-            var userSelectedContext = {
-              id: profile.defaultcustomer !== null ? profile.defaultcustomer.customerNumber : '',
-              text: profile.defaultcustomer !== null ? profile.defaultcustomer.displayname : '',
-              customer: profile.defaultcustomer
-            };
-            LocalStorage.setSelectedCustomerInfo(userSelectedContext);
+            var currentCustomer = LocalStorage.getCurrentCustomer();
+            if(currentCustomer == null){
+              var userSelectedContext = {
+                id: profile.defaultcustomer !== null ? profile.defaultcustomer.customerNumber : '',
+                text: profile.defaultcustomer !== null ? profile.defaultcustomer.displayname : '',
+                customer: profile.defaultcustomer
+              };
+            
+              LocalStorage.setSelectedCustomerInfo(userSelectedContext);
+            }
 
           } else {
             LocalStorage.setSelectedBranchInfo(profile.branchid || 'FDF'); // default to DFW branch
@@ -53,7 +57,7 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
-      getUserProfile: function(email) {
+      getUserProfile: function(email, message) {
         var config = {};
 
         if (email) {
@@ -61,8 +65,9 @@ angular.module('bekApp')
             email: email
           };
         } else { // show loading screen when getting current user's profile
+          var displayMessage = message ? message : 'Loading';
           config.data = {
-            message: 'Loading...'
+            message: displayMessage
           };
         }
 

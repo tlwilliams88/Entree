@@ -12,5 +12,6 @@ angular.module('bekApp')
 
   $scope.redirect = function() {     
     $modalInstance.close(false);   
-  }
+  };
+  
 }]);

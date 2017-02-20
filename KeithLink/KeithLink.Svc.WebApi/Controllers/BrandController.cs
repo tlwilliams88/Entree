@@ -25,6 +25,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="brandRepository"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="elRepo"></param>
         public BrandController(IBrandRepository brandRepository, IUserProfileLogic profileLogic, IEventLogRepository elRepo) : base(profileLogic) {
             _brandRepository = brandRepository;
             this._elRepo = elRepo;

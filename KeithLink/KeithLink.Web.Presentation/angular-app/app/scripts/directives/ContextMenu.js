@@ -9,8 +9,8 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     // scope: true,
-    controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService',
-    function($scope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService){
+    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService',
+    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService){
 
       if ($scope.isOrderEntryCustomer) {
 
@@ -78,6 +78,7 @@ angular.module('bekApp')
           ListService.createList(item),
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
+          $rootScope.$broadcast('ListCreatedFromContextMenu');
           closeModal();
         });
       };
@@ -100,6 +101,7 @@ angular.module('bekApp')
         var items = [item];
         CartService.renameCart = true;
         CartService.createCart(items).then(function(data) {
+          $rootScope.$broadcast('CartCreatedFromContextMenu');
           closeModal();
           $scope.displayMessage('success', 'Successfully created new cart ' + data.name + '.');
         }, function() {

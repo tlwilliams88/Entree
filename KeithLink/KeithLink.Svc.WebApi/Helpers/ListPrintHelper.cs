@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Extensions;
+﻿using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Customers.EF;
@@ -7,6 +8,7 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using Microsoft.Reporting.WinForms;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,10 +19,24 @@ using System.Web;
 
 namespace KeithLink.Svc.WebApi.Helpers
 {
+    /// <summary>
+    /// ListPrintHelper
+    /// </summary>
     public class ListPrintHelper
     {
+        /// <summary>
+        /// BuildReportFromList in ListPrintHelper
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="listId"></param>
+        /// <param name="userContext"></param>
+        /// <param name="userProfile"></param>
+        /// <param name="_listLogic"></param>
+        /// <param name="_profileLogic"></param>
+        /// <param name="_elRepo"></param>
+        /// <returns></returns>
         public static Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext,
-            UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic)
+            UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic, IEventLogRepository _elRepo)
         {
             if (!string.IsNullOrEmpty(options.Paging.Terms))
             {
@@ -44,7 +60,7 @@ namespace KeithLink.Svc.WebApi.Helpers
                 options.Paging.Sort = new List<SortInfo>();
             }
 
-            ListModel list = _listLogic.ReadList(userProfile, userContext, listId, true);
+            ListModel list = _listLogic.ReadList(userProfile, userContext, listId, options.ShowPrices);
 
             if (list == null)
                 return null;
@@ -76,7 +92,8 @@ namespace KeithLink.Svc.WebApi.Helpers
             string rptName = ChooseReportFromOptions(options, userContext, customer);
             Stream rdlcStream = assembly.GetManifestResourceStream(rptName);
             rv.LocalReport.LoadReportDefinition(rdlcStream);
-            rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
+            rv.LocalReport.SetParameters
+                (MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile, customer, _listLogic);
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
@@ -109,21 +126,21 @@ namespace KeithLink.Svc.WebApi.Helpers
         { // Choose different Report for different columns ; grouping doesn't change column widths so no different name
             if (customer != null)
             {
-                if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes))
+                if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
-                else if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                else if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
-                else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
-                else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes))
+                else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
-                else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes == false))
                     return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
             }
             return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
@@ -143,7 +160,7 @@ namespace KeithLink.Svc.WebApi.Helpers
                 groupbylabel = true;
             }
             parameters[3] = new ReportParameter("GroupByLabel", (groupbylabel).ToString());
-            parameters[4] = new ReportParameter("ShowPrices", customer.CanViewPricing.ToString());
+            parameters[4] = new ReportParameter("ShowPrices", options.ShowPrices.ToString());
             return parameters;
         }
 
@@ -157,7 +174,7 @@ namespace KeithLink.Svc.WebApi.Helpers
             foreach (ListItemReportModel item in printModel.Items)
             {
                 var itemInfo = itemHash.Where(i => i.ItemNumber == item.ItemNumber).FirstOrDefault();
-                if ((customer != null) && (customer.CanViewPricing))
+                if ((customer != null) && (options.ShowPrices))
                 {
                     StringBuilder priceInfo = new StringBuilder();
                     if (itemInfo != null)

@@ -14,7 +14,7 @@ angular.module('bekApp')
       function checkValidity(viewValue) {
         if(scope.$modelValue || scope.$modelValue === undefined){
           var regex = directive.INTEGER_REGEXP;
-          if (attrs.allowLeadingZeroes === 'true') {
+          if (attrs.allowLeadingZeroes === 'true' || attrs.allowleadingzeroes === 'true') {
             regex = directive.INTEGER_LEADING_ZEROS;
           }
           if (regex.test(viewValue)) {

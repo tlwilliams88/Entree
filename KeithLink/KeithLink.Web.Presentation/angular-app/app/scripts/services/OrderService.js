@@ -87,7 +87,7 @@ angular.module('bekApp')
           if(item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'){
             item.quantity = item.quantityordered;
           }
-        })
+        });
         return Order.update(params, order).$promise.then(function(changeOrder) {
           changeOrder = changeOrder.successResponse;
           PricingService.updateCaculatedFields(changeOrder.items);
@@ -104,7 +104,7 @@ angular.module('bekApp')
           orderNumber: commerceId
         }).$promise.then(function(resp) {
           // delete change order from cache
-          var orderNumber = resp.successResponse.ordernumber
+          var orderNumber = resp.successResponse.ordernumber;
           var deletedChangeOrder;
           Service.changeOrderHeaders.forEach(function(changeOrder) {
             if (changeOrder.ordernumber === orderNumber) {
@@ -162,9 +162,9 @@ angular.module('bekApp')
 
       UpdateRecentlyOrderedUNFIItems: function(recentlyOrdered) {
         var payload = {
-          catalog:"UNFI",
+          catalog:'UNFI',
           items:recentlyOrdered
-        }
+        };
         return $http.post('/recent/order', payload).then(function(response) {
           return response.data.successResponse;
         });
@@ -189,7 +189,7 @@ angular.module('bekApp')
           orderNumber: orderNumber
         }).$promise.then(function(response){
           return response.successResponse;
-        });;
+        });
       },
 
       exportOrderDetails: function(config, orderNumber) {

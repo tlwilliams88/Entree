@@ -37,17 +37,17 @@ angular.module('bekApp')
     ]
     */
     getBranches: function() {
-      var deferred = $q.defer();
+      var deferred = $q.defer(),
+          branches = localStorageService.get('branches');
 
-      var branches = localStorageService.get('branches');
-      if (!branches) {
-        $http.get('/catalog/divisions').then(function (response) {
-          localStorageService.set('branches', response.data.successResponse);
-          return deferred.resolve(response.data.successResponse);
-        });
-      } else {
-        deferred.resolve(branches);
+      if(branches){
+        localStorageService.remove('branches');
       }
+
+      $http.get('/catalog/divisions').then(function (response) {
+        localStorageService.set('branches', response.data.successResponse);
+        return deferred.resolve(response.data.successResponse);
+      });
 
       return deferred.promise;
     }

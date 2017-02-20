@@ -1,6 +1,4 @@
-﻿USE BEK_Commerce_AppData
-GO
--- Update ETL.ProcessContractItem stored procedure
+﻿
 -- =============================================
 -- Author:		Joshua P. Tirey
 -- Create date: 3/29/2015

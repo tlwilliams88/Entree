@@ -31,7 +31,8 @@ namespace KeithLink.Common.Impl.Repository.Logging
 					}
 				}
 			}
-			catch (Exception ex) { } //For now, swallow any exception
+			catch// (Exception ex)
+            { } //For now, swallow any exception
 		}
 	}
 }

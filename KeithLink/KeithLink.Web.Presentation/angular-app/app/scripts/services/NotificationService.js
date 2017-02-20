@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('NotificationService', [ '$http', '$filter', 'Notification',
-    function ($http, $filter, Notification) {
+  .factory('NotificationService', [ '$http', '$filter', 'Notification', 'toaster',
+    function ($http, $filter, Notification, toaster) {
     
     var Service = {
       userNotificationsCount: { }, // must be an object
@@ -78,6 +78,21 @@ angular.module('bekApp')
           Service.systemUpdates = [];
           //set unreadcount to 0 to clear notifications counter badge value
           Service.setUnreadCount(0);
+        });
+      },
+
+      forwardNotification: function(notification) {
+        Notification.forwardNotification(notification).$promise.then(function(resp){
+          var response = resp.successResponse;
+
+          if(response == true){
+            toaster.pop('success', null, 'Successfully forwarded notification to ' + notification.emailaddress + '.');
+          } else {
+            toaster.pop('error', null, response.errorMessage);
+          }
+
+          return response;
+          
         });
       }
     };
