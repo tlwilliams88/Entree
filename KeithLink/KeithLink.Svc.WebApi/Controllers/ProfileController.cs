@@ -847,7 +847,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [ApiKeyedRoute("profile/{email}/access/{appname}")]
-        public OperationReturnModel<bool> GrantApplicationAccess(string email, string appname) {
+        public OperationReturnModel<bool> GrantApplicationAccess(string email, string appname, [FromUri] bool edit = false) {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
@@ -869,7 +869,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     retVal.IsSuccess = false;
                     retVal.ErrorMessage = "Could not grant access to unknown application.";
                 } else {
-                    _profileLogic.GrantRoleAccess(this.AuthenticatedUser, email, selectedApp);
+                    _profileLogic.GrantRoleAccess(this.AuthenticatedUser, email, selectedApp, edit);
                     retVal.IsSuccess = true;
                     retVal.SuccessResponse = true;
                 }

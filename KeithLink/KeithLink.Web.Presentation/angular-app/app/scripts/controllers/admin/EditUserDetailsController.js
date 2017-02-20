@@ -99,6 +99,10 @@ angular.module('bekApp')
     UserProfileService.changeProgramAccess(email, program, isGrantingAccess);
   };
 
+  $scope.updateUserAccess = function(program) {
+    UserProfileService.updateProgramAccess(email, program);
+  };
+
 
   /**********
   CUSTOMERS
