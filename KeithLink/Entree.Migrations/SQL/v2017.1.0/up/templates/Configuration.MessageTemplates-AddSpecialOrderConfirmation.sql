@@ -13,7 +13,7 @@ INSERT INTO @Templates
 VALUES ('SpecialOrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}', 1, 
 '{NotifHeader}<table style="width: 100%;">
    <tr>
-       <td>Delivery Date: {ShipDate}</td>
+       <td>Warehouse Delivery Date: {ShipDate}</td>
    </tr>
    <tr>
        <td>Sent with Invoice Number: {InvoiceNumber}</td>
