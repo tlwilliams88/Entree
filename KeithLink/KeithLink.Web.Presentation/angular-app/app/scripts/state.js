@@ -177,7 +177,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:dept/:deptName/?brands',
+      url: ':type/:id/:dept/:deptName/:brands',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
       data: {
