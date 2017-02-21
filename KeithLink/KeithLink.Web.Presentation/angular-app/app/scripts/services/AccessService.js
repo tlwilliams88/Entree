@@ -166,6 +166,10 @@ angular.module('bekApp')
       return ( isSysAdmin() );
     },
 
+    canViewAccessToEmenuManage: function() {
+      return ( isBranchManager() || isPowerUser() );
+    },
+
     canViewCustomerGroups: function() {
       return ( Service.isInternalAccountAdminUser() );
     },
