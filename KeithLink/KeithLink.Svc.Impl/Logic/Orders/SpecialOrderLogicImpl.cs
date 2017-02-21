@@ -161,7 +161,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             if (detail != null) { // only process if we match the order specified on this system
                 ProcessOrderHistoryDetailByUpdateStatus(specialorder, detail);
             } else {
-                _log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
+                //_log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
             }
 
             // Alwayus clear context at the end of a transaction
@@ -385,7 +385,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName
             });
-            StringBuilder header = _messageTemplateLogic.BuildHeader("Your special order item is about to be sent!", customer);
+            StringBuilder header = _messageTemplateLogic.BuildHeader
+                ("Your special order will arrive at the Ben E. Keith warehouse on the date below. " +
+                 "Your special order items will ship on your next order following the arrival date in our warehouse.", customer);
             message.MessageBody += template.Body.Inject(new
             {
                 NotifHeader = header.ToString(),
