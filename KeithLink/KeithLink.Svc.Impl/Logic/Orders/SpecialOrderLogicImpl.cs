@@ -149,23 +149,33 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void ProcessSpecialOrderItemUpdate(string rawOrder) {
-            SpecialOrderResponseModel specialorder = JsonConvert.DeserializeObject<SpecialOrderResponseModel>(rawOrder);
+            try
+            {
+                SpecialOrderResponseModel specialorder = JsonConvert.DeserializeObject<SpecialOrderResponseModel>(rawOrder);
 
-            _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0}) with status {1}", specialorder.MessageId, specialorder.Item.ItemStatusId));
+                _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0}) with status {1}", specialorder.MessageId, specialorder.Item.ItemStatusId));
 
-            // retry trying to find the record up to 3 times. some times an exception is thrown for a bad command definition, but then processes fine the next time
-            EF.OrderHistoryDetail detail = 
-                Retry.Do<EF.OrderHistoryDetail>(() => 
-                FindOrderHistoryDetailForUpdate(specialorder), TimeSpan.FromSeconds(5), 3);
+                // retry trying to find the record up to 3 times. some times an exception is thrown for a bad command definition, but then processes fine the next time
+                EF.OrderHistoryDetail detail =
+                    Retry.Do<EF.OrderHistoryDetail>(() =>
+                    FindOrderHistoryDetailForUpdate(specialorder), TimeSpan.FromSeconds(5), 3);
 
-            if (detail != null) { // only process if we match the order specified on this system
-                ProcessOrderHistoryDetailByUpdateStatus(specialorder, detail);
-            } else {
-                //_log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
+                if (detail != null)
+                { // only process if we match the order specified on this system
+                    ProcessOrderHistoryDetailByUpdateStatus(specialorder, detail);
+                }
+                else
+                {
+                    _log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
+                }
+
+                // Always clear context at the end of a transaction
+                _unitOfWork.ClearContext();
             }
-
-            // Alwayus clear context at the end of a transaction
-            _unitOfWork.ClearContext();
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ProcessSpecialOrderItemUpdate", ex);
+            }
         }
 
         private EF.OrderHistoryDetail FindOrderHistoryDetailForUpdate(SpecialOrderResponseModel specialorder) {
