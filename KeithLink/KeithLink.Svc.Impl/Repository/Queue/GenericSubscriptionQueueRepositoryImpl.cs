@@ -100,6 +100,7 @@ namespace KeithLink.Svc.Impl.Repository.Queue {
             catch(Exception ex) // if connection was closed while processing; we see an exception here
             {
                 _logger.WriteErrorLog("GenericSubscriptionQueueRepositoryImpl_StartProcessing", ex);
+                _restartProcessing = true;
             }
 
             if (_processing == false) {
