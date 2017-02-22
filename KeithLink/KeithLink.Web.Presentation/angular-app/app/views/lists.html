@@ -161,6 +161,25 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="custom-lists" sticky>
+            <button 
+              ng-if="selectedList.permissions.canEditList && !isCustomInventoryList" 
+              type="submit" 
+              class="btn-lg btn btn-primary back-to-top-desktop" 
+              ng-disabled="listForm.$invalid" 
+              ng-click="saveList(selectedList)"
+              style="margin-top: 10px;">
+              Save
+            </button>
+
+            <button 
+              ng-if="selectedList.permissions.canEditList && isCustomInventoryList" 
+              type="submit" 
+              class="btn-lg btn btn-primary back-to-top-desktop" 
+              ng-disabled="listForm.$invalid" 
+              ng-click="saveCustomInventoryList(selectedList.items)">
+              Save
+            </button>
+
             <h3>Your Lists</h3>
 
             <div class="btn-group-vertical list-names text-blue">
@@ -1098,4 +1117,11 @@
 
     </div>
   </div>
+
+  <a ng-if="isMobileDevice" class='back-to-top icon-arrow-up2 text-blue pull-right' ng-click='scrollToTop()' style='display: inline;'></a>
+  <a type="submit"  ng-if="isMobileDevice && selectedList.permissions.canEditList && !isCustomInventoryList" class='floating-save-mobile icon-floppy-disk text-blue' ng-disabled="listForm.$invalid" ng-click='saveList(selectedList)'></a>
+  <a type="submit"  ng-if="isMobileDevice && selectedList.permissions.canEditList && isCustomInventoryList" class='floating-save-mobile icon-floppy-disk text-blue' ng-disabled="listForm.$invalid" ng-click='saveCustomInventoryList(selectedList)'></a>
+
 </div>
+
+ 

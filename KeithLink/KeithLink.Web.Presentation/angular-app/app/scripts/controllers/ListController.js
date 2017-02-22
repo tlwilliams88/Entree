@@ -1005,7 +1005,7 @@ angular.module('bekApp')
     }
 
   $scope.scrollToTop = function($var) {
-    $('.back-to-top').css({'display': 'inline'});
+    $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').css({'display': 'inline'});
     var duration = 300;
     event.preventDefault();
     jQuery('html, body').animate({scrollTop: 0}, duration);
@@ -1013,11 +1013,11 @@ angular.module('bekApp')
   };
 
   $(window).scroll(function() {
-    if($(this).scrollTop() > 75){
-      $('.back-to-top').fadeIn('fast');
-      $('.back-to-top').css('visibility', 'visible');
+    if($(this).scrollTop() > 190){
+      $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').fadeIn('fast');
+      $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').css('visibility', 'visible');
     } else {
-      $('.back-to-top').fadeOut('fast');
+      $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').fadeOut('fast');
     }
   });
 
