@@ -186,7 +186,10 @@
             </th>
             <th class="sort-col-header" ng-click="sortList('name',sort[0].order)">
               <span>Name<span sort-icons field="'name'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
-            </th>      
+            </th>
+            <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.is_contract_list" ng-click="sortList('category',sort[0].order)">
+              <span>Contract Category<span sort-icons field="'category'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+            </th>
             <th  class="hidden-mobile-visible-print"></th>
             <th class="hidden-mobile" ng-if="useParlevel">
               PAR
@@ -244,6 +247,9 @@
             <td>                
              <span ng-if="item.isvalid">{{::item.name}}</span>   
              <span ng-if="!item.isvalid">Invalid item</span>
+            </td>
+            <td class="hidden-mobile-visible-print" ng-if="selectedList.is_contract_list">
+              {{::item.category}}
             </td>
             <td class="hidden-mobile-visible-print" item-icons>   
             </td>
@@ -343,7 +349,7 @@
                   <col width="75%" />
                 </colgroup>
                 <tr>
-                  <td>Class</td>
+                  <td>Category</td>
                   <td>{{::item.class}}</td>
                 </tr>
                 <tr>
@@ -361,6 +367,10 @@
                 <tr>
                   <td>Brand</td>
                   <td>{{::item.brand}}</td>
+                </tr>
+                <tr ng-if="selectedList.is_contract_list">
+                  <td>Contract Category</td>
+                  <td>{{::item.category}}</td>
                 </tr>
                 <tr>
                   <td item-icons></td>
