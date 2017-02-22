@@ -164,17 +164,16 @@
             <button 
               ng-if="selectedList.permissions.canEditList && !isCustomInventoryList" 
               type="submit" 
-              class="btn-lg btn btn-primary back-to-top-desktop" 
+              class="btn-lg btn btn-primary back-to-top-desktop margin-top-10" 
               ng-disabled="listForm.$invalid" 
-              ng-click="saveList(selectedList)"
-              style="margin-top: 10px;">
+              ng-click="saveList(selectedList)">
               Save
             </button>
 
             <button 
               ng-if="selectedList.permissions.canEditList && isCustomInventoryList" 
               type="submit" 
-              class="btn-lg btn btn-primary back-to-top-desktop" 
+              class="btn-lg btn btn-primary back-to-top-desktop margin-top-10" 
               ng-disabled="listForm.$invalid" 
               ng-click="saveCustomInventoryList(selectedList.items)">
               Save
