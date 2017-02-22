@@ -8,11 +8,11 @@ BEGIN
 	SELECT
 		DISTINCT
 		c.CustomerNumber,
-		c.DivisionNumber,
+		c.DivisionNumber,		
 		i.ItemNumber
 	FROM
 		ETL.Staging_ProprietaryItem i INNER JOIN
-		ETL.Staging_ProprietaryCustomer c on i.ProprietaryNumber = c.ProprietaryNumber
+		ETL.Staging_ProprietaryCustomer c on i.ProprietaryNumber = c.ProprietaryNumber and i.DepartmentNumber = c.DepartmentNumber
 	Order By
 		i.ItemNumber
 END
