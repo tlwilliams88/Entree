@@ -399,5 +399,8 @@ namespace KeithLink.Svc.Core
         public const string SPECIALFILTER_DEVIATEDPRICES_DESCRIPTION = "Deviated Prices";
         public const string SPECIALFILTER_PREVIOUSORDERED = "previousordered";
         public const string SPECIALFILTER_PREVIOUSORDERED_DESCRIPTION = "Previously Ordered";
+
+        // user messages
+        public const string USERMESSAGES_LINKTOKEN = " LINK";
     }
 }
