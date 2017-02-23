@@ -1051,10 +1051,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                                               , string countRecentOrdered = null)
         {
             List<ExpandoObject> specialFilters = new List<ExpandoObject>();
-            AddSpecalFilter(specialFilters, 
-                            Constants.SPECIALFILTER_DEVIATEDPRICES,
-                            Constants.SPECIALFILTER_DEVIATEDPRICES_DESCRIPTION,
-                            countDeviated);
+            //AddSpecalFilter(specialFilters, 
+            //                Constants.SPECIALFILTER_DEVIATEDPRICES,
+            //                Constants.SPECIALFILTER_DEVIATEDPRICES_DESCRIPTION,
+            //                countDeviated);
             AddSpecalFilter(specialFilters, 
                             Constants.SPECIALFILTER_PREVIOUSORDERED,
                             Constants.SPECIALFILTER_PREVIOUSORDERED_DESCRIPTION,
