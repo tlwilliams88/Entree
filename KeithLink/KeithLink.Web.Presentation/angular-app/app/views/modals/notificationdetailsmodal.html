@@ -7,6 +7,7 @@
 
   <h4 style="margin-top:20px;">{{notification.subject}}</h4>
   <pre class="notification-body" ng-class="{ 'text-red': notification.mandatory }" ng-bind-html="notification.body"></pre>
+  <a ng-if="notification.link" target="_blank" href="{{notification.link}}">Click Here For Additional Details</a>
 
 </div>
 <div class="modal-footer">
