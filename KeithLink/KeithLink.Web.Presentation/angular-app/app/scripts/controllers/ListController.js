@@ -40,9 +40,17 @@ angular.module('bekApp')
     $scope.showRowOptionsDropdown = false;
     $scope.forms = {};
     $scope.isCustomInventoryList = originalList.iscustominventory ? true : false;
-    $scope.selectedFilterParameter = 'Filter By...';
 
     $scope.availableFilterParameters = [
+      {
+        name: 'View All'
+      }, {
+        name: 'Active Items',
+        filter: {
+          field: 'delta',
+          value: 'active'
+        }
+      },
       {
         name: 'Recently Added Items',
         filter: {
@@ -72,6 +80,8 @@ angular.module('bekApp')
         }
       }
     ];
+
+    $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
@@ -956,7 +966,7 @@ angular.module('bekApp')
           $scope.listSearchTerm = '';
         }
         
-        $scope.selectedFilterParameter = 'Filter By...';
+        $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
         $scope.selectedFilter = '';
         $scope.filterItems( $scope.listSearchTerm );       
       }    
