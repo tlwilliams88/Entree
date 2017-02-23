@@ -966,7 +966,7 @@ angular.module('bekApp')
           $scope.listSearchTerm = '';
         }
         
-        $scope.selectedFilterParameter = 'Filter By...';
+        $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
         $scope.selectedFilter = '';
         $scope.filterItems( $scope.listSearchTerm );       
       }    
