@@ -381,6 +381,8 @@ angular.module('bekApp')
     $scope.userRecipients = [];
     $scope.branchRecipients = [];
     $scope.allUsersSelected = false;
+    $scope.isMandatory = false;
+    $scope.isSystemUpdate = false;
     $scope.availableBranches = [
       {name: 'All Users', id: 'Entree', selected: false}
     ];
@@ -460,7 +462,7 @@ angular.module('bekApp')
     });
   };
 
-  $scope.sendMessage = function (broadcast, customerRecipients, userRecipients, systemUpdate) {
+  $scope.sendMessage = function (broadcast, customerRecipients, userRecipients, systemUpdate, link) {
     var label = systemUpdate ? 'System Update' : 'Admin Message';
     var payload = {
       customers: [],
@@ -469,6 +471,7 @@ angular.module('bekApp')
         label: label, // ??
         subject: broadcast.subject,
         body: broadcast.bodyContent,
+        link: broadcast.link,
         mandatory: false // ??
       }
     };
@@ -480,16 +483,11 @@ angular.module('bekApp')
         if(!$scope.allUsersSelected){
           //Build string of comma separated branch abbreviations
           $scope.branchRecipients.forEach(function(branch){
-          branches = (branches.length === 0) ? branch.id : branches.concat(','+branch.id);
+          branches = (branches.length === 0) ? branch.id : branches.concat(',' + branch.id);
         });
+
         payload.branchtoalert = branches;
-      }
-        MessagingService.broadcastMandatoryMessage(payload).then(function (success) {
-        $scope.displayMessage('success', 'The message was sent successfully.');
-        $scope.resetMessageFields(); //reset message inputs
-      }, function (error) {
-        $scope.displayMessage('error', 'There was an error sending the message: ' + error);
-      });
+        }
       }
     }
     else{
@@ -499,15 +497,14 @@ angular.module('bekApp')
       userRecipients.forEach(function(user) {
         payload.users.push(user.id);
       });
-      
-      // $log.debug(payload);
-      MessagingService.broadcastMessage(payload).then(function (success) {
-        $scope.displayMessage('success', 'The message was sent successfully.');
-        $scope.resetMessageFields(); //reset message inputs
-      }, function (error) {
-        $scope.displayMessage('error', 'There was an error sending the message: ' + error);
-      });
     }
+
+    MessagingService.broadcastMandatoryMessage(payload).then(function (success) {
+      $scope.displayMessage('success', 'The message was sent successfully.');
+      $scope.resetMessageFields(); //reset message inputs
+    }, function (error) {
+      $scope.displayMessage('error', 'There was an error sending the message: ' + error);
+    });
   };
 
   
