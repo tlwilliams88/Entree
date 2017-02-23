@@ -296,6 +296,7 @@ namespace KeithLink.Svc.Core
         public const int CONTENTMGMT_CONTRACTITEMS_THRESHOLD = 14;
         public const string CONTENTMGMT_CONTRACTITEMS_NEWADDED = "newly added";
         public const string CONTENTMGMT_CONTRACTITEMS_NEWDELETED = "newly deleted";
+        public const string CONTENTMGMT_CONTRACTITEMS_ACTIVE = "active";
 
         // content management
         public const string INVOICETYPE_INITIALINVOICE = "IN ";

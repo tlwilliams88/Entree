@@ -85,8 +85,10 @@ namespace KeithLink.Svc.Core.Extensions
                         ModifiedUtc = i.ModifiedUtc,
                         CreatedUtc = i.CreatedUtc,
                         Delta = (i.CreatedUtc.AddDays
-                            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD)>DateTime.Now)? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED : 
-                            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED : "",
+                            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED + 
+                                " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
+                            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
+                            Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
                         FromDate = i.FromDate,
                         ToDate = i.ToDate,
                         Each = i.Each ?? false,
