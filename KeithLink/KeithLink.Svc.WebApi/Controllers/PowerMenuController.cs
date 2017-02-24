@@ -54,23 +54,35 @@ namespace KeithLink.Svc.WebApi.Controllers
         public HttpResponseMessage ImportPowerMenuOrder()
         {
             HttpResponseMessage returnValue = new HttpResponseMessage();
+            string payload = null;
+            VendorPurchaseOrderRequest po = null;
 
-            var payload = this.Request.Content.ReadAsStringAsync().Result;
-            payload = WebUtility.UrlDecode(payload.Replace("xml=", ""));
-
-            XmlSerializer serializer = new XmlSerializer(typeof(VendorPurchaseOrderRequest));
-            VendorPurchaseOrderRequest po;
-
-            using (XmlReader rdr = XmlReader.Create(new StringReader(payload)))
+            try
             {
-                po = (VendorPurchaseOrderRequest)serializer.Deserialize(rdr);
+                _log.WriteInformationLog("Receiving order from PowerMenu");
+                payload = this.Request.Content.ReadAsStringAsync().Result;
+                payload = WebUtility.UrlDecode(payload.Replace("xml=", ""));
+
+                _log.WriteInformationLog(String.Format("PowerMenu Order Payload: {0}", payload));
+
+                XmlSerializer serializer = new XmlSerializer(typeof(VendorPurchaseOrderRequest));
+
+                using (XmlReader rdr = XmlReader.Create(new StringReader(payload)))
+                {
+                    po = (VendorPurchaseOrderRequest)serializer.Deserialize(rdr);
+                }
+
+                Guid newCart = _cartService.ImportFromPowerMenu(po);
+
+                string redirectTo = string.Format("{0}/#/cart/{1}", KeithLink.Svc.Impl.Configuration.PresentationUrl, newCart);
+                returnValue.Headers.Location = new Uri(redirectTo);
+                returnValue.StatusCode = HttpStatusCode.Redirect;
+                _log.WriteInformationLog("Successfully imported powermenu order.");
             }
-
-            Guid newCart = _cartService.ImportFromPowerMenu(po);
-
-            string redirectTo = string.Format("{0}/#/cart/{1}", KeithLink.Svc.Impl.Configuration.PresentationUrl, newCart);
-            returnValue.Headers.Location = new Uri(redirectTo);
-            returnValue.StatusCode = HttpStatusCode.Redirect;
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog(String.Format("Problem importing powermenu order. Payload: {0} - Purchase Order: {1}", payload, po), ex);
+            }
 
             return returnValue;
         }
