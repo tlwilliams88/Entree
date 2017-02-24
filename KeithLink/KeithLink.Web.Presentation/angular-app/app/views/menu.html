@@ -234,7 +234,7 @@
             ui-sref="menu.notifications"
             ui-sref-active="is-selected" >
             <li>
-              <div class="sidebar-nav__icon"><span class="icon-bell"></span></div>
+              <div class="sidebar-nav__icon"><span class="icon-bell user-bar-buttons"></span></div>
               <span ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" class="badge">{{userBar.userNotificationsCount.unread}}</span>
               Notifications
             </li>
@@ -363,7 +363,7 @@
          </div>
 
         <div class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
-          <a ng-click="isSidebarOpen = !isSidebarOpen" style="margin-right: 10px; margin-top: 5px; font-size: 28px;"><span class="icon-list2 user-bar-menu"></span></a>
+          <a ng-click="isSidebarOpen = !isSidebarOpen" style="margin-right: 10px; margin-top: 5px; font-size: 28px;"><span class="icon-list2 user-bar-buttons"></span></a>
           <img class="hand-pointer" src="images/bek-logo.png" style="max-width:100%"  alt="logo" ui-sref="menu.home" />
         </div>
 
@@ -408,7 +408,7 @@
           </div>
 
           <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent" style="padding-right: 15px; margin-top: 5px; margin-left: 5px;">
-            <span class="icon-bell text-blue primary-button-opacity" style="color: #489ecf;"></span>
+            <span class="icon-bell user-bar-buttons"></span>
             <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
           </span></a>
           <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
