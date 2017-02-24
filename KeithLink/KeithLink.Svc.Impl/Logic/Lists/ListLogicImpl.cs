@@ -793,7 +793,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             {
                 var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
                 if (price != null && (listItem.ProprietaryCustomers == null |
-                                      (listItem.ProprietaryCustomers != null && 
+                                      (listItem.ProprietaryCustomers != null &&
                                        listItem.ProprietaryCustomers.IndexOf(catalogInfo.CustomerId) > -1)))
                 {
                     listItem.PackagePrice = price.PackagePrice.ToString();

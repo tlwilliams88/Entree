@@ -192,16 +192,16 @@ namespace KeithLink.Svc.Windows.QueueService {
         {
             specialOrderScope = container.BeginLifetimeScope();
             _specialOrderLogic = specialOrderScope.Resolve<ISpecialOrderLogic>();
-            _specialOrderLogic.SubscribeToQueue();
-            //_specialOrderLogic.ListenForQueueMessages();
+            //_specialOrderLogic.SubscribeToQueue();
+            _specialOrderLogic.ListenForQueueMessages();
         }
 
         private void TerminateSpecialOrderUpdateThread()
         {
             if (_specialOrderLogic != null)
             {
-                _specialOrderLogic.Unsubscribe();
-                //_specialOrderLogic.StopListening();
+                //_specialOrderLogic.Unsubscribe();
+                _specialOrderLogic.StopListening();
             }
 
             if (specialOrderScope != null)
