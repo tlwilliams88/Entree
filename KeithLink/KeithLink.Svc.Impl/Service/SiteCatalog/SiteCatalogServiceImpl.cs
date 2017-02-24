@@ -162,7 +162,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                   UserProfile profile)
         {
             ProductsReturn ret;
-            var catalogCounts = _catalogLogic.GetHitsForCatalogs(catalogInfo, search, searchModel);
+            // is the following needed?
+            //var catalogCounts = _catalogLogic.GetHitsForCatalogs(catalogInfo, search, searchModel);
             var tempCatalogInfo = new UserSelectedContext();
             tempCatalogInfo.CustomerId = catalogInfo.CustomerId;
             tempCatalogInfo.BranchId = _catalogLogic.GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
@@ -199,7 +200,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
-            ret.CatalogCounts = catalogCounts;
+            //ret.CatalogCounts = catalogCounts;
 
             foreach (var product in ret.Products)
             {
