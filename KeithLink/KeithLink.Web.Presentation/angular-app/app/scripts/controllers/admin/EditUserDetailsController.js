@@ -59,6 +59,7 @@ angular.module('bekApp')
   var processingSaveProfile = false;
   $scope.updateProfile = function (profile) {
     var deferred = $q.defer();
+    profile.permit.invoices.canView = $('#canViewInvoices')[0].checked;
     if (!processingSaveProfile) {
       processingSaveProfile = true;
       if(profile.role == 'guest'){
