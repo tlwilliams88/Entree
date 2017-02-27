@@ -118,8 +118,8 @@ namespace KeithLink.Svc.Windows.QueueService {
             confirmationScope = container.BeginLifetimeScope();
 
             _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
-            _confirmationLogic.SubscribeToQueue();
-            //_confirmationLogic.ListenForQueueMessages();
+            //_confirmationLogic.SubscribeToQueue();
+            _confirmationLogic.ListenForQueueMessages();
         }
         
         private void InitializeNotificationsThreads()
@@ -139,8 +139,8 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _ETAQueueConsumer = notificationEtaScope.Resolve<INotificationQueueConsumer>();
             _ETAQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueETA;
-            _ETAQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueETA);
-            //_ETAQueueConsumer.ListenForNotificationMessagesOnQueue();
+            //_ETAQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueETA);
+            _ETAQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void StartHasNewsNotifications()
@@ -149,8 +149,8 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _hasNewsQueueConsumer = notificationHasNewsScope.Resolve<INotificationQueueConsumer>();
             _hasNewsQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueHasNews;
-            _hasNewsQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueHasNews);
-            //_hasNewsQueueConsumer.ListenForNotificationMessagesOnQueue();
+            //_hasNewsQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueHasNews);
+            _hasNewsQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void StartOrderNotifications()
@@ -159,8 +159,8 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _orderConfirmationQueueConsumer = notificationOrderConfirmationScope.Resolve<INotificationQueueConsumer>();
             _orderConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueueOrderConfirmation;
-            _orderConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueOrderConfirmation);
-            //_orderConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            //_orderConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueueOrderConfirmation);
+            _orderConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void StartPaymentNotifications()
@@ -169,39 +169,39 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             _paymentConfirmationQueueConsumer = notificationPaymentConfirmationScope.Resolve<INotificationQueueConsumer>();
             _paymentConfirmationQueueConsumer.RabbitMQQueueName = Configuration.RabbitMQQueuePaymentConfirmation;
-            _paymentConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueuePaymentConfirmation);
-            //_paymentConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            //_paymentConfirmationQueueConsumer.SubscribeToQueue(Configuration.RabbitMQQueuePaymentConfirmation);
+            _paymentConfirmationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void InitializePushMessageConsumerThread()
         {
             pushMessagesScope = container.BeginLifetimeScope();
             _pushmessageConsumer = pushMessagesScope.Resolve<IPushMessageConsumer>();
-            _pushmessageConsumer.SubscribeToQueue();
-            //_pushmessageConsumer.ListenForQueueMessages();
+            //_pushmessageConsumer.SubscribeToQueue();
+            _pushmessageConsumer.ListenForQueueMessages();
         }
 
         private void InitializeOrderUpdateThread() {
             orderHistoryScope = container.BeginLifetimeScope();
             _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
-            _orderHistoryLogic.SubscribeToQueue();
-            //_orderHistoryLogic.ListenForQueueMessages();
+            //_orderHistoryLogic.SubscribeToQueue();
+            _orderHistoryLogic.ListenForQueueMessages();
         }
 
         private void InitializeSpecialOrderUpdateThread()
         {
             specialOrderScope = container.BeginLifetimeScope();
             _specialOrderLogic = specialOrderScope.Resolve<ISpecialOrderLogic>();
-            _specialOrderLogic.SubscribeToQueue();
-            //_specialOrderLogic.ListenForQueueMessages();
+            //_specialOrderLogic.SubscribeToQueue();
+            _specialOrderLogic.ListenForQueueMessages();
         }
 
         private void TerminateSpecialOrderUpdateThread()
         {
             if (_specialOrderLogic != null)
             {
-                _specialOrderLogic.Unsubscribe();
-                //_specialOrderLogic.StopListening();
+                //_specialOrderLogic.Unsubscribe();
+                _specialOrderLogic.StopListening();
             }
 
             if (specialOrderScope != null)
@@ -212,8 +212,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         {
             if (_confirmationLogic != null)
             {
-                _confirmationLogic.UnsubscribeFromQueue();
-                //_confirmationLogic.Stop();
+                //_confirmationLogic.UnsubscribeFromQueue();
+                _confirmationLogic.Stop();
             }
             if (confirmationScope != null)
                 confirmationScope.Dispose();
@@ -222,8 +222,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void TerminateOrderUpdateThread() {
             if (_orderHistoryLogic != null)
             {
-                _orderHistoryLogic.Unsubscribe();
-                //_orderHistoryLogic.StopListening();
+                //_orderHistoryLogic.Unsubscribe();
+                _orderHistoryLogic.StopListening();
             }
 
             if (orderHistoryScope != null)
@@ -231,26 +231,30 @@ namespace KeithLink.Svc.Windows.QueueService {
         }
 
         private void TerminateNotificationsThreads() {
-            if (_orderConfirmationQueueConsumer != null)
-                _orderConfirmationQueueConsumer.Unsubscribe();
-
             if (_hasNewsQueueConsumer != null)
-                _hasNewsQueueConsumer.Unsubscribe();
+                //_hasNewsQueueConsumer.Unsubscribe();
+                _hasNewsQueueConsumer.Stop();
 
             if (_paymentConfirmationQueueConsumer != null)
-                _paymentConfirmationQueueConsumer.Unsubscribe();
+                //_paymentConfirmationQueueConsumer.Unsubscribe();
+                _paymentConfirmationQueueConsumer.Stop();
+
+            if (_orderConfirmationQueueConsumer != null)
+                //_paymentConfirmationQueueConsumer.Unsubscribe();
+                _orderConfirmationQueueConsumer.Stop();
 
             if (_ETAQueueConsumer != null)
-                _ETAQueueConsumer.Unsubscribe();
-
-            if (notificationOrderConfirmationScope != null)
-                notificationOrderConfirmationScope.Dispose();
+                //_ETAQueueConsumer.Unsubscribe();
+                _ETAQueueConsumer.Stop();
 
             if (notificationHasNewsScope != null)
                 notificationHasNewsScope.Dispose();
 
             if (notificationPaymentConfirmationScope != null)
                 notificationPaymentConfirmationScope.Dispose();
+
+            if (notificationOrderConfirmationScope != null)
+                notificationOrderConfirmationScope.Dispose();
 
             if (notificationEtaScope != null)
                 notificationEtaScope.Dispose();
@@ -260,8 +264,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         {
             if (_pushmessageConsumer != null)
             {
-                _pushmessageConsumer.Unsubscribe();
-                //_pushmessageConsumer.Stop();
+                //_pushmessageConsumer.Unsubscribe();
+                _pushmessageConsumer.Stop();
             }
 
             if (pushMessagesScope != null)
