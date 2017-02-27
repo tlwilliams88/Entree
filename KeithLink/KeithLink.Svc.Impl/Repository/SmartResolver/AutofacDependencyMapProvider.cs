@@ -307,6 +307,9 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // invoices
             builder.RegisterType<ExportInvoicesServiceImpl>().As<IExportInvoicesService>();
 
+            // invoices
+            builder.RegisterType<ExportInvoicesServiceImpl>().As<IExportInvoicesService>();
+
             ///////////////////////////////////////////////////////////////////////////////
             // Environment Specific Classes
             ///////////////////////////////////////////////////////////////////////////////
