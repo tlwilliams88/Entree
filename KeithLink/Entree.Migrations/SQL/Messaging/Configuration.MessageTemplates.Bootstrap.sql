@@ -282,6 +282,33 @@ Url: {url}', getdate(), getdate(), 0)
 INSERT INTO @Templates
 VALUES ('ForwardUserMessage', '', 1, 
 '<p style="text-align:center;">Forwarded by {UserEmail}</p><hr/>{ForwardBody}', getdate(), getdate(), 0)
+INSERT INTO @Templates
+VALUES ('SpecialOrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}', 1, 
+'{NotifHeader}<table style="width: 100%;">
+   <tr>
+       <td>Warehouse Delivery Date: {ShipDate}</td>
+   </tr>
+   <tr>
+       <td>Sent with Invoice Number: {InvoiceNumber}</td>
+       <td style="text-align:right;">Item Price: ${Total}</td>
+   </tr>
+</table>
+<table style="width: 100%;">
+	<tr style="border-bottom:1px solid gray;">
+		<th style="text-align:left;">Item # </th>
+		<th style="text-align:left;">GTIN </th>
+		<th style="text-align:left;">Source </th>
+		<th style="text-align:left;">Confirmed Items </th>
+		<th style="text-align:right;">Quantity</th>
+	</tr>
+	<tr style="border-bottom:1px solid gray;">
+		<td style="text-align:left;">{ItemNumber}</td>
+		<td style="text-align:left;">{GTIN}</td>
+		<td style="text-align:left;">{Source}</td>
+		<td style="text-align:left;">{Description}</td>
+		<td style="text-align:right;">{Quantity}</td>
+	</tr>
+</table>', getdate(), getdate(), 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates] A
 USING @Templates B ON (A.[TemplateKey] = B.[TemplateKey])
