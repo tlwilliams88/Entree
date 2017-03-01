@@ -8,14 +8,24 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants',
-    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
           item.position = index+1;
         });
       }
+
+      UserProfileService.getCurrentUserProfile().then(function(profile){
+        if(Service.isInternalUser == undefined){
+          if(profile.internal) {
+            Service.isInternalUser = true;
+          } else {
+            Service.isInternalUser = false;
+          }
+        }
+      })
 
       /*
       VALID PERMISSIONS
@@ -38,7 +48,7 @@ angular.module('bekApp')
       canCopyList
       */
 
-      function updateListPermissions(list, isInternalUser) {
+      function updateListPermissions(list) {
         var permissions = {};
 
         // FAVORITES
@@ -78,7 +88,7 @@ angular.module('bekApp')
 
         // MANDATORY -- only editable by internal users
         } else if (list.ismandatory) {
-          if(isInternalUser){
+          if(Service.isInternalUser){
             permissions.canDeleteList = true;
             permissions.canAddItems = true;
             permissions.canEditList = true;
@@ -251,8 +261,9 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getListWithItems: function(listId, params) {
-          Service.userProfile = UserProfileService.getCurrentUserProfile();
+        getListWithItems: function(listId, params, displayMessage) {
+          var savingOrLoadingItems = displayMessage ? displayMessage : 'Loading Items...';
+          Service.userProfile = UserProfileService.getCurrentUserProfile(savingOrLoadingItems);
           if (!params) {
             params = {
               includePrice: true
@@ -282,7 +293,7 @@ angular.module('bekApp')
         // returns paged list object
         getList: function(listId, params) {
             UserProfileService.getCurrentUserProfile().then(function(profile){
-              if(profile.emailaddress.indexOf('@benekeith.com') !== -1) {
+              if(profile.internal) {
                 Service.isInternalUser = true;
               } else {
                 Service.isInternalUser = false;
@@ -604,7 +615,6 @@ angular.module('bekApp')
         // accepts list object
         // returns promise and updated list object
         updateList: function(list, getEntireList, params, addingItem) {
-          list.message = 'Saving list...';
 
           return List.update(null, list).$promise.then(function(response) {
             var list = response.successResponse;
@@ -618,11 +628,10 @@ angular.module('bekApp')
 
             var promise;
             if (getEntireList) {
-              promise = Service.getListWithItems(list.listid, { includePrice: false });
+              promise = Service.getListWithItems(list.listid, { includePrice: false }, 'Saving List...');
             } else {
               promise = Service.getList(list.listid, params);
             }
-
             return promise.then(function(list) {
               if(!addingItem){
                 toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');

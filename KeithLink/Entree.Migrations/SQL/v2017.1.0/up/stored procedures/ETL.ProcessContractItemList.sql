@@ -1,379 +1,147 @@
 ﻿ALTER PROCEDURE [ETL].[ProcessContractItemList] 
 AS
 BEGIN
+	   -- =============================================
+       -- Author:			Brett Killins
+       -- Create date:		1/31/2017
+       -- Description:		Reconciles Entree Lists for Customer Contract items from Staging tables
+       -- =============================================
+       -- Newly added items can be identified by the CreatedUTC date
+       -- Inactive items can be identified by a past ToDate, and are deleted after 2 weeks
+    SET NOCOUNT ON
 
-SET NOCOUNT ON
+	INSERT -- create customer contract lists from staging customerbids if they don't exist 
+		INTO [BEK_Commerce_AppData].[List].[Lists]
+            ([DisplayName]
+            ,[Type]
+            ,[CustomerId]
+            ,[BranchId]
+            ,[ReadOnly]
+            ,[CreatedUtc]
+            ,[ModifiedUtc])
+        SELECT DISTINCT
+            'Contract - ' + LTRIM(RTRIM(cb.[BidNumber]))
+            ,2
+            ,LTRIM(RTRIM(cb.[CustomerNumber]))
+            ,LTRIM(RTRIM(cb.[DivisionNumber]))
+            ,1
+            ,GETUTCDATE()
+            ,GETUTCDATE()
+        FROM 
+            [BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] as cb
+		WHERE 
+			NOT EXISTS (
+				SELECT 
+					'x'
+					FROM [BEK_Commerce_AppData].[List].[Lists]
+					WHERE [CustomerId] = LTRIM(RTRIM(cb.[CustomerNumber]))
+						AND [BranchId] = LTRIM(RTRIM(cb.[DivisionNumber]))
+						AND [Type] = 2)
 
-DECLARE @customerId varchar(15)
-DECLARE @contractNumber varchar(50)
-DECLARE @branchID varchar(50)
-DECLARE @CurrentBidNumber varchar(15)
-DECLARE @CurrentDivision varchar(15)
-DECLARE @countT int
-DECLARE @existingListId bigint
-DECLARE @existingAddedListId bigint
-DECLARE @existingDeletedListId bigint
-
-DECLARE @rowCount int
-Set @rowCount = 0
-
-SET @CurrentBidNumber = ''
-SET @CurrentDivision = ''
-
-DECLARE @TempContractItems TABLE
-(
-	ItemNumber varchar(10),
-	BidNumber varchar(10),
-	DivisionNumber varchar(10),
-	Each bit,
-	BidLineNumber int,
-	CategoryDescription varchar(40)
-)
-
-DECLARE @AddedItems TABLE
-(
-	ItemNumber varchar(10),
-	Each bit,
-	CategoryDescription varchar(100),
-	BidLineNumber int
-)
-DECLARE @DeletedItems TABLE
-(
-	ItemNumber varchar(10),
-	Each bit,
-	CategoryDescription varchar(100),
-	BidLineNumber int
-)
-DECLARE @ChangedItems TABLE
-(
-	ItemNumber varchar(10),
-	CategoryDescription varchar(100),
-	BidLineNumber int
-)
-
---DECLARE Cursor for all contracts
-DECLARE contract_Cursor CURSOR FAST_FORWARD FOR
-	SELECT 
-		[CustomerNumber]
-		,[BidNumber]
-		,[DivisionNumber]
-	FROM 
-		[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid]
-	ORDER BY
-		BidNumber, DivisionNumber
-
-
-OPEN contract_Cursor
-FETCH NEXT FROM contract_Cursor INTO @customerId, @contractNumber, @branchID
-
-WHILE @@FETCH_STATUS = 0
-BEGIN
-	Print @rowCount
-
-	IF (@contractNumber <> @CurrentBidNumber OR @branchID <> @CurrentDivision)
-	BEGIN		
-		DELETE FROM  @TempContractItems
-		INSERT INTO @TempContractItems (ItemNumber, BidNumber, DivisionNumber, Each, BidLineNumber, CategoryDescription)
-		SELECT 
-				LTRIM(RTRIM(d.ItemNumber)),
-				LTRIM(RTRIM(d.BidNumber)),
-				LTRIM(RTRIM(d.DivisionNumber)),
-				CASE WHEN ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END AS 'BrokenCaseCode',
-				BidLineNumber,
-				CategoryDescription
-			FROM
-				[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] d
-			WHERE
-				BidNumber = @contractNumber AND
-				DivisionNumber = @branchID
-		
-		
-		SET @CurrentBidNumber = @contractNumber
-		SET @CurrentDivision = @branchID
-	END
-
-	
-	IF NOT EXISTS(SELECT 'x' FROM @TempContractItems) --No items for this contract, continue to next
-	BEGIN
-		GOTO cont
-	END
-
-	--Find existing contract list for the customer
-	SELECT @existingListId = Id from [BEK_Commerce_AppData].[List].Lists WHERE Type = 2 AND CustomerId = LTRIM(RTRIM(@customerId)) AND BranchId = LTRIM(RTRIM(@branchID))
-	Print @existingListId
-	IF @existingListId IS NULL
-		BEGIN
-			--List doesn't exist -- Create list
-			INSERT INTO [BEK_Commerce_AppData].[List].[Lists]
-				([DisplayName]
-				,[Type]
-				,[CustomerId]
-				,[BranchId]
-				,[ReadOnly]
-				,[CreatedUtc]
-				,[ModifiedUtc])
-			VALUES
-				('Contract - ' + LTRIM(RTRIM(@contractNumber))
-				,2
-				,LTRIM(RTRIM(@customerId))
-				,LTRIM(RTRIM(@branchID))
-				,1
-				,GETUTCDATE()
-				,GETUTCDATE())
-
-			SET @existingListId = SCOPE_IDENTITY();
-
-			--Insert items into the new list
-			INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
-					   ([ItemNumber]
-					   ,[Par]
-					   ,[CreatedUtc]
-					   ,[ParentList_Id]
-					   ,[ModifiedUtc]
-					   ,[Category]
-					   ,[Position]
-					   ,[Each]
-					   ,[CatalogId])
-			SELECT 
-				LTRIM(RTRIM(ItemNumber)) 'ItemNumber'
-				 ,0.00
-				,GETUTCDATE()
-				, @existingListId
-				, GETUTCDATE()
-				, CategoryDescription
-				, BidLineNumber
-				, Each	
-				, LTRIM(RTRIM(@branchID))
+    INSERT -- insert new items into all customer lists
+		INTO [BEK_Commerce_AppData].[List].[ListItems]
+			([ItemNumber]
+            ,[Par]
+            ,[CreatedUtc]
+            ,[ParentList_Id]
+            ,[ModifiedUtc]
+            ,[Category]
+            ,[Position]
+            ,[Each]
+            ,[CatalogId]
+            ,[ToDate])
+        SELECT
+			LTRIM(RTRIM(bcd.ItemNumber))
+			,0.00
+			,GETUTCDATE()
+			,l.Id
+			,GETUTCDATE()
+			,LTRIM(RTRIM(bcd.CategoryDescription))
+			,CAST(bcd.BidLineNumber as int)
+			,CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END
+			,LTRIM(RTRIM(cb.DivisionNumber))
+			,DATEADD(day, 1, GETDATE())
 			FROM 
-				@TempContractItems
-			ORDER BY
-				BidLineNumber ASC
-
-		END 
-	ELSE
-		BEGIN
-			--List already exist. Update with new or deleted items; update contract number.
-			UPDATE
-				[List].Lists
-			SET
-				DisplayName = (SELECT CONCAT('Contract - ', LTRIM(RTRIM(@contractNumber)))) 
+				[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			INNER JOIN 
+				[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+				ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+			INNER JOIN 
+				[BEK_Commerce_AppData].List.Lists l
+				ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
 			WHERE
-				[Id] = @existingListId
-				
-			--Print N'@CurrentBidNumber = ' + @CurrentBidNumber
-			--Print N'@existingListId = ' + str(@existingListId)
-			-- add rows to the temp changeditems table only for those items that need to be in this customer list
-			INSERT INTO @ChangedItems (ItemNumber, CategoryDescription, BidLineNumber)
-			SELECT 
-				d.ItemNumber, 
-				CategoryDescription,
-				BidLineNumber
-			FROM
-				@TempContractItems d
-			WHERE 
-				NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
-							WHERE li.ItemNumber = LTRIM(RTRIM(d.ItemNumber)) AND li.Category = d.CategoryDescription AND li.ParentList_Id = @existingListId)
-				OR NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
-							WHERE li.ItemNumber = LTRIM(RTRIM(d.ItemNumber)) AND li.Position = d.BidLineNumber AND li.ParentList_Id = @existingListId)
-
-			--Find new items to be added
-			INSERT INTO @AddedItems (ItemNumber, Each, CategoryDescription, BidLineNumber)
-			SELECT 
-				d.ItemNumber, 
-				Each,
-				CategoryDescription,
-				BidLineNumber
-			FROM
-				@TempContractItems d
-			WHERE 
-				NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
-							WHERE li.ItemNumber = LTRIM(RTRIM(d.ItemNumber)) AND li.Each = d.Each AND li.ParentList_Id = @existingListId)
-
-			--Find items being deleted
-			INSERT INTO @DeletedItems (ItemNumber, Each, CategoryDescription, BidLineNumber)
-			SELECT
-				l.ItemNumber,
-				l.Each,
-				l.Category,
-				l.Position
-			FROM
-				[BEK_Commerce_AppData].[List].[ListItems] l
-			WHERE
-				l.ParentList_Id = @existingListId AND
-				NOT EXISTS(SELECT 
+				NOT EXISTS (
+					SELECT
 						'x'
-					FROM
-						@TempContractItems d
-					WHERE
-						LTRIM(RTRIM(d.ItemNumber)) = l.ItemNumber AND
-						d.Each = l.Each)							
+						FROM [BEK_Commerce_AppData].[List].[ListItems] li
+						WHERE li.ParentList_Id = l.Id 
+							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
+							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
-			--New items to add?
-			IF EXISTS(SELECT 'x' FROM @AddedItems)
-				BEGIN
-					--Add to a Contract Added List, create if one doesn't already exist
-					
-					SELECT @existingAddedListId = Id from [BEK_Commerce_AppData].[List].Lists WHERE Type = 6 AND CustomerId = @customerId AND BranchId = @branchID
-					
-					Print 'Existing added list' 
-					Print @existingAddedListId
+	UPDATE
+		[BEK_Commerce_AppData].[List].[ListItems]
+		SET 
+			Position = CAST(bcd.BidLineNumber as int) 
+			, Category = LTRIM(RTRIM(bcd.CategoryDescription))
+			, ToDate = DATEADD(day, 1, GETDATE())
+		FROM 
+			[BEK_Commerce_AppData].[List].[ListItems] li
+		INNER JOIN 
+			[BEK_Commerce_AppData].List.Lists l
+			ON l.Id = li.ParentList_Id and l.Type = 2
+		INNER JOIN
+			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
+			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
+		INNER JOIN 
+			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			ON cb.BidNumber=bcd.BidNumber 
+				AND cb.DivisionNumber = bcd.DivisionNumber
+				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 
-					IF @existingAddedListId IS NULL
-					BEGIN
-						Print 'Creating List'
-						INSERT INTO [BEK_Commerce_AppData].[List].[Lists]
-							([DisplayName]
-							,[Type]
-							,[CustomerId]
-							,[BranchId]
-							,[ReadOnly]
-							,[CreatedUtc]
-							,[ModifiedUtc])
-						VALUES
-							('Contract Items Added'
-							,6
-							,@customerId
-							,@branchID
-							,1
-							,GETUTCDATE()
-							,GETUTCDATE())
+	UPDATE
+		[BEK_Commerce_AppData].[List].[ListItems]
+		SET 
+			ToDate = DATEADD(day, -14, GETDATE())
+		FROM 
+			[BEK_Commerce_AppData].[List].[ListItems] li
+		INNER JOIN 
+			[BEK_Commerce_AppData].List.Lists l
+			ON l.Id = li.ParentList_Id and l.Type = 2
+		LEFT OUTER JOIN
+			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
+			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
+		LEFT OUTER JOIN 
+			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			ON cb.BidNumber=bcd.BidNumber 
+				AND cb.DivisionNumber = bcd.DivisionNumber
+				AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+		WHERE bcd.ItemNumber is null and li.ToDate is null
 
-						SET @existingAddedListId = SCOPE_IDENTITY();
-					END
-					
-					--Insert Items into the Contracted Added list
-					INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
-							   ([ItemNumber]
-							   ,[Par]
-							   ,[CreatedUtc]
-							   ,[ParentList_Id]
-							   ,[ModifiedUtc]
-							   ,[Category]
-							   ,[Position]
-							   ,[Each]
-							   ,[CatalogId])
-					SELECT
-						LTRIM(RTRIM(ItemNumber)),
-						0.00,
-						GETUTCDATE(),
-						@existingAddedListId,
-						GETUTCDATE(),
-						CategoryDescription,
-						BidLineNumber,
-						Each,
-						@branchID
-					FROM
-						@AddedItems
+	DELETE TOP (50000)
+		FROM [BEK_Commerce_AppData].[List].[ListItems]
+		FROM [BEK_Commerce_AppData].[List].[ListItems] li
+			INNER JOIN [BEK_Commerce_AppData].[List].[Lists] l
+			ON li.ParentList_Id = l.Id
+			AND l.[Type] = 2
+	WHERE 
+		NOT EXISTS (
+			SELECT
+				'x'
+				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				INNER JOIN 
+					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+				INNER JOIN 
+					[BEK_Commerce_AppData].List.Lists l
+					ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
+				WHERE
+					ltrim(rtrim(ItemNumber)) = li.ItemNumber
+					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = li.Each
+					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerId 
+					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
+			)
+			AND ToDate < DATEADD(day, -13, GETDATE())
 
-					--Insert items into the list
-					INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
-							   ([ItemNumber]
-							   ,[Par]
-							   ,[CreatedUtc]
-							   ,[ParentList_Id]
-							   ,[ModifiedUtc]
-							   ,[Category]
-							   ,[Position]
-							   ,[Each]
-							   ,[CatalogId])
-					SELECT
-						LTRIM(RTRIM(ItemNumber)),
-						0.00,
-						GETUTCDATE(),
-						@existingListId,
-						GETUTCDATE(),
-						CategoryDescription,
-						BidLineNumber,
-						Each,
-						@branchID
-					FROM
-						@AddedItems
-
-				END
-				
-			--Items to delete
-			IF EXISTS(SELECT 'x' FROM @DeletedItems)
-				BEGIN
-					--Add to a Contract Added List, create if one doesn't already exist
-					
-					SELECT @existingDeletedListId = Id from [BEK_Commerce_AppData].[List].Lists WHERE Type = 7 AND CustomerId = @customerId AND BranchId = @branchID
-										
-					IF @existingDeletedListId IS NULL
-					BEGIN
-						INSERT INTO [BEK_Commerce_AppData].[List].[Lists]
-							([DisplayName]
-							,[Type]
-							,[CustomerId]
-							,[BranchId]
-							,[ReadOnly]
-							,[CreatedUtc]
-							,[ModifiedUtc])
-						VALUES
-							('Contract Items Deleted'
-							,7
-							,@customerId
-							,@branchID
-							,1
-							,GETUTCDATE()
-							,GETUTCDATE())
-
-						SET @existingDeletedListId = SCOPE_IDENTITY();
-					END
-
-
-					--DELETE Item
-					DELETE [BEK_Commerce_AppData].[List].[ListItems]
-					FROM [BEK_Commerce_AppData].[List].[ListItems] li inner join
-						@DeletedItems d on li.ItemNumber = d.ItemNumber AND li.Each = d.Each and ParentList_Id = @existingListId
-					
-					--Insert Items into the Contracted Deleted list
-					INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
-							   ([ItemNumber]
-							   ,[Par]
-							   ,[CreatedUtc]
-							   ,[ParentList_Id]
-							   ,[ModifiedUtc]
-							   ,[Category]
-							   ,[Position]
-							   ,[Each]
-							   ,[CatalogId])
-					SELECT
-						LTRIM(RTRIM(ItemNumber)),
-						0.00,
-						GETUTCDATE(),
-						@existingDeletedListId,
-						GETUTCDATE(),
-						CategoryDescription,
-						BidLineNumber,
-						Each,
-						@branchID
-					FROM
-						@DeletedItems
-				END				
-			
-			IF EXISTS(SELECT 'x' FROM @ChangedItems) -- update the items from the temporary table after processing each customers list
-				BEGIN
-					UPDATE LI
-					  SET LI.Category=CI.CategoryDescription, LI.Position=CI.BidLineNumber
-					  FROM [BEK_Commerce_AppData].[List].[ListItems] AS LI
-					  INNER JOIN @ChangedItems AS CI ON LI.ItemNumber = CI.ItemNumber
-					  WHERE LI.ParentList_Id = @existingListId
-				END				
-
-		END
-
-cont:
-	
-	SET @existingListId = null
-	SET @existingAddedListId = null
-	SET @existingDeletedListId = null
-	DELETE FROM @AddedItems
-	DELETE FROM @DeletedItems
-	DELETE FROM @ChangedItems -- clear temporary table at the end of each customers list
-	SET @rowCount = @rowCount +1
-	FETCH NEXT FROM contract_Cursor INTO @customerId, @contractNumber, @branchID
-END
-
-close contract_Cursor
-DEALLOCATE contract_Cursor
 END

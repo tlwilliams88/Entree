@@ -92,6 +92,15 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         #endregion
 
         #region methods
+        public InvoiceItemModel AssignContractCategory
+            (Dictionary<string, string> contractdictionary, InvoiceItemModel item)
+        {
+            string itmcategory = ContractInformationHelper.AddContractInformationIfInContract
+                (contractdictionary, item.ItemNumber);
+            item.Category = itmcategory;
+            return item;
+        }
+
         private FilterInfo BuildCustomerFilter(List<Core.Models.Profile.Customer> customers)
         {
             FilterInfo filter = new FilterInfo();
@@ -411,8 +420,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private string InvoiceModelCacheKey(InvoiceModel invoice)
         {
-            return String.Format("InvoiceHeader_{0}",
-                                 invoice.Id);
+            return String.Format("InvoiceHeader_{0}_{1}",
+                                 invoice.InvoiceNumber, invoice.CustomerNumber);
         }
 
         private PagedResults<InvoiceModel> GetInvoicesForCustomer(

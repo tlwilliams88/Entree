@@ -67,20 +67,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
-        private string GetBankName(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
-        {
-            string name = BANK_RESOLVE_UNDEFINED;
-            if (cb != null && cb.Name != null) { name = cb.Name; }
-            return name;
-        }
-
-        private string GetBankAccountNumber(Core.Models.OnlinePayments.Customer.EF.CustomerBank cb)
-        {
-            string number = BANK_RESOLVE_UNDEFINED;
-            if (cb != null && cb.AccountNumber != null) { number = cb.AccountNumber; }
-            return number;
-        }
-
         private Message GetEmailMessageForNotification(List<PaymentTransactionModel> payments, Core.Models.Profile.Customer customer)
         {
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(Constants.MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
@@ -434,6 +420,26 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             catch (Exception ex) {
                 throw new Core.Exceptions.Queue.QueueDataError<BaseNotification>(notification, "PaymentConfirmation:ProcessNotification", "Sending PaymentConfirmation notification", "An error occured processing a payment confirmation", ex);
             }
+        }
+
+        private string GetBankName(Core.Models.OnlinePayments.Customer.EF.CustomerBank bank)
+        {
+            string ret = BANK_RESOLVE_UNDEFINED;
+            if (bank != null && bank.Name != null)
+            {
+                ret = bank.Name;
+            }
+            return ret;
+        }
+
+        private string GetBankAccountNumber(Core.Models.OnlinePayments.Customer.EF.CustomerBank bank)
+        {
+            string ret = BANK_RESOLVE_UNDEFINED;
+            if (bank != null && bank.AccountNumber != null)
+            {
+                ret = bank.Name;
+            }
+            return ret;
         }
 
         //public void ProcessNotificationForExternalUsers(BaseNotification notification)

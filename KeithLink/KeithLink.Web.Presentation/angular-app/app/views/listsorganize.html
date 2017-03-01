@@ -97,7 +97,12 @@
           </td>
           <td>{{::item.itemnumber}}</td>
           <td>
-            {{::item.name}}
+            <span ng-if="item.isvalid">
+              {{::item.name}}
+            </span>
+            <span ng-if="!item.isvalid">
+              Invalid item
+            </span>
           </td>
           <td class="hidden-xs hidden-sm">
             {{::item.brand_extended_description}}

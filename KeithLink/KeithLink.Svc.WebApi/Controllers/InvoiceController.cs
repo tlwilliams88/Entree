@@ -34,6 +34,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
 	[Authorize]
     public class InvoiceController : BaseController {
         #region attributes
+        private readonly IExportInvoicesService _invService;
         private readonly IOnlinePaymentsLogic _invLogic;
 		private readonly IExportSettingLogic _exportLogic;
         private readonly IOrderLogic _orderLogic;
@@ -48,16 +49,19 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="profileLogic"></param>
         /// <param name="invoiceLogic"></param>
         /// <param name="exportSettingsLogic"></param>
-        /// <param name="invoiceImagingLogic"></param>
         /// <param name="orderLogic"></param>
+        /// <param name="invoiceImagingLogic"></param>
         /// <param name="logRepo"></param>
+        /// <param name="invService"></param>
 		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentsLogic invoiceLogic, IExportSettingLogic exportSettingsLogic,
-                                 IOrderLogic orderLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo) : base(profileLogic) {
+                                 IOrderLogic orderLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo,
+                                 IExportInvoicesService invService) : base(profileLogic) {
             _invLogic = invoiceLogic;
             _orderLogic = orderLogic;
 			_exportLogic = exportSettingsLogic;
             _imgLogic = invoiceImagingLogic;
             _log = logRepo;
+            _invService = invService;
         }
         #endregion
 
@@ -307,13 +311,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
             HttpResponseMessage ret;
             try
             {
-                if(exportRequest.Fields != null)
-                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-
-                Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
-                List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
-
-                ret = ExportModel<InvoiceItemModel>(items, exportRequest, SelectedUserContext);
+                ret = ExportModel<InvoiceItemModel>(_invService.GetExportableInvoiceItems(AuthenticatedUser,
+                                                                                     SelectedUserContext,
+                                                                                     exportRequest,
+                                                                                     invoiceNumber), 
+                                                    exportRequest, 
+                                                    SelectedUserContext);
             }
             catch (Exception ex)
             {
