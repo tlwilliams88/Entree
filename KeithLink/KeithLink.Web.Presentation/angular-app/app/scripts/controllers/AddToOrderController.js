@@ -941,7 +941,7 @@ angular.module('bekApp')
       var invalidItemFound = false;
  
       updatedCart.items.forEach(function(cartitem){
-        if (!cartitem.extPrice && !(cartitem.extPrice > 0) && !(cartitem.quantity === 0 && cartitem.status && cartitem.status.toUpperCase() === 'OUT OF STOCK')){
+        if (!cartitem.extPrice && !(cartitem.extPrice > 0) && !((cartitem.quantity === 0 || cartitem.quantity == '') && cartitem.status && cartitem.status.toUpperCase() === 'OUT OF STOCK')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Cannot create cart. Item ' + cartitem.itemnumber +' is invalid.  Please contact DSR for more information.');
         }

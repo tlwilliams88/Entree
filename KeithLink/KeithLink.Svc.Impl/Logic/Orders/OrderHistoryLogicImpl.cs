@@ -244,9 +244,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 DetermineDetailOnOrder(isSpecialOrder, header, currentDetail);
             }
+            RecalcOrderSubtotal(currentFile, header);
 
             _headerRepo.CreateOrUpdate(header);
-
+            
             if (hasSpecialItems)
             {
                 RemoveSpecialOrderItemsFromHistory(header);

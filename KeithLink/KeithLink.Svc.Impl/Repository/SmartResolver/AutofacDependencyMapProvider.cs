@@ -101,6 +101,7 @@ using KeithLink.Svc.Core.Interface.ApplicationHealth;
 using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 using KeithLink.Svc.Impl.Repository.Templates;
 using KeithLink.Svc.Core.Interface.Templates;
+using KeithLink.Svc.Impl.Service.Invoices;
 using KeithLink.Svc.Impl.Service.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
@@ -302,6 +303,9 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // catalog campaign
             builder.RegisterType<CatalogCampaignServiceImpl>().As<ICatalogCampaignService>();
             builder.RegisterType<SiteCatalogServiceImpl>().As<ISiteCatalogService>();
+
+            // invoices
+            builder.RegisterType<ExportInvoicesServiceImpl>().As<IExportInvoicesService>();
 
             ///////////////////////////////////////////////////////////////////////////////
             // Environment Specific Classes

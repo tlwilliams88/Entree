@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Core.Helpers {
                 }
                 else
                 {
-                    total = averageWeight * sellPrice;
+                    total = qty * averageWeight * sellPrice;
                 }
             }
             else

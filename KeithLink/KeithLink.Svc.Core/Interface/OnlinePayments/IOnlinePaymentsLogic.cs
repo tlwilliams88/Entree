@@ -13,7 +13,11 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Interface.OnlinePayments{
 	public interface IOnlinePaymentsLogic{
 		void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber);
-		
+
+        InvoiceItemModel AssignContractCategory
+            (Dictionary<string, string> contractdictionary, InvoiceItemModel item);
+
+
         List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext);
 
         CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber);
