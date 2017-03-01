@@ -44,7 +44,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\2017.2\Migration8.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
@@ -57,10 +58,7 @@
     <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SQL\2017.2\down\tables\" />
-    <Folder Include="SQL\2017.2\up\tables\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="BetaScriptGenerate.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -77,8 +75,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="SQL\2017.2\down\stored procedures\ETL.ReadFullItemData.sql" />
-    <Content Include="SQL\2017.2\up\stored procedures\ETL.ReadFullItemData.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadAllDepartments_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql" />
     <Content Include="SQL\Configs\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -145,6 +144,7 @@
     <Content Include="SQL\v1.12.2\up\Migration9-ES_Catalog_schema-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -46,6 +46,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         /// <summary>
         /// Import categories to elasatic search
+        /// DEPRECATED. Do not use anymore. Use ImportDepartments instead.
         /// </summary>
         public void ImportCategories()
         {
@@ -108,6 +109,38 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             }
            
             
+        }
+
+        /// <summary>
+        /// Loading categories from departments for a simpler category list
+        /// </summary>
+        public void ImportDepartments()
+        {
+            DateTime start = StartLog("Department Import");
+
+            DataTable departments = _stagingRepository.ReadDepartmentCategories();
+            var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
+
+            // Only get parent categories
+            foreach (DataRow row in departments.AsEnumerable().Where(x => x.GetInt("ParentDepartment").Equals(0)))
+            {
+                categories.Add(new ElasticSearchCategoryUpdate() {
+                    index = new ESCategoryRootData()
+                    {
+                        _id = row.GetString("DepartmentId"),
+                        data = new ESCategoryData()
+                        {
+                            parentcategoryid = null,
+                            name = row.GetString("DepartmentName"),
+                            subcategories = PopulateSubDepartments(row.GetString("DepartmentId"), departments)
+                        }
+                    }
+                });
+            }
+            
+            _elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
+
+            StopLog(start, "Department Import");
         }
 
 		/// <summary>
@@ -186,6 +219,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         /// <summary>
         /// Helps build a tree of sub categories
+        /// DEPRECATED - See ImportDepartments
         /// </summary>
         /// <param name="parentCategoryId"></param>
         /// <param name="childCategories"></param>
@@ -226,6 +260,52 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			return subCategories;
 		}
         
+        /// <summary>
+        /// Populate the main department categories with sub-categories
+        /// </summary>
+        /// <param name="departmentId"></param>
+        /// <param name="departments"></param>
+        /// <returns></returns>
+        private List<ESSubCategories> PopulateSubDepartments(string departmentId, DataTable departments)
+        {
+            List<ESSubCategories> returnValue = new List<ESSubCategories>();
+
+            // Only return categories that belong to the main department/category. 
+            // The format for those is: 00
+            // The first digit is the primary category, the second is the sub category id.
+            // So 10 belongs to category 1, et cetera.
+            var subDepartments = departments.AsEnumerable().Where(
+                x => x.GetInt("ParentDepartment") > 0 &&
+                x.GetInt("ParentDepartment").ToString().StartsWith(departmentId)
+            ).ToList();
+
+            foreach (DataRow subDepartment in subDepartments)
+            {
+                returnValue.Add(new ESSubCategories()
+                {
+                    categoryid = subDepartment.GetString("DepartmentId"),
+                    name = subDepartment.GetString("DepartmentName")
+                });
+            }
+
+
+            return returnValue;
+        }
+
+        private DateTime StartLog(string processName)
+        {
+            DateTime returnValue = DateTime.Now;
+            _eventLog.WriteInformationLog(String.Format("[Started],ETL Import,{0},ES,{1}", processName, returnValue));
+
+            return returnValue;
+        }
+
+        private void StopLog(DateTime startTime, string processName)
+        {
+            TimeSpan took = DateTime.Now - startTime;
+            _eventLog.WriteInformationLog(String.Format("[Finished],ETL Import,{0},ES,{1}", processName, took));
+        }
+
         #endregion
     }
 }

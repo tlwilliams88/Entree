@@ -12,6 +12,7 @@ namespace KeithLink.Svc.Core.Interface.ETL
         void PurgeInternalUserAccessTable();
         DataTable ReadAllBranches();
         DataTable ReadBrandControlLabels();
+        DataTable ReadDepartmentCategories();
         DataTable ReadItems(string branchId);
         DataTable ReadSubCategories();
         DataTable ReadParentCategories();
