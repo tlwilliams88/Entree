@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SQL\2017.2\down\stored procedures\ETL.ReadFullItemData.sql" />
+    <Content Include="SQL\2017.2\up\appsettings\Configuration.AppSettings.sql" />
     <Content Include="SQL\2017.2\up\stored procedures\Orders.PurgeOrderListAssociation.sql" />
     <Content Include="SQL\2017.2\up\stored procedures\Orders.WriteOrderListAssociation.sql" />
     <Content Include="SQL\2017.2\up\stored procedures\Orders.ReadOrderListAssociation.sql" />
