@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Entree.Migrations {
-    [Migration(8, "Modify the ETL stored procedure for reading the full item data by branch")]
+    [Migration(14, "Modify the ETL stored procedure for reading the full item data by branch")]
     public class Migration14 : Migration {
         public override void Up() {
             Execute.Script(@"SQL\2017.2.0\up\appsettings\Configuration.AppSettings.sql");
