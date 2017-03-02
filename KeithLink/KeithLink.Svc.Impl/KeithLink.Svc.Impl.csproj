@@ -357,6 +357,9 @@
     <Compile Include="Models\ElasticSearch\Item\ItemDelete.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
     <Compile Include="Models\ETL\PdmEnrichedItem.cs" />
+    <Compile Include="Models\Orders\Schemas\ShippingDateRequest.cs">
+      <DependentUpon>ShippingDateRequest.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Models\SiteCatalog\Products\External\IxOneProduct.cs" />
     <Compile Include="Models\SiteCatalog\Products\External\IxOneReturn.cs" />
     <Compile Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.Designer.cs">
@@ -409,6 +412,7 @@
     <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\Order2ListRepository.cs" />
     <Compile Include="Repository\Queue\GenericSubscriptionQueueRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
