@@ -101,6 +101,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MfTransHist
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsProxyUrl', 'http://testmultidocs.bekco.com/', 'MultiDocs Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsUrl', 'http://testmultidocs.bekco.com/', 'MultiDocs Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('OrderUpdateWatchPath', 'c:\test\entree\orderupdates\', 'Site Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CartOrOrder2ListIdPurgeDays', '-7', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuAdminPassword', '9M9NC0', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuAdminUsername', 'pniadmin', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuGroupSetupUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?Adminusername=pniadmin&amp;Adminpassword=9M9NC0N&amp;path=CUSTOMER', 'PowerMenu Settings', 0)
