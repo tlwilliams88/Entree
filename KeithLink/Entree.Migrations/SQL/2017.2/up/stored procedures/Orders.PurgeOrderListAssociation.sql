@@ -1,21 +1,17 @@
-﻿CREATE PROCEDURE [Orders].[WriteOrderListAssociation]
+﻿CREATE PROCEDURE [Orders].[PurgeOrderListAssociation]
 -- =============================================
 -- Author:		Brett Killins
 -- Create date: 2/28/2017
 -- Description:	<Description,,>
 -- =============================================
-			@ControlNumber	NVARCHAR (40),
-			@ListId			BIGINT
+			@PurgeDays		INT
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-INSERT INTO [Orders].[Order2List]
-           ([ControlNumber]
-           ,[ListId])
-     VALUES
-           (@ControlNumber
-           ,@ListId)
+	DELETE	[Orders].Order2List
+	WHERE
+		CreatedUtc < DATEADD(day, @PurgeDays, GETDATE())
 END
