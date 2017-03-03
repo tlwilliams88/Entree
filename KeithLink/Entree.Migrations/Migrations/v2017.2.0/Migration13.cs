@@ -12,11 +12,13 @@ namespace Entree.Migrations {
         public override void Up() {
             Execute.Script(@"SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql");
             Execute.Script(@"SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql");
+            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql");
         }
 
         public override void Down() {
             Execute.Script(@"SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql");
-            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_down.sql");
+            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\ETL.ReadAllDepartments_down.sql");
+            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\ETL.ReadFullItemData_down.sql");
         }
     }
 }

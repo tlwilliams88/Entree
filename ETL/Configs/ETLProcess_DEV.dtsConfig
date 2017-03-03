@@ -79,6 +79,12 @@
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalId].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalId.SSIS</ConfiguredValue>
   </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_DepartmentCategories].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\departmentCategories.SSIS</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_DepartmentSubCategories].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\departmentSubCategories.SSIS</ConfiguredValue>
+  </Configuration
 
   <!-- Web Services -->
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
@@ -87,7 +93,7 @@
 
   <!-- Connection Strings -->
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>
+    <ConfiguredValue>Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_SAM].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>Data Source=corpsqltst12\bi;Initial Catalog=SAM;Provider=SQLNCLI11.1;Integrated Security=SSPI</ConfiguredValue>
@@ -111,6 +117,6 @@
     <ConfiguredValue>Data Source=corpsqltst12;Initial Catalog=kpay;Provider=SQLNCLI11.1;User Id=ecom;Password=!2klkA5</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_Bek_Commerce_Transactions].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>Data Source=corpsqltst12.bekco.com;Initial Catalog=Bek_Commerce_Transactions;Provider=SQLNCLI11.1;User Id=ecom;Password=!2klkA5</ConfiguredValue>
+    <ConfiguredValue>Data Source=localhost;Initial Catalog=Bek_Commerce_Transactions;Provider=SQLNCLI11.1;User Id=ecom;Password=!2klkA5</ConfiguredValue>
   </Configuration>
 </DTSConfiguration>

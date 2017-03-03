@@ -174,11 +174,11 @@ namespace KeithLink.Svc.InternalSvc
             //Task.Factory.StartNew( () => _esCategoriesImportLogic.ImportCategories() ).ContinueWith( ( t ) =>
             //{ (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
 
-            //Task.Factory.StartNew( () => _esHouseBrandsImportLogic.ImportHouseBrands() ).ContinueWith( ( t ) =>
-            //{ (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+            Task.Factory.StartNew(() => _esHouseBrandsImportLogic.ImportHouseBrands()).ContinueWith((t) =>
+             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
-            //Task.Factory.StartNew( () => _esItemImportLogic.ImportItems() ).ContinueWith( ( t ) =>
-            //{ (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+            Task.Factory.StartNew(() => _esItemImportLogic.ImportItems()).ContinueWith((t) =>
+             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             Task.Factory.StartNew(() => _esCategoriesImportLogic.ImportDepartments()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
