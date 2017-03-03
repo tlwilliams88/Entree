@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_BETA"
   DTS:PackageType="5"
-  DTS:VersionBuild="398"
-  DTS:VersionGUID="{8F320B04-8DDF-4836-B189-FA71AF4D3F40}"
+  DTS:VersionBuild="400"
+  DTS:VersionGUID="{D6F407D0-4CE2-4C3B-B648-76A61D1016C3}"
   DTS:VersionMajor="2017"
   DTS:VersionMinor="1">
   <DTS:Property
@@ -2058,11 +2058,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAImaZYMlAil3aSQwjVv3yMAAAAAASAAACgAAAAEAAAAJ5iFKg0vLz7erzicqsKaxcIAAAAc6KWnHSISWUUAAAA8iaau9Yk5AWHN5sDJ/QxaCSVulk</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAABN1x4qnL3gumbxxEYj4nBAAAAAASAAACgAAAAEAAAAAgDistEdF11wM4vYKZdzmcIAAAAGhREtSA716MUAAAADtuc55Ag3h5WDToJuL/y3zaogtc</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABnT9+b+JZHt+ec4C90PSGzAAAAAASAAACgAAAAEAAAADUHNZegL7+kpHXKlZ88cSwIAAAAOJJVBeQCbWMUAAAAGf17509CCzteRtN3zLUWwdT2gk0</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACqxTJCcjG/WIBluJF0RjdqAAAAAASAAACgAAAAEAAAAE+RguqMud66ZcG1rKHA3cEIAAAA86RjUROvkc0UAAAAFhBIw+54bKyPxH2DAS26CCn4J90</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -2088,7 +2088,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAEMqCAebAbRHTgSmLYkzwcAAAAAASAAACgAAAAEAAAAO9m+t5JCMsQWBMe4K8KjHYQAAAA2VsEnfOmDtNW1Dr7n/JTwxQAAADu2aNf7RP3TC/uTQ22JqsS28dEAQ</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACprD8gdaOO6T+jY0/S1z9SAAAAAASAAACgAAAAEAAAAD1PQomkzWDtex4sLCGfaToQAAAAwiLBNUQKSUC+6sQICWBo0xQAAAA3BYyOxVNtAWNvglkkY8uNLQElxw</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -2123,7 +2123,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB6cu3Qs71nTTSqjIg1wpT3AAAAAASAAACgAAAAEAAAAJOzI6hMzZDfNKcYbID/W8MQAAAA3KEoczyi9YuMf7vXTyzCyhQAAADcfVf5rrtRA2/r6lE/tVx0FdTaeQ</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYKxkbHZ94UCiJ6Gv1557hAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC2vQAMOr82ttAqCEECZqlDAAAAAASAAACgAAAAEAAAACt+KbKo2f4fZ4VTtqDJkLIQAAAAtSN1bawxt5SYj6KlommDNhQAAADJ2Ebc5U7zogX7uf3S7CQvBXYfVQ</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -8558,14 +8558,6 @@
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PreferredItemCode]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ipreferred_item_code]" />
                             <inputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ilist_code_1_2]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="6"
-                              cachedName="ilist_code_1_2"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CategoryId]"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ilist_code_1_2]" />
-                            <inputColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[iitemtype]"
                               cachedCodepage="1252"
                               cachedDataType="str"
@@ -8613,14 +8605,6 @@
                               cachedName="ivendor2"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Vendor2]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ivendor2]" />
-                            <inputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[iclass]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="2"
-                              cachedName="iclass"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Class]"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[iclass]" />
                             <inputColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[icatmgr]"
                               cachedCodepage="1252"
@@ -8889,6 +8873,14 @@
                               cachedName="inon_stock"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NonStock]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[inon_stock]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[iclass]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="iclass"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CategoryId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[iclass]" />
                           </inputColumns>
                           <externalMetadataColumns
                             isUsed="True">
@@ -15877,7 +15869,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Brand Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="3">
+              DTS:ThreadHint="1">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -15896,7 +15888,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Catalog Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="4">
+              DTS:ThreadHint="2">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -15914,7 +15906,7 @@ on
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Departments"
-              DTS:ThreadHint="5">
+              DTS:ThreadHint="3">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -15932,7 +15924,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate GS1 Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="6">
+              DTS:ThreadHint="4">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -15950,7 +15942,7 @@ on
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate PDM data"
-              DTS:ThreadHint="7">
+              DTS:ThreadHint="5">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -20631,7 +20623,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Contract Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="1">
+              DTS:ThreadHint="7">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -20648,7 +20640,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Worksheet Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="2">
+              DTS:ThreadHint="8">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -22147,7 +22139,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Invoice Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="8">
+              DTS:ThreadHint="6">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -22703,30 +22695,19 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
             Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
 	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
 		<msb:CodeName>ST_8b38e1c04cd142498eb6973136894e60</msb:CodeName>
+		<msb:Language>msBuild</msb:Language>
 		<msb:DisplayName>ST_8b38e1c04cd142498eb6973136894e60</msb:DisplayName>
 		<msb:ProjectId>{5E196739-785D-49EC-8907-B2E31D628640}</msb:ProjectId>
 	</msb:PropertyGroup>
 	<msb:ItemGroup>
 		<msb:Project Include="ST_8b38e1c04cd142498eb6973136894e60.csproj"/>
-		<msb:File Include="Properties\Settings.settings"/>
 		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
 		<msb:File Include="Properties\Resources.resx"/>
 		<msb:File Include="Properties\Resources.Designer.cs"/>
 		<msb:File Include="Properties\Settings.Designer.cs"/>
 		<msb:File Include="ScriptMain.cs"/>
-		<msb:Breakpoint Include="657b75a922c74803af88ecf8ba66ae2a">
-			<msb:FileName>ScriptMain.cs</msb:FileName>
-			<msb:ColumnNumber>13</msb:ColumnNumber>
-			<msb:Enabled>True</msb:Enabled>
-			<msb:LineNumber>192</msb:LineNumber>
-			<msb:Condition></msb:Condition>
-			<msb:ConditionType>1</msb:ConditionType>
-			<msb:Language>C#</msb:Language>
-			<msb:HitCountType>1</msb:HitCountType>
-			<msb:HitCountTarget>1</msb:HitCountTarget>
-		</msb:Breakpoint>
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
@@ -22839,7 +22820,7 @@ namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
           <BinaryItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAMY1t1gAAAAAAAAAAOAAIiALATAAABgAAAAIAAAAAAAAbjYA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAFvhuVgAAAAAAAAAAOAAIiALATAAABgAAAAIAAAAAAAAbjYA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
 ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAABw2AABPAAAAAEAAAHgEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -22882,7 +22863,7 @@ BkQAkQCAAQYA6QBPBgEACQHlBU4AGQGdAVgAeQD4BAYAeQB7AGcACQHlBXQAIQE1BnsAGQGcBoEA
 GQEuBogAcQD4BAYAsQD4BAYAKQHAAI0AKQGPBpYAuQD4BJwA2QD4BAYACAAYALYACAAcALsAKQBz
 AEABLgALABgBLgATACEBLgAbAEABLgAjAEkBLgArAHIBLgAzAHIBLgA7AHIBLgBDAEkBLgBLAHgB
 LgBTAHIBLgBbAI8BQwBjALsASQBzAEABYwBrALsAgQB7ALsAGwBIAF0AbQADAAEABAADAAAAuAQJ
-AQAARAEOAQAARwYTAQIACAADAAIACQAFAAEACgAFAAIACwAHAASAAAABAAAAfRgzaQAAAAAAAAEA
+AQAARAEOAQAARwYTAQIACAADAAIACQAFAAEACgAFAAIACwAHAASAAAABAAAAfxh9bQAAAAAAAAEA
 AAAEAAAAAAAAAAAAAACkAHIAAAAAAAwAAAAAAAAAAAAAAK0AfAMAAAAABAAAAAAAAAAAAAAApAAd
 BAAAAAAMAAAAAAAAAAAAAACtADgAAAAAAAAAAAABAAAASQUAAAUAAgAAAAAAAFNUXzhiMzhlMWMw
 NGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwADxNb2R1bGU+AFN5c3RlbS5JTwBNaWNyb3NvZnQuU3Fs
@@ -22933,7 +22914,7 @@ QwBMAEEAUwAAOWQAZQBwAGEAcgB0AG0AZQBuAHQAUwB1AGIAQwBhAHQAZQBnAG8AcgBpAGUAcwAu
 AFMAUwBJAFMAABMqAC4ARQBOAFQAQwBBAFQAQQAAM2QAZQBwAGEAcgB0AG0AZQBuAHQAQwBhAHQA
 ZQBnAG8AcgBpAGUAcwAuAFMAUwBJAFMAAHFTAFQAXwA4AGIAMwA4AGUAMQBjADAANABjAGQAMQA0
 ADIANAA5ADgAZQBiADYAOQA3ADMAMQAzADYAOAA5ADQAZQA2ADAALgBQAHIAbwBwAGUAcgB0AGkA
-ZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAAAAAL3xP1IA+EJLiEs/kaU/EiwABCABAQgDIAABBSAB
+ZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAAAAAJ/m9NmS2BxBl/f7Kz6PQ/0ABCABAQgDIAABBSAB
 ARERBCABAQ4FIAEBEWULBwUCEj0SQRFFEkkEIAASdQQgABJ5BSABEn0cAyAAHAMgAA4EIAASQQMg
 AAIFBwIdDggJAAMdDg4OEYCJBAABAQ4JBwQCEkERRRJJBSACARwcBgcDAh0ODgYAAh0ODg4FAAIO
 Dg4GAAMBDg4CBAABAg4IAAESgJURgJkFIAASgJ0HIAIBDhKAnQi3elxWGTTgiQiJhF3NgIDMkQQA
@@ -22956,14 +22937,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAEAEAAAABgAAIAAAAAAAAAAAAAAAAAAAAEAAQAAADAAAIAAAAAAAAAAAAAAAAAAAAEAAAAAAEgA
 AABYQAAAGgQAAAAAAAAAAAAAGgQ0AAAAVgBTAF8AVgBFAFIAUwBJAE8ATgBfAEkATgBGAE8AAAAA
-AL0E7/4AAAEAAAABADNpfRgAAAEAM2l9GD8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABEAAAA
+AL0E7/4AAAEAAAABAH1tfxgAAAEAfW1/GD8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABEAAAA
 AQBWAGEAcgBGAGkAbABlAEkAbgBmAG8AAAAAACQABAAAAFQAcgBhAG4AcwBsAGEAdABpAG8AbgAA
 AAAAAACwBHoDAAABAFMAdAByAGkAbgBnAEYAaQBsAGUASQBuAGYAbwAAAFYDAAABADAAMAAwADAA
 MAA0AGIAMAAAABoAAQABAEMAbwBtAG0AZQBuAHQAcwAAAAAAAAAiAAEAAQBDAG8AbQBwAGEAbgB5
 AE4AYQBtAGUAAAAAAAAAAABwACQAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8AbgAAAAAA
 UwBUAF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEAMwA2
 ADgAOQA0AGUANgAwAAAAPgAPAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAAAAAxAC4AMAAuADYA
-MgA2ADkALgAyADYAOQAzADEAAAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEAbQBlAAAAUwBU
+MgA3ADEALgAyADgAMAAyADkAAAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEAbQBlAAAAUwBU
 AF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEAMwA2ADgA
 OQA0AGUANgAwAC4AZABsAGwAAABIABIAAQBMAGUAZwBhAGwAQwBvAHAAeQByAGkAZwBoAHQAAABD
 AG8AcAB5AHIAaQBnAGgAdAAgAEAAIAAgADIAMAAxADQAAAAqAAEAAQBMAGUAZwBhAGwAVAByAGEA
@@ -22972,8 +22953,8 @@ AGUAAABTAFQAXwA4AGIAMwA4AGUAMQBjADAANABjAGQAMQA0ADIANAA5ADgAZQBiADYAOQA3ADMA
 MQAzADYAOAA5ADQAZQA2ADAALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBhAG0AZQAA
 AAAAUwBUAF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEA
 MwA2ADgAOQA0AGUANgAwAAAAQgAPAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBuAAAAMQAu
-ADAALgA2ADIANgA5AC4AMgA2ADkAMwAxAAAAAABGAA8AAQBBAHMAcwBlAG0AYgBsAHkAIABWAGUA
-cgBzAGkAbwBuAAAAMQAuADAALgA2ADIANgA5AC4AMgA2ADkAMwAxAAAAAAAAAAAAAAAAAAAAAAAA
+ADAALgA2ADIANwAxAC4AMgA4ADAAMgA5AAAAAABGAA8AAQBBAHMAcwBlAG0AYgBsAHkAIABWAGUA
+cgBzAGkAbwBuAAAAMQAuADAALgA2ADIANwAxAC4AMgA4ADAAMgA5AAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -22990,11 +22971,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
-          <Breakpoint
-            Enabled="True"
-            File="ScriptMain.cs"
-            Line="192"
-            Column="13" />
         </ScriptProject>
       </DTS:ObjectData>
     </DTS:Executable>
@@ -23205,6 +23181,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers"
           TopLeft="15.5,180.5" />
         <NodeLayout
+          Size="172,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments"
+          TopLeft="15,607.5" />
+        <NodeLayout
           Size="136,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items"
           TopLeft="13.5,235.5" />
@@ -23228,6 +23208,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           Size="216,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc"
           TopLeft="16,548.5" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments"
+          TopLeft="14,686.5" />
         <NodeLayout
           Size="150,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
@@ -23266,14 +23250,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="172,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments"
-          TopLeft="15,607.5" />
-        <NodeLayout
-          Size="193,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments"
-          TopLeft="14,686.5" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks.PrecedenceConstraints[Constraint 1]"
           TopLeft="101,649.5">
@@ -24316,41 +24292,131 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     </LayoutInfo>
   </TaskHost>
   <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items">
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="NaN,NaN"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData"
-          TopLeft="NaN,NaN" />
+          Size="121,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData"
+          TopLeft="570,380" />
         <NodeLayout
-          Size="NaN,NaN"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT"
-          TopLeft="NaN,NaN" />
+          Size="153,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source"
+          TopLeft="380,120" />
         <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items.Paths[OLE DB Source Output]"
-          TopLeft="NaN,NaN">
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments.Paths[Flat File Source Output]"
+          TopLeft="456.5,162">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="{assembly:Null}"
+              EndConnector="174,218"
               Start="0,0"
-              End="0,0">
+              End="174,210.5">
               <mssgle:Curve.Segments>
-                <assembly:Null />
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,105" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,105"
+                    Point2="0,109"
+                    Point3="4,109" />
+                  <mssgle:LineSegment
+                    End="170,109" />
+                  <mssgle:CubicBezierSegment
+                    Point1="170,109"
+                    Point2="174,109"
+                    Point3="174,113" />
+                  <mssgle:LineSegment
+                    End="174,210.5" />
+                </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData"
+          TopLeft="435,302" />
+        <NodeLayout
+          Size="127,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT"
+          TopLeft="288,214" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items.Paths[OLE DB Source Output]"
+          TopLeft="351.5,256">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="164,46"
+              Start="0,0"
+              End="164,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19"
+                    Point2="0,23"
+                    Point3="4,23" />
+                  <mssgle:LineSegment
+                    End="160,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="160,23"
+                    Point2="164,23"
+                    Point3="164,27" />
+                  <mssgle:LineSegment
+                    End="164,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc">
     <LayoutInfo>
@@ -24568,6 +24634,107 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="121,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData"
+          TopLeft="455,350" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source"
+          TopLeft="147,130" />
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column"
+          TopLeft="158,256" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Flat File Source Output]"
+          TopLeft="223.5,172">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="12.5,84"
+              Start="0,0"
+              End="12.5,76.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,38"
+                    Point2="0,42"
+                    Point3="4,42" />
+                  <mssgle:LineSegment
+                    End="8.5,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="8.5,42"
+                    Point2="12.5,42"
+                    Point3="12.5,46" />
+                  <mssgle:LineSegment
+                    End="12.5,76.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Derived Column Output]"
+          TopLeft="236,298">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="279.5,52"
+              Start="0,0"
+              End="279.5,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22"
+                    Point2="0,26"
+                    Point3="4,26" />
+                  <mssgle:LineSegment
+                    End="275.5,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="275.5,26"
+                    Point2="279.5,26"
+                    Point3="279.5,30" />
+                  <mssgle:LineSegment
+                    End="279.5,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
   <TaskHost
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands">
     <LayoutInfo>
@@ -25112,169 +25279,5 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       </GraphLayout>
     </LayoutInfo>
   </TaskHost>
-  <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="121,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData"
-          TopLeft="570,380" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source"
-          TopLeft="380,120" />
-        <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments.Paths[Flat File Source Output]"
-          TopLeft="456.5,162">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="174,218"
-              Start="0,0"
-              End="174,210.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,105" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,105"
-                    Point2="0,109"
-                    Point3="4,109" />
-                  <mssgle:LineSegment
-                    End="170,109" />
-                  <mssgle:CubicBezierSegment
-                    Point1="170,109"
-                    Point2="174,109"
-                    Point3="174,113" />
-                  <mssgle:LineSegment
-                    End="174,210.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="121,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData"
-          TopLeft="455,350" />
-        <NodeLayout
-          Size="153,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source"
-          TopLeft="147,130" />
-        <NodeLayout
-          Size="156,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column"
-          TopLeft="158,256" />
-        <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Flat File Source Output]"
-          TopLeft="223.5,172">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="12.5,84"
-              Start="0,0"
-              End="12.5,76.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,38" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,38"
-                    Point2="0,42"
-                    Point3="4,42" />
-                  <mssgle:LineSegment
-                    End="8.5,42" />
-                  <mssgle:CubicBezierSegment
-                    Point1="8.5,42"
-                    Point2="12.5,42"
-                    Point3="12.5,46" />
-                  <mssgle:LineSegment
-                    End="12.5,76.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Derived Column Output]"
-          TopLeft="236,298">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="279.5,52"
-              Start="0,0"
-              End="279.5,44.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,22" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,22"
-                    Point2="0,26"
-                    Point3="4,26" />
-                  <mssgle:LineSegment
-                    End="275.5,26" />
-                  <mssgle:CubicBezierSegment
-                    Point1="275.5,26"
-                    Point2="279.5,26"
-                    Point3="279.5,30" />
-                  <mssgle:LineSegment
-                    End="279.5,44.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
 </Objects>]]></DTS:DesignTimeProperties>
 </DTS:Executable>
