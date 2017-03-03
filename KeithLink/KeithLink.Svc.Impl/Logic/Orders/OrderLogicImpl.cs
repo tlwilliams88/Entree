@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private readonly IUnitOfWork _uow;
         private readonly IUserActiveCartRepository _userActiveCartRepository;
         private readonly IShipDateRepository _shipRepo;
-        private readonly IOrder2ListRepository _order2ListRepo;
+        private readonly IOrderedFromListRepository _order2ListRepo;
         #endregion
 
         #region ctor
@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                               IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, IShipDateRepository shipRepo,
                               ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, 
                               IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository,
-                              IOrder2ListRepository order2ListRepo) {
+                              IOrderedFromListRepository order2ListRepo) {
             _cache = cache;
 			_catalogLogic = catalogLogic;
             _customerRepository = customerRepository;
@@ -820,7 +820,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             OrderSubmissionHelper.StartChangeOrderBlock(orderNumber, newOrderNumber, _cache);
 
             // transfer prior order's listid to an entry for the changeorder
-            Order2List o2l = _order2ListRepo.Read(orderNumber);
+            OrderedFromList o2l = _order2ListRepo.Read(orderNumber);
             if(o2l.ListId != null)
             {
                 o2l.ControlNumber = newOrderNumber;

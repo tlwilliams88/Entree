@@ -11,7 +11,7 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	DELETE	[Orders].Order2List
+	DELETE	[Orders].OrderedFromList
 	WHERE
 		CreatedUtc < DATEADD(day, @PurgeDays, GETDATE())
 END

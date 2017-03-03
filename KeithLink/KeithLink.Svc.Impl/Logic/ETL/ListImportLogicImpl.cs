@@ -24,14 +24,14 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         IStagingRepository _stagingRepository;
         IEventLogRepository _eventLogRepository;
-        private readonly IOrder2ListRepository _order2ListRepo;
+        private readonly IOrderedFromListRepository _order2ListRepo;
 
         #endregion
 
         #region constructor
 
-        public ListImportLogicImpl( IStagingRepository stagingRepository, IEventLogRepository eventLogRepository, 
-            IOrder2ListRepository order2ListRepo) {
+        public ListImportLogicImpl( IStagingRepository stagingRepository, IEventLogRepository eventLogRepository,
+            IOrderedFromListRepository order2ListRepo) {
             _stagingRepository = stagingRepository;
             _eventLogRepository = eventLogRepository;
             _order2ListRepo = order2ListRepo;

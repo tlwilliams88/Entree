@@ -7,7 +7,11 @@
     PRIMARY KEY CLUSTERED ([Key] ASC)
 )
 
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CartOrOrder2ListIdPurgeDays', '-7', 'Site Settings', 0)
+INSERT 
+	INTO @AppSettings 
+		([Key], [Value], [Comment], [Disabled]) 
+	VALUES 
+		('CartOrOrder2ListIdPurgeDays', '-7', 'Site Settings: Number of days (neg) to keep records in OrderedFromList', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])

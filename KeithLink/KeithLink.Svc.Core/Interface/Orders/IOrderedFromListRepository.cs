@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Orders
 {
-    public interface IOrder2ListRepository
+    public interface IOrderedFromListRepository
     {
-        Order2List Read(string controlNumber);
+        OrderedFromList Read(string controlNumber);
 
-        void Write(Order2List o2l);
+        void Write(OrderedFromList o2l);
 
         void Purge(int PurgeDays);
     }

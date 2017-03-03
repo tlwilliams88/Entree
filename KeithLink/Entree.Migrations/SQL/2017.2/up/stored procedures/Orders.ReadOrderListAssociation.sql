@@ -14,7 +14,7 @@ BEGIN
 	SELECT 
 		ListId
 	FROM 
-		[Orders].Order2List
+		[Orders].OrderedFromList
 	WHERE
 		ControlNumber = @ControlNumber
 END

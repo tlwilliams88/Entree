@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Orders
 {
-    public class Order2List
+    public class OrderedFromList
     {
         public string ControlNumber { get; set; }
         public long? ListId { get; set; }

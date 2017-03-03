@@ -84,7 +84,7 @@
     <Content Include="SQL\2017.2\up\stored procedures\Orders.WriteOrderListAssociation.sql" />
     <Content Include="SQL\2017.2\up\stored procedures\Orders.ReadOrderListAssociation.sql" />
     <Content Include="SQL\2017.2\up\stored procedures\ETL.ReadFullItemData.sql" />
-    <Content Include="SQL\2017.2\up\tables\Orders.Order2List.sql" />
+    <Content Include="SQL\2017.2\up\tables\Orders.OrderedFromList.sql" />
     <Content Include="SQL\Configs\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
-        private readonly IOrder2ListRepository _order2ListRepo;
+        private readonly IOrderedFromListRepository _order2ListRepo;
 
         private const string CACHE_GROUPNAME = "ShoppingCart";
         private const string CACHE_NAME = "ProcessingCart";
@@ -80,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
                                      INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache, IEventLogRepository log, IOrder2ListRepository order2ListRepo)
+                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository order2ListRepo)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -411,7 +411,7 @@ namespace KeithLink.Svc.Impl.Logic
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
 
-            cart.ListId = _order2ListRepo.Read(cartId.ToString()).ListId;
+            try { cart.ListId = _order2ListRepo.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
 
             return cart;
 		}
@@ -508,7 +508,7 @@ namespace KeithLink.Svc.Impl.Logic
             returnOrders.NumberOfOrders = catalogList.Count();
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
 
-            Order2List o2l = _order2ListRepo.Read(cartId.ToString());
+            OrderedFromList o2l = _order2ListRepo.Read(cartId.ToString());
 
             //make list of baskets
             foreach (var catalogId in catalogList)
@@ -547,7 +547,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                     if(o2l.ListId != null)
                     {
-                        _order2ListRepo.Write(new Order2List()
+                        _order2ListRepo.Write(new OrderedFromList()
                         {
                             ControlNumber = orderNumber,
                             ListId = o2l.ListId.Value
@@ -725,10 +725,10 @@ namespace KeithLink.Svc.Impl.Logic
             updateCart.RequestedShipDate = cart.RequestedShipDate;
 			updateCart.PONumber = cart.PONumber;
 
-            Order2List o2l = _order2ListRepo.Read(cart.CartId.ToString());
-            if (o2l.ListId == null && cart.ListId != null)
+            OrderedFromList o2l = _order2ListRepo.Read(cart.CartId.ToString());
+            if (o2l == null && cart.ListId != null)
             {
-                _order2ListRepo.Write(new Order2List()
+                _order2ListRepo.Write(new OrderedFromList()
                 {
                     ControlNumber = cart.CartId.ToString(),
                     ListId = cart.ListId.Value
