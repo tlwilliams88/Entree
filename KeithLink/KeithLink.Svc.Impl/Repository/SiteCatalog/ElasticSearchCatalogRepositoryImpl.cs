@@ -1371,24 +1371,24 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             //            if(true)
             if (listonly == false)
             {
-                GetListOnlyProductProperties(oProd, p);
+                GetFullProductProperties(oProd, p);
                 if (p.CatalogId.ToLower().StartsWith("unfi"))
                 {
-                    GetListOnlyUnfiProperties(oProd, p);
+                    GetFullUnfiProperties(oProd, p);
                 }
 
                 if (oProd._source.nutritional != null)
                 {
-                    GetListOnlyNutritionalProperties(oProd, p);
+                    GetFullNutritionalProperties(oProd, p);
                 }
             }
 
             return p;
         }
 
-        private void GetListOnlyNutritionalProperties(dynamic oProd, Product p)
+        private void GetFullNutritionalProperties(dynamic oProd, Product p)
         {
-            Nutritional nutritional = new Nutritional();
+            Nutritional nutritional = p.Nutritional;
             nutritional.BrandOwner = oProd._source.nutritional.brandowner;
             nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
             nutritional.GrossWeight = oProd._source.nutritional.grossweight;
@@ -1411,13 +1411,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             nutritional.Diets = new List<string>();
             if (oProd._source.nutritional.allergen != null)
             {
-                GetListOnlyNutritionalAllergenProperties(oProd, nutritional);
+                GetFullNutritionalAllergenProperties(oProd, nutritional);
             }
 
             nutritional.NutritionInfo = new List<Nutrition>();
             if (oProd._source.nutritional.nutrition != null)
             {
-                GetListOnlyNutritionalNutritionInfo(oProd, nutritional);
+                GetFullNutritionalNutritionInfo(oProd, nutritional);
             }
             if (oProd._source.nutritional.diet != null)
             {
@@ -1428,10 +1428,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     nutritional.DietInfo.Add(d);
                 }
             }
-            p.Nutritional = nutritional;
         }
 
-        private void GetListOnlyNutritionalNutritionInfo(dynamic oProd, Nutritional nutritional)
+        private void GetFullNutritionalNutritionInfo(dynamic oProd, Nutritional nutritional)
         {
             foreach (var nutrition in oProd._source.nutritional.nutrition)
             {
@@ -1447,7 +1446,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             }
         }
 
-        private void GetListOnlyNutritionalAllergenProperties(dynamic oProd, Nutritional nutritional)
+        private void GetFullNutritionalAllergenProperties(dynamic oProd, Nutritional nutritional)
         {
             if (oProd._source.nutritional.allergen.freefrom != null)
             {
@@ -1471,13 +1470,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             }
         }
 
-        private void GetListOnlyUnfiProperties(dynamic oProd, Product p)
+        private void GetFullUnfiProperties(dynamic oProd, Product p)
         {
             //make vendor into description
             p.Description = oProd._source.vendor1;
             p.IsSpecialtyCatalog = true;
 
-            UNFI unfi = new UNFI();
+            UNFI unfi = p.Unfi;
 
             unfi.CaseHeight = oProd._source.cheight.ToString();
             unfi.CaseLength = oProd._source.clength.ToString();
@@ -1509,7 +1508,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.Unfi = unfi;
         }
 
-        private void GetListOnlyProductProperties(dynamic oProd, Product p)
+        private void GetFullProductProperties(dynamic oProd, Product p)
         {
             p.ManufacturerNumber = oProd._source.mfrnumber;
             p.BrandControlLabel = oProd._source.brand_control_label;
