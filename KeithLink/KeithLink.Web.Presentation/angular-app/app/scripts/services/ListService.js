@@ -17,15 +17,13 @@ angular.module('bekApp')
         });
       }
 
-      UserProfileService.getCurrentUserProfile().then(function(profile){
-        if(Service.isInternalUser == undefined){
-          if(profile.internal) {
-            Service.isInternalUser = true;
-          } else {
-            Service.isInternalUser = false;
-          }
-        }
-      })
+      function getCurrentUserProfile() {
+        UserProfileService.getCurrentUserProfile().then(function(profile){
+
+          return Service.isInternalUser = profile.internal ? true : false;
+
+        });
+      }
 
       /*
       VALID PERMISSIONS
@@ -50,6 +48,10 @@ angular.module('bekApp')
 
       function updateListPermissions(list) {
         var permissions = {};
+
+        if(Service.isInternalUser == undefined){
+          getCurrentUserProfile();
+        }
 
         // FAVORITES
         if (list.isfavorite) {
@@ -292,14 +294,8 @@ angular.module('bekApp')
         // accepts listId (guid), paging params
         // returns paged list object
         getList: function(listId, params) {
-            UserProfileService.getCurrentUserProfile().then(function(profile){
-              if(profile.internal) {
-                Service.isInternalUser = true;
-              } else {
-                Service.isInternalUser = false;
-              }
-              
-            });
+
+            getCurrentUserProfile();
 
             if (!params) {
               var pageSize = LocalStorage.getPageSize();             
