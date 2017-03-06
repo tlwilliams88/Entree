@@ -11,8 +11,6 @@ angular.module('bekApp')
   .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService',
     function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService) {
 
-      var numberOfInstances = 0;
-
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
           item.position = index+1;
