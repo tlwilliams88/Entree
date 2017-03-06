@@ -11,6 +11,8 @@ angular.module('bekApp')
   .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService',
     function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService) {
 
+      var numberOfInstances = 0;
+
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
           item.position = index+1;
@@ -18,11 +20,9 @@ angular.module('bekApp')
       }
 
       function getCurrentUserProfile() {
-        UserProfileService.getCurrentUserProfile().then(function(profile){
 
-          return Service.isInternalUser = profile.internal ? true : false;
+        Service.isInternalUser = SessionService.userProfile.internal ? SessionService.userProfile.internal : false;
 
-        });
       }
 
       /*
@@ -49,7 +49,7 @@ angular.module('bekApp')
       function updateListPermissions(list) {
         var permissions = {};
 
-        if(Service.isInternalUser == undefined){
+        if(Service.isInternalUser == undefined) {
           getCurrentUserProfile();
         }
 
