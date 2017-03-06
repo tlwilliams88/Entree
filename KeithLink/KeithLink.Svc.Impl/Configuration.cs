@@ -161,6 +161,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
         private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
         private const string KEY_CUTOFFTIME_BILLPAY = "BillPayCutOffTime";
+        private const string KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS = "CartOrOrder2ListIdPurgeDays";
 
         //Email
         private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -1645,6 +1646,20 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static int CartOrOrder2ListIdPurgeDays
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS, "-7"));
+                }
+                catch
+                {
+                    return -7;
+                }
+            }
+        }
         #endregion
     }
 }

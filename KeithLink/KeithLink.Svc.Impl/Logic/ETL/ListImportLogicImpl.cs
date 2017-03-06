@@ -16,6 +16,7 @@ using System.Data.Sql;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.Orders;
 
 namespace KeithLink.Svc.Impl.Logic.ETL {
     public class ListImportLogicImpl : IListsImportLogic {
@@ -23,14 +24,17 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         IStagingRepository _stagingRepository;
         IEventLogRepository _eventLogRepository;
+        private readonly IOrderedFromListRepository _order2ListRepo;
 
         #endregion
 
         #region constructor
 
-        public ListImportLogicImpl( IStagingRepository stagingRepository, IEventLogRepository eventLogRepository ) {
+        public ListImportLogicImpl( IStagingRepository stagingRepository, IEventLogRepository eventLogRepository,
+            IOrderedFromListRepository order2ListRepo) {
             _stagingRepository = stagingRepository;
             _eventLogRepository = eventLogRepository;
+            _order2ListRepo = order2ListRepo;
         }
 
         #endregion
@@ -76,7 +80,21 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Importing history lists -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
             }
 
-            
+            try
+            {
+                DateTime start = DateTime.Now;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Starting:  Purge cart/order to list associations {0}", start.ToString()));
+
+                _order2ListRepo.Purge(Configuration.CartOrOrder2ListIdPurgeDays);
+
+                TimeSpan took = DateTime.Now - start;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Finished:  Purge cart/order to list associations.  Process took {0}", took.ToString()));
+
+            }
+            catch (Exception ex)
+            {
+                _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Purge cart/order to list associations -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+            }
         }
 
         #endregion

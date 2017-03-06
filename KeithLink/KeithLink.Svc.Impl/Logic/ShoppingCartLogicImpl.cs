@@ -67,6 +67,7 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
+        private readonly IOrderedFromListRepository _order2ListRepo;
 
         private const string CACHE_GROUPNAME = "ShoppingCart";
         private const string CACHE_NAME = "ProcessingCart";
@@ -79,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
                                      INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache, IEventLogRepository log)
+                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository order2ListRepo)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -98,6 +99,7 @@ namespace KeithLink.Svc.Impl.Logic
             this.externalServiceRepository = externalServiceRepository;
             _activeCartLogic = userActiveCartLogic;
             _externalCatalogRepo = externalCatalogRepo;
+            _order2ListRepo = order2ListRepo;
 		}
         #endregion
 
@@ -151,7 +153,10 @@ namespace KeithLink.Svc.Impl.Logic
                 item.Position = startpos++;
             }
 
-			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, cartBranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
+            return basketRepository.CreateOrUpdateBasket(customer.CustomerId, 
+                                                         cartBranchId.ToLower(), 
+                                                         newBasket, 
+                                                         cart.Items.Select(l => l.ToLineItem()).ToList());
 		}
 
         public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
@@ -405,7 +410,10 @@ namespace KeithLink.Svc.Impl.Logic
             }
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
-			return cart;
+
+            try { cart.ListId = _order2ListRepo.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
+
+            return cart;
 		}
 
         /// <summary>
@@ -500,6 +508,8 @@ namespace KeithLink.Svc.Impl.Logic
             returnOrders.NumberOfOrders = catalogList.Count();
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
 
+            OrderedFromList o2l = _order2ListRepo.Read(cartId.ToString());
+
             //make list of baskets
             foreach (var catalogId in catalogList)
             {
@@ -534,6 +544,15 @@ namespace KeithLink.Svc.Impl.Logic
                     //    throw new Exception();// for testing
                     OrderSubmissionHelper.StartOrderBlock(cartId, orderNumber, _cache);
                     OrderSubmissionHelper.StartOrderBlock(newCartId, orderNumber, _cache);
+
+                    if(o2l.ListId != null)
+                    {
+                        _order2ListRepo.Write(new OrderedFromList()
+                        {
+                            ControlNumber = orderNumber,
+                            ListId = o2l.ListId.Value
+                        });
+                    }
                 }
                 catch// (Exception e)
                 {
@@ -706,7 +725,17 @@ namespace KeithLink.Svc.Impl.Logic
             updateCart.RequestedShipDate = cart.RequestedShipDate;
 			updateCart.PONumber = cart.PONumber;
 
-			var itemsToRemove = new List<Guid>();
+            OrderedFromList o2l = _order2ListRepo.Read(cart.CartId.ToString());
+            if (o2l == null && cart.ListId != null)
+            {
+                _order2ListRepo.Write(new OrderedFromList()
+                {
+                    ControlNumber = cart.CartId.ToString(),
+                    ListId = cart.ListId.Value
+                });
+            }
+
+            var itemsToRemove = new List<Guid>();
 			var lineItems = new List<CS.LineItem>();
 
 			if (cart.Items != null)
