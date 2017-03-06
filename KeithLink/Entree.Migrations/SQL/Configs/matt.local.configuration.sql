@@ -107,6 +107,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuGr
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuLoginUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?username={0}&amp;password={1}&amp;path=MAIN&amp;customerlist={2}&amp;order=true&amp;framed=false&amp;lang=ENG&amp;country=USA', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuPermissionsUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?Adminusername=pniadmin&amp;Adminpassword=9M9NC0N&amp;Username={0}&amp;path=USER', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuWebServiceUrl', 'http://bekpmwsq1.bekco.com:8443/pmserviceendpoint.asmx', 'PowerMenu Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CartOrOrder2ListIdPurgeDays', '-7', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PresentationUrl', 'http://corpmisdev2a.bekco.com:8080/', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PurchaseOrdersGetLatestHowManyDays', '10', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQAccessConsumerUserName', 'accessclnt', 'RabbitMQ Settings: Credentials', 0)

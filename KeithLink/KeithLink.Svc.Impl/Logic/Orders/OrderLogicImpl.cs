@@ -61,18 +61,21 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private readonly IUnitOfWork _uow;
         private readonly IUserActiveCartRepository _userActiveCartRepository;
         private readonly IShipDateRepository _shipRepo;
+        private readonly IOrderedFromListRepository _order2ListRepo;
         #endregion
 
         #region ctor
         public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, ICacheRepository cache,
                               IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, IShipDateRepository shipRepo,
                               ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, 
-                              IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository) {
+                              IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository,
+                              IOrderedFromListRepository order2ListRepo) {
             _cache = cache;
 			_catalogLogic = catalogLogic;
             _customerRepository = customerRepository;
             _log = eventLogRepository;
             _noteLogic = noteLogic;
+            _order2ListRepo = order2ListRepo;
             _historyHeaderRepo = orderHistoryRepository;
             _invoiceRepository = kpayInvoiceRepository;
             _orderQueueLogic = orderQueueLogic;
@@ -247,6 +250,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             GiveLinkForSimilarItems(returnOrder);
             UpdateOrderForShipDate(context, null, returnOrder);
             returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+
+            returnOrder.ListId = _order2ListRepo.Read(returnOrder.OrderNumber).ListId;
 
             return returnOrder;
         }
@@ -813,6 +818,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             string newOrderNumber = client.SaveOrderAsChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
             OrderSubmissionHelper.StartChangeOrderBlock(orderNumber, newOrderNumber, _cache);
+
+            // transfer prior order's listid to an entry for the changeorder
+            OrderedFromList o2l = _order2ListRepo.Read(orderNumber);
+            if(o2l.ListId != null)
+            {
+                o2l.ControlNumber = newOrderNumber;
+                _order2ListRepo.Write(o2l);
+            }
 
             order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 

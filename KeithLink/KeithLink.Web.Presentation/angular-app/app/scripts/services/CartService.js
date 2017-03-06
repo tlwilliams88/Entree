@@ -261,7 +261,9 @@ angular.module('bekApp')
  
       // accepts cart object and params (deleteOmitted?)
       // returns promise and updated cart object
-      updateCart: function(cart, params) {
+      updateCart: function(cart, params, list) {
+
+        cart.listId = list;
         
         return Cart.update(params, cart).$promise.then(function(response) {
           cart = response.successResponse;

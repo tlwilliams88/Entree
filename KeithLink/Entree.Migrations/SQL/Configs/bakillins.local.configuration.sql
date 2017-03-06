@@ -40,7 +40,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ADExtRoleNa
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ADExtRoleNameOwner', 'Dev Owner', 'Active Directory Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ADExtPermissionViewInvoices', 'Dev ViewInvoices', 'Active Directory Settings', 0)
 
-
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CartOrOrder2ListIdPurgeDays', '-7', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('AllowedApiKeys', 'android_dev_v1,iphone_dev_v1,web_dev_v1,', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('AmazonSnsAccessKey', 'AKIAJ42DMK24ZMO56MYQ', 'Amazon Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('AmazonSnsMobilePlatformAppArnAndroid', 'arn:aws:sns:us-east-1:951996173818:app/GCM/BEK_GCM', 'Amazon Settings', 0)

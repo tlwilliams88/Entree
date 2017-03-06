@@ -707,7 +707,7 @@ angular.module('bekApp')
     function updateCart(cart) {
       if (!processingUpdateCart) {
         processingUpdateCart = true;
-        return CartService.updateCart(cart).then(function(updatedCart) {
+        return CartService.updateCart(cart, null, selectedList.listid).then(function(updatedCart) {
           setSelectedCart(updatedCart);
           $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);

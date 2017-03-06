@@ -8,6 +8,7 @@ DECLARE @AppSettings as TABLE
 )
 
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'AppName', 'Entree', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES('Site Settings', 'CartOrOrder2ListIdPurgeDays', '-7', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'PresentationUrl', 'http://shopbeta.benekeith.com', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'AllowedApiKeys', 'android_prod_v1,iphone_prod_v1,web_prod_v1', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'BrandAssetsUrl', 'https://shopbeta.benekeith.com/assets/brands', 0)

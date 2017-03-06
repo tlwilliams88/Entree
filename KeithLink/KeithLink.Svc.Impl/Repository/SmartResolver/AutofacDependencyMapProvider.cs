@@ -172,6 +172,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
+            builder.RegisterType<OrderedFromListRepositoryImpl>().As<IOrderedFromListRepository>();
             builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
             builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
             builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();

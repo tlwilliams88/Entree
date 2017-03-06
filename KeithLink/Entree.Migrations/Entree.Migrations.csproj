@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration14.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
@@ -59,7 +60,6 @@
     <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="BetaScriptGenerate.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -86,6 +86,13 @@
     <Content Include="SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql" />
+    <Content Include="SQL\2017.2\down\stored procedures\ETL.ReadFullItemData.sql" />
+    <Content Include="SQL\2017.2\up\appsettings\Configuration.AppSettings.sql" />
+    <Content Include="SQL\2017.2\up\stored procedures\Orders.PurgeOrderListAssociation.sql" />
+    <Content Include="SQL\2017.2\up\stored procedures\Orders.WriteOrderListAssociation.sql" />
+    <Content Include="SQL\2017.2\up\stored procedures\Orders.ReadOrderListAssociation.sql" />
+    <Content Include="SQL\2017.2\up\stored procedures\ETL.ReadFullItemData.sql" />
+    <Content Include="SQL\2017.2\up\tables\Orders.OrderedFromList.sql" />
     <Content Include="SQL\Configs\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
