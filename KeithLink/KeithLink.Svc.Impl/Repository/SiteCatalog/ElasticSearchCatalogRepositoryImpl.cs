@@ -623,7 +623,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             List<Category> filteredResults = (from s in response.Documents
                                               where !(from p in prefixesToExclude select p).Contains(s.Id)
-                                              && s.SubCategories != null
+                                              && (s.SubCategories != null && !s.Id.Equals(0))
                                               orderby s.Id
                                               select s).ToList<Category>();
 
