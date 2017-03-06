@@ -576,7 +576,7 @@ namespace KeithLink.Svc.Impl
 
         public static string CategoryPrefixesToExclude
         {
-            get { return GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
         }
 
         public static string CSSiteName

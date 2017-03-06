@@ -44,8 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\2017.2\Migration14.cs" />
-    <Compile Include="Migrations\2017.2\Migration8.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration14.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
@@ -58,9 +59,6 @@
     <Compile Include="Migrations\v2017.1.0\Migration7.cs" />
     <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SQL\2017.2\down\tables\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BetaScriptGenerate.ps1">
@@ -78,6 +76,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="SQL\v2017.1.0\up\templates\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadFullItemData_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadAllDepartments_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql" />
     <Content Include="SQL\2017.2\down\stored procedures\ETL.ReadFullItemData.sql" />
     <Content Include="SQL\2017.2\up\appsettings\Configuration.AppSettings.sql" />
     <Content Include="SQL\2017.2\up\stored procedures\Orders.PurgeOrderListAssociation.sql" />
@@ -130,7 +138,7 @@
     <Content Include="SQL\v2017.1.0\down\stored procedures\ETL.ReadProprietaryItems.sql" />
     <Content Include="SQL\v2017.1.0\down\stored procedures\ReadPDMData.sql" />
     <Content Include="SQL\v2017.1.0\down\tables\Staging_PDM_EnrichedProducts.sql" />
-    <Content Include="SQL\v2017.1.0\up\Configuration.MessageTemplates-AddSpecialOrderConfirmation.sql" />
+    <Content Include="SQL\v2017.1.0\up\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
     <Content Include="SQL\v2017.1.0\up\stored procedures\ETL.ReadProprietaryItems.sql" />
     <Content Include="SQL\v2017.1.0\up\stored procedures\ETL.ProcessContractItemList.sql" />
     <Content Include="SQL\v2017.1.0\up\stored procedures\ReadPDMData.sql" />
@@ -148,6 +156,7 @@
     <Content Include="SQL\v1.12.2\up\Migration9-ES_Catalog_schema-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

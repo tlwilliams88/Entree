@@ -1,12 +1,27 @@
-﻿
+﻿USE [BEK_Commerce_AppData]
+GO
+/**
+*
+* -------------------------------------------------------
+* Read the item data for the elastic search load. 
+* This proc is used by the internalsvc load process.
+* -------------------------------------------------------
+*   Changed  | Migration | By       
+* -------------------------------------------------------
+* 2017-03-03 | 13        | mdjoiner
+*
+**/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 ALTER PROCEDURE [ETL].[ReadFullItemData]
-	
+	@BranchId		varchar(10)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-
 	SELECT 
 		BranchId 
 		, ItemId 
@@ -35,14 +50,14 @@ BEGIN
 		, HowPrice
 		, Buyer
 		, Kosher
-		, c.CategoryId
+		, i.CategoryId
 		, ReplacementItem
 		, ReplacedItem
 		, CNDoc
 		, [Cube]
-		, ETL.initcap(c.CategoryName) as CategoryName
-		, (SELECT CategoryId from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryId
-		, (SELECT ETL.initcap(CategoryName) from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryName
+		, ETL.initcap(c.DepartmentName) as CategoryName
+		, c.ParentDepartment as ParentCategoryId
+		, (SELECT ETL.initcap(DepartmentName) from ETL.Staging_Departments WHERE DepartmentId = c.ParentDepartment) as ParentCategoryName
 		, ps.BrandOwner
 		, ps.CountryOfOrigin
 		, ps.GrossWeight
@@ -75,8 +90,8 @@ BEGIN
 		, i.GrossWeight 'GrossWt'	 
 	FROM  
 		ETL.Staging_ItemData i inner join 
-		ETL.Staging_Category c on i.CategoryId = c.CategoryId left outer join
+		ETL.Staging_Departments c on i.CategoryId = c.DepartmentId left outer join
 		ETL.Staging_FSE_ProductSpec ps on i.UPC = ps.Gtin
 	WHERE 
-		  i.ItemId NOT LIKE '999%'  AND SpecialOrderItem <>'Y'
+		  i.ItemId NOT LIKE '999%'  AND SpecialOrderItem <>'Y' and BranchId = @BranchId
 END

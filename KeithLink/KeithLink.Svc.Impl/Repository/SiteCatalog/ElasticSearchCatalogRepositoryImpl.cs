@@ -615,18 +615,19 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
 
-            foreach (string s in prefixesToExclude)
-            {
-                response.Documents.Where(b => !b.Id.Substring(0, 2).Equals(s));
-            }
-            
             // Have to do this because it won't infer from the ID up one level in the structure. Need to revisit.
-            foreach (var r in response.Hits) {
+            foreach (var r in response.Hits)
+            {
                 r.Source.Id = r.Id;
             }
 
-            CategoriesReturn results = new CategoriesReturn { Categories = response.Documents.Where(s => s.SubCategories != null 
-                && !(s.Id.Substring(0, 2).Equals("AA") || s.Id.Substring(0, 2).Equals("ZZ") || s.Id.Substring(0,2).Equals("TW"))).ToList<Category>() };
+            List<Category> filteredResults = (from s in response.Documents
+                                              where !(from p in prefixesToExclude select p).Contains(s.Id)
+                                              && (s.SubCategories != null && !s.Id.Equals(0))
+                                              orderby s.Id
+                                              select s).ToList<Category>();
+
+            CategoriesReturn results = new CategoriesReturn { Categories = filteredResults };
 
             return results;
         }
@@ -1280,7 +1281,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 cats.Add((ExpandoObject)cat);
             }
             else if (_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase) == false
-                     && code.StartsWith(pcode.Substring(0, 2)))
+                     && code.StartsWith(pcode))
             {
                 cats.Add((ExpandoObject)cat);
             }

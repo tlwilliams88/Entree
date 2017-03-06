@@ -83,7 +83,16 @@ namespace KeithLink.Svc.Impl.ETL
 			return PopulateDataTable("[ETL].[ReadUNFICategories]");
 		}
 
-		public DataTable ReadUnfiSubCategories()
+        // <summary>
+        /// Read Categories from Department Table
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ReadDepartmentCategories()
+        {
+            return PopulateDataTable("[ETL].[ReadDepartments]");
+        }
+
+        public DataTable ReadUnfiSubCategories()
 		{
 			return PopulateDataTable("[ETL].[ReadUNFISubCategories]");
 		}

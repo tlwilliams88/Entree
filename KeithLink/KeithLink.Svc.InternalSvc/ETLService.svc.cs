@@ -170,14 +170,18 @@ namespace KeithLink.Svc.InternalSvc
         /// <returns></returns>
         public bool ProcessElasticSearchData()
         {
-            Task.Factory.StartNew( () => _esCategoriesImportLogic.ImportCategories() ).ContinueWith( ( t ) =>
-            { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
-            
-            Task.Factory.StartNew( () => _esHouseBrandsImportLogic.ImportHouseBrands() ).ContinueWith( ( t ) =>
-            { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
-            
-            Task.Factory.StartNew( () => _esItemImportLogic.ImportItems() ).ContinueWith( ( t ) =>
-            { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+            // DEPRECATED - Use ImportDepartments instead
+            //Task.Factory.StartNew( () => _esCategoriesImportLogic.ImportCategories() ).ContinueWith( ( t ) =>
+            //{ (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+
+            Task.Factory.StartNew(() => _esHouseBrandsImportLogic.ImportHouseBrands()).ContinueWith((t) =>
+             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => _esItemImportLogic.ImportItems()).ContinueWith((t) =>
+             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => _esCategoriesImportLogic.ImportDepartments()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
         }

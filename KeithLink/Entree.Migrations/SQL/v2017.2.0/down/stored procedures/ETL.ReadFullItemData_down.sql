@@ -1,4 +1,10 @@
-﻿
+﻿USE [BEK_Commerce_AppData]
+GO
+/****** Object:  StoredProcedure [ETL].[ReadFullItemData]    Script Date: 3/2/2017 3:00:44 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 ALTER PROCEDURE [ETL].[ReadFullItemData]
 	@BranchId		varchar(10)
 AS
@@ -6,7 +12,6 @@ BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-
 	SELECT 
 		BranchId 
 		, ItemId 

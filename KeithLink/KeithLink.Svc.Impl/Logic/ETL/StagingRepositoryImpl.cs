@@ -284,7 +284,15 @@ namespace KeithLink.Svc.Impl.ETL
             return PopulateDataTable("[ETL].[ReadCustomers]");
         }
 
-        
+        /// <summary>
+        /// Read Categories from Department Table
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ReadDepartmentCategories()
+        {
+            return PopulateDataTable("[ETL].[ReadDepartments]");
+        }
+
         /// <summary>
         /// Read DSR Images
         /// </summary>
@@ -398,6 +406,8 @@ namespace KeithLink.Svc.Impl.ETL
         {
             return PopulateDataTable("[ETL].[ReadParentCategories]");
         }
+
+        
 
         /// <summary>
         /// Read proprietary items
