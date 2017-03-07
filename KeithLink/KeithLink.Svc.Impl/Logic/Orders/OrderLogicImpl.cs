@@ -953,6 +953,28 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             LookupProductDetails(user, catalogInfo, order, notes);
             UpdateExistingOrderInfo(order, existingOrder, deleteOmmitedItems);
 
+            OrderedFromList o2l = _order2ListRepo.Read(order.OrderNumber);
+            if (o2l == null && order.ListId != null)
+            {
+                _order2ListRepo.Write(new OrderedFromList()
+                {
+                    ControlNumber = order.OrderNumber,
+                    ListId = order.ListId.Value
+                });
+            }
+            else if (o2l != null && o2l.ListId != order.ListId)
+            {
+                _order2ListRepo.Delete(order.OrderNumber);
+                if (order.ListId != null)
+                {
+                    _order2ListRepo.Write(new OrderedFromList()
+                    {
+                        ControlNumber = order.OrderNumber,
+                        ListId = order.ListId.Value
+                    });
+                }
+            }
+
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             List<com.benekeith.FoundationService.PurchaseOrderLineItemUpdate> itemUpdates = new List<com.benekeith.FoundationService.PurchaseOrderLineItemUpdate>();
 
