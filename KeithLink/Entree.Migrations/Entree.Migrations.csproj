@@ -45,8 +45,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration14.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
@@ -83,16 +83,18 @@
     <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadAllDepartments_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.PurgeOrderListAssociation_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.ReadOrderListAssociation_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.WriteOrderListAssociation_down.sql" />
     <Content Include="SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\tables\Orders.OrderedFromList_down.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql" />
-    <Content Include="SQL\2017.2\down\stored procedures\ETL.ReadFullItemData.sql" />
-    <Content Include="SQL\2017.2\up\appsettings\Configuration.AppSettings.sql" />
-    <Content Include="SQL\2017.2\up\stored procedures\Orders.PurgeOrderListAssociation.sql" />
-    <Content Include="SQL\2017.2\up\stored procedures\Orders.WriteOrderListAssociation.sql" />
-    <Content Include="SQL\2017.2\up\stored procedures\Orders.ReadOrderListAssociation.sql" />
-    <Content Include="SQL\2017.2\up\stored procedures\ETL.ReadFullItemData.sql" />
-    <Content Include="SQL\2017.2\up\tables\Orders.OrderedFromList.sql" />
+    <Content Include="SQL\v2017.2.0\up\appsettings\Configuration.AppSettings.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.PurgeOrderListAssociation_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.WriteOrderListAssociation_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.ReadOrderListAssociation_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\tables\Orders.OrderedFromList_up.sql" />
     <Content Include="SQL\Configs\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
