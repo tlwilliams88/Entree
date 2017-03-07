@@ -17,6 +17,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         #region attributes
         private const string STOREDPROC_GET_ONE = "[Orders].[ReadOrderListAssociation]";
         private const string STOREDPROC_WRITE_ONE = "[Orders].[WriteOrderListAssociation]";
+        private const string STOREDPROC_DELETE_ONE = "[Orders].[DeleteOrderListAssociation]";
         private const string STOREDPROC_PURGE_BY_DAYS = "[Orders].[PurgeOrderListAssociation]";
         #endregion
 
@@ -35,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                 commandType: CommandType.StoredProcedure
             ));
         }
-
+ 
         public void Write(OrderedFromList o2l)
         {
             if(o2l.ListId != null)
@@ -46,6 +47,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
                 ExecuteCommand(STOREDPROC_WRITE_ONE, parms);
             }
+        }
+
+
+        public void Delete(string controlNumber)
+        {
+            ExecuteCommand(STOREDPROC_DELETE_ONE, "@ControlNumber", controlNumber);
         }
 
         public void Purge(int PurgeDays)

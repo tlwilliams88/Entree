@@ -13,6 +13,7 @@ namespace Entree.Migrations {
             Execute.Script(@"SQL\2017.2.0\up\appsettings\Configuration.AppSettings.sql");
             Execute.Script(@"SQL\2017.2.0\up\tables\Orders.OrderedFromList.sql");
             Execute.Script(@"SQL\2017.2.0\up\stored procedures\Orders.ReadOrderListAssociation.sql");
+            Execute.Script(@"SQL\2017.2.0\up\stored procedures\Orders.DeleteOrderListAssociation.sql");
             Execute.Script(@"SQL\2017.2.0\up\stored procedures\Orders.WriteOrderListAssociation.sql");
             Execute.Script(@"SQL\2017.2.0\up\stored procedures\Orders.PurgeOrderListAssociation.sql");
         }
