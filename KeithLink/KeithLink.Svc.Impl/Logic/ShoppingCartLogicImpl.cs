@@ -545,7 +545,7 @@ namespace KeithLink.Svc.Impl.Logic
                     OrderSubmissionHelper.StartOrderBlock(cartId, orderNumber, _cache);
                     OrderSubmissionHelper.StartOrderBlock(newCartId, orderNumber, _cache);
 
-                    if(o2l.ListId != null)
+                    if(o2l != null && o2l.ListId != null)
                     {
                         _order2ListRepo.Write(new OrderedFromList()
                         {
