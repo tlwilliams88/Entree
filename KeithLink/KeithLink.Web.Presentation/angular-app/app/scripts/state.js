@@ -434,47 +434,23 @@ angular.module('bekApp')
             }
           }
         }],
-        validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
+        validListId: ['$stateParams', 'ResolveService', function($stateParams, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
         selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, lists, validListId, ListService, DateService, Constants, LocalStorage, ENV) {
              
-             var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
-             var params = {size: pageSize, from: 0, sort: []};
+          var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
+              params = {size: pageSize, from: 0, sort: []},
+              validListId = $stateParams.listId,
+              listHeader = $filter('filter')(lists, {listid: validListId})[0];
 
-          if($stateParams.cartId !== 'New'){
-            var allSets = LocalStorage.getLastOrderList();
-            var allValidSets = [];           
-            var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
-            allSets.forEach(function(set){          
-              if(set.timeset > timeoutDate){
-                allValidSets.push(set);
-              }
+          if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
+            ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
+              $stateParams.sortingParams = storedParams;
+              params = storedParams;
             });
-
-            if(allValidSets.length){
-              allValidSets.forEach(function(set){
-                if(set.cartId === $stateParams.cartId){
-                    ListService.lists.forEach(function(list){
-                      if(list.listid === set.listId){
-                        validListId = set.listId;
-                         set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-                      }
-                    });
-                  }
-              });  
-            }                
-            LocalStorage.setLastOrderList(allValidSets);  
-          } 
-          var listHeader = $filter('filter')(lists, {listid: validListId})[0];
-
-            if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
-              ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
-                $stateParams.sortingParams = storedParams; 
-                params = storedParams;
-              });
-            }   
+          }   
          
           return ListService.getList(validListId, params);
         }]

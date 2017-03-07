@@ -12,7 +12,7 @@ angular.module('bekApp')
  
     $scope.$on('$stateChangeStart', 
       function(event, toState, toParams, fromState, fromParams){
-      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !$scope.continueToCart && !$scope.orderCanceled){
+      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !(toState.name == 'register') && !$scope.continueToCart && !$scope.orderCanceled){
  
         if(!$scope.tempCartName){
           $scope.saveAndRetainQuantity();
@@ -705,7 +705,7 @@ angular.module('bekApp')
  
     var processingUpdateCart = false;
     function updateCart(cart) {
-      if (!processingUpdateCart) {
+      if (!processingUpdateCart && cart.items) {
         processingUpdateCart = true;
         return CartService.updateCart(cart, null, selectedList.listid).then(function(updatedCart) {
           setSelectedCart(updatedCart);
@@ -832,7 +832,7 @@ angular.module('bekApp')
       if (!processingSaveChangeOrder) {
         processingSaveChangeOrder = true;
  
-        return OrderService.updateOrder(order).then(function(cart) {
+        return OrderService.updateOrder(order, null, selectedList.listid).then(function(cart) {
           setSelectedCart(cart);
           $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
