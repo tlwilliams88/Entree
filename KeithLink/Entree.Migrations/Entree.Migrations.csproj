@@ -158,7 +158,12 @@
     <Content Include="SQL\v1.12.2\up\Migration9-ES_Catalog_schema-up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.PurgeOrderListAssociation.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.ReadOrderListAssociation.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.WriteOrderListAssociation.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.DeleteOrderListAssociation.sql" />
     <Content Include="SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\templates\Configuration.AppSettings.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

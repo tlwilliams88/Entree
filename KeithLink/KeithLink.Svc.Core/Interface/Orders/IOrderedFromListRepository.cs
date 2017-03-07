@@ -13,6 +13,8 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
         void Write(OrderedFromList o2l);
 
+        void Delete(string controlNumber);
+
         void Purge(int PurgeDays);
     }
 }

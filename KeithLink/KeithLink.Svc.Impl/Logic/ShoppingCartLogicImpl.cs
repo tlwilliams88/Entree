@@ -545,7 +545,7 @@ namespace KeithLink.Svc.Impl.Logic
                     OrderSubmissionHelper.StartOrderBlock(cartId, orderNumber, _cache);
                     OrderSubmissionHelper.StartOrderBlock(newCartId, orderNumber, _cache);
 
-                    if(o2l.ListId != null)
+                    if(o2l != null && o2l.ListId != null)
                     {
                         _order2ListRepo.Write(new OrderedFromList()
                         {
@@ -733,6 +733,18 @@ namespace KeithLink.Svc.Impl.Logic
                     ControlNumber = cart.CartId.ToString(),
                     ListId = cart.ListId.Value
                 });
+            }
+            else if(o2l != null && o2l.ListId != cart.ListId)
+            {
+                _order2ListRepo.Delete(cart.CartId.ToString());
+                if (cart.ListId != null)
+                {
+                    _order2ListRepo.Write(new OrderedFromList()
+                    {
+                        ControlNumber = cart.CartId.ToString(),
+                        ListId = cart.ListId.Value
+                    });
+                }
             }
 
             var itemsToRemove = new List<Guid>();
