@@ -821,7 +821,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // transfer prior order's listid to an entry for the changeorder
             OrderedFromList o2l = _order2ListRepo.Read(orderNumber);
-            if(o2l.ListId != null)
+            if(o2l != null && o2l.ListId != null)
             {
                 o2l.ControlNumber = newOrderNumber;
                 _order2ListRepo.Write(o2l);
