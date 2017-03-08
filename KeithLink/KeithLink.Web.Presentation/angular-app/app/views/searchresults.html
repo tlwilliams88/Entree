@@ -237,11 +237,9 @@
                 ng-if="  parentcategories.available.length > 1"
                 value="categoryValue_{{parentcategory.name}}"
                 id="categoryId_{{parentcategory.name}}"
-                ng-checked="  parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
-                ng-disabled="parentcategory.name === featuredBreadcrumb.displayText"
                 ng-click="toggleSelection(true,   parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
               <label
-                ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
+                ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1}">
                 <span class="category-description-md">
                   {{::parentcategory.name}} 
                 </span>
@@ -254,13 +252,11 @@
                 <div>
                   <input 
                     type="checkbox"
-                    ng-checked="  subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText || category.isSelected"
-                    ng-disabled="category.name === featuredBreadcrumb.displayText"
-                    ng-click="toggleSelection(false,  subcategories.selected, category.name, parentcategory.name)"
+                    ng-click="toggleSelection(false, subcategories.selected, category.name, parentcategory.name)"
                     class="input-margin-5px">
                   <label
-                    ng-click="toggleSelection(false,  subcategories.selected, category.name, parentcategory.name)" 
-                    ng-class="{active:  subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
+                    ng-click="toggleSelection(false, subcategories.selected, category.name, parentcategory.name)" 
+                    ng-class="{active:  subcategories.selected.indexOf(category.name) > -1}">
                     <span class="category-description-md">
                       {{::category.name}} 
                     </span> 
