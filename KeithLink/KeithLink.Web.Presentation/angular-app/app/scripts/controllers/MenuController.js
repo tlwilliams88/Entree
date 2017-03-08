@@ -9,7 +9,7 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService', 'CategoryService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -18,7 +18,8 @@ angular.module('bekApp')
       branches, // state resolve
       CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
       mandatoryMessages,
-      localStorageService
+      localStorageService,
+      CategoryService
     ) {
 
   $scope.$state = $state;
@@ -35,6 +36,12 @@ angular.module('bekApp')
 
   OrderService.getChangeOrders().then(function(resp){
     $scope.changeOrders = resp;
+  });
+
+  CategoryService.getCategories('BEK').then(function(resp){
+    $scope.departments = resp;
+
+    $scope.selectDepartment('');
   });
 
   $scope.$on('CartCreatedFromContextMenu', function() {
@@ -152,24 +159,11 @@ angular.module('bekApp')
     $scope.selectedUserContext = selectedUserContext;
   };
 
-  $scope.departments = [
-    { 'value': '', 'text': 'All'},
-    { 'value': '1', 'text': 'Produce'},
-    { 'value': '2', 'text': 'Frozen'},
-    { 'value': '3', 'text': 'Frozen Meat'},
-    { 'value': '4', 'text': 'Grocery'},
-    { 'value': '5', 'text': 'Boxed Beef'},
-    { 'value': '6', 'text': 'Dairy'},
-    { 'value': '7', 'text': 'Non-Food'},
-    { 'value': '8', 'text': 'Rest. Supply'}];
-
-
   $scope.selectDepartment = function(dept){
-    $scope.departmentNum = dept;
-    $scope.department = $filter('filter')($scope.departments, {value: dept});
+    $scope.department = dept ? dept : $scope.departments[0];
+    $scope.departmentNum = dept.id;
+    // $scope.department = dept.name;
   };
-
-  $scope.selectDepartment('');
 
   // get default selected user context
   if ($scope.isOrderEntryCustomer) {

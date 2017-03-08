@@ -377,27 +377,21 @@
           <form name="universalSearchForm" novalidate ng-if="::canBrowseCatalog">
             <div class="input-group input-group-lg">
                <div dropdown is-open="openScope" class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle">{{department[0].text}}<span class="caret margin-left-5" ></span></button>
+                  <button type="button" class="btn btn-default dropdown-toggle">{{department.name}}<span class="caret margin-left-5" ></span></button>
                   <ul class="dropdown-menu" role="menu">
-                    <li ng-repeat="department in departments" ><a ng-click="selectDepartment(department.value)">{{department.text}}</a></li>
+                    <li ng-repeat="department in departments" ><a ng-click="selectDepartment(department)">{{department.name}}</a></li>
                   </ul>
                 </div><!-- /btn-group -->
 
               <input required ng-minlength="3" name="universalSearchForm.userBar.universalSearchTerm" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword" validate-input>
               <span class="input-group-btn" style="background-color: #F3F1EB; border-radius: 4px;">
-                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: departmentNum, deptName: department[0].text })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: department.id, deptName: department.name })" ng-disabled="universalSearchForm.$invalid || !userBar.universalSearchTerm" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>
             <div style="margin-left: 60px;" ng-if="universalSearchForm.$error.searchInputInvalid"><p class="text-red">Invalid Input. No special characters allowed in search terms.</p></div>
           </form>
         </div>
-<!--           <div class="pull-right hidden-xs hidden-sm hidden-print" style="height: 60px; width:260px;">
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right margin-top-10 margin-right-10"></order-dropdown>
-    <div header-buttons>
-      <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
-    </div>
-  </div> -->
 
         <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10" style="margin-left:none; padding-left:none; display:inline-flex; margin-top: 3px; margin-right: 5px;">
 

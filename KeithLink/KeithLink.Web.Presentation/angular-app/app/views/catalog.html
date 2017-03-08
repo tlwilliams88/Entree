@@ -82,13 +82,13 @@
   <!-- Categories -->
   <div class="row">
   	<div class="col-sm-12">
-  		<h2>Select A Category</h2>
+  		<h2>Categories</h2>
       <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
 
       <div ng-show="!loadingCategories && categories.length > 0">
     		<ul class="horizontal-slide hidden-xs hidden-sm">
-    			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
-    				<div class="featured-item text-center">
+    			<li ng-repeat="category in categories | orderBy: ['id']" class="item-holder">
+    				<div ng-if="category.name != 'All'" class="featured-item text-center">
     					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, brands: category.name })" ng-src="{{category.category_image.url}}" alt="image">
     					<div class="featured-item__detail">
     						{{::category.name}}
@@ -106,7 +106,7 @@
   <!-- Brands -->
   <div class="row">
   	<div class="col-sm-12">
-  		<h2>Select A Brand</h2>
+  		<h2>Ben E. Keith Exclusive Brands</h2>
   		<div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
 
       <div ng-show="!loadingBrands && brands.length > 0">
