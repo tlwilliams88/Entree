@@ -1,4 +1,5 @@
 ﻿using Elasticsearch.Net;
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Models.ElasticSearch.Item;
 using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
@@ -181,11 +182,14 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 
                 Ids = dd["hits"]["hits"];
 
-                foreach (var Id in Ids)
+                if(Ids != null)
                 {
-                    if(Id != null && Id._id != null && existing.Contains(Id._id.ToString()) == false)
+                    foreach (var Id in Ids)
                     {
-                        existing.Add(Id._id.ToString());
+                        if (Id != null && Id._id != null && existing.Contains(Id._id.ToString()) == false)
+                        {
+                            existing.Add(Id._id.ToString());
+                        }
                     }
                 }
 
