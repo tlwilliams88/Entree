@@ -380,7 +380,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 			else
 				mustClause.Add(new { match = new { isproprietary = false } }); //No CustomerId (Guest), filter out all proprietary items
 
-            if (!string.IsNullOrEmpty(department)) {
+            if (!string.IsNullOrEmpty(department) && department.Equals("0") == false) {
                 mustClause.Add(new { match = new { @parentcategoryid = department } });
             }
 
