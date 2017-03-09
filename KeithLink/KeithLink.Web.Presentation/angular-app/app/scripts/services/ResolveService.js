@@ -64,56 +64,23 @@ angular.module('bekApp')
 
       // returns valid list id
       validateList: function(listId, defaultList) {
-        var selectedList = ListService.findListById(listId);
-        if (!selectedList && defaultList) {
-          selectedList = ListService.findList(defaultList, true);
-        }
-        if (!selectedList) {
-          selectedList = ListService.getFavoritesList();
-        }
+        var selectedList;
 
-        return selectedList.listid;
+        if(listId){
+          ListService.getListWithItems(listId).then(function(resp){
+            return selectedList = resp.listid;
+          });
+        } else if(!listId && defaultList){
+          ListService.getListWithItems(defaultList).then(function(resp){
+            return selectedList = resp.listid;
+          });
+        } else {
+          ListService.getFavoritesList().then(function(resp){
+            return selectedList = resp.listid;
+          });
+        }
+        
       }
-
-      // selectDefaultBasket: function(id, changeOrders) {
-      //   var selectedBasket;
-
-      //   // check valid cart id
-      //   var selectedCart = CartService.findCartById(id);
-      //   if (selectedCart) {
-      //     selectedBasket = CartService.getCart(selectedCart.id);
-      //   }
-
-      //   // check valid change order number
-      //   var selectedChangeOrder = OrderService.findChangeOrderByOrderNumber(changeOrders, id);
-      //   if (!selectedCart && selectedChangeOrder) {
-      //     selectedBasket = selectedChangeOrder;
-      //   }
-
-      //   // // if invalid id, select a cart
-      //   // var defaultCart = CartService.getSelectedCart();
-      //   // if (!selectedCart && !selectedChangeOrder && defaultCart) {
-      //   //   selectedBasket = CartService.getCart(defaultCart.id);
-      //   // }
-
-      //   // // default to change order if no carts exist
-      //   // var defaultChangeOrder = changeOrders[0];
-      //   // if (!selectedCart && !selectedChangeOrder && !defaultCart && defaultChangeOrder) {
-      //   //   selectedBasket = defaultChangeOrder;
-      //   // }
-
-      //   return selectedBasket;
-      // },
-
-      // selectDefaultList: function(listId) {
-      //   // check for valid listId, go to favorites list by default
-      //   var selectedList = ListService.findListById(listId);
-      //   if (!selectedList) {
-      //     selectedList = ListService.getFavoritesList();
-      //   }
-
-      //   return ListService.getList(selectedList.listid);
-      // }
 
     };
  

@@ -336,7 +336,10 @@ angular.module('bekApp')
           if (!isNaN(parseInt(listId))) {
             listId = parseInt(listId);
           }
-          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
+          Service.getAllLists().then(function(){
+            return UtilityService.findObjectByField(Service.lists, 'listid', listId);
+          })
+          
         },
 
         /********************

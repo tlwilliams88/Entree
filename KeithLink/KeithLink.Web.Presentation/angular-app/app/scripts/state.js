@@ -267,52 +267,54 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          return ResolveService.validateList($stateParams.listId);
+        validListId: ['$stateParams', 'ResolveService', 'lists', '$filter', function($stateParams, ResolveService, lists, $filter) {
+          return $filter('filter')(lists, {listid: $stateParams.listId})[0].listid;
         }],
         originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, validListId, lists, ListService, DateService, Constants, LocalStorage, ENV) {
          
-          var last = LocalStorage.getLastList();
-          var stillExists = false;
-
-          var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
-          var params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'};
+          var last = LocalStorage.getLastList(),
+              stillExists = false,
+              pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
+              params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'},
+              listIdtoBeUsed = '';
    
           ListService.lists.forEach(function(list){
-            if(last && last.listId && list.listid === last.listId.listid){
-               stillExists = true;
-               var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
-               if(last.timeset < timeoutDate){         
-                  stillExists = false;
-                 }
+            if(last && last.listId){
+              stillExists = true;
+              var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
+              if(last.timeset < timeoutDate){         
+                stillExists = false;
+              }
             }
           });
 
-          var listIdtoBeUsed = '';
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
-             last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-             LocalStorage.setLastList(last);
-             listIdtoBeUsed = last.listId.listid ? last.listId.listid : last.listId;
+            last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
+            LocalStorage.setLastList(last);
+            listIdtoBeUsed = last.listId.listid ? last.listId.listid : last.listId;
           }
           else{
-             LocalStorage.setLastList({});
-             listIdtoBeUsed = validListId;
+            LocalStorage.setLastList({});
+            listIdtoBeUsed = validListId;
            }
 
           var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
 
-         if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
-             ListService.getParamsObject(params, 'lists').then(function(storedParams){
-             $stateParams.sortingParams = storedParams;
-             params = storedParams;
+          if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
+              ListService.getParamsObject(params, 'lists').then(function(storedParams){
+              $stateParams.sortingParams = storedParams;
+              params = storedParams;
             });
           }
+
+          listIdtoBeUsed = listIdtoBeUsed ? listIdtoBeUsed : $filter('filter')(ListService.lists, {name: 'History'})[0].listid;
+
           if(listIdtoBeUsed == 'nonbeklist'){
             return ListService.getCustomInventoryList();
           } else {
             return ListService.getList(listIdtoBeUsed, params);
-            }
+          }
         
         }]
       }
