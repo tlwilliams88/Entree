@@ -33,7 +33,7 @@ BEGIN
 		, UPC
 		, MfrNumber
 		, MfrName
-		, (SELECT b.ExtendedDescription FROM ETL.Staging_Brands b WHERE b.Brand = i.Brand) As BrandDescription
+		, (SELECT CASE WHEN b.ExtendedDescription = '' THEN b.Brand ELSE b.ExtendedDescription END FROM ETL.Staging_Brands b WHERE b.Brand = i.Brand) As BrandDescription
 		, MaxSmrt
 		, Cases
 		, Package
