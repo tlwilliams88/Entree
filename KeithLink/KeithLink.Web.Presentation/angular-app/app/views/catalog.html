@@ -89,10 +89,10 @@
     		<ul class="horizontal-slide hidden-xs hidden-sm">
     			<li ng-repeat="category in categories | orderBy: ['id']" class="item-holder">
     				<div ng-if="category.name != 'All'" class="featured-item text-center">
-    					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, brands: category.name })" ng-src="{{category.category_image.url}}" alt="image">
+    					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
     					<div class="featured-item__detail">
     						{{::category.name}}
-    						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, brands: category.name })" class="text-uppercase">view category</a>
+    						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="text-uppercase">view category</a>
     					</div>
     				</div>
     			</li>
@@ -113,10 +113,10 @@
         <ul class="horizontal-slide hidden-xs hidden-sm">
     			<li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
     				<div class="featured-item text-center">
-    					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brands: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
+    					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
     					<div class="featured-item__detail">
     						{{::brand.extended_description}}
-    						<a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brands: brand.extended_description })" class="text-uppercase">view brand</a>
+    						<a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" class="text-uppercase">view brand</a>
     					</div>
     				</div>
     			</li>
