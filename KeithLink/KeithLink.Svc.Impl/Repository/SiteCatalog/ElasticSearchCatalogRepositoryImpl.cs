@@ -1321,7 +1321,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             {
                 BuildTempZoneFacet(oFacetValue, facetValue);
             }
-            facet.Add(facetValue as ExpandoObject);
+            if (facetValue["name"] != null && facetValue["name"].ToString().Length > 0)
+            { // filter out the mystery "noname" facets
+                facet.Add(facetValue as ExpandoObject);
+            }
         }
 
         private void BuildTempZoneFacet(dynamic oFacetValue, IDictionary<string, object> facetValue)
@@ -1333,7 +1336,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         {
             if (oFacetValue["brand_meta"]["buckets"].Count > 0)
             {
-                facetValue.Add(new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].ToString()));
+                facetValue.Add
+                    (new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].ToString()));
             }
             else
             {
