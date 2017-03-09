@@ -9,7 +9,7 @@
 angular.module('bekApp')
 .directive('passwordRequirements', function () {
     
-    var EMAIL_REGEX = /^[^&]*$/;
+    var EMAIL_REGEX = /^[^& ]*$/;
 
     return {
       require: 'ngModel',
