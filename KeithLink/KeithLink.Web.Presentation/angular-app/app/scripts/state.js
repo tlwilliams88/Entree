@@ -177,7 +177,13 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:dept/:deptName/:brands',
+      url: ':type/:id/:deptName',
+      params: {
+        brand: null,
+        category: null,
+        dept: null,
+        deptName: null
+      },
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
       data: {
@@ -186,10 +192,6 @@ angular.module('bekApp')
       resolve: {
         security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
           var customerRecord = LocalStorage.getCurrentCustomer();
-
-          if( $stateParams.brands.length && $stateParams.type != 'housebrand') {
-            $stateParams.brands = '';
-          }
 
           if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
             return $q.reject('Customer Cannot View UNFI Items.');

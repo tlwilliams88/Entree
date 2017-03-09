@@ -45,6 +45,7 @@ angular.module('bekApp')
 
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
+    $scope.displayText = $stateParams.brand ? $stateParams.brand : $stateParams.category;
 
     $scope.selectedSortParameter = 'Relevance';
     $scope.sortParametervalue = '';
@@ -329,7 +330,7 @@ angular.module('bekApp')
 
       $scope.breadcrumbs = [];
       $scope.filterCount = 0;
-      var displayText = $stateParams.brands ? $stateParams.brands : $scope.paramId;
+      var displayText = $scope.displayText ? $scope.displayText : $scope.paramId;
 
       // search term
       if ($scope.paramType === 'search') {
