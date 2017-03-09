@@ -593,8 +593,12 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             AdditionalData data = new AdditionalData();
             data.Brand = row.GetString("Brand");
             data.BrandNotAnalyzed = row.GetString("Brand");
-            data.BrandDescription = row.GetString("BrandDescription");
-            data.BrandDescriptionNotAnalyzed = row.GetString("BrandDescription");
+            data.BrandDescription = (row.GetString("BrandDescription").Length > 0)? 
+                                     row.GetString("BrandDescription") : 
+                                     row.GetString("Brand");
+            data.BrandDescriptionNotAnalyzed = (row.GetString("BrandDescription").Length > 0) ?
+                                     row.GetString("BrandDescription") :
+                                     row.GetString("Brand");
             data.BrandControlLabel = row.GetString("MaxSmrt");
             data.Buyer = row.GetString("Buyer");
             data.Cases = row.GetString("Cases");
