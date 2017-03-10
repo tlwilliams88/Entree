@@ -1810,6 +1810,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
 
+            //decode user passwords
+            originalPassword = System.Web.HttpUtility.UrlDecode(originalPassword);
+            newPassword = System.Web.HttpUtility.UrlDecode(newPassword); 
+
             AssertPasswordLength(newPassword);
             AssertPasswordComplexity(newPassword);
             AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
