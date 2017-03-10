@@ -268,7 +268,11 @@ angular.module('bekApp')
       },
       resolve: {
         validListId: ['$stateParams', 'ResolveService', 'lists', '$filter', function($stateParams, ResolveService, lists, $filter) {
-          return $filter('filter')(lists, {listid: $stateParams.listId})[0].listid;
+          var list = $filter('filter')(lists, {listid: $stateParams.listId})[0];
+
+          if(list) {
+            return list.listid;
+          }
         }],
         originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, validListId, lists, ListService, DateService, Constants, LocalStorage, ENV) {
@@ -280,7 +284,7 @@ angular.module('bekApp')
               listIdtoBeUsed = '';
    
           ListService.lists.forEach(function(list){
-            if(last && last.listId){
+            if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
               var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
               if(last.timeset < timeoutDate){         
@@ -308,7 +312,12 @@ angular.module('bekApp')
             });
           }
 
-          listIdtoBeUsed = listIdtoBeUsed ? listIdtoBeUsed : $filter('filter')(ListService.lists, {name: 'History'})[0].listid;
+          if(!listIdtoBeUsed){
+            var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
+                favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
+
+            listIdtoBeUsed =  historyList.length ? historyList[0].listid : favoritesList[0].listid;
+          }
 
           if(listIdtoBeUsed == 'nonbeklist'){
             return ListService.getCustomInventoryList();

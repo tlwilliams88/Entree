@@ -55,7 +55,7 @@ angular.module('bekApp')
         name: 'Recently Added Items',
         filter: {
           field: 'delta',
-          value: 'newly added'
+          value: 'newly added active'
         }
       },
       {
@@ -71,7 +71,7 @@ angular.module('bekApp')
           condition: 'or',
           filter:[{
             field: 'delta',
-            value: 'newly added'
+            value: 'newly added active'
           },
           {
             field: 'delta',
@@ -360,7 +360,8 @@ angular.module('bekApp')
           listId: listid,          
           timeset: timeset
       };
-     
+      
+      $stateParams.listId = listid;
       LocalStorage.setLastList(lastlist);
       if($scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm) {
