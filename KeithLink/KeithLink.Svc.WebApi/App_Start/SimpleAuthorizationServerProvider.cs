@@ -42,14 +42,11 @@ namespace KeithLink.Svc.WebApi
 
             string errMsg = null;
 
-
             // determine if we are authenticating an internal or external user
             if (ProfileHelper.IsInternalAddress(context.UserName)) {
                 IUserDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserDomainRepository)) as IUserDomainRepository;
 
-                bool success = await Task.Run<bool>(() => ADRepo.AuthenticateUser(context.UserName,
-                                                                                  System.Web.HttpUtility.UrlDecode(context.Password), 
-                                                                                  out errMsg));
+                bool success = await Task.Run<bool>(() => ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg));
 
                 if (!success) {
                     context.SetError("invalid_grant", errMsg);
@@ -58,9 +55,7 @@ namespace KeithLink.Svc.WebApi
             } else {
                 ICustomerDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(ICustomerDomainRepository)) as ICustomerDomainRepository;
 
-                AuthenticationModel authentication = await Task.Run<AuthenticationModel>
-                    (() => ADRepo.AuthenticateUser(context.UserName,
-                                                   System.Web.HttpUtility.UrlDecode(context.Password)));
+                AuthenticationModel authentication = await Task.Run<AuthenticationModel>(() => ADRepo.AuthenticateUser( context.UserName, context.Password ));
 
                 if (!authentication.Status.Equals( AuthenticationStatus.Successful ) && !authentication.Status.Equals( AuthenticationStatus.PasswordExpired ) ) {
                     context.SetError( "invalid_grant", authentication.Message );

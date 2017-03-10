@@ -10,13 +10,35 @@ namespace KeithLink.Svc.WebApi.Models {
         /// Email
         /// </summary>
         public string Email { get; set; }
+        private string _originalPassword;
         /// <summary>
         /// OriginalPassword
         /// </summary>
-        public string OriginalPassword { get; set; }
+        public string OriginalPassword
+        {
+            get
+            {
+                return System.Web.HttpUtility.UrlDecode(_originalPassword);
+            }
+            set
+            {
+                _originalPassword = value;
+            }
+        }
+        private string _newPassword;
         /// <summary>
         /// NewPassword
         /// </summary>
-        public string NewPassword { get; set; }
+        public string NewPassword
+        {
+            get
+            {
+                return System.Web.HttpUtility.UrlDecode(_newPassword);
+            }
+            set
+            {
+                _newPassword = value;
+            }
+        }
     }
 }
