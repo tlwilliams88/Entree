@@ -60,6 +60,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_BEKDB_CONNECTIONSTRING = "BEKDBContext";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
         private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
+        private const string KEY_BRANDS_EXCLUDED = "BrandsToExclude";
         private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
         private const string KEY_CORS_ENABLED_DOMAINS = "CorsEnabledDomains";
         private const string KEY_CORS_ENABLED_HEADERS = "CorsEnabledHeaders";
@@ -563,6 +564,10 @@ namespace KeithLink.Svc.Impl
         public static string BrandAssetsUrl
         {
             get { return DBAppSettingsRepositoryImpl.GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
+        }
+
+        public static List<string> BrandsToExclude {
+            get { return GetCommaSeparatedValues(DBAppSettingsRepositoryImpl.GetValue(KEY_BRANDS_EXCLUDED, string.Empty));  }
         }
 
         public static List<string> CacheServersEndpoints
