@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration16.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration15.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration14.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
@@ -78,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="SQL\v2017.1.0\up\templates\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
+    <Content Include="SQL\v2017.2.0\down\appsettings\BrandsToExclude_down.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ProcessContractItemList_down.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadFullItemData_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -90,6 +92,7 @@
     <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.WriteOrderListAssociation_down.sql" />
     <Content Include="SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql" />
     <Content Include="SQL\v2017.2.0\down\tables\Orders.OrderedFromList_down.sql" />
+    <Content Include="SQL\v2017.2.0\up\appsettings\BrandsToExclude_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ProcessContractItemList_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql" />
@@ -168,6 +171,7 @@
     <Content Include="SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql" />
     <Content Include="SQL\v2017.2.0\up\templates\Configuration.AppSettings.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(ProjectDir)SQL" "$(TargetDir)SQL" /E /Y</PostBuildEvent>

@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Repository.Brands
 
         public BrandsReturn GetHouseBrands()
         {
-           
+
             var response = _esHelper.Client.Search<Brand>(s => s
                 .From(0)
                 .Size(50)
@@ -41,7 +41,14 @@ namespace KeithLink.Svc.Impl.Repository.Brands
                 r.ImageURL = String.Format("{0}/{1}.jpg", Configuration.BrandAssetsUrl, r.BrandControlLabel.ToLower());
             }
 
-            BrandsReturn results = new BrandsReturn { Brands = response.Documents.ToList<Brand>() };
+            List<string> excludedBrands = Configuration.BrandsToExclude;
+
+            List<Brand> filteredBrands = (from brand in response.Documents.ToList<Brand>()
+                                          where !(from b in excludedBrands
+                                                  select b.ToString()).Contains(brand.BrandControlLabel, StringComparer.InvariantCultureIgnoreCase)
+                                          select brand).ToList<Brand>();
+
+            BrandsReturn results = new BrandsReturn { Brands = filteredBrands };
             return results;
         }
 
