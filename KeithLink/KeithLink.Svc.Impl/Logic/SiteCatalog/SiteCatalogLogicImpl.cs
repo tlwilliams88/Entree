@@ -428,6 +428,35 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
+        public ShallowProduct GetShallowProductById(string branchId, string id, string catalogType)
+        {
+            branchId = GetBranchId(branchId, catalogType);
+
+            Product prod = _catalogRepository.GetProductById(branchId, id);
+
+            ShallowProduct ret = null;
+
+            if (prod != null)
+            {
+                ret = new ShallowProduct()
+                {
+                    ItemNumber = prod.ItemNumber,
+                    Name = prod.Name,
+                    Description = prod.Description,
+                    Brand = prod.BrandExtendedDescription,
+                    Manufacturer = prod.ManufacturerName,
+                    Pack = prod.Pack,
+                    Size = prod.Size,
+                    PackSize = prod.PackSize,
+                    Upc = prod.UPC,
+                    Category = prod.CategoryName,
+                    Class = prod.ItemClass
+                };
+            }
+
+            return ret;
+        }
+
         public Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile) {
             Product ret = null;
             if (idorupc.Length <= 6)
