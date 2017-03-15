@@ -286,7 +286,7 @@
 
   <div class="row main-content">
     <div class="col-sm-12">
-      <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
+      <div class="row hidden-print user-bar-mobile main-user-bar visible-xs visible-sm">
         <ul class="left-mobile-menu">
           <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li class="mobile-menu-item"><span class="icon-back"></span></li></a>
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li class="mobile-menu-item"><span class="icon-list2"></span></li></a>
@@ -346,7 +346,7 @@
           </li>
         </ul>
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.home" />
-        <img src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px show-small-icon-375px" ui-sref="menu.home" />
+        <img src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.home" />
       </div>
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print">
       <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>

@@ -1,8 +1,7 @@
 .user-bar {
   font-weight: 300;
-  background-image: url('../images/Background_Header.jpg');
-  background-position: 30% 60%;
-  background-repeat: no-repeat;
+  background-image: url(../images/Background_Header.jpg);
+  background-position: 25% 60%;
   padding: 15px;
 
   .user-bar__notification {
@@ -59,8 +58,11 @@
   border-bottom: 1px solid $color-border;
 }
 
+.main-user-bar {
+  background-image: url(../images/Background_Header.jpg);
+}
+
 .user-bar-mobile {
-  background-image: url('../images/Background_Header.jpg');
 
   text-align: center;
 
