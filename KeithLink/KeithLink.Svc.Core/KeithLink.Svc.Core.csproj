@@ -376,6 +376,7 @@
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
+    <Compile Include="Models\SiteCatalog\ShallowProduct.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItemReportModel.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartReportModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />

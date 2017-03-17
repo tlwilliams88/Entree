@@ -261,6 +261,46 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return ret;
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [ApiKeyedRoute("catalog/external/{catalogType}/{branchId}/product/{id}")]
+        public OperationReturnModel<ShallowProduct> GetShallowProductById(string catalogType, string branchId, string id)
+        {
+            OperationReturnModel<ShallowProduct> ret = new OperationReturnModel<ShallowProduct>();
+            try
+            {
+                if(Svc.Impl.Configuration.ServePublicApi)
+                {
+                    ShallowProduct prod = _catalogLogic.GetShallowProductById(branchId,
+                                                                              id,
+                                                                              catalogType);
+
+                    if (prod == null)
+                    {
+                        ret.ErrorMessage = "No product found";
+                        ret.IsSuccess = false;
+                    }
+                    else
+                    {
+                        ret.SuccessResponse = prod;
+                        ret.IsSuccess = true;
+                    }
+                }
+                else
+                {
+                    ret.ErrorMessage = "Public Serve turned OFF";
+                    ret.IsSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetProductById", ex);
+            }
+            return ret;
+        }
+
         /// <summary>
         /// Get Product by Id or UPC
         /// </summary>
