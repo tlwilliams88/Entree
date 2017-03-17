@@ -116,7 +116,11 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                                     UserProfile profile)
         {
             // get just the itemnumber and catalogid of the products matching the query
+            searchModel.Size = 1; // set size 1 to to min results; we want total
             ProductsReturn ret = _catalogRepository.GetProductNumbersByCategory(newCatalog, categoryName, searchModel);
+
+            searchModel.Size = ret.TotalCount; // set size total from before
+            ret = _catalogRepository.GetProductNumbersByCategory(newCatalog, categoryName, searchModel);
 
             FilterPreviouslyOrderedProducts(catalogInfo, profile, ret);
 
@@ -233,8 +237,12 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                                   UserSelectedContext tempCatalogInfo,
                                                                   UserProfile profile)
         {
+            searchModel.Size = 1; // set size to 1 to make results small; we want total
             ProductsReturn ret = _catalogRepository.GetProductNumbersBySearch(tempCatalogInfo, search, searchModel);
 
+            searchModel.Size = ret.TotalCount; // set size to total to get all
+            ret = _catalogRepository.GetProductNumbersBySearch(tempCatalogInfo, search, searchModel);
+            
             FilterPreviouslyOrderedProducts(catalogInfo, profile, ret);
 
             // now go back and fill out the rest of the product information on those that are recently ordered
@@ -304,7 +312,11 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                                                                        SearchInputModel searchModel,
                                                                        UserProfile profile)
         {
+            searchModel.Size = 1; // set size to 1; we want total
             ProductsReturn returnValue = _catalogRepository.GetHouseProductNumbersByBranch(catalogInfo, brandControlLabel, searchModel);
+
+            searchModel.Size = returnValue.TotalCount; // set size to total
+            returnValue = _catalogRepository.GetHouseProductNumbersByBranch(catalogInfo, brandControlLabel, searchModel);
 
             FilterPreviouslyOrderedProducts(catalogInfo, profile, returnValue);
 

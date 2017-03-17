@@ -950,8 +950,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 products.Add(new Product() { ItemNumber = oProd._id, CatalogId = oProd._index });
             }
             ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
+            int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
 
-            return new ProductsReturn() { Products = products, Facets = facets, Count = products.Count };
+            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
 
         private int GetCountProductFromElasticSearch(string branch, bool listonly, string searchBody, object searchBodyD = null)
