@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants',
-    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants', 'LocalStorage',
+    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants, LocalStorage) {
  
     var Service = {
       
@@ -265,6 +265,13 @@ angular.module('bekApp')
 
         if(list){
           cart.listId = list;
+          var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
+              lastlist ={
+                listId: cart.listId,          
+                timeset: timeset
+              };
+         
+          LocalStorage.setLastList(lastlist);
         }
         
         return Cart.update(params, cart).$promise.then(function(response) {
