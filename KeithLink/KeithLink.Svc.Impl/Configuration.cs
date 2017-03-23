@@ -57,6 +57,8 @@ namespace KeithLink.Svc.Impl
 
         // Elasticsearch / Commerce Server / Application specific
         private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
+        private const string KEY_VALID_PUBLIC_API_TOKENS = "ValidPublicApiTokens";
+        private const string KEY_SERVE_PUBLIC_API = "ServePublicApi";
         private const string KEY_BEKDB_CONNECTIONSTRING = "BEKDBContext";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
         private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
@@ -478,6 +480,24 @@ namespace KeithLink.Svc.Impl
             {
                 string val = DBAppSettingsRepositoryImpl.GetValue(KEY_ALLOWED_API_KEYS, string.Empty);
                 return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static List<string> ValidPublicApiTokens
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_VALID_PUBLIC_API_TOKENS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static bool ServePublicApi
+        {
+            get
+            {
+                string check = DBAppSettingsRepositoryImpl.GetValue(KEY_SERVE_PUBLIC_API, "False");
+                return bool.Parse(check);
             }
         }
 

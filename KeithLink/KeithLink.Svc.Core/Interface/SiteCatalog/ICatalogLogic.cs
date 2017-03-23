@@ -16,6 +16,8 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 
         List<Division> GetDivisions();
 
+        ShallowProduct GetShallowProductById(string branchId, string id, string catalogType);
+            
         Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType);
 
         Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile);
