@@ -471,9 +471,21 @@ angular.module('bekApp')
 
           listId = listId ? listId : LocalStorage.getLastList();
           listHeader = $filter('filter')(lists, {listid: listId.listId})[0];
-          listHeader = listHeader ? listHeader : historyList;
-          listHeader = listHeader ? listHeader : favoritesList;
-          listId = listId && listId > 0 ? listId : listHeader.listid;
+
+          if(!listHeader) {
+            
+            if(historyList) {
+              listHeader = historyList;
+            } else {
+              listHeader = favoritesList;
+            }
+            
+          }
+
+          if(!listId) {
+            listId = listHeader.listid;
+          }
+
 
           if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
