@@ -45,6 +45,7 @@ using KeithLink.Svc.Core;
 using System.IO;
 using Microsoft.Reporting.WinForms;
 using System.Reflection;
+using KeithLink.Svc.Impl.Migrations;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -66,6 +67,7 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IEventLogRepository _log;
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
+        private readonly IUserProfileLogic _userLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IOrderedFromListRepository _order2ListRepo;
 
@@ -80,7 +82,8 @@ namespace KeithLink.Svc.Impl.Logic
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
                                      INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository order2ListRepo)
+                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository order2ListRepo,
+                                     IUserProfileLogic userLogic)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -100,6 +103,7 @@ namespace KeithLink.Svc.Impl.Logic
             _activeCartLogic = userActiveCartLogic;
             _externalCatalogRepo = externalCatalogRepo;
             _order2ListRepo = order2ListRepo;
+		    _userLogic = userLogic;
 		}
         #endregion
 
@@ -807,13 +811,13 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem());
 		}
 
-		public List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, List<QuickAddItemModel> productsToValidate)
+		public List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, UserProfile user, List<QuickAddItemModel> productsToValidate)
 		{
 			int totalProcessed = 0;
 			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
 			while (totalProcessed < productsToValidate.Count)
-			{
+			{  
 				var batch = productsToValidate.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
 
 				var tempProducts = catalogLogic.GetProductsByIdsWithPricing(catalogInfo, batch);
@@ -821,10 +825,15 @@ namespace KeithLink.Svc.Impl.Logic
 				products.Products.AddRange(tempProducts.Products);
 				totalProcessed += 50;
 			}
-
+      
             if(products.Products.Count() < productsToValidate.Count())
             {
-                LookupUnfoundProductsInExternalCatalogs(catalogInfo, productsToValidate, products);
+                Customer customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+                if (_userLogic.CheckCanViewUNFI(user, catalogInfo.CustomerId, catalogInfo.BranchId))
+                {
+                    LookupUnfoundProductsInExternalCatalogs(catalogInfo, productsToValidate, products);
+                }
             }
 
             var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
