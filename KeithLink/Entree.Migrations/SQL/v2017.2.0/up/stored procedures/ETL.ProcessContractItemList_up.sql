@@ -78,6 +78,20 @@ BEGIN
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
+       UPDATE
+             [BEK_Commerce_AppData].[List].[Lists]
+             SET 
+                    DisplayName = 'Contract - ' + ltrim(rtrim(cb.BidNumber))
+             FROM 
+                    [BEK_Commerce_AppData].[List].[Lists] l
+             INNER JOIN 
+                    [BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+                    ON  l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+                           AND l.CustomerId = ltrim(rtrim(cb.CustomerNumber))
+             WHERE
+                    l.DisplayName <> 'Contract - ' + ltrim(rtrim(cb.BidNumber))
+                    AND [Type] = 2
+
 	UPDATE
 		[BEK_Commerce_AppData].[List].[ListItems]
 		SET 
