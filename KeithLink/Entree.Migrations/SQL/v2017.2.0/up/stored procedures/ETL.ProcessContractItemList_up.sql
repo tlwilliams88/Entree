@@ -156,6 +156,6 @@ BEGIN
 					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerId 
 					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
 			)
-			AND ToDate < DATEADD(day, -13, GETDATE())
-
+			--AND ToDate < DATEADD(day, -13, GETDATE())
+			--remove delayed delete
 END
