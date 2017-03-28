@@ -45,7 +45,6 @@ using KeithLink.Svc.Core;
 using System.IO;
 using Microsoft.Reporting.WinForms;
 using System.Reflection;
-using KeithLink.Svc.Impl.Migrations;
 
 namespace KeithLink.Svc.Impl.Logic
 {
