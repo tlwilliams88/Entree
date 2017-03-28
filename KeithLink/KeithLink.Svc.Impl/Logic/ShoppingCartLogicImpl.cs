@@ -67,9 +67,8 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IEventLogRepository _log;
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
-        private readonly IUserProfileLogic _userLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
-        private readonly IOrderedFromListRepository _order2ListRepo;
+        private readonly IOrderedFromListRepository _orderedFromListRepository;
 
         private const string CACHE_GROUPNAME = "ShoppingCart";
         private const string CACHE_NAME = "ProcessingCart";
@@ -82,8 +81,7 @@ namespace KeithLink.Svc.Impl.Logic
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
                                      INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository order2ListRepo,
-                                     IUserProfileLogic userLogic)
+                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -102,8 +100,7 @@ namespace KeithLink.Svc.Impl.Logic
             this.externalServiceRepository = externalServiceRepository;
             _activeCartLogic = userActiveCartLogic;
             _externalCatalogRepo = externalCatalogRepo;
-            _order2ListRepo = order2ListRepo;
-		    _userLogic = userLogic;
+            _orderedFromListRepository = orderedFromListRepository;
 		}
         #endregion
 
@@ -415,7 +412,7 @@ namespace KeithLink.Svc.Impl.Logic
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
 
-            try { cart.ListId = _order2ListRepo.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
+            try { cart.ListId = _orderedFromListRepository.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
 
             return cart;
 		}
@@ -512,7 +509,7 @@ namespace KeithLink.Svc.Impl.Logic
             returnOrders.NumberOfOrders = catalogList.Count();
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
 
-            OrderedFromList o2l = _order2ListRepo.Read(cartId.ToString());
+            OrderedFromList o2l = _orderedFromListRepository.Read(cartId.ToString());
 
             //make list of baskets
             foreach (var catalogId in catalogList)
@@ -551,7 +548,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                     if(o2l != null && o2l.ListId != null)
                     {
-                        _order2ListRepo.Write(new OrderedFromList()
+                        _orderedFromListRepository.Write(new OrderedFromList()
                         {
                             ControlNumber = orderNumber,
                             ListId = o2l.ListId.Value
@@ -729,10 +726,10 @@ namespace KeithLink.Svc.Impl.Logic
             updateCart.RequestedShipDate = cart.RequestedShipDate;
 			updateCart.PONumber = cart.PONumber;
 
-            OrderedFromList o2l = _order2ListRepo.Read(cart.CartId.ToString());
+            OrderedFromList o2l = _orderedFromListRepository.Read(cart.CartId.ToString());
             if (o2l == null && cart.ListId != null)
             {
-                _order2ListRepo.Write(new OrderedFromList()
+                _orderedFromListRepository.Write(new OrderedFromList()
                 {
                     ControlNumber = cart.CartId.ToString(),
                     ListId = cart.ListId.Value
@@ -740,10 +737,10 @@ namespace KeithLink.Svc.Impl.Logic
             }
             else if(o2l != null && o2l.ListId != cart.ListId)
             {
-                _order2ListRepo.Delete(cart.CartId.ToString());
+                _orderedFromListRepository.Delete(cart.CartId.ToString());
                 if (cart.ListId != null)
                 {
-                    _order2ListRepo.Write(new OrderedFromList()
+                    _orderedFromListRepository.Write(new OrderedFromList()
                     {
                         ControlNumber = cart.CartId.ToString(),
                         ListId = cart.ListId.Value
@@ -828,9 +825,7 @@ namespace KeithLink.Svc.Impl.Logic
       
             if(products.Products.Count() < productsToValidate.Count())
             {
-                Customer customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-
-                if (_userLogic.CheckCanViewUNFI(user, catalogInfo.CustomerId, catalogInfo.BranchId))
+                if (CheckCanViewUNFI(user, catalogInfo.CustomerId, catalogInfo.BranchId))
                 {
                     LookupUnfoundProductsInExternalCatalogs(catalogInfo, productsToValidate, products);
                 }
@@ -901,6 +896,55 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 products.Products.AddRange(tempProducts.Products);
             }
+        }
+
+        private bool CheckCanViewUNFI(UserProfile user, string customernumber, string customerbranch)
+        {
+            if ((user != null) &&
+                (user.IsInternalUser) &&
+                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIBEKUsers.Contains(user.UserName, StringComparer.CurrentCultureIgnoreCase)))
+            {
+                return true;
+            }
+            if ((user != null) &&
+                (user.RoleName.Equals("dsr", StringComparison.CurrentCultureIgnoreCase)) &&
+                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIDSRs.Contains(user.UserName, StringComparer.CurrentCultureIgnoreCase)))
+            {
+                return true;
+            }
+            if (customernumber != null && customerbranch != null)
+            {
+                if (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIBranches.Contains(customerbranch, StringComparer.CurrentCultureIgnoreCase))
+                {
+                    return true;
+                }
+
+                Customer existingCustomer = customerRepository.GetCustomerByCustomerNumber(customernumber, customerbranch);
+
+                if (existingCustomer == null)
+                {
+                    _log.WriteWarningLog(string.Format("customer lookup; customer or its DSR are null with {0} on branch {1}", customernumber, customerbranch));
+                }
+                else
+                {
+                    if (existingCustomer.Dsr == null)
+                    {
+                        _log.WriteWarningLog(string.Format("customer lookup; customer or its DSR are null with {0} on branch {1}", customernumber, customerbranch));
+                    }
+                }
+
+                if (existingCustomer != null && existingCustomer.Dsr != null && existingCustomer.Dsr.Name != null &&
+                    KeithLink.Svc.Impl.Configuration.WhiteListedUNFIDSRs.Contains(existingCustomer.Dsr.Name, StringComparer.CurrentCultureIgnoreCase))
+                {
+                    return true;
+                }
+
+                if (KeithLink.Svc.Impl.Configuration.WhiteListedUNFICustomers.Contains(customernumber))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         #endregion
