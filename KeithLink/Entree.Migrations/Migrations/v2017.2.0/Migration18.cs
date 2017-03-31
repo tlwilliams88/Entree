@@ -13,18 +13,20 @@ namespace Entree.Migrations
     {
         public override void Up()
         {
-            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignHeader.sql");
-            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignItemByHeader.sql");
-            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignHeader.sql");
-            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader.sql");
+            Execute.Script(@"SQL\v2017.2.0\up\tables\Marketing.CatalogCampaignHeader_up.sql");
+            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignHeader_up.sql");
+            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignItemByHeader_up.sql");
+            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignHeader_up.sql");
+            Execute.Script(@"SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader_up.sql");
         }
 
         public override void Down()
         {
-            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignHeader.sql");
-            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignItemByHeader.sql");
-            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignHeader.sql");
-            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader.sql");
+            Execute.Script(@"SQL\v2017.2.0\down\tables\Marketing.CatalogCampaignHeader_down.sql");
+            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignHeader_down.sql");
+            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignItemByHeader_down.sql");
+            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignHeader_down.sql");
+            Execute.Script(@"SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader_down.sql");
         }
     }
 }

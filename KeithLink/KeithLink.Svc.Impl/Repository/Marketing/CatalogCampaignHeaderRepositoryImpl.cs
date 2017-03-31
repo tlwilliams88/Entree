@@ -79,6 +79,7 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
                     COMMAND_ADD,
                     new
                     {
+                        @Name = header.Name,
                         @Description = header.Description,
                         @StartDate = header.StartDate,
                         @EndDate = header.EndDate,
@@ -93,6 +94,7 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
                     COMMAND_UPDATE,
                     new
                     {
+                        @Name = header.Name,
                         @Description = header.Description,
                         @Active = header.Active,
                         @StartDate = header.StartDate,

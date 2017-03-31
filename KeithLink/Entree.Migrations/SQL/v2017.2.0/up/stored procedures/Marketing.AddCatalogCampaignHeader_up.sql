@@ -1,13 +1,13 @@
-﻿CREATE PROCEDURE [Marketing].[UpdateCatalogCampaignHeader]
+﻿CREATE PROCEDURE [Marketing].[AddCatalogCampaignHeader]
 -- =============================================
 -- Author:		Brett Killins
 -- Create date: 2/28/2017
 -- Description:	<Description,,>
 -- =============================================
-			@Description	VARCHAR (250),
+			@Name          	VARCHAR (250),
+			@Description	VARCHAR (5000),
 			@StartDate		DATETIME,
 			@EndDate		DATETIME,
-			@Active			BIT,
 			@Uri			VARCHAR (250)
 AS
 BEGIN
@@ -15,12 +15,20 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	UPDATE [Marketing].[CatalogCampaignHeader]
-	SET [Description] = @Description
-		, [Active] = @Active
-		, [StartDate] = @StartDate
-		, [EndDate] = @EndDate
-	WHERE [Uri] = @Uri
+	INSERT INTO [Marketing].[CatalogCampaignHeader]
+			   ([Name]
+			   ,[Description]
+			   ,[Active]
+			   ,[StartDate]
+			   ,[EndDate]
+			   ,[Uri])
+		 VALUES
+			   (@Name
+			   ,@Description
+			   ,1
+			   ,@StartDate
+			   ,@EndDate
+			   ,@Uri)
 
     SELECT [Id]
 	FROM [Marketing].[CatalogCampaignHeader]

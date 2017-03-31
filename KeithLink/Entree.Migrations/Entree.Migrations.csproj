@@ -90,14 +90,16 @@
     <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadAllDepartments_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignHeader.sql" />
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignItemByHeader.sql" />
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignHeader.sql" />
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignHeader_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignItemByHeader_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.GetAllCatalogCampaignHeader_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignHeader_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader_down.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.PurgeOrderListAssociation_down.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.ReadOrderListAssociation_down.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.WriteOrderListAssociation_down.sql" />
     <Content Include="SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql" />
+    <Content Include="SQL\v2017.2.0\down\tables\Marketing.CatalogCampaignHeader_down.sql" />
     <Content Include="SQL\v2017.2.0\down\tables\Orders.OrderedFromList_down.sql" />
     <Content Include="SQL\v2017.2.0\up\appsettings\ValidPublicApiTokens_up.sql" />
     <Content Include="SQL\v2017.2.0\up\appsettings\BrandsToExclude_up.sql" />
@@ -105,13 +107,15 @@
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql" />
     <Content Include="SQL\v2017.2.0\up\appsettings\Configuration.AppSettings.sql" />
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignItemByHeader.sql" />
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader.sql" />
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignHeader.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.GetAllCatalogCampaignHeader_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignItemByHeader_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignHeader_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.PurgeOrderListAssociation_up.sql" />
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignHeader.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignHeader_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.WriteOrderListAssociation_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.ReadOrderListAssociation_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\tables\Marketing.CatalogCampaignHeader_up.sql" />
     <Content Include="SQL\v2017.2.0\up\tables\Orders.OrderedFromList_up.sql" />
     <Content Include="SQL\Configs\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
