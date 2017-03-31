@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
+    <Compile Include="Migrations\v2017.2.0\Migration18.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration17.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration16.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration15.cs" />
@@ -89,6 +90,10 @@
     <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadAllDepartments_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignHeader.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignItemByHeader.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignHeader.sql" />
+    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.PurgeOrderListAssociation_down.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.ReadOrderListAssociation_down.sql" />
     <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.WriteOrderListAssociation_down.sql" />
@@ -100,7 +105,11 @@
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql" />
     <Content Include="SQL\v2017.2.0\up\appsettings\Configuration.AppSettings.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignItemByHeader.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignHeader.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.PurgeOrderListAssociation_up.sql" />
+    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignHeader.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.WriteOrderListAssociation_up.sql" />
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.ReadOrderListAssociation_up.sql" />
     <Content Include="SQL\v2017.2.0\up\tables\Orders.OrderedFromList_up.sql" />
