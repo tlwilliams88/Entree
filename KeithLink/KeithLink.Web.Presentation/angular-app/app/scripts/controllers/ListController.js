@@ -361,7 +361,6 @@ angular.module('bekApp')
           timeset: timeset
       };
       
-      $stateParams.listId = listid;
       LocalStorage.setLastList(lastlist);
       if($scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm) {
