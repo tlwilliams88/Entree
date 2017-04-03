@@ -403,6 +403,46 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return returnValue;
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("catalog/campaign")]
+        public OperationReturnModel<CatalogCampaignsReturnModel> GetCampaignHeaders()
+        {
+            OperationReturnModel<CatalogCampaignsReturnModel> returnValue = new OperationReturnModel<CatalogCampaignsReturnModel>();
+            try
+            {
+                returnValue.SuccessResponse = _campaignLogic.GetAllCampaigns(true);
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetAllCampaigns", ex);
+            }
+
+            return returnValue;
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("catalog/campaign/add")]
+        public OperationReturnModel<bool> AddOrUpdateCampaignHeader(CatalogCampaignAddOrUpdateRequestModel model)
+        {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+            try
+            {
+                returnValue.SuccessResponse = _campaignLogic.AddOrUpdateCampaign(model);
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("AddOrUpdateCampaign", ex);
+            }
+
+            return returnValue;
+        }
+
         /// <summary>
         /// Retrieve divisions
         /// </summary>
