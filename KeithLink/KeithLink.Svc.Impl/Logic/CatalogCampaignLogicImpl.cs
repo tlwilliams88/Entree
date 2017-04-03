@@ -56,6 +56,34 @@ namespace KeithLink.Svc.Impl.Logic
             return returnValue;
         }
 
+        public CatalogCampaignsReturnModel GetAllCampaigns(bool includeItems = true)
+        {
+            CatalogCampaignsReturnModel returnValue = new CatalogCampaignsReturnModel();
+            returnValue.campaigns = _campaignHeaderRepo.GetAll();
+
+            if (includeItems)
+            {
+                foreach (var header in returnValue.campaigns)
+                {
+                    header.Items = _campaignItemRepo.GetByCampaign(header.Id);
+                }
+            }
+
+            return returnValue;
+        }
+
+        public bool AddOrUpdateCampaign(CatalogCampaignAddOrUpdateRequestModel campaign)
+        {
+            long Id = _campaignHeaderRepo.CreateOrUpdate(campaign);
+
+            foreach (CatalogCampaignItem item in campaign.Items)
+            {
+                _campaignItemRepo.CreateOrUpdate(Id, item);
+            }
+
+            return true;
+        }
+
         #endregion
 
         #endregion
