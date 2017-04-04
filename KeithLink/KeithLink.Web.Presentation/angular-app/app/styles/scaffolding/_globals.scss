@@ -101,6 +101,7 @@ td {
 
 .inline-block-display {
   display:inline-block;
+  display: -ms-inline-flexbox;
 }
 
 .highlightRows:nth-of-type(even) {
