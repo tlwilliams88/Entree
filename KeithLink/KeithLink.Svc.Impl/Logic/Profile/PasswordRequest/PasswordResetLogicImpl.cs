@@ -107,6 +107,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile.PasswordRequest {
                     ret.Email = profile.Email;
                     ret.FirstName = profile.FirstName;
                     ret.LastName = profile.LastName;
+                    ret.UserName = profile.Email.Substring(profile.Email.IndexOf('@') + 1);
                     ret.IsCorrect = true;
 
                     return ret;
