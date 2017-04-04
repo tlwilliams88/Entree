@@ -90,7 +90,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile.PasswordRequest {
             }
         }
 
-        public string IsTokenValid(string token) {
+        public ValidateTokenReturn IsTokenValid(string token) {
+            ValidateTokenReturn ret = new ValidateTokenReturn();
+
             var passwordRequest = _passwordRepo.Read(p => p.Token.Equals(token) && !p.Processed && p.Expiration > DateTime.UtcNow).FirstOrDefault();
 
             if(passwordRequest == null) {
@@ -99,9 +101,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile.PasswordRequest {
                 var profile = _profileRepo.GetCSProfile(passwordRequest.UserId);
 
                 if(profile == null) {
-                    return null;
-                } else {
-                    return profile.Email;
+                    return ret;
+                } else
+                {
+                    ret.Email = profile.Email;
+                    ret.FirstName = profile.FirstName;
+                    ret.LastName = profile.LastName;
+                    ret.IsCorrect = true;
+
+                    return ret;
                 }
             }
         }
