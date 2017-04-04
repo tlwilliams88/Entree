@@ -85,15 +85,16 @@
           </div>
         
         </div>
-        <div class="form-group" ng-if="canGrantAccessToEmenuManage || canViewAccessToEmenuManage">
+        <div class="form-group" ng-show="canGrantAccessToEmenuManage || canViewAccessToEmenuManage">
           <label for="powerMenuAccess" class="col-md-2 control-label">E-Menu Manage Access</label>
           <div class="col-md-1">
             <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-disabled="canViewAccessToEmenuManage" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" class="editDetailsCheckbox"/>
           </div>
+          <span ng-if="canGrantAccessToEmenuManage">
             <a ng-if="profile.powermenupermissionslink" class="col-md-3 btn-link" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
             <a ng-if="profile.powermenuloginurl" class="col-md-3 btn-link" target="_blank" ng-click="updateUserAccess('powermenu')">Resend eMenuManage Account Setup</a>
-            <a ng-if="profile.powermenuloginurl" class="col-md-2 btn-link" target="_blank" ng-href="{{profile.powermenuloginurl}}">eMenuManage Login</a>
-          </div>
+          </span>
+          <a ng-if="profile.powermenuloginurl" class="col-md-2 btn-link" target="_blank" ng-href="{{profile.powermenuloginurl}}">eMenuManage Login</a>
         </div>
       </form>
     </div>
