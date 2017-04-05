@@ -217,6 +217,9 @@ angular.module('bekApp')
             return $q.reject('Customer Cannot View UNFI Items.');
           }
 
+        }],
+        campaignInfo: [ function() {
+          return false
         }]
       }
     })
