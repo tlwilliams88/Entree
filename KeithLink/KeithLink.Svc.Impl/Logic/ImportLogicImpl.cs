@@ -417,13 +417,9 @@ namespace KeithLink.Svc.Impl.Logic
             var quantityColumn = 1;
             var eachColumn = 2;
 
-            if (file.Options.IgnoreFirstLine.Equals(true))
+            rdr.Read();
+            if (file.Options.IgnoreFirstLine.Equals(false))
             {
-                rdr.Read(); // Skip the first line
-            }
-            else
-            {
-                rdr.Read();
                 for (int i = 0; i < rdr.FieldCount - 1; i++)
                 {
                     if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
