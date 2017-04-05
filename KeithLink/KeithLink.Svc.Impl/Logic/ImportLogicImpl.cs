@@ -420,6 +420,10 @@ namespace KeithLink.Svc.Impl.Logic
             if (file.Options.IgnoreFirstLine.Equals(true))
             {
                 rdr.Read(); // Skip the first line
+            }
+            else
+            {
+                rdr.Read();
                 for (int i = 0; i < rdr.FieldCount - 1; i++)
                 {
                     if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
