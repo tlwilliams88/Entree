@@ -10,8 +10,8 @@ angular.module('bekApp')
 .directive('passwordRequirements', function () {
     
     var UPPERCASE_REGEX = /[A-Z]/,
-      LOWERCASE_REGEX = /[a-z]/,
-      NUMBER_REGEX = /[0-9]/;
+        LOWERCASE_REGEX = /[a-z]/,
+        NUMBER_REGEX = /[0-9]/;
 
     return {
       require: 'ngModel',
@@ -20,8 +20,15 @@ angular.module('bekApp')
         if (!ctrl) { return; }
 
         ctrl.$validators.passwordRequirements = function(modelValue, viewValue) {
-          var email_name_check = new RegExp(attrs.emailAddress.split('@')[0], 'i');
-          return ctrl.$isEmpty(modelValue) || ( UPPERCASE_REGEX.test(viewValue) && LOWERCASE_REGEX.test(viewValue) && NUMBER_REGEX.test(viewValue) && viewValue.length >7 && !email_name_check.test(viewValue) );
+          var username_check = new RegExp(attrs.username, 'i'),
+              first_name_check = new RegExp(attrs.firstName, 'i'),
+              last_name_check = new RegExp(attrs.lastName, 'i'),
+              password_length_check = viewValue ? viewValue.length > 7 : false;
+
+          return ctrl.$isEmpty(modelValue) || ( UPPERCASE_REGEX.test(viewValue) && 
+            LOWERCASE_REGEX.test(viewValue) && NUMBER_REGEX.test(viewValue) && 
+            password_length_check && !username_check.test(viewValue) && 
+            !first_name_check.test(viewValue) && !last_name_check.test(viewValue) );
         };
       }
     };

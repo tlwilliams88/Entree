@@ -83,8 +83,12 @@ td {
   letter-spacing: 1px;
 }
 
-.max-width-100Per {
+.max-width-100Percent {
   max-width: 100% !important;
+}
+
+.height-100Percent {
+  height: 100%;
 }
 
 .hidden-icon{
@@ -101,6 +105,7 @@ td {
 
 .inline-block-display {
   display:inline-block;
+  display: -ms-inline-flexbox;
 }
 
 .highlightRows:nth-of-type(even) {

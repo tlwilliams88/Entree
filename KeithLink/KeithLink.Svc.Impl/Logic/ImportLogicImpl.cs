@@ -417,18 +417,20 @@ namespace KeithLink.Svc.Impl.Logic
             var quantityColumn = 1;
             var eachColumn = 2;
 
-            if (file.Options.IgnoreFirstLine.Equals(true))
+            rdr.Read();
+            if (file.Options.IgnoreFirstLine.Equals(false))
             {
-                rdr.Read(); // Skip the first line
-                for (int i = 0; i < rdr.FieldCount - 1; i++)
+                if (rdr.FieldCount > 0)
                 {
-                    if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                        itemNumberColumn = i;
-                    else if (rdr.GetString(i).Equals("# Ordered", StringComparison.CurrentCultureIgnoreCase))
-                        quantityColumn = i;
-                    else if (rdr.GetString(i).Equals("each", StringComparison.CurrentCultureIgnoreCase))
-                        quantityColumn = i;
-
+                    for (int i = 0; i < rdr.FieldCount - 1; i++)
+                    {
+                        if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
+                            itemNumberColumn = i;
+                        else if (rdr.GetString(i).Equals("# Ordered", StringComparison.CurrentCultureIgnoreCase))
+                            quantityColumn = i;
+                        else if (rdr.GetString(i).Equals("each", StringComparison.CurrentCultureIgnoreCase))
+                            quantityColumn = i;
+                    }
                 }
             }
 
@@ -459,6 +461,11 @@ namespace KeithLink.Svc.Impl.Logic
             catch (Exception ex)
             {
                 eventLogRepository.WriteErrorLog("Bad parse of file", ex);
+            }
+
+            if (returnValue.Count == 0)
+            {
+                throw new ApplicationException("Empty Order; No Products Defined in File");
             }
 
             return returnValue;

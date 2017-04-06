@@ -959,12 +959,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("profile/forgotpassword/validatetoken")]
-        public Models.OperationReturnModel<string> ValidateToken(ValidateTokenModel tokenModel) {
-            Models.OperationReturnModel<string> retVal = new Models.OperationReturnModel<string>();
+        public Models.OperationReturnModel<ValidateTokenReturn> ValidateToken(ValidateTokenModel tokenModel) {
+            Models.OperationReturnModel<ValidateTokenReturn> retVal = new Models.OperationReturnModel<ValidateTokenReturn>();
             try
             {
-                retVal.SuccessResponse = _passwordLogic.IsTokenValid(tokenModel.Token);
-                retVal.IsSuccess = true;
+                ValidateTokenReturn ret = _passwordLogic.IsTokenValid(tokenModel.Token);
+
+                if (ret.IsCorrect)
+                {
+                    retVal.SuccessResponse = _passwordLogic.IsTokenValid(tokenModel.Token);
+                    retVal.IsSuccess = true;
+                }
+                else
+                {
+                    retVal.IsSuccess = false;
+                }
             }
             catch (Exception ex)
             {
