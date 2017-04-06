@@ -463,6 +463,11 @@ namespace KeithLink.Svc.Impl.Logic
                 eventLogRepository.WriteErrorLog("Bad parse of file", ex);
             }
 
+            if (returnValue.Count == 0)
+            {
+                throw new ApplicationException("Empty Order; No Products Defined in File");
+            }
+
             return returnValue;
         }
 
