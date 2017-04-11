@@ -82,7 +82,40 @@
     <Content Include="Scripts\AppData\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.2.0\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.2.0\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.1.0\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.1.0\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Stored Procedures\ETL\PurgeOrderHistory_AppData\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDepartments\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadFullItemData\v2017.2.0\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadFullItemData\v2017.2.0\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadPDMData\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadPDMData\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadProprietaryItems\v2017.1.0\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadProprietaryItems\v2017.1.0\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Stored Procedures\List\DeleteCustomInventoryItems\create.sql">
@@ -91,7 +124,58 @@
     <Content Include="Scripts\AppData\Stored Procedures\List\DeleteCustomInventoryItems\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\v1.12.2\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\v1.12.2\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignItemsByHeader\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignItemsByHeader\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeaderByUri\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeaderByUri\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\v1.12.2\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\v1.12.2\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignItemByUri\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Stored Procedures\Orders\DeleteOrderListAssociation\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Stored Procedures\Orders\usp_GetLastFiveOrdersForItem\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\ETL\Staging_Departments\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\ETL\Staging_Departments\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\ETL\Staging_PDM_EnrichedProducts\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Tables\List\CustomInventoryItems\v1.12-label\down.sql">
@@ -104,6 +188,30 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Tables\List\ListItems\v1.12.0\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\v1.12.2\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\v1.12.2\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignItems\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignItems\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Orders\OrderedFromList\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Tables\Orders\OrderedFromList\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Types\BigIntList\create.sql">
@@ -271,7 +379,7 @@
     <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadCustomers\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDepartments\base.sql">
+    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDepartments\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDsrImage\create.sql">
@@ -290,9 +398,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadItemsByBranch\create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadPDMData\base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadParentCategories\create.sql">
@@ -328,16 +433,7 @@
     <Content Include="Scripts\AppData\Stored Procedures\Marketing\AddCatalogCampaignItemByHeader\base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\base.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignItemsByHeader\base.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\base.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignItemByUri\base.sql">
+    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignItemByUri\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Stored Procedures\Marketing\UpdateCatalogCampaignHeader\base.sql">
@@ -415,9 +511,6 @@
     <Content Include="Scripts\AppData\Tables\ETL\Staging_CustomerBid\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Departments\base.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\Tables\ETL\Staging_Dsr\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -454,7 +547,7 @@
     <Content Include="Scripts\AppData\Tables\ETL\Staging_OpenDetailAR\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_PDM_EnrichedProducts\base.sql">
+    <Content Include="Scripts\AppData\Tables\ETL\Staging_PDM_EnrichedProducts\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Tables\ETL\Staging_PaidDetail\create.sql">
@@ -502,12 +595,6 @@
     <Content Include="Scripts\AppData\Tables\List\Lists\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\base.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignItems\base.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\Tables\Messaging\CustomerTopics\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -530,9 +617,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Tables\Orders\OrderHistoryHeader\create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Tables\Orders\OrderedFromList\base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Tables\Orders\UserActiveCarts\create.sql">
