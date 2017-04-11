@@ -79,151 +79,187 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\AppData\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.2.0\down.sql">
+    <Content Include="Scripts\AppData\Configuration\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.2.0\up.sql">
+    <Content Include="Scripts\AppData\Customers\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.1.0\down.sql">
+    <Content Include="Scripts\AppData\ETL\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\v2017.1.0\up.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\v2017.2.0\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\PurgeOrderHistory_AppData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\v2017.2.0\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDepartments\drop.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\v2017.1.0\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadFullItemData\v2017.2.0\down.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\v2017.1.0\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadFullItemData\v2017.2.0\up.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeOrderHistory_AppData\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadPDMData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDepartments\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadPDMData\drop.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\v2017.2.0\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadProprietaryItems\v2017.1.0\down.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\v2017.2.0\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadProprietaryItems\v2017.1.0\up.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\List\DeleteCustomInventoryItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\List\DeleteCustomInventoryItems\drop.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\v2017.1.0\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\v2017.1.0\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\drop.sql">
+    <Content Include="Scripts\AppData\Invoice\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\v1.12.2\down.sql">
+    <Content Include="Scripts\AppData\List\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignHeader\v1.12.2\up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignItemsByHeader\create.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetAllCatalogCampaignItemsByHeader\drop.sql">
+    <Content Include="Scripts\AppData\Marketing\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeaderByUri\create.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeaderByUri\drop.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\create.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\v1.12.2\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\drop.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\v1.12.2\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\v1.12.2\down.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignItemsByHeader\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignHeader\v1.12.2\up.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignItemsByHeader\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignItemByUri\drop.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Orders\DeleteOrderListAssociation\drop.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Orders\usp_GetLastFiveOrdersForItem\create.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Departments\create.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Departments\drop.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\v1.12.2\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_PDM_EnrichedProducts\drop.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\v1.12.2\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\CustomInventoryItems\v1.12-label\down.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignItemByUri\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\CustomInventoryItems\v1.12-label\up.sql">
+    <Content Include="Scripts\AppData\Messaging\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\ListItems\v1.12.0\down.sql">
+    <Content Include="Scripts\AppData\Orders\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\ListItems\v1.12.0\up.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\create.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\drop.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderListAssociation\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\v1.12.2\down.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\usp_GetLastFiveOrdersForItem\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignHeader\v1.12.2\up.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Marketing\CatalogCampaignItems\drop.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Orders\OrderedFromList\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Orders\OrderedFromList\drop.sql">
+    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\v1.12-label\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Types\BigIntList\create.sql">
+    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\v1.12-label\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Types\BigIntList\drop.sql">
+    <Content Include="Scripts\AppData\List\Tables\ListItems\v1.12.0\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\UserDefinedFunction\ETL\ConcatBranchesForItem\create.sql">
+    <Content Include="Scripts\AppData\List\Tables\ListItems\v1.12.0\up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\UserDefinedFunction\ETL\initcap\create.sql">
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignHeader\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignHeader\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignHeader\v1.12.2\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignHeader\v1.12.2\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignItems\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignItems\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\dbo\Types\BigIntList\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\dbo\Types\BigIntList\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Functions\ConcatBranchesForItem\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Functions\initcap\create.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Profile\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\v2017.1.0\up\templates\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
@@ -322,316 +358,316 @@
     <Content Include="SQL\v2017.2.0\up\templates\Configuration.AppSettings.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\AppData\Stored Procedures\Configuration\CheckAppSettingsForChange\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\CheckAppSettingsForChange\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Configuration\GetAppSetting\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\GetAppSetting\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Configuration\ReadAppSettings\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\ReadAppSettings\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Configuration\SaveAppSetting\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\SaveAppSetting\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\LoadAddressesToCS\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadAddressesToCS\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\LoadOrganizationsToCS\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadOrganizationsToCS\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\LoadOrgsAndAddressesToCS\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadOrgsAndAddressesToCS\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessBEKItemNumbersForUNFIByVendorId\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessBEKItemNumbersForUNFIByVendorId\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessContractItemList\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessItemHistoryData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessItemHistoryData\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessStagedInvoices\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessStagedInvoices\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ProcessWorksheetList\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\PurgeInternalUserAccess\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeInternalUserAccess\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadAverageItemUsage\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadAverageItemUsage\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadBranches\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadBranches\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadBrandControlLabels\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadBrandControlLabels\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadCSUsers\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadCSUsers\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadContractItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadContractItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadCustomers\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadCustomers\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDepartments\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDepartments\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDsrImage\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDsrImage\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadDsrInfo\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDsrInfo\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadFullItemData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadInvoices\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadInvoices\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadItemGS1Data\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadItemGS1Data\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadItemsByBranch\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadItemsByBranch\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadParentCategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadParentCategories\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadProprietaryItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadSubCategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadSubCategories\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadUNFICategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFICategories\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadUNFIDistinctWarehouses\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIDistinctWarehouses\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadUNFIProducts\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIProducts\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadUNFISubCategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFISubCategories\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadUNFItemsByWarehouse\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFItemsByWarehouse\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\ETL\ReadWorksheetItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadWorksheetItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\AddCatalogCampaignHeader\base.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\AddCatalogCampaignHeader\base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\AddCatalogCampaignItemByHeader\base.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\AddCatalogCampaignItemByHeader\base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\GetCatalogCampaignItemByUri\create.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignItemByUri\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\UpdateCatalogCampaignHeader\base.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\UpdateCatalogCampaignHeader\base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Marketing\UpdateCatalogCampaignItemByHeader\base.sql">
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\UpdateCatalogCampaignItemByHeader\base.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Orders\DeleteOrderListAssociation\create.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Orders\PurgeOrderListAssociation\base.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Orders\ReadOrderListAssociation\base.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderListAssociation\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Orders\WriteOrderListAssociation\base.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\Orders\usp_GetNextControlNumber\create.sql">
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\usp_GetNextControlNumber\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Stored Procedures\dbo\spCreateAuditLogEntry\create.sql">
+    <Content Include="Scripts\AppData\dbo\Stored Procedures\spCreateAuditLogEntry\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\BranchSupport\BranchSupports\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\BranchSupport\DsrAliases\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\Tables\DsrAliases\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\BranchSupport\Dsrs\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\Tables\Dsrs\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Configuration\AppSettings\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Configuration\ExportSettings\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\ExportSettings\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Configuration\ExternalCatalogs\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Configuration\MessageTemplates\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Customers\InternalUserAccess\create.sql">
+    <Content Include="Scripts\AppData\Customers\Tables\InternalUserAccess\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Customers\ItemHistory\create.sql">
+    <Content Include="Scripts\AppData\Customers\Tables\ItemHistory\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_BidContractDetail\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_BidContractDetail\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_BidContractHeader\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_BidContractHeader\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Branch\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Branch\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_BrandControlLabels\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_BrandControlLabels\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Brands\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Brands\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Category\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Category\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Customer\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_CustomerBid\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_CustomerBid\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Dsr\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Dsr\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_EmployeeInfo\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_EmployeeInfo\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_FSE_ProductAllergens\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductAllergens\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_FSE_ProductDiet\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductDiet\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_FSE_ProductNutrition\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductNutrition\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_FSE_ProductSpec\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductSpec\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_ItemData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_KNet_Invoice\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_KNet_Invoice\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_KPay_Invoice\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_KPay_Invoice\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_NationalIdDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_NationalIdDesc\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_NationalNumberAndSubDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_NationalNumberAndSubDesc\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_OpenDetailAR\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_OpenDetailAR\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_PDM_EnrichedProducts\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_PaidDetail\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PaidDetail\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_ProprietaryCustomer\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ProprietaryCustomer\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_ProprietaryItem\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ProprietaryItem\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_RegionalIdDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalIdDesc\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_RegionalNumberDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalNumberDesc\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_Terms\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Terms\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_UNFIProducts\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_UNFIProducts\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\ETL\Staging_WorksheetItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_WorksheetItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Invoice\InvoiceItems\create.sql">
+    <Content Include="Scripts\AppData\Invoice\Tables\InvoiceItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Invoice\Invoices\create.sql">
+    <Content Include="Scripts\AppData\Invoice\Tables\Invoices\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Invoice\Terms\create.sql">
+    <Content Include="Scripts\AppData\Invoice\Tables\Terms\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\CustomInventoryItems\create.sql">
+    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\ListItems\create.sql">
+    <Content Include="Scripts\AppData\List\Tables\ListItems\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\ListShares\create.sql">
+    <Content Include="Scripts\AppData\List\Tables\ListShares\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\List\Lists\create.sql">
+    <Content Include="Scripts\AppData\List\Tables\Lists\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Messaging\CustomerTopics\create.sql">
+    <Content Include="Scripts\AppData\Messaging\Tables\CustomerTopics\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Messaging\UserMessages\create.sql">
+    <Content Include="Scripts\AppData\Messaging\Tables\UserMessages\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Messaging\UserMessagingPreferences\create.sql">
+    <Content Include="Scripts\AppData\Messaging\Tables\UserMessagingPreferences\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Messaging\UserPushNotificationDevices\create.sql">
+    <Content Include="Scripts\AppData\Messaging\Tables\UserPushNotificationDevices\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Messaging\UserTopicSubscriptions\create.sql">
+    <Content Include="Scripts\AppData\Messaging\Tables\UserTopicSubscriptions\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Orders\IdentityCounter\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\IdentityCounter\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Orders\OrderHistoryDetail\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryDetail\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Orders\OrderHistoryHeader\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Orders\UserActiveCarts\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\UserActiveCarts\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Profile\MarketingPreferences\create.sql">
+    <Content Include="Scripts\AppData\Profile\Tables\MarketingPreferences\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Profile\PasswordResetRequests\create.sql">
+    <Content Include="Scripts\AppData\Profile\Tables\PasswordResetRequests\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\Profile\Settings\create.sql">
+    <Content Include="Scripts\AppData\Profile\Tables\Settings\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Tables\dbo\AuditLog\create.sql">
+    <Content Include="Scripts\AppData\dbo\Tables\AuditLog\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
