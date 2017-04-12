@@ -21,6 +21,9 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
         private const string COMMAND_GET_ALL = "Marketing.GetAllCatalogCampaignHeader";
 
         private const string COMMAND_GET_BY_URI = "Marketing.GetCatalogCampaignHeaderByUri";
+
+        private const string COMMAND_ADD = "Marketing.AddCatalogCampaignHeader";
+        private const string COMMAND_UPDATE = "Marketing.UpdateCatalogCampaignHeader";
         #endregion
 
         #region constructor
@@ -51,13 +54,59 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
 
         public List<CatalogCampaignHeader> GetAll()
         {
-            return Read<CatalogCampaignHeader>(new CommandDefinition(
-                COMMAND_GET_ALL
+            var campaigns = Read<CatalogCampaignHeader>(new CommandDefinition(
+                COMMAND_GET_ALL,
+                commandType: CommandType.StoredProcedure
             ));
+            return campaigns;
         }
         #endregion
 
         #region save
+        public Int64 CreateOrUpdate(CatalogCampaignHeader header)
+        {
+            CatalogCampaignHeader oldheader = ReadOne<CatalogCampaignHeader>(new CommandDefinition(
+                                                COMMAND_GET_BY_URI,
+                                                new { @Uri = header.Uri },
+                                                commandType: CommandType.StoredProcedure
+                                              ));
+
+            Int64 Id = 0;
+
+            if (oldheader == null)
+            {
+                Id = ExecuteScalarCommand<int>(new CommandDefinition(
+                    COMMAND_ADD,
+                    new
+                    {
+                        @Name = header.Name,
+                        @Description = header.Description,
+                        @StartDate = header.StartDate,
+                        @EndDate = header.EndDate,
+                        @Uri = header.Uri
+                    },
+                    commandType: CommandType.StoredProcedure
+                ));
+            }
+            else
+            {
+                Id = ExecuteScalarCommand<int>(new CommandDefinition(
+                    COMMAND_UPDATE,
+                    new
+                    {
+                        @Name = header.Name,
+                        @Description = header.Description,
+                        @Active = header.Active,
+                        @StartDate = header.StartDate,
+                        @EndDate = header.EndDate,
+                        @Uri = header.Uri
+                    },
+                    commandType: CommandType.StoredProcedure
+                ));
+            }
+
+            return Id;
+        }
         #endregion
 
         #region delete

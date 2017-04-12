@@ -402,5 +402,8 @@ namespace KeithLink.Svc.Core
 
         // user messages
         public const string USERMESSAGES_LINKTOKEN = " LINK";
+
+        // string formats
+        public const string NUMERICFORMAT_FIXED_2DECIMALS = "F2";
     }
 }

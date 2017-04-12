@@ -345,6 +345,8 @@
     <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignAddOrUpdateRequestModelcs.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignsReturnModel.cs" />
     <Compile Include="Models\Messaging\ForwardUserMessageModel.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignHeader.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignItem.cs" />
@@ -374,6 +376,7 @@
     <Compile Include="Models\Profile\SettingsModelReturn.cs" />
     <Compile Include="Models\Profile\UserPermissionsModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
+    <Compile Include="Models\Profile\ValidateTokenReturn.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
     <Compile Include="Models\SiteCatalog\ShallowProduct.cs" />

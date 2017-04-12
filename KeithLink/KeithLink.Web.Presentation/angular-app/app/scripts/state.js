@@ -217,6 +217,9 @@ angular.module('bekApp')
             return $q.reject('Customer Cannot View UNFI Items.');
           }
 
+        }],
+        campaignInfo: [ function() {
+          return false
         }]
       }
     })
@@ -328,6 +331,7 @@ angular.module('bekApp')
           if(listIdtoBeUsed == 'nonbeklist'){
             return ListService.getCustomInventoryList();
           } else {
+            LocalStorage.setLastList(listIdtoBeUsed);
             return ListService.getList(listIdtoBeUsed, params);
           }
         
@@ -451,16 +455,40 @@ angular.module('bekApp')
             }
           }
         }],
-        validListId: ['$stateParams', 'ResolveService', function($stateParams, ResolveService) {
-          return ResolveService.validateList($stateParams.listId, 'isworksheet');
+        validListId: ['$stateParams', 'ResolveService', 'LocalStorage', function($stateParams, ResolveService, LocalStorage) {
+          var lastList;
+
+          lastList = $stateParams.listId ? $stateParams.listId : LocalStorage.getLastList();
+
+          return ResolveService.validateList(lastList, 'isworksheet');
         }],
         selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, lists, validListId, ListService, DateService, Constants, LocalStorage, ENV) {
              
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: []},
-              validListId = $stateParams.listId,
-              listHeader = $filter('filter')(lists, {listid: validListId})[0];
+              listId = $stateParams.listId.listId ? $stateParams.listId.listId : $stateParams.listId,
+              historyList = $filter('filter')(lists, {name: 'history'})[0],
+              favoritesList = $filter('filter')(lists, {name: 'favorites'})[0],
+              listHeader;
+
+          listId = listId ? listId : LocalStorage.getLastList();
+          listHeader = $filter('filter')(lists, {listid: listId.listId})[0];
+
+          if(!listHeader) {
+            
+            if(historyList) {
+              listHeader = historyList;
+            } else {
+              listHeader = favoritesList;
+            }
+            
+          }
+
+          if(!listId) {
+            listId = listHeader.listid;
+          }
+
 
           if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
@@ -469,7 +497,7 @@ angular.module('bekApp')
             });
           }   
          
-          return ListService.getList(validListId, params);
+          return ListService.getList(listId, params);
         }]
       }
     })

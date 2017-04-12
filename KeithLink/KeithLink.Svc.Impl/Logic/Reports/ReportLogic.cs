@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.Reports {
     public class ReportLogic : IReportLogic {
@@ -74,8 +75,8 @@ namespace KeithLink.Svc.Impl.Logic.Reports {
                 ItemNumber = g.Key.ItemNumber,
                 TotalQuantityOrdered = g.Sum(a => a.QuantityOrdered),
                 TotalQuantityShipped = g.Sum(a => a.QantityShipped),
-                AveragePrice = Math.Round(g.Average(a => a.Price), 2).ToString("00000000.00"),
-                TotalCost = Math.Round(g.Sum(a => a.LineTotal), 2).ToString("00000000.00"),
+                AveragePrice = Math.Round(g.Average(a => a.Price), 2).ToString(Constants.NUMERICFORMAT_FIXED_2DECIMALS),
+                TotalCost = Math.Round(g.Sum(a => a.LineTotal), 2).ToString(Constants.NUMERICFORMAT_FIXED_2DECIMALS),
                 Name = g.Select(a => a.Name).FirstOrDefault(),
                 Each = g.Key.Each ? "Y" : "N",
                 Class = g.Select(a => a.ItemClass).FirstOrDefault(),

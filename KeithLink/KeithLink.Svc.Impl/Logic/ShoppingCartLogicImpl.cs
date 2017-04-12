@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
-        private readonly IOrderedFromListRepository _order2ListRepo;
+        private readonly IOrderedFromListRepository _orderedFromListRepository;
 
         private const string CACHE_GROUPNAME = "ShoppingCart";
         private const string CACHE_NAME = "ProcessingCart";
@@ -80,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic
 									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
                                      INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
-                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository order2ListRepo)
+                                     ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository)
 		{
             _cache = cache;
 			this.basketRepository = basketRepository;
@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Impl.Logic
             this.externalServiceRepository = externalServiceRepository;
             _activeCartLogic = userActiveCartLogic;
             _externalCatalogRepo = externalCatalogRepo;
-            _order2ListRepo = order2ListRepo;
+            _orderedFromListRepository = orderedFromListRepository;
 		}
         #endregion
 
@@ -411,7 +411,7 @@ namespace KeithLink.Svc.Impl.Logic
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
 
-            try { cart.ListId = _order2ListRepo.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
+            try { cart.ListId = _orderedFromListRepository.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
 
             return cart;
 		}
@@ -508,7 +508,7 @@ namespace KeithLink.Svc.Impl.Logic
             returnOrders.NumberOfOrders = catalogList.Count();
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
 
-            OrderedFromList o2l = _order2ListRepo.Read(cartId.ToString());
+            OrderedFromList o2l = _orderedFromListRepository.Read(cartId.ToString());
 
             //make list of baskets
             foreach (var catalogId in catalogList)
@@ -547,7 +547,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                     if(o2l != null && o2l.ListId != null)
                     {
-                        _order2ListRepo.Write(new OrderedFromList()
+                        _orderedFromListRepository.Write(new OrderedFromList()
                         {
                             ControlNumber = orderNumber,
                             ListId = o2l.ListId.Value
@@ -725,10 +725,10 @@ namespace KeithLink.Svc.Impl.Logic
             updateCart.RequestedShipDate = cart.RequestedShipDate;
 			updateCart.PONumber = cart.PONumber;
 
-            OrderedFromList o2l = _order2ListRepo.Read(cart.CartId.ToString());
+            OrderedFromList o2l = _orderedFromListRepository.Read(cart.CartId.ToString());
             if (o2l == null && cart.ListId != null)
             {
-                _order2ListRepo.Write(new OrderedFromList()
+                _orderedFromListRepository.Write(new OrderedFromList()
                 {
                     ControlNumber = cart.CartId.ToString(),
                     ListId = cart.ListId.Value
@@ -736,10 +736,10 @@ namespace KeithLink.Svc.Impl.Logic
             }
             else if(o2l != null && o2l.ListId != cart.ListId)
             {
-                _order2ListRepo.Delete(cart.CartId.ToString());
+                _orderedFromListRepository.Delete(cart.CartId.ToString());
                 if (cart.ListId != null)
                 {
-                    _order2ListRepo.Write(new OrderedFromList()
+                    _orderedFromListRepository.Write(new OrderedFromList()
                     {
                         ControlNumber = cart.CartId.ToString(),
                         ListId = cart.ListId.Value
@@ -807,13 +807,13 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem());
 		}
 
-		public List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, List<QuickAddItemModel> productsToValidate)
+		public List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, UserProfile user, List<QuickAddItemModel> productsToValidate)
 		{
 			int totalProcessed = 0;
 			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
 			while (totalProcessed < productsToValidate.Count)
-			{
+			{  
 				var batch = productsToValidate.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
 
 				var tempProducts = catalogLogic.GetProductsByIdsWithPricing(catalogInfo, batch);
@@ -821,10 +821,13 @@ namespace KeithLink.Svc.Impl.Logic
 				products.Products.AddRange(tempProducts.Products);
 				totalProcessed += 50;
 			}
-
+      
             if(products.Products.Count() < productsToValidate.Count())
             {
-                LookupUnfoundProductsInExternalCatalogs(catalogInfo, productsToValidate, products);
+                if (ProfileHelper.CheckCanViewUNFI(user, catalogInfo.CustomerId, catalogInfo.BranchId, customerRepository, _log))
+                {
+                    LookupUnfoundProductsInExternalCatalogs(catalogInfo, productsToValidate, products);
+                }
             }
 
             var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
@@ -893,7 +896,6 @@ namespace KeithLink.Svc.Impl.Logic
                 products.Products.AddRange(tempProducts.Products);
             }
         }
-
         #endregion
     }
 }

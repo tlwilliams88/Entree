@@ -91,7 +91,7 @@
                   <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen && $state.params.catalogType != 'UNFI', 'icon-plus3' : !parentcategory.isOpen && $state.params.catalogType != 'UNFI'}" ng-click="toggleSubCategories(parentcategory, $index)" class="subCategoryToggle pull-right"></span>
                 </div>
               </accordion-heading>
-              <div class="panel-body max-width-100Per" ng-repeat="category in parentcategory.categories">
+              <div class="panel-body max-width-100Percent" ng-repeat="category in parentcategory.categories">
                 <div>
                   <input 
                   type="checkbox"

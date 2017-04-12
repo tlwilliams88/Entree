@@ -404,6 +404,7 @@ angular.module('bekApp')
     $scope.canViewMarketing = AccessService.canViewMarketing();
     $scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
     $scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
+    $scope.canViewAccessToEmenuManage = AccessService.canViewAccessToEmenuManage();
     $scope.canRunReports = AccessService.canRunReports();
     $scope.isSysAdmin = AccessService.isSysAdmin();
   }

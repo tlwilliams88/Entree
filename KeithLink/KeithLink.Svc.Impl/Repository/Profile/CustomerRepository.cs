@@ -655,11 +655,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             
             CommerceUpdateOperationResponse res = FoundationService.ExecuteRequest(update.ToRequest()).OperationResponses[0] as CommerceUpdateOperationResponse;
 
-            if(res.CommerceEntities.Count > 0){
-                Organization org = new Organization(res.CommerceEntities[0]);
+            Customer cus = GetCustomerById(customerId);
 
-                _customerCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Join("-", org.CustomerNumber, org.BranchNumber)));
-            }
+            _customerCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Join("-", cus.CustomerNumber, cus.CustomerBranch)));
         }
 		#endregion
 	}
