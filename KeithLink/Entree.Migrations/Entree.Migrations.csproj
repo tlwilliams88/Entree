@@ -85,6 +85,30 @@
     <Content Include="Scripts\AppData\Configuration\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\bakillins.local.configuration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.Beta.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.local.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.Production.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.QA.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\jeremy.local.configuration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\matt.local.configuration.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\Configuration.MessageTemplates.Bootstrap.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Customers\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
