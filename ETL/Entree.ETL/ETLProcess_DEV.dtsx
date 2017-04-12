@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="406"
-  DTS:VersionGUID="{6F2219A4-7F7A-4AA7-9C4C-3D8D34B0DF13}"
+  DTS:VersionBuild="405"
+  DTS:VersionGUID="{7AC1B144-1B2F-4457-BAEE-EEF5FE780276}"
   DTS:VersionMajor="2017"
   DTS:VersionMinor="1">
   <DTS:Property
@@ -2058,11 +2058,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADefOBtVVGwP3Rcv8pexN5sAAAAAASAAACgAAAAEAAAAAEheUyR7S0HZ0vQMniPL50IAAAAtRymOojD3FkUAAAAwskx7mXBdV5AsejVzJ8/HVgWpSw</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD3yIdClXREBRB+eKFRF06LAAAAAASAAACgAAAAEAAAAIJsv/JZDoItCwcfUOZMINkIAAAAbli3AIuuXuoUAAAAzzeTQXvNirrHihcUU+tK/bbiMxA</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAr6o186CwJL361LnxCBSk4AAAAAASAAACgAAAAEAAAALfTc6GQa8UvzibkUDVi0ggIAAAANjcYeoq5hG8UAAAAQWXnvr6WIz5/LiWKVpQ2WWAzWkQ</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB63/KYTFw2E2ei2gEsmFgOAAAAAASAAACgAAAAEAAAADRIJFgCGlcrAvmpOdo3g5cIAAAACYRmPr8MW8IUAAAAxM6NhbPlBCR/3Gg963ihbOsc9GI</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -2088,7 +2088,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA0R9T3MZIDFkSZ3z11i06UAAAAAASAAACgAAAAEAAAAB/DgejlNQm84uZYmxklRswQAAAAFYLrlJNEVLqyhkcE6QgcvBQAAABFh/uQF+D4HWIU5TeIGKl73dgzXQ</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADFPM2b18MvxLFgkUxHHX0BAAAAAASAAACgAAAAEAAAAD1xhO5XWUtey1VBaIkKPYgQAAAAZXWIw7xt8U5GZpSHTC08rBQAAABbPuRHjSEQQe4E9Z2lDUanIZpsCQ</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -2123,7 +2123,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAMRlu+tBZFDGWGhbBSM03cAAAAAASAAACgAAAAEAAAADkg6Q9upomXHJ38qmq7YMEQAAAAcCdkgJAADoPKvEAOyAlWkBQAAACkelWLH+9jfQ1tOUtBWChPXzDVgw</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACx0XvpJUUo6Nry54cuAfMRAAAAAASAAACgAAAAEAAAACywSgr96EwQJ5YX2QB1Z+MQAAAASxsJnM/46PZeadfMUHfLeRQAAABekCQv4IsaC4bcmbqugEncp7YQzg</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -2392,7 +2392,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Catalog Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2435,7 +2435,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Contract And Worksheet Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="10">
+          DTS:ThreadHint="9">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2478,7 +2478,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="11">
+          DTS:ThreadHint="10">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2521,7 +2521,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Item History"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="12">
+          DTS:ThreadHint="11">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2564,7 +2564,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="13">
+          DTS:ThreadHint="12">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -13133,7 +13133,7 @@ WHERE ControlLabel != ''</property>
                           dataType="System.Int32"
                           description="Specifies the mode used to access the database."
                           name="AccessMode"
-                          typeConverter="AccessMode">0</property>
+                          typeConverter="AccessMode">2</property>
                         <property
                           dataType="System.String"
                           description="The mappings between the parameters in the SQL command and variables."
@@ -13187,7 +13187,7 @@ WHERE ControlLabel != ''</property>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].ExternalColumns[ExtendedDescription]"
                               codePage="1252"
                               dataType="str"
-                              length="30"
+                              length="20"
                               name="ExtendedDescription" />
                           </externalMetadataColumns>
                         </output>
@@ -13207,7 +13207,7 @@ WHERE ControlLabel != ''</property>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ExtendedDescription]"
                               codePage="1252"
                               dataType="str"
-                              length="30"
+                              length="20"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ExtendedDescription]"
                               name="ExtendedDescription" />
                             <outputColumn
@@ -16154,41 +16154,22 @@ WHERE ControlLabel != ''</property>
           <DTS:Variables />
           <DTS:Executables>
             <DTS:Executable
-              DTS:refId="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brand Control Label Tables"
+              DTS:refId="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brand Tables"
               DTS:CreationName="Microsoft.ExecuteSQLTask"
               DTS:Description="Execute SQL Task"
               DTS:DTSID="{EBD99438-E447-45AD-8CE0-CB819C67BD6A}"
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
-              DTS:ObjectName="Truncate Brand Control Label Tables"
+              DTS:ObjectName="Truncate Brand Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="1">
+              DTS:ThreadHint="4">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
                   SQLTask:Connection="{18E0DEC5-849F-4295-99EC-064483FC95E0}"
-                  SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];&#xA;/*TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];*/" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
-              </DTS:ObjectData>
-            </DTS:Executable>
-            <DTS:Executable
-              DTS:refId="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brands"
-              DTS:CreationName="Microsoft.ExecuteSQLTask"
-              DTS:Description="Execute SQL Task"
-              DTS:DTSID="{938e2c2b-d886-47d4-aac5-990d4aecd3e5}"
-              DTS:ExecutableType="Microsoft.ExecuteSQLTask"
-              DTS:LocaleID="-1"
-              DTS:ObjectName="Truncate Brands"
-              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="2">
-              <DTS:Variables />
-              <DTS:LoggingOptions
-                DTS:FilterKind="0" />
-              <DTS:ObjectData>
-                <SQLTask:SqlTaskData
-                  SQLTask:Connection="{18E0DEC5-849F-4295-99EC-064483FC95E0}"
-                  SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_Brands]&#xA;/*TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];*/" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+                  SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];&#xA;TRUNCATE TABLE [ETL].[Staging_Brands];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
               </DTS:ObjectData>
             </DTS:Executable>
             <DTS:Executable
@@ -16200,7 +16181,7 @@ WHERE ControlLabel != ''</property>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Catalog Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="3">
+              DTS:ThreadHint="5">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -16218,7 +16199,7 @@ WHERE ControlLabel != ''</property>
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Departments"
-              DTS:ThreadHint="4">
+              DTS:ThreadHint="6">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -16236,7 +16217,7 @@ WHERE ControlLabel != ''</property>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate GS1 Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="5">
+              DTS:ThreadHint="2">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -16254,7 +16235,7 @@ WHERE ControlLabel != ''</property>
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate PDM data"
-              DTS:ThreadHint="6">
+              DTS:ThreadHint="3">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -20935,7 +20916,7 @@ WHERE ControlLabel != ''</property>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Contract Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="8">
+              DTS:ThreadHint="7">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -20952,7 +20933,7 @@ WHERE ControlLabel != ''</property>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Worksheet Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="9">
+              DTS:ThreadHint="8">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -21789,7 +21770,7 @@ WHERE ControlLabel != ''</property>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate DSR Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="0">
+              DTS:ThreadHint="1">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -22451,7 +22432,7 @@ WHERE ControlLabel != ''</property>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Invoice Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="7">
+              DTS:ThreadHint="0">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -22494,7 +22475,7 @@ WHERE ControlLabel != ''</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Purge AppData"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -22511,7 +22492,7 @@ WHERE ControlLabel != ''</property>
           DTS:LocaleID="-1"
           DTS:ObjectName="Purge CS Transactions"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="10">
+          DTS:ThreadHint="9">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -22529,7 +22510,7 @@ WHERE ControlLabel != ''</property>
       DTS:ExecutableType="Microsoft.ScriptTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Rename Mainframe Files"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <ScriptProject
@@ -22538,15 +22519,6 @@ WHERE ControlLabel != ''</property>
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -22666,6 +22638,35 @@ WHERE ControlLabel != ''</property>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -23003,35 +23004,6 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
-          <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -23061,6 +23033,15 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -23295,7 +23276,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="14">
+      DTS:ThreadHint="13">
       <DTS:Variables />
       <DTS:PropertyExpression
         DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
@@ -23603,10 +23584,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="284,877"
-          Size="284,920"
+          PanelSize="284,959"
+          Size="284,1002"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks"
-          TopLeft="24,468.5" />
+          TopLeft="21,420.5" />
         <NodeLayout
           Size="156,42"
           Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen"
@@ -23632,61 +23613,45 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           TopLeft="51,1544" />
         <NodeLayout
           Size="185,42"
-          Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brand Control Label Tables"
-          TopLeft="22.5,9.5" />
-        <NodeLayout
-          Size="158,42"
-          Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brands"
-          TopLeft="27,66.5" />
+          Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brand Tables"
+          TopLeft="23.5,5.5" />
         <NodeLayout
           Size="223,42"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Catalog Stage Tables"
-          TopLeft="18.0000000000001,137.5" />
+          TopLeft="19.0000000000001,75.4999999999999" />
         <NodeLayout
           Size="172,42"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Departments"
-          TopLeft="24.5,306.5" />
+          TopLeft="25.5,233.5" />
         <NodeLayout
           Size="207,42"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate GS1 Stage Tables"
-          TopLeft="14.5,197.5" />
+          TopLeft="17.5,128.5" />
         <NodeLayout
           Size="172,42"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate PDM data"
-          TopLeft="14,254.5" />
+          TopLeft="18,182.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="294,356"
-          Size="294,399"
+          PanelSize="268,331"
+          Size="268,374"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables"
           TopLeft="36,10.9999999999998" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer.PrecedenceConstraints[Constraint]"
-          TopLeft="183,410">
+          TopLeft="166.5,385">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-17,58.5000000000002"
+              EndConnector="0,35.5000000000002"
               Start="0,0"
-              End="-17,51.0000000000002">
+              End="0,28.0000000000002">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,25.2500000000001" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,25.2500000000001"
-                    Point2="0,29.2500000000001"
-                    Point3="-4,29.2500000000001" />
-                  <mssgle:LineSegment
-                    End="-13,29.2500000000001" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-13,29.2500000000001"
-                    Point2="-17,29.2500000000001"
-                    Point3="-17,33.2500000000001" />
-                  <mssgle:LineSegment
-                    End="-17,51.0000000000002" />
+                    End="0,28.0000000000002" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -23697,30 +23662,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer.PrecedenceConstraints[Constraint 1]"
-          TopLeft="166,1388.5">
+          TopLeft="163,1422.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-24.5,155.5"
+              EndConnector="-21.5,121.5"
               Start="0,0"
-              End="-24.5,148">
+              End="-21.5,114">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,73.75" />
+                    End="0,56.75" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,73.75"
-                    Point2="0,77.75"
-                    Point3="-4,77.75" />
+                    Point1="0,56.75"
+                    Point2="0,60.75"
+                    Point3="-4,60.75" />
                   <mssgle:LineSegment
-                    End="-20.5,77.75" />
+                    End="-17.5,60.75" />
                   <mssgle:CubicBezierSegment
-                    Point1="-20.5,77.75"
-                    Point2="-24.5,77.75"
-                    Point3="-24.5,81.75" />
+                    Point1="-17.5,60.75"
+                    Point2="-21.5,60.75"
+                    Point3="-21.5,64.75" />
                   <mssgle:LineSegment
-                    End="-24.5,148" />
+                    End="-21.5,114" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24495,47 +24460,33 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="127,42"
+          Size="NaN,NaN"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches\PRODCAT"
-          TopLeft="265,138" />
+          TopLeft="NaN,NaN" />
         <NodeLayout
-          Size="161,42"
+          Size="NaN,NaN"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches\KeithlinkAppData"
-          TopLeft="548,329" />
+          TopLeft="NaN,NaN" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches.Paths[OLE DB Source Output]"
-          TopLeft="328.5,180">
+          TopLeft="NaN,NaN">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="300,149"
+              EndConnector="{assembly:Null}"
               Start="0,0"
-              End="300,141.5">
+              End="0,0">
               <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,70.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,70.5"
-                    Point2="0,74.5"
-                    Point3="4,74.5" />
-                  <mssgle:LineSegment
-                    End="296,74.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="296,74.5"
-                    Point2="300,74.5"
-                    Point3="300,78.5" />
-                  <mssgle:LineSegment
-                    End="300,141.5" />
-                </mssgle:SegmentCollection>
+                <assembly:Null />
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

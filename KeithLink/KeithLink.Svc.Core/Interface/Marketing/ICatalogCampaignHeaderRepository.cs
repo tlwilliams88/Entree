@@ -13,5 +13,6 @@ namespace KeithLink.Svc.Core.Interface.Marketing
         CatalogCampaignHeader GetHeader(int id);
         CatalogCampaignHeader GetByUri(string uri);
         List<CatalogCampaignHeader> GetAll();
+        Int64 CreateOrUpdate(CatalogCampaignHeader header);
     }
 }
