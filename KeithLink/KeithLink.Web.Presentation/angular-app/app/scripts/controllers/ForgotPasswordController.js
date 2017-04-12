@@ -4,7 +4,8 @@ angular.module('bekApp')
   .controller('ForgotPasswordController', ['$scope', 'UserProfileService', '$state', 'validToken', '$stateParams', 'toaster',
     function ($scope, UserProfileService, $state, validToken, $stateParams, toaster) {
 
-    var validatedToken = validToken.data.successResponse;
+    var Token = validToken.data.successResponse,
+        validatedToken = Token.email;
 
     $scope.isTokenValid = (validatedToken && validatedToken.length > 0) ? true : false;
     
