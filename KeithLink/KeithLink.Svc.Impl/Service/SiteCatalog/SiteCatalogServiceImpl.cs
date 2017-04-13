@@ -233,23 +233,27 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private ProductsReturn ApplySpecialFilters(UserSelectedContext catalogInfo, UserProfile profile, List<string> specialFilters, SearchInputModel searchModel,
             ProductsReturn returnProducts)
         {
-            if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
+            if (specialFilters != null)
             {
-                FilterDeviatedPriceProducts(returnProducts, catalogInfo);
+                if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
+                {
+                    FilterDeviatedPriceProducts(returnProducts, catalogInfo);
+                }
+
+                if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
+                {
+                    FilterPreviouslyOrderedProducts(catalogInfo, profile, returnProducts);
+                }
+
+                ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId,
+                    returnProducts.Products.Select(p => p.ItemNumber).ToList());
+
+                // add facet for specialfilters to return and set count to number of products
+                filtered.Facets = returnProducts.Facets;
+                _catalogRepository.RecalculateFacets(filtered, specialFilters);
+                returnProducts = filtered;
             }
-
-            if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
-            {
-                FilterPreviouslyOrderedProducts(catalogInfo, profile, returnProducts);
-            }
-
-            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId,
-                returnProducts.Products.Select(p => p.ItemNumber).ToList());
-
-            // add facet for specialfilters to return and set count to number of products
-            filtered.Facets = returnProducts.Facets;
-            _catalogRepository.RecalculateFacets(filtered, specialFilters);
-            return filtered;
+            return returnProducts;
         }
 
         /// <summary>
