@@ -98,38 +98,13 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                 ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, searchModel);
             }
 
-            if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
-            {
-                FilterDeviatedPriceProducts(ret, catalogInfo);
-            }
-
-            if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
-            {
-                FilterPreviouslyOrderedProducts(catalogInfo, profile, ret);
-            }
-
-            if (specialFilters.Count > 0)
-            {
-                ret = ReformCategoryProductReturn(newCatalog, searchModel, ret);
-            }
+            ret = ApplySpecialFilters(catalogInfo, profile, specialFilters, searchModel, ret);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
 
             GetAdditionalProductInfo(profile, ret, catalogInfo);
 
             return ret;
-        }
-
-        private ProductsReturn ReformCategoryProductReturn(UserSelectedContext newCatalog, SearchInputModel searchModel, ProductsReturn ret)
-        {
-            ProductsReturn filtered = _catalogRepository.GetProductsByIds
-                (newCatalog.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
-
-            // add facet for specialfilters to return and set count to number of products
-            filtered.Facets = ret.Facets;
-            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
-            _catalogRepository.RecalculateFacets(filtered, specialFilters);
-            return filtered;
         }
 
         private ProductsReturn GetAllCategoryProductsShallow(SearchInputModel searchModel, string categoryName,
@@ -183,21 +158,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                 ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, search, searchModel);
             }
 
-            if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
-            {
-                FilterDeviatedPriceProducts(ret, catalogInfo);
-            }
-
-            if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
-            {
-                FilterPreviouslyOrderedProducts(catalogInfo, profile, ret);
-            }
-
-            if (specialFilters.Count > 0)
-            {
-                ret = ReformReturnProductsForSearchWithSpecialFilters(catalogInfo, searchModel, ret);
-            }
-
+            ret = ApplySpecialFilters(catalogInfo, profile, specialFilters, searchModel, ret);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
@@ -209,19 +170,6 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             }
 
             return ret;
-        }
-
-        private ProductsReturn ReformReturnProductsForSearchWithSpecialFilters(UserSelectedContext catalogInfo,
-            SearchInputModel searchModel, ProductsReturn ret)
-        {
-            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId,
-                ret.Products.Select(p => p.ItemNumber).ToList());
-
-            // add facet for specialfilters to return and set count to number of products
-            filtered.Facets = ret.Facets;
-            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
-            _catalogRepository.RecalculateFacets(filtered, specialFilters);
-            return filtered;
         }
 
         private ProductsReturn GetAllProductsBySearchShallow(string search, SearchInputModel searchModel,
@@ -259,38 +207,12 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
             }
 
-            if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
-            {
-                FilterPreviouslyOrderedProducts(catalogInfo, profile, returnValue);
-            }
-
-            if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
-            {
-                FilterDeviatedPriceProducts(returnValue, catalogInfo);
-            }
-
-            if (specialFilters.Count > 0)
-            {
-                returnValue = ReformHouseBrandProductsReturn(catalogInfo, searchModel, returnValue);
-            }
+            returnValue = ApplySpecialFilters(catalogInfo, profile, specialFilters, searchModel, returnValue);
 
             AddPricingInfo(returnValue, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, returnValue, catalogInfo);
 
             return returnValue;
-        }
-
-        private ProductsReturn ReformHouseBrandProductsReturn(UserSelectedContext catalogInfo, SearchInputModel searchModel,
-            ProductsReturn returnValue)
-        {
-            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId,
-                returnValue.Products.Select(p => p.ItemNumber).ToList());
-
-            // add facet for specialfilters to return and set count to number of products
-            filtered.Facets = returnValue.Facets;
-            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
-            _catalogRepository.RecalculateFacets(filtered, specialFilters);
-            return filtered;
         }
 
         private ProductsReturn GetAllHouseBrandProductsShallow(UserSelectedContext catalogInfo, string brandControlLabel,
@@ -308,6 +230,28 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #endregion
 
         #region common
+        private ProductsReturn ApplySpecialFilters(UserSelectedContext catalogInfo, UserProfile profile, List<string> specialFilters, SearchInputModel searchModel,
+            ProductsReturn returnProducts)
+        {
+            if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
+            {
+                FilterDeviatedPriceProducts(returnProducts, catalogInfo);
+            }
+
+            if (specialFilters.Contains(Constants.SPECIALFILTER_PREVIOUSORDERED))
+            {
+                FilterPreviouslyOrderedProducts(catalogInfo, profile, returnProducts);
+            }
+
+            ProductsReturn filtered = _catalogRepository.GetProductsByIds(catalogInfo.BranchId,
+                returnProducts.Products.Select(p => p.ItemNumber).ToList());
+
+            // add facet for specialfilters to return and set count to number of products
+            filtered.Facets = returnProducts.Facets;
+            _catalogRepository.RecalculateFacets(filtered, specialFilters);
+            return filtered;
+        }
+
         /// <summary>
         /// Filter the given list of products for just those with deviated prices
         /// </summary>
