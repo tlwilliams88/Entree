@@ -224,19 +224,13 @@
     <Content Include="Scripts\AppData\Orders\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\drop.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\drop.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderListAssociation\drop.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\Migration0014-v2017-2-0_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\Migration0014-v2017-2-0_up.sql" />
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\Migration0014-v2017-2-0_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\Migration0014-v2017-2-0_up.sql" />
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderListAssociation\Migration0014-v2017-2-0_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderListAssociation\Migration0014-v2017-2-0_up.sql" />
     <Content Include="Scripts\AppData\Orders\Stored Procedures\usp_GetLastFiveOrdersForItem\create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\create.sql">
@@ -278,12 +272,8 @@
     <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignItems\Migration0009_v1-12-2_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\drop.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\Migration0014-v2017-2-0_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\Migration0014-v2017-2-0_up.sql" />
     <Content Include="Scripts\AppData\dbo\Types\BigIntList\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -296,6 +286,8 @@
     <Content Include="Scripts\AppData\ETL\Functions\initcap\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\Migration0014-v2017-2-0_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\Migration0014-v2017-2-0_up.sql" />
     <Content Include="Scripts\AppData\Profile\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -519,18 +511,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignItemByUri\Migration0018_v2017-2-0_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderListAssociation\create.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\usp_GetNextControlNumber\create.sql">
