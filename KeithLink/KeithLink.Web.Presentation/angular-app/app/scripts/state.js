@@ -473,7 +473,7 @@ angular.module('bekApp')
               listHeader;
 
           listId = listId ? listId : LocalStorage.getLastList();
-          listHeader = $filter('filter')(lists, {listid: listId.listId})[0];
+          listHeader = listId.listId ? $filter('filter')(lists, {listid: listId.listId})[0] : $filter('filter')(lists, {listid: listId})[0];
 
           if(!listHeader) {
             
