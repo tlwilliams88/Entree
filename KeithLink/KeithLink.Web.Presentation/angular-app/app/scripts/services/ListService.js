@@ -655,7 +655,7 @@ angular.module('bekApp')
               Service.lists.splice(idx, 1);
             }
 
-            toaster.pop('success', null, 'Successfully deleted list ' + deletedList.name + '.');
+            toaster.pop('success', null, 'Successfully deleted list.');
             return Service.getFavoritesList();
           }, function(error) {
             toaster.pop('error', null, 'Error deleting list.');
