@@ -277,10 +277,11 @@ angular.module('bekApp')
       },
       resolve: {
         validListId: ['$stateParams', 'ResolveService', 'lists', '$filter', function($stateParams, ResolveService, lists, $filter) {
-          var list = $filter('filter')(lists, {listid: $stateParams.listId})[0];
+          var existingList = $filter('filter')(lists, {listid: $stateParams.listId})[0],
+              list = existingList ? existingList : $stateParams.listId;
 
           if(list) {
-            return list.listid;
+            return list.listid ? list.listid : list;
           }
         }],
         originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
