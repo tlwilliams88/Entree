@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'PricingService', 'Order', 'LocalStorage',
-    function ($http, $q, $filter, UtilityService, ExportService, PricingService, Order, LocalStorage) {
+  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'PricingService', 'Order', 'LocalStorage', 'DateService', 'Constants',
+    function ($http, $q, $filter, UtilityService, ExportService, PricingService, Order, LocalStorage, DateService, Constants) {
     
     var Service = {
 
