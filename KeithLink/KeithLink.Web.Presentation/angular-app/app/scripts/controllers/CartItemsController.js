@@ -196,10 +196,10 @@ angular.module('bekApp')
     function invalidItemCheck(items) {
       var invalidItemFound = false;
       items.forEach(function(item){
-        if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK')){
+        if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK' && item.status.toUpperCase() !== 'DELETED')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
-        } else if(item.isMandatory && item.status && item.status.toUpperCase() !== 'OUT OF STOCK' && item.quantity == 0 && $scope.isChangeOrder){ 
+        } else if(item.isMandatory && item.status && item.quantity == 0 && $scope.isChangeOrder && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK' && item.status.toUpperCase() !== 'DELETED')){ 
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
         }
@@ -221,6 +221,7 @@ angular.module('bekApp')
             return (item.quantity > 0 || (item.quantity === 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
           });
           $scope.currentCart.items = updatedCart.items;
+          $scope.currentCart.items = $scope.currentCart.items.$filter('filter')($scope.currentCart.items, {status: !'Deleted'});
           $scope.resetSubmitDisableFlag(true);
           return CartService.updateCart(updatedCart).then(function(savedCart) {
             $scope.currentCart.isRenaming = false;
