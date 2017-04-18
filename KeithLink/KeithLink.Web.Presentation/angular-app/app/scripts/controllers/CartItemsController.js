@@ -221,7 +221,7 @@ angular.module('bekApp')
             return (item.quantity > 0 || (item.quantity === 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK')) && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price)));
           });
           $scope.currentCart.items = updatedCart.items;
-          $scope.currentCart.items = $scope.currentCart.items.$filter('filter')($scope.currentCart.items, {status: !'Deleted'});
+          $scope.currentCart.items = $filter('filter')($scope.currentCart.items, {status: '!Deleted'});
           $scope.resetSubmitDisableFlag(true);
           return CartService.updateCart(updatedCart).then(function(savedCart) {
             $scope.currentCart.isRenaming = false;

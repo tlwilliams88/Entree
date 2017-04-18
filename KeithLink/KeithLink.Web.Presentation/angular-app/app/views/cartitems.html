@@ -414,7 +414,7 @@
             <td class="input-col nowrap">
               <span ng-if="::!item.isoutofstock" class="visible-print">{{item.quantity}}</span>
               <span ng-if="::item.isoutofstock" class="visible-print">{{item.quantityordered}}</span>
-              <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid" ng-hide="item.status === 'Deleted'">
+              <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid && item.status != 'Deleted'">
                 <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
                 <div ng-if="::!item.isoutofstock" counter ng-model="item.quantity" min="0" length="5" ></div>
                 <div ng-if="::item.isoutofstock" counter ng-model="item.quantityordered" min="0" length="5" ></div>
@@ -442,7 +442,7 @@
             </td>
             <td class="large-icon icon-col">
               <a class="hidden-print visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-              <a class="hidden-print hidden-xs hidden-sm" ng-if="!(item.isMandatory && isChangeOrder)" ng-hide="item.status === 'Deleted'" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+              <a class="hidden-print hidden-xs hidden-sm" ng-if="!(item.isMandatory && isChangeOrder || item.status == 'Deleted')" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
             </td>
             <td></td>
           </tr>
