@@ -71,6 +71,8 @@ namespace KeithLink.Svc.Impl.Logic.ContentManagement {
                     return Constants.CONTENTMGMT_BRANCHNAME_FAR;
                 case Constants.BRANCH_FDF:
                     return Constants.CONTENTMGMT_BRANCHNAME_FDF;
+                case Constants.BRANCH_FEL:
+                    return Constants.CONTENTMGMT_BRANCHNAME_FEL;
                 case Constants.BRANCH_FHS:
                     return Constants.CONTENTMGMT_BRANCHNAME_FHS;
                 case Constants.BRANCH_FLR:

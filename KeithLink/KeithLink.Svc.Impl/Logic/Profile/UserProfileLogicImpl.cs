@@ -929,6 +929,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     return Constants.BRANCH_FAQ;
                 case "FAMA":
                 case "FDFW":
+                case "FELB":
                 case "FHST":
                 case "FLRK":
                 case "FOKC":
