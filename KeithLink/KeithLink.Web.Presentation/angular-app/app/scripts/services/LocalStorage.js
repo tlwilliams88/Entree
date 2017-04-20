@@ -146,9 +146,32 @@ angular.module('bekApp')
       },
 
       getDefaultUserName: function() {
-        localStorageService.get(Constants.localStorage.userName);
-      }
+        return localStorageService.get(Constants.localStorage.userName);
+      },
 
+      setHideTutorialHomePage: function(hideTutorial){
+        localStorageService.set(Constants.localStorage.hideTutorial, hideTutorial);
+      },
+
+      getHideTutorialHomePage: function(){
+        return localStorageService.get(Constants.localStorage.hideTutorial);
+      },
+
+      setHideTutorialSearch: function(hideTutorial){
+        localStorageService.set(Constants.localStorage.hideTutorial, hideTutorial);
+      },
+
+      getHideTutorialSearch: function(){
+        return localStorageService.get(Constants.localStorage.hideTutorial);
+      },
+
+      setHideTutorialAddToOrder: function(hideTutorial){
+        localStorageService.set(Constants.localStorage.hideTutorial, hideTutorial);
+      },
+
+      getHideTutorialAddToOrder: function(){
+        return localStorageService.get(Constants.localStorage.hideTutorial);
+      }
     };
 
     function setCustomerNumber(customerNumber) {
