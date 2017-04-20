@@ -37,6 +37,7 @@ angular
     'angulartics.google.analytics',
     'gc.fastRepeat',
     'angular-google-analytics'
+    'ngOnboarding'
   ])
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', '$analyticsProvider', 'AnalyticsProvider',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, $analyticsProvider, AnalyticsProvider) {

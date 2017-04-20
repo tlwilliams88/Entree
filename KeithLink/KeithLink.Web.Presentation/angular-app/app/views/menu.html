@@ -19,7 +19,7 @@
   <div class="menu-overlay" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
+  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:100005;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
@@ -361,11 +361,13 @@
             <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()" ><li class="tablet-menu-item" ><span title="Back" class="icon-back"></span></li></a>
           </ul>
          </div>
+        
 
-        <div class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
-          <a ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px;"><span class="icon-list2 user-bar-buttons "></span></a>
+        <div id="menuIcon" class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm onboarding-container" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
+          <a ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
           <img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.home" />
         </div>
+        
 
         <div class="col-xs-2 hidden-xs hidden-sm padding-left-5 margin-top-5" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
           <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
@@ -436,3 +438,4 @@
     </div>
   </div>
 </div>
+

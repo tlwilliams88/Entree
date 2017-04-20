@@ -408,4 +408,5 @@ angular.module('bekApp')
     $scope.canRunReports = AccessService.canRunReports();
     $scope.isSysAdmin = AccessService.isSysAdmin();
   }
+
 }]);
