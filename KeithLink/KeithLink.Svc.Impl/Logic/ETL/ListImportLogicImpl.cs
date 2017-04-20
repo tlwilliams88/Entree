@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Lists;
 
 namespace KeithLink.Svc.Impl.Logic.ETL {
     public class ListImportLogicImpl : IListsImportLogic {
@@ -25,16 +26,18 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         IStagingRepository _stagingRepository;
         IEventLogRepository _eventLogRepository;
         private readonly IOrderedFromListRepository _order2ListRepo;
+        private readonly IContractChangesRepository _contractChangesRepo;
 
         #endregion
 
         #region constructor
 
         public ListImportLogicImpl( IStagingRepository stagingRepository, IEventLogRepository eventLogRepository,
-            IOrderedFromListRepository order2ListRepo) {
+            IOrderedFromListRepository order2ListRepo, IContractChangesRepository contractChangesRepo) {
             _stagingRepository = stagingRepository;
             _eventLogRepository = eventLogRepository;
             _order2ListRepo = order2ListRepo;
+            _contractChangesRepo = contractChangesRepo;
         }
 
         #endregion
@@ -50,6 +53,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import contract lists {0}", start.ToString()));
 
                 _stagingRepository.ProcessContractItems();
+
+                _contractChangesRepo.Purge(Configuration.ContractChangesPurgeDays);
 
                 TimeSpan took = DateTime.Now - start;
                 _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import contract lists.  Process took {0}", took.ToString()));

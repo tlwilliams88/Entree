@@ -165,6 +165,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
         private const string KEY_CUTOFFTIME_BILLPAY = "BillPayCutOffTime";
         private const string KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS = "CartOrOrder2ListIdPurgeDays";
+        private const string KEY_CONTRACTCHANGES_PURGEDAYS = "ContractChangesPurgeDays";
 
         //Email
         private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -1689,6 +1690,21 @@ namespace KeithLink.Svc.Impl
                 try
                 {
                     return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS, "-7"));
+                }
+                catch
+                {
+                    return -7;
+                }
+            }
+        }
+
+        public static int ContractChangesPurgeDays
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_CONTRACTCHANGES_PURGEDAYS, "-7"));
                 }
                 catch
                 {
