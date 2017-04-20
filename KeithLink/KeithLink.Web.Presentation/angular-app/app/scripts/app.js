@@ -36,14 +36,18 @@ angular
     'angulartics', 
     'angulartics.google.analytics',
     'gc.fastRepeat',
+    'angular-google-analytics'
     'ngOnboarding'
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', '$analyticsProvider',
-  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, $analyticsProvider) {
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', '$analyticsProvider', 'AnalyticsProvider',
+  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, $analyticsProvider, AnalyticsProvider) {
  
   //googleAnalyticsCordovaProvider.trackingId = ENV.googleAnalytics;
   //googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
   //googleAnalyticsCordovaProvider.debug = true; // default: false
+
+  AnalyticsProvider.setAccount('UA-58495462-2');
+  AnalyticsProvider.useECommerce(true, false);
 
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
@@ -83,8 +87,8 @@ angular
     }
   };  
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics) {
  
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
