@@ -8,10 +8,29 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage) {
+  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV) {
 
     $scope.isHomePage = isHomePage;
+
+    var isMobile = UtilityService.isMobileDevice();
+    var isMobileApp = ENV.mobileApp;
+    var hideTutorial = LocalStorage.getHideTutorialHomePage();
+    $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
+
+    $scope.setHideTutorial = function(){
+      LocalStorage.setHideTutorialHomePage(true);
+    };
+
+    $scope.menuOnboardingSteps = [
+      {
+        title: "New Menu Location",
+        position: "bottom",
+        description: "Where did the menu go? <br/><br/> In order to give you more space to work we've hidden the menu.  <br/><br/> When you need it click on the menu icon in the top left corner.",
+        attachTo: "#menuIcon",
+        width: 400
+      }
+    ];
 
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;

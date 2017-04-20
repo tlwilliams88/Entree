@@ -198,7 +198,7 @@ angular.module('bekApp')
           }
         }],
         campaignInfo: [ function() {
-          return false
+          return false;
         }]
       }
     })
@@ -219,7 +219,7 @@ angular.module('bekApp')
 
         }],
         campaignInfo: [ function() {
-          return false
+          return false;
         }]
       }
     })
