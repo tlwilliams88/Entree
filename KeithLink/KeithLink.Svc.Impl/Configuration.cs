@@ -207,6 +207,9 @@ namespace KeithLink.Svc.Impl
         private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
         private const string KEY_UNFI_WHITELIST_BRANCHES = "UNFIWhitelistBranches";
 
+        // Queue Service Functions
+        private const string KEY_QUEUE_SERVICE_PROCESSCONTRACTCHANGES = "ProcessContractChanges";
+
         // Monitor Service Functions
         private const string KEY_MONITOR_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
         private const string KEY_MONITOR_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
@@ -1522,6 +1525,14 @@ namespace KeithLink.Svc.Impl
             {
                 string val = DBAppSettingsRepositoryImpl.GetValue(KEY_UNFI_WHITELIST_BEKUSERS, string.Empty);
                 return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static string ProcessContractChanges
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_PROCESSCONTRACTCHANGES, string.Empty);
             }
         }
 

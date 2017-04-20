@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.Lists;
 
 namespace KeithLink.Svc.Windows.QueueService {
     partial class QueueService : ServiceBase {
@@ -26,6 +27,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IConfirmationLogic _confirmationLogic;
         private IOrderHistoryLogic _orderHistoryLogic;
         private ISpecialOrderLogic _specialOrderLogic;
+        private IListLogic _listLogic;
         private INotificationQueueConsumer _orderConfirmationQueueConsumer;
         private INotificationQueueConsumer _hasNewsQueueConsumer;
         private INotificationQueueConsumer _paymentConfirmationQueueConsumer;
@@ -36,6 +38,7 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private ILifetimeScope confirmationScope;
         private ILifetimeScope lostOrdersScope;
+        private ILifetimeScope contractChangesScope;
         private ILifetimeScope orderHistoryScope;
         private ILifetimeScope specialOrderScope;
         private ILifetimeScope notificationOrderConfirmationScope;
@@ -45,7 +48,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope pushMessagesScope;
 
         private static bool _checkLostOrdersProcessing;
-        private Timer _checkLostOrdersTimer;
+        private static bool _contractChangesProcessing;
+        private Timer _Timer;
 
         const int TIMER_DURATION_TICKMINUTE = 60000;
         const int TIMER_DURATION_START = 1000;
@@ -62,31 +66,12 @@ namespace KeithLink.Svc.Windows.QueueService {
         #endregion
 
         #region methods
-        private void InitializeCheckLostOrdersTimer() {
+        private void InitializeTimer() {
 
             AutoResetEvent auto = new AutoResetEvent( false );
-            TimerCallback cb = new TimerCallback( ProcessCheckLostOrdersMinuteTick );
+            TimerCallback cb = new TimerCallback( ProcessMinuteTick );
 
-            string checksetting = Configuration.CheckLostOrders;
-            List<string> excluded = new List<string>();
-            if (checksetting.IndexOf('|') > -1)
-            {
-                string exclusions = checksetting.Substring(checksetting.IndexOf('|') + 1);
-                checksetting = checksetting.Substring(0, checksetting.IndexOf('|'));
-                excluded = Configuration.GetCommaSeparatedValues(exclusions.ToUpper());
-            }
-
-            if (checksetting.Equals( "true", StringComparison.CurrentCultureIgnoreCase ) && 
-                excluded.Contains(System.Environment.MachineName) == false) {
-                _log.WriteInformationLog("CheckLostOrders started");
-                _checkLostOrdersTimer = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE );
-                lostOrdersScope = container.BeginLifetimeScope();
-                _emailClient = lostOrdersScope.Resolve<IEmailClient>();
-            }
-            else
-            {
-                _log.WriteInformationLog("CheckLostOrders not started");
-            }
+            _Timer = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE );
         }
 
         protected override void OnStart( string[] args ) {
@@ -97,7 +82,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             InitializePushMessageConsumerThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
-            //InitializeCheckLostOrdersTimer();// moved to monitor service
+            InitializeTimer();
             InitializeSpecialOrderUpdateThread();
         }
 
@@ -110,6 +95,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TerminatePushMessageConsumerThread();
             //TerminateCheckLostOrdersTimer();// moved to monitor service
             TerminateSpecialOrderUpdateThread();
+            TerminateTimer();
 
             _log.WriteInformationLog( "Service stopped" );
         }
@@ -272,16 +258,49 @@ namespace KeithLink.Svc.Windows.QueueService {
                 pushMessagesScope.Dispose();
         }
 
-        private void TerminateCheckLostOrdersTimer() {
-            if (_checkLostOrdersTimer != null) {
-                _checkLostOrdersTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
+        private void TerminateTimer() {
+            if (_Timer != null) {
+                _Timer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
             }
         }
 
-        private void ProcessCheckLostOrdersMinuteTick( object state ) {
+        private void ProcessMinuteTick(object state)
+        {
+            //if (true)
+            // only process at the top of the hour
+            if (DateTime.Now.Minute == 0)
+            {
+                //StartEntreeProcess(Configuration.CheckLostOrders, "CheckLostOrders", () => ProcessCheckLostOrdersTick());
 
-//            if ((_checkLostOrdersProcessing) && (DateTime.Now.Minute == 0))
-//                _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, _checkLostOrdersProcessing=true");
+                StartEntreeProcess(Configuration.ProcessContractChanges, "ProcessContractChanges", () => ProcessContractChangesTick());
+            }
+        }
+
+        private void StartEntreeProcess(string checkstring, string processname, Action action)
+        {
+            string checksetting = checkstring;
+            List<string> excluded = new List<string>();
+            if (checksetting.IndexOf('|') > -1)
+            {
+                string exclusions = checksetting.Substring(checksetting.IndexOf('|') + 1);
+                checksetting = checksetting.Substring(0, checksetting.IndexOf('|'));
+                excluded = Configuration.GetCommaSeparatedValues(exclusions.ToUpper());
+            }
+
+            if (checksetting.Equals("true", StringComparison.CurrentCultureIgnoreCase) &&
+                excluded.Contains(System.Environment.MachineName) == false)
+            {
+                _log.WriteInformationLog(string.Format("{0} started", processname));
+                Task.Run(action);
+            }
+            else
+            {
+                _log.WriteInformationLog(string.Format("{0} not started", processname));
+            }
+        }
+
+        private void ProcessCheckLostOrdersTick() {
+
             if (!_checkLostOrdersProcessing)
             {
                 _checkLostOrdersProcessing = true;
@@ -290,17 +309,11 @@ namespace KeithLink.Svc.Windows.QueueService {
                 {
                     while (DateTime.Now.Hour < 5)
                     {
-                        //_log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, asleep");
                         return;
                     }
                 }
 
-                // only process at the top of the hour
-                if (DateTime.Now.Minute == 0)
-                //if (true) // testing only
-                {
-                    ProcessCheckLostOrders();
-                }
+                ProcessCheckLostOrders();
 
                 _checkLostOrdersProcessing = false;
             }
@@ -308,7 +321,6 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void ProcessCheckLostOrders()
         {
-            //_log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run");
             try
             {
                 string subject;
@@ -323,6 +335,7 @@ namespace KeithLink.Svc.Windows.QueueService {
 
                 if ((subject != null) && (subject.Length > 0) && (body != null) && (body.Length > 0))
                 {
+                    _emailClient = lostOrdersScope.Resolve<IEmailClient>();
                     //_log.WriteErrorLog("BEK: " + subject + ";" + body );
                     _emailClient.SendEmail(Configuration.FailureEmailAdresses, null, null, "BEK: " + subject, body);
                 }
@@ -332,6 +345,34 @@ namespace KeithLink.Svc.Windows.QueueService {
                 _log.WriteErrorLog("Error in ProcessCheckLostOrdersMinuteTick", ex);
                 KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex);
             }
+        }
+
+        private void ProcessContractChangesTick()
+        {
+
+            if (!_contractChangesProcessing)
+            {
+                _contractChangesProcessing = true;
+
+                if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5)
+                {
+                    while (DateTime.Now.Hour < 5)
+                    {
+                        return;
+                    }
+                }
+
+                ProcessContractChanges();
+
+                _contractChangesProcessing = false;
+            }
+        }
+
+        private void ProcessContractChanges()
+        {
+            contractChangesScope = container.BeginLifetimeScope();
+            _listLogic = contractChangesScope.Resolve<IListLogic>();
+            _listLogic.ProcessContractChanges();
         }
         #endregion
     }
