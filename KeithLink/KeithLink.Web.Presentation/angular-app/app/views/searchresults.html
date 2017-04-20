@@ -69,7 +69,7 @@
             <span >Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
           </accordion-heading>
           <accordion close-others="true">
-            <accordion-group ng-repeat="parentcategory in   parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion">
+            <accordion-group ng-repeat="parentcategory in parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion">
               <accordion-heading>
                 <div>
                   <div class="pull-left">
@@ -81,9 +81,9 @@
                     ng-if="$state.params.catalogType != 'UNFI'"
                     ng-checked="  parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                     ng-disabled="parentcategory.name === featuredBreadcrumb.displayText"
-                    ng-click="toggleSelection(true,   parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
+                    ng-click="toggleSelection(true, parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
                     <label
-                      ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
+                      ng-class="{active: parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText}">
                       {{::parentcategory.name}} 
                       <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
                     </label>
@@ -225,10 +225,10 @@
 <div class="row top-offset">
   
   <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
-    <div class="row" ng-show="  parentcategories.available.length > 0">
-      <div class="col-sm-12">
+    <div class="row" ng-show="parentcategories.available.length > 0" >
+      <div class="col-sm-12" id="categoriesSection">
         <h3>Categories<span ng-show="filterCount" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
-          <ul class="nav search-results__category">
+          <ul class="nav search-results__category"  >
             <li class="margin-left-10 " ng-repeat="parentcategory in  parentcategories.available">
             <div>
               <input 
@@ -679,4 +679,6 @@
   <div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
 
 </div>
+
+<onboarding-popover enabled="runTutorial" steps="searchOnboardingSteps" on-finish-callback="setHideTutorial()" step-index="onboardingIndex"></onboarding-popover>
 

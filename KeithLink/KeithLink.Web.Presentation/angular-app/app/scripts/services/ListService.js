@@ -338,7 +338,7 @@ angular.module('bekApp')
           }
           Service.getAllLists().then(function(){
             return UtilityService.findObjectByField(Service.lists, 'listid', listId);
-          })
+          });
           
         },
 

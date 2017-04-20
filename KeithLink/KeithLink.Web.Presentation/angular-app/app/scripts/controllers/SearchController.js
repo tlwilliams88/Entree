@@ -8,19 +8,39 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
       $filter,
       $timeout,
-      ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, // bek custom services
+      ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, UtilityService, // bek custom services
       blockUI,
       LocalStorage,
       SessionService,
-      campaignInfo
+      campaignInfo, ENV
     ) {
+
+    //$scope.runTutorial is set in the loadProducts function
+
+    $scope.searchOnboardingSteps = [
+      {
+        title: "Updated Categories",
+        position: "right",
+        description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> Click the (+) icon to see your sub-categories",
+        attachTo: "#categoriesSection",
+        yOffset: "5px",
+        width: 400
+      }
+    ];
+
+    var isMobile = UtilityService.isMobileDevice();
+    var isMobileApp = ENV.mobileApp;
+    var hideTutorial = LocalStorage.getHideTutorialSearch();
+    $scope.setHideTutorial = function(){
+      LocalStorage.setHideTutorialSearch(true);
+    };
 
     // clear keyword search term at top of the page
     if ($scope.userBar) {
@@ -360,7 +380,7 @@ angular.module('bekApp')
       setBreadcrumbsForAggregates($scope.dietary, 'Dietary', 'dietary');
       setBreadcrumbsForAggregates($scope.itemspecs, 'Item Specifications', 'itemspecs');
       setBreadcrumbsForAggregates($scope.temp_zones, 'Temp Zone', 'temp_zone');
-      setBreadcrumbsForAggregates($scope.specialfilters, 'Special Filters', 'specialfilters')
+      setBreadcrumbsForAggregates($scope.specialfilters, 'Special Filters', 'specialfilters');
 
     }
 
@@ -378,16 +398,16 @@ angular.module('bekApp')
             apiText: apitext,
             clickData: aggregateDataSelected,
             displayText: displayText
-          })
+          });
         } else if(aggregateDataSelected.length >= 3) {
           $scope.breadcrumbs.push({
             apiText: apitext,
             clickData: aggregateDataSelected,
             displayText: displayText
-          })
+          });
         }
 
-        $scope.filterCount += aggregateDataSelected.length
+        $scope.filterCount += aggregateDataSelected.length;
       }
     }
 
@@ -413,14 +433,14 @@ angular.module('bekApp')
             return false;
           }
           
-        })
+        });
         
         loadProducts();
       } else {
         $scope.clearFacets();
       }
 
-    }
+    };
 
     /*************
     LOAD PRODUCT DATA
@@ -461,6 +481,7 @@ angular.module('bekApp')
         var page = 1;
         $scope.products = data.products;
         $scope.totalProducts = data.totalcount;
+        $scope.runTutorial = (data.facets.categories.length && hideTutorial == 'false') || isMobileApp || isMobile ? true : false;
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
         }
