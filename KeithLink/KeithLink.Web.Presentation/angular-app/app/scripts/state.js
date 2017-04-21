@@ -198,7 +198,7 @@ angular.module('bekApp')
           }
         }],
         campaignInfo: [ function() {
-          return false
+          return false;
         }]
       }
     })
@@ -219,7 +219,7 @@ angular.module('bekApp')
 
         }],
         campaignInfo: [ function() {
-          return false
+          return false;
         }]
       }
     })
@@ -486,10 +486,7 @@ angular.module('bekApp')
             
           }
 
-          if(!listId) {
-            listId = listHeader.listid;
-          }
-
+          listId = listHeader.listid;
 
           if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){

@@ -2,9 +2,9 @@
  
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI',
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV) {
     
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -25,6 +25,24 @@ angular.module('bekApp')
  
       }
     });
+
+    var isMobile = UtilityService.isMobileDevice();
+    var isMobileApp = ENV.mobileApp;
+    var hideTutorial = LocalStorage.getHideTutorialAddToOrder();
+    $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
+
+    $scope.setHideTutorial = function(){
+      LocalStorage.setHideTutorialAddToOrder(true);
+    };
+
+    $scope.addToOrderOnboardingSteps = [
+      {
+        title: "Refreshed Look And Feel",
+        position: "centered",
+        description: "We changed the color and font of our screens to make everything easier to read.  <br/><br/> We hope it helps.",
+        width: 400
+      }
+    ];
  
     function calculatePieces(items){
       //total piece count for cart info box
