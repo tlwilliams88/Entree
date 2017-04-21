@@ -1726,7 +1726,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 //if (changes != null) _log.WriteInformationLog(string.Format("ReadNextSet, count={0}", changes.Count));
                 //else _log.WriteInformationLog("changes null");
 
-                while (changes != null)
+                if (changes != null && changes.Count > 0)
                 {
                     try
                     {
