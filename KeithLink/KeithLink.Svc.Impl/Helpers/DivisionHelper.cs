@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Impl.Helpers
 					case "FOK":
 						return "FOK06";
                     case "FEL":
-                        return "FEL06";
+                        return "FEL02";
                     case "FSA":
 						return "FSA07";
 					default:
