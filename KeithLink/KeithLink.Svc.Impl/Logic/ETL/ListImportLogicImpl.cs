@@ -54,12 +54,17 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 _stagingRepository.ProcessContractItems();
 
-                _contractChangesRepo.Purge(Configuration.ContractChangesPurgeDays);
-
                 TimeSpan took = DateTime.Now - start;
                 _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import contract lists.  Process took {0}", took.ToString()));
 
-            } 
+                start = DateTime.Now;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Starting:  Purge contract changes {0}", start.ToString()));
+
+                _contractChangesRepo.Purge(Configuration.ContractChangesPurgeDays);
+
+                took = DateTime.Now - start;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Finished:  Purge contract changes.  Process took {0}", took.ToString()));
+            }
             catch (Exception ex) {
                 _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Importing contract lists -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
             }
