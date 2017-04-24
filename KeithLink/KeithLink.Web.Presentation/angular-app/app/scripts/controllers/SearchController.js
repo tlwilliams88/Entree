@@ -47,16 +47,6 @@ angular.module('bekApp')
       $scope.userBar.universalSearchTerm = '';
     }
 
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
-
-    $scope.$on('CartCreatedFromContextMenu', function() {
-      CartService.getCartHeaders().then(function(cartHeaders){
-        $scope.cartHeaders = cartHeaders;
-      });
-    });
-
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
     $scope.hasCasePrice = PricingService.hasCasePrice;

@@ -101,7 +101,6 @@ angular.module('bekApp')
         var items = [item];
         CartService.renameCart = true;
         CartService.createCart(items).then(function(data) {
-          $rootScope.$broadcast('CartCreatedFromContextMenu');
           closeModal();
           $scope.displayMessage('success', 'Successfully created new cart ' + data.name + '.');
         }, function() {

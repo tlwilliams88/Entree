@@ -18,6 +18,8 @@ angular.module('bekApp')
     var hideTutorial = LocalStorage.getHideTutorialHomePage();
     $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
 
+    CartService.getCartHeaders();
+
     $scope.setHideTutorial = function(){
       LocalStorage.setHideTutorialHomePage(true);
     };
@@ -31,10 +33,6 @@ angular.module('bekApp')
         width: 400
       }
     ];
-
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
 
     // get orders
     $scope.orders = [];
