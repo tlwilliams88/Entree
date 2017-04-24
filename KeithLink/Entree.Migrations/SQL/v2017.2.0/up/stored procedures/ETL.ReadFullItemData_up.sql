@@ -87,11 +87,13 @@ BEGIN
 		, i.FDAProductFlag
 		, i.TempZone
 		, i.FPNetWt
-		, i.GrossWeight 'GrossWt'	 
+		, i.GrossWeight 'GrossWt'
+		,b.BrandControlLabel
 	FROM  
-		ETL.Staging_ItemData i inner join 
-		ETL.Staging_Departments c on i.CategoryId = c.DepartmentId left outer join
-		ETL.Staging_FSE_ProductSpec ps on i.UPC = ps.Gtin
+		ETL.Staging_ItemData i 
+		inner join ETL.Staging_Departments c on i.CategoryId = c.DepartmentId
+		left outer join	ETL.Staging_FSE_ProductSpec ps on i.UPC = ps.Gtin
+		left outer join ETL.Staging_Brands b on b.Brand = i.Brand
 	WHERE 
 		  i.ItemId NOT LIKE '999%'  AND SpecialOrderItem <>'Y' and BranchId = @BranchId
 END

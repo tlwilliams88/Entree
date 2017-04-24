@@ -599,7 +599,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.BrandDescriptionNotAnalyzed = (row.GetString("BrandDescription").Length > 0) ?
                                      row.GetString("BrandDescription") :
                                      row.GetString("Brand");
-            data.BrandControlLabel = row.GetString("MaxSmrt");
+            data.BrandControlLabel = row.GetString("BrandControlLabel");
             data.Buyer = row.GetString("Buyer");
             data.Cases = row.GetString("Cases");
             data.CategoryId = row.GetString("CategoryId");
