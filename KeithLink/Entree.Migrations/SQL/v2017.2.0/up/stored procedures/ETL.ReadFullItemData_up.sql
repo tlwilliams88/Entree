@@ -88,7 +88,7 @@ BEGIN
 		, i.TempZone
 		, i.FPNetWt
 		, i.GrossWeight 'GrossWt'
-		,b.BrandControlLabel
+		,b.ControlLabel AS [BrandControlLabel]
 	FROM  
 		ETL.Staging_ItemData i 
 		inner join ETL.Staging_Departments c on i.CategoryId = c.DepartmentId
