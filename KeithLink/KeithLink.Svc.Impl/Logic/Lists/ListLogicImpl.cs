@@ -38,6 +38,7 @@ using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Models.Configuration;
+using Microsoft.ReportingServices.ReportProcessing.ExprHostObjectModel;
 using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
@@ -1749,12 +1750,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                 Product itemdetail = null;
                                 ProductsReturn tempProducts = null;
                                 try
-                                { 
+                                {
                                     List<string> tmp = new List<string>();
                                     tmp.Add(change.ItemNumber);
                                     tempProducts = _catalogLogic.GetProductsByIds(change.BranchId, tmp);
                                 }
-                                catch { }
+                                catch
+                                {
+                                    _log.WriteWarningLog(string.Format("Failure to look up item {0}, branch {1}", change.ItemNumber, change.BranchId));
+                                }
                                 if (tempProducts != null)
                                 {
                                     itemdetail = 
