@@ -266,9 +266,9 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void ProcessMinuteTick(object state)
         {
-            //if (true)
+            if (true)
             // only process at the top of the hour
-            if (DateTime.Now.Minute == 0)
+            //if (DateTime.Now.Minute == 0)
             {
                 //StartEntreeProcess(Configuration.CheckLostOrders, "CheckLostOrders", () => ProcessCheckLostOrdersTick());
 
@@ -309,6 +309,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                 {
                     while (DateTime.Now.Hour < 5)
                     {
+                        _checkLostOrdersProcessing = false;
                         return;
                     }
                 }
@@ -358,6 +359,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                 {
                     while (DateTime.Now.Hour < 5)
                     {
+                        _contractChangesProcessing = false;
                         return;
                     }
                 }

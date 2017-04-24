@@ -1726,7 +1726,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 //if (changes != null) _log.WriteInformationLog(string.Format("ReadNextSet, count={0}", changes.Count));
                 //else _log.WriteInformationLog("changes null");
 
-                if (changes != null && changes.Count > 0)
+                while (changes != null && changes.Count > 0)
                 {
                     try
                     {
@@ -1736,58 +1736,71 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                         Customer customer = _customerRepo.GetCustomerByCustomerNumber(changes[0].CustomerId,
                             changes[0].BranchId);
 
-                        StringBuilder header =
-                            _messageTemplateLogic.BuildHeader("Some items on your contract have changed", customer);
-
-                        MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_CONTRACTCHANGE);
-
-                        StringBuilder itemsContent = new StringBuilder();
-                        var tempProducts = _catalogLogic.GetProductsByIds(customer.CustomerBranch,
-                            changes.Select(c => c.ItemNumber).ToList());
-                        foreach (ContractChange change in changes)
+                        if (customer != null)
                         {
-                            Product itemdetail =
-                                tempProducts.Products.Where(p => p.ItemNumber == change.ItemNumber).FirstOrDefault();
-                            MessageTemplateModel itemTemplate =
-                                _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS);
-                            itemsContent.Append(itemTemplate.Body.Inject(new
+                            StringBuilder header =
+                                _messageTemplateLogic.BuildHeader("Some items on your contract have changed", customer);
+
+                            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_CONTRACTCHANGE);
+
+                            StringBuilder itemsContent = new StringBuilder();
+                            foreach (ContractChange change in changes)
                             {
-                                Status =
-                                (change.Status.Equals("Added"))
-                                    ? "<font color=green>" + change.Status + "</font>"
-                                    : "<font color=red>" + change.Status + "</font>",
-                                ProductNumber = change.ItemNumber,
-                                ProductDescription = (itemdetail != null) ? itemdetail.Name : "",
-                                Brand = (itemdetail != null) ? itemdetail.BrandExtendedDescription : "",
-                                Pack = (itemdetail != null) ? itemdetail.Pack : "",
-                                Size = (itemdetail != null) ? itemdetail.Size : ""
-                            }));
+                                Product itemdetail = null;
+                                ProductsReturn tempProducts = null;
+                                try
+                                { 
+                                    List<string> tmp = new List<string>();
+                                    tmp.Add(change.ItemNumber);
+                                    tempProducts = _catalogLogic.GetProductsByIds(change.BranchId, tmp);
+                                }
+                                catch { }
+                                if (tempProducts != null)
+                                {
+                                    itemdetail = 
+                                                tempProducts.Products.Where(p => p.ItemNumber == change.ItemNumber).FirstOrDefault();
+                                }
+                                MessageTemplateModel itemTemplate =
+                                    _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS);
+                                itemsContent.Append(itemTemplate.Body.Inject(new
+                                {
+                                    Status =
+                                    (change.Status.Equals("Added"))
+                                        ? "<font color=green>" + change.Status + "</font>"
+                                        : "<font color=red>" + change.Status + "</font>",
+                                    ProductNumber = change.ItemNumber,
+                                    ProductDescription = (itemdetail != null) ? itemdetail.Name : "",
+                                    Brand = (itemdetail != null) ? itemdetail.BrandExtendedDescription : "",
+                                    Pack = (itemdetail != null) ? itemdetail.Pack : "",
+                                    Size = (itemdetail != null) ? itemdetail.Size : ""
+                                }));
+                            }
+
+                            HasNewsNotification notifcation = new HasNewsNotification()
+                            {
+                                CustomerNumber = changes[0].CustomerId,
+                                BranchId = changes[0].BranchId,
+                                Subject = template.Subject.Inject(new
+                                {
+                                    CustomerNumber = customer.CustomerNumber,
+                                    CustomerName = customer.CustomerName
+                                }),
+                                Notification = template.Body.Inject(new
+                                {
+                                    NotifHeader = header.ToString(),
+                                    ContractChangeItems = itemsContent.ToString()
+                                })
+                            };
+                            _queueRepo.PublishToDirectedExchange(notifcation.ToJson(),
+                                Configuration.RabbitMQNotificationServer,
+                                Configuration.RabbitMQNotificationUserNamePublisher,
+                                Configuration.RabbitMQNotificationUserPasswordPublisher,
+                                Configuration.RabbitMQVHostNotification,
+                                Configuration.RabbitMQExchangeNotificationV2,
+                                Constants.RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY);
+                            _log.WriteInformationLog(string.Format("Published to notification exchange, {0}",
+                                notifcation.ToJson()));
                         }
-
-                        HasNewsNotification notifcation = new HasNewsNotification()
-                        {
-                            CustomerNumber = changes[0].CustomerId,
-                            BranchId = changes[0].BranchId,
-                            Subject = template.Subject.Inject(new
-                            {
-                                CustomerNumber = customer.CustomerNumber,
-                                CustomerName = customer.CustomerName
-                            }),
-                            Notification = template.Body.Inject(new
-                            {
-                                NotifHeader = header.ToString(),
-                                ContractChangeItems = itemsContent.ToString()
-                            })
-                        };
-                        _queueRepo.PublishToDirectedExchange(notifcation.ToJson(),
-                            Configuration.RabbitMQNotificationServer,
-                            Configuration.RabbitMQNotificationUserNamePublisher,
-                            Configuration.RabbitMQNotificationUserPasswordPublisher,
-                            Configuration.RabbitMQVHostNotification,
-                            Configuration.RabbitMQExchangeNotificationV2,
-                            Constants.RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY);
-                        _log.WriteInformationLog(string.Format("Published to notification exchange, {0}",
-                            notifcation.ToJson()));
                     }
                     catch (Exception ex)
                     {
