@@ -66,6 +66,11 @@ angular.module('bekApp')
       $scope.promoMessage = errorMessage;
     }).finally(function() {
       $scope.loadingPromoItems = false;
+
+      // If Tutorial Should not show remove onboarding-focus class for icon element
+      if(!$scope.runTutorial){
+        $('.onboarding-focus').removeClass('onboarding-focus');
+      }
     });
  
     // get account info
