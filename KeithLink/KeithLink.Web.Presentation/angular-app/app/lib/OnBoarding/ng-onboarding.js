@@ -112,7 +112,7 @@
             }
             $('.onboarding-focus').removeClass('onboarding-focus');
             if (showOverlay) {
-              if (curStep['attachTo'] && scope.overlay && scope.enabled) {
+              if (curStep['attachTo'] && scope.overlay) {
                 return $(curStep['attachTo']).addClass('onboarding-focus');
               }
             }

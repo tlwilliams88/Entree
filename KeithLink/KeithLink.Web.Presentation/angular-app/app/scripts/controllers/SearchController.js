@@ -481,7 +481,10 @@ angular.module('bekApp')
         var page = 1;
         $scope.products = data.products;
         $scope.totalProducts = data.totalcount;
-        $scope.runTutorial = (data.facets.categories.length && hideTutorial == 'false') || isMobileApp || isMobile ? true : false;
+        $scope.runTutorial = (data.facets.categories.length && hideTutorial != 'true') || isMobileApp || isMobile ? true : false;
+        if(!$scope.runTutorial){
+          $('.onboarding-focus').removeClass('onboarding-focus');
+        }
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
         }

@@ -150,27 +150,27 @@ angular.module('bekApp')
       },
 
       setHideTutorialHomePage: function(hideTutorial){
-        localStorageService.set(Constants.localStorage.hideTutorial, hideTutorial);
+        localStorageService.set(Constants.localStorage.hideTutorialHome, hideTutorial);
       },
 
       getHideTutorialHomePage: function(){
-        return localStorageService.get(Constants.localStorage.hideTutorial);
+        return localStorageService.get(Constants.localStorage.hideTutorialHome);
       },
 
       setHideTutorialSearch: function(hideTutorial){
-        localStorageService.set(Constants.localStorage.hideTutorial, hideTutorial);
+        localStorageService.set(Constants.localStorage.hideTutorialSearch, hideTutorial);
       },
 
       getHideTutorialSearch: function(){
-        return localStorageService.get(Constants.localStorage.hideTutorial);
+        return localStorageService.get(Constants.localStorage.hideTutorialSearch);
       },
 
       setHideTutorialAddToOrder: function(hideTutorial){
-        localStorageService.set(Constants.localStorage.hideTutorial, hideTutorial);
+        localStorageService.set(Constants.localStorage.hideTutorialAddToOrder, hideTutorial);
       },
 
       getHideTutorialAddToOrder: function(){
-        return localStorageService.get(Constants.localStorage.hideTutorial);
+        return localStorageService.get(Constants.localStorage.hideTutorialAddToOrder);
       }
     };
 
