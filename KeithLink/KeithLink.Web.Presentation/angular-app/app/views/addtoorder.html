@@ -1,3 +1,5 @@
+<onboarding-popover enabled="runTutorial" steps="addToOrderOnboardingSteps" on-finish-callback="setHideTutorial()" step-index="onboardingIndex"></onboarding-popover>
+
 <div page-header-bar>
   <div header-message>
     Add To Order
@@ -76,7 +78,7 @@
           </ul>
         </div>
         
-        <div class="info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group">
+        <div class="info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group" id="addToOrderTable">
           <span class="nav-description text-light" ng-if="isChangeOrder" >Selected Order</span>
           <span class="nav-description text-light" ng-if="!isChangeOrder" >Cart Name</span>
           <span class="nav-title" ng-hide="isRenaming">{{selectedCart.name || selectedCart.invoicenumber || 'New Cart'}} 
@@ -152,7 +154,7 @@
   
 
   <form 
-    novalidate 
+    novalidate
     name="addToOrderForm" 
     class="style-validation-errors" 
     autocomplete="off">
@@ -563,5 +565,3 @@
   </table>
   </form>
 </div>
-
-<onboarding-popover enabled="runTutorial" steps="addToOrderOnboardingSteps" on-finish-callback="setHideTutorial()" step-index="onboardingIndex"></onboarding-popover>
