@@ -33,15 +33,11 @@ angular.module('bekApp')
           element.find('div.btn-group-vertical').removeAttr('style');
         }
 
-          ListService.getListHeaders().then(function(lists) {
-            $scope.lists = lists;
-          });
+          $scope.lists = ListService.listHeaders;
 
           CartService.getShipDates(); // needed if user creates a cart using the context menu
           
-          CartService.getCartHeaders().then(function(carts) {
-            $scope.carts = carts;
-          });
+          $scope.carts = CartService.cartHeaders;
 
           OrderService.getChangeOrders().then(function(orders) {
             $scope.changeOrders = orders;

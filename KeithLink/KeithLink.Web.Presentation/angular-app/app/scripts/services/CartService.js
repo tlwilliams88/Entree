@@ -282,17 +282,7 @@ angular.module('bekApp')
         return Cart.update(params, cart).$promise.then(function(response) {
           cart = response.successResponse;
 
-          // update cache
-          Service.cartHeaders.forEach(function(cartHeader, index) {
-            if (cartHeader.id === cart.id) {
-              var cartHeaderToUpdate = Service.cartHeaders[index];
-              cartHeaderToUpdate.requestedshipdate = cart.requestedshipdate;
-              cartHeaderToUpdate.subtotal = cart.subtotal;
-              cartHeaderToUpdate.name = cart.name;
-            }
-          });
-
-          Service.updateCartHeaders();
+          Service.getCartHeaders();
 
           return Service.getCart(cart.id);
         });
@@ -332,7 +322,7 @@ angular.module('bekApp')
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
 
-          Service.updateCartHeaders();
+          Service.updateCartHeaders(Service.cartHeaders);
           
           return response.successResponse;
         });
@@ -353,7 +343,7 @@ angular.module('bekApp')
           });
           angular.copy(cartsKept, Service.cartHeaders);
           
-          Service.updateCartHeaders();
+          Service.updateCartHeaders(Service.cartHeaders);
  
           return;
         });
@@ -369,6 +359,7 @@ angular.module('bekApp')
         }
         
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
+          Service.getCartHeaders();
           return response.successResponse;
         });
       },
