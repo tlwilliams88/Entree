@@ -846,6 +846,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         }
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
+            SetWorkingCatalog(searchModel.CatalogType);
+
             List<dynamic> filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
                         string termSearch = search;
             List<string> fieldsToSearch = null;
