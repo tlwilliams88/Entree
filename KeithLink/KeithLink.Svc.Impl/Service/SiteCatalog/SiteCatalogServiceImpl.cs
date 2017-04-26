@@ -233,7 +233,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private ProductsReturn ApplySpecialFilters(UserSelectedContext catalogInfo, UserProfile profile, List<string> specialFilters, SearchInputModel searchModel,
             ProductsReturn returnProducts)
         {
-            if (specialFilters != null)
+            if (specialFilters != null && specialFilters.Count > 0)
             {
                 if (specialFilters.Contains(Constants.SPECIALFILTER_DEVIATEDPRICES))
                 {
