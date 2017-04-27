@@ -1,7 +1,7 @@
 (function() {
-  var app;
+  'use strict';
 
-  app = angular.module("ngOnboarding", []);
+  var app = angular.module("ngOnboarding", []);
 
   app.provider("ngOnboardingDefaults", function() {
     return {
