@@ -29,8 +29,10 @@ angular.module('bekApp')
 
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
-    var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile;
-    $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
+
+    // Tutorial
+    var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile,
+        runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
 
     function setHideTutorial(){
       LocalStorage.setHideTutorialAddToOrder(true);
@@ -41,13 +43,11 @@ angular.module('bekApp')
       id: "addtoorder_tutorial",
       title: "Refreshed Look And Feel",
       buttons: [{name: "Close", onclick: setHideTutorial}],
-      description: "We changed the color and font of our screens to make everything easier to read.  <br/><br/> We hope it helps.",
+      description: "We changed the color and font of our screens to make everything easier to read.  <br/><br/> We hope these change help. <br/><br/> Also you may notice your list items have now been sorted by the simplified product categories.",
       overlay: true
     })
 
-    if(hideTutorial) {
-      guiders.hideAll();
-    } else {
+    if(runTutorial) {
       guiders.show('addtoorder_tutorial');
     }
 

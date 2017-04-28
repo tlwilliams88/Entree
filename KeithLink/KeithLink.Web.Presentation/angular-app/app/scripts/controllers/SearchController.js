@@ -32,7 +32,7 @@ angular.module('bekApp')
     guiders.createGuider({
       id: "searchpage_tutorial",
       title: "Updated Categories",
-      description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> Click the (+) icon to see your sub-categories",
+      description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> As an example 'All Produce' is now 'Produce' and 'Frozen & Fresh Poultry' are under 'Center Of Plate'. <br/><br/> These categories are also available to choose from when searching or navigating from the product catalog. <br/><br/> To see sub-categories click the (+) icon.",
       buttons: [{name: "Close", onclick: setHideTutorial}],
       overlay: true,
       attachTo: "#categoriesSection",
@@ -43,9 +43,10 @@ angular.module('bekApp')
 
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
-    var hideTutorial = LocalStorage.getHideTutorialSearch();
+
     function setHideTutorial(){
       LocalStorage.setHideTutorialSearch(true);
+      $scope.tutorialRunning = false;
       guiders.hideAll();
     };
 
@@ -488,13 +489,14 @@ angular.module('bekApp')
         var page = 1;
         $scope.products = data.products;
         $scope.totalProducts = data.totalcount;
-        $scope.runTutorial = (data.facets.categories.length && hideTutorial != 'true') || isMobileApp || isMobile ? true : false;
+        var hideTutorial = LocalStorage.getHideTutorialSearch(),
+            runTutorial = data.facets.categories.length && !(hideTutorial || isMobileApp || isMobile) ? true : false;
 
-        if($scope.runTutorial) {
+        if(runTutorial) {
+          $scope.tutorialRunning = true;
           guiders.show('searchpage_tutorial');
-        } else {
-          guiders.hideAll();
         }
+
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
         }
