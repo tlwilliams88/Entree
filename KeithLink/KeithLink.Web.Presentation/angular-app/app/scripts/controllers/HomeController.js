@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * @ngdoc function
  * @name bekApp.controller:HomeController
@@ -8,29 +8,44 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV) {
+  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', '$timeout',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, $timeout) {
 
     $scope.isHomePage = isHomePage;
+
+    $scope.$on('$stateChangeStart',
+      function(){
+        guiders.hideAll();
+    });
 
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
     var hideTutorial = LocalStorage.getHideTutorialHomePage();
     $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
 
-    $scope.setHideTutorial = function(){
+    guiders.createGuider({
+      id: "homepage_tutorial",
+      title: "New Menu Location",
+      description: "Where did the menu go? <br/><br/> In order to give you more space to work we've hidden the menu.  <br/><br/> When you need it click on the menu icon in the top left corner.",
+      buttons: [{name: "Close", onclick: setHideTutorial}],
+      overlay: true,
+      attachTo: "#menuIcon",
+      position: "right",
+      offset: {left: -70, top: 64.11},
+      highlight: true
+    })
+
+    function setHideTutorial(){
       LocalStorage.setHideTutorialHomePage(true);
+      guiders.hideAll();
     };
 
-    $scope.menuOnboardingSteps = [
-      {
-        title: "New Menu Location",
-        position: "bottom",
-        description: "Where did the menu go? <br/><br/> In order to give you more space to work we've hidden the menu.  <br/><br/> When you need it click on the menu icon in the top left corner.",
-        attachTo: "#menuIcon",
-        width: 400
-      }
-    ];
+    if(hideTutorial) {
+      guiders.hideAll();
+    } else {
+      guiders.show('homepage_tutorial');
+    }
+
 
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -56,7 +71,7 @@ angular.module('bekApp')
         $scope.loadingOrders = false;
       });
     }
- 
+
     // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
@@ -72,7 +87,7 @@ angular.module('bekApp')
         $('.onboarding-focus').removeClass('onboarding-focus');
       }
     });
- 
+
     // get account info
     $scope.loadingAccountBalance = true;
     CustomerService.getAccountBalanceInfo().then(function(data) {
@@ -87,7 +102,7 @@ angular.module('bekApp')
     });
 
     $scope.hidePayNowButton = ($scope.selectedUserContext.customer.termcode === '50' || $scope.selectedUserContext.customer.termcode === '51');
- 
+
     $scope.showPromoItemContent = function(promoItem) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/promoitemcontentmodal.html',
@@ -99,7 +114,7 @@ angular.module('bekApp')
         }
       });
     };
- 
+
     $scope.showAdditionalInfo = function(notification) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/notificationdetailsmodal.html',
@@ -113,7 +128,7 @@ angular.module('bekApp')
         }
       });
     };
- 
+
     $scope.notificationParams = {
       size: 6,
       from:0,
@@ -122,7 +137,7 @@ angular.module('bekApp')
         order: 'desc'
       }]
     };
- 
+
     $scope.loadingRecentActivity = true;
       NotificationService.getMessages($scope.notificationParams).then(function(data) {
         var notifications =data.results,
@@ -137,12 +152,12 @@ angular.module('bekApp')
           else{
             dates.push(date);
             notificationDates[date] = [notification];
-          }          
-         
+          }
+
         });
       $scope.notificationDates = notificationDates;
-      $scope.dates = dates;      
+      $scope.dates = dates;
       $scope.loadingRecentActivity = false;
     });
- 
+
   }]);

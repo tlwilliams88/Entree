@@ -1,6 +1,6 @@
 'use strict';
- 
- 
+
+
 /**
  * @ngdoc overview
  * @name bekApp
@@ -33,15 +33,14 @@ angular
     'blockUI',            // used for context menu dropdown in upper left corner
     'sticky',
     'configenv',               // used to inject environment variables into angular through Grunt
-    'angulartics', 
+    'angulartics',
     'angulartics.google.analytics',
     'gc.fastRepeat',
-    'angular-google-analytics',
-    'ngOnboarding'
+    'angular-google-analytics'
   ])
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', '$analyticsProvider', 'AnalyticsProvider',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, $analyticsProvider, AnalyticsProvider) {
- 
+
   //googleAnalyticsCordovaProvider.trackingId = ENV.googleAnalytics;
   //googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
   //googleAnalyticsCordovaProvider.debug = true; // default: false
@@ -52,19 +51,19 @@ angular
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
   // cfpLoadingBarProvider.latencyThreshold = 500;
- 
+
   // configure logging
   $logProvider.debugEnabled(ENV.loggingEnabled);
- 
+
   // set local storage prefix
   localStorageServiceProvider.setPrefix('bek');
- 
+
   // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptor');
- 
+
   // group multiple aysnc methods together to only run through one digest cycle
   $httpProvider.useApplyAsync(true);
- 
+
   // Enable Angular debug information for everything but prod and QA
   $compileProvider.debugInfoEnabled(ENV.enableDebugInfo);
 
@@ -78,24 +77,24 @@ angular
       return config.data.substr(config.data.indexOf('message')+8);
     } else if (config.url === '/invoice/payment' && config.method === 'POST') { // submit payments
       return 'Submitting payments...';
-    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) { // show overlay for all PUT requests except for active cart 
+    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) { // show overlay for all PUT requests except for active cart
       return 'Saving...';
     } else if (config.method === 'DELETE') {
       return 'Deleting...';
     } else {
       return false;
     }
-  };  
+  };
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics',
   function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics) {
- 
+
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
   };
- 
+
   $rootScope.redirectUserToCorrectHomepage = function() {
     if ( AccessService.isOrderEntryCustomer() ) {
       $state.go('menu.home');
@@ -103,7 +102,7 @@ angular
       $state.go('menu.catalog.home');
     }
   };
- 
+
   $rootScope.openExternalLink = function(url) {
     window.open(url, '_system');
   };
@@ -111,11 +110,11 @@ angular
   // ENV.currentusername = localStorageService.get('currentUserName');
 
   ENV.username = localStorageService.get('userName');
- 
+
   /**********
   $stateChangeStart
   **********/
- 
+
   var bypass;
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
@@ -144,16 +143,16 @@ angular
       }
     }
 
-    if (bypass) { 
+    if (bypass) {
       $log.debug('route: ' + toState.name);
       bypass = false;
-      return; 
+      return;
     }
 
     event.preventDefault();
 
     // Validate the state the user is trying to access
-    
+
     if (AccessService.isLoggedIn()) {
       $log.debug('user logged in');
       validateStateForLoggedInUser();
@@ -172,19 +171,19 @@ angular
         processValidStateChange();
       }
     }
- 
+
   });
- 
+
   /**********
   $stateChangeSuccess
   **********/
- 
+
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
     $log.debug('state change success');
 
     // Pull Mandatory notifications for header bar
-    var notificationParams = {     
+    var notificationParams = {
       size: 50,
       from: 0,
       filter: {
@@ -204,7 +203,7 @@ angular
       NotificationService.getMessages(notificationParams);
       NotificationService.getUnreadMessageCount();
     }
- 
+
     // remove lists and carts from memory
     if (fromState.data && toState.data) {
       if (fromState.data.saveLists && !toState.data.saveLists) {
@@ -217,11 +216,11 @@ angular
       }
     }
   });
- 
+
   /**********
   $stateChangeError
   **********/
-  
+
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
     $log.debug(error);
 
