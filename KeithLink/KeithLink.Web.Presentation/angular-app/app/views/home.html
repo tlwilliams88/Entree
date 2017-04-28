@@ -178,11 +178,11 @@
               {{order.status}}
             </div>
             <!-- Display order status before ETA info is available -->
-            <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null 
-              || order.estimateddeliverytime != null 
+            <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null
+              || order.estimateddeliverytime != null
               || order. actualdeliverytime != null" style="padding:12px 0">
-              <span ng-if="order.estimateddeliverytime != null 
-                && order.actualdeliverytime == null 
+              <span ng-if="order.estimateddeliverytime != null
+                && order.actualdeliverytime == null
                 && order.deliveryoutofsequence != true">
                 <span class="small-icon icon-truck"></span>
               <br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
@@ -191,7 +191,7 @@
               Delivered<br />{{order.actualdeliverytime | formatDateWithTimezone}}
             </span>
               <span ng-if="
-                order.actualdeliverytime == null && (order.estimateddeliverytime == null 
+                order.actualdeliverytime == null && (order.estimateddeliverytime == null
                 || order.deliveryoutofsequence == true)">
               <span class="small-icon icon-truck"></span>
               <br />Out For Delivery
@@ -295,7 +295,7 @@
             </div>
             <div class="details-item">
               <div class="item-title">
-                Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span>              
+                Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span>
               </div>
               <div class="item-value">
                 {{order.ordertotal | currency}}
@@ -309,8 +309,8 @@
                 {{order.status}}
               </div>
               <!-- Display order status before ETA info is available-->
-              <div ng-if="order.estimateddeliverytime != null 
-              && order.actualdeliverytime == null 
+              <div ng-if="order.estimateddeliverytime != null
+              && order.actualdeliverytime == null
               && order.deliveryoutofsequence != true" class="item-value highlight-col">
                 <span class="small-icon icon-truck"></span>
                 <br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
@@ -319,7 +319,7 @@
                 Delivered
                 <br/>{{order.actualdeliverytime | formatDateWithTimezone}}
               </div>
-              <div ng-if="order.actualdeliverytime == null && (!order.estimateddeliverytime == null 
+              <div ng-if="order.actualdeliverytime == null && (!order.estimateddeliverytime == null
               || order.deliveryoutofsequence == true)" class="item-value highlight-col">
                 <span class="small-icon icon-truck"></span>
                 <br />Out For Delivery
@@ -356,6 +356,3 @@
       </div>
     </div>
   </div>
-
-
-<onboarding-popover enabled="runTutorial" steps="menuOnboardingSteps" on-finish-callback="setHideTutorial()" step-index="onboardingIndex"></onboarding-popover>
