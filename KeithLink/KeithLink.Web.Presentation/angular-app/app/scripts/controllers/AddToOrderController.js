@@ -33,7 +33,7 @@ angular.module('bekApp')
     $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
 
     function setHideTutorial(){
-      LocalStorage.setHideTutorialHomePage(true);
+      LocalStorage.setHideTutorialAddToOrder(true);
       guiders.hideAll();
     };
 
