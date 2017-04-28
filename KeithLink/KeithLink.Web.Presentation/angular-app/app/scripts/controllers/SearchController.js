@@ -37,7 +37,7 @@ angular.module('bekApp')
       overlay: true,
       attachTo: "#categoriesSection",
       position: "right",
-      offset: {left: 180, top: 325},
+      offset: {left: 245, top: 321.3889},
       highlight: true
     })
 
@@ -45,7 +45,7 @@ angular.module('bekApp')
     var isMobileApp = ENV.mobileApp;
     var hideTutorial = LocalStorage.getHideTutorialSearch();
     function setHideTutorial(){
-      LocalStorage.setHideTutorialHomePage(true);
+      LocalStorage.setHideTutorialSearch(true);
       guiders.hideAll();
     };
 
