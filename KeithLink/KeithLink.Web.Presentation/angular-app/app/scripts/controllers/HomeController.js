@@ -20,8 +20,10 @@ angular.module('bekApp')
 
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
-    var hideTutorial = LocalStorage.getHideTutorialHomePage();
-    $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
+
+    // Tutorial
+    var hideTutorial = LocalStorage.getHideTutorialHomePage(),
+        runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
 
     guiders.createGuider({
       id: "homepage_tutorial",
@@ -37,15 +39,14 @@ angular.module('bekApp')
 
     function setHideTutorial(){
       LocalStorage.setHideTutorialHomePage(true);
+      $rootScope.tutorialRunning = false;
       guiders.hideAll();
     };
 
-    if(hideTutorial) {
-      guiders.hideAll();
-    } else {
+    if(runTutorial) {
+      $rootScope.tutorialRunning = true;
       guiders.show('homepage_tutorial');
     }
-
 
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
