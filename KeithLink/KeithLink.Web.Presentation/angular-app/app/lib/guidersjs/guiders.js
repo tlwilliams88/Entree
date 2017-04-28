@@ -252,7 +252,7 @@ var guiders = (function($) {
   };
 
   guiders._dehighlightElement = function(selector) {
-    $(selector).removeClass('guiders_highlight');
+    $('.guiders_highlight').removeClass('guiders_highlight');
   };
 
   guiders._hideOverlay = function() {

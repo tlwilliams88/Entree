@@ -13,10 +13,10 @@ angular.module('bekApp')
 
     $scope.isHomePage = isHomePage;
 
-    function setHideTutorial(){
-      LocalStorage.setHideTutorialHomePage(true);
-      guiders.hideAll();
-    };
+    $scope.$on('$stateChangeStart',
+      function(){
+        guiders.hideAll();
+    });
 
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
@@ -24,16 +24,21 @@ angular.module('bekApp')
     $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
 
     guiders.createGuider({
-      buttons: [{name: "Close", onclick: setHideTutorial}],
-      description: "Where did the menu go? <br/><br/> In order to give you more space to work we've hidden the menu.  <br/><br/> When you need it click on the menu icon in the top left corner.",
       id: "homepage_tutorial",
+      title: "New Menu Location",
+      description: "Where did the menu go? <br/><br/> In order to give you more space to work we've hidden the menu.  <br/><br/> When you need it click on the menu icon in the top left corner.",
+      buttons: [{name: "Close", onclick: setHideTutorial}],
       overlay: true,
       attachTo: "#menuIcon",
       position: "right",
-      title: "New Menu Location",
-      offset: {left: 30, top: 80},
+      offset: {left: -70, top: 64.11},
       highlight: true
     })
+
+    function setHideTutorial(){
+      LocalStorage.setHideTutorialHomePage(true);
+      guiders.hideAll();
+    };
 
     if(hideTutorial) {
       guiders.hideAll();

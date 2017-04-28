@@ -22,17 +22,22 @@ angular.module('bekApp')
       campaignInfo, ENV
     ) {
 
+    $scope.$on('$stateChangeStart',
+      function(){
+        guiders.hideAll();
+    });
+
     //$scope.runTutorial is set in the loadProducts function
 
     guiders.createGuider({
-      buttons: [{name: "Close", onclick: setHideTutorial}],
-      description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> Click the (+) icon to see your sub-categories",
       id: "searchpage_tutorial",
+      title: "Updated Categories",
+      description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> Click the (+) icon to see your sub-categories",
+      buttons: [{name: "Close", onclick: setHideTutorial}],
       overlay: true,
       attachTo: "#categoriesSection",
       position: "right",
-      title: "Updated Categories",
-      offset: {left: 30, top: 80},
+      offset: {left: 180, top: 325},
       highlight: true
     })
 
@@ -40,7 +45,8 @@ angular.module('bekApp')
     var isMobileApp = ENV.mobileApp;
     var hideTutorial = LocalStorage.getHideTutorialSearch();
     function setHideTutorial(){
-      LocalStorage.setHideTutorialSearch(true);
+      LocalStorage.setHideTutorialHomePage(true);
+      guiders.hideAll();
     };
 
     // clear keyword search term at top of the page
@@ -485,7 +491,7 @@ angular.module('bekApp')
         $scope.runTutorial = (data.facets.categories.length && hideTutorial != 'true') || isMobileApp || isMobile ? true : false;
 
         if($scope.runTutorial) {
-          guiders.show('homepage_tutorial');
+          guiders.show('searchpage_tutorial');
         } else {
           guiders.hideAll();
         }
