@@ -54,9 +54,9 @@ namespace KeithLink.Svc.Impl.Logic.ContentManagement {
 
         private List<ContentItemViewModel> GetBranchItems(ref List<EE.ContentItem> items, string branchId)
         {
-            return items.Where(i => i.AdditionalData != null)
-                        .Where(i => i.AdditionalData.Count > 0)
-                        .Where(i => GetBranchName(branchId).Contains(i.AdditionalData[0].TargetBranch))
+            return items.Where(i => i.AdditionalData != null
+                                    && i.AdditionalData.Count > 0 
+                                    && GetBranchName(branchId).Contains(i.AdditionalData[0].TargetBranch, StringComparer.CurrentCultureIgnoreCase))
                         .Select(i => i.ToContentItemViewModel(branchId))
                         .ToList();
         }
