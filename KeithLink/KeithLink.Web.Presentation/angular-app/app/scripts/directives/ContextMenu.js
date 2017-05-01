@@ -17,9 +17,7 @@ angular.module('bekApp')
             listHeaders = ListService.listHeaders,
             changeOrderHeaders = OrderService.changeOrderHeaders;
 
-        if(listHeaders.length){
-          $scope.lists = ListService.listHeaders;
-        }
+        $scope.lists = listHeaders.length ? listHeaders : ListService.getListHeaders();
 
         if ($scope.canCreateOrders) {
           CartService.getShipDates(); // needed if user creates a cart using the context menu
