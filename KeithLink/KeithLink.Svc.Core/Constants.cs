@@ -28,6 +28,7 @@ namespace KeithLink.Svc.Core
         public const string BRANCH_FLR = "FLR";
         public const string BRANCH_FOK = "FOK";
         public const string BRANCH_FSA = "FSA";
+        public const string BRANCH_FEL = "FEL";
         public const string BRANCH_GOF = "GOF";
 
         public const string CATALOG_BEK = "BEK";
@@ -284,13 +285,17 @@ namespace KeithLink.Svc.Core
 
         // content management
         public const string CONTENTMGMT_BRANCHNAME_FAM = "Amarillo";
+        public const string CONTENTMGMT_BRANCHNAME_FAM_ALTERNATE = "West Texas";
         public const string CONTENTMGMT_BRANCHNAME_FAQ = "New Mexico";
         public const string CONTENTMGMT_BRANCHNAME_FAR = "Little Rock"; // not actually defined, but makes sense that FAR would see FLR's content
         public const string CONTENTMGMT_BRANCHNAME_FDF = "Dallas/Fort Worth";
         public const string CONTENTMGMT_BRANCHNAME_FHS = "Houston";
+        public const string CONTENTMGMT_BRANCHNAME_FHS_ALTERNATE = "Gulf Coast";
         public const string CONTENTMGMT_BRANCHNAME_FLR = "Little Rock";
+        public const string CONTENTMGMT_BRANCHNAME_FLR_ALTERNATE = "Mid-South";
         public const string CONTENTMGMT_BRANCHNAME_FOK = "Oklahoma";
         public const string CONTENTMGMT_BRANCHNAME_FSA = "San Antonio";
+        public const string CONTENTMGMT_BRANCHNAME_FEL = "Southeast";
         public const string CONTENTMGMT_BRANCHNAME_GOF = "General Office";
 
         public const int CONTENTMGMT_CONTRACTITEMS_THRESHOLD = 14;
