@@ -13,7 +13,7 @@ angular.module('bekApp')
     })
 .directive('contextMenuTemplate', [ '$modal', '$document', '$timeout', 'ContextMenuService', 'UtilityService', 'CartService', 'OrderService', 'ListService',
   function($modal, $document, $timeout, ContextMenuService, UtilityService, CartService, OrderService, ListService){
-  
+
   return {
     replace: true,
     transclude: true,
@@ -26,7 +26,7 @@ angular.module('bekApp')
 
         var totalHeight = event.clientY + elementHeight;
 
-        // check that the bottom of the element is not off the screen and that the element is smaller than the height of the screen 
+        // check that the bottom of the element is not off the screen and that the element is smaller than the height of the screen
         if (totalHeight > doc.clientHeight && elementHeight < doc.clientHeight) {
           element.find('div.btn-group-vertical').css('top', -1 * elementHeight + 37);
         } else {
@@ -36,12 +36,10 @@ angular.module('bekApp')
           $scope.lists = ListService.listHeaders;
 
           CartService.getShipDates(); // needed if user creates a cart using the context menu
-          
+
           $scope.carts = CartService.cartHeaders;
 
-          OrderService.getChangeOrders().then(function(orders) {
-            $scope.changeOrders = orders;
-          });
+          $scope.changeOrders = OrderService.changeOrderHeaders;
 
       };
 
@@ -65,7 +63,7 @@ angular.module('bekApp')
 
         opened = true;
       }
-        
+
       function openContextMenuMouseoverEvent(event) {
         mouseenter = true;
         // desktop
@@ -74,12 +72,12 @@ angular.module('bekApp')
             closeDesktop(ContextMenuService.menuElement);
           }
           ContextMenuService.menuElement = angular.element(event.target).closest('.context-menu-template').find('.context-menu');
-          
+
           event.preventDefault();
           event.stopPropagation();
           $scope.$apply(function() {
             openOnDesktop(event, ContextMenuService.menuElement);
-          });  
+          });
         }
       }
 
@@ -98,7 +96,7 @@ angular.module('bekApp')
               }
             }
           });
-        } 
+        }
       }
 
       var timer;
@@ -135,7 +133,7 @@ angular.module('bekApp')
       $element.bind('mouseenter', openContextMenuMouseoverEvent);
       $element.bind('click', openContextMenuClickEvent);
       $element.bind('mouseleave', closeContextMenuEvent);
-      
+
       $scope.$on('$destroy', function() {
         $element.unbind('mouseenter', openContextMenuMouseoverEvent);
         $element.unbind('click', openContextMenuClickEvent);

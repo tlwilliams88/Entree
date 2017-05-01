@@ -13,17 +13,20 @@ angular.module('bekApp')
     function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService){
 
       if ($scope.isOrderEntryCustomer) {
+        var cartHeaders = CartService.cartHeaders,
+            listHeaders = ListService.listHeaders,
+            changeOrderHeaders = OrderService.changeOrderHeaders;
 
-        $scope.lists = ListService.listHeaders;
+        if(listHeaders.length){
+          $scope.lists = ListService.listHeaders;
+        }
 
         if ($scope.canCreateOrders) {
           CartService.getShipDates(); // needed if user creates a cart using the context menu
-          
-          $scope.carts = CartService.cartHeaders;
 
-          OrderService.getChangeOrders().then(function(orders) {
-            $scope.changeOrders = orders;
-          });
+        $scope.carts = cartHeaders.length ? cartHeaders : CartService.getCartHeaders();
+        $scope.changeOrders = changeOrderHeaders.length ? changeOrderHeaders : OrderService.getChangeOrders();
+
         }
       }
 
