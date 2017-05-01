@@ -8,7 +8,7 @@
     <div class="btn-group" dropdown is-open="status.cartisopen" style="font-size: 23px; margin-top: 5px;">
       <button class="badge-parent btn-no-style dropdown-toggle btn-small-mobile-truck">
         <span title="Carts" class="icon-truck user-bar-buttons"></span>
-        <span ng-if="cartsHeaders && cartsHeaders.length > 0" class="badge" style="margin-top: -10px; margin-left: -10px;">{{cartsHeaders.length}}</span>
+        <span ng-if="cartsHeaders != null && cartsHeaders.length > 0" class="badge" style="margin-top: -10px; margin-left: -10px;">{{cartsHeaders.length}}</span>
       </button>
       <ul class="dropdown-menu truck-dropdown">
         <li class="heading"><h3>Current Carts</h3></li>
