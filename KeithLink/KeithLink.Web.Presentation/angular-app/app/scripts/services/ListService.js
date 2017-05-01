@@ -167,6 +167,7 @@ angular.module('bekApp')
         lists: [],
         labels: [],
         userProfile: {},
+        listHeaders: [],
 
         updateListPermissions: updateListPermissions,
 
@@ -196,11 +197,13 @@ angular.module('bekApp')
             params = {};
           }
           return List.get(params).$promise.then(function(lists) {
-            lists.successResponse.forEach(function(list) {
+            var listHeaders = lists.successResponse;
+            listHeaders.forEach(function(list) {
               updateListPermissions(list);
             });
-            angular.copy(lists.successResponse, Service.lists);
-            return lists.successResponse;
+            angular.copy(listHeaders, Service.lists);
+            Service.listHeaders = listHeaders;
+            return listHeaders;
           });
         },
 

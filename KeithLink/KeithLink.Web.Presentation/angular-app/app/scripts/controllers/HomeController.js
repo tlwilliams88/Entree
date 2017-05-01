@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * @ngdoc function
  * @name bekApp.controller:HomeController
@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV) {
+  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', 'ListService',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, ListService) {
 
     $scope.isHomePage = isHomePage;
 
@@ -17,6 +17,12 @@ angular.module('bekApp')
     var isMobileApp = ENV.mobileApp;
     var hideTutorial = LocalStorage.getHideTutorialHomePage();
     $scope.runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
+
+    CartService.getCartHeaders();
+
+    ListService.getListHeaders();
+
+    OrderService.getChangeOrders();
 
     $scope.setHideTutorial = function(){
       LocalStorage.setHideTutorialHomePage(true);
@@ -31,10 +37,6 @@ angular.module('bekApp')
         width: 400
       }
     ];
-
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
 
     // get orders
     $scope.orders = [];
@@ -56,7 +58,7 @@ angular.module('bekApp')
         $scope.loadingOrders = false;
       });
     }
- 
+
     // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
@@ -67,7 +69,7 @@ angular.module('bekApp')
     }).finally(function() {
       $scope.loadingPromoItems = false;
     });
- 
+
     // get account info
     $scope.loadingAccountBalance = true;
     CustomerService.getAccountBalanceInfo().then(function(data) {
@@ -82,7 +84,7 @@ angular.module('bekApp')
     });
 
     $scope.hidePayNowButton = ($scope.selectedUserContext.customer.termcode === '50' || $scope.selectedUserContext.customer.termcode === '51');
- 
+
     $scope.showPromoItemContent = function(promoItem) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/promoitemcontentmodal.html',
@@ -94,7 +96,7 @@ angular.module('bekApp')
         }
       });
     };
- 
+
     $scope.showAdditionalInfo = function(notification) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/notificationdetailsmodal.html',
@@ -108,7 +110,7 @@ angular.module('bekApp')
         }
       });
     };
- 
+
     $scope.notificationParams = {
       size: 6,
       from:0,
@@ -117,7 +119,7 @@ angular.module('bekApp')
         order: 'desc'
       }]
     };
- 
+
     $scope.loadingRecentActivity = true;
       NotificationService.getMessages($scope.notificationParams).then(function(data) {
         var notifications =data.results,
@@ -132,12 +134,12 @@ angular.module('bekApp')
           else{
             dates.push(date);
             notificationDates[date] = [notification];
-          }          
-         
+          }
+
         });
       $scope.notificationDates = notificationDates;
-      $scope.dates = dates;      
+      $scope.dates = dates;
       $scope.loadingRecentActivity = false;
     });
- 
+
   }]);

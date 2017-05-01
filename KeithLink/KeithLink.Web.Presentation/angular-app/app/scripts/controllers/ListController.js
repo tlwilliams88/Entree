@@ -23,10 +23,6 @@ angular.module('bekApp')
 
     var orderBy = $filter('orderBy');
 
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
-
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
