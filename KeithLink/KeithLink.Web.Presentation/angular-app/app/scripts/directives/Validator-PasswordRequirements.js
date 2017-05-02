@@ -25,10 +25,17 @@ angular.module('bekApp')
               last_name_check = new RegExp(attrs.lastName, 'i'),
               password_length_check = viewValue ? viewValue.length > 7 : false;
 
-          return ctrl.$isEmpty(modelValue) || ( UPPERCASE_REGEX.test(viewValue) && 
-            LOWERCASE_REGEX.test(viewValue) && NUMBER_REGEX.test(viewValue) && 
-            password_length_check && !username_check.test(viewValue) && 
-            !first_name_check.test(viewValue) && !last_name_check.test(viewValue) );
+          if(attrs.username && attrs.firstName && attrs.lastName) {
+            return ctrl.$isEmpty(modelValue) || ( UPPERCASE_REGEX.test(viewValue) && 
+              LOWERCASE_REGEX.test(viewValue) && NUMBER_REGEX.test(viewValue) && 
+              password_length_check && !username_check.test(viewValue) && 
+              !first_name_check.test(viewValue) && !last_name_check.test(viewValue) );
+          } else {
+            return ctrl.$isEmpty(modelValue) || ( UPPERCASE_REGEX.test(viewValue) && 
+              LOWERCASE_REGEX.test(viewValue) && NUMBER_REGEX.test(viewValue) && 
+              password_length_check );
+          }
+
         };
       }
     };

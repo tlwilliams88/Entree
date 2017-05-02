@@ -167,6 +167,7 @@ angular.module('bekApp')
         lists: [],
         labels: [],
         userProfile: {},
+        listHeaders: [],
 
         updateListPermissions: updateListPermissions,
 
@@ -196,11 +197,13 @@ angular.module('bekApp')
             params = {};
           }
           return List.get(params).$promise.then(function(lists) {
-            lists.successResponse.forEach(function(list) {
+            var listHeaders = lists.successResponse;
+            listHeaders.forEach(function(list) {
               updateListPermissions(list);
             });
-            angular.copy(lists.successResponse, Service.lists);
-            return lists.successResponse;
+            angular.copy(listHeaders, Service.lists);
+            Service.listHeaders = listHeaders;
+            return listHeaders;
           });
         },
 
@@ -338,7 +341,7 @@ angular.module('bekApp')
           }
           Service.getAllLists().then(function(){
             return UtilityService.findObjectByField(Service.lists, 'listid', listId);
-          })
+          });
           
         },
 
@@ -655,7 +658,7 @@ angular.module('bekApp')
               Service.lists.splice(idx, 1);
             }
 
-            toaster.pop('success', null, 'Successfully deleted list ' + deletedList.name + '.');
+            toaster.pop('success', null, 'Successfully deleted list.');
             return Service.getFavoritesList();
           }, function(error) {
             toaster.pop('error', null, 'Error deleting list.');

@@ -8,34 +8,52 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
       $filter,
       $timeout,
-      ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, // bek custom services
+      ProductService, CategoryService, Constants, PricingService, CartService, ApplicationSettingsService, UtilityService, // bek custom services
       blockUI,
       LocalStorage,
       SessionService,
-      campaignInfo
+      campaignInfo, ENV
     ) {
+
+    $scope.$on('$stateChangeStart',
+      function(){
+        guiders.hideAll();
+    });
+
+    //$scope.runTutorial is set in the loadProducts function
+
+    guiders.createGuider({
+      id: "searchpage_tutorial",
+      title: "Updated Categories",
+      description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> As an example 'All Produce' is now 'Produce' and 'Frozen & Fresh Poultry' are under 'Center Of Plate'. <br/><br/> These categories are also available to choose from when searching or navigating from the product catalog. <br/><br/> To see sub-categories click the (+) icon.",
+      buttons: [{name: "Close", onclick: setHideTutorial}],
+      overlay: true,
+      attachTo: "#categoriesSection",
+      position: "right",
+      offset: {left: 245, top: 321.3889},
+      highlight: true
+    })
+
+    var isMobile = UtilityService.isMobileDevice();
+    var isMobileApp = ENV.mobileApp;
+
+    function setHideTutorial(){
+      LocalStorage.setHideTutorialSearch(true);
+      $scope.tutorialRunning = false;
+      guiders.hideAll();
+    };
 
     // clear keyword search term at top of the page
     if ($scope.userBar) {
       $scope.userBar.universalSearchTerm = '';
     }
-
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
-
-    $scope.$on('CartCreatedFromContextMenu', function() {
-      CartService.getCartHeaders().then(function(cartHeaders){
-        $scope.cartHeaders = cartHeaders;
-      });
-    });
 
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
@@ -84,55 +102,55 @@ angular.module('bekApp')
     $scope.products = [];
     $scope.aggregates = [{
 
-      name: 'parentcategories', 
+      name: 'parentcategories',
       metrics: {
         available: [],
         selected: [],
         showMore: true
       }
     }, {
-      name: 'subcategories', 
+      name: 'subcategories',
       metrics: {
         selected: [],
         showMore: true
       }
     }, {
-      name: 'brands', 
+      name: 'brands',
       metrics: {
         available: [],
         selected: [],
         showMore: true // display Show More button for this facet
       }
     }, {
-      name: 'manufacturers', 
+      name: 'manufacturers',
       metrics: {
         available: [],
         selected: [],
         showMore: true
       }
     }, {
-      name: 'itemspecs', 
+      name: 'itemspecs',
       metrics: {
         available: [],
         selected: [],
         showMore: true
       }
     }, {
-      name: 'temp_zones', 
+      name: 'temp_zones',
       metrics: {
         available: [],
         selected: [],
         showMore: true
       }
     }, {
-      name: 'dietary', 
+      name: 'dietary',
       metrics: {
         available: [],
         selected: [],
         showMore: true
       }
     }, {
-      name: 'specialfilters', 
+      name: 'specialfilters',
       metrics: {
         available: [],
         selected: [],
@@ -174,7 +192,7 @@ angular.module('bekApp')
     $scope.blockUIAndChangePage = function(page, toggleView){
         $scope.startingPoint = 0;
         $scope.endPoint = 0;
-        $scope.toggleView = toggleView;  
+        $scope.toggleView = toggleView;
 
         var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
 
@@ -217,24 +235,24 @@ angular.module('bekApp')
         if(!foundStartPoint){
           appendProducts(page);
         }
-        //We need two calls for stop here because we have two paging directives on the view. If the page change is triggered 
+        //We need two calls for stop here because we have two paging directives on the view. If the page change is triggered
         //automatically (deleting all items on page/saving) the event will fire twice and two loading overlays will be generated.
         blockUI.stop();
         blockUI.stop();
      };
-    
+
      $scope.pageChanged = function(pages, visited) {
       var facets;
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
-      $scope.loadingPage = true;    
+      $scope.loadingPage = true;
       $scope.currentPage = pages.currentPage;
       $scope.startingPoint = ((pages.currentPage - 1)*$scope.itemsPerPage) + 1;
       $scope.startingResult = $scope.startingPoint;
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
       $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
       $scope.setRange();
-      
+
       $scope.aggregateCount = ($scope.brands.selected.length + $scope.itemspecs.selected.length + $scope.dietary.selected.length + $scope.manufacturers.selected.length + $scope.temp_zones.selected.length + $scope.parentcategories.selected.length + $scope.subcategories.selected.length);
 
       if($scope.aggregateCount !== 0){
@@ -280,7 +298,7 @@ angular.module('bekApp')
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
 
-      if(initialPageLoad){   
+      if(initialPageLoad){
         $scope.currentPage = 1;
         $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage);
         $scope.products = $scope.products.slice($scope.firstPageItem, ($scope.currentPage * $scope.itemsPerPage));
@@ -293,9 +311,9 @@ angular.module('bekApp')
     function appendProducts(results) {
       $scope.visitedPages.push({page: $scope.currentPage, items: results, deletedCount: 0});
       //Since pages can be visited out of order, sort visited pages into numeric order.
-      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
-        var sorterval1 = obj1.page;      
-        var sorterval2 = obj2.page;       
+      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){
+        var sorterval1 = obj1.page;
+        var sorterval2 = obj2.page;
         return sorterval1 - sorterval2;
       });
 
@@ -339,7 +357,7 @@ angular.module('bekApp')
         };
 
         $scope.breadcrumbs.unshift($scope.featuredBreadcrumb);
-        
+
         $scope.featuredBreadcrumb = {
           displayText: displayText
         };
@@ -360,7 +378,7 @@ angular.module('bekApp')
       setBreadcrumbsForAggregates($scope.dietary, 'Dietary', 'dietary');
       setBreadcrumbsForAggregates($scope.itemspecs, 'Item Specifications', 'itemspecs');
       setBreadcrumbsForAggregates($scope.temp_zones, 'Temp Zone', 'temp_zone');
-      setBreadcrumbsForAggregates($scope.specialfilters, 'Special Filters', 'specialfilters')
+      setBreadcrumbsForAggregates($scope.specialfilters, 'Special Filters', 'specialfilters');
 
     }
 
@@ -378,16 +396,16 @@ angular.module('bekApp')
             apiText: apitext,
             clickData: aggregateDataSelected,
             displayText: displayText
-          })
+          });
         } else if(aggregateDataSelected.length >= 3) {
           $scope.breadcrumbs.push({
             apiText: apitext,
             clickData: aggregateDataSelected,
             displayText: displayText
-          })
+          });
         }
 
-        $scope.filterCount += aggregateDataSelected.length
+        $scope.filterCount += aggregateDataSelected.length;
       }
     }
 
@@ -412,15 +430,15 @@ angular.module('bekApp')
           } else {
             return false;
           }
-          
-        })
-        
+
+        });
+
         loadProducts();
       } else {
         $scope.clearFacets();
       }
 
-    }
+    };
 
     /*************
     LOAD PRODUCT DATA
@@ -429,7 +447,7 @@ angular.module('bekApp')
       var facets;
       $scope.userProfile = SessionService.userProfile;
       $scope.currentCustomer = LocalStorage.getCurrentCustomer();
-      
+
       $scope.aggregateCount = ($scope.brands.selected.length + $scope.itemspecs.selected.length + $scope.temp_zones.selected.length + $scope.manufacturers.selected.length + $scope.parentcategories.selected.length + $scope.subcategories.selected.length + $scope.specialfilters.selected.length);
 
       if($scope.aggregateCount !== 0){
@@ -461,6 +479,14 @@ angular.module('bekApp')
         var page = 1;
         $scope.products = data.products;
         $scope.totalProducts = data.totalcount;
+        var hideTutorial = LocalStorage.getHideTutorialSearch(),
+            runTutorial = data.facets.categories.length && !(hideTutorial || isMobileApp || isMobile) ? true : false;
+
+        if(runTutorial) {
+          $scope.tutorialRunning = true;
+          guiders.show('searchpage_tutorial');
+        }
+
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
         }
@@ -495,7 +521,7 @@ angular.module('bekApp')
         blockUI.stop();
 
         delete $scope.searchMessage;
-        
+
         return data.facets;
         });
       }, function(error) {

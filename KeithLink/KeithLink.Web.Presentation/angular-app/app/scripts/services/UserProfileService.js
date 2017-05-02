@@ -49,7 +49,9 @@ angular.module('bekApp')
       },
 
       validateToken: function(token) {        
-        return $http.post('/profile/forgotpassword/validatetoken/', { token: token });
+        var promise = $http.post('/profile/forgotpassword/validatetoken/', { token: token });
+        return UtilityService.resolvePromise(promise);
+
       },
 
       resetPassword: function(email) {          
