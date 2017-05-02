@@ -6,11 +6,8 @@ angular.module('bekApp')
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
      CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV) {
 
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
-
     $scope.$on('$stateChangeStart',
+
       function(event, toState, toParams, fromState, fromParams){
       if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !(toState.name == 'register') && !$scope.continueToCart && !$scope.orderCanceled){
 
