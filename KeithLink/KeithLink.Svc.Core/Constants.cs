@@ -28,6 +28,7 @@ namespace KeithLink.Svc.Core
         public const string BRANCH_FLR = "FLR";
         public const string BRANCH_FOK = "FOK";
         public const string BRANCH_FSA = "FSA";
+        public const string BRANCH_FEL = "FEL";
         public const string BRANCH_GOF = "GOF";
 
         public const string CATALOG_BEK = "BEK";
@@ -56,6 +57,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_CSR_FLR = "flrk-ls-csv-all";
         public const string ROLE_INTERNAL_CSR_FSA = "fsan-ls-csv-all";
         public const string ROLE_INTERNAL_CSR_FOK = "fokc-ls-csv-all";
+        public const string ROLE_INTERNAL_CSR_FEL = "felb-ls-csv-all";
 
         public const string ROLE_INTERNAL_DSM_FAQ = "fabq-ls-sys-ac-dsms";
         public const string ROLE_INTERNAL_DSM_FAM = "fama-ls-sys-ac-dsms";
@@ -64,6 +66,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_DSM_FLR = "flrk-ls-sys-ac-dsms";
         public const string ROLE_INTERNAL_DSM_FSA = "fsan-ls-sys-ac-dsms";
         public const string ROLE_INTERNAL_DSM_FOK = "fokc-ls-sys-ac-dsms";
+        public const string ROLE_INTERNAL_DSM_FEL = "felb-ls-sys-ac-dsms";
 
         public const string ROLE_INTERNAL_DSR_FAQ = "fabq-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FAM = "fama-ls-sys-ac-dsrs";
@@ -72,6 +75,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_DSR_FLR = "flrk-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FSA = "fsan-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FOK = "fokc-ls-sys-ac-dsrs";
+        public const string ROLE_INTERNAL_DSR_FEL = "felb-ls-sys-ac-dsrs";
 
         public const string ROLE_INTERNAL_MIS_FAQ = "FABQ-LS-SYS-AC-Entree_BranchIS";
         public const string ROLE_INTERNAL_MIS_FAM = "FAMA-LS-SYS-AC-Entree_BranchIS";
@@ -81,6 +85,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_MIS_FAR = "FLAR-LS-SYS-AC-Entree_BranchIS";
         public const string ROLE_INTERNAL_MIS_FSA = "FSAN-LS-SYS-AC-Entree_BranchIS";
         public const string ROLE_INTERNAL_MIS_FOK = "FOKC-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FEL = "FELB-LS-SYS-AC-Entree_BranchIS";
 
         public const string ROLE_INTERNAL_POWERUSER_FAQ = "FABQ-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_FAM = "FAMA-LS-SYS-AC-Entree_PowerUsers";
@@ -90,6 +95,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_POWERUSER_FAR = "FLAR-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_FSA = "FSAN-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_FOK = "FOKC-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FEL = "FELB-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_GOF = "FFGO-LS-SYS-AC-Entree_PowerUsers";
 
 
@@ -101,6 +107,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_MARKETING_FAR = "FLAR-LS-SYS-AC-Entree_Marketing";
         public const string ROLE_INTERNAL_MARKETING_FSA = "FSAN-LS-SYS-AC-Entree_Marketing";
         public const string ROLE_INTERNAL_MARKETING_FOK = "FOKC-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FEL = "FELB-LS-SYS-AC-Entree_Marketing";
         public const string ROLE_INTERNAL_MARKETING_GOF = "FFGO-LS-SYS-AC-Entree_Marketing";
 
         public const string ROLE_NAME_BRANCHIS = "branchismanager";
@@ -131,21 +138,22 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_DSR_FAQ, ROLE_INTERNAL_DSR_FAM,
             ROLE_INTERNAL_DSR_FDF, ROLE_INTERNAL_DSR_FHS,
             ROLE_INTERNAL_DSR_FLR, ROLE_INTERNAL_DSR_FSA,
-            ROLE_INTERNAL_DSR_FOK
+            ROLE_INTERNAL_DSR_FOK, ROLE_INTERNAL_DSR_FEL
         };
 
         public static readonly List<string> DSM_ROLES = new List<string>() {
             ROLE_INTERNAL_DSM_FAQ, ROLE_INTERNAL_DSM_FAM,
             ROLE_INTERNAL_DSM_FDF, ROLE_INTERNAL_DSM_FHS,
             ROLE_INTERNAL_DSM_FLR, ROLE_INTERNAL_DSM_FSA,
-            ROLE_INTERNAL_DSM_FOK
+            ROLE_INTERNAL_DSM_FOK, ROLE_INTERNAL_DSM_FEL
         };
 
         public static readonly List<string> MIS_ROLES = new List<string>() {
             ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM,
             ROLE_INTERNAL_MIS_FDF, ROLE_INTERNAL_MIS_FHS,
             ROLE_INTERNAL_MIS_FLR, ROLE_INTERNAL_MIS_FAR,
-            ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK
+            ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK,
+            ROLE_INTERNAL_MIS_FEL
         };
 
         public static readonly List<string> POWERUSER_ROLES = new List<string>(){
@@ -153,13 +161,14 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_POWERUSER_FAR, ROLE_INTERNAL_POWERUSER_FDF,
             ROLE_INTERNAL_POWERUSER_FHS, ROLE_INTERNAL_POWERUSER_FLR,
             ROLE_INTERNAL_POWERUSER_FOK, ROLE_INTERNAL_POWERUSER_FSA,
-            ROLE_INTERNAL_POWERUSER_GOF
+            ROLE_INTERNAL_POWERUSER_GOF, ROLE_INTERNAL_POWERUSER_FEL
         };
 
         public static readonly List<string> MARKETING_ROLES = new List<string>(){
             ROLE_INTERNAL_MARKETING_FAQ, ROLE_INTERNAL_MARKETING_FAM, ROLE_INTERNAL_MARKETING_FDF,
 			ROLE_INTERNAL_MARKETING_FHS,ROLE_INTERNAL_MARKETING_FLR,ROLE_INTERNAL_MARKETING_FAR,
-			ROLE_INTERNAL_MARKETING_FSA,ROLE_INTERNAL_MARKETING_FOK,ROLE_INTERNAL_MARKETING_GOF
+			ROLE_INTERNAL_MARKETING_FSA,ROLE_INTERNAL_MARKETING_FOK,ROLE_INTERNAL_MARKETING_GOF,
+            ROLE_INTERNAL_MARKETING_FEL
         };
 
         // Elastic Search : Indexes
@@ -284,13 +293,17 @@ namespace KeithLink.Svc.Core
 
         // content management
         public const string CONTENTMGMT_BRANCHNAME_FAM = "Amarillo";
+        public const string CONTENTMGMT_BRANCHNAME_FAM_ALTERNATE = "West Texas";
         public const string CONTENTMGMT_BRANCHNAME_FAQ = "New Mexico";
         public const string CONTENTMGMT_BRANCHNAME_FAR = "Little Rock"; // not actually defined, but makes sense that FAR would see FLR's content
         public const string CONTENTMGMT_BRANCHNAME_FDF = "Dallas/Fort Worth";
         public const string CONTENTMGMT_BRANCHNAME_FHS = "Houston";
+        public const string CONTENTMGMT_BRANCHNAME_FHS_ALTERNATE = "Gulf Coast";
         public const string CONTENTMGMT_BRANCHNAME_FLR = "Little Rock";
+        public const string CONTENTMGMT_BRANCHNAME_FLR_ALTERNATE = "Mid-South";
         public const string CONTENTMGMT_BRANCHNAME_FOK = "Oklahoma";
         public const string CONTENTMGMT_BRANCHNAME_FSA = "San Antonio";
+        public const string CONTENTMGMT_BRANCHNAME_FEL = "Southeast";
         public const string CONTENTMGMT_BRANCHNAME_GOF = "General Office";
 
         public const int CONTENTMGMT_CONTRACTITEMS_THRESHOLD = 14;

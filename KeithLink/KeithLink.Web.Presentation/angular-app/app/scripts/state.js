@@ -198,7 +198,7 @@ angular.module('bekApp')
           }
         }],
         campaignInfo: [ function() {
-          return false
+          return false;
         }]
       }
     })
@@ -219,7 +219,7 @@ angular.module('bekApp')
 
         }],
         campaignInfo: [ function() {
-          return false
+          return false;
         }]
       }
     })
@@ -277,10 +277,11 @@ angular.module('bekApp')
       },
       resolve: {
         validListId: ['$stateParams', 'ResolveService', 'lists', '$filter', function($stateParams, ResolveService, lists, $filter) {
-          var list = $filter('filter')(lists, {listid: $stateParams.listId})[0];
+          var existingList = $filter('filter')(lists, {listid: $stateParams.listId})[0],
+              list = existingList ? existingList : $stateParams.listId;
 
           if(list) {
-            return list.listid;
+            return list.listid ? list.listid : list;
           }
         }],
         originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
@@ -321,7 +322,9 @@ angular.module('bekApp')
             });
           }
 
-          if(!listIdtoBeUsed){
+          listIdtoBeUsed = parseInt(listIdtoBeUsed, 10);
+
+          if((isNaN(listIdtoBeUsed) || !listHeader)){
             var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
                 favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
 
@@ -473,7 +476,7 @@ angular.module('bekApp')
               listHeader;
 
           listId = listId ? listId : LocalStorage.getLastList();
-          listHeader = $filter('filter')(lists, {listid: listId.listId})[0];
+          listHeader = listId.listId ? $filter('filter')(lists, {listid: listId.listId})[0] : $filter('filter')(lists, {listid: listId})[0];
 
           if(!listHeader) {
             
@@ -485,10 +488,7 @@ angular.module('bekApp')
             
           }
 
-          if(!listId) {
-            listId = listHeader.listid;
-          }
-
+          listId = listHeader.listid;
 
           if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){

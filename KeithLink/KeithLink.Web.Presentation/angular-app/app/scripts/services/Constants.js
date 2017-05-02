@@ -17,7 +17,10 @@ angular.module('bekApp')
       pageSize: 'pageSize',
       defaultSort: 'defaultSort',
       defaultView: 'defaultView',
-      userName: 'userName'
+      userName: 'userName',
+      hideTutorialHome: 'hideTutorialHome',
+      hideTutorialSearch: 'hideTutorialSearch',
+      hideTutorialAddToOrder: 'hideTutorialAddToOrder'
     },
 
     offlineLocalStorage: {

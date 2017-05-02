@@ -10,7 +10,7 @@
 <!-- End CSS -->
 
 <div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" ng-swipe-disable-mouse class="sidebar-menu-wrapper">
-<!--   <span class="hidden-xs hidden-sm" style="border-left: 1px solid #2a2621; height: 100%; z-index: 10002; position:absolute;"> 
+<!--   <span class="hidden-xs hidden-sm" style="border-left: 1px solid #2a2621; height: 100%; z-index: 10002; position:absolute;">
   <div ng-mouseenter="isSidebarOpen = true" ng-swipe-right="isSidebarOpen = true" ng-click="isSidebarOpen = true" style="width:35px; height:100px; margin-top: 350px; margin-left: -10px; background-color: #2a2621; border-radius: 10%; padding-top: 40px; padding-left: 14px; opacity: .8; position: fixed; color: #FFF;">
     <span class="icon-verticallist2 large-icon"></span>
   </div>
@@ -19,7 +19,7 @@
   <div class="menu-overlay" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
+  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:100005;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
@@ -62,7 +62,7 @@
             ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
             <li>Technical Support</li>
           </button>
-         <a style="color:inherit; text-styling:none;" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li>Send Feedback</li></a> 
+         <a style="color:inherit; text-styling:none;" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li>Send Feedback</li></a>
           <button
             class="btn-no-style"
             ng-click="openExternalLink(userGuideUrl)">
@@ -127,7 +127,7 @@
               <span ng-class="{'icon-angle-up sidebar-nav__collapse-arrow': !specialCatalogOpen, 'icon-angle-down sidebar-nav__collapse-arrow': specialCatalogOpen}"></span>
           </button>
             <ul ng-show="specialCatalogOpen">
-                <button 
+                <button
                     class="btn-no-style sub-btn"
                     ng-click="toggleSidebarMenu()";
                     type="button"
@@ -147,8 +147,8 @@
           </div>
           <div ng-click="isSidebarOpen = false">
           <a
-            analytics-on 
-            analytics-category="External Applications" 
+            analytics-on
+            analytics-category="External Applications"
             analytics-event="Emenumanage"
             ng-if="::userProfile.ispowermenucustomer"
             ng-href="{{userProfile.powermenuloginurl}}"
@@ -159,8 +159,8 @@
             </li>
           </a>
           <a
-            analytics-on 
-            analytics-category="External Applications" 
+            analytics-on
+            analytics-category="External Applications"
             analytics-event="Kbit"
             ng-if="userProfile.iskbitcustomer"
             ng-click="openExternalLink(cognosUrl)">
@@ -362,10 +362,13 @@
           </ul>
          </div>
 
-        <div class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
-          <a ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px;"><span class="icon-list2 user-bar-buttons "></span></a>
+
+        <div id="menuIcon" class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
+          <a ng-hide="tutorialRunning" ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
+          <a ng-show="tutorialRunning" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
           <img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.home" />
         </div>
+
 
         <div class="col-xs-2 hidden-xs hidden-sm padding-left-5 margin-top-5" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
           <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
@@ -414,7 +417,7 @@
               <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                 <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                 <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
-                <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>               
+                <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                 <a class="feedback-link" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><button class="btn btn-lg btn-default feedback-btn">Send Feedback</button> </a>
                 <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
                 <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
