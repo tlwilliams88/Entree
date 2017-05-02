@@ -44,12 +44,6 @@ angular.module('bekApp')
     $scope.selectDepartment('');
   });
 
-  $scope.$on('CartCreatedFromContextMenu', function() {
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.carts = cartHeaders;
-    });
-  });
-
   $scope.$on('ListCreatedFromContextMenu', function() {
     ListService.getListHeaders().then(function(lists) {
       $scope.lists = lists;
@@ -84,7 +78,6 @@ angular.module('bekApp')
 
   if (AccessService.isOrderEntryCustomer()) {
 
-    $scope.cartHeaders = CartService.cartHeaders;
     $scope.numOrdersToDisplay = 6;
     $scope.numCartsToDisplay = 4;
 
