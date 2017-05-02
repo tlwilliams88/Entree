@@ -21,6 +21,14 @@ angular.module('bekApp')
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
 
+    CartService.getCartHeaders();
+
+    ListService.getListHeaders();
+
+    OrderService.getChangeOrders();
+
+    $scope.setHideTutorial = function(){
+
     // Tutorial
     var hideTutorial = LocalStorage.getHideTutorialHomePage(),
         runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
