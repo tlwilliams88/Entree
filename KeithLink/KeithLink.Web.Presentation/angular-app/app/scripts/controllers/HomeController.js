@@ -27,8 +27,6 @@ angular.module('bekApp')
 
     OrderService.getChangeOrders();
 
-    $scope.setHideTutorial = function(){
-
     // Tutorial
     var hideTutorial = LocalStorage.getHideTutorialHomePage(),
         runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
