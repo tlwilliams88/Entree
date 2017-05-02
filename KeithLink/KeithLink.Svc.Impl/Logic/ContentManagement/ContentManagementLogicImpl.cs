@@ -52,38 +52,51 @@ namespace KeithLink.Svc.Impl.Logic.ContentManagement {
             return true;
         }
 
-        private List<ContentItemViewModel> GetBranchItems(ref List<EE.ContentItem> items, string branchId) {
-            return (from EE.ContentItem i in items
-                    where i.AdditionalData.Count > 0 &&
-                            i.AdditionalData[0].TargetBranch.Contains(GetBranchName(branchId))
-                    select i.ToContentItemViewModel(branchId))
-                    .Take(Configuration.MarketingContentBranchItemCount)
-                    .ToList();
+        private List<ContentItemViewModel> GetBranchItems(ref List<EE.ContentItem> items, string branchId)
+        {
+            return items.Where(i => i.AdditionalData != null
+                                    && i.AdditionalData.Count > 0 
+                                    && GetBranchName(branchId).Contains(i.AdditionalData[0].TargetBranch, StringComparer.CurrentCultureIgnoreCase))
+                        .Select(i => i.ToContentItemViewModel(branchId))
+                        .ToList();
         }
 
-        private string GetBranchName(string branchId) {
+        private List<string> GetBranchName(string branchId)
+        {
+            List<string> list = new List<string>();
             switch (branchId.ToUpper()) {
                 case Constants.BRANCH_FAM:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FAM;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FAM);
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FAM_ALTERNATE);
+                    break;
                 case Constants.BRANCH_FAQ:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FAQ;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FAQ);
+                    break;
                 case Constants.BRANCH_FAR:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FAR;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FAR);
+                    break;
                 case Constants.BRANCH_FDF:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FDF;
-                case Constants.BRANCH_FEL:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FEL;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FDF);
+                    break;
                 case Constants.BRANCH_FHS:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FHS;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FHS);
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FHS_ALTERNATE);
+                    break;
                 case Constants.BRANCH_FLR:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FLR;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FLR);
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FLR_ALTERNATE);
+                    break;
                 case Constants.BRANCH_FOK:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FOK;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FOK);
+                    break;
+                case Constants.BRANCH_FEL:
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FEL);
+                    break;
                 case Constants.BRANCH_FSA:
-                    return Constants.CONTENTMGMT_BRANCHNAME_FSA;
-                default:
-                    return null;
+                    list.Add(Constants.CONTENTMGMT_BRANCHNAME_FSA);
+                    break;
             }
+            return list;
         }
 
         private List<ContentItemViewModel> GetGlobalItems(ref List<EE.ContentItem> items, int existingItemCount) {

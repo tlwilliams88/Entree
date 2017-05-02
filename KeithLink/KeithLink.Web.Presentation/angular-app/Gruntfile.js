@@ -686,7 +686,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin'
   ]);
-  
+
   grunt.registerTask('build-for-beta', [
    'clean:dist',
     // 'includeSource:dist',
@@ -704,7 +704,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin'
   ]);
-  
+
   // Not currently used
   // Was used to simulate real world conditions with dummy data
   grunt.registerTask('build-for-demo', [
