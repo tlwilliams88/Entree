@@ -1,8 +1,11 @@
-<div class="btn-group margin-right-18 primary-button-opacity" dropdown is-open="openScope" tooltip="{{tooltipMessage}}">
-  <button type="button" ng-if="!isMobile" ng-disabled="isDisabled" class="btn btn-md btn-primary" ng-click="openCreateOrderModal('lg')">
+<div ng-if="!isMobile" class="btn-group primary-button-opacity margin-left-5" style="margin-right: -5px;" dropdown is-open="openScope" tooltip="{{tooltipMessage}}">
+  <button type="button"  ng-disabled="isDisabled" class="btn btn-md btn-primary" ng-click="openCreateOrderModal('lg')">
     Create An Order
   </button>
-  <button type="button" ng-if="isMobile" ng-disabled="isDisabled" class="btn btn-sm btn-mobile-homepage btn-primary-homepage" ng-click="openCreateOrderModal('md')">
+</div>
+  <div ng-if="isMobile" class="btn-group margin-right-13 margin-left-5 primary-button-opacity" dropdown is-open="openScope" tooltip="{{tooltipMessage}}">
+
+  <button type="button"  ng-disabled="isDisabled" class="btn btn-sm btn-mobile-homepage btn-primary-homepage" ng-click="openCreateOrderModal('md')">
     <span style="color: #FFFFFF"><span class="hidden-xs">Create An</span> Order</span>
   </button>
 </div>

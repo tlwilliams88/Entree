@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-.config([ '$stateProvider', '$urlRouterProvider', 
+.config([ '$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
 
   // the $stateProvider determines path urls and their related controllers
@@ -39,7 +39,14 @@ angular.module('bekApp')
         branches: ['BranchService', 'localStorageService', function(BranchService, localStorageService) {
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
-          return localStorageService.get('branches');
+          var branches = localStorageService.get('branches');
+
+          if(branches != null && branches.length > 0) {
+            return branches;
+          } else {
+            BranchService.getBranches();
+            return localStorageService.get('branches');
+          }
         }],
         userProfile: ['SessionService', function(SessionService) {
           return SessionService.userProfile;
@@ -88,7 +95,7 @@ angular.module('bekApp')
           return localStorageService.get('branches');
         }]
       }
-    })        
+    })
     .state('menu.applicationsettings', {
       url: '/applicationsettings/',
       templateUrl: 'views/applicationsettings.html',
@@ -286,18 +293,18 @@ angular.module('bekApp')
         }],
         originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, validListId, lists, ListService, DateService, Constants, LocalStorage, ENV) {
-         
+
           var last = LocalStorage.getLastList(),
               stillExists = false,
               pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'},
               listIdtoBeUsed = '';
-   
+
           ListService.lists.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
               var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
-              if(last.timeset < timeoutDate){         
+              if(last.timeset < timeoutDate){
                 stillExists = false;
               }
             }
@@ -337,7 +344,7 @@ angular.module('bekApp')
             LocalStorage.setLastList(listIdtoBeUsed);
             return ListService.getList(listIdtoBeUsed, params);
           }
-        
+
         }]
       }
     })
@@ -467,7 +474,7 @@ angular.module('bekApp')
         }],
         selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, lists, validListId, ListService, DateService, Constants, LocalStorage, ENV) {
-             
+
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: []},
               listId = $stateParams.listId.listId ? $stateParams.listId.listId : $stateParams.listId,
@@ -479,13 +486,13 @@ angular.module('bekApp')
           listHeader = listId.listId ? $filter('filter')(lists, {listid: listId.listId})[0] : $filter('filter')(lists, {listid: listId})[0];
 
           if(!listHeader) {
-            
+
             if(historyList) {
               listHeader = historyList;
             } else {
               listHeader = favoritesList;
             }
-            
+
           }
 
           listId = listHeader.listid;
@@ -495,8 +502,8 @@ angular.module('bekApp')
               $stateParams.sortingParams = storedParams;
               params = storedParams;
             });
-          }   
-         
+          }
+
           return ListService.getList(listId, params);
         }]
       }
@@ -718,7 +725,7 @@ angular.module('bekApp')
         currentUserProfile : ['UserProfileService', function(UserProfileService){
         return UserProfileService.getCurrentUserProfile();
       }]
-      } 
+      }
     })
     .state('menu.admin.customergroup', {
       url: 'customergroup/',
@@ -787,11 +794,11 @@ angular.module('bekApp')
 
       }
     });
-  
+
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
-  
+
   // redirect when user tries to go to an abstract state
   // $urlRouterProvider.when('/lists', '/lists/0');
   // $urlRouterProvider.when('/lists/', '/lists/0');
@@ -799,7 +806,7 @@ angular.module('bekApp')
   $urlRouterProvider.when('/cart/', '/cart/0');
 
   $urlRouterProvider.otherwise('/404');
-  
+
   // allow user to access paths with or without trailing slashes
   $urlRouterProvider.rule(function ($injector, $location) {
     var path = $location.url();
