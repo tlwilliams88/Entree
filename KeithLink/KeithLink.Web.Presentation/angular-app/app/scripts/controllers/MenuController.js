@@ -49,7 +49,7 @@ angular.module('bekApp')
       $scope.lists = lists;
     });
   });
- 
+
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -63,7 +63,7 @@ angular.module('bekApp')
   // Using 3 different values for potential hotfix mobile submissions
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
- 
+
   $scope.webVersionNum = '2017.2.0';
   $scope.androidVersionNum = '2017.2.0';
   $scope.iOSVersionNum = '2017.2.0';
@@ -71,7 +71,7 @@ angular.module('bekApp')
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
-  
+
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
@@ -98,7 +98,7 @@ angular.module('bekApp')
     }
   }
 
-  $scope.checkModal = function(){   
+  $scope.checkModal = function(){
     if($modal){
       $modalStack.dismissAll();
     }
@@ -226,7 +226,7 @@ angular.module('bekApp')
   document.onclick = function(element){
     $timeout(function() {
       if($scope.displayUserMenu && !$scope.mouseOverDropdown){
-        $scope.displayUserMenu = !$scope.displayUserMenu; 
+        $scope.displayUserMenu = !$scope.displayUserMenu;
       }
     }, 0);
   };
@@ -298,7 +298,7 @@ angular.module('bekApp')
 
   //Submenu for specialty catalogs
   $scope.toggleSpecialCatalogSubmenu = function() {
-    if ($scope.$state !== undefined) {       
+    if ($scope.$state !== undefined) {
       $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
     }
   };

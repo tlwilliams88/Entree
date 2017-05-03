@@ -97,18 +97,22 @@ angular.module('bekApp')
             report.items[i].quantity = 0;
           }
             $scope.report = report;
-            addPositions()
+            updatePositions();
         }
       }
 
-      var position = 1;
-      function addPositions() {
 
-        $scope.report.items.forEach(function(item) {
-          item.position = position;
-          position++
-        })
-        position = 1;
+      function updatePositions() {
+
+        var newPosition = 1;
+        angular.forEach($scope.report.items.slice(0, $scope.report.items.length), function(item, index) {
+          if(!item.isdeleted){
+              item.position = newPosition;
+              item.editPosition = newPosition;
+              newPosition += 1;
+          }
+        });
+
       }
 
       function onItemQuantityChanged(newVal, oldVal) {
@@ -147,7 +151,7 @@ angular.module('bekApp')
           deletedItems.push(item);
         }
 
-        addPositions();
+        updatePositions();
         refreshSubtotal();
       };
 
