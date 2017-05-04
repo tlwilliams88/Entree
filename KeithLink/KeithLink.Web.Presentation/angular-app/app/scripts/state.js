@@ -41,12 +41,6 @@ angular.module('bekApp')
           // also needed for tech support
           var branches = localStorageService.get('branches');
 
-          if(branches != null && branches.length > 0) {
-            return branches;
-          } else {
-            BranchService.getBranches();
-            return localStorageService.get('branches');
-          }
         }],
         userProfile: ['SessionService', function(SessionService) {
           return SessionService.userProfile;
