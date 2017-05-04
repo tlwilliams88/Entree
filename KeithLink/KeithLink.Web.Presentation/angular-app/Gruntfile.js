@@ -610,6 +610,8 @@ module.exports = function (grunt) {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     } else if (target === 'test') {
       return grunt.task.run(['build-for-test', 'connect:dist:keepalive']);
+    } else if (target === 'beta') {
+      return grunt.task.run(['build-for-beta', 'connect:dist:keepalive']);
     }
 
     grunt.task.run([
