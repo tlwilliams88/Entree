@@ -225,7 +225,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.details', {
-      url: ':itemNumber/',
+      url: ':itemNumber',
       templateUrl: 'views/itemdetails.html',
       controller: 'ItemDetailsController',
       data: {
