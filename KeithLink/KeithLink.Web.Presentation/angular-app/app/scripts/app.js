@@ -91,13 +91,20 @@ angular
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
-  $rootScope.displayMessage = function(type, message) {
-    toaster.pop(type, null, message);
-  };
+  $rootScope.displayMessage = function (type, message) {
+    toaster.pop(type, null, message)
+  }
 
   $rootScope.redirectUserToCorrectHomepage = function() {
-    if ( AccessService.isOrderEntryCustomer() ) {
+    var returnToStateName = $rootScope.returnToStateName,
+        returnToStateItemNumber = $rootScope.returnToStateItemNumber;
+
+    if ( AccessService.isOrderEntryCustomer() && !returnToStateItemNumber) {
       $state.go('menu.home');
+    } else if( AccessService.isOrderEntryCustomer() && returnToStateItemNumber != null) {
+      $state.go(returnToStateName, {
+        itemNumber: returnToStateItemNumber
+      });
     } else {
       $state.go('menu.catalog.home');
     }
@@ -117,6 +124,15 @@ angular
 
   var bypass;
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+
+    if ($rootScope.returnToStateName != null && toState.name === 'menu.catalog.products.details' && $rootScope.directedToProduct === true) {
+      $rootScope.returnToStateName = '';
+      $rootScope.returnToStateItemNumber = '';
+    } else if(!$rootScope.returnToStateName != null && !$rootScope.directedToProduct != null) {
+      $rootScope.directedToProduct = true;
+      $rootScope.returnToStateName = toState.name;
+      $rootScope.returnToStateItemNumber = toParams.itemNumber;
+    }
 
     function isStateRestricted(stateData) {
       return stateData && stateData.authorize;
