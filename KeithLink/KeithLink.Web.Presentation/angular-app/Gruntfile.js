@@ -606,7 +606,7 @@ module.exports = function (grunt) {
 
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
-    if (target === 'dist') {
+    if (target === 'prod') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
     } else if (target === 'test') {
       return grunt.task.run(['build-for-test', 'connect:dist:keepalive']);
@@ -619,23 +619,6 @@ module.exports = function (grunt) {
       'ngconstant:dev',
       // 'includeSource:server',
       'concurrent:server',
-      'autoprefixer',
-      'connect:livereload',
-      'run:mock_server',
-      'watch'
-    ]);
-  });
-
-  grunt.registerTask('serve-qa', 'Compile then start a connect web server', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'connect:dist:keepalive']);
-    }
-
-    grunt.task.run([
-      'clean:server',
-      'ngconstant:test',
-      // 'includeSource:server',
-      'concurrent:dist',
       'autoprefixer',
       'connect:livereload',
       'run:mock_server',

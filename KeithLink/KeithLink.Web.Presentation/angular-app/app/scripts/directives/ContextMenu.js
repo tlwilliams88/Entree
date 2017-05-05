@@ -12,22 +12,19 @@ angular.module('bekApp')
     controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService',
     function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService){
 
-      ListService.getListHeaders().then(function(lists) {
-        $scope.lists = lists;
-      });
-
       if ($scope.isOrderEntryCustomer) {
+        var cartHeaders = CartService.cartHeaders,
+            listHeaders = ListService.listHeaders,
+            changeOrderHeaders = OrderService.changeOrderHeaders;
+
+        $scope.lists = listHeaders.length > 0 ? listHeaders : ListService.getListHeaders();
 
         if ($scope.canCreateOrders) {
           CartService.getShipDates(); // needed if user creates a cart using the context menu
 
-          CartService.getCartHeaders().then(function(carts) {
-            $scope.carts = carts;
-          });
+        $scope.carts = cartHeaders.length > 0 ? cartHeaders : CartService.getCartHeaders();
+        $scope.changeOrders = changeOrderHeaders.length > 0 ? changeOrderHeaders : OrderService.getChangeOrders();
 
-          OrderService.getChangeOrders().then(function(orders) {
-            $scope.changeOrders = orders;
-          });
         }
       }
 
@@ -101,7 +98,6 @@ angular.module('bekApp')
         var items = [item];
         CartService.renameCart = true;
         CartService.createCart(items).then(function(data) {
-          $rootScope.$broadcast('CartCreatedFromContextMenu');
           closeModal();
           $scope.displayMessage('success', 'Successfully created new cart ' + data.name + '.');
         }, function() {
