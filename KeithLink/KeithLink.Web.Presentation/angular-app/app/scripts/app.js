@@ -101,7 +101,7 @@ angular
 
     if ( AccessService.isOrderEntryCustomer() && !returnToStateItemNumber) {
       $state.go('menu.home');
-    } else if( AccessService.isOrderEntryCustomer() && returnToStateItemNumber) {
+    } else if( AccessService.isOrderEntryCustomer() && returnToStateItemNumber != null) {
       $state.go(returnToStateName, {
         itemNumber: returnToStateItemNumber
       });
@@ -125,10 +125,10 @@ angular
   var bypass;
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
 
-    if ($rootScope.returnToStateName && toState.name === 'menu.catalog.products.details' && $rootScope.directedToProduct) {
+    if ($rootScope.returnToStateName != null && toState.name === 'menu.catalog.products.details' && $rootScope.directedToProduct === true) {
       $rootScope.returnToStateName = '';
       $rootScope.returnToStateItemNumber = '';
-    } else if(!$rootScope.returnToStateName && !$rootScope.directedToProduct) {
+    } else if(!$rootScope.returnToStateName != null && !$rootScope.directedToProduct != null) {
       $rootScope.directedToProduct = true;
       $rootScope.returnToStateName = toState.name;
       $rootScope.returnToStateItemNumber = toParams.itemNumber;
