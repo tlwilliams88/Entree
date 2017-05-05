@@ -287,7 +287,7 @@
   <div class="row main-content">
     <div class="col-sm-12">
       <div class="row hidden-print user-bar-mobile main-user-bar visible-xs visible-sm">
-        <ul class="left-mobile-menu">
+        <ul class="left-mobile-menu" style="margin-left: -5px">
           <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li class="mobile-menu-item"><span class="icon-back"></span></li></a>
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li class="mobile-menu-item"><span class="icon-list2"></span></li></a>
         </ul>
@@ -357,7 +357,7 @@
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }" >
 
          <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;" ng-if="isMobile">
-           <ul style="float: left;">
+           <ul style="float: left; margin-left: -12px; padding-right: 8px;">
             <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()" ><li class="tablet-menu-item" ><span title="Back" class="icon-back"></span></li></a>
           </ul>
          </div>

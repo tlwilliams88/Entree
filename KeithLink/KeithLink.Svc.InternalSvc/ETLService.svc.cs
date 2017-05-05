@@ -78,7 +78,7 @@ namespace KeithLink.Svc.InternalSvc
             process.ContinueWith((t) => customerLogic.ImportCustomerItemHistory())
                 .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
-            process.ContinueWith((t) => _esCategoriesImportLogic.ImportCategories())
+            process.ContinueWith((t) => _esCategoriesImportLogic.ImportDepartments())
                 .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             process.ContinueWith((t) => _esHouseBrandsImportLogic.ImportHouseBrands())

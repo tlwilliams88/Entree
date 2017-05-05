@@ -20,7 +20,7 @@
 	}
 }
 
-@media (min-width:1281px) { 
+@media (min-width:1281px) {
 	.desktop-margin-right-10 {
 		margin-right: 10px;
 	}
@@ -106,8 +106,8 @@
   margin-right:15px;
 }
 
-.margin-right-18 {
-  margin-right:18px;
+.margin-right-13 {
+  margin-right:13px;
 }
 
 .margin-top-3 {
@@ -132,4 +132,8 @@
 
 .margin-bottom-10 {
   margin-bottom: 10px !important;
+}
+
+.negative-margin-left-10 {
+  margin-left: -10px;
 }
