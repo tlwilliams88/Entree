@@ -8,6 +8,7 @@ declare @AppSettings as TABLE
 )
 
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'AppName', 'Entree', 0)
+INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES('Site Settings', 'CartOrOrder2ListIdPurgeDays', '-7', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'PresentationUrl', 'http://shopqa.benekeith.com', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'AllowedApiKeys', 'android_test_v1,iphone_test_v1,web_test_v1,', 0)
 INSERT INTO @AppSettings (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'BrandAssetsUrl', 'http://shopqa.benekeith.com/assets/brands', 0)
@@ -222,6 +223,9 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('QueuesToChe
  "minimumconsumerswarningthreshold":2,
  "maximummessageswarningthreshold":100}
 ]}', 'Monitor Service Functions', 0)
+
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])

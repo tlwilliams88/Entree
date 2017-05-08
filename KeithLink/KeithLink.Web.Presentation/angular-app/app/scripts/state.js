@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-.config([ '$stateProvider', '$urlRouterProvider', 
+.config([ '$stateProvider', '$urlRouterProvider',
   function ($stateProvider, $urlRouterProvider) {
 
   // the $stateProvider determines path urls and their related controllers
@@ -39,7 +39,8 @@ angular.module('bekApp')
         branches: ['BranchService', 'localStorageService', function(BranchService, localStorageService) {
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
-          return localStorageService.get('branches');
+          var branches = localStorageService.get('branches');
+
         }],
         userProfile: ['SessionService', function(SessionService) {
           return SessionService.userProfile;
@@ -88,7 +89,7 @@ angular.module('bekApp')
           return localStorageService.get('branches');
         }]
       }
-    })        
+    })
     .state('menu.applicationsettings', {
       url: '/applicationsettings/',
       templateUrl: 'views/applicationsettings.html',
@@ -177,7 +178,13 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:dept/:deptName/?brands',
+      url: ':type/:id/:deptName',
+      params: {
+        brand: null,
+        category: null,
+        dept: null,
+        deptName: null
+      },
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
       data: {
@@ -192,7 +199,7 @@ angular.module('bekApp')
           }
         }],
         campaignInfo: [ function() {
-          return false
+          return false;
         }]
       }
     })
@@ -211,6 +218,9 @@ angular.module('bekApp')
             return $q.reject('Customer Cannot View UNFI Items.');
           }
 
+        }],
+        campaignInfo: [ function() {
+          return false;
         }]
       }
     })
@@ -267,53 +277,68 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          return ResolveService.validateList($stateParams.listId);
+        validListId: ['$stateParams', 'ResolveService', 'lists', '$filter', function($stateParams, ResolveService, lists, $filter) {
+          var existingList = $filter('filter')(lists, {listid: $stateParams.listId})[0],
+              list = existingList ? existingList : $stateParams.listId;
+
+          if(list) {
+            return list.listid ? list.listid : list;
+          }
         }],
         originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, validListId, lists, ListService, DateService, Constants, LocalStorage, ENV) {
-         
-          var last = LocalStorage.getLastList();
-          var stillExists = false;
 
-          var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
-          var params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'};
-   
+          var last = LocalStorage.getLastList(),
+              stillExists = false,
+              pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
+              params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'},
+              listIdtoBeUsed = '';
+
           ListService.lists.forEach(function(list){
-            if(last && last.listId && list.listid === last.listId.listid){
-               stillExists = true;
-               var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
-               if(last.timeset < timeoutDate){         
-                  stillExists = false;
-                 }
+            if(last && last.listId && (last.listId == list.listid)){
+              stillExists = true;
+              var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
+              if(last.timeset < timeoutDate){
+                stillExists = false;
+              }
             }
           });
 
-          var listIdtoBeUsed = '';
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
-             last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-             LocalStorage.setLastList(last);
-             listIdtoBeUsed = last.listId.listid ? last.listId.listid : last.listId;
+            last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
+            LocalStorage.setLastList(last);
+            listIdtoBeUsed = last.listId.listid ? last.listId.listid : last.listId;
           }
           else{
-             LocalStorage.setLastList({});
-             listIdtoBeUsed = validListId;
+            LocalStorage.setLastList({});
+            listIdtoBeUsed = validListId;
            }
 
           var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
 
-         if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
-             ListService.getParamsObject(params, 'lists').then(function(storedParams){
-             $stateParams.sortingParams = storedParams;
-             params = storedParams;
+          if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
+              ListService.getParamsObject(params, 'lists').then(function(storedParams){
+              $stateParams.sortingParams = storedParams;
+              params = storedParams;
             });
           }
+
+          listIdtoBeUsed = parseInt(listIdtoBeUsed, 10);
+
+          if((isNaN(listIdtoBeUsed) || !listHeader)){
+            var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
+                favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
+
+            listIdtoBeUsed =  historyList.length ? historyList[0].listid : favoritesList[0].listid;
+          }
+
           if(listIdtoBeUsed == 'nonbeklist'){
             return ListService.getCustomInventoryList();
           } else {
+            LocalStorage.setLastList(listIdtoBeUsed);
             return ListService.getList(listIdtoBeUsed, params);
-            }
-        
+          }
+
         }]
       }
     })
@@ -434,49 +459,46 @@ angular.module('bekApp')
             }
           }
         }],
-        validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          return ResolveService.validateList($stateParams.listId, 'isworksheet');
+        validListId: ['$stateParams', 'ResolveService', 'LocalStorage', function($stateParams, ResolveService, LocalStorage) {
+          var lastList;
+
+          lastList = $stateParams.listId ? $stateParams.listId : LocalStorage.getLastList();
+
+          return ResolveService.validateList(lastList, 'isworksheet');
         }],
         selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, lists, validListId, ListService, DateService, Constants, LocalStorage, ENV) {
-             
-             var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
-             var params = {size: pageSize, from: 0, sort: []};
 
-          if($stateParams.cartId !== 'New'){
-            var allSets = LocalStorage.getLastOrderList();
-            var allValidSets = [];           
-            var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
-            allSets.forEach(function(set){          
-              if(set.timeset > timeoutDate){
-                allValidSets.push(set);
-              }
+          var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
+              params = {size: pageSize, from: 0, sort: []},
+              listId = $stateParams.listId.listId ? $stateParams.listId.listId : $stateParams.listId,
+              historyList = $filter('filter')(lists, {name: 'history'})[0],
+              favoritesList = $filter('filter')(lists, {name: 'favorites'})[0],
+              listHeader;
+
+          listId = listId ? listId : LocalStorage.getLastList();
+          listHeader = listId.listId ? $filter('filter')(lists, {listid: listId.listId})[0] : $filter('filter')(lists, {listid: listId})[0];
+
+          if(!listHeader) {
+
+            if(historyList) {
+              listHeader = historyList;
+            } else {
+              listHeader = favoritesList;
+            }
+
+          }
+
+          listId = listHeader.listid;
+
+          if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
+            ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
+              $stateParams.sortingParams = storedParams;
+              params = storedParams;
             });
+          }
 
-            if(allValidSets.length){
-              allValidSets.forEach(function(set){
-                if(set.cartId === $stateParams.cartId){
-                    ListService.lists.forEach(function(list){
-                      if(list.listid === set.listId){
-                        validListId = set.listId;
-                         set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-                      }
-                    });
-                  }
-              });  
-            }                
-            LocalStorage.setLastOrderList(allValidSets);  
-          } 
-          var listHeader = $filter('filter')(lists, {listid: validListId})[0];
-
-            if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
-              ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
-                $stateParams.sortingParams = storedParams; 
-                params = storedParams;
-              });
-            }   
-         
-          return ListService.getList(validListId, params);
+          return ListService.getList(listId, params);
         }]
       }
     })
@@ -697,7 +719,7 @@ angular.module('bekApp')
         currentUserProfile : ['UserProfileService', function(UserProfileService){
         return UserProfileService.getCurrentUserProfile();
       }]
-      } 
+      }
     })
     .state('menu.admin.customergroup', {
       url: 'customergroup/',
@@ -766,11 +788,11 @@ angular.module('bekApp')
 
       }
     });
-  
+
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
-  
+
   // redirect when user tries to go to an abstract state
   // $urlRouterProvider.when('/lists', '/lists/0');
   // $urlRouterProvider.when('/lists/', '/lists/0');
@@ -778,7 +800,7 @@ angular.module('bekApp')
   $urlRouterProvider.when('/cart/', '/cart/0');
 
   $urlRouterProvider.otherwise('/404');
-  
+
   // allow user to access paths with or without trailing slashes
   $urlRouterProvider.rule(function ($injector, $location) {
     var path = $location.url();

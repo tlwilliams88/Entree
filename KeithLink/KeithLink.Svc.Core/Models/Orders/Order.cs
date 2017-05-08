@@ -40,7 +40,10 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[Description("Invoice #")]
 		public string InvoiceNumber { get; set; }
 
-		[DataMember(Name = "invoicestatus")]
+        [DataMember(Name = "listId")]
+        public long? ListId { get; set; }
+
+        [DataMember(Name = "invoicestatus")]
 		[Description("Invoice Status")]
 		public string InvoiceStatus { get; set; }
 				

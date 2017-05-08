@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'PricingService', 'Order', 
-    function ($http, $q, $filter, UtilityService, ExportService, PricingService, Order) {
+  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'PricingService', 'Order', 'LocalStorage', 'DateService', 'Constants',
+    function ($http, $q, $filter, UtilityService, ExportService, PricingService, Order, LocalStorage, DateService, Constants) {
     
     var Service = {
 
@@ -81,8 +81,20 @@ angular.module('bekApp')
         });
       },
 
-      updateOrder: function(order, params) {
+      updateOrder: function(order, params, list) {
         order.message = 'Updating order...';
+
+        if(list){
+          order.listId = list;
+          var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
+              lastlist ={
+                listId: order.listId,          
+                timeset: timeset
+              };
+         
+          LocalStorage.setLastList(lastlist);
+        }
+        
         order.items.forEach(function(item){
           if(item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'){
             item.quantity = item.quantityordered;

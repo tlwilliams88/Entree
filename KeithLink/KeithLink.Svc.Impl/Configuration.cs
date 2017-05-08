@@ -57,9 +57,12 @@ namespace KeithLink.Svc.Impl
 
         // Elasticsearch / Commerce Server / Application specific
         private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
+        private const string KEY_VALID_PUBLIC_API_TOKENS = "ValidPublicApiTokens";
+        private const string KEY_SERVE_PUBLIC_API = "ServePublicApi";
         private const string KEY_BEKDB_CONNECTIONSTRING = "BEKDBContext";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
         private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
+        private const string KEY_BRANDS_EXCLUDED = "BrandsToExclude";
         private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
         private const string KEY_CORS_ENABLED_DOMAINS = "CorsEnabledDomains";
         private const string KEY_CORS_ENABLED_HEADERS = "CorsEnabledHeaders";
@@ -161,6 +164,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
         private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
         private const string KEY_CUTOFFTIME_BILLPAY = "BillPayCutOffTime";
+        private const string KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS = "CartOrOrder2ListIdPurgeDays";
 
         //Email
         private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -231,6 +235,9 @@ namespace KeithLink.Svc.Impl
         // Export Settings
         private const string KEY_EXPORT_ADDTITLE = "ExportAddTitle";
         private const string KEY_EXPORT_ADDCUSTOMER = "ExportAddCustomer";
+
+        //Contract List Changes
+        private const string KEY_CONTRACTLISTCHANGE_PRICEBLOCKDELETED = "ContractListDeleteBlockPrices";
         #endregion
 
         #region methods
@@ -250,17 +257,17 @@ namespace KeithLink.Svc.Impl
             RoleNameCorporateAdmin, Constants.ROLE_CORPORATE_SECURITY,
             Constants.ROLE_INTERNAL_CSR_FAQ, Constants.ROLE_INTERNAL_CSR_FAM, Constants.ROLE_INTERNAL_CSR_FDF,
             Constants.ROLE_INTERNAL_CSR_FHS, Constants.ROLE_INTERNAL_CSR_FLR, Constants.ROLE_INTERNAL_CSR_FSA,
-            Constants.ROLE_INTERNAL_CSR_FOK, Constants.ROLE_INTERNAL_DSM_FAQ, Constants.ROLE_INTERNAL_DSM_FAM,
-            Constants.ROLE_INTERNAL_DSM_FDF, Constants.ROLE_INTERNAL_DSM_FHS, Constants.ROLE_INTERNAL_DSM_FLR,
-            Constants.ROLE_INTERNAL_DSM_FSA, Constants.ROLE_INTERNAL_DSM_FOK, Constants.ROLE_INTERNAL_DSR_FAQ,
+            Constants.ROLE_INTERNAL_CSR_FOK, Constants.ROLE_INTERNAL_CSR_FEL, Constants.ROLE_INTERNAL_DSM_FAQ, Constants.ROLE_INTERNAL_DSM_FAM,
+            Constants.ROLE_INTERNAL_DSM_FDF, Constants.ROLE_INTERNAL_DSM_FHS, Constants.ROLE_INTERNAL_DSM_FLR, Constants.ROLE_INTERNAL_DSM_FEL,
+            Constants.ROLE_INTERNAL_DSM_FSA, Constants.ROLE_INTERNAL_DSM_FOK, Constants.ROLE_INTERNAL_DSR_FAQ, Constants.ROLE_INTERNAL_DSR_FEL,
             Constants.ROLE_INTERNAL_DSR_FAM, Constants.ROLE_INTERNAL_DSR_FDF, Constants.ROLE_INTERNAL_DSR_FHS,
             Constants.ROLE_INTERNAL_DSR_FLR, Constants.ROLE_INTERNAL_DSR_FSA, Constants.ROLE_INTERNAL_DSR_FOK,
-            Constants.ROLE_INTERNAL_MIS_FAQ, Constants.ROLE_INTERNAL_MIS_FAM, Constants.ROLE_INTERNAL_MIS_FDF,
+            Constants.ROLE_INTERNAL_MIS_FAQ, Constants.ROLE_INTERNAL_MIS_FAM, Constants.ROLE_INTERNAL_MIS_FDF, Constants.ROLE_INTERNAL_MIS_FEL,
             Constants.ROLE_INTERNAL_MIS_FHS, Constants.ROLE_INTERNAL_MIS_FLR, Constants.ROLE_INTERNAL_MIS_FSA,
-            Constants.ROLE_INTERNAL_MIS_FOK, Constants.ROLE_INTERNAL_MIS_FAR, Constants.ROLE_INTERNAL_POWERUSER_FAM,
+            Constants.ROLE_INTERNAL_MIS_FOK, Constants.ROLE_INTERNAL_MIS_FAR, Constants.ROLE_INTERNAL_POWERUSER_FAM, Constants.ROLE_INTERNAL_POWERUSER_FEL,
             Constants.ROLE_INTERNAL_POWERUSER_FAQ, Constants.ROLE_INTERNAL_POWERUSER_FAR, Constants.ROLE_INTERNAL_POWERUSER_FDF,
             Constants.ROLE_INTERNAL_POWERUSER_FHS, Constants.ROLE_INTERNAL_POWERUSER_FLR, Constants.ROLE_INTERNAL_POWERUSER_FOK,
-            Constants.ROLE_INTERNAL_POWERUSER_FSA, Constants.ROLE_INTERNAL_POWERUSER_GOF, Constants.ROLE_INTERNAL_MARKETING_FAQ,
+            Constants.ROLE_INTERNAL_POWERUSER_FSA, Constants.ROLE_INTERNAL_POWERUSER_GOF, Constants.ROLE_INTERNAL_MARKETING_FAQ, Constants.ROLE_INTERNAL_MARKETING_FEL,
             Constants.ROLE_INTERNAL_MARKETING_FAM, Constants.ROLE_INTERNAL_MARKETING_FDF, Constants.ROLE_INTERNAL_MARKETING_FHS,
             Constants.ROLE_INTERNAL_MARKETING_FLR, Constants.ROLE_INTERNAL_MARKETING_FAR, Constants.ROLE_INTERNAL_MARKETING_FSA,
             Constants.ROLE_INTERNAL_MARKETING_FOK, Constants.ROLE_INTERNAL_MARKETING_GOF
@@ -269,6 +276,15 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+        public static bool ContractListDeleteBlockPrices
+        {
+            get
+            {
+                string check = DBAppSettingsRepositoryImpl.GetValue(KEY_CONTRACTLISTCHANGE_PRICEBLOCKDELETED, "True");
+                return bool.Parse(check);
+            }
+        }
+
         public static List<string> ExportAddCustomer
         {
             get
@@ -467,6 +483,24 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static List<string> ValidPublicApiTokens
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_VALID_PUBLIC_API_TOKENS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static bool ServePublicApi
+        {
+            get
+            {
+                string check = DBAppSettingsRepositoryImpl.GetValue(KEY_SERVE_PUBLIC_API, "False");
+                return bool.Parse(check);
+            }
+        }
+
         public static string AmazonSnsAccessKey
         {
             get
@@ -552,6 +586,10 @@ namespace KeithLink.Svc.Impl
             get { return DBAppSettingsRepositoryImpl.GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
         }
 
+        public static List<string> BrandsToExclude {
+            get { return GetCommaSeparatedValues(DBAppSettingsRepositoryImpl.GetValue(KEY_BRANDS_EXCLUDED, string.Empty));  }
+        }
+
         public static List<string> CacheServersEndpoints
         {
             get
@@ -563,7 +601,7 @@ namespace KeithLink.Svc.Impl
 
         public static string CategoryPrefixesToExclude
         {
-            get { return GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
         }
 
         public static string CSSiteName
@@ -1633,6 +1671,20 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static int CartOrOrder2ListIdPurgeDays
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS, "-7"));
+                }
+                catch
+                {
+                    return -7;
+                }
+            }
+        }
         #endregion
     }
 }

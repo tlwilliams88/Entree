@@ -250,6 +250,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 case "flr":
                 case "fok":
                 case "fsa":
+                case "fel":
                     return Constants.CATALOG_BEK;
                 case "unfi_5":
                 case "unfi_7":

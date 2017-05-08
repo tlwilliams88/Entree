@@ -23,10 +23,6 @@ angular.module('bekApp')
 
     var orderBy = $filter('orderBy');
 
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.cartHeaders = cartHeaders;
-    });
-
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
@@ -40,6 +36,55 @@ angular.module('bekApp')
     $scope.showRowOptionsDropdown = false;
     $scope.forms = {};
     $scope.isCustomInventoryList = originalList.iscustominventory ? true : false;
+
+    $scope.availableFilterParameters = [
+      {
+        name: 'View All'
+      }, {
+        name: 'Active Items',
+        filter: {
+          field: 'delta',
+          value: 'active'
+        }
+      },
+      {
+        name: 'Recently Added Items',
+        filter: {
+          field: 'delta',
+          value: 'newly added active'
+        }
+      },
+      {
+        name: 'Recently Deleted Items',
+        filter: {
+          field: 'delta',
+          value: 'newly deleted'
+        }
+      },
+      {
+        name: 'Recently Added/Deleted Items',
+        filter: {
+          condition: 'or',
+          filter:[{
+            field: 'delta',
+            value: 'newly added active'
+          },
+          {
+            field: 'delta',
+            value: 'newly deleted'
+          }]
+        }
+      }
+    ];
+
+    $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
+
+    $scope.selectFilterParameter = function(filterparameter) {
+      $scope.selectedFilterParameter = filterparameter.name;
+      $scope.selectedFilter = filterparameter.filter;
+
+      $scope.filterItems();
+    };
 
     // detect IE
     // returns $scope.isIE is true if IE or false, if browser is not IE
@@ -311,7 +356,7 @@ angular.module('bekApp')
           listId: listid,          
           timeset: timeset
       };
-     
+      
       LocalStorage.setLastList(lastlist);
       if($scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm) {
@@ -356,9 +401,14 @@ angular.module('bekApp')
     **********/
 
     $scope.filterItems = function(searchTerm) {
-      if($scope.unsavedChangesConfirmation()){
+      if($scope.unsavedChangesConfirmation() && searchTerm){
         $scope.initPagingValues(true);
         listPagingModel.filterListItems(searchTerm);
+      } else if($scope.unsavedChangesConfirmation() && $scope.selectedFilter) {
+        $scope.initPagingValues(true);
+        listPagingModel.filterListItemsByMultipleFields($scope.selectedFilter);
+      } else {
+        listPagingModel.filterListItems();
       }
     };
     
@@ -906,9 +956,14 @@ angular.module('bekApp')
       });
     };
 
-    $scope.clearFilter = function(){
+    $scope.clearFilter = function(clearSearch){
       if($scope.unsavedChangesConfirmation()){
-        $scope.listSearchTerm = '';
+        if(clearSearch){
+          $scope.listSearchTerm = '';
+        }
+        
+        $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
+        $scope.selectedFilter = '';
         $scope.filterItems( $scope.listSearchTerm );       
       }    
     };
@@ -956,7 +1011,7 @@ angular.module('bekApp')
     }
 
   $scope.scrollToTop = function($var) {
-    $('.back-to-top').css({'display': 'inline'});
+    $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').css({'display': 'inline'});
     var duration = 300;
     event.preventDefault();
     jQuery('html, body').animate({scrollTop: 0}, duration);
@@ -964,11 +1019,11 @@ angular.module('bekApp')
   };
 
   $(window).scroll(function() {
-    if($(this).scrollTop() > 75){
-      $('.back-to-top').fadeIn('fast');
-      $('.back-to-top').css('visibility', 'visible');
+    if($(this).scrollTop() > 190){
+      $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').fadeIn('fast');
+      $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').css('visibility', 'visible');
     } else {
-      $('.back-to-top').fadeOut('fast');
+      $('.back-to-top, .back-to-top-desktop, .floating-save-mobile').fadeOut('fast');
     }
   });
 

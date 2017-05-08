@@ -29,6 +29,7 @@ namespace KeithLink.Svc.Impl.Logic
         #region attributes
         private IListLogic listServiceRepository;
         private ICatalogLogic catalogLogic;
+        private readonly ISiteCatalogService _catalogService;
         private ICustomInventoryItemsRepository _customInventoryRepo;
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
@@ -48,10 +49,11 @@ namespace KeithLink.Svc.Impl.Logic
         #region ctor
         public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, 
             IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic,
-            ICustomInventoryItemsRepository customInventoryRepo)
+            ICustomInventoryItemsRepository customInventoryRepo, ISiteCatalogService catalogService)
         {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
+            _catalogService = catalogService;
             this.eventLogRepository = eventLogRepository;
             this.shoppingCartLogic = shoppingCartLogic;
             this.priceLogic = priceLogic;
@@ -415,18 +417,20 @@ namespace KeithLink.Svc.Impl.Logic
             var quantityColumn = 1;
             var eachColumn = 2;
 
-            if (file.Options.IgnoreFirstLine.Equals(true))
+            rdr.Read();
+            if (file.Options.IgnoreFirstLine.Equals(false))
             {
-                rdr.Read(); // Skip the first line
-                for (int i = 0; i < rdr.FieldCount - 1; i++)
+                if (rdr.FieldCount > 0)
                 {
-                    if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
-                        itemNumberColumn = i;
-                    else if (rdr.GetString(i).Equals("# Ordered", StringComparison.CurrentCultureIgnoreCase))
-                        quantityColumn = i;
-                    else if (rdr.GetString(i).Equals("each", StringComparison.CurrentCultureIgnoreCase))
-                        quantityColumn = i;
-
+                    for (int i = 0; i < rdr.FieldCount - 1; i++)
+                    {
+                        if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
+                            itemNumberColumn = i;
+                        else if (rdr.GetString(i).Equals("# Ordered", StringComparison.CurrentCultureIgnoreCase))
+                            quantityColumn = i;
+                        else if (rdr.GetString(i).Equals("each", StringComparison.CurrentCultureIgnoreCase))
+                            quantityColumn = i;
+                    }
                 }
             }
 
@@ -457,6 +461,11 @@ namespace KeithLink.Svc.Impl.Logic
             catch (Exception ex)
             {
                 eventLogRepository.WriteErrorLog("Bad parse of file", ex);
+            }
+
+            if (returnValue.Count == 0)
+            {
+                throw new ApplicationException("Empty Order; No Products Defined in File");
             }
 
             return returnValue;
@@ -557,7 +566,7 @@ namespace KeithLink.Svc.Impl.Logic
 
             upc = upc.Replace("\"", "");
 
-            ProductsReturn products = catalogLogic.GetProductsBySearch(catalogInfo, upc, new SearchInputModel() { From = 0, Size = 10, SField = "upc" }, user);
+            ProductsReturn products = _catalogService.GetProductsBySearch(catalogInfo, upc, new SearchInputModel() { From = 0, Size = 10, SField = "upc" }, user);
             foreach (Product p in products.Products)
             {
                 if (p.UPC == upc)

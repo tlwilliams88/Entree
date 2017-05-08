@@ -6,6 +6,14 @@
   @extend .visible-lg;
 }
 
+.hidden-desktop-visible-print {
+  @extend .hidden-xs;
+  @extend .hidden-sm;
+  @extend .visible-print;
+  @extend .visible-md;
+  @extend .hidden-lg;
+}
+
 @media print {
   @include make-grid(sm);
 

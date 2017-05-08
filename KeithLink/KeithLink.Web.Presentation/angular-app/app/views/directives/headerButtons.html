@@ -1,30 +1,30 @@
-<div class="hidden-xs hidden-sm hidden-print page-header-bar__actions">
+<div class="hidden-xs hidden-sm hidden-print page-header-bar__actions" style="display:inline-flex;">
 
   <div ng-transclude="" class="page-header__buttons">
 
   </div>
-  
+
   <div class="page-header__orders" ng-if="isOrderEntryCustomer && canCreateOrders">
-    <div class="btn-group" dropdown is-open="status.cartisopen">
-      <button class="badge-parent btn-no-style dropdown-toggle">
-        <span title="Carts" class="text-blue icon-truck"></span>
-        <span ng-if="cartHeaders && cartHeaders.length > 0" class="badge">{{cartHeaders.length}}</span>
+    <div class="btn-group" dropdown is-open="status.cartisopen" style="font-size: 23px; margin-top: 5px;" ng-class="{ 'negative-margin-left-10' : isMobileApp , 'margin-left-15' : !(isMobileApp || isMobile) }">
+      <button class="badge-parent btn-no-style dropdown-toggle btn-small-mobile-truck">
+        <span title="Carts" class="icon-truck user-bar-buttons"></span>
+        <span ng-if="cartsHeaders != null && cartsHeaders.length > 0" class="badge" style="margin-top: -10px; margin-left: -10px;">{{cartsHeaders.length}}</span>
       </button>
       <ul class="dropdown-menu truck-dropdown">
         <li class="heading"><h3>Current Carts</h3></li>
-        <li class="cart" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2">
+        <li class="cart" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: 2">
           <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
           <div class="cart-dropdown__info">
             <strong>{{cart.name}}</strong>
             <br>
             Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
-            <br>            
+            <br>
             Item Count: {{(cart.itemcount || 0) + (cart.itemcount === 1 ? ' Item' : ' Items')+ '/'+(cart.piececount || 0) + (cart.piececount === 1 ? ' Piece ' : ' Pieces')}}
-            <br>            
+            <br>
             Cart Total: {{cart.subtotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="display: table;">View Cart</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id, listId: cart.listid })">Continue Shopping</a>
           </div>
         </li>
         <li class="cart-dropdown__view-all">
@@ -44,8 +44,8 @@
             <br>
             Change Order Total: {{changeOrder.ordertotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })">View Change Order</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;">View Change Order</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber, listId: changeOrder.listid })">Continue Shopping</a>
           </div>
         </li>
       </ul>

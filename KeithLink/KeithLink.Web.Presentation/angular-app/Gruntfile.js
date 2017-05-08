@@ -606,8 +606,12 @@ module.exports = function (grunt) {
 
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
-    if (target === 'dist') {
+    if (target === 'prod') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
+    } else if (target === 'test') {
+      return grunt.task.run(['build-for-test', 'connect:dist:keepalive']);
+    } else if (target === 'beta') {
+      return grunt.task.run(['build-for-beta', 'connect:dist:keepalive']);
     }
 
     grunt.task.run([
@@ -684,7 +688,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin'
   ]);
-  
+
   grunt.registerTask('build-for-beta', [
    'clean:dist',
     // 'includeSource:dist',
@@ -702,7 +706,7 @@ module.exports = function (grunt) {
     'usemin',
     'htmlmin'
   ]);
-  
+
   // Not currently used
   // Was used to simulate real world conditions with dummy data
   grunt.registerTask('build-for-demo', [

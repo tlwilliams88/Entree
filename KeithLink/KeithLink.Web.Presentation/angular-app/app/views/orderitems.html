@@ -2,7 +2,7 @@
   <div header-message>
     Order Details
   </div>
-  <div header-buttons>
+  <div class="margin-right-10 pull-right">
     <a title="Check Status" class="btn-lg btn btn-success" ng-click="getRelatedOrder = true; getOrder(order.ordernumber)" ng-if="order.status === 'Submitted' || (UNFIOrder && UNFIOrder.status === 'Submitted')">Check Status</a>
     <a title="Save As List" class="btn btn-icon btn-default" ng-click="saveAsList()"><span class="icon-text2"></span></a>
     <a title="Print" class="btn btn-icon btn-default" ng-click="print()"><span class="icon-printer"></span></a>
@@ -32,7 +32,7 @@
         </div>
         <div class="order-item">
           <div class="order-item-title">Delivery Date</div>
-          <div class="order-item-value-1">{{UNFIOrder.deliverydate || 'N/A' | formatDate}}</div>
+          <div class="order-item-value-1">{{UNFIOrder.deliverydate || 'N/A' | formatDate}} <span data-tooltip="Entr&eacute;e Special Order:&#xa;Date of arrival at Ben E. Keith warehouse.&#xa;Items will ship on order following arrival date." class="icon-leaf"></span></div>
           <div class="order-item-title">Delivered</div>
           <div class="order-item-value-2" ng-if="UNFIOrder.estimateddeliverytime == null && UNFIOrder.actualdeliverytime == null && UNFIOrder.scheduleddeliverytime == null">N/A</div>
           <div class="order-item-value-2" ng-if="UNFIOrder.estimateddeliverytime != null && UNFIOrder.actualdeliverytime == null">ETA: {{UNFIOrder.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>

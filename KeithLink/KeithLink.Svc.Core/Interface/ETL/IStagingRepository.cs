@@ -12,12 +12,13 @@ namespace KeithLink.Svc.Core.Interface.ETL
         void PurgeInternalUserAccessTable();
         DataTable ReadAllBranches();
         DataTable ReadBrandControlLabels();
+        DataTable ReadDepartmentCategories();
         DataTable ReadItems(string branchId);
         DataTable ReadSubCategories();
         DataTable ReadParentCategories();
 		DataTable ReadUnfiCategories();
 		DataTable ReadUnfiSubCategories();
-        DataTable ReadFullItemForElasticSearch();
+        DataTable ReadFullItemForElasticSearch(string branchId);
         DataSet ReadGSDataForItems();
         DataTable ReadPDMDataForItems();
         DataTable ReadProprietaryItems();

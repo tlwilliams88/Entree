@@ -27,6 +27,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public class MessagingLogicImpl : IMessagingLogic {
@@ -70,15 +71,132 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         public void CreateMailMessage(MailMessageModel mailMessage) {
             Dictionary<Guid, UserMessage> messages = new Dictionary<Guid, UserMessage>();
 
+            IfCustomersRelayMessageToEachCustomer(mailMessage, messages);
+
+            IfUsersRelayMessageToEachUser(mailMessage, messages);
+
+            //Add messages to all users in the case of system alert
+            if (mailMessage.IsAlert)
+            {
+                ExtractLinkIfPresent(mailMessage);
+
+                RelayAlert(mailMessage, messages);
+            }
+
+            //Create all of the message records
+            foreach (var message in messages)
+                _userMessageRepository.Create(message.Value);
+
+            _uow.SaveChanges();
+        }
+
+        private void RelayAlert(MailMessageModel mailMessage, Dictionary<Guid, UserMessage> messages)
+        {
+            if ((mailMessage.BranchesToAlert != null) && (mailMessage.BranchesToAlert.Length > 0))
+            {
+                RelayAlertToUsersInBranches(mailMessage, messages);
+            }
+            else
+            {
+                RelayAlertToAllUsers(mailMessage, messages);
+            }
+        }
+
+        private static void ExtractLinkIfPresent(MailMessageModel mailMessage)
+        {
+            if (mailMessage.Message.Link != null)
+            {
+                mailMessage.Message.Body += string.Format("{0}=\"{1}\"",
+                                                          Constants.USERMESSAGES_LINKTOKEN,
+                                                          mailMessage.Message.Link);
+            }
+        }
+
+        private void RelayAlertToAllUsers(MailMessageModel mailMessage, Dictionary<Guid, UserMessage> messages)
+        {
+            List<UserProfile> users = _userRepo.GetExternalUsers();
+            users.AddRange(_userRepo.GetInternalUsers());
+            foreach (var user in users)
+                if (!messages.ContainsKey(user.UserId))
+                    messages.Add(user.UserId, new UserMessage()
+                    {
+                        Body = mailMessage.Message.Body,
+                        Subject = mailMessage.Message.Subject,
+                        Label = mailMessage.Message.Label,
+                        Mandatory = mailMessage.Message.Mandatory,
+                        UserId = user.UserId,
+                        NotificationType = mailMessage.Message.NotificationType
+                    });
+        }
+
+        private void RelayAlertToUsersInBranches(MailMessageModel mailMessage, Dictionary<Guid, UserMessage> messages)
+        {
+            List<UserProfile> users = new List<UserProfile>();
+            GetBranchesToAlert(mailMessage, users);
+            foreach (var user in users)
+                if (!messages.ContainsKey(user.UserId))
+                    messages.Add(user.UserId, new UserMessage()
+                    {
+                        Body = mailMessage.Message.Body,
+                        Subject = mailMessage.Message.Subject,
+                        Label = mailMessage.Message.Label,
+                        Mandatory = mailMessage.Message.Mandatory,
+                        UserId = user.UserId,
+                        NotificationType = mailMessage.Message.NotificationType
+                    });
+        }
+
+        private void GetBranchesToAlert(MailMessageModel mailMessage, List<UserProfile> users)
+        {
+            List<string> branches = Configuration.GetCommaSeparatedValues(mailMessage.BranchesToAlert);
+            foreach (string branch in branches)
+            {
+                List<Customer> customers = _custRepo.GetCustomersForBranch(branch);
+                Parallel.ForEach(customers,
+                                 new ParallelOptions { MaxDegreeOfParallelism = 4 },
+                                 customer =>
+                                 {
+                                     var lusers = _userRepo.GetUsersForCustomerOrAccount(customer.CustomerId);
+                                     if (lusers != null && lusers.Count > 0)
+                                         users.AddRange(lusers);
+                                 });
+            }
+        }
+
+        private void IfUsersRelayMessageToEachUser(MailMessageModel mailMessage, Dictionary<Guid, UserMessage> messages)
+        {
+            //Add any messages to specific users
+            if (mailMessage.UserIds != null && mailMessage.UserIds.Any())
+            {
+                foreach (var user in mailMessage.UserIds)
+                    if (!messages.ContainsKey(user))
+                        messages.Add(user, new UserMessage()
+                        {
+                            Body = mailMessage.Message.Body,
+                            Subject = mailMessage.Message.Subject,
+                            Label = mailMessage.Message.Label,
+                            Mandatory = mailMessage.Message.Mandatory,
+                            UserId = user,
+                            NotificationType = NotificationType.Mail
+                        });
+            }
+        }
+
+        private void IfCustomersRelayMessageToEachCustomer(MailMessageModel mailMessage, Dictionary<Guid, UserMessage> messages)
+        {
             //If CustomerIds are provided, send message to every user for that customer
-            if(mailMessage.CustomerIds != null && mailMessage.CustomerIds.Any()) {
-                foreach(var customer in mailMessage.CustomerIds) {
+            if (mailMessage.CustomerIds != null && mailMessage.CustomerIds.Any())
+            {
+                foreach (var customer in mailMessage.CustomerIds)
+                {
                     //var users = _userProfileLogic.GetUsers(new UserFilterModel() { CustomerId = customer });
                     var users = _userRepo.GetUsersForCustomerOrAccount(customer);
 
-                    foreach(var user in users) {
-                        if(!messages.ContainsKey(user.UserId))
-                            messages.Add(user.UserId, new UserMessage() {
+                    foreach (var user in users)
+                    {
+                        if (!messages.ContainsKey(user.UserId))
+                            messages.Add(user.UserId, new UserMessage()
+                            {
                                 Body = mailMessage.Message.Body,
                                 Subject = mailMessage.Message.Subject,
                                 Label = mailMessage.Message.Label,
@@ -89,80 +207,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                     }
                 }
             }
-
-            //Add any messages to specific users
-            if(mailMessage.UserIds != null && mailMessage.UserIds.Any()) {
-                foreach(var user in mailMessage.UserIds)
-                    if(!messages.ContainsKey(user))
-                        messages.Add(user, new UserMessage() {
-                            Body = mailMessage.Message.Body,
-                            Subject = mailMessage.Message.Subject,
-                            Label = mailMessage.Message.Label,
-                            Mandatory = mailMessage.Message.Mandatory,
-                            UserId = user,
-                            NotificationType = NotificationType.Mail
-                        });
-            }
-
-            //Add messages to all users in the case of system alert
-            if (mailMessage.IsAlert)
-            {
-                if ((mailMessage.BranchesToAlert != null) && (mailMessage.BranchesToAlert.Length > 0))
-                {
-                    //var users = _userProfileLogic.GetUsers(new UserFilterModel()
-                    //{
-                    //    Type = KeithLink.Svc.Core.Constants.EMAILMASK_BRANCHSYSTEMALERT,
-                    //    Branch = mailMessage.BranchToAlert
-                    //});
-                    List<UserProfile> users = new List<UserProfile>();
-                    List<string> branches = Configuration.GetCommaSeparatedValues(mailMessage.BranchesToAlert);
-                    foreach(string branch in branches)
-                    {
-                        List<Customer> customers = _custRepo.GetCustomersForBranch(branch);
-                        Parallel.ForEach(customers,
-                                         new ParallelOptions { MaxDegreeOfParallelism = 4 },
-                                         customer =>
-                                         {
-                                             var lusers = _userRepo.GetUsersForCustomerOrAccount(customer.CustomerId);
-                                             if (lusers != null && lusers.Count > 0)
-                                                 users.AddRange(lusers);
-                                         });
-                    }
-                    foreach (var user in users)
-                        if (!messages.ContainsKey(user.UserId))
-                            messages.Add(user.UserId, new UserMessage()
-                            {
-                                Body = mailMessage.Message.Body,
-                                Subject = mailMessage.Message.Subject,
-                                Label = mailMessage.Message.Label,
-                                Mandatory = mailMessage.Message.Mandatory,
-                                UserId = user.UserId,
-                                NotificationType = mailMessage.Message.NotificationType
-                            });
-                }
-                else
-                {
-                    List<UserProfile> users = _userRepo.GetExternalUsers();
-                    users.AddRange(_userRepo.GetInternalUsers());
-                    foreach (var user in users)
-                        if (!messages.ContainsKey(user.UserId))
-                            messages.Add(user.UserId, new UserMessage()
-                            {
-                                Body = mailMessage.Message.Body,
-                                Subject = mailMessage.Message.Subject,
-                                Label = mailMessage.Message.Label,
-                                Mandatory = mailMessage.Message.Mandatory,
-                                UserId = user.UserId,
-                                NotificationType = mailMessage.Message.NotificationType
-                            });
-                }
-            }
-
-            //Create all of the message records
-            foreach (var message in messages)
-                _userMessageRepository.Create(message.Value);
-
-            _uow.SaveChanges();
         }
 
         public void CreateMessagingPreferencesByCustomer(Guid userId, ProfileMessagingPreferenceModel messagingPrefModel) {
@@ -250,9 +294,18 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         }
 
         public PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging) {
+
             var userMessages = _userMessageRepository.ReadUserMessagesPaged(user, paging.Size, paging.From).ToList();
 
-            return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
+            paging.From = null; // we do a skip and take reading from the EF so we null the from so as not to do the skip again in the getpage
+
+            var ret = userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>()
+                                                                      .GetPage<UserMessageModel>(paging, "MessageCreated");
+
+            // this was added to get the full # of messages available for the frontend infinite scroll plugin to do its thing
+            ret.TotalResults = _userMessageRepository.GetMessagesCount(user.UserId);
+
+            return ret;
         }
 
         public bool ForwardUserMessage(UserProfile requester, ForwardUserMessageModel forwardrequest)

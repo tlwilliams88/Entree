@@ -101,6 +101,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MfTransHist
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsProxyUrl', 'http://testmultidocs.bekco.com/', 'MultiDocs Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('MultiDocsUrl', 'http://testmultidocs.bekco.com/', 'MultiDocs Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('OrderUpdateWatchPath', 'c:\test\entree\orderupdates\', 'Site Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CartOrOrder2ListIdPurgeDays', '-7', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuAdminPassword', '9M9NC0', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuAdminUsername', 'pniadmin', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuGroupSetupUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?Adminusername=pniadmin&amp;Adminpassword=9M9NC0N&amp;path=CUSTOMER', 'PowerMenu Settings', 0)
@@ -198,6 +199,9 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('UNFIWhiteli
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WebNowUrl', 'http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}', 'Misc Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsers', 'tcfox,jwames,pabrandt,mdjoiner,jdhughes,corp-ssa-entreadmin,dmderusha,bakillins,jmmills,meiacomini', 'WhiteList: must be lowercase', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsersEnforced', 'false', 'WhiteList', 0)
+
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])

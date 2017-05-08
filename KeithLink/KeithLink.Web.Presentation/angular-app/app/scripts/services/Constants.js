@@ -17,7 +17,10 @@ angular.module('bekApp')
       pageSize: 'pageSize',
       defaultSort: 'defaultSort',
       defaultView: 'defaultView',
-      userName: 'userName'
+      userName: 'userName',
+      hideTutorialHome: 'hideTutorialHome',
+      hideTutorialSearch: 'hideTutorialSearch',
+      hideTutorialAddToOrder: 'hideTutorialAddToOrder'
     },
 
     offlineLocalStorage: {
@@ -31,7 +34,7 @@ angular.module('bekApp')
      yearMonthDayFullTimestampDashes: 'YYYY-MM-DD HH:mm:ss.SSSS',
      yearMonthDayHourMinute : 'YYYYMMDDHHmm',
      monthDayYearSlashes: 'MM/DD/YYYY',
-     monthDayYearTimeDashes: 'MM-DD-YYYY h:mma',
+     monthDayYearTimeDashes: 'M-D-YY h:mma',
      monthDayYearHourMinuteSecondSlashes: 'MM/DD/YYYY HH:mm:ss',
      yearMonthDayHourMinuteSecondDashes: 'YYYY-MM-DDTHH:mm:ss',
      yearMonthDayDashes : 'YYYY-MM-DD',

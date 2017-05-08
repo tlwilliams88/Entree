@@ -100,16 +100,16 @@ angular.module('bekApp')
       },
 
       getLastOrderList: function() {
-       var last = localStorageService.get(Constants.localStorage.lastOrderList) || [];
-       return last;
+        var last = localStorageService.get(Constants.localStorage.lastOrderList) || [];
+        return last;
       },
 
       setLastList: function(list) {
-      localStorageService.set(Constants.localStorage.lastList, list);
+        localStorageService.set(Constants.localStorage.lastList, list);
       },
 
       setLastOrderList: function(allSets) {        
-      localStorageService.set(Constants.localStorage.lastOrderList, allSets);
+        localStorageService.set(Constants.localStorage.lastOrderList, allSets);
       },
 
       /*************
@@ -146,9 +146,32 @@ angular.module('bekApp')
       },
 
       getDefaultUserName: function() {
-        localStorageService.get(Constants.localStorage.userName);
-      }
+        return localStorageService.get(Constants.localStorage.userName);
+      },
 
+      setHideTutorialHomePage: function(hideTutorial){
+        localStorageService.set(Constants.localStorage.hideTutorialHome, hideTutorial);
+      },
+
+      getHideTutorialHomePage: function(){
+        return localStorageService.get(Constants.localStorage.hideTutorialHome);
+      },
+
+      setHideTutorialSearch: function(hideTutorial){
+        localStorageService.set(Constants.localStorage.hideTutorialSearch, hideTutorial);
+      },
+
+      getHideTutorialSearch: function(){
+        return localStorageService.get(Constants.localStorage.hideTutorialSearch);
+      },
+
+      setHideTutorialAddToOrder: function(hideTutorial){
+        localStorageService.set(Constants.localStorage.hideTutorialAddToOrder, hideTutorial);
+      },
+
+      getHideTutorialAddToOrder: function(){
+        return localStorageService.get(Constants.localStorage.hideTutorialAddToOrder);
+      }
     };
 
     function setCustomerNumber(customerNumber) {

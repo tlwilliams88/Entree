@@ -82,7 +82,12 @@ namespace KeithLink.Common.Impl.Repository.Settings
         }
 
         public static string GetValue(string key, string defval) {
-            return DBAppSettingsRepositoryImpl.GetInstance().GetInstanceValue(key, defval);
+            string val = DBAppSettingsRepositoryImpl.GetInstance().GetInstanceValue(key, defval);
+            if (val != null)
+            {
+                return val;
+            }
+            return defval;
         }
 
         private void Init() {

@@ -29,7 +29,7 @@ angular.module('bekApp')
       
       // determine starting date of 1 month in the past
       var initialFromDate = new Date();
-      initialFromDate = initialFromDate.setMonth(initialFromDate.getMonth() - 1);
+      initialFromDate = initialFromDate.setMonth(initialFromDate.getMonth() - 6);
       initialFromDate = new Date(initialFromDate);
 
       $scope.fromDate = initialFromDate;

@@ -34,9 +34,9 @@ namespace KeithLink.Svc.Core.Extensions
 
         public static UserMessageModel ToUserMessageModel(this UserMessage userMessage)
         {
-            // replace switch |LOGO| with blank space, if it's in this message in the body
-            return new UserMessageModel()
+            UserMessageModel message =  new UserMessageModel()
             {
+                // replace switch |LOGO| with blank space, if it's in this message in the body
                 Body = userMessage.Body.Replace("|LOGO|", "&nbsp;"),
                 MessageRead = userMessage.MessageReadUtc.HasValue ? DateTime.SpecifyKind(userMessage.MessageReadUtc.Value.ToLocalTime(), DateTimeKind.Unspecified) : userMessage.MessageReadUtc,
                 NotificationType = userMessage.NotificationType,
@@ -51,6 +51,29 @@ namespace KeithLink.Svc.Core.Extensions
                 CustomerName = userMessage.CustomerName,
                 BranchId = userMessage.BranchId
             };
+
+            if(message.Body.IndexOf(string.Format("{0}=", Constants.USERMESSAGES_LINKTOKEN)) > -1)
+            { 
+                // extract link from body
+                StringBuilder link = new StringBuilder
+                    (message.Body.Substring(message.Body.IndexOf(string.Format("{0}=", Constants.USERMESSAGES_LINKTOKEN))));
+
+                link.Remove(0, link.ToString().IndexOf("\"") + 1);
+                link.Remove(link.Length - 1, 1);
+
+                message.Link = link.ToString();
+
+                // remove extracted link from body
+                StringBuilder body = new StringBuilder(message.Body);
+                body.Replace( string.Format("{0}=\"{1}\"",
+                                           Constants.USERMESSAGES_LINKTOKEN,
+                                           message.Link), 
+                             "");
+
+                message.Body = body.ToString();
+            }
+
+            return message;
         }
 
         public static string GetEnumDescription(Enum value)

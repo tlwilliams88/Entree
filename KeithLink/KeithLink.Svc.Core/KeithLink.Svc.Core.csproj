@@ -193,6 +193,7 @@
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\Configurations\IExportSettingLogic.cs" />
     <Compile Include="Interface\Customers\IInternalUserAccessRepository.cs" />
+    <Compile Include="Interface\ElasticSearch\IESItem.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
     <Compile Include="Interface\OnlinePayments\Log\IKPayLogRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
+    <Compile Include="Interface\Orders\IOrderedFromListRepository.cs" />
     <Compile Include="Interface\Orders\IOrderHistoryWriter.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderLogic.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderRepository.cs" />
@@ -298,6 +300,7 @@
     <Compile Include="Interface\SingleSignOn\IKbitRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
     <Compile Include="Interface\SiteCatalog\IExternalImageProcessorUnfi.cs" />
+    <Compile Include="Interface\SiteCatalog\ISiteCatalogService.cs" />
     <Compile Include="Interface\SpecialOrders\ISpecialOrderDBContext.cs" />
     <Compile Include="Interface\Templates\ITemplatesRepository.cs" />
     <Compile Include="Models\ApplicationHealth\QueuesToCheckModel.cs" />
@@ -319,6 +322,7 @@
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\ElasticSearch\ESItem.cs" />
     <Compile Include="Models\Invoices\CustomerWithInvoices.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\Base64Image.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowPageReturnModel.cs" />
@@ -341,6 +345,8 @@
     <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignAddOrUpdateRequestModelcs.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignsReturnModel.cs" />
     <Compile Include="Models\Messaging\ForwardUserMessageModel.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignHeader.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignItem.cs" />
@@ -350,6 +356,7 @@
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
+    <Compile Include="Models\Orders\Order2List.cs" />
     <Compile Include="Models\PowerMenu\Order\LoginModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderHeaderModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderItemModel.cs" />
@@ -369,8 +376,10 @@
     <Compile Include="Models\Profile\SettingsModelReturn.cs" />
     <Compile Include="Models\Profile\UserPermissionsModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
+    <Compile Include="Models\Profile\ValidateTokenReturn.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
+    <Compile Include="Models\SiteCatalog\ShallowProduct.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItemReportModel.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartReportModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using System.Dynamic;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
@@ -103,6 +104,36 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
 
         public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<string> SeekSpecialFilters(string facetFilters)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProductsReturn GetProductNumbersByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProductsReturn GetProductNumbersBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ProductsReturn GetHouseProductNumbersByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddSpecialFiltersToFacets(ExpandoObject facets, string countDeviated = null, string countRecentOrdered = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RecalculateFacets(ProductsReturn ret, List<string> specialFilters)
         {
             throw new NotImplementedException();
         }

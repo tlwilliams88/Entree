@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', '$q', 'ENV', 'LocalStorage',
-    function ($http, $q, ENV, LocalStorage) {
+  .factory('AuthenticationService', ['$http', '$q', 'ENV', 'LocalStorage', 'UtilityService',
+    function ($http, $q, ENV, LocalStorage, UtilityService) {
 
     var Service = {
 
       authenticateUser: function(username, password) {
 
         // must use query string, authen request does not work if sending data as a JSON object
-        var data = 'grant_type=password&username=' + username + '&password=' + password + '&apiKey=' + ENV.apiKey + '&message=Loading...';
+        var data = 'grant_type=password&username=' + username + '&password=' + encodeURIComponent(password) + '&apiKey=' + ENV.apiKey + '&message=Loading...';
 
         var headers = { headers : {
             'Content-Type': 'application/x-www-form-urlencoded' 
@@ -37,7 +37,9 @@ angular.module('bekApp')
       },
 
       login: function(username, password) {
+
         return Service.authenticateUser(username, password);
+        
       },
 
       logout: function() {
