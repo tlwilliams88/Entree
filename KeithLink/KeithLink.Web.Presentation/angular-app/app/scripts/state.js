@@ -323,6 +323,9 @@ angular.module('bekApp')
             });
           }
 
+          if(listIdtoBeUsed !== 'nonbeklist') {
+            
+          }
           listIdtoBeUsed = parseInt(listIdtoBeUsed, 10);
 
           if(isNaN(listIdtoBeUsed)){
