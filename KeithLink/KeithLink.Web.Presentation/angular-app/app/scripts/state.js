@@ -323,14 +323,17 @@ angular.module('bekApp')
             });
           }
 
-          listIdtoBeUsed = parseInt(listIdtoBeUsed, 10);
+          if(listIdtoBeUsed !== 'nonbeklist') {
+            listIdtoBeUsed = parseInt(listIdtoBeUsed, 10);
 
-          if((isNaN(listIdtoBeUsed) || !listHeader)){
-            var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
-                favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
+            if(isNaN(listIdtoBeUsed)){
+              var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
+                  favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
 
-            listIdtoBeUsed =  historyList.length ? historyList[0].listid : favoritesList[0].listid;
+              listIdtoBeUsed =  historyList.length ? historyList[0].listid : favoritesList[0].listid;
+            }
           }
+
 
           if(listIdtoBeUsed == 'nonbeklist'){
             return ListService.getCustomInventoryList();

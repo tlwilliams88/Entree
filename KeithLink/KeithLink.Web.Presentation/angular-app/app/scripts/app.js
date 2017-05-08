@@ -86,8 +86,8 @@ angular
     }
   };
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService) {
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -203,6 +203,18 @@ angular
       NotificationService.getMessages(notificationParams);
       NotificationService.getUnreadMessageCount();
     }
+
+    ListService.getListHeaders().then(function(listheaders){
+      $rootScope.listHeaders = listheaders;
+    })
+
+    CartService.getCartHeaders().then(function(cartheaders) {
+      $rootScope.cartsHeaders = cartheaders;
+    })
+
+    OrderService.getChangeOrders().then(function(changeorders) {
+      $rootScope.changeOrders = changeorders;
+    })
 
     // remove lists and carts from memory
     if (fromState.data && toState.data) {

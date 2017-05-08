@@ -23,7 +23,7 @@ angular.module('bekApp')
 
     CartService.getCartHeaders();
 
-    ListService.getListHeaders();
+    // ListService.getListHeaders();
 
     OrderService.getChangeOrders();
 

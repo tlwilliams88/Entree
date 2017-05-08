@@ -51,9 +51,7 @@ angular.module('bekApp')
   });
 
   $scope.$on('ListCreatedFromContextMenu', function() {
-    ListService.getListHeaders().then(function(lists) {
-      $scope.lists = lists;
-    });
+    $scope.lists = ListService.lists;
   });
 
 
