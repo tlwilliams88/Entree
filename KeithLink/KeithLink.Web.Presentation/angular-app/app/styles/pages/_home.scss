@@ -5,9 +5,6 @@
 }
 
 @media (max-width:360px) {
-  .margin-top-5-max-width-360px {
-    margin-top: -5px !important;
-  }
   .margin-left-10-max-width-564px {
     margin-left: 10px !important;
   }
@@ -76,21 +73,19 @@
 @media(min-width:992px) {
   .btn-primary-homepage {
     background-color: #489ecf;
-    padding: 10px 12px;
-    font-size: 14px;
-    line-height: 1.33;
-    border-radius: 4px;
   }
 }
 
 @media(max-width:991px) {
   .btn-mobile-homepage {
     background-color: #9E987E;
-    padding: 5px 10px;
-    font-size: 11px;
-    line-height: 1.5;
-    border-radius: 3px;
+    font-size: 8px;
+    margin-right: -12px;
     margin-top: -5px;
+  }
+
+  .btn-small-mobile-truck {
+    font-size: 23px;
   }
 }
 
@@ -144,7 +139,6 @@
     position: relative;
     @include arrow('left','top', 5px, $color-white, $color-border, 1px);
     margin-top: 15px;
-    border-radius: 3px;
     letter-spacing: 1px;
     background-color: $color-white;
     border: 1px solid $color-border;
@@ -206,7 +200,6 @@ $order-col__background: #f1efe5;
   background-color: $color-white;
   border: 1px solid $color-border;
   margin-top: 10px;
-  box-shadow: 0px 0px 5px #c3bc9c;
  
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
@@ -243,9 +236,9 @@ $order-col__background: #f1efe5;
  
 .view-all {
   border: 1px solid $color-border;
-  border-radius: 0 0 4px 4px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 20px;
   background-color: $color-white;
 }
  
@@ -308,4 +301,10 @@ $order-col__background: #f1efe5;
       }
     }
   }
+}
+
+.vertical-line {
+  border-left: 4px solid #F7B834; 
+  height:28px; 
+  margin-top: -4px;
 }

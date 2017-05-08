@@ -108,22 +108,23 @@ namespace KeithLink.Svc.Core.Models.Lists
 			if (this.Items != null)
 				foreach (var item in this.Items)
 				{
-					clonedList.Items.Add(new ListItemModel()
-					{
-						ListItemId = item.ListItemId,
+                    clonedList.Items.Add(new ListItemModel()
+                    {
+                        ListItemId = item.ListItemId,
                         IsValid = item.IsValid,
-						Name = item.Name,
-						ItemNumber = item.ItemNumber,
+                        Name = item.Name,
+                        ItemNumber = item.ItemNumber,
                         Pack = item.Pack,
-						PackSize = item.PackSize,
-						Label = item.Label,
-						ParLevel = item.ParLevel,
-						Position = item.Position,
-						TempZone = item.TempZone,
-						Category = item.Category,
-						FromDate = item.FromDate,
-						BrandExtendedDescription = item.BrandExtendedDescription,
-						ToDate = item.ToDate,
+                        PackSize = item.PackSize,
+                        Label = item.Label,
+                        ParLevel = item.ParLevel,
+                        Position = item.Position,
+                        TempZone = item.TempZone,
+                        Category = item.Category,
+                        FromDate = item.FromDate,
+                        BrandExtendedDescription = item.BrandExtendedDescription,
+                        ToDate = item.ToDate,
+                        Delta = item.Delta,
 						CreatedUtc = item.CreatedUtc,
 						ModifiedUtc = item.ModifiedUtc,
 						CasePrice = item.CasePrice,

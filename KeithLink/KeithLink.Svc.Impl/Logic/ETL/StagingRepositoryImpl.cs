@@ -284,7 +284,15 @@ namespace KeithLink.Svc.Impl.ETL
             return PopulateDataTable("[ETL].[ReadCustomers]");
         }
 
-        
+        /// <summary>
+        /// Read Categories from Department Table
+        /// </summary>
+        /// <returns></returns>
+        public DataTable ReadDepartmentCategories()
+        {
+            return PopulateDataTable("[ETL].[ReadDepartments]");
+        }
+
         /// <summary>
         /// Read DSR Images
         /// </summary>
@@ -305,10 +313,12 @@ namespace KeithLink.Svc.Impl.ETL
         /// <summary>
         /// Read full item for ElasticSearch
         /// </summary>
+        /// <param name="branchId">the specific branch to load</param>
         /// <returns></returns>
-        public DataTable ReadFullItemForElasticSearch()
+        public DataTable ReadFullItemForElasticSearch(string branchId)
         {
-            return PopulateDataTable("[ETL].[ReadFullItemData]");
+            return PopulateDataTable("[ETL].[ReadFullItemData]", 
+                                     new List<SqlParameter>() { new SqlParameter("@BranchId", branchId) });
         }
 
         /// <summary>
@@ -396,6 +406,8 @@ namespace KeithLink.Svc.Impl.ETL
         {
             return PopulateDataTable("[ETL].[ReadParentCategories]");
         }
+
+        
 
         /// <summary>
         /// Read proprietary items

@@ -33,10 +33,10 @@ angular.module('bekApp')
           return $http.get('/catalog/campaign/' + campaignId + '/info').then(function(resp){
             campaignDetails = resp.data.successResponse;
             return campaignDetails;
-          })
+          });
         },
 
-        getFacets: function(brands, manufacturers, dietary, itemspecs, temp_zone, parentcategories, subcategories) {
+        getFacets: function(brands, manufacturers, dietary, itemspecs, temp_zone, parentcategories, subcategories, specialfilters) {
           var facets = [];
 
           // handle nonstock special case
@@ -65,6 +65,9 @@ angular.module('bekApp')
           }
           if (subcategories && subcategories.length > 0){
             facets.push('categories:' + subcategories.join('|'));
+          }
+          if (specialfilters && specialfilters.length > 0){
+            facets.push('specialfilters:' + specialfilters.join('|'));
           }
           if (nonstockIndex > -1) {
             facets.push('nonstock:y');

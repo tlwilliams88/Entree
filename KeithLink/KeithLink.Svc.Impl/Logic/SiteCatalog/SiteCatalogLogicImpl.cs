@@ -27,6 +27,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -102,46 +103,103 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel) {
+        public void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel)
+        {
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
 
+            PriceReturn pricingInfo = GetPricingInfoForProducts(prods, context);
+
+            AddPricingInfoToProducts(prods, pricingInfo);
+
+            AddSortForPricingWhenApplicable(prods, searchModel);
+        }
+
+        private void AddSortForPricingWhenApplicable(ProductsReturn prods, SearchInputModel searchModel)
+        {
+            if ((searchModel.SField == "caseprice" 
+                || searchModel.SField == "unitprice")) // sort pricing info first
+            {
+                if (searchModel.SDir == "asc")
+                    SortAscendingByPrices(prods, searchModel);
+                else
+                    SortDescendingByPrices(prods, searchModel);
+            }
+        }
+
+        private void SortDescendingByPrices(ProductsReturn prods, SearchInputModel searchModel)
+        {
+            if (searchModel.SField == "caseprice")
+                prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
+            else
+                prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
+        }
+
+        private void SortAscendingByPrices(ProductsReturn prods, SearchInputModel searchModel)
+        {
+            if (searchModel.SField == "caseprice")
+                prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
+            else
+                prods.Products.Sort((x, y) => x.UnitCost.CompareTo(y.UnitCost));
+        }
+
+        private void AddPricingInfoToProducts(ProductsReturn prods, PriceReturn pricingInfo)
+        {
+            foreach (Price p in pricingInfo.Prices)
+            {
+                Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
+
+                prod.CasePrice = p.CasePrice.ToString();
+                prod.CasePriceNumeric = p.CasePrice;
+                prod.PackagePrice = p.PackagePrice.ToString();
+                prod.PackagePriceNumeric = p.PackagePrice;
+                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                //}
+            }
+        }
+
+        /// <summary>
+        /// Filter the given list of products for just those with deviated prices
+        /// </summary>
+        /// <param name="prods"></param>
+        /// <param name="context"></param>
+        /// <param name="searchModel"></param>
+        private void FilterDeviatedPriceProducts(ProductsReturn prods, UserSelectedContext context)
+        {
+            if (context == null || String.IsNullOrEmpty(context.CustomerId))
+                return;
+
+            PriceReturn pricingInfo = GetPricingInfoForProducts(prods, context);
+
+            foreach (Price p in pricingInfo.Prices)
+            {
+                Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
+
+                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+            }
+
+            prods.Products = prods.Products.Where(p => p.DeviatedCost == "Y").ToList();
+            prods.Count = prods.Products.Count();
+            prods.TotalCount = prods.Products.Count();
+        }
+
+        private PriceReturn GetPricingInfoForProducts(ProductsReturn prods, UserSelectedContext context)
+        {
             PriceReturn pricingInfo = null;
             if (prods.Products.Count > 0 && IsSpecialtyCatalog(null, prods.Products[0].CatalogId))
             {
                 string source = GetCatalogTypeFromCatalogId(prods.Products[0].CatalogId);
                 pricingInfo = _priceLogic.GetNonBekItemPrices("fdf", context.CustomerId, source, DateTime.Now.AddDays(1), prods.Products);
-            } else {
+            }
+            else
+            {
                 pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
             }
 
-            foreach (Price p in pricingInfo.Prices) {
-                Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
-
-                    prod.CasePrice = p.CasePrice.ToString();
-                    prod.CasePriceNumeric = p.CasePrice;
-                    prod.PackagePrice = p.PackagePrice.ToString();
-                    prod.PackagePriceNumeric = p.PackagePrice;
-                    prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
-                //}
-            }
-
-            if ((searchModel.SField == "caseprice" || searchModel.SField == "unitprice") && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
-            {
-                if (searchModel.SDir == "asc")
-                    if (searchModel.SField == "caseprice")
-                        prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
-                    else
-                        prods.Products.Sort((x, y) => x.UnitCost.CompareTo(y.UnitCost));
-                else
-                    if (searchModel.SField == "caseprice")
-                    prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
-                else
-                    prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
-            }
+            return pricingInfo;
         }
 
-        private void AddProductImageInfo(Product ret)
+        public void AddProductImageInfo(Product ret)
         {
             //ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
             if (ret.Unfi != null) {
@@ -221,7 +279,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return categoriesReturn;
         }
 
-        private static string GetCategoriesCacheKey(int from, int size, string catalogType) {
+        private string GetCategoriesCacheKey(int from, int size, string catalogType) {
             return String.Format("CategoriesReturn_{0}_{1}_{2}", from, size, catalogType);
         }
 
@@ -243,11 +301,29 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                                              .ToList();
         }
 
+        private string BlockSpecialFiltersInFacets(string facetFilters)
+        {
+            StringBuilder ret = new StringBuilder();
+            string facetSeparator = "___";
+            string[] facets = facetFilters.Split(new string[] { facetSeparator }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string s in facets)
+            {
+                string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                if (keyValues[0].Equals("specialfilters") == false) // pull specialfilters out of ES query
+                {
+                    if (ret.Length > 0) { ret.Append(facetSeparator); }
+                    ret.Append(s);
+                }
+            }
+
+            return ret.ToString();
+        }
+
         public Dictionary<string, int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             var newSearchModel = new SearchInputModel();
             newSearchModel.CatalogType = searchModel.CatalogType;
             newSearchModel.Dept = searchModel.Dept;
-            newSearchModel.Facets = searchModel.Facets;
+            newSearchModel.Facets = BlockSpecialFiltersInFacets(searchModel.Facets);
             newSearchModel.From = searchModel.From;
             newSearchModel.SDir = searchModel.SDir;
             newSearchModel.SField = searchModel.SField;
@@ -270,21 +346,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
 
             return returnDict;
-        }
-
-        public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel, UserProfile profile) {
-            ProductsReturn returnValue;
-
-            // special handling for price sorting
-            if (searchModel.SField == "caseprice")
-                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
-            else
-                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
-
-            AddPricingInfo(returnValue, catalogInfo, searchModel);
-            GetAdditionalProductInfo(profile, returnValue, catalogInfo);
-
-            return returnValue;
         }
 
         private List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber) {
@@ -367,6 +428,35 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
+        public ShallowProduct GetShallowProductById(string branchId, string id, string catalogType)
+        {
+            branchId = GetBranchId(branchId, catalogType);
+
+            Product prod = _catalogRepository.GetProductById(branchId, id);
+
+            ShallowProduct ret = null;
+
+            if (prod != null)
+            {
+                ret = new ShallowProduct()
+                {
+                    ItemNumber = prod.ItemNumber,
+                    Name = prod.Name,
+                    Description = prod.Description,
+                    Brand = prod.BrandExtendedDescription,
+                    Manufacturer = prod.ManufacturerName,
+                    Pack = prod.Pack,
+                    Size = prod.Size,
+                    PackSize = prod.PackSize,
+                    Upc = prod.UPC,
+                    Category = prod.CategoryName,
+                    Class = prod.ItemClass
+                };
+            }
+
+            return ret;
+        }
+
         public Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile) {
             Product ret = null;
             if (idorupc.Length <= 6)
@@ -410,10 +500,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
-        public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile) {
-            ProductsReturn ret;
+        public string GetCategoryName(string category, SearchInputModel searchModel)
+        {
             string categoryName = category;
-           
+
             // enable category search on either category id or search name
             Category catFromSearchName = this.GetCategories(0, 2000, searchModel.CatalogType).Categories.Where(x => x.SearchName == category).FirstOrDefault();
             if (catFromSearchName != null)
@@ -421,26 +511,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             if (searchModel.CatalogType.Equals(Constants.CATALOG_UNFI, StringComparison.InvariantCultureIgnoreCase))
                 categoryName = categoryName.ToUpper();
-
-            var newCatalog = new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType) };
-
-            // special handling for price sorting
-            if (searchModel.SField == "caseprice") // we have to block caseprice from the searchModel used in es
-                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = searchModel.Size });
-            else
-                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, searchModel);
-
-            AddPricingInfo(ret, catalogInfo, searchModel);
-
-            GetAdditionalProductInfo(profile, ret, catalogInfo);
-
-            // special handling for price sorting - handle the pricesort
-            if (searchModel.SField == "caseprice" && searchModel.SDir == "asc")
-                ret.Products = ret.Products.OrderBy(p => p.CasePriceNumeric).ToList();
-            else if (searchModel.SField == "caseprice" && searchModel.SDir == "desc")
-                ret.Products = ret.Products.OrderByDescending(p => p.CasePriceNumeric).ToList();
-
-            return ret;
+            return categoryName;
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
@@ -519,20 +590,31 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             tempCatalogInfo.CustomerId = catalogInfo.CustomerId;
             tempCatalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
 
+            List<string> specialFilters = _catalogRepository.SeekSpecialFilters(searchModel.Facets);
+
             // special handling for price sorting
             if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
-                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, 
-                                                             search, 
-                                                             new SearchInputModel() { 
-                                                                Facets = searchModel.Facets, 
-                                                                From = searchModel.From, 
-                                                                Size = Configuration.MaxSortByPriceItemCount,
-                                                                Dept = searchModel.Dept, 
-																CatalogType = searchModel.CatalogType
-                                                                }
+            {
+                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo,
+                                                             search,
+                                                             new SearchInputModel()
+                                                             {
+                                                                 Facets = searchModel.Facets,
+                                                                 From = searchModel.From,
+                                                                 Size = Configuration.MaxSortByPriceItemCount,
+                                                                 Dept = searchModel.Dept,
+                                                                 CatalogType = searchModel.CatalogType
+                                                             }
                                                             );
+            }
+            else if (specialFilters.Contains("deviatedprices"))
+            {
+                ret = GetDeviatedPriceProductsBySearch(catalogInfo, search, searchModel, tempCatalogInfo);
+            }
             else
+            {
                 ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, search, searchModel);
+            }
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
@@ -543,6 +625,19 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 product.IsSpecialtyCatalog = IsSpecialtyCatalog(searchModel.CatalogType);
             }
 
+            return ret;
+        }
+
+        private ProductsReturn GetDeviatedPriceProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserSelectedContext tempCatalogInfo)
+        {
+            ProductsReturn ret = _catalogRepository.GetProductNumbersBySearch(tempCatalogInfo, search, searchModel);
+            // filter out just those with deviated prices
+            FilterDeviatedPriceProducts(ret, catalogInfo);
+            // now go back and fill out the rest of the product information on those with deviated prices
+            ret = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ret.Products.Select(p => p.ItemNumber).ToList());
+            // add facet for specialfilters to return and set count to number of products
+            ret.Facets = new System.Dynamic.ExpandoObject();
+            _catalogRepository.AddSpecialFiltersToFacets(ret.Facets, ret.Products.Count().ToString());
             return ret;
         }
 

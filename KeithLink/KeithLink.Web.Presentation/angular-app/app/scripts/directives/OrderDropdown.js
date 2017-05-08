@@ -18,8 +18,8 @@ angular.module('bekApp')
           shipDates = CartService.getShipDates(),
           cartHeaders = CartService.cartHeaders ? CartService.cartHeaders : CartService.getCartHeaders(),
           listHeaders = ListService.getListHeaders(),
-          selectedList= ApplicationSettingsService.getDefaultOrderList(),
           isOffline = CartService.isOffline,
+          selectedList,
           customListHeaders;
 
       if($scope.isMobile){
@@ -33,6 +33,7 @@ angular.module('bekApp')
       }
 
       $scope.openCreateOrderModal = function(size) {
+        selectedList = ApplicationSettingsService.getDefaultOrderList();
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/createordermodal.html',
           controller: 'CreateOrderModalController',

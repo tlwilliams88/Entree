@@ -39,7 +39,7 @@ angular.module('bekApp')
     return function(dateTime, formatString) {
       // use default format string if none is provided
       if (!formatString) {
-        formatString = 'ddd, MMM D, YYYY';
+        formatString = 'ddd,  M-D-YY';
       }
 
       return getFormattedDateTime(dateTime, formatString);
@@ -58,7 +58,7 @@ angular.module('bekApp')
       date.tz(jstz.determine().name());
       // use default format string if none is provided
       if (!formatString) {
-        formatString = 'ddd, MMM D, YYYY h:mma z';
+        formatString = 'ddd,  M-D-YY h:mma z';
       }
 
       return $filter('formatDate')(date, formatString);

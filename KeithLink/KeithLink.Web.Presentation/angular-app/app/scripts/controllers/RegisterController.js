@@ -75,7 +75,11 @@ angular.module('bekApp')
 
    };
 
-  $scope.setSignUpBool = function(signUpBool) { 
+  $scope.setSignUpBool = function(signUpBool) {
+    $scope.registerUser.password = null;
+
+    $scope.registerUser.email = null;
+
     $scope.signUpBool = !signUpBool;
   };
 
@@ -126,6 +130,7 @@ angular.module('bekApp')
       branch: null
     };
     $scope.registrationForm.$setPristine();
+    $scope.registrationErrorMessage = null;
     $scope.signUpBool = false;
   };
 

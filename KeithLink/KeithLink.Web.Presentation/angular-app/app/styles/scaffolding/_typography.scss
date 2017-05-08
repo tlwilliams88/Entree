@@ -36,6 +36,7 @@
 a {
   cursor: pointer;
 }
+
 a:hover {
   text-decoration: none;
 }
@@ -58,4 +59,8 @@ a:hover {
 
 .text-large {
   font-size: 14px;
+}
+
+.primary-button-opacity {
+  opacity: .8;
 }

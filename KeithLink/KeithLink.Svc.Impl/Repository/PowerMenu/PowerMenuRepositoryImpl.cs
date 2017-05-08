@@ -33,6 +33,8 @@ namespace KeithLink.Svc.Impl.Repository.PowerMenu {
                 {
                     System.Net.Http.HttpResponseMessage response = client.PostAsXmlAsync(Configuration.PowerMenuWebServiceUrl, request).Result;
 
+                    var responseData = response.Content.ReadAsStringAsync();
+
                     if (response.StatusCode.Equals( System.Net.HttpStatusCode.OK ) || response.StatusCode.Equals( System.Net.HttpStatusCode.NoContent )) {
                         returnValue = true;
                         _log.WriteInformationLog(string.Format("PowerMenu response: {0}", response.Content.ReadAsStringAsync().Result));

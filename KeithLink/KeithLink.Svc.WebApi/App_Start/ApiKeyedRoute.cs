@@ -11,6 +11,9 @@ namespace KeithLink.Svc.WebApi
             : base(template)
         {
             AllowedApiKeys = Svc.Impl.Configuration.AllowedApiKeys;
+
+            // add public api tokens
+            AllowedApiKeys.AddRange(Svc.Impl.Configuration.ValidPublicApiTokens);
         }
         public List<string> AllowedApiKeys
         {

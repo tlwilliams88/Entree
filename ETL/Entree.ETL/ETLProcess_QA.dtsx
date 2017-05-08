@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_QA"
   DTS:PackageType="5"
-  DTS:VersionBuild="386"
-  DTS:VersionGUID="{8D8FADE2-7789-426B-8750-750CCCDBC411}"
+  DTS:VersionBuild="405"
+  DTS:VersionGUID="{7AC1B144-1B2F-4457-BAEE-EEF5FE780276}"
   DTS:VersionMajor="2017"
   DTS:VersionMinor="1">
   <DTS:Property
@@ -906,6 +906,92 @@
               DTS:DataType="129"
               DTS:ObjectName="CrLf"
               DTS:DTSID="{520398DC-F3D9-4C5A-8097-D87C11AE2304}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FF_DepartmentCategories]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{10db5d00-b906-4f4c-8d2c-f6e5dc823281}"
+      DTS:ObjectName="FF_DepartmentCategories">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="FixedWidth"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\departmentCategories.SSIS">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="1"
+              DTS:MaximumWidth="1"
+              DTS:DataType="129"
+              DTS:ObjectName="DepartmentId"
+              DTS:DTSID="{0858B3B6-36A0-4D67-82AF-812E9081EF25}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="79"
+              DTS:MaximumWidth="79"
+              DTS:DataType="129"
+              DTS:ObjectName="DepartmentName"
+              DTS:DTSID="{AC8DB782-5641-4D2C-8BCE-C83497A69B86}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="2"
+              DTS:MaximumWidth="2"
+              DTS:DataType="129"
+              DTS:ObjectName="Empty"
+              DTS:DTSID="{6C78E504-CE7B-4193-9EC2-9652D533A540}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FF_DepartmentSubCategories]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{15d9703a-f3b5-4641-b31a-5f267cbf7225}"
+      DTS:ObjectName="FF_DepartmentSubCategories">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="FixedWidth"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\departmentSubCategories.SSIS">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="2"
+              DTS:MaximumWidth="2"
+              DTS:DataType="129"
+              DTS:ObjectName="DepartmentId"
+              DTS:DTSID="{3E2A5109-5C8A-4717-BE44-FF95517986A6}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="78"
+              DTS:MaximumWidth="78"
+              DTS:DataType="129"
+              DTS:ObjectName="DepartmentName"
+              DTS:DTSID="{C8A6F156-C0D3-4ECC-BA3E-0A7B0CE1C2FF}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="2"
+              DTS:MaximumWidth="2"
+              DTS:DataType="129"
+              DTS:ObjectName="Column 2"
+              DTS:DTSID="{4EBBB980-03D8-4D73-85AF-12A9D8B442E9}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -1966,17 +2052,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://corpkecdev1:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
+            DTS:ServerURL="http://corpkecdev1:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACFT22XgvakKV2DrQmmYCrQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADot3s38QOBMDtYqmaWzrCBAAAAAASAAACgAAAAEAAAAG2y1VVOjrenN+CGToPsB/4IAAAATnQLeHcI/5EUAAAABG4OlF5cnsdGXqMN0ikPCQ6dnl8</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD3yIdClXREBRB+eKFRF06LAAAAAASAAACgAAAAEAAAAIJsv/JZDoItCwcfUOZMINkIAAAAbli3AIuuXuoUAAAAzzeTQXvNirrHihcUU+tK/bbiMxA</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACFT22XgvakKV2DrQmmYCrQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAd1j8vMPxNhtpmhl933dEWAAAAAASAAACgAAAAEAAAANegy+D/0hX9V4gLHDOBwpkIAAAAfFlQTZ8DzGAUAAAAr2eL6uVi3VXlYwzhgQmcQyXTUQA</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB63/KYTFw2E2ei2gEsmFgOAAAAAASAAACgAAAAEAAAADRIJFgCGlcrAvmpOdo3g5cIAAAACYRmPr8MW8IUAAAAxM6NhbPlBCR/3Gg963ihbOsc9GI</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1988,7 +2074,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1998,7 +2084,12 @@
       DTS:ObjectName="OLE_Bek_Commerce_Transactions">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=Bek_Commerce_Transactions;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;User Id=ecom;Initial Catalog=Bek_Commerce_Transactions;Provider=SQLNCLI11.1;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADFPM2b18MvxLFgkUxHHX0BAAAAAASAAACgAAAAEAAAAD1xhO5XWUtey1VBaIkKPYgQAAAAZXWIw7xt8U5GZpSHTC08rBQAAABbPuRHjSEQQe4E9Z2lDUanIZpsCQ</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2032,7 +2123,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAACFT22XgvakKV2DrQmmYCrQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAArswahH12LBoyCI/QwVq4MAAAAAASAAACgAAAAEAAAAPY40EM5v9el7tglu32ZqA0QAAAAzA6vG/unbSkAqxcxUVUZ0RQAAACjIg0TuTRRWBFfmfX8prh/dUiceQ</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAx8qMbCyi1k+wgjafIpyd7gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACx0XvpJUUo6Nry54cuAfMRAAAAAASAAACgAAAAEAAAACywSgr96EwQJ5YX2QB1Z+MQAAAASxsJnM/46PZeadfMUHfLeRQAAABekCQv4IsaC4bcmbqugEncp7YQzg</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -2043,7 +2134,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqlirst14;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2073,7 +2164,7 @@
       DTS:ObjectName="SMTP">
       <DTS:ObjectData>
         <SmtpConnectionManager
-          ConnectionString="SmtpServer=corpsqlirst12;UseWindowsAuthentication=True;EnableSsl=False;" />
+          ConnectionString="SmtpServer=corpsqlirst14;UseWindowsAuthentication=True;EnableSsl=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -2301,7 +2392,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Catalog Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2344,7 +2435,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Contract And Worksheet Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="8">
+          DTS:ThreadHint="9">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2387,7 +2478,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="9">
+          DTS:ThreadHint="10">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2430,7 +2521,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Item History"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="10">
+          DTS:ThreadHint="11">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2473,7 +2564,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="11">
+          DTS:ThreadHint="12">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -7964,6 +8055,313 @@
               </DTS:ObjectData>
             </DTS:Executable>
             <DTS:Executable
+              DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments"
+              DTS:CreationName="Microsoft.Pipeline"
+              DTS:Description="Data Flow Task"
+              DTS:DTSID="{7c344163-6a96-4be4-b275-4a0522c5db58}"
+              DTS:ExecutableType="Microsoft.Pipeline"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Stage Departments"
+              DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <pipeline
+                  version="1">
+                  <components>
+                    <component
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData"
+                      componentClassID="Microsoft.OLEDBDestination"
+                      contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                      description="OLE DB Destination"
+                      name="AppData"
+                      usesDispositions="true"
+                      version="4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                          name="CommandTimeout">0</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of the database object used to open a rowset."
+                          name="OpenRowset">[ETL].[Staging_Departments]</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the variable that contains the name of the database object used to open a rowset."
+                          name="OpenRowsetVariable"></property>
+                        <property
+                          dataType="System.String"
+                          description="The SQL command to be executed."
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Forces the use of the DefaultCodePage property value when describing character data."
+                          name="AlwaysUseDefaultCodePage">false</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the mode used to access the database."
+                          name="AccessMode"
+                          typeConverter="AccessMode">3</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepIdentity">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepNulls">false</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                          name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                          name="FastLoadMaxInsertCommitSize">2147483647</property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                          connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                          description="The OLE DB runtime connection used to access the database."
+                          name="OleDbConnection" />
+                      </connections>
+                      <inputs>
+                        <input
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input]"
+                          errorOrTruncationOperation="Insert"
+                          errorRowDisposition="FailComponent"
+                          hasSideEffects="true"
+                          name="OLE DB Destination Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input].Columns[DepartmentId]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="1"
+                              cachedName="DepartmentId"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input].Columns[DepartmentName]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="79"
+                              cachedName="DepartmentName"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentName]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentName]" />
+                          </inputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentId]"
+                              dataType="i4"
+                              name="DepartmentId" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentName]"
+                              codePage="1252"
+                              dataType="str"
+                              length="150"
+                              name="DepartmentName" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[ParentDepartment]"
+                              dataType="i4"
+                              name="ParentDepartment" />
+                          </externalMetadataColumns>
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Outputs[OLE DB Destination Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="OLE DB Destination Error Output"
+                          synchronousInputId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source"
+                      componentClassID="Microsoft.FlatFileSource"
+                      contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                      description="Flat File Source"
+                      localeId="1033"
+                      name="Flat File Source"
+                      usesDispositions="true"
+                      version="1">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Specifies whether zero-length columns are treated as null."
+                          name="RetainNulls">false</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                          name="FileNameColumnName"></property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Connections[FlatFileConnection]"
+                          connectionManagerID="Package.ConnectionManagers[FF_DepartmentCategories]"
+                          connectionManagerRefId="Package.ConnectionManagers[FF_DepartmentCategories]"
+                          name="FlatFileConnection" />
+                      </connections>
+                      <outputs>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output]"
+                          name="Flat File Source Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentId]"
+                              length="1"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]"
+                              name="DepartmentId"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the data is in binary format."
+                                  name="UseBinaryFormat">false</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentName]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentName]"
+                              length="79"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentName]"
+                              name="DepartmentName"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the data is in binary format."
+                                  name="UseBinaryFormat">false</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[Empty]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Empty]"
+                              length="2"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].Columns[Empty]"
+                              name="Empty"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the data is in binary format."
+                                  name="UseBinaryFormat">false</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentId]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="DepartmentId" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentName]"
+                              codePage="1252"
+                              dataType="str"
+                              length="79"
+                              name="DepartmentName" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Empty]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              name="Empty" />
+                          </externalMetadataColumns>
+                        </output>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Error Output]"
+                          isErrorOut="true"
+                          name="Flat File Source Error Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                              codePage="1252"
+                              dataType="text"
+                              description="Flat File Source Error Output Column"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                              name="Flat File Source Error Output Column" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                  </components>
+                  <paths>
+                    <path
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments.Paths[Flat File Source Output]"
+                      endId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData.Inputs[OLE DB Destination Input]"
+                      name="Flat File Source Output"
+                      startId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source.Outputs[Flat File Source Output]" />
+                  </paths>
+                </pipeline>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
               DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items"
               DTS:CreationName="Microsoft.Pipeline"
               DTS:Description="Data Flow Task"
@@ -8160,14 +8558,6 @@
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PreferredItemCode]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ipreferred_item_code]" />
                             <inputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ilist_code_1_2]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="6"
-                              cachedName="ilist_code_1_2"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CategoryId]"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ilist_code_1_2]" />
-                            <inputColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[iitemtype]"
                               cachedCodepage="1252"
                               cachedDataType="str"
@@ -8215,14 +8605,6 @@
                               cachedName="ivendor2"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Vendor2]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ivendor2]" />
-                            <inputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[iclass]"
-                              cachedCodepage="1252"
-                              cachedDataType="str"
-                              cachedLength="2"
-                              cachedName="iclass"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Class]"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[iclass]" />
                             <inputColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[icatmgr]"
                               cachedCodepage="1252"
@@ -8491,6 +8873,14 @@
                               cachedName="inon_stock"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NonStock]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[inon_stock]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[iclass]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="iclass"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CategoryId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[iclass]" />
                           </inputColumns>
                           <externalMetadataColumns
                             isUsed="True">
@@ -12154,6 +12544,701 @@ on
               </DTS:ObjectData>
             </DTS:Executable>
             <DTS:Executable
+              DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments"
+              DTS:CreationName="Microsoft.Pipeline"
+              DTS:Description="Data Flow Task"
+              DTS:DTSID="{61b5c988-6911-4461-8142-04d6fe795400}"
+              DTS:ExecutableType="Microsoft.Pipeline"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Stage Sub-Departments"
+              DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <pipeline
+                  version="1">
+                  <components>
+                    <component
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData"
+                      componentClassID="Microsoft.OLEDBDestination"
+                      contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                      description="OLE DB Destination"
+                      name="AppData"
+                      usesDispositions="true"
+                      version="4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                          name="CommandTimeout">0</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of the database object used to open a rowset."
+                          name="OpenRowset">[ETL].[Staging_Departments]</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the variable that contains the name of the database object used to open a rowset."
+                          name="OpenRowsetVariable"></property>
+                        <property
+                          dataType="System.String"
+                          description="The SQL command to be executed."
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Forces the use of the DefaultCodePage property value when describing character data."
+                          name="AlwaysUseDefaultCodePage">false</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the mode used to access the database."
+                          name="AccessMode"
+                          typeConverter="AccessMode">3</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepIdentity">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepNulls">false</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                          name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                          name="FastLoadMaxInsertCommitSize">2147483647</property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                          connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                          description="The OLE DB runtime connection used to access the database."
+                          name="OleDbConnection" />
+                      </connections>
+                      <inputs>
+                        <input
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input]"
+                          errorOrTruncationOperation="Insert"
+                          errorRowDisposition="FailComponent"
+                          hasSideEffects="true"
+                          name="OLE DB Destination Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].Columns[DepartmentId]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="DepartmentId"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].Columns[DepartmentName]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="78"
+                              cachedName="DepartmentName"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentName]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentName]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].Columns[ParentDepartment]"
+                              cachedDataType="wstr"
+                              cachedLength="1"
+                              cachedName="ParentDepartment"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[ParentDepartment]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Output].Columns[ParentDepartment]" />
+                          </inputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentId]"
+                              dataType="i4"
+                              name="DepartmentId" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentName]"
+                              codePage="1252"
+                              dataType="str"
+                              length="150"
+                              name="DepartmentName" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input].ExternalColumns[ParentDepartment]"
+                              dataType="i4"
+                              name="ParentDepartment" />
+                          </externalMetadataColumns>
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Outputs[OLE DB Destination Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="OLE DB Destination Error Output"
+                          synchronousInputId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column"
+                      componentClassID="Microsoft.DerivedColumn"
+                      contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                      description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                      name="Derived Column"
+                      usesDispositions="true">
+                      <inputs>
+                        <input
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Inputs[Derived Column Input]"
+                          description="Input to the Derived Column Transformation"
+                          name="Derived Column Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Inputs[Derived Column Input].Columns[DepartmentId]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="DepartmentId"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]" />
+                          </inputColumns>
+                          <externalMetadataColumns />
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Output]"
+                          description="Default Output of the Derived Column Transformation"
+                          exclusionGroup="1"
+                          name="Derived Column Output"
+                          synchronousInputId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Inputs[Derived Column Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Output].Columns[ParentDepartment]"
+                              dataType="wstr"
+                              errorOrTruncationOperation="Computation"
+                              errorRowDisposition="FailComponent"
+                              length="1"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Output].Columns[ParentDepartment]"
+                              name="ParentDepartment"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Expression"
+                                  name="Expression">[SUBSTRING](#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]},1,1)</property>
+                                <property
+                                  containsID="true"
+                                  dataType="System.String"
+                                  description="Derived Column Friendly Expression"
+                                  expressionType="Notify"
+                                  name="FriendlyExpression">SUBSTRING(DepartmentId,1,1)</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Error Output]"
+                          description="Error Output of the Derived Column Transformation"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="Derived Column Error Output"
+                          synchronousInputId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Inputs[Derived Column Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source"
+                      componentClassID="Microsoft.FlatFileSource"
+                      contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                      description="Flat File Source"
+                      localeId="1033"
+                      name="Flat File Source"
+                      usesDispositions="true"
+                      version="1">
+                      <properties>
+                        <property
+                          dataType="System.Boolean"
+                          description="Specifies whether zero-length columns are treated as null."
+                          name="RetainNulls">false</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                          name="FileNameColumnName"></property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Connections[FlatFileConnection]"
+                          connectionManagerID="Package.ConnectionManagers[FF_DepartmentSubCategories]"
+                          connectionManagerRefId="Package.ConnectionManagers[FF_DepartmentSubCategories]"
+                          name="FlatFileConnection" />
+                      </connections>
+                      <outputs>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output]"
+                          name="Flat File Source Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentId]"
+                              length="2"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentId]"
+                              name="DepartmentId"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the data is in binary format."
+                                  name="UseBinaryFormat">false</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentName]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentName]"
+                              length="78"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[DepartmentName]"
+                              name="DepartmentName"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the data is in binary format."
+                                  name="UseBinaryFormat">false</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[Column 2]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Column 2]"
+                              length="2"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].Columns[Column 2]"
+                              name="Column 2"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the data is in binary format."
+                                  name="UseBinaryFormat">false</property>
+                              </properties>
+                            </outputColumn>
+                          </outputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentId]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              name="DepartmentId" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DepartmentName]"
+                              codePage="1252"
+                              dataType="str"
+                              length="78"
+                              name="DepartmentName" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Column 2]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              name="Column 2" />
+                          </externalMetadataColumns>
+                        </output>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Error Output]"
+                          isErrorOut="true"
+                          name="Flat File Source Error Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                              codePage="1252"
+                              dataType="text"
+                              description="Flat File Source Error Output Column"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                              name="Flat File Source Error Output Column" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                  </components>
+                  <paths>
+                    <path
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Derived Column Output]"
+                      endId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData.Inputs[OLE DB Destination Input]"
+                      name="Derived Column Output"
+                      startId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Outputs[Derived Column Output]" />
+                    <path
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Flat File Source Output]"
+                      endId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column.Inputs[Derived Column Input]"
+                      name="Flat File Source Output"
+                      startId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source.Outputs[Flat File Source Output]" />
+                  </paths>
+                </pipeline>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels"
+              DTS:CreationName="Microsoft.Pipeline"
+              DTS:Description="Data Flow Task"
+              DTS:DTSID="{b3c4c533-2f6c-45e9-8286-90ab688c7f92}"
+              DTS:ExecutableType="Microsoft.Pipeline"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Staging Brand Control Labels"
+              DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <pipeline
+                  version="1">
+                  <components>
+                    <component
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands"
+                      componentClassID="Microsoft.OLEDBDestination"
+                      contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                      description="OLE DB Destination"
+                      name="BEK_Commerce_AppData Brands"
+                      usesDispositions="true"
+                      version="4">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                          name="CommandTimeout">0</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of the database object used to open a rowset."
+                          name="OpenRowset">[ETL].[Staging_BrandControlLabels]</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the variable that contains the name of the database object used to open a rowset."
+                          name="OpenRowsetVariable"></property>
+                        <property
+                          dataType="System.String"
+                          description="The SQL command to be executed."
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Forces the use of the DefaultCodePage property value when describing character data."
+                          name="AlwaysUseDefaultCodePage">false</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the mode used to access the database."
+                          name="AccessMode"
+                          typeConverter="AccessMode">3</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepIdentity">false</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                          name="FastLoadKeepNulls">false</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                          name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                          name="FastLoadMaxInsertCommitSize">2147483647</property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                          connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                          description="The OLE DB runtime connection used to access the database."
+                          name="OleDbConnection" />
+                      </connections>
+                      <inputs>
+                        <input
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input]"
+                          errorOrTruncationOperation="Insert"
+                          errorRowDisposition="FailComponent"
+                          hasSideEffects="true"
+                          name="OLE DB Destination Input">
+                          <inputColumns>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input].Columns[ControlLabel]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="5"
+                              cachedName="ControlLabel"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input].ExternalColumns[ControlLabel]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].Columns[ControlLabel]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input].Columns[ExtendedDescription]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="30"
+                              cachedName="ExtendedDescription"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input].ExternalColumns[ExtendedDescription]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].Columns[ExtendedDescription]" />
+                          </inputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input].ExternalColumns[ControlLabel]"
+                              codePage="1252"
+                              dataType="str"
+                              length="10"
+                              name="ControlLabel" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input].ExternalColumns[ExtendedDescription]"
+                              codePage="1252"
+                              dataType="str"
+                              length="30"
+                              name="ExtendedDescription" />
+                          </externalMetadataColumns>
+                        </input>
+                      </inputs>
+                      <outputs>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Outputs[OLE DB Destination Error Output]"
+                          exclusionGroup="1"
+                          isErrorOut="true"
+                          name="OLE DB Destination Error Output"
+                          synchronousInputId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input]">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                    <component
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands"
+                      componentClassID="Microsoft.OLEDBSource"
+                      contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                      description="OLE DB Source"
+                      name="PRODCAT Brands"
+                      usesDispositions="true"
+                      version="7">
+                      <properties>
+                        <property
+                          dataType="System.Int32"
+                          description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                          name="CommandTimeout">0</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the name of the database object used to open a rowset."
+                          name="OpenRowset">[dbo].[brand_control_labels]</property>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the variable that contains the name of the database object used to open a rowset."
+                          name="OpenRowsetVariable"></property>
+                        <property
+                          dataType="System.String"
+                          description="The SQL command to be executed."
+                          name="SqlCommand"
+                          UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">SELECT ControlLabel, ExtendedDescription FROM brands
+WHERE ControlLabel != ''</property>
+                        <property
+                          dataType="System.String"
+                          description="The variable that contains the SQL command to be executed."
+                          name="SqlCommandVariable"></property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the column code page to use when code page information is unavailable from the data source."
+                          name="DefaultCodePage">1252</property>
+                        <property
+                          dataType="System.Boolean"
+                          description="Forces the use of the DefaultCodePage property value when describing character data."
+                          name="AlwaysUseDefaultCodePage">false</property>
+                        <property
+                          dataType="System.Int32"
+                          description="Specifies the mode used to access the database."
+                          name="AccessMode"
+                          typeConverter="AccessMode">2</property>
+                        <property
+                          dataType="System.String"
+                          description="The mappings between the parameters in the SQL command and variables."
+                          name="ParameterMapping"></property>
+                      </properties>
+                      <connections>
+                        <connection
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Connections[OleDbConnection]"
+                          connectionManagerID="Package.ConnectionManagers[OLE_PRODCAT]"
+                          connectionManagerRefId="Package.ConnectionManagers[OLE_PRODCAT]"
+                          description="The OLE DB runtime connection used to access the database."
+                          name="OleDbConnection" />
+                      </connections>
+                      <outputs>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output]"
+                          name="OLE DB Source Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].Columns[ControlLabel]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].ExternalColumns[ControlLabel]"
+                              length="5"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].Columns[ControlLabel]"
+                              name="ControlLabel"
+                              truncationRowDisposition="FailComponent" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].Columns[ExtendedDescription]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].ExternalColumns[ExtendedDescription]"
+                              length="30"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].Columns[ExtendedDescription]"
+                              name="ExtendedDescription"
+                              truncationRowDisposition="FailComponent" />
+                          </outputColumns>
+                          <externalMetadataColumns
+                            isUsed="True">
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].ExternalColumns[ControlLabel]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="ControlLabel" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output].ExternalColumns[ExtendedDescription]"
+                              codePage="1252"
+                              dataType="str"
+                              length="20"
+                              name="ExtendedDescription" />
+                          </externalMetadataColumns>
+                        </output>
+                        <output
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output]"
+                          isErrorOut="true"
+                          name="OLE DB Source Error Output">
+                          <outputColumns>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ControlLabel]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ControlLabel]"
+                              name="ControlLabel" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ExtendedDescription]"
+                              codePage="1252"
+                              dataType="str"
+                              length="20"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ExtendedDescription]"
+                              name="ExtendedDescription" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                              name="ErrorCode"
+                              specialFlags="1" />
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                              dataType="i4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                              name="ErrorColumn"
+                              specialFlags="2" />
+                          </outputColumns>
+                          <externalMetadataColumns />
+                        </output>
+                      </outputs>
+                    </component>
+                  </components>
+                  <paths>
+                    <path
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels.Paths[OLE DB Source Output]"
+                      endId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands.Inputs[OLE DB Destination Input]"
+                      name="OLE DB Source Output"
+                      startId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands.Outputs[OLE DB Source Output]" />
+                  </paths>
+                </pipeline>
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
               DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
               DTS:CreationName="Microsoft.Pipeline"
               DTS:Description="Data Flow Task"
@@ -12493,6 +13578,14 @@ on
               DTS:LogicalAnd="True"
               DTS:ObjectName="Constraint"
               DTS:To="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc" />
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks.PrecedenceConstraints[Constraint 1]"
+              DTS:CreationName=""
+              DTS:DTSID="{3665F698-97C6-4F01-AA9A-6E2230F4BD75}"
+              DTS:From="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint 1"
+              DTS:To="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments" />
           </DTS:PrecedenceConstraints>
         </DTS:Executable>
         <DTS:Executable
@@ -15069,14 +16162,14 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Brand Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="1">
+              DTS:ThreadHint="4">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
                   SQLTask:Connection="{18E0DEC5-849F-4295-99EC-064483FC95E0}"
-                  SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_Brands];&#xA;/*TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];*/" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+                  SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];&#xA;TRUNCATE TABLE [ETL].[Staging_Brands];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
               </DTS:ObjectData>
             </DTS:Executable>
             <DTS:Executable
@@ -15088,7 +16181,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Catalog Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="2">
+              DTS:ThreadHint="5">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -15096,6 +16189,23 @@ on
                 <SQLTask:SqlTaskData
                   SQLTask:Connection="{18E0DEC5-849F-4295-99EC-064483FC95E0}"
                   SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_Branch];&#xA;TRUNCATE TABLE [ETL].[Staging_Category];&#xA;TRUNCATE TABLE [ETL].[Staging_ItemData];&#xA;TRUNCATE TABLE [ETL].[Staging_Customer];&#xA;TRUNCATE TABLE [ETL].[Staging_NationalIdDesc];&#xA;TRUNCATE TABLE [ETL].[Staging_NationalNumberAndSubDesc];&#xA;TRUNCATE TABLE [ETL].[Staging_RegionalIdDesc];&#xA;TRUNCATE TABLE [ETL].[Staging_RegionalNumberDesc];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              </DTS:ObjectData>
+            </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Departments"
+              DTS:CreationName="Microsoft.ExecuteSQLTask"
+              DTS:Description="Truncate Department Data"
+              DTS:DTSID="{4d68e506-6047-4947-80fb-a98ef62679ab}"
+              DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Truncate Departments"
+              DTS:ThreadHint="6">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{18E0DEC5-849F-4295-99EC-064483FC95E0}"
+                  SQLTask:BypassPrepare="False"
+                  SQLTask:SqlStatementSource="truncate table [etl].[Staging_Departments]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
               </DTS:ObjectData>
             </DTS:Executable>
             <DTS:Executable
@@ -15107,7 +16217,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate GS1 Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="3">
+              DTS:ThreadHint="2">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -15125,7 +16235,7 @@ on
               DTS:ExecutableType="Microsoft.ExecuteSQLTask"
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate PDM data"
-              DTS:ThreadHint="4">
+              DTS:ThreadHint="3">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -19806,7 +20916,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Contract Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="6">
+              DTS:ThreadHint="7">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -19823,7 +20933,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Worksheet Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="7">
+              DTS:ThreadHint="8">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -20660,7 +21770,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate DSR Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="0">
+              DTS:ThreadHint="1">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -21322,7 +22432,7 @@ on
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Invoice Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="5">
+              DTS:ThreadHint="0">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -21365,7 +22475,7 @@ on
           DTS:LocaleID="-1"
           DTS:ObjectName="Purge AppData"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -21382,7 +22492,7 @@ on
           DTS:LocaleID="-1"
           DTS:ObjectName="Purge CS Transactions"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="8">
+          DTS:ThreadHint="9">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -21400,7 +22510,7 @@ on
       DTS:ExecutableType="Microsoft.ScriptTask"
       DTS:LocaleID="-1"
       DTS:ObjectName="Rename Mainframe Files"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <ScriptProject
@@ -21827,6 +22937,9 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
             files.Add("*.ENTRAID", @"regionalId.SSIS");
             files.Add("*.ENTRARA", @"regionalNumber.SSIS");
 
+            files.Add("*.ENTCLAS", @"departmentSubCategories.SSIS");
+            files.Add("*.ENTCATA", @"departmentCategories.SSIS");
+
             //deprecated.  all invoice data coming from KeithPay, 2014-12-08 -- JMM
             //files.Add("*.JXORDDP", @"keithNetInvoice.SSIS");
             //files.Add("*.JZRECWP", @"paidDetailFile.SSIS");
@@ -21875,15 +22988,15 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
             Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
 	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
 		<msb:CodeName>ST_8b38e1c04cd142498eb6973136894e60</msb:CodeName>
+		<msb:Language>msBuild</msb:Language>
 		<msb:DisplayName>ST_8b38e1c04cd142498eb6973136894e60</msb:DisplayName>
 		<msb:ProjectId>{5E196739-785D-49EC-8907-B2E31D628640}</msb:ProjectId>
 	</msb:PropertyGroup>
 	<msb:ItemGroup>
 		<msb:Project Include="ST_8b38e1c04cd142498eb6973136894e60.csproj"/>
-		<msb:File Include="Properties\Settings.settings"/>
 		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
 		<msb:File Include="Properties\Resources.resx"/>
 		<msb:File Include="Properties\Resources.Designer.cs"/>
 		<msb:File Include="Properties\Settings.Designer.cs"/>
@@ -22000,114 +23113,114 @@ namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
           <BinaryItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAN95K1gAAAAAAAAAAOAAAiELAQsAABgAAAAIAAAAAAAATjYA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAFvhuVgAAAAAAAAAAOAAIiALATAAABgAAAAIAAAAAAAAbjYA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
-ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAPw1AABPAAAAAEAAAAgEAAAAAAAAAAAAAAAAAAAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAABw2AABPAAAAAEAAAHgEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAVBYAAAAgAAAAGAAAAAIA
-AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAAgEAAAAQAAAAAYAAAAaAAAAAAAAAAAAAAAAAABAAABA
-LnJlbG9jAAAMAAAAAGAAAAACAAAAIAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAw
-NgAAAAAAAEgAAAACAAUAOCQAAMQRAAABAAAAAAAAAIAjAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKA4AAAoqEzACAC0AAAABAAARfgEAAAQtIHIBAABw0AIA
-AAIoDwAACm8QAAAKcxEAAAoKBoABAAAEfgEAAAQqGn4CAAAEKh4CgAIAAAQqGn4DAAAEKi5zBgAA
-BoADAAAEKh4CKBQAAAoqABswBADaAAAAAgAAEQICKBYAAApvFwAACnJzAABwbxgAAApvGQAACm8a
-AAAKfQQAAAQWCigLAAAGCwJ7BAAABAcoCgAABgwILGwHbxsAAAoTBCs0EQRvHAAACqUhAAABDQIC
-ewQAAAQSAygdAAAKbxoAAAoSAygeAAAKbxoAAAooDAAABgoGJhEEbx8AAAotw94VEQR1IgAAARMF
-EQUsBxEFbyAAAArcAnsEAAAEBygJAAAGKwIXCgYsDgIoFgAAChZvIQAACisMAigWAAAKF28hAAAK
-3g8mAigWAAAKF28hAAAK3gAqAAABHAAAAgBFAEGGABUAAAAAAAAAAMrKAA8jAAABEzADACgAAAAD
-AAARAnKtAABwFigiAAAKCgYMFg0rDggJmgsHKCMAAAoJF1gNCQiOaTLsKhswAwBTAAAABAAAERcK
-A28bAAAKDSsoCW8cAAAKpSEAAAELAhIBKB0AAApvGgAAChYoIgAACgwIjmkXLwIWCglvHwAACi3Q
-3hQJdSIAAAETBBEELAcRBG8gAAAK3AYqAAEQAAACAAkAND0AFAAAAAATMAMAyAAAAAUAABFzJAAA
-CgoGcrkAAHByzQAAcG8lAAAKBnLxAABwcgUBAHBvJQAACgZyJwEAcHI7AQBwbyUAAAoGcmkBAHBy
-fQEAcG8lAAAKBnKrAQBwcr8BAHBvJQAACgZy4wEAcHL3AQBwbyUAAAoGchMCAHByJwIAcG8lAAAK
-BnJVAgBwcmkCAHBvJQAACgZyjwIAcHKjAgBwbyUAAAoGcsMCAHBy1wIAcG8lAAAKBnILAwBwch8D
-AHBvJQAACgZyPwMAcHJTAwBwbyUAAAoGKhMwAwAuAAAABgAAERYKAwQoJgAACgsHjmkXMxwDBSgn
-AAAKDAcWmggXKCgAAAoIKCkAAAosAhcKBioeAigqAAAKKgAAAAAAALQAAADOyu++AQAAAJEAAABs
-U3lzdGVtLlJlc291cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAu
-MCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5I1N5c3Rl
-bS5SZXNvdXJjZXMuUnVudGltZVJlc291cmNlU2V0AgAAAAAAAAAAAAAAUEFEUEFEULQAAABCU0pC
-AQABAAAAAAAMAAAAdjQuMC4zMDMxOQAAAAAFAGwAAADABAAAI34AACwFAAAoBwAAI1N0cmluZ3MA
-AAAAVAwAAHwDAAAjVVMA0A8AABAAAAAjR1VJRAAAAOAPAADkAQAAI0Jsb2IAAAAAAAAAAgAAAVcd
-ogEJAwAAAPolMwAWAAABAAAAJwAAAAUAAAAHAAAADQAAAAgAAAAqAAAAAgAAAA8AAAAGAAAAAgAA
-AAMAAAAEAAAAAQAAAAQAAAABAAAAAQAAAAAACgABAAAAAAAGAMEAugAKAN0AyAAOAD0BFAEGAFkB
-ugAGAG8BXgEGAKABiwEGAEUCMgIGAAQD6gIGAC8DHQMGAEYDHQMGAGMDHQMGAIIDHQMGAJsDHQMG
-ALQDHQMGAM8DHQMGAOoDHQMGAAMEHQMGADwEHAQGAFwEHAQGAI0EegQGAKoEugAGAK8EugAGANME
-HQMKAP8E6QQKABgF6QQGAC0FHAQOAE8FFAEOAHEFFAESAMoFqgUSAOIFqgUGAAcGMgIGACsGMgIG
-AEMGMgIGAGQGugAGAIcGugAGAJsGkQYGAKUGkQYGALsGkQYGAMsGugAAAAAAAQAAAAAAAQABAAAA
-EAAyADwABQABAAEAAAEQAGsAPAAJAAMABQABABAAdAB/AA0ABAAIAAMBAACjAAAAEQAFAA4AEQB/
-ARMAEQCsARcAEQD2ATkAAQAaAkcABgaJAmQAVoCRAmcAVoCZAmcAUCAAAAAAgxi8ARsAAQBYIAAA
-AACTCMIBHwABAJEgAAAAAJMI1gEkAAEAmCAAAAAAkwjiASkAAQCgIAAAAACWCAYCPQACALMgAAAA
-AIYYvAEbAAIApyAAAAAAkRhIBaYAAgC8IAAAAACGAC0CGwACAMAhAAAAAJEATwJKAAIA9CEAAAAA
-kQBcAlEABABkIgAAAACRAHACWAAGADgjAAAAAIEAfgJdAAYAciMAAAAAhhi8ARsACQAAAAEAoQIA
-AAEApwIAAAIAswIAAAEApwIAAAIAswIAAAEAuQIAAAIAyQIAAAMA3gJBALwBdQBJALwBdQBRALwB
-dQBZALwBdQBhALwBdQBpALwBdQBxALwBdQB5ALwBdQCBALwBdQCJALwBdQCRALwBegCZALwBGwCh
-ALwBGwAJALwBGwCpAMEEfwCpANwEhgApALwBiwDBALwBlwDRALwBGwARALwBGwDZALwBGwAZAIMF
-qgDhANQFrwDpAOsFtADxAPQFugAJAP4FvgA5AB0GwgABATcGugAJAVMGugAJAfQFugABAVsGxwAR
-AXAGGwDhAHgGegAhAbIG2gAxAcAG5AA5ALwBGwA5AMcGAAEhAbIGCwE5AdIGEgExAdkGGAExAd4G
-HwEZALwBGwAIABgAawAIABwAcAApAJMAnQAuABsAnAEuACMAnAEuAGMAwgEuAAsAKwEuABMAcwEu
-ADMAcwEuACsAnAEuADsAogEuAEMAnAEuAFsAuQFDAGsAcABJAJMAnQBhAJsAcACDAKsAcACSAMsA
-6QDyAAYBJAECAAEAAwADAAAAbwEvAAAA7gE0AAAAEgJCAAIAAgADAAIAAwAFAAEABAAFAAIABQAH
-AASAAAABAAAAExi/agAAAAAAAH8AAAAEAAAAAAAAAAAAAAABALEAAAAAAAQAAAAAAAAAAAAAAAEA
-ugAAAAAADAAAAAAAAAAAAAAACgD1AAAAAAAMAAAAAAAAAAAAAAAKAIsFAAAAAAAAAAABAAAA5QYA
-AAUABAAAAAAAADxNb2R1bGU+AFNUXzhiMzhlMWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwLmRs
-bABSZXNvdXJjZXMAU1RfOGIzOGUxYzA0Y2QxNDI0OThlYjY5NzMxMzY4OTRlNjAuUHJvcGVydGll
-cwBTZXR0aW5ncwBTY3JpcHRNYWluAFNUXzhiMzhlMWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYw
-AFNjcmlwdFJlc3VsdHMAbXNjb3JsaWIAU3lzdGVtAE9iamVjdABTeXN0ZW0uQ29uZmlndXJhdGlv
-bgBBcHBsaWNhdGlvblNldHRpbmdzQmFzZQBNaWNyb3NvZnQuU3FsU2VydmVyLlNjcmlwdFRhc2sA
-TWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuVGFza3MuU2NyaXB0VGFzawBWU1RBUlRTY3JpcHRPYmpl
-Y3RNb2RlbEJhc2UARW51bQBTeXN0ZW0uUmVzb3VyY2VzAFJlc291cmNlTWFuYWdlcgByZXNvdXJj
-ZU1hbgBTeXN0ZW0uR2xvYmFsaXphdGlvbgBDdWx0dXJlSW5mbwByZXNvdXJjZUN1bHR1cmUALmN0
-b3IAZ2V0X1Jlc291cmNlTWFuYWdlcgBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQBDdWx0dXJlAGRl
-ZmF1bHRJbnN0YW5jZQBnZXRfRGVmYXVsdABEZWZhdWx0AEtFSVRIQ09NX0RJUkVDVE9SWQBNYWlu
-AFN5c3RlbS5Db2xsZWN0aW9ucwBIYXNodGFibGUAQ2xlYW51cEZpbGVzAEludGVyZmFjZUZpbGVz
-RXhpc3QARmlsZXNUb1JlbmFtZQBSZW5hbWVGaWxlAHZhbHVlX18AU3VjY2VzcwBGYWlsdXJlAHZh
-bHVlAHdvcmtpbmdQYXRoAGZpbGVzAFBhcmVudERpcmVjdG9yeQBDdXJyZW50RmlsZUV4dGVuc2lv
-bgBOZXdGaWxlbmFtZQBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFRhcmdldEZyYW1ld29ya0F0
-dHJpYnV0ZQBTeXN0ZW0uUmVmbGVjdGlvbgBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5
-RGVzY3JpcHRpb25BdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2Vt
-Ymx5Q29tcGFueUF0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5
-cmlnaHRBdHRyaWJ1dGUAQXNzZW1ibHlUcmFkZW1hcmtBdHRyaWJ1dGUAQXNzZW1ibHlDdWx0dXJl
-QXR0cmlidXRlAEFzc2VtYmx5VmVyc2lvbkF0dHJpYnV0ZQBTeXN0ZW0uUnVudGltZS5Db21waWxl
-clNlcnZpY2VzAENvbXBpbGF0aW9uUmVsYXhhdGlvbnNBdHRyaWJ1dGUAUnVudGltZUNvbXBhdGli
-aWxpdHlBdHRyaWJ1dGUAU3lzdGVtLkRpYWdub3N0aWNzAERlYnVnZ2VyTm9uVXNlckNvZGVBdHRy
-aWJ1dGUAVHlwZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhhbmRsZQBBc3NlbWJseQBn
-ZXRfQXNzZW1ibHkAU3lzdGVtLkNvbXBvbmVudE1vZGVsAEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0
-ZQBFZGl0b3JCcm93c2FibGVTdGF0ZQBDb21waWxlckdlbmVyYXRlZEF0dHJpYnV0ZQAuY2N0b3IA
-U1NJU1NjcmlwdFRhc2tFbnRyeVBvaW50QXR0cmlidXRlAFNjcmlwdE9iamVjdE1vZGVsAGdldF9E
-dHMATWljcm9zb2Z0LlNxbFNlcnZlci5NYW5hZ2VkRFRTAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRz
-LlJ1bnRpbWUAVmFyaWFibGVzAGdldF9WYXJpYWJsZXMAVmFyaWFibGUAZ2V0X0l0ZW0AZ2V0X1Zh
-bHVlAFRvU3RyaW5nAElEaWN0aW9uYXJ5RW51bWVyYXRvcgBHZXRFbnVtZXJhdG9yAElFbnVtZXJh
-dG9yAGdldF9DdXJyZW50AERpY3Rpb25hcnlFbnRyeQBnZXRfS2V5AE1vdmVOZXh0AElEaXNwb3Nh
-YmxlAERpc3Bvc2UAc2V0X1Rhc2tSZXN1bHQARXhjZXB0aW9uAFN5c3RlbS5JTwBEaXJlY3RvcnkA
-U2VhcmNoT3B0aW9uAEdldEZpbGVzAEZpbGUARGVsZXRlAEFkZABTdHJpbmcAQ29uY2F0AENvcHkA
-RXhpc3RzAFNUXzhiMzhlMWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwLlByb3BlcnRpZXMuUmVz
-b3VyY2VzLnJlc291cmNlcwAAcVMAVABfADgAYgAzADgAZQAxAGMAMAA0AGMAZAAxADQAMgA0ADkA
-OABlAGIANgA5ADcAMwAxADMANgA4ADkANABlADYAMAAuAFAAcgBvAHAAZQByAHQAaQBlAHMALgBS
-AGUAcwBvAHUAcgBjAGUAcwAAOVUAcwBlAHIAOgA6AEUAVABMAFAAcgBvAGMAZQBzAHMAXwBLAGUA
-aQB0AGgAQwBvAG0ARABpAHIAAAsqAC0AKgAuACoAARMqAC4ARQBOAFQAQwBVAFMAVAAAI2MAdQBz
-AHQAbwBtAGUAcgBGAGkAbABlAC4AUwBTAEkAUwAAEyoALgBFAE4AVABDAEIASQBEAAAhYwB1AHMA
-dABvAG0AZQByAEIAaQBkAC4AUwBTAEkAUwAAEyoALgBKAFUAQgBJAEQARABQAAAtYgBpAGQAQwBv
-AG4AdAByAGEAYwB0AEQAZQB0AGEAaQBsAC4AUwBTAEkAUwAAEyoALgBKAFMAQgBJAEQASABQAAAt
-YgBpAGQAQwBvAG4AdAByAGEAYwB0AEgAZQBhAGQAZQByAC4AUwBTAEkAUwAAEyoALgBFAE4AVABQ
-AFIATwBQAAAjcAByAG8AcABDAHUAcwB0AG8AbQBlAHIALgBTAFMASQBTAAATKgAuAEoAQgBQAFIA
-UABJAFAAABtwAHIAbwBwAEkAdABlAG0ALgBTAFMASQBTAAATKgAuAEUATgBUAEgASQBTAFQAAC1j
-AHUAcwB0AG8AbQBlAHIAVwBvAHIAawBzAGgAZQBlAHQALgBTAFMASQBTAAATKgAuAEoAQwBUAFIA
-TQBBAFAAACVjAHUAcwB0AG8AbQBlAHIAVABlAHIAbQBzAC4AUwBTAEkAUwAAEyoALgBFAE4AVABO
-AEEASQBEAAAfbgBhAHQAaQBvAG4AYQBsAEkAZAAuAFMAUwBJAFMAABMqAC4ARQBOAFQATgBBAE4A
-QQAAM24AYQB0AGkAbwBuAGEAbABOAHUAbQBiAGUAcgBBAG4AZABTAHUAYgAuAFMAUwBJAFMAABMq
-AC4ARQBOAFQAUgBBAEkARAAAH3IAZQBnAGkAbwBuAGEAbABJAGQALgBTAFMASQBTAAATKgAuAEUA
-TgBUAFIAQQBSAEEAACdyAGUAZwBpAG8AbgBhAGwATgB1AG0AYgBlAHIALgBTAFMASQBTAAAAMCvf
-Q/t3uEGdKm2yt1TTcQAIt3pcVhk04IkIiYRdzYCAzJEDBhIVAwYSGQMgAAEEAAASFQQAABIZBQAB
-ARIZBAgAEhUECAASGQMGEgwEAAASDAQIABIMAgYOBgACAQ4SHQYAAgIOEh0EAAASHQYgAwIODg4C
-BggDBhEUBAAAAAAEAQAAAAQgAQEOBCABAQgGAAESVRFZBCAAEl0GIAIBDhJdBAcBEhUFIAEBEWUI
-AQACAAAAAAADAAABBCAAEnEEIAASdQUgARJ5HAMgABwDIAAOBCAAEn0DIAACDgcGAhIdAhGAhRJ9
-EoCJCQADHQ4ODhGAlQQAAQEOCAcEHQ4OHQ4IDQcFAhGAhR0OEn0SgIkFIAIBHBwEBwESHQYAAh0O
-Dg4FAAIODg4GAAMBDg4CBAABAg4GBwMCHQ4ORwEAGi5ORVRGcmFtZXdvcmssVmVyc2lvbj12NC4w
-AQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRAuTkVUIEZyYW1ld29yayA0KAEAI1NUXzhiMzhlMWMw
-NGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwAAAFAQAAAAAWAQARQ29weXJpZ2h0IEAgIDIwMTQAAAgB
-AAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4Y2VwdGlvblRocm93cwEAAAAkNgAAAAAAAAAAAAA+NgAA
-ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMDYAAAAAAAAAAAAAAABfQ29yRGxsTWFpbgBtc2NvcmVl
-LmRsbAAAAAAA/yUAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAdBYAAAAgAAAAGAAAAAIA
+AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAHgEAAAAQAAAAAYAAAAaAAAAAAAAAAAAAAAAAABAAABA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAIAAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAABQ
+NgAAAAAAAEgAAAACAAUAfCMAAOgRAAABAAAAAAAAAGQ1AAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAABswBADUAAAAAQAAEQICKBAAAApvEQAACnIBAABwbxIAAApv
+EwAACm8UAAAKfQEAAAQWCigEAAAGCwJ7AQAABAcoAwAABixoB28VAAAKDCszCG8WAAAKpREAAAEN
+AgJ7AQAABBIDKBcAAApvFAAAChIDKBgAAApvFAAACigFAAAGCgYmCG8ZAAAKLcXeFAh1EgAAARME
+EQQsBxEEbxoAAArcAnsBAAAEBygCAAAGKwIXCgYsDgIoEAAAChZvGwAACisMAigQAAAKF28bAAAK
+3g8mAigQAAAKF28bAAAK3gAqARwAAAIAQgA/gQAUAAAAAAAAAADExAAPEwAAARMwAwAkAAAAAgAA
+EQJyOwAAcBYoHAAACgoWCysMBgeaKB0AAAoHF1gLBwaOaTLuKhswAwBOAAAAAwAAERcKA28VAAAK
+CysmB28WAAAKpREAAAEMAhICKBcAAApvFAAAChYoHAAACo5pFy8CFgoHbxkAAAot0t4RB3USAAAB
+DQksBglvGgAACtwGKgAAARAAAAIACQAyOwARAAAAABMwBADmAAAAAAAAAHMeAAAKJXJHAABwclsA
+AHBvHwAACiVyfwAAcHKTAABwbx8AAAolcrUAAHByyQAAcG8fAAAKJXL3AABwcgsBAHBvHwAACiVy
+OQEAcHJNAQBwbx8AAAolcnEBAHByhQEAcG8fAAAKJXKhAQBwcrUBAHBvHwAACiVy4wEAcHL3AQBw
+bx8AAAolch0CAHByMQIAcG8fAAAKJXJRAgBwcmUCAHBvHwAACiVymQIAcHKtAgBwbx8AAAolcs0C
+AHBy4QIAcG8fAAAKJXIJAwBwch0DAHBvHwAACiVyVwMAcHJrAwBwbx8AAAoqAAATMAMALgAAAAQA
+ABEWCgMEKCAAAAoLB45pFzMcAwUoIQAACgwHFpoIFygiAAAKCCgjAAAKLAIXCgYqHgIoJAAACioe
+AiglAAAKKq5+AgAABC0ecp8DAHDQAwAAAigmAAAKbycAAApzKAAACoACAAAEfgIAAAQqGn4DAAAE
+Kh4CgAMAAAQqGn4EAAAEKh4CKCkAAAoqLnMMAAAGgAQAAAQqQlNKQgEAAQAAAAAADAAAAHY0LjAu
+MzAzMTkAAAAABQBsAAAAvAQAACN+AAAoBQAAxAYAACNTdHJpbmdzAAAAAOwLAAAUBAAAI1VTAAAQ
+AAAQAAAAI0dVSUQAAAAQEAAA2AEAACNCbG9iAAAAAAAAAAIAAAFXHaIBCQMAAAD6ATMAFgAAAQAA
+ACcAAAAFAAAABwAAAA0AAAAIAAAAKQAAAAIAAAAQAAAABAAAAAIAAAADAAAABAAAAAEAAAAEAAAA
+AQAAAAEAAAAAAOwDAQAAAAAABgCQAhgFBgAfAxgFBgDcAQUFDwCMBQAABgAJAn8EBgBzAn8EBgBU
+An8EBgAGA38EBgCwAn8EBgDJAn8EBgAgAn8EBgA7Ak0DCgDkApsDCgBMAZsDBgCkAP0FBgDiBP0F
+BgCxBv0FBgCYAB0EBgCeBB0EBgAkBB0EBgC/AQUFBgA8Bh0EBgC4BDgFBgCoBGoEDgCIAdYDDgDw
+AdYDDgBoAVUEBgCkARgFCgDEA5sDEgDOBfcAEgCPAPcABgDIBP0FBgCnBi4ABgCRBC4ABgDYAC4A
+BgBpAx0EBgAXAR0EBgCuAB0EBgCTBn8EAAAAACUAAAAAAAEAAQABABAANQQBADkAAQABAAAAEAA/
+BZsFWQACAAcAAAEQAPQFmwVtAAQACwADAQAAIAYAAFEABQAOAAEAVwDAABEAKQTDABEAPAHHABEA
+fwDLAAYGagDPAFaAEAbSAFaAHAHSAFAgAAAAAIYAOwQGAAEATCEAAAAAkQDYBdYAAQB8IQAAAACR
+AGoG3QADAOghAAAAAJEA3QDkAAUA3CIAAAAAgQDSAOkABQAWIwAAAACGGPgEBgAIAB4jAAAAAIMY
++AQGAAgAJiMAAAAAkwi0BPAACABSIwAAAACTCCQB9QAIAFkjAAAAAJMIMAH6AAgAYSMAAAAAlghD
+BgABCQBoIwAAAACGGPgEBgAJAHAjAAAAAJEY/gQFAQkAAAABAHADAAACAO4FAAABAHADAAACAO4F
+AAABAKEGAAACAEAEAAADAOsAAAABAEcDCQD4BAEAEQD4BAYAGQD4BAoAKQD4BBAAMQD4BBAAOQD4
+BBAAQQD4BBAASQD4BBAAUQD4BBAAWQD4BBAAYQD4BBAAaQD4BAYAqQD4BAYA0QD4BBUA4QD4BAYA
+cQAYBicA6QDKBSwA8QAUBDEA+QA9AzcAsQBnAzsAeQDUBD8AAQFeBjcAiQCHBjcAiQA9AzcAAQF+
+BkQAkQCAAQYA6QBPBgEACQHlBU4AGQGdAVgAeQD4BAYAeQB7AGcACQHlBXQAIQE1BnsAGQGcBoEA
+GQEuBogAcQD4BAYAsQD4BAYAKQHAAI0AKQGPBpYAuQD4BJwA2QD4BAYACAAYALYACAAcALsAKQBz
+AEABLgALABgBLgATACEBLgAbAEABLgAjAEkBLgArAHIBLgAzAHIBLgA7AHIBLgBDAEkBLgBLAHgB
+LgBTAHIBLgBbAI8BQwBjALsASQBzAEABYwBrALsAgQB7ALsAGwBIAF0AbQADAAEABAADAAAAuAQJ
+AQAARAEOAQAARwYTAQIACAADAAIACQAFAAEACgAFAAIACwAHAASAAAABAAAAfxh9bQAAAAAAAAEA
+AAAEAAAAAAAAAAAAAACkAHIAAAAAAAwAAAAAAAAAAAAAAK0AfAMAAAAABAAAAAAAAAAAAAAApAAd
+BAAAAAAMAAAAAAAAAAAAAACtADgAAAAAAAAAAAABAAAASQUAAAUAAgAAAAAAAFNUXzhiMzhlMWMw
+NGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwADxNb2R1bGU+AFN5c3RlbS5JTwBNaWNyb3NvZnQuU3Fs
+U2VydmVyLk1hbmFnZWREVFMAS0VJVEhDT01fRElSRUNUT1JZAHZhbHVlX18AbXNjb3JsaWIAQWRk
+AGRlZmF1bHRJbnN0YW5jZQBWYXJpYWJsZQBJRGlzcG9zYWJsZQBIYXNodGFibGUAUnVudGltZVR5
+cGVIYW5kbGUAR2V0VHlwZUZyb21IYW5kbGUAUmVuYW1lRmlsZQBGaWxlc1RvUmVuYW1lAE5ld0Zp
+bGVuYW1lAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlJ1bnRpbWUAVHlwZQBGYWlsdXJlAGdldF9D
+dWx0dXJlAHNldF9DdWx0dXJlAHJlc291cmNlQ3VsdHVyZQBWU1RBUlRTY3JpcHRPYmplY3RNb2Rl
+bEJhc2UAQXBwbGljYXRpb25TZXR0aW5nc0Jhc2UARGlzcG9zZQBFZGl0b3JCcm93c2FibGVTdGF0
+ZQBEZWxldGUAQ29tcGlsZXJHZW5lcmF0ZWRBdHRyaWJ1dGUARGVidWdnZXJOb25Vc2VyQ29kZUF0
+dHJpYnV0ZQBEZWJ1Z2dhYmxlQXR0cmlidXRlAEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0ZQBBc3Nl
+bWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5VHJhZGVtYXJrQXR0cmlidXRlAFRhcmdldEZyYW1l
+d29ya0F0dHJpYnV0ZQBBc3NlbWJseUNvbmZpZ3VyYXRpb25BdHRyaWJ1dGUAQXNzZW1ibHlEZXNj
+cmlwdGlvbkF0dHJpYnV0ZQBDb21waWxhdGlvblJlbGF4YXRpb25zQXR0cmlidXRlAEFzc2VtYmx5
+UHJvZHVjdEF0dHJpYnV0ZQBBc3NlbWJseUNvcHlyaWdodEF0dHJpYnV0ZQBTU0lTU2NyaXB0VGFz
+a0VudHJ5UG9pbnRBdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAFJ1bnRpbWVDb21w
+YXRpYmlsaXR5QXR0cmlidXRlAGdldF9WYWx1ZQB2YWx1ZQBTeXN0ZW0uUnVudGltZS5WZXJzaW9u
+aW5nAFRvU3RyaW5nAHdvcmtpbmdQYXRoAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuU2NyaXB0VGFzawBN
+aWNyb3NvZnQuU3FsU2VydmVyLkR0cy5UYXNrcy5TY3JpcHRUYXNrAFNjcmlwdE9iamVjdE1vZGVs
+AFN5c3RlbS5Db21wb25lbnRNb2RlbABTVF84YjM4ZTFjMDRjZDE0MjQ5OGViNjk3MzEzNjg5NGU2
+MC5kbGwAZ2V0X0l0ZW0AU3lzdGVtAEVudW0AcmVzb3VyY2VNYW4AU2NyaXB0TWFpbgBDdXJyZW50
+RmlsZUV4dGVuc2lvbgBTeXN0ZW0uQ29uZmlndXJhdGlvbgBTeXN0ZW0uR2xvYmFsaXphdGlvbgBT
+eXN0ZW0uUmVmbGVjdGlvbgBTZWFyY2hPcHRpb24ARXhjZXB0aW9uAEN1bHR1cmVJbmZvAGdldF9S
+ZXNvdXJjZU1hbmFnZXIASUVudW1lcmF0b3IAR2V0RW51bWVyYXRvcgBJRGljdGlvbmFyeUVudW1l
+cmF0b3IALmN0b3IALmNjdG9yAFN5c3RlbS5EaWFnbm9zdGljcwBTeXN0ZW0uUnVudGltZS5Db21w
+aWxlclNlcnZpY2VzAFN5c3RlbS5SZXNvdXJjZXMAU1RfOGIzOGUxYzA0Y2QxNDI0OThlYjY5NzMx
+MzY4OTRlNjAuUHJvcGVydGllcy5SZXNvdXJjZXMucmVzb3VyY2VzAERlYnVnZ2luZ01vZGVzAFNU
+XzhiMzhlMWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwLlByb3BlcnRpZXMAZ2V0X1ZhcmlhYmxl
+cwBDbGVhbnVwRmlsZXMAR2V0RmlsZXMAZmlsZXMAU2V0dGluZ3MAU3lzdGVtLkNvbGxlY3Rpb25z
+AFN1Y2Nlc3MAZ2V0X0R0cwBTY3JpcHRSZXN1bHRzAEV4aXN0cwBDb25jYXQAT2JqZWN0AGdldF9E
+ZWZhdWx0AHNldF9UYXNrUmVzdWx0AGdldF9DdXJyZW50AEludGVyZmFjZUZpbGVzRXhpc3QATW92
+ZU5leHQAZ2V0X0tleQBnZXRfQXNzZW1ibHkAQ29weQBQYXJlbnREaXJlY3RvcnkARGljdGlvbmFy
+eUVudHJ5AAAAAAA5VQBzAGUAcgA6ADoARQBUAEwAUAByAG8AYwBlAHMAcwBfAEsAZQBpAHQAaABD
+AG8AbQBEAGkAcgAACyoALQAqAC4AKgABEyoALgBFAE4AVABDAFUAUwBUAAAjYwB1AHMAdABvAG0A
+ZQByAEYAaQBsAGUALgBTAFMASQBTAAATKgAuAEUATgBUAEMAQgBJAEQAACFjAHUAcwB0AG8AbQBl
+AHIAQgBpAGQALgBTAFMASQBTAAATKgAuAEoAVQBCAEkARABEAFAAAC1iAGkAZABDAG8AbgB0AHIA
+YQBjAHQARABlAHQAYQBpAGwALgBTAFMASQBTAAATKgAuAEoAUwBCAEkARABIAFAAAC1iAGkAZABD
+AG8AbgB0AHIAYQBjAHQASABlAGEAZABlAHIALgBTAFMASQBTAAATKgAuAEUATgBUAFAAUgBPAFAA
+ACNwAHIAbwBwAEMAdQBzAHQAbwBtAGUAcgAuAFMAUwBJAFMAABMqAC4ASgBCAFAAUgBQAEkAUAAA
+G3AAcgBvAHAASQB0AGUAbQAuAFMAUwBJAFMAABMqAC4ARQBOAFQASABJAFMAVAAALWMAdQBzAHQA
+bwBtAGUAcgBXAG8AcgBrAHMAaABlAGUAdAAuAFMAUwBJAFMAABMqAC4ASgBDAFQAUgBNAEEAUAAA
+JWMAdQBzAHQAbwBtAGUAcgBUAGUAcgBtAHMALgBTAFMASQBTAAATKgAuAEUATgBUAE4AQQBJAEQA
+AB9uAGEAdABpAG8AbgBhAGwASQBkAC4AUwBTAEkAUwAAEyoALgBFAE4AVABOAEEATgBBAAAzbgBh
+AHQAaQBvAG4AYQBsAE4AdQBtAGIAZQByAEEAbgBkAFMAdQBiAC4AUwBTAEkAUwAAEyoALgBFAE4A
+VABSAEEASQBEAAAfcgBlAGcAaQBvAG4AYQBsAEkAZAAuAFMAUwBJAFMAABMqAC4ARQBOAFQAUgBB
+AFIAQQAAJ3IAZQBnAGkAbwBuAGEAbABOAHUAbQBiAGUAcgAuAFMAUwBJAFMAABMqAC4ARQBOAFQA
+QwBMAEEAUwAAOWQAZQBwAGEAcgB0AG0AZQBuAHQAUwB1AGIAQwBhAHQAZQBnAG8AcgBpAGUAcwAu
+AFMAUwBJAFMAABMqAC4ARQBOAFQAQwBBAFQAQQAAM2QAZQBwAGEAcgB0AG0AZQBuAHQAQwBhAHQA
+ZQBnAG8AcgBpAGUAcwAuAFMAUwBJAFMAAHFTAFQAXwA4AGIAMwA4AGUAMQBjADAANABjAGQAMQA0
+ADIANAA5ADgAZQBiADYAOQA3ADMAMQAzADYAOAA5ADQAZQA2ADAALgBQAHIAbwBwAGUAcgB0AGkA
+ZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAAAAAAJ/m9NmS2BxBl/f7Kz6PQ/0ABCABAQgDIAABBSAB
+ARERBCABAQ4FIAEBEWULBwUCEj0SQRFFEkkEIAASdQQgABJ5BSABEn0cAyAAHAMgAA4EIAASQQMg
+AAIFBwIdDggJAAMdDg4OEYCJBAABAQ4JBwQCEkERRRJJBSACARwcBgcDAh0ODgYAAh0ODg4FAAIO
+Dg4GAAMBDg4CBAABAg4IAAESgJURgJkFIAASgJ0HIAIBDhKAnQi3elxWGTTgiQiJhF3NgIDMkQQA
+AAAABAEAAAACBg4DBhJdAwYSYQMGEhACBggDBhEUBgACAQ4SPQYAAgIOEj0EAAASPQYgAwIODg4E
+AAASXQQAABJhBQABARJhBAAAEhADAAABBAgAEl0ECAASYQQIABIQCAEACAAAAAAAHgEAAQBUAhZX
+cmFwTm9uRXhjZXB0aW9uVGhyb3dzAQgBAAIAAAAAACgBACNTVF84YjM4ZTFjMDRjZDE0MjQ5OGVi
+Njk3MzEzNjg5NGU2MAAABQEAAAAAFgEAEUNvcHlyaWdodCBAICAyMDE0AABHAQAaLk5FVEZyYW1l
+d29yayxWZXJzaW9uPXY0LjABAFQOFEZyYW1ld29ya0Rpc3BsYXlOYW1lEC5ORVQgRnJhbWV3b3Jr
+IDQAtAAAAM7K774BAAAAkQAAAGxTeXN0ZW0uUmVzb3VyY2VzLlJlc291cmNlUmVhZGVyLCBtc2Nv
+cmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3
+N2E1YzU2MTkzNGUwODkjU3lzdGVtLlJlc291cmNlcy5SdW50aW1lUmVzb3VyY2VTZXQCAAAAAAAA
+AAAAAABQQURQQURQtAAAAEQ2AAAAAAAAAAAAAF42AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ
+NgAAAAAAAAAAAAAAAF9Db3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -22116,32 +23229,32 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAEAEAAAABgAAIAAAAAAAAAAAAAAAAAAAAEAAQAAADAAAIAAAAAAAAAAAAAAAAAAAAEAAAAAAEgA
-AABYQAAAsAMAAAAAAAAAAAAAsAM0AAAAVgBTAF8AVgBFAFIAUwBJAE8ATgBfAEkATgBGAE8AAAAA
-AL0E7/4AAAEAAAABAL9qExgAAAEAv2oTGD8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABEAAAA
+AABYQAAAGgQAAAAAAAAAAAAAGgQ0AAAAVgBTAF8AVgBFAFIAUwBJAE8ATgBfAEkATgBGAE8AAAAA
+AL0E7/4AAAEAAAABAH1tfxgAAAEAfW1/GD8AAAAAAAAABAAAAAIAAAAAAAAAAAAAAAAAAABEAAAA
 AQBWAGEAcgBGAGkAbABlAEkAbgBmAG8AAAAAACQABAAAAFQAcgBhAG4AcwBsAGEAdABpAG8AbgAA
-AAAAAACwBBADAAABAFMAdAByAGkAbgBnAEYAaQBsAGUASQBuAGYAbwAAAOwCAAABADAAMAAwADAA
-MAA0AGIAMAAAAHAAJAABAEYAaQBsAGUARABlAHMAYwByAGkAcAB0AGkAbwBuAAAAAABTAFQAXwA4
-AGIAMwA4AGUAMQBjADAANABjAGQAMQA0ADIANAA5ADgAZQBiADYAOQA3ADMAMQAzADYAOAA5ADQA
-ZQA2ADAAAABAAA8AAQBGAGkAbABlAFYAZQByAHMAaQBvAG4AAAAAADEALgAwAC4ANgAxADYAMwAu
-ADIANwAzADIANwAAAAAAcAAoAAEASQBuAHQAZQByAG4AYQBsAE4AYQBtAGUAAABTAFQAXwA4AGIA
-MwA4AGUAMQBjADAANABjAGQAMQA0ADIANAA5ADgAZQBiADYAOQA3ADMAMQAzADYAOAA5ADQAZQA2
-ADAALgBkAGwAbAAAAEgAEgABAEwAZQBnAGEAbABDAG8AcAB5AHIAaQBnAGgAdAAAAEMAbwBwAHkA
-cgBpAGcAaAB0ACAAQAAgACAAMgAwADEANAAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkAbABl
-AG4AYQBtAGUAAABTAFQAXwA4AGIAMwA4AGUAMQBjADAANABjAGQAMQA0ADIANAA5ADgAZQBiADYA
-OQA3ADMAMQAzADYAOAA5ADQAZQA2ADAALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBh
-AG0AZQAAAAAAUwBUAF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkA
-NwAzADEAMwA2ADgAOQA0AGUANgAwAAAARAAPAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBu
-AAAAMQAuADAALgA2ADEANgAzAC4AMgA3ADMAMgA3AAAAAABIAA8AAQBBAHMAcwBlAG0AYgBsAHkA
-IABWAGUAcgBzAGkAbwBuAAAAMQAuADAALgA2ADEANgAzAC4AMgA3ADMAMgA3AAAAAAAAAAAAAAAA
+AAAAAACwBHoDAAABAFMAdAByAGkAbgBnAEYAaQBsAGUASQBuAGYAbwAAAFYDAAABADAAMAAwADAA
+MAA0AGIAMAAAABoAAQABAEMAbwBtAG0AZQBuAHQAcwAAAAAAAAAiAAEAAQBDAG8AbQBwAGEAbgB5
+AE4AYQBtAGUAAAAAAAAAAABwACQAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8AbgAAAAAA
+UwBUAF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEAMwA2
+ADgAOQA0AGUANgAwAAAAPgAPAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAAAAAxAC4AMAAuADYA
+MgA3ADEALgAyADgAMAAyADkAAAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEAbQBlAAAAUwBU
+AF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEAMwA2ADgA
+OQA0AGUANgAwAC4AZABsAGwAAABIABIAAQBMAGUAZwBhAGwAQwBvAHAAeQByAGkAZwBoAHQAAABD
+AG8AcAB5AHIAaQBnAGgAdAAgAEAAIAAgADIAMAAxADQAAAAqAAEAAQBMAGUAZwBhAGwAVAByAGEA
+ZABlAG0AYQByAGsAcwAAAAAAAAAAAHgAKAABAE8AcgBpAGcAaQBuAGEAbABGAGkAbABlAG4AYQBt
+AGUAAABTAFQAXwA4AGIAMwA4AGUAMQBjADAANABjAGQAMQA0ADIANAA5ADgAZQBiADYAOQA3ADMA
+MQAzADYAOAA5ADQAZQA2ADAALgBkAGwAbAAAAGgAJAABAFAAcgBvAGQAdQBjAHQATgBhAG0AZQAA
+AAAAUwBUAF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEA
+MwA2ADgAOQA0AGUANgAwAAAAQgAPAAEAUAByAG8AZAB1AGMAdABWAGUAcgBzAGkAbwBuAAAAMQAu
+ADAALgA2ADIANwAxAC4AMgA4ADAAMgA5AAAAAABGAA8AAQBBAHMAcwBlAG0AYgBsAHkAIABWAGUA
+cgBzAGkAbwBuAAAAMQAuADAALgA2ADIANwAxAC4AMgA4ADAAMgA5AAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAADAAAAFA2AAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAAADAAAAHA2AAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -22163,7 +23276,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="12">
+      DTS:ThreadHint="13">
       <DTS:Variables />
       <DTS:PropertyExpression
         DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
@@ -22174,10 +23287,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
       <DTS:ObjectData>
         <SendMailTask:SendMailTaskData
           SendMailTask:SMTPServer="{27E35359-C6DF-4504-B136-640306980715}"
-          SendMailTask:From="CORPMISDEV2B@noreply.com"
+          SendMailTask:From="CORPMISDEV2A@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_QA has failed on CORPMISDEV2B"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_QA has failed on CORPMISDEV2B.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_QA has failed on CORPMISDEV2A"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_QA has failed on CORPMISDEV2A.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -22326,6 +23439,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           Id="Package\Application Data Processing\Process Catalog Data"
           TopLeft="5.5,5.5" />
         <NodeLayout
+          Size="258,42"
+          Id="Package\Application Data Processing\Process Contract And Worksheet Data"
+          TopLeft="10,70.5" />
+        <NodeLayout
           Size="188,42"
           Id="Package\Application Data Processing\Process Customer Data"
           TopLeft="16.5,130.5" />
@@ -22337,10 +23454,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           Size="208,42"
           Id="Package\Application Data Processing\Process Elastic Search Data"
           TopLeft="23,263" />
-        <NodeLayout
-          Size="258,42"
-          Id="Package\Application Data Processing\Process Contract And Worksheet Data"
-          TopLeft="10,70.5" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -22355,38 +23468,54 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <NodeLayout
           Size="158,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Categories"
-          TopLeft="17.5,124" />
+          TopLeft="25.5,197" />
         <NodeLayout
           Size="159,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers"
-          TopLeft="15.5,180.5" />
+          TopLeft="23.5,253.5" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments"
+          TopLeft="23,680.5" />
         <NodeLayout
           Size="136,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items"
-          TopLeft="13.5,235.5" />
+          TopLeft="21.5,308.5" />
         <NodeLayout
           Size="187,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc"
-          TopLeft="18,297" />
+          TopLeft="26,370" />
         <NodeLayout
           Size="235,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc"
-          TopLeft="21,368" />
+          TopLeft="29,441" />
         <NodeLayout
           Size="158,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage PDM Data"
-          TopLeft="16,424" />
+          TopLeft="24,497" />
+        <NodeLayout
+          Size="188,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc"
+          TopLeft="21,555" />
         <NodeLayout
           Size="216,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc"
-          TopLeft="16,548.5" />
+          TopLeft="24,621.5" />
+        <NodeLayout
+          Size="193,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments"
+          TopLeft="22,759.5" />
+        <NodeLayout
+          Size="217,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels"
+          TopLeft="28.5,135.5" />
         <NodeLayout
           Size="150,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
           TopLeft="20.5,67.5" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks.PrecedenceConstraints[Constraint]"
-          TopLeft="111.5,339">
+          TopLeft="119.5,412">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -22418,17 +23547,47 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="188,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc"
-          TopLeft="13,482" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks.PrecedenceConstraints[Constraint 1]"
+          TopLeft="109,722.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="9.5,37"
+              Start="0,0"
+              End="9.5,29.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,14.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,14.5"
+                    Point2="0,18.5"
+                    Point3="4,18.5" />
+                  <mssgle:LineSegment
+                    End="5.5,18.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="5.5,18.5"
+                    Point2="9.5,18.5"
+                    Point3="9.5,22.5" />
+                  <mssgle:LineSegment
+                    End="9.5,29.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="284,646"
-          Size="284,688"
+          PanelSize="284,959"
+          Size="284,1002"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks"
-          TopLeft="34,341.5" />
+          TopLeft="21,420.5" />
         <NodeLayout
           Size="156,42"
           Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen"
@@ -22438,28 +23597,32 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
           Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Diet"
           TopLeft="12,67.9999999999999" />
         <NodeLayout
-          Size="141,42"
-          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec"
-          TopLeft="13,191" />
-        <NodeLayout
           Size="159,42"
           Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Nutrition"
           TopLeft="11,126.5" />
+        <NodeLayout
+          Size="141,42"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec"
+          TopLeft="13,191" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
           PanelSize="181,288"
           Size="181,331"
           Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks"
-          TopLeft="68,1087" />
+          TopLeft="51,1544" />
         <NodeLayout
           Size="185,42"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Brand Tables"
-          TopLeft="15.5,18" />
+          TopLeft="23.5,5.5" />
         <NodeLayout
           Size="223,42"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Catalog Stage Tables"
           TopLeft="19.0000000000001,75.4999999999999" />
+        <NodeLayout
+          Size="172,42"
+          Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate Departments"
+          TopLeft="25.5,233.5" />
         <NodeLayout
           Size="207,42"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables\Truncate GS1 Stage Tables"
@@ -22471,36 +23634,24 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="268,235"
-          Size="268,279"
+          PanelSize="268,331"
+          Size="268,374"
           Id="Package\Process_CatalogAndCustomer\Truncate_Catalog_Tables"
-          TopLeft="28,23.9999999999998" />
+          TopLeft="36,10.9999999999998" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer.PrecedenceConstraints[Constraint]"
-          TopLeft="162,303">
+          TopLeft="166.5,385">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="14,38.5000000000003"
+              EndConnector="0,35.5000000000002"
               Start="0,0"
-              End="14,31.0000000000003">
+              End="0,28.0000000000002">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,15.2500000000002" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,15.2500000000002"
-                    Point2="0,19.2500000000002"
-                    Point3="4,19.2500000000002" />
-                  <mssgle:LineSegment
-                    End="10,19.2500000000002" />
-                  <mssgle:CubicBezierSegment
-                    Point1="10,19.2500000000002"
-                    Point2="14,19.2500000000002"
-                    Point3="14,23.2500000000002" />
-                  <mssgle:LineSegment
-                    End="14,31.0000000000003" />
+                    End="0,28.0000000000002" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -22511,30 +23662,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer.PrecedenceConstraints[Constraint 1]"
-          TopLeft="176,1029.5">
+          TopLeft="163,1422.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-17.5,57.5"
+              EndConnector="-21.5,121.5"
               Start="0,0"
-              End="-17.5,50">
+              End="-21.5,114">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24.75" />
+                    End="0,56.75" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,24.75"
-                    Point2="0,28.75"
-                    Point3="-4,28.75" />
+                    Point1="0,56.75"
+                    Point2="0,60.75"
+                    Point3="-4,60.75" />
                   <mssgle:LineSegment
-                    End="-13.5,28.75" />
+                    End="-17.5,60.75" />
                   <mssgle:CubicBezierSegment
-                    Point1="-13.5,28.75"
-                    Point2="-17.5,28.75"
-                    Point3="-17.5,32.75" />
+                    Point1="-17.5,60.75"
+                    Point2="-21.5,60.75"
+                    Point3="-21.5,64.75" />
                   <mssgle:LineSegment
-                    End="-17.5,50" />
+                    End="-21.5,114" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -22546,8 +23697,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="356,1473"
-          Size="356,1516"
+          PanelSize="356,1930"
+          Size="356,1973"
           Id="Package\Process_CatalogAndCustomer"
           TopLeft="89,222.5" />
         <NodeLayout
@@ -23060,30 +24211,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="637.666666666667,115">
+          TopLeft="631.4,115">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="1023.83333333333,249"
+              EndConnector="976.933333333333,249"
               Start="0,0"
-              End="1023.83333333333,241.5">
+              End="976.933333333333,241.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,61.9849999999999" />
+                    End="0,92.1492426593596" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,61.9849999999999"
-                    Point2="0,65.9849999999999"
-                    Point3="4,65.9849999999999" />
+                    Point1="0,92.1492426593596"
+                    Point2="0,96.1492426593596"
+                    Point3="4,96.1492426593596" />
                   <mssgle:LineSegment
-                    End="1019.83333333333,65.9849999999999" />
+                    End="972.933333333333,96.1492426593596" />
                   <mssgle:CubicBezierSegment
-                    Point1="1019.83333333333,65.9849999999999"
-                    Point2="1023.83333333333,65.9849999999999"
-                    Point3="1023.83333333333,69.9849999999999" />
+                    Point1="972.933333333333,96.1492426593596"
+                    Point2="976.933333333333,96.1492426593596"
+                    Point3="976.933333333333,100.14924265936" />
                   <mssgle:LineSegment
-                    End="1023.83333333333,241.5" />
+                    End="976.933333333333,241.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -23094,30 +24245,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="445,980.5">
+          TopLeft="445,1209">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="1053,-274.9"
+              EndConnector="1053,-524.5"
               Start="0,0"
-              End="1045.5,-274.9">
+              End="1045.5,-524.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="742.193144363876,0" />
+                    End="693.673343605547,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="742.193144363876,0"
-                    Point2="746.193144363876,0"
-                    Point3="746.193144363876,-4" />
+                    Point1="693.673343605547,0"
+                    Point2="697.673343605547,0"
+                    Point3="697.673343605547,-4" />
                   <mssgle:LineSegment
-                    End="746.193144363876,-270.9" />
+                    End="697.673343605547,-520.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="746.193144363876,-270.9"
-                    Point2="746.193144363876,-274.9"
-                    Point3="750.193144363876,-274.9" />
+                    Point1="697.673343605547,-520.5"
+                    Point2="697.673343605547,-524.5"
+                    Point3="701.673343605547,-524.5" />
                   <mssgle:LineSegment
-                    End="1045.5,-274.9" />
+                    End="1045.5,-524.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -23306,10 +24457,344 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     </LayoutInfo>
   </Package>
   <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches\PRODCAT"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Categories">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Categories\PRODCAT"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Categories\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Categories.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers.Paths[Sort Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\Flat File Source"
+          TopLeft="380,120" />
+        <NodeLayout
+          Size="121,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData"
+          TopLeft="570,380" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments.Paths[Flat File Source Output]"
+          TopLeft="456.5,162">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="174,218"
+              Start="0,0"
+              End="174,210.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,105" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,105"
+                    Point2="0,109"
+                    Point3="4,109" />
+                  <mssgle:LineSegment
+                    End="170,109" />
+                  <mssgle:CubicBezierSegment
+                    Point1="170,109"
+                    Point2="174,109"
+                    Point3="174,113" />
+                  <mssgle:LineSegment
+                    End="174,210.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Departments\AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData"
+          TopLeft="435,302" />
+        <NodeLayout
+          Size="127,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT"
+          TopLeft="288,214" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items.Paths[OLE DB Source Output]"
+          TopLeft="351.5,256">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="164,46"
+              Start="0,0"
+              End="164,38.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19"
+                    Point2="0,23"
+                    Point3="4,23" />
+                  <mssgle:LineSegment
+                    End="160,23" />
+                  <mssgle:CubicBezierSegment
+                    Point1="160,23"
+                    Point2="164,23"
+                    Point3="164,27" />
+                  <mssgle:LineSegment
+                    End="164,38.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc\FF_NationalId"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc\AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc\FF_NationalNumber"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc\AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage PDM Data">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="152,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage PDM Data\OLE DB Source"
@@ -23349,7 +24834,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -23377,10 +24864,709 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
     </Properties>
   </PipelineComponentMetadata>
   <TaskHost
-    design-time-name="Package\Process_EmployeeData\Import DSR Info\Get Raw DSR Data">
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc\FF_RegionalNumber"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc\AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number Desc.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Derived Column"
+          TopLeft="158,256" />
+        <NodeLayout
+          Size="121,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData"
+          TopLeft="455,350" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\Flat File Source"
+          TopLeft="147,130" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Flat File Source Output]"
+          TopLeft="223.5,172">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="12.5,84"
+              Start="0,0"
+              End="12.5,76.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,38"
+                    Point2="0,42"
+                    Point3="4,42" />
+                  <mssgle:LineSegment
+                    End="8.5,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="8.5,42"
+                    Point2="12.5,42"
+                    Point3="12.5,46" />
+                  <mssgle:LineSegment
+                    End="12.5,76.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments.Paths[Derived Column Output]"
+          TopLeft="236,298">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="279.5,52"
+              Start="0,0"
+              End="279.5,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22"
+                    Point2="0,26"
+                    Point3="4,26" />
+                  <mssgle:LineSegment
+                    End="275.5,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="275.5,26"
+                    Point2="279.5,26"
+                    Point3="279.5,30" />
+                  <mssgle:LineSegment
+                    End="279.5,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Sub-Departments\AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels">
     <LayoutInfo>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands"
+          TopLeft="179,129" />
+        <NodeLayout
+          Size="237,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands"
+          TopLeft="456,320" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels.Paths[OLE DB Source Output]"
+          TopLeft="260.5,171">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="314,149"
+              Start="0,0"
+              End="314,141.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,70.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,70.5"
+                    Point2="0,74.5"
+                    Point3="4,74.5" />
+                  <mssgle:LineSegment
+                    End="310,74.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="310,74.5"
+                    Point2="314,74.5"
+                    Point3="314,78.5" />
+                  <mssgle:LineSegment
+                    End="314,141.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\BEK_Commerce_AppData Brands">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brand Control Labels\PRODCAT Brands">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="163,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands\PRODCAT Brands"
+          TopLeft="179,129" />
+        <NodeLayout
+          Size="237,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands\BEK_Commerce_AppData Brands"
+          TopLeft="456,320" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands.Paths[OLE DB Source Output]"
+          TopLeft="260.5,171">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="314,149"
+              Start="0,0"
+              End="314,141.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,70.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,70.5"
+                    Point2="0,74.5"
+                    Point3="4,74.5" />
+                  <mssgle:LineSegment
+                    End="310,74.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="310,74.5"
+                    Point2="314,74.5"
+                    Point3="314,78.5" />
+                  <mssgle:LineSegment
+                    End="314,141.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen\FSE"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Allergen.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Diet">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Diet\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Diet\FSE"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Diet.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Nutrition">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Nutrition\FSE"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Nutrition\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Nutrition.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\FSE"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Detail">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Detail\FF_BidDetail"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Detail\BEK_Commerce_AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Detail.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Header">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Header\FF_BidHeader"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Header\BEK_Commerce_AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Bid Header.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\Customer Bid">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Customer Bid\FF_CustomerBid"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Customer Bid\BEK_Commerce_AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Customer Bid.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\Product Spec">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Product Spec\KeithlinkAppData"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Product Spec\FSE"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Product Spec.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item\FF_PropItem"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item\BEK_Commerce_AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\Proprietary Item.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\ProprietaryCustomer">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\ProprietaryCustomer\FF_PropCustomer"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\ProprietaryCustomer\BEK_Commerce_AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\ProprietaryCustomer.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\WorkSheet Items">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\WorkSheet Items\CustomerWorksheet"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\WorkSheet Items\Bek_Commerce_AppData"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_ContractAndWorksheet\Import Contract Data\WorkSheet Items.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_EmployeeData\Import DSR Info\Get Raw DSR Data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="151,42"
           Id="Package\Process_EmployeeData\Import DSR Info\Get Raw DSR Data\Kpay DSR Data"
@@ -23408,7 +25594,81 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData\Sam Employee Table"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData\App_Data Staging Table"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData.Paths[OLE DB Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Process_Invoices\Customer Invoice Import Tasks\Customer Terms">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_Invoices\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination"
+          TopLeft="NaN,NaN" />
+        <NodeLayout
+          Size="NaN,NaN"
+          Id="Package\Process_Invoices\Customer Invoice Import Tasks\Customer Terms\Flat File Source"
+          TopLeft="NaN,NaN" />
+        <EdgeLayout
+          Id="Package\Process_Invoices\Customer Invoice Import Tasks\Customer Terms.Paths[Flat File Source Output]"
+          TopLeft="NaN,NaN">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="{assembly:Null}"
+              Start="0,0"
+              End="0,0">
+              <mssgle:Curve.Segments>
+                <assembly:Null />
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

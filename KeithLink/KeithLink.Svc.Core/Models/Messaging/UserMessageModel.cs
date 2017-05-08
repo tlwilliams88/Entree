@@ -37,6 +37,8 @@ namespace KeithLink.Svc.Core.Models.Messaging
         public string Subject { get; set; }
         [DataMember(Name = "body")]
         public string Body { get; set; }
+        [DataMember(Name = "link")]
+        public string Link { get; set; }
         [DataMember(Name = "mandatory")]
         public bool Mandatory { get; set; }
     }

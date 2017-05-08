@@ -49,7 +49,9 @@ angular.module('bekApp')
       },
 
       validateToken: function(token) {        
-        return $http.post('/profile/forgotpassword/validatetoken/', { token: token });
+        var promise = $http.post('/profile/forgotpassword/validatetoken/', { token: token });
+        return UtilityService.resolvePromise(promise);
+
       },
 
       resetPassword: function(email) {          
@@ -118,7 +120,10 @@ angular.module('bekApp')
       },
 
       createUser: function(userProfile) {
+        userProfile.password = encodeURIComponent(userProfile.password);
+        userProfile.confirmpassword = encodeURIComponent(userProfile.confirmpassword);
         userProfile.message = 'Creating user...';
+
         var promise = $http.post('/profile/register', userProfile);
         return UtilityService.resolvePromise(promise);
       },
@@ -157,6 +162,10 @@ angular.module('bekApp')
       changePassword: function(passwordData) {
         var deferred = $q.defer();
 
+        passwordData.confirmNewpassword = encodeURIComponent(passwordData.confirmNewpassword);
+        passwordData.newpassword = encodeURIComponent(passwordData.newpassword);
+        passwordData.originalpassword = encodeURIComponent(passwordData.originalpassword);
+
         $http.put('/profile/password', passwordData).then(function(response) {
           $log.debug(response);
           if (response.data.successResponse === true) {
@@ -171,6 +180,8 @@ angular.module('bekApp')
 
       changeForgottenPassword: function(passwordData) {
         var deferred = $q.defer();
+
+        passwordData.password = encodeURIComponent(passwordData.password);
 
         $http.post('/profile/forgotpassword/change', passwordData).then(function(response) {
           $log.debug(response);
@@ -238,6 +249,12 @@ angular.module('bekApp')
       } else {
         return revokeAccess(url);
       }
+    };
+
+    Service.updateProgramAccess = function(email, program) {
+      var url = '/profile/' + email + '/access/' + program + '?edit=1';
+
+      grantAccess(url);
     };
 
 

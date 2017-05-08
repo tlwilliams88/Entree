@@ -64,7 +64,7 @@
     </form>
 
   </div>
-  <div header-buttons>
+  <div class="pull-right margin-right-10 hidden-xs hidden-sm">
     <button 
       ng-if="selectedList.permissions.canEditList && !isCustomInventoryList" 
       type="submit" 
@@ -161,6 +161,24 @@
       <div class="row">
         <div class="col-sm-12">
           <div class="custom-lists" sticky>
+            <button 
+              ng-if="selectedList.permissions.canEditList && !isCustomInventoryList" 
+              type="submit" 
+              class="btn-lg btn btn-primary back-to-top-desktop margin-top-10" 
+              ng-disabled="listForm.$invalid" 
+              ng-click="saveList(selectedList)">
+              Save
+            </button>
+
+            <button 
+              ng-if="selectedList.permissions.canEditList && isCustomInventoryList" 
+              type="submit" 
+              class="btn-lg btn btn-primary back-to-top-desktop margin-top-10" 
+              ng-disabled="listForm.$invalid" 
+              ng-click="saveCustomInventoryList(selectedList.items)">
+              Save
+            </button>
+
             <h3>Your Lists</h3>
 
             <div class="btn-group-vertical list-names text-blue">
@@ -265,7 +283,7 @@
             placeholder="Search current list by keyword, item # or label" />
           <span class="input-group-btn">
             <button type="submit" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+            <button type="button"  ng-click="clearFilter(true)" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
 
           </span>
           <input
@@ -366,6 +384,22 @@
    </pagination> 
   </div>
 
+  <div class="row" ng-if="selectedList.is_contract_list" ng-class="{ 'sub-content' : selectedList.itemCount < pagingPageSize }">
+    <div class="col-xs-5">
+      <div class="btn-group" dropdown is-open="status.sortParams">
+        <a class="btn btn-md btn-default dropdown-toggle">
+          {{selectedFilterParameter}} <span class="caret text-dark"></span>
+        </a>
+        <ul class=dropdown-menu>
+          <li ng-repeat="filterParameter in availableFilterParameters">
+            <a ng-click="selectFilterParameter(filterParameter)">{{filterParameter.name}}</a>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-sm btn-danger" ng-click="clearFilter(false)">Clear Filter</button>
+    </div>
+  </div>
+
   <div class="row sub-content">
     <div class="col-xs-5 " >         
       <span>{{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected</span>
@@ -374,7 +408,7 @@
 
 
     <div class="col-xs-7 col-md-5 col-lg-5 text-right" style="float:right;" ng-if="(selectedList.itemCount - itemCountOffset) > 0 && (rangeStart - rangeStartOffset) <= (rangeEnd - rangeEndOffset)">      
-     Showing {{rangeStart - rangeStartOffset}} - {{rangeEnd - rangeEndOffset}} of {{selectedList.itemCount - itemCountOffset}} Items
+     Showing {{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{selectedList.itemCount - itemCountOffset}} Items
     </div>
     </div>
 
@@ -411,13 +445,14 @@
               <th class="sort-col-header drop-column" ng-click="sortList('itemclass',sort[0].order)">
                 <span>Category <span sort-icons field="'itemclass'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
+              <th class="display-column drop-column-mobile"></th>
               <th ng-if="listHasCustomItems" class="sort-col-header drop-column" ng-click="sortList('supplier',sort[0].order)">
                 <span>Supplier <span sort-icons field="'supplier'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
               </th>
-              <th class="sort-col-header drop-column" ng-click="sortList('notes',sort[0].order)">
+              <th class="sort-col-header drop-column hidden-sm hidden-xs" ng-click="sortList('notes',sort[0].order)">
                 <span>Notes <span sort-icons field="'notes'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>          
               <th class="hidden-mobile-visible-print"></th>
@@ -444,7 +479,7 @@
           </thead>
 
           <tbody 
-              ng-class="{ 'item-selected': item.isSelected }" 
+              ng-class="{ 'item-selected': item.isSelected, 'border-left-orange': item.custominventoryitemid, 'border-left-green': item.delta == 'newly added active' && selectedList.is_contract_list, 'border-left-red': item.delta == 'newly deleted' && selectedList.is_contract_list }"
               fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}"
               data-product="{{item}}" 
               data-drag="dragEnabled" 
@@ -460,8 +495,7 @@
               id="listsTableRows"
               class="highlightRows"
               ng-click="shiftSelectOtherRows($event, item, $index)"
-              ng-show="!isCustomInventoryList"
-              ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">                
+              ng-show="!isCustomInventoryList">                
            
             <tr>
               <td class="hidden-drag" ng-class="{'bek-drag-handle': !item.custominventoryitemid}">
@@ -1082,4 +1116,11 @@
 
     </div>
   </div>
+
+  <a ng-if="isMobileDevice" class='back-to-top icon-arrow-up2 text-blue pull-right' ng-click='scrollToTop()' style='display: inline;'></a>
+  <a type="submit"  ng-if="isMobileDevice && selectedList.permissions.canEditList && !isCustomInventoryList" class='floating-save-mobile icon-floppy-disk text-blue' ng-disabled="listForm.$invalid" ng-click='saveList(selectedList)'></a>
+  <a type="submit"  ng-if="isMobileDevice && selectedList.permissions.canEditList && isCustomInventoryList" class='floating-save-mobile icon-floppy-disk text-blue' ng-disabled="listForm.$invalid" ng-click='saveCustomInventoryList(selectedList)'></a>
+
 </div>
+
+ 

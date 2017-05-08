@@ -107,6 +107,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuGr
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuLoginUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?username={0}&amp;password={1}&amp;path=MAIN&amp;customerlist={2}&amp;order=true&amp;framed=false&amp;lang=ENG&amp;country=USA', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuPermissionsUrl', 'http://bekpmwsq1.bekco.com:8443/main/Logon.aspx?Adminusername=pniadmin&amp;Adminpassword=9M9NC0N&amp;Username={0}&amp;path=USER', 'PowerMenu Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PowerMenuWebServiceUrl', 'http://bekpmwsq1.bekco.com:8443/pmserviceendpoint.asmx', 'PowerMenu Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CartOrOrder2ListIdPurgeDays', '-7', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PresentationUrl', 'http://corpmisdev2a.bekco.com:8080/', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('PurchaseOrdersGetLatestHowManyDays', '10', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('RabbitMQAccessConsumerUserName', 'accessclnt', 'RabbitMQ Settings: Credentials', 0)
@@ -195,6 +196,9 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('UNFIWhiteli
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WebNowUrl', 'http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}', 'Misc Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsers', 'tcfox,jwames,pabrandt,mdjoiner,jdhughes,corp-ssa-entreadmin,dmderusha,bakillins,jmmills,meiacomini', 'WhiteList: must be lowercase', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('WhiteListedBekUsersEnforced', 'false', 'WhiteList', 0)
+
+-- Contract List Changes
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ContractListDeleteBlockPrices', 'true', 'Contract List Changes', 0)
 
 MERGE INTO [BEK_Commerce_AppData].[Configuration].[AppSettings] A
 USING @AppSettings B ON (A.[Key] = B.[Key])

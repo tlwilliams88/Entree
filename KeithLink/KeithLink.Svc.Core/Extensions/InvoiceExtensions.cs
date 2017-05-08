@@ -75,7 +75,7 @@ namespace KeithLink.Svc.Core.Extensions {
 
             switch (value.InvoiceStatus.ToUpper()) {
                 case "O":
-                    if (value.DueDate >= DateTime.Now)
+                    if (value.DueDate >= DateTime.Today.AddDays(1))
                         return InvoiceStatus.Open;
                     else
                         return InvoiceStatus.PastDue;

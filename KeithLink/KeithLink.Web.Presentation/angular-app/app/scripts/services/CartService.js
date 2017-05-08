@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants',
-    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants', 'LocalStorage', '$rootScope',
+    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants, LocalStorage, $rootScope) {
  
     var Service = {
       
@@ -33,8 +33,13 @@ angular.module('bekApp')
           .then(function(resp) {
             var cartHeaders = resp.successResponse;
             angular.copy(cartHeaders, Service.cartHeaders);
+            Service.updateCartHeaders(cartHeaders);
             return cartHeaders;
           });
+      },
+
+      updateCartHeaders: function(headers) {
+        $rootScope.cartsHeaders = headers;
       },
  
       // accepts cartId (guid)
@@ -261,20 +266,23 @@ angular.module('bekApp')
  
       // accepts cart object and params (deleteOmitted?)
       // returns promise and updated cart object
-      updateCart: function(cart, params) {
+      updateCart: function(cart, params, list) {
+
+        if(list){
+          cart.listId = list;
+          var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
+              lastlist ={
+                listId: cart.listId,          
+                timeset: timeset
+              };
+         
+          LocalStorage.setLastList(lastlist);
+        }
         
         return Cart.update(params, cart).$promise.then(function(response) {
           cart = response.successResponse;
 
-          // update cache
-          Service.cartHeaders.forEach(function(cartHeader, index) {
-            if (cartHeader.id === cart.id) {
-              var cartHeaderToUpdate = Service.cartHeaders[index];
-              cartHeaderToUpdate.requestedshipdate = cart.requestedshipdate;
-              cartHeaderToUpdate.subtotal = cart.subtotal;
-              cartHeaderToUpdate.name = cart.name;
-            }
-          });
+          Service.getCartHeaders();
 
           return Service.getCart(cart.id);
         });
@@ -313,6 +321,8 @@ angular.module('bekApp')
           var deletedCart = Service.findCartById(cartId);
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
+
+          Service.updateCartHeaders(Service.cartHeaders);
           
           return response.successResponse;
         });
@@ -332,6 +342,8 @@ angular.module('bekApp')
             }
           });
           angular.copy(cartsKept, Service.cartHeaders);
+          
+          Service.updateCartHeaders(Service.cartHeaders);
  
           return;
         });
@@ -347,6 +359,7 @@ angular.module('bekApp')
         }
         
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
+          Service.getCartHeaders();
           return response.successResponse;
         });
       },

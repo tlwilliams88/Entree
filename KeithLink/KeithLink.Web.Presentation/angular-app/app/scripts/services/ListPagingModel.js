@@ -54,35 +54,28 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
     },
 
     getFilterObject: function(filterFields) {
-      var filterList = [];
+      var filterList = filterFields;
 
-      for(var propertyName in filterFields) {
-        if (filterFields[propertyName] && filterFields[propertyName] !== '') {
-          filterList.push({
-            field: propertyName,
-            value: filterFields[propertyName] 
-          });
-        }
-      }
-
-      var filterParamObject = null;
       if (filterList.length > 0) {
-        var firstFilter = filterList.splice(0,1)[0];
-        
-        filterParamObject = firstFilter;
         filterParamObject.filter = filterList;
       }
       return filterParamObject;
     },
 
     filterListItems: function(searchTerm) {
-      this.searchTerm = searchTerm;
+      if(searchTerm){
+        this.searchTerm = searchTerm;
+      } else {
+        this.searchTerm = '';
+        this.filter = '';
+      }
+      
       this.pageIndex = 0;
       this.loadList();
     },
 
     filterListItemsByMultipleFields: function(filterFields) {
-      this.filter = this.getFilterObject(filterFields);
+      this.filter = filterFields;
       this.pageIndex = 0;
       this.loadList();
     },

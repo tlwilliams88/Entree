@@ -78,10 +78,9 @@
   </div>
   <div class="hidden-xs hidden-sm hidden-print page-header-bar__actions">
 
-    <div class="pull-right" header-buttons >
+    <div class="pull-right margin-right-10">
       <div class="page-header__buttons">
         <a title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></a>
-        <a title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></a>
         <a title="Export" class="btn btn-default btn-icon" ng-click="openCartExportModal(currentCart.id)" ng-if="!currentCart.ordernumber"><span class="icon-export"></span></a>
       </div>
     </div>
@@ -123,9 +122,9 @@
           </div>
 
           <div class="col-xs-7 hidden-print text-right-lg text-right-xs">
-            <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id, listId: currentCart.listId })" class="btn btn-default">Continue Shopping</a>
 
-            <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber, listId: currentCart.listId })" class="btn btn-default">Continue Shopping</a>
           </div>
 
         </div>      
@@ -415,7 +414,7 @@
             <td class="input-col nowrap">
               <span ng-if="::!item.isoutofstock" class="visible-print">{{item.quantity}}</span>
               <span ng-if="::item.isoutofstock" class="visible-print">{{item.quantityordered}}</span>
-              <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid">
+              <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid && item.status != 'Deleted'">
                 <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
                 <div ng-if="::!item.isoutofstock" counter ng-model="item.quantity" min="0" length="5" ></div>
                 <div ng-if="::item.isoutofstock" counter ng-model="item.quantityordered" min="0" length="5" ></div>
@@ -443,7 +442,7 @@
             </td>
             <td class="large-icon icon-col">
               <a class="hidden-print visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-              <a class="hidden-print hidden-xs hidden-sm" ng-if="!(item.isMandatory && isChangeOrder)" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+              <a class="hidden-print hidden-xs hidden-sm" ng-if="!(item.isMandatory && isChangeOrder || item.status == 'Deleted')" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
             </td>
             <td></td>
           </tr>

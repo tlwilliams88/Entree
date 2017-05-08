@@ -17,15 +17,11 @@ angular.module('bekApp')
         });
       }
 
-      UserProfileService.getCurrentUserProfile().then(function(profile){
-        if(Service.isInternalUser == undefined){
-          if(profile.internal) {
-            Service.isInternalUser = true;
-          } else {
-            Service.isInternalUser = false;
-          }
-        }
-      })
+      function getCurrentUserProfile() {
+
+        Service.isInternalUser = SessionService.userProfile.internal ? SessionService.userProfile.internal : false;
+
+      }
 
       /*
       VALID PERMISSIONS
@@ -50,6 +46,10 @@ angular.module('bekApp')
 
       function updateListPermissions(list) {
         var permissions = {};
+
+        if(Service.isInternalUser == undefined) {
+          getCurrentUserProfile();
+        }
 
         // FAVORITES
         if (list.isfavorite) {
@@ -167,6 +167,7 @@ angular.module('bekApp')
         lists: [],
         labels: [],
         userProfile: {},
+        listHeaders: [],
 
         updateListPermissions: updateListPermissions,
 
@@ -196,11 +197,13 @@ angular.module('bekApp')
             params = {};
           }
           return List.get(params).$promise.then(function(lists) {
-            lists.successResponse.forEach(function(list) {
+            var listHeaders = lists.successResponse;
+            listHeaders.forEach(function(list) {
               updateListPermissions(list);
             });
-            angular.copy(lists.successResponse, Service.lists);
-            return lists.successResponse;
+            angular.copy(listHeaders, Service.lists);
+            Service.listHeaders = listHeaders;
+            return listHeaders;
           });
         },
 
@@ -292,14 +295,8 @@ angular.module('bekApp')
         // accepts listId (guid), paging params
         // returns paged list object
         getList: function(listId, params) {
-            UserProfileService.getCurrentUserProfile().then(function(profile){
-              if(profile.internal) {
-                Service.isInternalUser = true;
-              } else {
-                Service.isInternalUser = false;
-              }
-              
-            });
+
+            getCurrentUserProfile();
 
             if (!params) {
               var pageSize = LocalStorage.getPageSize();             
@@ -342,7 +339,10 @@ angular.module('bekApp')
           if (!isNaN(parseInt(listId))) {
             listId = parseInt(listId);
           }
-          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
+          Service.getAllLists().then(function(){
+            return UtilityService.findObjectByField(Service.lists, 'listid', listId);
+          });
+          
         },
 
         /********************
@@ -658,7 +658,7 @@ angular.module('bekApp')
               Service.lists.splice(idx, 1);
             }
 
-            toaster.pop('success', null, 'Successfully deleted list ' + deletedList.name + '.');
+            toaster.pop('success', null, 'Successfully deleted list.');
             return Service.getFavoritesList();
           }, function(error) {
             toaster.pop('error', null, 'Error deleting list.');

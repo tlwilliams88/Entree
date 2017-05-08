@@ -9,7 +9,7 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService', 'CategoryService', 'BranchService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -18,17 +18,24 @@ angular.module('bekApp')
       branches, // state resolve
       CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
       mandatoryMessages,
-      localStorageService
+      localStorageService,
+      CategoryService,
+      BranchService
     ) {
 
   $scope.$state = $state;
   $scope.isMobile = UtilityService.isMobileDevice();
   $scope.isMobileApp = ENV.mobileApp;
   $scope.mandatoryMessages = mandatoryMessages;
+  $scope.branches = branches;
+  if(!$scope.branches) {
+    BranchService.getBranches().then(function(resp){
+      $scope.branches = resp;
+    })
+  }
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
-  $scope.branches = branches;
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
@@ -37,10 +44,10 @@ angular.module('bekApp')
     $scope.changeOrders = resp;
   });
 
-  $scope.$on('CartCreatedFromContextMenu', function() {
-    CartService.getCartHeaders().then(function(cartHeaders){
-      $scope.carts = cartHeaders;
-    });
+  CategoryService.getCategories('BEK').then(function(resp){
+    $scope.departments = resp;
+
+    $scope.selectDepartment('');
   });
 
   $scope.$on('ListCreatedFromContextMenu', function() {
@@ -48,7 +55,7 @@ angular.module('bekApp')
       $scope.lists = lists;
     });
   });
- 
+
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -62,22 +69,21 @@ angular.module('bekApp')
   // Using 3 different values for potential hotfix mobile submissions
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
- 
-  $scope.webVersionNum = '2017.1.0';
-  $scope.androidVersionNum = '2017.1.0';
-  $scope.iOSVersionNum = '2017.1.0';
+
+  $scope.webVersionNum = '2017.2.0';
+  $scope.androidVersionNum = '2017.2.0';
+  $scope.iOSVersionNum = '2017.2.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
-  
+
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
 
   if (AccessService.isOrderEntryCustomer()) {
 
-    $scope.cartHeaders = CartService.cartHeaders;
     $scope.numOrdersToDisplay = 6;
     $scope.numCartsToDisplay = 4;
 
@@ -98,7 +104,7 @@ angular.module('bekApp')
     }
   }
 
-  $scope.checkModal = function(){   
+  $scope.checkModal = function(){
     if($modal){
       $modalStack.dismissAll();
     }
@@ -152,24 +158,11 @@ angular.module('bekApp')
     $scope.selectedUserContext = selectedUserContext;
   };
 
-  $scope.departments = [
-    { 'value': '', 'text': 'All'},
-    { 'value': '1', 'text': 'Produce'},
-    { 'value': '2', 'text': 'Frozen'},
-    { 'value': '3', 'text': 'Frozen Meat'},
-    { 'value': '4', 'text': 'Grocery'},
-    { 'value': '5', 'text': 'Boxed Beef'},
-    { 'value': '6', 'text': 'Dairy'},
-    { 'value': '7', 'text': 'Non-Food'},
-    { 'value': '8', 'text': 'Rest. Supply'}];
-
-
   $scope.selectDepartment = function(dept){
-    $scope.departmentNum = dept;
-    $scope.department = $filter('filter')($scope.departments, {value: dept});
+    $scope.department = dept ? dept : $scope.departments[0];
+    $scope.departmentNum = dept.id;
+    // $scope.department = dept.name;
   };
-
-  $scope.selectDepartment('');
 
   // get default selected user context
   if ($scope.isOrderEntryCustomer) {
@@ -239,7 +232,7 @@ angular.module('bekApp')
   document.onclick = function(element){
     $timeout(function() {
       if($scope.displayUserMenu && !$scope.mouseOverDropdown){
-        $scope.displayUserMenu = !$scope.displayUserMenu; 
+        $scope.displayUserMenu = !$scope.displayUserMenu;
       }
     }, 0);
   };
@@ -311,7 +304,7 @@ angular.module('bekApp')
 
   //Submenu for specialty catalogs
   $scope.toggleSpecialCatalogSubmenu = function() {
-    if ($scope.$state !== undefined) {       
+    if ($scope.$state !== undefined) {
       $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
     }
   };
@@ -348,7 +341,7 @@ angular.module('bekApp')
         branch: function() {
           var branchFound,
             branchId = LocalStorage.getBranchId();
-          angular.forEach(branches, function(branch) {
+          angular.forEach($scope.branches, function(branch) {
             if (branch.id.toUpperCase() === branchId.toUpperCase()) {
               branchFound = branch;
             }
@@ -410,7 +403,9 @@ angular.module('bekApp')
     $scope.canViewMarketing = AccessService.canViewMarketing();
     $scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
     $scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
+    $scope.canViewAccessToEmenuManage = AccessService.canViewAccessToEmenuManage();
     $scope.canRunReports = AccessService.canRunReports();
     $scope.isSysAdmin = AccessService.isSysAdmin();
   }
+
 }]);

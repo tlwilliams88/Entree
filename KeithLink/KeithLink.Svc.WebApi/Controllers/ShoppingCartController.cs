@@ -282,7 +282,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<List<ItemValidationResultModel>> retVal = new Models.OperationReturnModel<List<ItemValidationResultModel>>();
             try
             {
-                retVal.SuccessResponse = _shoppingCartLogic.ValidateItems(this.SelectedUserContext, items);
+                retVal.SuccessResponse = _shoppingCartLogic.ValidateItems(this.SelectedUserContext, this.AuthenticatedUser, items);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)

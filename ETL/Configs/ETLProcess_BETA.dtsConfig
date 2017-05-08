@@ -56,6 +56,12 @@
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalId].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\regionalId.SSIS</ConfiguredValue>
 	</Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_DepartmentCategories].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\departmentCategories.SSIS</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_DepartmentSubCategories].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekkecocp1\sys-scr-inetoe$\ftpdata\Prod\Entree\departmentSubCategories.SSIS</ConfiguredValue>
+  </Configuration>
 
   <!-- Web Services -->
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">

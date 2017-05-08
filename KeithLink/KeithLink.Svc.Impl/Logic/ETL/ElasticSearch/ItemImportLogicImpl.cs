@@ -19,6 +19,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.ElasticSearch;
+using KeithLink.Svc.Core.Models.ElasticSearch.Item;
 
 namespace KeithLink.Svc.Impl.Logic.ETL {
     public class ItemImportLogicImpl : IItemImport {
@@ -68,10 +70,24 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 DateTime start = DateTime.Now;
                 _eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import items to ES {0}", start.ToString()));
 
-                var branches = _stagingRepository.ReadAllBranches();
+                DataSet gsData = _stagingRepository.ReadGSDataForItems();
+
+                Dictionary<string, PdmEnrichedItem> pdmDict = BuildPDMDictionary();
+
+                Dictionary<string, List<ItemNutrition>> itemNutritions = BuildNutritionDictionary(gsData);
+
+                Dictionary<string, List<Diet>> itemDiet = BuildDietDictionary(gsData);
+
+                Dictionary<string, Allergen> itemAllergens = BuildAllergenDictionary(gsData);
+
+                Dictionary<string, List<string>> proprietaryItems = 
+                    BuildProprietaryItemDictionary(_stagingRepository.ReadProprietaryItems());
+
+                DataTable branches = _stagingRepository.ReadAllBranches();
 
                 foreach (DataRow row in branches.Rows)
                 {
+                    _eventLog.WriteInformationLog(String.Format("ETL: Import Item Process :  Start Import items to ES branch {0}", row.GetString("BranchId").ToLower()));
                     try
                     {
                         if (!_elasticSearchRepository.CheckIfIndexExist(row.GetString("BranchId").ToLower()))
@@ -86,48 +102,73 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                     {
                         _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error updating indexes or synonyms.  {0} -- {1}", ex1.Message, ex1.StackTrace));
                     }
-                }
 
-                var dataTable = _stagingRepository.ReadFullItemForElasticSearch();
-                var products = new BlockingCollection<ItemUpdate>();
-
-                var gsData = _stagingRepository.ReadGSDataForItems();
-
-                var pdmDict = BuildPDMDictionary();
-                var itemNutritions = BuildNutritionDictionary(gsData);
-                var itemDiet = BuildDietDictionary(gsData);
-                var itemAllergens = BuildAllergenDictionary(gsData);
-                var proprietaryItems = BuildProprietaryItemDictionary(_stagingRepository.ReadProprietaryItems());
-
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    PdmEnrichedItem pdmItem = null;
-
-                    if(pdmDict.ContainsKey(row.GetString("ItemId"))) {
-                        pdmItem = pdmDict[row.GetString("ItemId")];
-                    }
-
-                    products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, 
-                                                           itemAllergens, proprietaryItems, pdmItem));
-                };
-
-                int totalProcessed = 0;
-
-                while (totalProcessed < products.Count)
-                {
                     try
                     {
-                        var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
+                        DataTable dataTable = 
+                            _stagingRepository.ReadFullItemForElasticSearch(row.GetString("BranchId").ToLower());
 
-                        _elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
+                        List<string> ESItems = 
+                            _elasticSearchRepository.ReadListOfProductsByBranch
+                                (row.GetString("BranchId").ToLower());
 
-                        totalProcessed += Configuration.ElasticSearchBatchSize;
+                        BlockingCollection<IESItem> products = new BlockingCollection<IESItem>();
+
+                        foreach (DataRow rowItem in dataTable.Rows)
+                        {
+                            if (rowItem.GetString("BranchId").Equals
+                                (row.GetString("BranchId"), StringComparison.CurrentCultureIgnoreCase))
+                            {
+                                PdmEnrichedItem pdmItem = null;
+
+                                if (pdmDict.ContainsKey(rowItem.GetString("ItemId")))
+                                {
+                                    pdmItem = pdmDict[rowItem.GetString("ItemId")];
+                                }
+
+                                products.Add(PopulateElasticSearchItem(rowItem, itemNutritions, itemDiet,
+                                                                       itemAllergens, proprietaryItems, pdmItem, 
+                                                                       ESItems));
+
+                                ESItems.Remove(rowItem.GetString("ItemId"));
+                            }
+                        };
+
+                        foreach(string toDelete in ESItems)
+                        {
+                            ItemDelete del = new ItemDelete();
+                            del.delete = new RootData();
+                            del.delete._id = toDelete;
+                            del.delete._index = row.GetString("BranchId").ToLower();
+                            products.Add(del);
+                        }
+
+                        int totalProcessed = 0;
+
+                        while (totalProcessed < products.Count)
+                        {
+                            try
+                            {
+                                var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
+
+                                _elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
+
+                                totalProcessed += Configuration.ElasticSearchBatchSize;
+                            }
+                            catch (Exception ex2)
+                            {
+                                _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error importing individual item to ES.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+                            }
+                        }
                     }
-                    catch (Exception ex2)
+                    catch (Exception ex1)
                     {
-                        _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error importing individual item to ES.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+                        _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error updating indexes or synonyms.  {0} -- {1}", ex1.Message, ex1.StackTrace));
                     }
+                    _eventLog.WriteInformationLog(String.Format("ETL: Import Item Process :  End Import items to ES branch {0}", row.GetString("BranchId").ToLower()));
                 }
+
+
 
                 TimeSpan took = DateTime.Now - start;
                 _eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import items to ES.  Process took {0}", took.ToString()));
@@ -139,36 +180,52 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         }
 
-
-		public void ImportUNFIItems()
+        public void ImportUNFIItems()
 		{
 			try
 			{
 				DateTime start = DateTime.Now;
 				_eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import UNFI items to ES {0}", start.ToString()));
 
-				var items = _stagingRepository.ReadUNFIItems();
+                var warehouses = _stagingRepository.ReadDistinctUNFIWarehouses();
 
+				var products = new BlockingCollection<IESItem>();
 
-				var products = new BlockingCollection<ItemUpdate>();
+                var items = _stagingRepository.ReadUNFIItems();
 
-				foreach (DataRow row in items.Rows)
+                foreach (var warehouse in warehouses)
 				{
-					products.Add(PopulateUNFIElasticSearchItem(row));
-				};
-
-				var indexes = products.Select(p => p.index._index).Distinct().ToList();
-
-				foreach (var index in indexes)
-				{
-					if (!_elasticSearchRepository.CheckIfIndexExist(index))
+					if (!_elasticSearchRepository.CheckIfIndexExist(string.Format("unfi_{0}", warehouse)))
 					{
-						_elasticSearchRepository.CreateEmptyIndex(index);
-						_elasticSearchRepository.MapProductProperties(index, GetProductMapping());
+						_elasticSearchRepository.CreateEmptyIndex(string.Format("unfi_{0}", warehouse));
+						_elasticSearchRepository.MapProductProperties(string.Format("unfi_{0}", warehouse), GetProductMapping());
 					}
-				}
-				
-				int totalProcessed = 0;
+
+                    List<string> ESItems =
+                        _elasticSearchRepository.ReadListOfProductsByBranch
+                            (string.Format("unfi_{0}", warehouse));
+
+                    foreach (DataRow row in items.Rows)
+                    {
+                        if (row.GetString("WarehouseNumber").Equals(warehouse))
+                        {
+                            products.Add(PopulateUNFIElasticSearchItem(row, ESItems));
+                        }
+
+                        ESItems.Remove(row.GetString("ProductNumber"));
+                    };
+
+                    foreach (string toDelete in ESItems)
+                    {
+                        ItemDelete del = new ItemDelete();
+                        del.delete = new RootData();
+                        del.delete._id = toDelete;
+                        del.delete._index = string.Format("unfi_{0}", warehouse);
+                        products.Add(del);
+                    }
+                }
+
+                int totalProcessed = 0;
 
 				while (totalProcessed < products.Count)
 				{
@@ -504,9 +561,11 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         /// <param name="allergens"></param>
         /// <param name="proprietaryItems"></param>
         /// <returns></returns>
-        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, 
-                                                     Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, 
-                                                     Dictionary<string, List<string>> proprietaryItems, PdmEnrichedItem pdmData) {
+        private IESItem PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, 
+                                                     Dictionary<string, List<Diet>> diets, 
+                                                     Dictionary<string, Allergen> allergens, 
+                                                     Dictionary<string, List<string>> proprietaryItems, 
+                                                     PdmEnrichedItem pdmData, List<string> existingItems) {
             NutritionalInformation nutInfo = new NutritionalInformation();
             nutInfo.BrandOwner = row.GetString("BrandOwner");
             nutInfo.CountryOfOrigin = row.GetString("CountryOfOrigin");
@@ -534,9 +593,13 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             AdditionalData data = new AdditionalData();
             data.Brand = row.GetString("Brand");
             data.BrandNotAnalyzed = row.GetString("Brand");
-            data.BrandDescription = row.GetString("BrandDescription");
-            data.BrandDescriptionNotAnalyzed = row.GetString("BrandDescription");
-            data.BrandControlLabel = row.GetString("MaxSmrt");
+            data.BrandDescription = (row.GetString("BrandDescription").Length > 0)? 
+                                     row.GetString("BrandDescription") : 
+                                     row.GetString("Brand");
+            data.BrandDescriptionNotAnalyzed = (row.GetString("BrandDescription").Length > 0) ?
+                                     row.GetString("BrandDescription") :
+                                     row.GetString("Brand");
+            data.BrandControlLabel = row.GetString("BrandControlLabel");
             data.Buyer = row.GetString("Buyer");
             data.Cases = row.GetString("Cases");
             data.CategoryId = row.GetString("CategoryId");
@@ -599,28 +662,49 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             index._index = row.GetString("BranchId").ToLower();
             index.data = data;
 
-            ItemUpdate item = new ItemUpdate();
-            item.index = index;
+            if (existingItems.Contains(row.GetString("ItemId")))
+            {
+                ItemUpdate item = new ItemUpdate();
+                item.index = index;
 
-            item.index.data.ItemSpecification = new List<string>();
+                item.index.data.ItemSpecification = new List<string>();
 
-			if (item.index.data.ReplacementItem != "000000")
-				item.index.data.ItemSpecification.Add(ItemSpec_ReplacementItem);
-			if (item.index.data.ReplacedItem != "000000")
-				item.index.data.ItemSpecification.Add(ItemSpec_Replaced);
-			if (item.index.data.ChildNutrition.Equals("y", StringComparison.CurrentCultureIgnoreCase))
-				item.index.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
-            // TODO: Find out why this is commented out
-			//if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
-			//	item.index.data.itemspecification.Add(ItemSpec_NonStock);
-            if (item.index.data.SellSheet.Equals("y", StringComparison.CurrentCultureIgnoreCase))
-                item.index.data.ItemSpecification.Add(ItemSpec_SellSheet_FriendlyName);
+                if (item.index.data.ReplacementItem != "000000")
+                    item.index.data.ItemSpecification.Add(ItemSpec_ReplacementItem);
+                if (item.index.data.ReplacedItem != "000000")
+                    item.index.data.ItemSpecification.Add(ItemSpec_Replaced);
+                if (item.index.data.ChildNutrition.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                    item.index.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
+                if (item.index.data.SellSheet.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                    item.index.data.ItemSpecification.Add(ItemSpec_SellSheet_FriendlyName);
 
-            return item;
+                return item;
+            }
+            else
+            {
+                ItemInsert item = new ItemInsert();
+                item.index = index;
+
+                item.index.data.ItemSpecification = new List<string>();
+
+                if (item.index.data.ReplacementItem != "000000")
+                    item.index.data.ItemSpecification.Add(ItemSpec_ReplacementItem);
+                if (item.index.data.ReplacedItem != "000000")
+                    item.index.data.ItemSpecification.Add(ItemSpec_Replaced);
+                if (item.index.data.ChildNutrition.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                    item.index.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
+                // TODO: Find out why this is commented out
+                //if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                //	item.index.data.itemspecification.Add(ItemSpec_NonStock);
+                if (item.index.data.SellSheet.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                    item.index.data.ItemSpecification.Add(ItemSpec_SellSheet_FriendlyName);
+
+                return item;
+            }
         }
 
 
-		private ItemUpdate PopulateUNFIElasticSearchItem(DataRow row)
+		private IESItem PopulateUNFIElasticSearchItem(DataRow row, List<string> existingItems)
 		{
 
 			var data = new AdditionalData()
@@ -647,7 +731,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 				VendorTiersPerPallet = row.GetNullableInt("VendorTiersPerPallet"),
 				VendorCasesPerPallet = row.GetNullableInt("VendorCasesPerPallet"),
 				CaseQuantity = row.GetNullableInt("CaseQuantity"),
-				PutUp = row.GetString("PutUp"),
+                Cases = row.GetString("OnHandQty"),
+                PutUp = row.GetString("PutUp"),
 				ContSize = row.GetNullableDouble("ContSize"),
 				ContUnit = row.GetString("ContUnit"),
 				TCSCode = row.GetString("TCSCode"),
@@ -680,9 +765,19 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			index._index = string.Format("unfi_{0}", data.WarehouseNumber);
 			index.data = data;
 
-			ItemUpdate item = new ItemUpdate();
-			item.index = index;
-			return item;
+            if (existingItems.Contains(data.MfrItemNumber.ToString()))
+            {
+                ItemUpdate item = new ItemUpdate();
+                item.index = index;
+                return item;
+            }
+            else
+            {
+                ItemInsert item = new ItemInsert();
+                item.index = index;
+                return item;
+            }
+            return null;
 		}
         #endregion
 

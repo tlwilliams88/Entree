@@ -353,7 +353,13 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemBase.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemDelete.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
     <Compile Include="Models\ETL\PdmEnrichedItem.cs" />
+    <Compile Include="Models\Orders\Schemas\ShippingDateRequest.cs">
+      <DependentUpon>ShippingDateRequest.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Models\SiteCatalog\Products\External\IxOneProduct.cs" />
     <Compile Include="Models\SiteCatalog\Products\External\IxOneReturn.cs" />
     <Compile Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.Designer.cs">
@@ -406,6 +412,7 @@
     <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\OrderedFromListRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericSubscriptionQueueRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
@@ -761,7 +768,7 @@
     <Compile Include="Models\ElasticSearch\Item\Allergen.cs" />
     <Compile Include="Models\ElasticSearch\Item\Diet.cs" />
     <Compile Include="Models\ElasticSearch\Item\ItemNutrition.cs" />
-    <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemInsert.cs" />
     <Compile Include="Models\ElasticSearch\Item\NutritionalInformation.cs" />
     <Compile Include="Models\ElasticSearch\Item\RootData.cs" />
     <Compile Include="Models\ETL\CatalogExport.cs" />
@@ -881,6 +888,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\SiteCatalog\SiteCatalogServiceImpl.cs" />
     <Compile Include="Service\Invoices\ExportInvoicesServiceImpl.cs" />
     <Compile Include="Service\ShoppingCart\ShoppingCartServiceImpl.cs" />
     <Compile Include="Service\CatalogCampaignServiceImpl.cs" />
