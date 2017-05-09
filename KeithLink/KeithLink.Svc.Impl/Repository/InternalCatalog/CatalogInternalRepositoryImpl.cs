@@ -29,19 +29,22 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
             }
             catch (Exception ex)
             {
-                if (importProgress.Status == CatalogOperationsStatus.Failed)
-                {
-                    StringBuilder errors = new StringBuilder();
+                StringBuilder errors = new StringBuilder();
 
+                errors.AppendLine("CatalogInternalRepositoryImpl_ImportXML:");
+
+                if (importProgress != null && importProgress.Errors != null && importProgress.Errors.Count > 0)
+                {
                     foreach (CatalogError e in importProgress.Errors)
                     {
                         errors.AppendLine(String.Format("Line: {0} - Message: {1}", e.LineNumber, e.Message));
                     }
 
-                    Exception newException = new Exception(errors.ToString(), ex);
-
-                    throw newException;
                 }
+
+                Exception newException = new Exception(errors.ToString(), ex);
+
+                throw newException;
 
             }
 
