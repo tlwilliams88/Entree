@@ -9,7 +9,7 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService', 'CategoryService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService', 'CategoryService', 'BranchService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -19,17 +19,23 @@ angular.module('bekApp')
       CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
       mandatoryMessages,
       localStorageService,
-      CategoryService
+      CategoryService,
+      BranchService
     ) {
 
   $scope.$state = $state;
   $scope.isMobile = UtilityService.isMobileDevice();
   $scope.isMobileApp = ENV.mobileApp;
   $scope.mandatoryMessages = mandatoryMessages;
+  $scope.branches = branches;
+  if(!$scope.branches) {
+    BranchService.getBranches().then(function(resp){
+      $scope.branches = resp;
+    })
+  }
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
-  $scope.branches = branches;
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
@@ -335,7 +341,7 @@ angular.module('bekApp')
         branch: function() {
           var branchFound,
             branchId = LocalStorage.getBranchId();
-          angular.forEach(branches, function(branch) {
+          angular.forEach($scope.branches, function(branch) {
             if (branch.id.toUpperCase() === branchId.toUpperCase()) {
               branchFound = branch;
             }

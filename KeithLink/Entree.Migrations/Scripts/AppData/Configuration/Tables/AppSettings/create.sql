@@ -1,0 +1,30 @@
+/****** Object:  Table [Configuration].[AppSettings]    Script Date: 10/27/2016 1:05:25 PM ******/
+SET ANSI_NULLS OFF
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [Configuration].[AppSettings](
+	[Key] [varchar](50) NOT NULL,
+	[Value] [varchar](max) NOT NULL,
+	[Comment] [varchar](max) NOT NULL,
+	[Disabled] [bit] NOT NULL DEFAULT ((0)),
+PRIMARY KEY CLUSTERED 
+(
+	[Key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Index [IX_AppSettings_Key]    Script Date: 10/27/2016 1:05:25 PM ******/
+CREATE NONCLUSTERED INDEX [IX_AppSettings_Key] ON [Configuration].[AppSettings]
+(
+	[Key] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+
+GO
