@@ -114,6 +114,12 @@
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001-1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\dbo\Types\BigIntList\BigIntList_0004_0001-12-2_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\dbo\Types\BigIntList\BigIntList_0004_0001-12-2_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\ETL\ETL_0001_0001-1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -132,6 +138,10 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeOrderHistory_AppData\PurgeOrderHistory_AppData_0001_0001-1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDepartments\ReadDepartments_0013_0001-2-2_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDepartments\ReadDepartments_0013_0001-2-2_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0008_2017-02-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0001_0001-1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -590,14 +600,11 @@
     <Content Include="Scripts\AppData\Profile\Tables\Settings\Settings_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\dbo\Tables\AuditLog\AuditLog_0001_0001-01-11_up.sql">
+    <Content Include="Scripts\AppData\dbo\Tables\AuditLog\AuditLog_0001_0001-1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\AppData\dbo\Types\BigIntList\" />
-    <Folder Include="Scripts\AppData\ETL\Stored Procedures\ReadDepartments\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(ProjectDir)SQL" "$(TargetDir)SQL" /E /Y</PostBuildEvent>
