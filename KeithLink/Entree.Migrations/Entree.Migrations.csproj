@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration18.cs" />
     <Compile Include="Migrations\v2017.2.0\Migration17.cs" />
@@ -53,7 +54,7 @@
     <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
-    <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
+    <Compile Include="Migrations\v1.11_Baseline\Migration0001.cs" />
     <Compile Include="Migrations\v1.12.2_es_catalog\Migration10.cs" />
     <Compile Include="Migrations\v1.12.2_es_catalog\Migration9.cs" />
     <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
