@@ -319,26 +319,31 @@ angular.module('bekApp')
         var promise;
         var creatingList = false;
         if (report.listid) {
-          promise = List.update({}, report).$promise;
+          List.update({}, report).$promise.then(function() {
+              $scope.successMessage = '';
+              $scope.errorMessage = '';
+              $scope.inventoryForm.$setPristine();
+
+              toaster.pop('success', 'Successfully saved report.');
+            }, function() {
+              toaster.pop('error', 'Error saving report.');
+            });
         } else {
           $analytics.eventTrack('Run Inventory Valuation', {  category: 'Reports'});
-          promise = List.save({ type: 'InventoryValuation' }, report).$promise;
           creatingList = true;
-        }
+          List.save({ type: 'InventoryValuation' }, report).$promise.then(function() {
+              $scope.successMessage = '';
+              $scope.errorMessage = '';
+              $scope.inventoryForm.$setPristine();
 
-        promise.then(function(response) {
+              toaster.pop('success', 'Successfully saved report.');
+            }, function() {
+              toaster.pop('error', 'Error saving report.');
+            });
 
-          $scope.successMessage = '';
-          $scope.errorMessage = '';
-          $scope.inventoryForm.$setPristine();
+          }
 
-          $scope.sortList('position', true)
-
-          toaster.pop('success', 'Successfully saved report.');
-        }, function() {
-          toaster.pop('error', 'Error saving report.');
-        });
-      };
+        };
 
       /**************
         Rename Report
