@@ -81,10 +81,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\AppData\BranchSupport\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\BranchSupport_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Configuration_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\bakillins.local.configuration.sql">
@@ -111,22 +111,29 @@
     <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\Configuration.MessageTemplates.Bootstrap.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Customers\create.sql">
+    <Content Include="Scripts\AppData\Customers\Customers_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\create.sql">
+    <Content Include="Scripts\AppData\ETL\ETL_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\Migration0011_2017-1-0_down.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_Migration0011_2017-01-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\Migration0011_2017-1-0_up.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_Migration0011_2017-01-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeOrderHistory_AppData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\ProcessWorksheetList_Migration0021_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\ProcessWorksheetList_Migration0021_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeOrderHistory_AppData\PurgeOrderHistory_AppData_Migration0001_0001-01-11_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_Migration0008_2017-02-00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\drop.sql">
@@ -142,6 +149,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Migration0021_v2017-4-0_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Migration0021_v2017-4-0_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Migration0021_v2017-4-0_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Migration0021_v2017-4-0_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\2017.4.0\down.sql">
@@ -225,7 +244,7 @@
     <Content Include="Scripts\AppData\Orders\Stored Procedures\usp_GetLastFiveOrdersForItem\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\Staging_Departments_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\drop.sql">
@@ -266,10 +285,10 @@
     </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\Migration0014-v2017-2-0_down.sql" />
     <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\Migration0014-v2017-2-0_up.sql" />
-    <Content Include="Scripts\AppData\ETL\Functions\ConcatBranchesForItem\create.sql">
+    <Content Include="Scripts\AppData\ETL\Functions\ConcatBranchesForItem\ConcatBranchesForItem_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Functions\initcap\create.sql">
+    <Content Include="Scripts\AppData\ETL\Functions\initcap\initcap_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\OrderedFromList_0014_v2017-2-0_down.sql" />
@@ -385,106 +404,106 @@
     <Content Include="SQL\v2017.2.0\up\templates\Configuration.AppSettings.sql" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\AppData\Configuration\Stored Procedures\CheckAppSettingsForChange\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\CheckAppSettingsForChange\CheckAppSettingsForChange_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Stored Procedures\GetAppSetting\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\GetAppSetting\GetAppSetting_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Stored Procedures\ReadAppSettings\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\ReadAppSettings\ReadAppSettings_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Stored Procedures\SaveAppSetting\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Stored Procedures\SaveAppSetting\SaveAppSetting_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadAddressesToCS\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadAddressesToCS\LoadAddressesToCS_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadOrganizationsToCS\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadOrganizationsToCS\LoadOrganizationsToCS_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadOrgsAndAddressesToCS\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\LoadOrgsAndAddressesToCS\LoadOrgsAndAddressesToCS_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessBEKItemNumbersForUNFIByVendorId\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessBEKItemNumbersForUNFIByVendorId\ProcessBEKItemNumbersForUNFIByVendorId_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessItemHistoryData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessItemHistoryData\ProcessItemHistoryData_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessStagedInvoices\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessStagedInvoices\ProcessStagedInvoices_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\ProcessWorksheetList_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeInternalUserAccess\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeInternalUserAccess\PurgeInternalUserAccess_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadAverageItemUsage\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadAverageItemUsage\ReadAverageItemUsage_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadBranches\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadBranches\ReadBranches_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadBrandControlLabels\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadBrandControlLabels\ReadBrandControlLabels_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadCSUsers\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadCSUsers\ReadCSUsers_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadContractItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadContractItems\ReadContractItems_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadCustomers\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadCustomers\ReadCustomers_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDsrImage\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDsrImage\ReadDsrImage_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDsrInfo\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDsrInfo\ReadDsrInfo_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadInvoices\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadInvoices\ReadInvoices_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadItemGS1Data\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadItemGS1Data\ReadItemGS1Data_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadItemsByBranch\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadItemsByBranch\ReadItemsByBranch_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadParentCategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadParentCategories\ReadParentCategories_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadSubCategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadSubCategories\ReadSubCategories_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFICategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFICategories\ReadUNFICategories_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIDistinctWarehouses\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIDistinctWarehouses\ReadUNFIDistinctWarehouses_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIProducts\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIProducts\ReadUNFIProducts_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFISubCategories\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFISubCategories\ReadUNFISubCategories_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFItemsByWarehouse\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFItemsByWarehouse\ReadUNFItemsByWarehouse_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadWorksheetItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadWorksheetItems\ReadWorksheetItems_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\AddCatalogCampaignHeader\Migration0018_v2017-2-0_up.sql">
@@ -499,121 +518,121 @@
     <Content Include="Scripts\AppData\Orders\Stored Procedures\usp_GetNextControlNumber\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\dbo\Stored Procedures\spCreateAuditLogEntry\create.sql">
+    <Content Include="Scripts\AppData\dbo\Stored Procedures\spCreateAuditLogEntry\spCreateAuditLogEntry_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\BranchSupports_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\BranchSupport\Tables\DsrAliases\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\Tables\DsrAliases\DsrAliases_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\BranchSupport\Tables\Dsrs\create.sql">
+    <Content Include="Scripts\AppData\BranchSupport\Tables\Dsrs\Dsrs_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\AppSettings_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Tables\ExportSettings\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\ExportSettings\ExportSettings_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\ExternalCatalogs\ExternalCatalogs_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\create.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\MessageTemplates_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Customers\Tables\InternalUserAccess\create.sql">
+    <Content Include="Scripts\AppData\Customers\Tables\InternalUserAccess\InternalUserAccess_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Customers\Tables\ItemHistory\create.sql">
+    <Content Include="Scripts\AppData\Customers\Tables\ItemHistory\ItemHistory_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_BidContractDetail\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_BidContractDetail\Staging_BidContractDetail_Migration0001_0001-01-11_up .sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_BidContractHeader\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_BidContractHeader\Staging_BidContractHeader_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Branch\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Branch\Staging_Branch_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_BrandControlLabels\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_BrandControlLabels\Staging_BrandControlLabels_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Brands\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Brands\Staging_Brands_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Category\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Category\Staging_Category_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Customer\Staging_Customer_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_CustomerBid\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_CustomerBid\Staging_CustomerBid_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Dsr\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Dsr\Staging_Dsr_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_EmployeeInfo\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_EmployeeInfo\Staging_EmployeeInfo_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductAllergens\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductAllergens\Staging_FSE_ProductAllergens_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductDiet\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductDiet\Staging_FSE_ProductDiet_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductNutrition\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductNutrition\Staging_FSE_ProductNutrition_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductSpec\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_FSE_ProductSpec\Staging_FSE_ProductSpec_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\Staging_ItemData_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_KNet_Invoice\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_KNet_Invoice\Staging_KNet_Invoice_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_KPay_Invoice\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_KPay_Invoice\Staging_KPay_Invoice_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_NationalIdDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_NationalIdDesc\Staging_NationalIdDesc_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_NationalNumberAndSubDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_NationalNumberAndSubDesc\Staging_NationalNumberAndSubDesc_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_OpenDetailAR\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_OpenDetailAR\Staging_OpenDetailAR_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\Staging_PDM_EnrichedProducts_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_PaidDetail\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PaidDetail\Staging_PaidDetail_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_ProprietaryCustomer\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ProprietaryCustomer\Staging_ProprietaryCustomer_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_ProprietaryItem\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ProprietaryItem\Staging_ProprietaryItem_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalIdDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalIdDesc\Staging_RegionalIdDesc_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalNumberDesc\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_RegionalNumberDesc\Staging_RegionalNumberDesc_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Terms\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Terms\Staging_Terms_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_UNFIProducts\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_UNFIProducts\Staging_UNFIProducts_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_WorksheetItems\create.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_WorksheetItems\Staging_WorksheetItems_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Invoice\Tables\InvoiceItems\create.sql">
@@ -673,7 +692,7 @@
     <Content Include="Scripts\AppData\Profile\Tables\Settings\Settings_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\dbo\Tables\AuditLog\create.sql">
+    <Content Include="Scripts\AppData\dbo\Tables\AuditLog\AuditLog_Migration0001_0001-01-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

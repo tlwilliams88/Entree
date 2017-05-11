@@ -244,8 +244,10 @@
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
     <Compile Include="Interface\Lists\IFavoriteLogic.cs" />
+    <Compile Include="Interface\Lists\IHistoryListLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
+    <Compile Include="Interface\Lists\IListService.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Lists\INoteLogic.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignHeaderRepository.cs" />

@@ -311,6 +311,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Lists\HistoryListLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryWriterImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessageConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessagePublisherImpl.cs" />
@@ -888,6 +889,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\List\ListServiceImpl.cs" />
     <Compile Include="Service\SiteCatalog\SiteCatalogServiceImpl.cs" />
     <Compile Include="Service\Invoices\ExportInvoicesServiceImpl.cs" />
     <Compile Include="Service\ShoppingCart\ShoppingCartServiceImpl.cs" />
