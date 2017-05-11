@@ -144,6 +144,18 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\drop.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\2017.4.0\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\2017.4.0\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\ContractItems\2017.4.0\down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\ContractItems\2017.4.0\up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Marketing\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
