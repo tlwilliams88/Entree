@@ -123,6 +123,12 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\Migration0011_2017-1-0_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\Migration0021_v2017-4-0_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\Migration0021_v2017-4-0_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\PurgeOrderHistory_AppData\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -142,6 +148,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\drop.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Migration0021_v2017-4-0_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Migration0021_v2017-4-0_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Migration0021_v2017-4-0_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Migration0021_v2017-4-0_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Marketing\create.sql">

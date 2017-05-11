@@ -103,6 +103,7 @@ using KeithLink.Svc.Impl.Repository.Templates;
 using KeithLink.Svc.Core.Interface.Templates;
 using KeithLink.Svc.Impl.Service.Invoices;
 using KeithLink.Svc.Impl.Service.SiteCatalog;
+using KeithLink.Svc.Impl.Service.List;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -240,6 +241,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // lists
             builder.RegisterType<FavoriteLogicImpl>().As<IFavoriteLogic>();
             builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
+            builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
             builder.RegisterType<NoteLogicImpl>().As<INoteLogic>();
 
@@ -307,6 +309,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // invoices
             builder.RegisterType<ExportInvoicesServiceImpl>().As<IExportInvoicesService>();
+
+            builder.RegisterType<ListServiceImpl>().As<IListService>();
 
             ///////////////////////////////////////////////////////////////////////////////
             // Environment Specific Classes
