@@ -160,6 +160,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Migration0021_v2017-4-0_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\2017.4.0\down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
