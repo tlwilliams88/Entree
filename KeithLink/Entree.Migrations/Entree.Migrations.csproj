@@ -213,7 +213,7 @@
     <Content Include="Scripts\AppData\Messaging\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\create.sql">
+    <Content Include="Scripts\AppData\Orders\Orders_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\Migration0014-v2017-2-0_down.sql" />
@@ -272,9 +272,9 @@
     <Content Include="Scripts\AppData\ETL\Functions\initcap\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\Migration0014-v2017-2-0_down.sql" />
-    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\Migration0014-v2017-2-0_up.sql" />
-    <Content Include="Scripts\AppData\Profile\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\OrderedFromList_0014_v2017-2-0_down.sql" />
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\OrderedFromList_0014_v2017-2-0_up.sql" />
+    <Content Include="Scripts\AppData\Profile\Profile_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="SQL\v2017.1.0\up\templates\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
@@ -652,25 +652,25 @@
     <Content Include="Scripts\AppData\Messaging\Tables\UserTopicSubscriptions\create.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\IdentityCounter\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\IdentityCounter\IdentityCounter_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryDetail\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryDetail\OrderHistoryDetail_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryHeader\OrderHistoryHeader_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Orders\Tables\UserActiveCarts\create.sql">
+    <Content Include="Scripts\AppData\Orders\Tables\UserActiveCarts\UserActiveCarts_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Profile\Tables\MarketingPreferences\create.sql">
+    <Content Include="Scripts\AppData\Profile\Tables\MarketingPreferences\MarketingPreferences_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Profile\Tables\PasswordResetRequests\create.sql">
+    <Content Include="Scripts\AppData\Profile\Tables\PasswordResetRequests\PasswordResetRequests_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Profile\Tables\Settings\create.sql">
+    <Content Include="Scripts\AppData\Profile\Tables\Settings\Settings_0001_1-11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\dbo\Tables\AuditLog\create.sql">
