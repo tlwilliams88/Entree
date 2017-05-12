@@ -326,7 +326,7 @@ angular.module('bekApp')
           if(listIdtoBeUsed !== 'nonbeklist') {
             listIdtoBeUsed = parseInt(listIdtoBeUsed, 10);
 
-            if(isNaN(listIdtoBeUsed) || !listHeader){
+            if(isNaN(listIdtoBeUsed) || (listIdtoBeUsed == 0 && !listHeader)){
               var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
                   favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
 
