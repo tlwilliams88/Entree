@@ -12,10 +12,10 @@ angular.module('bekApp')
         function ($scope, $state, SessionService, AuthenticationService, UserProfileService) {
            var profile = SessionService.userProfile;
 
-           $scope.passwordData = { 
+           $scope.passwordData = {
                email: profile.emailaddress,
-               originalPassword: '',
-               newPassword: ''
+               originalpassword: '',
+               newpassword: ''
            };
 
            $scope.changePassword = function(passwordData) {
@@ -28,7 +28,7 @@ angular.module('bekApp')
                }, function(errorMessage) {
                    $scope.changePasswordErrorMessage = errorMessage.errorMessage;
                });
-           }; 
+           };
 
            $scope.signOut = function() {
                AuthenticationService.logout();
