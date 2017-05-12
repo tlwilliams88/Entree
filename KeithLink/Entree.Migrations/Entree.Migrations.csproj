@@ -112,7 +112,7 @@
     <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\matt.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\Configuration.MessageTemplates.Bootstrap.sql">
+    <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\MessageTemplates_0001_0001.1.11_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001-1-11_up.sql">
@@ -158,17 +158,16 @@
     <Content Include="Scripts\AppData\Invoice\Tables\Invoices\Invoices_0001_1-11_up.sql" />
     <Content Include="Scripts\AppData\Invoice\Tables\Terms\Terms_0001_1-11_up.sql" />
     <Content Include="Scripts\AppData\List\List_0001_1-11_up.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0003_1-12_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0003_1-12_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_1-12_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_1-12_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_up.sql" />
-    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0001_1-11_up.sql" />
-    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_1-12_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_1-12_up.sql" />
-    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_1-12_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_1-12_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_1.12_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_1.12_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_1.12_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_1.12_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\HistoryDetail\HistoryDetail_0021_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -181,9 +180,10 @@
     <Content Include="Scripts\AppData\List\Tables\HistoryHeader\HistoryHeader_0021_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0001_1-11_up.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0003_1-12_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0003_1-12_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0001_1.11_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0003_1.12_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0004_1.12_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0003_1.12_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ListShares\ListShares_0001_1-11_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\Lists\Lists_0001_1-11_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Marketing_0001_1-11_up.sql" />
@@ -191,12 +191,12 @@
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\AddCatalogCampaignHeader\AddCatalogCampaignHeader_0018_2017-2-0_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\AddCatalogCampaignItemByHeader\AddCatalogCampaignItemByHeader_0018_2017-2-0_down.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\AddCatalogCampaignItemByHeader\AddCatalogCampaignItemByHeader_0018_2017-2-0_up.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0009_1-12-2_down.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0009_1-12-2_up.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0010_1-12-2_down.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0010_1-12-2_up.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017-2-0_down.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017-2-0_up.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0009_1.12.2_down.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0009_1.12.2_up.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0010_1.12.2_down.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0010_1.12.2_up.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.2.0_down.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.2.0_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignItemsByHeader\GetAllCatalogCampaignItemsByHeader_0009_1-12-2_down.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignItemsByHeader\GetAllCatalogCampaignItemsByHeader_0009_1-12-2_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\GetCatalogCampaignHeaderbyUri_0010_1-12-2_down.sql" />

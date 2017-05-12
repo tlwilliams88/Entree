@@ -1,1 +1,0 @@
-﻿CREATE TYPE dbo.BigIntList AS TABLE (Id bigint NOT NULL PRIMARY KEY)
