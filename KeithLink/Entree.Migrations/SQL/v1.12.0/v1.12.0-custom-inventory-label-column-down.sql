@@ -1,4 +1,4 @@
-﻿USE BEK_Commerce_AppData
+﻿
 GO
 ALTER TABLE [List].[CustomInventoryItems] DROP COLUMN Label
 GO

@@ -1,4 +1,4 @@
-USE BEK_Commerce_AppData
+
 
 GO
 -- Clean up bad data created from previous version
