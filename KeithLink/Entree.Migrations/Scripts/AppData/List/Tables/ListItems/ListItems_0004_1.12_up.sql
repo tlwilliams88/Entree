@@ -7,3 +7,5 @@ DELETE FROM [List].[ListItems]
 			LEFT JOIN [List].[CustomInventoryItems] c ON c.Id = l.CustomInventoryItemId
 			WHERE l.CustomInventoryItemId IS NOT NULL
 			AND   c.Id IS NULL)
+
+GO

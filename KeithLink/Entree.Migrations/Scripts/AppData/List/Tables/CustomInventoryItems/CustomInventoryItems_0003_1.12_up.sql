@@ -1,6 +1,3 @@
-USE BEK_Commerce_AppData
-GO
-
 CREATE TABLE [List].[CustomInventoryItems] (
 	Id BIGINT PRIMARY KEY IDENTITY(1,1) NOT NULL,
 	ItemNumber VARCHAR(25) NOT NULL,
@@ -18,4 +15,6 @@ CREATE TABLE [List].[CustomInventoryItems] (
 	CreatedUtc DATETIME NOT NULL DEFAULT (getutcdate()),
 	ModifiedUtc DATETIME NOT NULL DEFAULT (getutcdate())
 )
-GO
+
+GO-- Add label column to custom inventory items
+ALTER TABLE [List].[CustomInventoryItems] ADD Label nvarchar(150)  NULL
