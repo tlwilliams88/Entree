@@ -15,7 +15,7 @@
         <li class="cart" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: 2">
           <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
           <div class="cart-dropdown__info">
-            <p style="display: block; width: 100%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+            <p>
               <span><strong>{{cart.name}}</strong></span>
             </p>
             Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}

@@ -246,6 +246,13 @@
       max-width: 170px;
       color: $color-font;
     }
+    .cart-dropdown__info p {
+      display: block;
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
     .btn {
       margin-top: 10px;
     }
