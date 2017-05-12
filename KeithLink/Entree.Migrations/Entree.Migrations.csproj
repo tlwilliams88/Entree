@@ -113,7 +113,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\MessageTemplates_0001_0001.11.00_up.sql" />
-    <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_up.sql">
+    <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_up.sql" />
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0014_2017.02.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0014_2017.02.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0016_2017.02.00_up.sql" />
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0016_2017.02.00_down.sql" />
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0017_2017.02.00_up.sql" />
+    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0017_2017.02.00_down.sql" />
+    <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\Seed\MessageTemplatesSeed_0011_2017.01.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\dbo\Types\BigIntList\BigIntList_0004_0001-12-02_down.sql" />
@@ -121,6 +132,10 @@
     <Content Include="Scripts\AppData\ETL\ETL_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0015_2017-02-00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0015_2017-02-00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0007_2017-01-00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0007_2017-01-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0011_2017-01-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -154,6 +169,19 @@
     <Content Include="Scripts\AppData\List\List_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDepartments\ReadDepartments_0013_2017-02-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadDepartments\ReadDepartments_0013_2017-02-00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0008_2017-02-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0013_2017-02-00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0013_2017-02-00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0006_2017-01-00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0006_2017-01-00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_down.sql" />
@@ -174,7 +202,7 @@
     <Content Include="Scripts\AppData\List\Tables\HistoryHeader\HistoryHeader_0021_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0001_1.11_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0003_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0004_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ListItems\ListItems_0003_0001.12.00_up.sql" />
@@ -189,8 +217,6 @@
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0009_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0010_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0010_0001.12.00_up.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.2.0_down.sql" />
-    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.2.0_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignItemsByHeader\GetAllCatalogCampaignItemsByHeader_0009_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignItemsByHeader\GetAllCatalogCampaignItemsByHeader_0009_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\GetCatalogCampaignHeaderbyUri_0010_0001.12.00_down.sql" />
@@ -201,6 +227,8 @@
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\GetCatalogCampaignHeader_0010_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignItemByUri\GetCatalogCampaignItemByUri_0018_2017.02.00_down.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignItemByUri\GetCatalogCampaignItemByUri_0018_2017.02.00_up.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.02.00_down.sql" />
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.02.00_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\UpdateCatalogCampaignHeader\UpdateCatalogCampaignHeader_0018_2017.02.00_down.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\UpdateCatalogCampaignHeader\UpdateCatalogCampaignHeader_0018_2017.02.00_up.sql" />
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\UpdateCatalogCampaignItemByHeader\UpdateCatalogCampaignItemByHeader_0018_2017.02.00_down.sql" />
@@ -220,10 +248,16 @@
     <Content Include="Scripts\AppData\Orders\Orders_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\Staging_Departments_0013_2017.02.00_down.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\Staging_Departments_0013_2017.02.00_down.sql" />
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignHeader\CatalogCampaignHeader_0018_2017.02.00_up.sql" />
+    <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignHeader\CatalogCampaignHeader_0018_2017.02.00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\Staging_Departments_0013_2017-02-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\drop.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\Staging_Departments_0013_2017-02-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\Staging_PDM_EnrichedProducts_0006_2017-01-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Functions\ConcatBranchesForItem\ConcatBranchesForItem_0001_0001.11.00_up.sql">
@@ -247,9 +281,7 @@
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryDetail\Constraints\OrderHistoryDetailConstraint_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Profile\Profile_0001_0001.11.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Scripts\AppData\Profile\Profile_0001_0001.11.00_up.sql" />
     <Content Include="SQL\v2017.1.0\up\templates\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
     <Content Include="SQL\v2017.2.0\down\appsettings\ValidPublicApiTokens_down.sql" />
     <Content Include="SQL\v2017.2.0\down\appsettings\BrandsToExclude_down.sql" />
@@ -547,7 +579,8 @@
     <Content Include="Scripts\AppData\ETL\Tables\Staging_OpenDetailAR\Staging_OpenDetailAR_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\Staging_PDM_EnrichedProducts_0001_0001.11.00_up.sql">
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\Staging_PDM_EnrichedProducts_0001_0001.11.00_up.sql" />
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\Staging_PDM_EnrichedProducts_0006_2017-01-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_PaidDetail\Staging_PaidDetail_0001_0001.11.00_up.sql">
