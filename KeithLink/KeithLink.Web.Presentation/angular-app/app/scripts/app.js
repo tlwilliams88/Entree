@@ -202,19 +202,9 @@ angular
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getMessages(notificationParams);
       NotificationService.getUnreadMessageCount();
+
     }
 
-    ListService.getListHeaders().then(function(listheaders){
-      $rootScope.listHeaders = listheaders;
-    })
-
-    CartService.getCartHeaders().then(function(cartheaders) {
-      $rootScope.cartsHeaders = cartheaders;
-    })
-
-    OrderService.getChangeOrders().then(function(changeorders) {
-      $rootScope.changeOrders = changeorders;
-    })
 
     // remove lists and carts from memory
     if (fromState.data && toState.data) {
