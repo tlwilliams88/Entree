@@ -162,10 +162,9 @@ angular.module('bekApp')
       changePassword: function(passwordData) {
         var deferred = $q.defer();
 
-        passwordData.newpassword = encodeURIComponent(passwordData.confirmPassword);
-        delete passwordData.confirmPassword;
-        passwordData.originalpassword = encodeURIComponent(passwordData.originalPassword);
-
+        passwordData.newPassword = encodeURIComponent(passwordData.newPassword);
+        passwordData.originalPassword = encodeURIComponent(passwordData.originalPassword);
+ 
         $http.put('/profile/password', passwordData).then(function(response) {
           $log.debug(response);
           if (response.data.successResponse === true) {
