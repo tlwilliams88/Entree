@@ -49,7 +49,7 @@ angular.module('bekApp')
     //   file: avatarFile.base64
     // };
     var file = {
-      name: $scope.files[0].name, 
+      name: $scope.files[0].name,
       file: $scope.files[0]
     };
     UserProfileService.uploadAvatar(file).then(refreshAvatarUrl);
@@ -68,10 +68,10 @@ angular.module('bekApp')
     $scope.updateProfileForm.$setPristine();
   };
 
-  $scope.updateUserProfile = function(userProfile) {     
+  $scope.updateUserProfile = function(userProfile) {
     userProfile.email = userProfile.emailaddress;
     $scope.updateProfileErrorMessage = null;
-    
+
     UserProfileService.updateUserProfile(userProfile).then(function(profile) {
       $scope.$parent.userProfile = profile;
       $scope.updateProfileForm.$setPristine();
@@ -89,8 +89,8 @@ angular.module('bekApp')
       $scope.changePasswordData = {};
       $scope.changePasswordForm.$setPristine();
       $scope.displayMessage('success', 'Successfully changed password.');
-    }, function (errorMessage) {
-      $scope.changePasswordErrorMessage = errorMessage;
+    }, function (error) {
+      $scope.changePasswordErrorMessage = error.errorMessage;
       $scope.displayMessage('error', 'Error updating profile.');
     });
   };

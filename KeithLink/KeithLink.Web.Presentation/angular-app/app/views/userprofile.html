@@ -56,11 +56,11 @@
         <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
 
         <div class="col-md-4">
-          <input 
-            type="text" 
-            class="form-control form-control-lg" 
+          <input
+            type="text"
+            class="form-control form-control-lg"
             ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/"
-            id="phoneNumber" 
+            id="phoneNumber"
             name="phoneNumber"
             ng-model="userProfile.phonenumber">
         </div>
@@ -70,12 +70,12 @@
 
         <div class="col-md-6">
           <!-- <div class="select-div"> -->
-          <select 
+          <select
             ng-required="!isOrderEntryCustomer"
-            name="branch" 
-            id="branch" 
+            name="branch"
+            id="branch"
             class="form-control form-control-lg"
-            ng-options="branch.id as branch.name for branch in branches" 
+            ng-options="branch.id as branch.name for branch in branches"
             ng-model="userProfile.branchid">
           </select>
           <!-- </div> -->
@@ -109,7 +109,7 @@
             ng-show="changePasswordForm.originalPassword.$error.required && changePasswordForm.originalPassword.$dirty"
             class="text-red">Password is required</span>
           <input type="password" class="form-control form-control-lg" required id="originalPassword"
-                 name="originalPassword" ng-model="changePasswordData.originalpassword">
+                 name="originalPassword" ng-model="changePasswordData.originalPassword">
         </div>
       </div>
       <div class="form-group ">
@@ -122,7 +122,7 @@
             ng-show="changePasswordForm.newPassword.$error.passwordRequirements && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.required"
             class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Minimum length is 8 characters. Cannot contain any part of your name or email address.</span>
           <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" required
-            password-requirements username="{{userProfile.username}}" first-name="{{userProfile.firstname}}" last-name="{{userProfile.lastname}}" ng-model="changePasswordData.newpassword">
+            password-requirements username="{{userProfile.username}}" first-name="{{userProfile.firstname}}" last-name="{{userProfile.lastname}}" ng-model="changePasswordData.newPassword">
         </div>
       </div>
       <div class="form-group ">
@@ -136,7 +136,7 @@
             ng-show="changePasswordForm.confirmPassword.$error.matchInput && changePasswordForm.confirmPassword.$dirty"
             class="text-red">Passwords do not match</span>
           <input type="password" class="form-control form-control-lg" name="confirmPassword" id="confirmPassword"
-                 required match-input="changePasswordData.newpassword"
+                 required match-input="changePasswordData.newPassword"
                  ng-model="changePasswordData.confirmNewpassword">
         </div>
       </div>
@@ -150,17 +150,17 @@
       </div>
     </form>
   </div>
- 
+
   <div class="col-md-6" ng-show="isOrderEntryCustomer" ng-controller="CustomerController">
     <h2>Assigned Customers</h2>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
     <form name="customerSearchForm" class="search-form">
       <div class="input-group">
-        <input 
-          ng-model="customerSearchTerm" 
-          type="text" 
-          class="form-control" 
+        <input
+          ng-model="customerSearchTerm"
+          type="text"
+          class="form-control"
           placeholder="Filter customers by name or number" />
         <span class="input-group-btn">
           <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default icon-search"></button>
