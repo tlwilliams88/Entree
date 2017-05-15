@@ -1,7 +1,3 @@
-
-
-GO
-
 CREATE TABLE [List].[HistoryDetail] (
     [Id]					BIGINT			PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [ParentHistoryHeaderId] BIGINT          DEFAULT 0 NOT NULL,

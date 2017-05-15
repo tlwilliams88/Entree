@@ -1,7 +1,3 @@
-
-
-GO
-
 CREATE TABLE [List].[HistoryHeader] (
     [Id]				BIGINT			PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [CustomerNumber]    [nvarchar](10)	NULL,

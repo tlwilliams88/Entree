@@ -91,40 +91,40 @@
     <Content Include="Scripts\AppData\Configuration\Configuration_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\bakillins.local.configuration.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.Beta.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\Configuration.AppSettings.Bootstrap.Beta.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.local.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\Configuration.AppSettings.Bootstrap.local.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.Production.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\Configuration.AppSettings.Bootstrap.Production.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Configuration.AppSettings.Bootstrap.QA.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\Configuration.AppSettings.Bootstrap.QA.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\jeremy.local.configuration.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\jeremy.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\matt.local.configuration.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\matt.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\MessageTemplates_0001_0001.11.00_up.sql" />
+    <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\Seed\MessageTemplatesSeed_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\Customers\Customers_0001_0001.11.00_up.sql" />
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0014_2017.02.00_down.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\AppSettingsSeed_0014_2017.02.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0014_2017.02.00_up.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\AppSettingsSeed_0014_2017.02.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0016_2017.02.00_up.sql" />
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0016_2017.02.00_down.sql" />
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0017_2017.02.00_up.sql" />
-    <Content Include="Scripts\AppData\Configuration\Seed\AppSettings\Seed\AppSettingsSeed_0017_2017.02.00_down.sql" />
-    <Content Include="Scripts\AppData\Configuration\Seed\MessageTemplates\Seed\MessageTemplatesSeed_0011_2017.01.00_up.sql">
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\AppSettingsSeed_0016_2017.02.00_up.sql" />
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\AppSettingsSeed_0016_2017.02.00_down.sql" />
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\AppSettingsSeed_0017_2017.02.00_up.sql" />
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\AppSettingsSeed_0017_2017.02.00_down.sql" />
+    <Content Include="Scripts\AppData\Configuration\Tables\MessageTemplates\Seed\MessageTemplatesSeed_0011_2017.01.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\dbo\Types\BigIntList\BigIntList_0004_0001-12-02_down.sql" />
@@ -182,6 +182,9 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0006_2017-01-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_down.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_down.sql" />
