@@ -45,7 +45,7 @@ angular
   //googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
   //googleAnalyticsCordovaProvider.debug = true; // default: false
 
-  AnalyticsProvider.setAccount('UA-58495462-2');
+  AnalyticsProvider.setAccount(ENV.googleAnalytics);
   AnalyticsProvider.useECommerce(true, false);
 
   // configure loading bar

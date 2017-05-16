@@ -14,8 +14,8 @@ angular.module('bekApp')
 
            $scope.passwordData = {
                email: profile.emailaddress,
-               originalpassword: '',
-               newpassword: ''
+               originalPassword: '',
+               newPassword: ''
            };
 
            $scope.changePassword = function(passwordData) {
