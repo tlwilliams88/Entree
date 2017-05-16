@@ -48,22 +48,21 @@
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
-    <Compile Include="Migrations\v1.12.2_es_catalog\Migration10.cs" />
-    <Compile Include="Migrations\v1.12.2_es_catalog\Migration9.cs" />
-    <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
-    <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
-    <Compile Include="Migrations\v2017.1.0\Migration11.cs" />
-    <Compile Include="Migrations\v2017.1.0\Migration12.cs" />
-    <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
-    <Compile Include="Migrations\v2017.1.0\Migration7.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration13.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration14.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration15.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration16.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration17.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration18.cs" />
-    <Compile Include="Migrations\v2017.2.0\Migration8.cs" />
-    <Compile Include="Migrations\v2017.4.0\Migration21.cs" />
+    <Compile Include="Migrations\v0001.12.02\Migration0010.cs" />
+    <Compile Include="Migrations\v0001.12.02\Migration0009.cs" />
+    <Compile Include="Migrations\v0001.12.00\Migration0004.cs" />
+    <Compile Include="Migrations\v2017.01.00\Migration0011.cs" />
+    <Compile Include="Migrations\v2017.01.00\Migration0012.cs" />
+    <Compile Include="Migrations\v2017.01.00\Migration0006.cs" />
+    <Compile Include="Migrations\v2017.01.00\Migration0007.cs" />
+    <Compile Include="Migrations\v2017.02.00\Migration0013.cs" />
+    <Compile Include="Migrations\v2017.02.00\Migration0014.cs" />
+    <Compile Include="Migrations\v2017.02.00\Migration0015.cs" />
+    <Compile Include="Migrations\v2017.02.00\Migration0016.cs" />
+    <Compile Include="Migrations\v2017.02.00\Migration0017.cs" />
+    <Compile Include="Migrations\v2017.02.00\Migration0018.cs" />
+    <Compile Include="Migrations\v2017.02.00\Migration0008.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0021.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -582,7 +581,6 @@
     <Content Include="Scripts\AppData\ETL\Tables\Staging_OpenDetailAR\Staging_OpenDetailAR_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\Staging_PDM_EnrichedProducts_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Tables\Staging_PDM_EnrichedProducts\Staging_PDM_EnrichedProducts_0006_2017-01-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -638,7 +636,7 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(ProjectDir)SQL" "$(TargetDir)SQL" /E /Y</PostBuildEvent>
+    <PostBuildEvent>XCOPY "$(ProjectDir)Scripts" "$(TargetDir)SQL" /E /Y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

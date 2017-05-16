@@ -1,4 +1,4 @@
-﻿using Entree.Migrations.Migrations.Helpers;
+﻿using Entree.Migrations.Helpers;
 
 using FluentMigrator;
 
