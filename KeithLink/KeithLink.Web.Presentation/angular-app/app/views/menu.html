@@ -292,6 +292,7 @@
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li class="mobile-menu-item"><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu">
+          <a class="hidden-xs" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li class="mobile-menu-item"><span class="icon-comment" style="font-size: 20px;"></span></li></a>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li class="mobile-menu-item"><span class="icon-search"></span></li></a>
           <li class="mobile-menu-item" ng-if="canCreateOrders">
             <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
@@ -397,6 +398,10 @@
         </div>
 
         <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10 margin-top-3 margin-right-5" style="margin-left:none; padding-left:none; display:inline-flex;">
+
+          <div style="margin-top: 2%; margin-right: 10px;">
+            <a class="hidden-md" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><span class="icon-comment margin-right-5" style="font-size: 20px;"></span><span class="show-icon-only" style="width:80%">Submit Feedback</span></a>
+          </div>
 
           <div class="mobile-margin-right-15 desktop-margin-right-10" style="display: inline-flex; width: 200px;">
             <div header-buttons>
