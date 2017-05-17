@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entree.Migrations.Migrations.Helpers
+namespace Entree.Migrations.Helpers
 {
     public static class ScriptsCollectionHelper
     {
@@ -21,8 +21,8 @@ namespace Entree.Migrations.Migrations.Helpers
             if (migrationNumber.Length < 4)
                 throw new ApplicationException(string.Format("Migration {0} is not valid. A four or more character string is required"));
 
-            if (direction != "up" || direction != "down")
-                throw new ApplicationException(string.Format("Cannot migration in {0} direction. Expecint 'up' or 'down'", direction));
+            if (direction != "up" && direction != "down")
+                throw new ApplicationException(string.Format("Cannot migration in {0} direction. Expect 'up' or 'down'", direction));
 
             if (Directory.Exists(@"Scripts\") == false) {
                 throw new FileNotFoundException("Directory 'Scripts\' not found.");
