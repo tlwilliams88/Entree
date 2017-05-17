@@ -245,6 +245,7 @@
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
     <Compile Include="Interface\Lists\IFavoriteLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryListLogic.cs" />
+    <Compile Include="Interface\Lists\IHistoryListRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
     <Compile Include="Interface\Lists\IListService.cs" />
@@ -337,6 +338,8 @@
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
     <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
+    <Compile Include="Models\Lists\History\HistoryListDetail.cs" />
+    <Compile Include="Models\Lists\History\HistoryListHeader.cs" />
     <Compile Include="Models\Lists\InHistoryReturnModel.cs" />
     <Compile Include="Models\Lists\ListCopyResultModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportModel.cs" />

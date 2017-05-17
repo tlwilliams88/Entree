@@ -13,6 +13,8 @@ namespace Entree.Migrations {
             Execute.Script(@"Scripts\AppData\List\Tables\HistoryHeader\HistoryHeader_0021_2017-04-00_up.sql");
             Execute.Script(@"Scripts\AppData\List\Tables\HistoryDetail\HistoryDetail_0021_2017-04-00_up.sql");
             Execute.Script(@"Scripts\AppData\ETL\Stored Procedures\ProcessWorksheetList\ProcessWorksheetList_0021_2017-04-00_up.sql");
+            Execute.Script(@"Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_up.sql");
+            Execute.Script(@"Scripts\AppData\List\Stored Procedures\ReadHistoryDetailsByParentId\ReadHistoryDetailsByParentId_0021_2017-04-00_up.sql");
         }
 
         public override void Down() {

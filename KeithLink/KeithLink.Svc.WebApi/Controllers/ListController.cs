@@ -39,6 +39,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         private readonly IAuditLogRepository _auditLogRepo;
         private readonly IListLogic _listLogic;
         private readonly IListRepository _listRepo;
+        private readonly IListService _listService;
         private readonly IExportSettingLogic _exportLogic;
         private readonly IEventLogRepository _elRepo;
         private readonly IUserProfileLogic _profileLogic;
@@ -55,13 +56,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="auditLogRepo"></param>
         /// <param name="listRepo"></param>
         public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic,
-                              IEventLogRepository elRepo, IAuditLogRepository auditLogRepo, IListRepository listRepo)
+                              IEventLogRepository elRepo, IAuditLogRepository auditLogRepo, IListRepository listRepo, IListService listService)
             : base(profileLogic) {
             _auditLogRepo = auditLogRepo;
             _listLogic = listLogic;
             _profileLogic = profileLogic;
             _exportLogic = exportSettingsLogic;
             _elRepo = elRepo;
+            _listService = listService;
             _listRepo = listRepo;
         }
         #endregion
@@ -765,6 +767,128 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             return ret;
         }
+
+        /// <summary>
+        /// Retrieve list by type for the authenticated user
+        /// </summary>
+        /// <param name="type">List type</param>
+        /// <param name="headerOnly">Header only or details?</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("list2/type/{type}")]
+        public OperationReturnModel<List<ListModel>> List2(ListType type, bool headerOnly = false)
+        {
+            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
+            try
+            {
+                ret.SuccessResponse = _listService.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Retrieve all list for the authenticated user
+        /// </summary>
+        /// <param name="header">Headonly only or details?</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("list2/")]
+        public OperationReturnModel<List<ListModel>> List2(bool header = false)
+        {
+            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
+            try
+            {
+                ret.SuccessResponse = _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, header);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("list2/{listId}")]
+        public OperationReturnModel<PagedListModel> pagedList2(long listId, PagingModel paging)
+        {
+            OperationReturnModel<PagedListModel> ret = new OperationReturnModel<PagedListModel>();
+            try
+            {
+                if (!string.IsNullOrEmpty(paging.Terms))
+                {
+                    //Build filter
+                    paging.Filter = new FilterInfo()
+                    {
+                        Field = "ItemNumber",
+                        FilterType = "contains",
+                        Value = paging.Terms,
+                        Condition = "||",
+                        Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = paging.Terms, FilterType = "contains" },
+                                                           new FilterInfo() { Condition = "||", Field = "Name", Value = paging.Terms, FilterType = "contains" } }
+                    };
+                    if (paging.Terms.IndexOf(' ') > -1)
+                    {
+                        string[] words = paging.Terms.Split(' ');
+                        paging.Filter = new FilterInfo()
+                        {
+                            Field = "ItemNumber",
+                            FilterType = "contains",
+                            Value = paging.Terms,
+                            Condition = "||",
+                            Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "&&", Field = "Label", Value = words[0], FilterType = "contains" },
+                                                           new FilterInfo() { Condition = "&&", Field = "Name", Value = words[0], FilterType = "contains" } }
+                        };
+                        foreach (string word in words)
+                        {
+                            paging.Filter.Filters[0].Filters = new List<FilterInfo>();
+                            paging.Filter.Filters[0].Filters.Add
+                                (new FilterInfo()
+                                {
+                                    Condition = "&&",
+                                    Field = "Label",
+                                    Value = word,
+                                    FilterType = "contains"
+                                });
+                            paging.Filter.Filters[1].Filters = new List<FilterInfo>();
+                            paging.Filter.Filters[1].Filters.Add
+                                (new FilterInfo()
+                                {
+                                    Condition = "&&",
+                                    Field = "Name",
+                                    Value = word,
+                                    FilterType = "contains"
+                                });
+                        }
+                    }
+                }
+                //var stopWatch = new System.Diagnostics.Stopwatch(); //Temp: Remove
+                //stopWatch.Start();
+                var list = _listService.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, paging);
+                //stopWatch.Stop();
+                //elRepo.WriteInformationLog(string.Format("Total time to retrieve List {0}: {1}ms", listId, stopWatch.ElapsedMilliseconds));
+
+                ret.SuccessResponse = list;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("pagedList", ex);
+            }
+            return ret;
+        }
+
         #endregion
     }
 }

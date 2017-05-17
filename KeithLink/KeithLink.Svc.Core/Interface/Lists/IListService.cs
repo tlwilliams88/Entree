@@ -13,5 +13,12 @@ namespace KeithLink.Svc.Core.Interface.Lists
     public interface IListService
     {
         List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
+
+        List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
+
+        PagedListModel ReadPagedList(UserProfile user,
+                                     UserSelectedContext catalogInfo,
+                                     long Id,
+                                     Core.Models.Paging.PagingModel paging);
     }
 }
