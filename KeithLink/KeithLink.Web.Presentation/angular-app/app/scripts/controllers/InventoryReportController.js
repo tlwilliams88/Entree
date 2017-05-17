@@ -93,9 +93,9 @@ angular.module('bekApp')
         }
 
         if(report) {
-          for(var i = 0; i < report.items.length; i++) {
-            report.items[i].quantity = 0;
-          }
+          report.items.forEach(function(item) {
+            item.quantity = 0;
+          })
             $scope.report = report;
             updatePositions();
         }
@@ -105,7 +105,7 @@ angular.module('bekApp')
       function updatePositions() {
 
         var newPosition = 1;
-        angular.forEach($scope.report.items.slice(0, $scope.report.items.length), function(item, index) {
+        $scope.report.items.slice(0, $scope.report.items.length).forEach(function(item, index) {
           if(!item.isdeleted){
               item.position = newPosition;
               item.editPosition = newPosition;
