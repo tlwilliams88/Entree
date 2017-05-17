@@ -105,7 +105,7 @@ angular.module('bekApp')
       function updatePositions() {
 
         var newPosition = 1;
-        $scope.report.items.slice(0, $scope.report.items.length).forEach(function(item, index) {
+        $scope.report.items.forEach(function(item, index) {
           if(!item.isdeleted){
               item.position = newPosition;
               item.editPosition = newPosition;
