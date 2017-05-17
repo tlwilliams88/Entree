@@ -27,7 +27,7 @@ angular.module('bekApp')
                 text: profile.defaultcustomer !== null ? profile.defaultcustomer.displayname : '',
                 customer: profile.defaultcustomer
               };
-            
+
               LocalStorage.setSelectedCustomerInfo(userSelectedContext);
             }
 
@@ -48,13 +48,13 @@ angular.module('bekApp')
         });
       },
 
-      validateToken: function(token) {        
+      validateToken: function(token) {
         var promise = $http.post('/profile/forgotpassword/validatetoken/', { token: token });
         return UtilityService.resolvePromise(promise);
 
       },
 
-      resetPassword: function(email) {          
+      resetPassword: function(email) {
         var promise = $http.post('/profile/forgotpassword?emailAddress='+email);
         return UtilityService.resolvePromise(promise);
       },
@@ -81,7 +81,7 @@ angular.module('bekApp')
           var profile = data.userProfiles[0];
           $log.debug(profile);
           profile.displayRole = AccessService.getRoleDisplayString(profile.rolename);
-          Service.updateDisplayName(profile);  
+          Service.updateDisplayName(profile);
           return profile;
         });
       },
@@ -111,7 +111,7 @@ angular.module('bekApp')
         var config = {
           params: params
         };
-        
+
         var promise = $http.get('/profile/users', config);
 
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
@@ -153,8 +153,8 @@ angular.module('bekApp')
           //to local storage
           if(loggedinprofile.userid === profile.userid){
             SessionService.userProfile = profile;
-          } 
-          Service.updateDisplayName(profile);        
+          }
+          Service.updateDisplayName(profile);
           return profile;
         });
       },
@@ -162,10 +162,9 @@ angular.module('bekApp')
       changePassword: function(passwordData) {
         var deferred = $q.defer();
 
-        passwordData.confirmNewpassword = encodeURIComponent(passwordData.confirmNewpassword);
-        passwordData.newpassword = encodeURIComponent(passwordData.newpassword);
-        passwordData.originalpassword = encodeURIComponent(passwordData.originalpassword);
-
+        passwordData.newPassword = encodeURIComponent(passwordData.newPassword);
+        passwordData.originalPassword = encodeURIComponent(passwordData.originalPassword);
+ 
         $http.put('/profile/password', passwordData).then(function(response) {
           $log.debug(response);
           if (response.data.successResponse === true) {
