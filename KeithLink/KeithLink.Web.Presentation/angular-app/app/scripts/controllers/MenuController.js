@@ -9,7 +9,7 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService', 'CategoryService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService', 'OrderService', 'mandatoryMessages', 'localStorageService', 'CategoryService', 'BranchService',
     function (
       $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
@@ -19,17 +19,23 @@ angular.module('bekApp')
       CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService, OrderService, // bek custom services
       mandatoryMessages,
       localStorageService,
-      CategoryService
+      CategoryService,
+      BranchService
     ) {
 
   $scope.$state = $state;
   $scope.isMobile = UtilityService.isMobileDevice();
   $scope.isMobileApp = ENV.mobileApp;
   $scope.mandatoryMessages = mandatoryMessages;
+  $scope.branches = branches;
+  if(!$scope.branches) {
+    BranchService.getBranches().then(function(resp){
+      $scope.branches = resp;
+    })
+  }
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
-  $scope.branches = branches;
   $scope.userGuideUrl = '/Assets/help/User_Guide.pdf';
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
@@ -49,7 +55,7 @@ angular.module('bekApp')
       $scope.lists = lists;
     });
   });
- 
+
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -63,7 +69,7 @@ angular.module('bekApp')
   // Using 3 different values for potential hotfix mobile submissions
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
- 
+
   $scope.webVersionNum = '2017.2.0';
   $scope.androidVersionNum = '2017.2.0';
   $scope.iOSVersionNum = '2017.2.0';
@@ -71,7 +77,7 @@ angular.module('bekApp')
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
-  
+
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
@@ -98,7 +104,7 @@ angular.module('bekApp')
     }
   }
 
-  $scope.checkModal = function(){   
+  $scope.checkModal = function(){
     if($modal){
       $modalStack.dismissAll();
     }
@@ -226,7 +232,7 @@ angular.module('bekApp')
   document.onclick = function(element){
     $timeout(function() {
       if($scope.displayUserMenu && !$scope.mouseOverDropdown){
-        $scope.displayUserMenu = !$scope.displayUserMenu; 
+        $scope.displayUserMenu = !$scope.displayUserMenu;
       }
     }, 0);
   };
@@ -298,7 +304,7 @@ angular.module('bekApp')
 
   //Submenu for specialty catalogs
   $scope.toggleSpecialCatalogSubmenu = function() {
-    if ($scope.$state !== undefined) {       
+    if ($scope.$state !== undefined) {
       $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
     }
   };
@@ -335,7 +341,7 @@ angular.module('bekApp')
         branch: function() {
           var branchFound,
             branchId = LocalStorage.getBranchId();
-          angular.forEach(branches, function(branch) {
+          angular.forEach($scope.branches, function(branch) {
             if (branch.id.toUpperCase() === branchId.toUpperCase()) {
               branchFound = branch;
             }

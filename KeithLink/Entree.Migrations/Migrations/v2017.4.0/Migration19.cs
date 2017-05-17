@@ -20,9 +20,7 @@ namespace Entree.Migrations
             Execute.Script(@"Scripts\AppData\Configuration\Seed\AppSettings\header.sql");
             Execute.Script(@"Scripts\AppData\Configuration\Seed\AppSettings\Migration0019_v2017-4-0_up.sql");
             Execute.Script(@"Scripts\AppData\Configuration\Seed\AppSettings\footer.sql");
-            Execute.Script(@"Scripts\AppData\Configuration\Seed\Message Templates\header.sql");
-            Execute.Script(@"Scripts\AppData\Configuration\Seed\Message Templates\Migration0019_v2017-4-0_up.sql");
-            Execute.Script(@"Scripts\AppData\Configuration\Seed\Message Templates\footer.sql");
+            Execute.Script(@"Scripts\AppData\Configuration\Message Templates\Seed\Migration0019_2017-4-0_up.sql");
             Execute.Script(@"Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\Migration0019_v2017-4-0_up.sql");
         }
 

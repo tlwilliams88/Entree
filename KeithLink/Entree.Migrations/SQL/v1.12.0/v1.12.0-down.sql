@@ -1,4 +1,4 @@
-﻿USE BEK_Commerce_AppData
+﻿
 GO
 -- Get rid of EF migrations table
 EXEC sp_rename 'bak__MigrationHistory', '__MigrationHistory';

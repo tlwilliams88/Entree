@@ -1,4 +1,4 @@
-﻿USE BEK_Commerce_AppData
+﻿
 
 CREATE TABLE [ETL].[Staging_Departments] (
 	[DepartmentId] INT NOT NULL PRIMARY KEY,
