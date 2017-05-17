@@ -98,23 +98,6 @@ namespace KeithLink.Svc.Impl.Service.List
             return list;
         }
 
-        private void AddOtherLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list)
-        {
-            List<ListModel> theRest = _genericListLogic.ReadUserList(user, catalogInfo, headerOnly);
-            list.AddRange(theRest.Where(l => l.Type != ListType.Worksheet));
-        }
-
-        private void AddHistoryList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list)
-        {
-            List<ListModel> worksheet = _historyListLogic.ReadList(catalogInfo, headerOnly);
-
-            FillOutProducts(user, catalogInfo, worksheet, true);
-
-            list.AddRange(worksheet);
-        }
-
         public PagedListModel ReadPagedList(UserProfile user,
                                             UserSelectedContext catalogInfo,
                                             long Id,
@@ -133,9 +116,11 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
             }
 
-            if(returnList == null)
+            if (returnList == null)
             {
-                List<ListModel> otherLists = _genericListLogic.ReadUserList(user, catalogInfo);
+                List<ListModel> otherLists = _genericListLogic.ReadUserList(user, catalogInfo)
+                                                              .Where(l => l.Type != ListType.Worksheet) //except what we already define in the specific lists (add other types we define)
+                                                              .ToList();
                 foreach (ListModel list in otherLists)
                 {
                     if (returnList == null && list.ListId == Id)
@@ -152,42 +137,22 @@ namespace KeithLink.Svc.Impl.Service.List
             return pagedList;
         }
 
-        private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+        private void AddOtherLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
+            List<ListModel> list)
         {
-            if (list.Items == null || list.Items.Count == 0)
-                return;
+            List<ListModel> theRest = _genericListLogic.ReadUserList(user, catalogInfo, headerOnly);
+            list.AddRange(theRest.Where(l => l.Type != ListType.Worksheet));
+            //except what we already define in the specific lists (add other types we define)
+        }
 
-            var notes = _listRepo.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) &&
-                                            l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) &&
-                                            l.Type == ListType.Notes,
-                                       i => i.Items)
-                                 .FirstOrDefault();
-            var favorites = _listRepo.Read(l => l.UserId == user.UserId &&
-                                                l.CustomerId.Equals(catalogInfo.CustomerId) &&
-                                                l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) &&
-                                                l.Type == ListType.Favorite,
-                                           i => i.Items)
-                                     .FirstOrDefault();
+        private void AddHistoryList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
+            List<ListModel> list)
+        {
+            List<ListModel> worksheet = _historyListLogic.ReadList(catalogInfo, headerOnly);
 
-            var notesHash = new Dictionary<string, ListItem>();
-            var favHash = new Dictionary<string, ListItem>();
+            FillOutProducts(user, catalogInfo, worksheet, true);
 
-            if (notes != null &&
-               notes.Items != null)
-                notesHash = notes.Items
-                                 .GroupBy(i => i.ItemNumber)
-                                 .ToDictionary(n => n.Key, n => n.First());
-            if (favorites != null &&
-               favorites.Items != null)
-                favHash = favorites.Items
-                                   .GroupBy(i => i.ItemNumber)
-                                   .ToDictionary(f => f.Key, f => f.First());
-
-            Parallel.ForEach(list.Items, listItem =>
-            {
-                listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
-                listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;
-            });
+            list.AddRange(worksheet);
         }
 
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)
