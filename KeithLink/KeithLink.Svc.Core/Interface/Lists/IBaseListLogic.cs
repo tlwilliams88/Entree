@@ -9,7 +9,12 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {
-    public interface IHistoryListLogic : IBaseListLogic
+    public interface IBaseListLogic
     {
+        List<ListModel> ReadList(UserSelectedContext catalogInfo, bool headerOnly = false);
+
+        ListModel GetListModel(UserProfile user,
+                                UserSelectedContext catalogInfo,
+                                long Id);
     }
 }

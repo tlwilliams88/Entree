@@ -8,6 +8,8 @@ AS
 
 	SELECT
 		[Id],
+		[CustomerNumber],
+		[BranchId],
 		[Name],
 		[CreatedUtc],
 		[ModifiedUtc]

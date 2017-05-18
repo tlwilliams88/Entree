@@ -5,6 +5,8 @@ using KeithLink.Svc.Core.Helpers;
 
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Lists.History;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -97,6 +99,81 @@ namespace KeithLink.Svc.Core.Extensions
                         CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
                     } ).OrderBy( l => l.Position ).ToList()
             };
+        }
+
+        public static ListModel ToListModel(this HistoryListHeader header, UserSelectedContext catalogInfo)
+        {
+            return new ListModel()
+            {
+                BranchId = header.BranchId,
+                IsContractList = false,
+                IsFavorite = false,
+                IsWorksheet = true,
+                IsReminder = false,
+                IsMandatory = false,
+                IsRecommended = false,
+                IsCustomInventory = false,
+                Type = ListType.Worksheet,
+                //SharedWith = list.Shares != null ? list.Shares.Select(s => s.CustomerId).ToList() : null,
+                ListId = header.Id,
+                Name = header.Name,
+                ReadOnly = true,
+                //IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) &&
+                //                                   list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
+                //                                : false,
+                //IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
+                Items = header.Items == null ? null :
+                    header.Items.Select(i => new ListItemModel()
+                    {
+                        ListItemId = i.Id, 
+                //        Category = i.Category,
+                //        Type = header.Type,
+                        ItemNumber = i.ItemNumber,
+                //        Label = i.Label,
+                //        ParLevel = i.Par,
+                //        ListItemId = i.Id,
+                        Position = i.LineNumber,
+                        ModifiedUtc = i.ModifiedUtc,
+                        CreatedUtc = i.CreatedUtc,
+                //        Delta = (i.CreatedUtc.AddDays
+                //            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
+                //                " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
+                //            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
+                //            Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
+                //        FromDate = i.FromDate,
+                //        ToDate = i.ToDate,
+                        Each = i.Each ?? false,
+                //        Quantity = i.Quantity,
+                        CatalogId = i.CatalogId
+                //        CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
+                    }).OrderBy(l => l.Position).ToList()
+            };
+        }
+
+        public static PagedListModel ToPagedList(this ListModel returnList, PagingModel paging)
+        {
+            var pagedList = new PagedListModel()
+            {
+                BranchId = returnList.BranchId,
+                IsContractList = returnList.IsContractList,
+                IsFavorite = returnList.IsFavorite,
+                IsMandatory = returnList.IsMandatory,
+                IsRecommended = returnList.IsRecommended,
+                IsReminder = returnList.IsReminder,
+                IsShared = returnList.IsShared,
+                IsSharing = returnList.IsSharing,
+                IsWorksheet = returnList.IsWorksheet,
+                ListId = returnList.ListId,
+                Name = returnList.Name,
+                ReadOnly = returnList.ReadOnly,
+                SharedWith = returnList.SharedWith,
+                Type = returnList.Type
+            };
+
+            if (returnList.Items != null)
+                pagedList.Items = returnList.Items.AsQueryable<ListItemModel>().GetPage<ListItemModel>(paging, "Position");
+
+            return pagedList;
         }
 
         /// <summary>
