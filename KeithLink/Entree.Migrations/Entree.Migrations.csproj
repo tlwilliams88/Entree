@@ -65,6 +65,16 @@
     <Compile Include="Migrations\v2017.02.00\Migration0018.cs" />
     <Compile Include="Migrations\v2017.02.00\Migration0008.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0021.cs" />
+    <Compile Include="Migrations\v1.11_Baseline\v1.11_Baseline.cs" />
+    <Compile Include="Migrations\v1.12.2_es_catalog\Migration10.cs" />
+    <Compile Include="Migrations\v1.12.2_es_catalog\Migration9.cs" />
+    <Compile Include="Migrations\v1.12\v1.12.0_Add_CustomInventoryItemId_Column - Copy.cs" />
+    <Compile Include="Migrations\v1.12\v1.12.0_Add_Label_Column_CustomInventory.cs" />
+    <Compile Include="Migrations\v2017.1.0\Migration11.cs" />
+    <Compile Include="Migrations\v2017.1.0\Migration12.cs" />
+    <Compile Include="Migrations\v2017.1.0\Migration7.cs" />
+    <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
+    <Compile Include="Migrations\v2017.3.0\Migration20.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -383,6 +393,8 @@
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.DeleteOrderListAssociation.sql" />
     <Content Include="SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql" />
     <Content Include="SQL\v2017.2.0\up\templates\Configuration.AppSettings.sql" />
+    <Content Include="SQL\v2017.3.0\down\branchsupports\Branchsupports.Branchsupport_FEL_down.sql" />
+    <Content Include="SQL\v2017.3.0\up\branchsupports\Branchsupports.Branchsupport_FEL_up.sql" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\AppData\Configuration\Stored Procedures\CheckAppSettingsForChange\CheckAppSettingsForChange_0001_0001.11.00_up.sql">
