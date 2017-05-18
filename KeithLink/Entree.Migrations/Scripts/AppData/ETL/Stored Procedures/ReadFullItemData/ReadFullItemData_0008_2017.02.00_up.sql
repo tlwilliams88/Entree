@@ -1,6 +1,4 @@
-﻿USE [BEK_Commerce_AppData]
-GO
-/**
+﻿/**
 *
 * -------------------------------------------------------
 * Read the item data for the elastic search load. 

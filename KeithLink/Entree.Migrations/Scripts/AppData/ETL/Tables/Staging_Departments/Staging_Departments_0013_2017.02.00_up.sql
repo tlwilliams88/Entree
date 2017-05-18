@@ -8,5 +8,7 @@ CREATE TABLE [ETL].[Staging_Departments] (
 	[ParentDepartment] INT
 )
 
+GO
+
 CREATE UNIQUE INDEX UX_Departments
 	ON [ETL].[Staging_Departments] (DepartmentId, ParentDepartment);

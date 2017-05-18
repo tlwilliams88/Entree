@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace Entree.Migrations
 {
-    [Migration(16, "Add config settings to exclude specific house brands")]
-    public class Migration0016 : Core.BaseMigrationClass
+    [Migration(3, "Added CustomInventoryId Column to ListItems")]
+    public class Migration0003 : Core.BaseMigrationClass
     {
-        public Migration0016() {
-            base.MigrationNumber = "0016";
+        public Migration0003() {
+            base.MigrationNumber = "0003";
         }
     }
 }

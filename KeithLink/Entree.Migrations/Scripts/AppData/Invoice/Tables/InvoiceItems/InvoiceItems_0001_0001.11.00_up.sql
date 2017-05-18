@@ -25,25 +25,6 @@ CREATE TABLE [Invoice].[InvoiceItems](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Index [IX_InvoiceId]    Script Date: 10/27/2016 1:05:25 PM ******/
-CREATE NONCLUSTERED INDEX [IX_InvoiceId] ON [Invoice].[InvoiceItems]
-(
-	[InvoiceId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
-SET ANSI_PADDING ON
-
-GO
 ALTER TABLE [Invoice].[InvoiceItems] ADD  DEFAULT (getutcdate()) FOR [CreatedUtc]
 GO
 ALTER TABLE [Invoice].[InvoiceItems] ADD  DEFAULT (getutcdate()) FOR [ModifiedUtc]
-GO
-ALTER TABLE [Invoice].[InvoiceItems]  WITH NOCHECK ADD  CONSTRAINT [FK_Invoice.InvoiceItems_Invoice.Invoices_InvoiceId] FOREIGN KEY([InvoiceId])
-REFERENCES [Invoice].[Invoices] ([Id])
-ON DELETE CASCADE
-GO
-ALTER TABLE [Invoice].[InvoiceItems] CHECK CONSTRAINT [FK_Invoice.InvoiceItems_Invoice.Invoices_InvoiceId]
-GO

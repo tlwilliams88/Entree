@@ -1,4 +1,5 @@
-﻿using Entree.Migrations.Helpers;
+﻿using Entree.Migrations.Core;
+using Entree.Migrations.Helpers;
 
 using FluentMigrator;
 
@@ -11,21 +12,10 @@ using System.Threading.Tasks;
 namespace Entree.Migrations
 {
     [Migration(4, "Add label column to custom inventory list")]
-    public class Migration0004 : Migration
+    public class Migration0004 : BaseMigrationClass
     {
-        public override void Up()
-        {
-            foreach (string script in ScriptsCollectionHelper.GetAllMigrationFiles("0004", "up")) {
-                this.Execute.Script(script);
-            }
+        public Migration0004() {
+            base.MigrationNumber = "0004";
         }
-
-        public override void Down()
-        {
-            foreach (string script in ScriptsCollectionHelper.GetAllMigrationFiles("0004", "down")) {
-                this.Execute.Script(script);
-            }
-        }
-
     }
 }

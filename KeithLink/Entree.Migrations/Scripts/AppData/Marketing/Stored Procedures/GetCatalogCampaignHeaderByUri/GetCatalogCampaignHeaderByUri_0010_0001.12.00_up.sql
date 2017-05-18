@@ -1,16 +1,13 @@
-
-
-GO
-
-CREATE PROCEDURE [Marketing].[GetCatalogCampaignHeader] 
-	@id bigint
+CREATE PROCEDURE [Marketing].[GetCatalogCampaignHeaderByUri] 
+	@Uri VARCHAR(255)
 AS
 	SELECT
 		[Id],
+		[Uri],
 		[Description],
 		[Active],
 		[StartDate],
 		[EndDate]
 	FROM [Marketing].[CatalogCampaignHeader] 
-	WHERE [Id] = @id
+	WHERE [Uri] = @Uri
 GO
