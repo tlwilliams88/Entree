@@ -45,7 +45,7 @@ angular
   //googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
   //googleAnalyticsCordovaProvider.debug = true; // default: false
 
-  AnalyticsProvider.setAccount('UA-58495462-2');
+  AnalyticsProvider.setAccount(ENV.googleAnalytics);
   AnalyticsProvider.useECommerce(true, false);
 
   // configure loading bar
@@ -86,8 +86,8 @@ angular
     }
   };
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService) {
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -218,7 +218,9 @@ angular
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getMessages(notificationParams);
       NotificationService.getUnreadMessageCount();
+
     }
+
 
     // remove lists and carts from memory
     if (fromState.data && toState.data) {

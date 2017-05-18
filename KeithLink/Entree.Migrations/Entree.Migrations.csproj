@@ -62,6 +62,7 @@
     <Compile Include="Migrations\v2017.1.0\Migration12.cs" />
     <Compile Include="Migrations\v2017.1.0\Migration7.cs" />
     <Compile Include="Migrations\v2017.1.0\Migration6.cs" />
+    <Compile Include="Migrations\v2017.3.0\Migration20.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -397,6 +398,8 @@
     <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.DeleteOrderListAssociation.sql" />
     <Content Include="SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql" />
     <Content Include="SQL\v2017.2.0\up\templates\Configuration.AppSettings.sql" />
+    <Content Include="SQL\v2017.3.0\down\branchsupports\Branchsupports.Branchsupport_FEL_down.sql" />
+    <Content Include="SQL\v2017.3.0\up\branchsupports\Branchsupports.Branchsupport_FEL_up.sql" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\AppData\Configuration\Stored Procedures\CheckAppSettingsForChange\create.sql">
