@@ -82,18 +82,6 @@ module.exports = function (grunt) {
                   }
               }
           },
-          // test: {
-          //   options: {
-          //     port: 9001,
-          //     middleware: function (connect) {
-          //       return [
-          //         connect.static('.tmp'),
-          //         connect.static('test'),
-          //         connect.static(appConfig.app)
-          //       ];
-          //     }
-          //   }
-          // },
           dist: {
               options: {
                   open: true,
@@ -196,7 +184,6 @@ module.exports = function (grunt) {
                 '<%= yeoman.dist %>/scripts/{,*/}*.js',
                 '<%= yeoman.dist %>/styles/{,*/}*.css',
                 '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-                // '<%= yeoman.dist %>/styles/fonts/*'
               ]
           }
       },
@@ -240,43 +227,6 @@ module.exports = function (grunt) {
               }
           }
       },
-
-      // The following *-min tasks will produce minified files in the dist folder
-      // By default, your `index.html`'s <!-- Usemin block --> will take care of
-      // minification. These next options are pre-configured if you do not wish
-      // to use the Usemin blocks.
-      // cssmin: {
-      //   dist: {
-      //     files: {
-      //       '<%= yeoman.dist %>/styles/main.css': [
-      //         '.tmp/styles/{,*/}*.css'
-      //       ]
-      //     }
-      //   }
-      // },
-      // uglify: {
-      //   dist: {
-      //     files: {
-      //       '<%= yeoman.dist %>/scripts/scripts.js': [
-      //         '<%= yeoman.dist %>/scripts/scripts.js'
-      //       ]
-      //     }
-      //   }
-      // },
-      // concat: {
-      //   dist: {}
-      // },
-
-      // imagemin: {
-      //     dist: {
-      //         files: [{
-      //             expand: true,
-      //             cwd: '<%= yeoman.app %>/images',
-      //             src: '{,*/}*.{png,jpg,jpeg,gif}',
-      //             dest: '<%= yeoman.dist %>/images'
-      //         }]
-      //     }
-      // },
 
       svgmin: {
           dist: {
@@ -436,7 +386,6 @@ module.exports = function (grunt) {
           ],
           dist: [
             'compass:dist',
-            // 'imagemin',
             'svgmin'
           ]
       },
@@ -455,7 +404,6 @@ module.exports = function (grunt) {
               options: {
                   wait: false
               },
-              // cmd: "node", // but that's the default
               args: [
                 'mockApi/apiserver.js'
               ]
@@ -484,6 +432,10 @@ module.exports = function (grunt) {
           }
       },
 
+      setVersion: {
+
+      },
+
       ngconstant: {
           // Options for all targets
           options: {
@@ -496,27 +448,29 @@ module.exports = function (grunt) {
           debug: {
               constants: {
                   ENV: {
+                    version: '<%= config.version %>',
                     name: '<%= config.environment.debug.name %>',
                     apiKey: '<%= config.environment.debug.apiKey %>',
                     apiEndpoint: '<%= config.environment.debug.apiEndpoint %>',
-                    loggingEnabled: config.environment.debug.loggingEnabled,
+                    loggingEnabled: '<%= config.environment.debug.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.debug.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.debug.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
-                    mobileApp: false,
-                    lastListStorageTimeout: 48,
-                    enableDebugInfo: true
+                    mobileApp: '<%= config.environment.debug.mobileApp %>',
+                    lastListStorageTimeout: '<%= config.environment.debug.lastListStorageTimeout %>',
+                    enableDebugInfo: '<%= config.environment.debug.enableDebugInfo %>'
                   }
               }
           },
-		  demo: {
+		      demo: {
               constants: {
                   ENV: {
+                    version: '<%= config.version %>',
                     name: '<%= config.environment.demo.name %>',
                     apiKey: '<%= config.environment.demo.apiKey %>',
                     apiEndpoint: '<%= config.environment.demo.apiEndpoint %>',
-                    loggingEnabled: config.environment.demo.loggingEnabled,
+                    loggingEnabled: '<%= config.environment.demo.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.demo.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.demo.cognosUrl %>',
                     mobileApp: false,
@@ -528,10 +482,11 @@ module.exports = function (grunt) {
           dev: {
               constants: {
                   ENV: {
+                    version: '<%= config.version %>',
                     name: '<%= config.environment.dev.name %>',
                     apiKey: '<%= config.environment.dev.apiKey %>',
                     apiEndpoint: '<%= config.environment.dev.apiEndpoint %>',
-                    loggingEnabled: config.environment.dev.loggingEnabled,
+                    loggingEnabled: '<%= config.environment.dev.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.dev.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.dev.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
@@ -545,10 +500,11 @@ module.exports = function (grunt) {
           test: {
               constants: {
                   ENV: {
+                    version: '<%= config.version %>',
                     name: '<%= config.environment.test.name %>',
                     apiKey: '<%= config.environment.test.apiKey %>',
                     apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
-                    loggingEnabled: config.environment.test.loggingEnabled,
+                    loggingEnabled: '<%= config.environment.test.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.test.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.test.cognosUrl %>',
                     mobileApp: false,
@@ -560,10 +516,11 @@ module.exports = function (grunt) {
           prod: {
               constants: {
                   ENV: {
+                    version: '<%= config.version %>',
                     name: '<%= config.environment.prod.name %>',
                     apiKey: '<%= config.environment.prod.apiKey %>',
                     apiEndpoint: '<%= config.environment.prod.apiEndpoint %>',
-                    loggingEnabled: config.environment.prod.loggingEnabled,
+                    loggingEnabled: '<%= config.environment.prod.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.prod.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.prod.cognosUrl %>',
                     mobileApp: false,
@@ -572,13 +529,14 @@ module.exports = function (grunt) {
                   }
               }
           },
-		  beta: {
+		      beta: {
               constants: {
                   ENV: {
+                    version: '<%= config.version %>',
                     name: '<%= config.environment.beta.name %>',
                     apiKey: '<%= config.environment.beta.apiKey %>',
                     apiEndpoint: '<%= config.environment.beta.apiEndpoint %>',
-                    loggingEnabled: config.environment.beta.loggingEnabled,
+                    loggingEnabled: '<%= config.environment.beta.loggingEnabled %>',
                     googleAnalytics: '<%= config.environment.beta.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.beta.cognosUrl %>',
                     mobileApp: false,
@@ -604,6 +562,11 @@ module.exports = function (grunt) {
       }
   });
 
+  grunt.registerTask('updateVersion', function() {
+    var versionNumber = grunt.option('appVersion') || 'No version number set';
+    config['version'] = versionNumber;
+    grunt.file.write('config.json', JSON.stringify(config, null, 2));
+  });
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'prod') {
@@ -616,8 +579,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'ngconstant:dev',
-      // 'includeSource:server',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -626,54 +587,29 @@ module.exports = function (grunt) {
     ]);
   });
 
-  grunt.registerTask('server', 'DEPRECATED TASK. Use the "serve" task instead', function (target) {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve:' + target]);
-  });
-
-  grunt.registerTask('dev', [ // todo: remove this and get to 'build-for-' to avoid confusion with unit test targets
-    // 'npm-install',
-    'clean:dev',
-    'ngconstant:dev',
-    // 'includeSource:dev',
-    'compass:server',
-    'copy:dev',
-    'copy:newRelicDebug',
-    'karma'
-  ]);
-
   grunt.registerTask('build-for-debug', [
-    // 'npm-install',
-    'clean:dev',
-    'ngconstant:debug',
-    // 'includeSource:dev',
-    'compass:server',
-    'copy:dev',
-    'copy:newRelicDebug',
-    'karma'
-  ]);
+      'updateVersion',
+      'clean:dev',
+      'ngconstant:debug',
+      'compass:server',
+      'copy:dev',
+      'copy:newRelicDebug',
+      'karma'
+    ]);
 
   grunt.registerTask('build-for-dev', [
-    // 'npm-install',
+    'updateVersion',
     'clean:dev',
     'ngconstant:dev',
-    // 'includeSource:dev',
     'compass:server',
     'copy:dev',
     'copy:newRelicDebug',
-    'karma'
-  ]);
-
-  grunt.registerTask('test', [
-    'clean:server',
-    'concurrent:test',
-    'autoprefixer',
     'karma'
   ]);
 
   grunt.registerTask('build-for-test', [
+    'updateVersion',
     'clean:dist',
-    // 'includeSource:dist',
     'ngconstant:test',
     'useminPrepare',
     'concurrent:dist',
@@ -690,8 +626,8 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build-for-beta', [
-   'clean:dist',
-    // 'includeSource:dist',
+    'updateVersion',
+    'clean:dist',
     'ngconstant:beta',
     'useminPrepare',
     'concurrent:dist',
@@ -707,49 +643,9 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  // Not currently used
-  // Was used to simulate real world conditions with dummy data
-  grunt.registerTask('build-for-demo', [
-    'clean:dist',
-    // 'includeSource:dist',
-    'ngconstant:demo',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
-    'copy:dist',
-    'copy:newRelic',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin'
-  ]);
-
-  // Not currently used
-  // Originally used to proof marketing content prior to Entree going live
-  grunt.registerTask('build-for-stage', [
-    'clean:dist',
-    // 'includeSource:dist',
-    'ngconstant:stage',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
-    'copy:dist',
-    'copy:newRelic',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin'
-  ]);
-
   grunt.registerTask('build', [
+    'updateVersion',
     'clean:dist',
-    // 'includeSource:dist',
     'ngconstant:prod',
     'useminPrepare',
     'concurrent:dist',
@@ -765,10 +661,4 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('default', [
-    'npm-install',
-    'newer:jshint',
-    'test',
-    'build'
-  ]);
 };
