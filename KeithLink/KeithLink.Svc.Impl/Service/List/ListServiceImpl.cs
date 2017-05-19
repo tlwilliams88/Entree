@@ -25,7 +25,8 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IListLogic _genericListLogic;
         private readonly IListRepository _listRepo;
         private readonly IHistoryListLogic _historyListLogic;
-        private readonly IFavoritesLogic _favoritesLogic;
+        private readonly IFavoritesListLogic _favoritesLogic;
+        private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly IPriceLogic _priceLogic;
@@ -33,14 +34,15 @@ namespace KeithLink.Svc.Impl.Service.List
         #endregion
 
         #region ctor
-        public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, 
-                                IItemHistoryRepository itemHistoryRepo, IFavoritesLogic favoritesLogic, IPriceLogic priceLogic, IEventLogRepository log)
+        public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
+                                IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
             _listRepo = listRepo;
             // specific lists -
             _historyListLogic = historyListLogic;
             _favoritesLogic = favoritesLogic;
+            _notesLogic = notesLogic;
             _catalogLogic = catalogLogic;
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
@@ -76,6 +78,8 @@ namespace KeithLink.Svc.Impl.Service.List
             AddHistoryList(user, catalogInfo, headerOnly, list);
 
             //var favorites = _favoritesLogic.GetFavoritedItemNumbers(user, catalogInfo);
+
+            //var notes = _notesLogic.GetNotesDictionary(user, catalogInfo);            
 
             AddOtherLists(user, catalogInfo, headerOnly, list);
 

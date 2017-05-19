@@ -11,13 +11,13 @@ using KeithLink.Svc.Core.Models.Lists;
 using System;
 
 namespace KeithLink.Svc.Impl.Logic.Lists {
-    public class FavoritesLogicImpl : IFavoritesLogic {
+    public class FavoritesListLogicImpl : IFavoritesListLogic {
         #region attributes
-        private readonly IFavoritesRepository _favoritesRepo;
+        private readonly IFavoritesListRepository _favoritesRepo;
         #endregion
 
         #region ctor
-        public FavoritesLogicImpl(IFavoritesRepository favoritesRepo)
+        public FavoritesListLogicImpl(IFavoritesListRepository favoritesRepo)
         {
             _favoritesRepo = favoritesRepo;
         }

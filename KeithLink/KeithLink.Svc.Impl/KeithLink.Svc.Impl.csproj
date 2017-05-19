@@ -312,11 +312,12 @@
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\NotesListLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryWriterImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessageConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessagePublisherImpl.cs" />
     <Compile Include="Logic\SiteCatalog\Images\External\UnfiImageProcessing.cs" />
-    <Compile Include="Logic\Lists\FavoritesLogicImpl.cs" />
+    <Compile Include="Logic\Lists\FavoritesListLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryLogic.cs" />
     <Compile Include="Logic\Lists\ListLogicImpl.cs" />
     <Compile Include="Logic\Lists\NoteLogicImpl.cs" />
@@ -411,8 +412,9 @@
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\FavoritesRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\FavoritesListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\HistoryListRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\NotesListRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderedFromListRepositoryImpl.cs" />

@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Test.Logic
     public class InternalListLogicTests
     {
 		private readonly IListLogic listLogic;
-        private readonly IFavoritesLogic _favoriteLogic;
+        private readonly IFavoritesListLogic _favoriteLogic;
         private readonly IHistoryLogic _historyLogic;
         private readonly INoteLogic _noteLogic;
 
@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Test.Logic
 			var container = DependencyMap.Build();
 
 			listLogic = container.Resolve<IListLogic>();
-            _favoriteLogic = container.Resolve<IFavoritesLogic>();
+            _favoriteLogic = container.Resolve<IFavoritesListLogic>();
             _historyLogic = container.Resolve<IHistoryLogic>();
             _noteLogic = container.Resolve<INoteLogic>();
 		}

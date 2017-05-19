@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
-    public interface IFavoritesLogic : IBaseListLogic
+    public interface IFavoritesListLogic : IBaseListLogic
     {
         List<string> GetFavoritedItemNumbers(UserProfile user, UserSelectedContext catalogInfo);
     }

@@ -41,7 +41,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private readonly ICatalogRepository _catalogRepository;
         private readonly IPriceLogic _priceLogic;
         private readonly IListRepository _listRepo;
-        private readonly IFavoritesLogic _favoriteLogic;
+        private readonly IFavoritesListLogic _favoriteLogic;
         private readonly IHistoryLogic _historyLogic;
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly INoteLogic _noteLogic;
@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #region constructor
         public SiteCatalogServiceImpl(ICacheRepository catalogCacheRepository, ICatalogLogic catalogLogic
                                       , ICatalogRepository catalogRepository, IPriceLogic priceLogic
-                                      , IListRepository listRepo, IFavoritesLogic favoriteLogic
+                                      , IListRepository listRepo, IFavoritesListLogic favoriteLogic
                                       , IHistoryLogic historyLogic, INoteLogic noteLogic
                                       , IItemHistoryRepository itemHistoryRepo)
         {
