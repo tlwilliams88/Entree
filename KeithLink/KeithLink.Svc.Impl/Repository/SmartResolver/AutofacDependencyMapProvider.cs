@@ -152,6 +152,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // lists
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
+            builder.RegisterType<FavoritesRepositoryImpl>().As<IFavoritesRepository>();
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<HistoryListRepositoryImpl>().As<IHistoryListRepository>();
             builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
@@ -240,7 +241,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             // lists
-            builder.RegisterType<FavoriteLogicImpl>().As<IFavoriteLogic>();
+            builder.RegisterType<FavoritesLogicImpl>().As<IFavoritesLogic>();
             builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
             builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();

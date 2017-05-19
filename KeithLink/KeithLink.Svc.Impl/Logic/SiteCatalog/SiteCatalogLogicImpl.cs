@@ -39,7 +39,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private readonly ICategoryImageRepository _categoryImageRepository;
 		private readonly IDivisionLogic _divisionLogic;
         private readonly IExportSettingLogic _externalCatalogRepository;
-        private readonly IFavoriteLogic _favoriteLogic;
+        private readonly IFavoritesLogic _favoriteLogic;
         private readonly IHistoryLogic _historyLogic;
         private readonly IListRepository _listRepo;
         private readonly IProductImageRepository _imgRepository;
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         #region constructor
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, ICategoryImageRepository categoryImageRepository, 
                                     ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryHeaderRepo, 
-                                    IOrderHistoryDetailRepository orderHistoryDetailRepo, IExportSettingLogic externalCatalogRepository, IFavoriteLogic favoriteLogic, 
+                                    IOrderHistoryDetailRepository orderHistoryDetailRepo, IExportSettingLogic externalCatalogRepository, IFavoritesLogic favoriteLogic, 
                                     INoteLogic noteLogic, IHistoryLogic historyLogic, IListRepository listRepo)
         {
             _catalogCacheRepository = catalogCacheRepository;
