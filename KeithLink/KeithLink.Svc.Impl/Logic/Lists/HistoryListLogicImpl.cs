@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _log = log;
         }
         #endregion
-        public List<ListModel> ReadList(UserSelectedContext catalogInfo, bool headerOnly = false)
+        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
         {
             return _historyListrepo.ReadListForCustomer(catalogInfo, headerOnly);
         }

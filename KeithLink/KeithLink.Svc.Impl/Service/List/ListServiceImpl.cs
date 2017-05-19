@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IListLogic _genericListLogic;
         private readonly IListRepository _listRepo;
         private readonly IHistoryListLogic _historyListLogic;
+        private readonly IFavoritesLogic _favoritesLogic;
         private readonly ICatalogLogic _catalogLogic;
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly IPriceLogic _priceLogic;
@@ -33,12 +34,13 @@ namespace KeithLink.Svc.Impl.Service.List
 
         #region ctor
         public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, 
-                                IItemHistoryRepository itemHistoryRepo, IPriceLogic priceLogic, IEventLogRepository log)
+                                IItemHistoryRepository itemHistoryRepo, IFavoritesLogic favoritesLogic, IPriceLogic priceLogic, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
             _listRepo = listRepo;
             // specific lists -
             _historyListLogic = historyListLogic;
+            _favoritesLogic = favoritesLogic;
             _catalogLogic = catalogLogic;
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
@@ -54,7 +56,7 @@ namespace KeithLink.Svc.Impl.Service.List
             {
                 case ListType.Worksheet:
                 {
-                    returnList = _historyListLogic.ReadList(catalogInfo, headerOnly);
+                    returnList = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
 
                     FillOutProducts(user, catalogInfo, returnList, true);
                 }
@@ -72,6 +74,8 @@ namespace KeithLink.Svc.Impl.Service.List
             List<ListModel> list = new List<ListModel>();
 
             AddHistoryList(user, catalogInfo, headerOnly, list);
+
+            //var favorites = _favoritesLogic.GetFavoritedItemNumbers(user, catalogInfo);
 
             AddOtherLists(user, catalogInfo, headerOnly, list);
 
@@ -148,7 +152,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private void AddHistoryList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
             List<ListModel> list)
         {
-            List<ListModel> worksheet = _historyListLogic.ReadList(catalogInfo, headerOnly);
+            List<ListModel> worksheet = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
 
             FillOutProducts(user, catalogInfo, worksheet, true);
 

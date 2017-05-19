@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IBaseListLogic
     {
-        List<ListModel> ReadList(UserSelectedContext catalogInfo, bool headerOnly = false);
+        List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
 
         ListModel GetListModel(UserProfile user,
                                 UserSelectedContext catalogInfo,

@@ -45,8 +45,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                                 ));
             }
 
-            List <ListModel> list = new List<ListModel>() { header.ToListModel(catalogInfo) };
-            return list;
+            return new List<ListModel>() { header.ToListModel(catalogInfo) };
         }
     }
 }

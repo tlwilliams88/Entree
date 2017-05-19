@@ -244,7 +244,8 @@
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
-    <Compile Include="Interface\Lists\IFavoriteLogic.cs" />
+    <Compile Include="Interface\Lists\IFavoritesLogic.cs" />
+    <Compile Include="Interface\Lists\IFavoritesRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryListLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryListRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
@@ -339,6 +340,8 @@
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
     <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
+    <Compile Include="Models\Lists\Favorites\FavoritesListDetail.cs" />
+    <Compile Include="Models\Lists\Favorites\FavoritesListHeader.cs" />
     <Compile Include="Models\Lists\History\HistoryListDetail.cs" />
     <Compile Include="Models\Lists\History\HistoryListHeader.cs" />
     <Compile Include="Models\Lists\InHistoryReturnModel.cs" />

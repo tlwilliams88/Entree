@@ -65,6 +65,7 @@
     <Compile Include="Migrations\v2017.02.00\Migration0018.cs" />
     <Compile Include="Migrations\v2017.02.00\Migration0008.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0023.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0022.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0021.cs" />
     <Compile Include="Migrations\v2017.03.00\Migration0020.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -91,6 +92,8 @@
     <Content Include="Scripts\AppData\BranchSupport\BranchSupport_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\BranchSupports_0020_2017.03.00_down.sql" />
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\BranchSupports_0020_2017.03.00_up.sql" />
     <Content Include="Scripts\AppData\Configuration\Configuration_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -177,8 +180,16 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0006_2017-01-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_down.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0021_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadFavoritesDetailsByParentId\ReadFavoritesDetailsByParentId_0021_2017-04-00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadFavoritesDetailsByParentId\ReadFavoritesDetailsByParentId_0021_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadHistoryDetailsByParentId\ReadHistoryDetailsByParentId_0021_2017-04-00_down.sql" />
@@ -193,6 +204,21 @@
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_0001.12.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\FavoritesDetail_0022_2017-04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\FavoritesDetail_0022_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateFavoritesList\MigrateFavoritesList_0022_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\FavoritesHeader\FavoritesHeader_0022_2017-04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\FavoritesHeader\FavoritesHeader_0022_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\HistoryDetail\HistoryDetail_0021_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
