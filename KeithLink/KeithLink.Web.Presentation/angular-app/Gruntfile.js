@@ -432,10 +432,6 @@ module.exports = function (grunt) {
           }
       },
 
-      setVersion: {
-
-      },
-
       ngconstant: {
           // Options for all targets
           options: {
