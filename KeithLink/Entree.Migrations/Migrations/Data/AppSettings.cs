@@ -17,7 +17,7 @@ namespace Entree.Migrations.Data {
             _specificConfigurationsToRun = new Dictionary<string, string>();
 
             // Matt
-            _specificConfigurationsToRun.Add("CORPMISDEV2A", @"SQL\Configs\matt.local.configuration.sql");
+            //_specificConfigurationsToRun.Add("CORPMISDEV2A", @"SQL\Configs\matt.local.configuration.sql");
 
             // Jeremy
             _specificConfigurationsToRun.Add("CORPMISDEV2B", @"SQL\Configs\jeremy.local.configuration.sql");

@@ -180,6 +180,10 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0006_2017-01-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_down.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeadersByCustomerAndBranch_0023_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeadersByCustomerAndBranch_0023_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_up.sql">
@@ -190,6 +194,13 @@
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetNotesHeaderByCustomerNumberBranch\GetNotesHeaderByCustomerNumberBranch_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetNotesHeaderByCustomerNumberBranch\GetNotesHeaderByCustomerNumberBranch_0021_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateContractsList\MigrateContractsList_0023_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateFavoritesList\MigrateFavoritesList_0022_2017-04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateNotesList\MigrateNotesList_0022_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\MigrateNotesList\MigrateNotesList_0022_2017-04-00_up.sql">
@@ -205,16 +216,14 @@
     </Content>
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0023_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0023_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\Indexes\IX_ContractHeader_0023_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0023_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0023_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByParentId\ReadNotesDetailsByParentId_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByParentId\ReadNotesDetailsByParentId_0021_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_up.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ContractItems\Indexes\IX_ContractItems_0023_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_0001.12.00_down.sql" />

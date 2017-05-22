@@ -9,7 +9,7 @@ AS
 		ch.CustomerNumber,
 		ch.Name,
 		ch.CreatedAt,
-		ch.ModifiedOn
+		ch.ModifiedUtc
 	FROM
 		[List].[ContractHeaders] ch
 	WHERE

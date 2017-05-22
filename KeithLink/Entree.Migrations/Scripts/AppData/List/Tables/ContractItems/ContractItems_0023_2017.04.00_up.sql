@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [List].[ContractItems]
 (
-	[Id] INT PRIMARY KEY,
+	[Id] INT PRIMARY KEY IDENTITY(1,1),
 	[ParentContractHeaderId] INT NOT NULL,
 	[LineNumber] INT NOT NULL,
 	[ItemNumber] CHAR(10) NOT NULL,
