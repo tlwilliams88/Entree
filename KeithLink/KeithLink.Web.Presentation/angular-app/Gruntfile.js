@@ -574,7 +574,9 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'updateVersion',
       'clean:server',
+      'ngconstant:dev',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
