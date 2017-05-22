@@ -1,7 +1,7 @@
 ﻿INSERT INTO [List].[ContractHeaders]
 (
 	[ContractId],
-	[Branch],
+	[BranchId],
 	[CustomerNumber],
 	[Name]
 )

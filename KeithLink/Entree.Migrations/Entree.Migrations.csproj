@@ -140,6 +140,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0015_2017-02-00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04-00_down.sql" />
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04.00_p.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0015_2017-02-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0007_2017-01-00_down.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0007_2017-01-00_up.sql" />
