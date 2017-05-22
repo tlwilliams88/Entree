@@ -19,6 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #region attributes
         private const string COMMAND_GETHEADER = "[List].[GetNotesHeaderByCustomerNumberBranch]";
         private const string COMMAND_GETDETAILS = "[List].[ReadNotesDetailsByParentId]";
+        private const string COMMAND_ADDFAVORITE = "[List].[AddOrUpdateNotesByCustomerNumberBranch]";
         #endregion
         #region constructor
         public NotesListRepositoryImpl() : base(Configuration.BEKDBConnectionString)
@@ -47,6 +48,26 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return new List<ListModel>() { header.ToListModel(catalogInfo) };
         }
 
+        public void AddOrUpdateNote(string customerNumber,
+                                string branchId,
+                                string itemNumber,
+                                bool each,
+                                string catalogId,
+                                string note,
+                                bool active)
+        {
+            ExecuteCommand(new CommandDefinition(COMMAND_ADDFAVORITE,
+                new
+                {
+                    @CustomerNumber = customerNumber,
+                    @BranchId = branchId,
+                    @ItemNumber = itemNumber,
+                    @Each = each,
+                    @CatalogId = catalogId,
+                    @Note = note,
+                    @Active = active
+                }, commandType: CommandType.StoredProcedure));
+        }
         #endregion
     }
 }

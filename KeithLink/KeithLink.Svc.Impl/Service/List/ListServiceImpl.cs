@@ -83,6 +83,9 @@ namespace KeithLink.Svc.Impl.Service.List
             // read favorites
             //var favorites = _favoritesLogic.GetFavoritedItemNumbers(user, catalogInfo);
 
+            // Add a note
+            //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
+
             // read notes
             //var notes = _notesLogic.GetNotesDictionary(user, catalogInfo);            
 
@@ -175,7 +178,10 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> worksheet = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
 
-            FillOutProducts(user, catalogInfo, worksheet, true);
+            if (worksheet != null && worksheet.Count > 0)
+            {
+                FillOutProducts(user, catalogInfo, worksheet, true);
+            }
 
             list.AddRange(worksheet);
         }

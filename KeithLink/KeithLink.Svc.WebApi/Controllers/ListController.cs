@@ -767,31 +767,6 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             return ret;
         }
-
-        /// <summary>
-        /// Retrieve list by type for the authenticated user
-        /// </summary>
-        /// <param name="type">List type</param>
-        /// <param name="headerOnly">Header only or details?</param>
-        /// <returns></returns>
-        [HttpGet]
-        [ApiKeyedRoute("list2/type/{type}")]
-        public OperationReturnModel<List<ListModel>> List2(ListType type, bool headerOnly = false)
-        {
-            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
-            try
-            {
-                ret.SuccessResponse = _listService.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
-                ret.IsSuccess = true;
-            }
-            catch (Exception ex)
-            {
-                ret.IsSuccess = false;
-                ret.ErrorMessage = ex.Message;
-                _elRepo.WriteErrorLog("List", ex);
-            }
-            return ret;
-        }
         #endregion
     }
 }
