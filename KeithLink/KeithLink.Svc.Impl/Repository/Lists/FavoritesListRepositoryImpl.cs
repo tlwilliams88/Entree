@@ -14,14 +14,14 @@ using KeithLink.Svc.Core.Models.Lists.Favorites;
 
 namespace KeithLink.Svc.Impl.Repository.Lists
 {
-    public class FavoritesRepositoryImpl : DapperDatabaseConnection, IFavoritesRepository
+    public class FavoritesListRepositoryImpl : DapperDatabaseConnection, IFavoritesListRepository
     {
         #region attributes
         private const string COMMAND_GETHEADER = "[List].[GetFavoritesHeaderByUserIdCustomerNumberBranch]";
         private const string COMMAND_GETDETAILS = "[List].[ReadFavoritesDetailsByParentId]";
         #endregion
         #region constructor
-        public FavoritesRepositoryImpl() : base(Configuration.BEKDBConnectionString)
+        public FavoritesListRepositoryImpl() : base(Configuration.BEKDBConnectionString)
         {
 
         }

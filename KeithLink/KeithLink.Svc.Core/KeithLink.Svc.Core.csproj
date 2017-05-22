@@ -244,8 +244,8 @@
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
-    <Compile Include="Interface\Lists\IFavoritesLogic.cs" />
-    <Compile Include="Interface\Lists\IFavoritesRepository.cs" />
+    <Compile Include="Interface\Lists\IFavoritesListLogic.cs" />
+    <Compile Include="Interface\Lists\IFavoritesListRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryListLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryListRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
@@ -253,6 +253,8 @@
     <Compile Include="Interface\Lists\IListService.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Lists\INoteLogic.cs" />
+    <Compile Include="Interface\Lists\INotesListLogic.cs" />
+    <Compile Include="Interface\Lists\INotesListRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignHeaderRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignItemRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignLogic.cs" />
@@ -351,6 +353,8 @@
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
+    <Compile Include="Models\Lists\Notes\NotesListDetail.cs" />
+    <Compile Include="Models\Lists\Notes\NotesListHeader.cs" />
     <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
