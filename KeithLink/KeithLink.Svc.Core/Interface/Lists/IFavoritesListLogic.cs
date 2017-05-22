@@ -12,5 +12,12 @@ namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IFavoritesListLogic : IBaseListLogic
     {
         List<string> GetFavoritedItemNumbers(UserProfile user, UserSelectedContext catalogInfo);
+
+        void AddFavorite(UserProfile user,
+            UserSelectedContext catalogInfo,
+            string itemNumber,
+            bool each,
+            string catalogId);
+
     }
 }
