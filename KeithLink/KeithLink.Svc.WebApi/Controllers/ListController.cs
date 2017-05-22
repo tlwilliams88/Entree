@@ -175,7 +175,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
             try
             {
-                ret.SuccessResponse = _listLogic.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
+                ret.SuccessResponse = _listService.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
@@ -194,12 +194,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="includePrice">Include item prices?</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("list/{listId}")]
-        public OperationReturnModel<ListModel> List(long listId, bool includePrice = true) {
+        [ApiKeyedRoute("list/{type}/{listId}")]
+        public OperationReturnModel<ListModel> List(ListType type, long listId, bool includePrice = true) {
             OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
-                var list = _listLogic.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId, includePrice);
+                var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, includePrice);
 
                 if (list != null)
                     list.ReadOnly = (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.RecommendedItems) ||

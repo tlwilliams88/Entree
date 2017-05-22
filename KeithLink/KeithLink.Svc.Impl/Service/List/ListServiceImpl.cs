@@ -111,6 +111,18 @@ namespace KeithLink.Svc.Impl.Service.List
             return list;
         }
 
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id, bool includePrice = true)
+        {
+            switch (type)
+            {
+                case ListType.Worksheet:
+                    return _historyListLogic.GetListModel(user, catalogInfo, Id);
+                default:
+                    return _genericListLogic.ReadList(user, catalogInfo, Id, includePrice);
+            }
+        }
+
+
         public PagedListModel ReadPagedList(UserProfile user,
                                             UserSelectedContext catalogInfo,
                                             long Id,
