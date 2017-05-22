@@ -19,6 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #region attributes
         private const string COMMAND_GETHEADER = "[List].[GetFavoritesHeaderByUserIdCustomerNumberBranch]";
         private const string COMMAND_GETDETAILS = "[List].[ReadFavoritesDetailsByParentId]";
+        private const string COMMAND_ADDFAVORITE = "[List].[AddOrUpdateFavoriteByUserIdCustomerNumberBranch]";
         #endregion
         #region constructor
         public FavoritesListRepositoryImpl() : base(Configuration.BEKDBConnectionString)
@@ -47,6 +48,24 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return new List<ListModel>() { header.ToListModel(catalogInfo) };
         }
 
+        public void AddFavorite(string userId,
+                                string customerNumber,
+                                string branchId,
+                                string itemNumber,
+                                bool each,
+                                string catalogId)
+        {
+            ExecuteCommand(new CommandDefinition(COMMAND_ADDFAVORITE,
+                new
+                {
+                    @UserId = userId,
+                    @CustomerNumber = customerNumber,
+                    @BranchId = branchId,
+                    @ItemNumber = itemNumber,
+                    @Each = each,
+                    @CatalogId = catalogId
+                }, commandType: CommandType.StoredProcedure));   
+        }
         #endregion
     }
 }

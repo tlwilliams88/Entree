@@ -37,6 +37,20 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return _favoritesRepo.GetFavoritesList(user.UserId.ToString(), catalogInfo, headerOnly);
         }
 
+        public void AddFavorite(UserProfile user, 
+                                UserSelectedContext catalogInfo,
+                                string itemNumber,
+                                bool each,
+                                string catalogId)
+        {
+            _favoritesRepo.AddFavorite(user.UserId.ToString(),
+                catalogInfo.CustomerId,
+                catalogInfo.BranchId,
+                itemNumber,
+                each,
+                catalogId);
+        }
+
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
         {
             throw new NotImplementedException();

@@ -12,5 +12,12 @@ namespace KeithLink.Svc.Core.Interface.Lists
     public interface IFavoritesListRepository
     {
         List<ListModel> GetFavoritesList(string userId, UserSelectedContext catalogInfo, bool headerOnly);
+
+        void AddFavorite(string userId,
+            string customerNumber,
+            string branchId,
+            string itemNumber,
+            bool each,
+            string catalogId);
     }
 }

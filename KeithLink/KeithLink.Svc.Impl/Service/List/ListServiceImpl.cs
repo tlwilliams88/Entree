@@ -77,8 +77,13 @@ namespace KeithLink.Svc.Impl.Service.List
 
             AddHistoryList(user, catalogInfo, headerOnly, list);
 
+            // Add a favorite
+            //_favoritesLogic.AddFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId);
+
+            // read favorites
             //var favorites = _favoritesLogic.GetFavoritedItemNumbers(user, catalogInfo);
 
+            // read notes
             //var notes = _notesLogic.GetNotesDictionary(user, catalogInfo);            
 
             AddOtherLists(user, catalogInfo, headerOnly, list);
