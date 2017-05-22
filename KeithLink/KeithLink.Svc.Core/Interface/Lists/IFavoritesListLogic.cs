@@ -13,11 +13,12 @@ namespace KeithLink.Svc.Core.Interface.Lists {
     {
         List<string> GetFavoritedItemNumbers(UserProfile user, UserSelectedContext catalogInfo);
 
-        void AddFavorite(UserProfile user,
+        void AddOrUpdateFavorite(UserProfile user,
             UserSelectedContext catalogInfo,
             string itemNumber,
             bool each,
-            string catalogId);
+            string catalogId,
+            bool active);
 
     }
 }

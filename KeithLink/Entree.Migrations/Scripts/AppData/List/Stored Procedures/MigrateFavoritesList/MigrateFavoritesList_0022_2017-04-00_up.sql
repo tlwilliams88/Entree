@@ -37,12 +37,14 @@ BEGIN
 			([ParentFavoritesHeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
-             ,[Each])
+             ,[Each]
+			 ,[Active])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
 			,li.[CatalogId]
 			,li.Each
+			,1
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 		INNER JOIN List.[FavoritesHeader] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[UserId] = l.[UserId]

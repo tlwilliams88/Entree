@@ -48,12 +48,13 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return new List<ListModel>() { header.ToListModel(catalogInfo) };
         }
 
-        public void AddFavorite(string userId,
+        public void AddOrUpdateFavorite(string userId,
                                 string customerNumber,
                                 string branchId,
                                 string itemNumber,
                                 bool each,
-                                string catalogId)
+                                string catalogId,
+                                bool active)
         {
             ExecuteCommand(new CommandDefinition(COMMAND_ADDFAVORITE,
                 new
@@ -63,7 +64,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                     @BranchId = branchId,
                     @ItemNumber = itemNumber,
                     @Each = each,
-                    @CatalogId = catalogId
+                    @CatalogId = catalogId,
+                    @Active = active
                 }, commandType: CommandType.StoredProcedure));   
         }
         #endregion

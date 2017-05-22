@@ -37,18 +37,20 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return _favoritesRepo.GetFavoritesList(user.UserId.ToString(), catalogInfo, headerOnly);
         }
 
-        public void AddFavorite(UserProfile user, 
+        public void AddOrUpdateFavorite(UserProfile user, 
                                 UserSelectedContext catalogInfo,
                                 string itemNumber,
                                 bool each,
-                                string catalogId)
+                                string catalogId,
+                                bool active)
         {
-            _favoritesRepo.AddFavorite(user.UserId.ToString(),
+            _favoritesRepo.AddOrUpdateFavorite(user.UserId.ToString(),
                 catalogInfo.CustomerId,
                 catalogInfo.BranchId,
                 itemNumber,
                 each,
-                catalogId);
+                catalogId,
+                active);
         }
 
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
