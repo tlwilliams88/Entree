@@ -5,6 +5,7 @@ CREATE TABLE [List].[NotesDetail] (
 	[Each]					  [bit]	    		NULL,
 	[CatalogId]				  [nvarchar](24)	NULL,
 	[Note]				      [nvarchar](max)	NULL,
+		[Active]                BIT            NULL,
     [CreatedUtc]			  DATETIME			DEFAULT (getutcdate()) NOT NULL,
     [ModifiedUtc]			  DATETIME          DEFAULT (getutcdate()) NOT NULL
 );

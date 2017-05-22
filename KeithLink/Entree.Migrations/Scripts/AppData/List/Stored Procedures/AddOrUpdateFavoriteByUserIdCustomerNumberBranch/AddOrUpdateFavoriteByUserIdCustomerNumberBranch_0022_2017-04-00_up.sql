@@ -4,7 +4,8 @@ CREATE PROCEDURE [List].[AddOrUpdateFavoriteByUserIdCustomerNumberBranch]
 	@BranchId		NVARCHAR (10),
 	@ItemNumber		NVARCHAR (15),
 	@Each           BIT,
-	@CatalogId      NVARCHAR (24)
+	@CatalogId      NVARCHAR (24),
+	@Active         BIT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -51,6 +52,7 @@ AS
 		[ItemNumber]              NVARCHAR (15) NOT NULL,
 		[Each]                    BIT           NULL,
 		[CatalogId]               NVARCHAR (24) NULL,
+		[Active]                    BIT           NULL,
 		[CreatedUtc]              DATETIME      DEFAULT (getutcdate()) NOT NULL,
 		[ModifiedUtc]             DATETIME      DEFAULT (getutcdate()) NOT NULL,
 		PRIMARY KEY CLUSTERED ([Id] ASC)
@@ -58,14 +60,14 @@ AS
 
 	INSERT 
 		INTO @Detail 
-			([ParentFavoritesHeaderId], [ItemNumber], [Each], [CatalogId]) 
+			([ParentFavoritesHeaderId], [ItemNumber], [Each], [CatalogId], Active) 
 		VALUES 
-			(@ParentFavoritesHeaderId, @ItemNumber, @Each, @CatalogId)
+			(@ParentFavoritesHeaderId, @ItemNumber, @Each, @CatalogId, @Active)
 
 	MERGE INTO [BEK_Commerce_AppData].[List].[FavoritesDetail] A
 	USING @Detail B ON (A.[ParentFavoritesHeaderId] = B.[ParentFavoritesHeaderId] and A.[ItemNumber] = B.[ItemNumber] and A.[Each] = B.[Each] and A.[CatalogId] = B.[CatalogId])
 	WHEN NOT MATCHED THEN
 		INSERT
-			([ParentFavoritesHeaderId], [ItemNumber], [Each], [CatalogId]) 
+			([ParentFavoritesHeaderId], [ItemNumber], [Each], [CatalogId], [Active]) 
 		VALUES 
-			(B.ParentFavoritesHeaderId, B.ItemNumber, B.Each, B.CatalogId);
+			(B.ParentFavoritesHeaderId, B.ItemNumber, B.Each, B.CatalogId, B.Active);
