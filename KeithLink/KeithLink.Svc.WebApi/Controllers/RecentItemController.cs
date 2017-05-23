@@ -17,6 +17,8 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class RecentItemController : BaseController {
         #region attributes
         private readonly IListLogic _repo;
+        private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
+        private readonly IListService _listService;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -27,8 +29,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="listLogic"></param>
         /// <param name="profileLogic"></param>
         /// <param name="logRepo"></param>
-        public RecentItemController(IListLogic listLogic,  IUserProfileLogic profileLogic, IEventLogRepository logRepo)  : base(profileLogic) {
+        public RecentItemController(IListLogic listLogic,  IUserProfileLogic profileLogic, IRecentlyViewedListLogic recentlyViewedLogic,
+                                    IListService listService, IEventLogRepository logRepo)  : base(profileLogic) {
             _repo = listLogic;
+            _recentlyViewedLogic = recentlyViewedLogic;
+            _listService = listService;
             _log = logRepo;
         }
         #endregion
@@ -44,7 +49,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<List<RecentItem>> retVal = new Models.OperationReturnModel<List<RecentItem>>();
             try
             {
-                retVal.SuccessResponse = _repo.ReadRecent(this.AuthenticatedUser, this.SelectedUserContext);
+                retVal.SuccessResponse = _listService.ReadRecent(this.AuthenticatedUser, this.SelectedUserContext);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -147,7 +152,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _repo.AddRecentlyViewedItem(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
+                _recentlyViewedLogic.AddOrUpdateRecentlyViewed(this.AuthenticatedUser, 
+                                                               this.SelectedUserContext,
+                                                               itemnumber,
+                                                               false/*each*/,
+                                                               this.SelectedUserContext.BranchId,
+                                                               true/*active*/);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }

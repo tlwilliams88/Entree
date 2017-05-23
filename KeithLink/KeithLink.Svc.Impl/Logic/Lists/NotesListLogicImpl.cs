@@ -40,6 +40,23 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             return _notesRepo.GetNotesList(catalogInfo, false);
         }
+
+        public void AddOrUpdateNote(UserSelectedContext catalogInfo,
+                                string itemNumber,
+                                bool each,
+                                string catalogId,
+                                string note,
+                                bool active)
+        {
+            _notesRepo.AddOrUpdateNote(catalogInfo.CustomerId,
+                catalogInfo.BranchId,
+                itemNumber,
+                each,
+                catalogId,
+                note, 
+                active);
+        }
+
         #endregion
     }
 }

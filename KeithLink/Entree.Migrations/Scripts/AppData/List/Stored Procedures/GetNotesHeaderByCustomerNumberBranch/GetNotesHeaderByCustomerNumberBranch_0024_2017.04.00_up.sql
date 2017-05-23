@@ -1,4 +1,4 @@
-CREATE PROCEDURE [List].[GetHistoryHeaderByCustomerNumberAndBranch] 
+CREATE PROCEDURE [List].[GetNotesHeaderByCustomerNumberBranch]
 	@CustomerNumber	NVARCHAR (10),
 	@BranchId		NVARCHAR (10)
 AS
@@ -10,9 +10,8 @@ AS
 		[Id],
 		[CustomerNumber],
 		[BranchId],
-		[Name],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[HistoryHeaders] 
+	FROM [List].[NotesHeaders] 
 	WHERE	[CustomerNumber] = @CustomerNumber
 			AND [BranchId] = @BranchId

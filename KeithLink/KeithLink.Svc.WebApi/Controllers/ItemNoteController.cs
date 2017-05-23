@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using KeithLink.Svc.Impl.Service.List;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -18,6 +19,7 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ItemNoteController : BaseController {
         #region attributes
         private readonly IListLogic listServiceRepository;
+        private readonly INotesListLogic _notesLogic;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -28,8 +30,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="listServiceRepository"></param>
         /// <param name="profileLogic"></param>
         /// <param name="logRepo"></param>
-        public ItemNoteController(IListLogic listServiceRepository,  IUserProfileLogic profileLogic, IEventLogRepository logRepo) : base(profileLogic) {
+        public ItemNoteController(IListLogic listServiceRepository,  IUserProfileLogic profileLogic, INotesListLogic notesLogic,
+            IEventLogRepository logRepo) : base(profileLogic) {
 			this.listServiceRepository = listServiceRepository;
+            _notesLogic = notesLogic;
             _log = logRepo;
         }
         #endregion
@@ -46,7 +50,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                listServiceRepository.AddNote(this.AuthenticatedUser, this.SelectedUserContext, newNote);
+                _notesLogic.AddOrUpdateNote(this.SelectedUserContext, newNote.ItemNumber, false, newNote.CatalogId, newNote.Note, true);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }
