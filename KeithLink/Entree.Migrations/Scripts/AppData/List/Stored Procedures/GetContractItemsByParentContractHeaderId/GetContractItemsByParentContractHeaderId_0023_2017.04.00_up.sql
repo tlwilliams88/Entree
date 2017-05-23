@@ -14,6 +14,6 @@ AS
 		ci.CreatedUtc,
 		ci.ModifiedUtc
 	FROM
-		[List].[ContractItems] ci
+		[List].[ContractDetails] ci
 	WHERE
 		ci.ParentContractHeaderId = @ParentContractHeaderId

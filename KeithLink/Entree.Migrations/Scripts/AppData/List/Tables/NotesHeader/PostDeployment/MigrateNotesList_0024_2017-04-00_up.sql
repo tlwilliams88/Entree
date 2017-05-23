@@ -1,6 +1,3 @@
-CREATE PROCEDURE [List].[MigrateNotesList] 
-AS
-BEGIN
 	   -- =============================================
        -- Author:			Brett Killins
        -- Create date:		5/18/2017
@@ -56,5 +53,3 @@ BEGIN
 					WHERE [ItemNumber] = li.[ItemNumber]
 						AND [Each] = li.[Each]
 						AND [CatalogId] = li.[CatalogId])
-
-END

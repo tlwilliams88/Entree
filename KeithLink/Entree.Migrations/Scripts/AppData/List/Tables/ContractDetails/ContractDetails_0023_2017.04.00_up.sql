@@ -1,4 +1,4 @@
-﻿CREATE TABLE [List].[ContractItems]
+﻿CREATE TABLE [List].[ContractDetails]
 (
 	[Id] INT PRIMARY KEY IDENTITY(1,1),
 	[ParentContractHeaderId] INT NOT NULL,

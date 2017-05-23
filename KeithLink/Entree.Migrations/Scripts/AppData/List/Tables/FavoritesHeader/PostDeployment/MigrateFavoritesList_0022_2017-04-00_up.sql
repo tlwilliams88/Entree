@@ -1,6 +1,3 @@
-CREATE PROCEDURE [List].[MigrateFavoritesList] 
-AS
-BEGIN
 	   -- =============================================
        -- Author:			Brett Killins
        -- Create date:		5/18/2017
@@ -22,6 +19,7 @@ BEGIN
             [BEK_Commerce_AppData].[List].[Lists] as l
 		WHERE 
 			l.[Type] = 1 AND
+			l.CustomerId IS NOT NULL AND
 			NOT EXISTS (
 				SELECT 
 					'x'
@@ -59,5 +57,3 @@ BEGIN
 					WHERE [ItemNumber] = li.[ItemNumber]
 						AND [Each] = li.[Each]
 						AND [CatalogId] = li.[CatalogId])
-
-END

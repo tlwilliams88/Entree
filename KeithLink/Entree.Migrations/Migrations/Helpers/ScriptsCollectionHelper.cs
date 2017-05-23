@@ -53,7 +53,8 @@ namespace Entree.Migrations.Helpers
                             x.Contains("Seed") == false &&
                             x.Contains("Indexes") == false &&
                             x.Contains("Views") == false &&
-                            x.Contains("Constraints") == false).ToList<string>().ForEach(x => returnValue.Enqueue(x));
+                            x.Contains("Constraints") == false &&
+                            x.Contains("PostDeployment") == false).ToList<string>().ForEach(x => returnValue.Enqueue(x));
 
 
             filesGlob.Where(x => x.Contains("Types")).ToList<string>().ForEach(x => returnValue.Enqueue(x));
@@ -61,13 +62,15 @@ namespace Entree.Migrations.Helpers
             // Ignore Constraints and Indexes - they are to be processed later
             filesGlob.Where(x => x.Contains("Tables") && 
                                  x.Contains("Constraints") == false && 
-                                 x.Contains("Indexes") == false).ToList<string>().ForEach(x => returnValue.Enqueue(x));
+                                 x.Contains("Indexes") == false &&
+                                 x.Contains("PostDeployment") == false).ToList<string>().ForEach(x => returnValue.Enqueue(x));
 
             filesGlob.Where(x => x.Contains("Functions")).ToList<string>().ForEach(x => returnValue.Enqueue(x));
             filesGlob.Where(x => x.Contains("Stored Procedures")).ToList<string>().ForEach(x => returnValue.Enqueue(x));
             filesGlob.Where(x => x.Contains("Views")).ToList<string>().ForEach(x => returnValue.Enqueue(x));
             filesGlob.Where(x => x.Contains("Indexes")).ToList<string>().ForEach(x => returnValue.Enqueue(x));
             filesGlob.Where(x => x.Contains("Constraints")).ToList<string>().ForEach(x => returnValue.Enqueue(x));
+            filesGlob.Where(x => x.Contains("PostDeployment")).ToList<string>().ForEach(x => returnValue.Enqueue(x));
 
 
             return returnValue;
