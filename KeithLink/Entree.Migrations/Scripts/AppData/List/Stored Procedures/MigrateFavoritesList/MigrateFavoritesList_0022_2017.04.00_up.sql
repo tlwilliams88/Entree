@@ -1,4 +1,4 @@
-CREATE PROCEDURE [List].[MigrateNotesList] 
+CREATE PROCEDURE [List].[MigrateFavoritesList] 
 AS
 BEGIN
 	   -- =============================================
@@ -8,51 +8,54 @@ BEGIN
        -- =============================================
 
 	INSERT -- create customer favorite lists
-		INTO [BEK_Commerce_AppData].[List].[NotesHeader]
+		INTO [BEK_Commerce_AppData].[List].[FavoritesHeaders]
             ([CustomerNumber]
             ,[BranchId]
+			,[UserId]
             ,[Name])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
-            ,'Notes'
+			,l.[UserId]
+            ,'Favorites'
         FROM 
             [BEK_Commerce_AppData].[List].[Lists] as l
 		WHERE 
-			l.[Type] = 4 AND
+			l.[Type] = 1 AND
 			NOT EXISTS (
 				SELECT 
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[NotesHeader]
+					FROM [BEK_Commerce_AppData].[List].[FavoritesHeaders]
 					WHERE [CustomerNumber] = l.[CustomerId]
 						AND [BranchId] = l.[BranchId]
-						AND l.[Type] = 4)
+						AND [UserId] = l.[UserId]
+						AND l.[Type] = 1)
 		
 
     INSERT
-		INTO [BEK_Commerce_AppData].[List].[NotesDetail]
-			([ParentNotesHeaderId]
+		INTO [BEK_Commerce_AppData].[List].[FavoritesDetails]
+			([ParentFavoritesHeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]
-			 ,[Note])
+			 ,[Active])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
 			,li.[CatalogId]
 			,li.Each
-			,li.Note
+			,1
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-		INNER JOIN List.[NotesHeader] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
+		INNER JOIN List.[FavoritesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[UserId] = l.[UserId]
 		WHERE
 			l.Type = 1 and
 			NOT EXISTS (
 				SELECT
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[NotesDetail]
+					FROM [BEK_Commerce_AppData].[List].[FavoritesDetails]
 					INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-					INNER JOIN List.[NotesHeader] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
+					INNER JOIN List.[FavoritesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[UserId] = l.[UserId]
 					WHERE [ItemNumber] = li.[ItemNumber]
 						AND [Each] = li.[Each]
 						AND [CatalogId] = li.[CatalogId])

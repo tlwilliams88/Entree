@@ -1,5 +1,4 @@
-CREATE PROCEDURE [List].[GetRecentlyViewedHeaderByUserIdCustomerNumberBranch]
-	@UserId			[uniqueidentifier], 
+CREATE PROCEDURE [List].[GetNotesHeaderByCustomerNumberBranch]
 	@CustomerNumber	NVARCHAR (10),
 	@BranchId		NVARCHAR (10)
 AS
@@ -9,13 +8,10 @@ AS
 
 	SELECT
 		[Id],
-		CONVERT(nvarchar(50),[UserId]),
 		[CustomerNumber],
 		[BranchId],
-		[Name],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[RecentlyViewedHeader] 
-	WHERE	[UserId] = @UserId
-	        AND [CustomerNumber] = @CustomerNumber
+	FROM [List].[NotesHeaders] 
+	WHERE	[CustomerNumber] = @CustomerNumber
 			AND [BranchId] = @BranchId

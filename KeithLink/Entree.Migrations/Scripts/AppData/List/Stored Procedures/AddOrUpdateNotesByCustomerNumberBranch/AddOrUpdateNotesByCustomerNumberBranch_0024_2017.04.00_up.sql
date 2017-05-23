@@ -28,7 +28,7 @@ AS
 		VALUES 
 			(@CustomerNumber, @BranchId, N'Notes')
 
-	MERGE INTO [BEK_Commerce_AppData].[List].[NotesHeader] A
+	MERGE INTO [BEK_Commerce_AppData].[List].[NotesHeaders] A
 	USING @Header B ON (A.[CustomerNumber] = B.[CustomerNumber] and A.[BranchId] = B.[BranchId])
 	WHEN NOT MATCHED THEN
 		INSERT ([CustomerNumber], [BranchId], [Name]) 
@@ -63,7 +63,7 @@ AS
 		VALUES 
 			(@ParentNotesHeaderId, @ItemNumber, @Each, @CatalogId, @Note, @Active)
 
-	MERGE INTO [BEK_Commerce_AppData].[List].[NotesDetail] A
+	MERGE INTO [BEK_Commerce_AppData].[List].[NotesDetails] A
 	USING @Detail B ON (A.[ParentNotesHeaderId] = B.[ParentNotesHeaderId] and A.[ItemNumber] = B.[ItemNumber] and A.[Each] = B.[Each] and A.[CatalogId] = B.[CatalogId])
 	WHEN MATCHED THEN
 	    UPDATE SET A.[Note] = B.[Note],A.[Active] = B.[Active], A.[ModifiedUtc] = B.[ModifiedUtc]

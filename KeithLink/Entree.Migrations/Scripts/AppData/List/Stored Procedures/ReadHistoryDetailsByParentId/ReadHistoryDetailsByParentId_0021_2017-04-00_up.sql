@@ -13,5 +13,5 @@ AS
 		[CatalogId],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[HistoryDetail] 
+	FROM [List].[HistoryDetails] 
 	WHERE	[ParentHistoryHeaderId] = @ParentHistoryHeaderId

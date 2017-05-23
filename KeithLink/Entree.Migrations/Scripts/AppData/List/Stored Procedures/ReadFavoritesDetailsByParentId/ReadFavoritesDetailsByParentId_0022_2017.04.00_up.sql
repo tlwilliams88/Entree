@@ -1,5 +1,5 @@
-CREATE PROCEDURE [List].[ReadRecentlyViewedDetailsByParentId] 
-	@ParentRecentlyViewedHeaderId	bigint
+CREATE PROCEDURE [List].[ReadFavoritesDetailsByParentId] 
+	@ParentFavoritesHeaderId	bigint
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -12,5 +12,5 @@ AS
 		[CatalogId],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[RecentlyViewedDetail] 
-	WHERE	[ParentRecentlyViewedHeaderId] = @ParentRecentlyViewedHeaderId
+	FROM [List].[FavoritesDetails] 
+	WHERE	[ParentFavoritesHeaderId] = @ParentFavoritesHeaderId

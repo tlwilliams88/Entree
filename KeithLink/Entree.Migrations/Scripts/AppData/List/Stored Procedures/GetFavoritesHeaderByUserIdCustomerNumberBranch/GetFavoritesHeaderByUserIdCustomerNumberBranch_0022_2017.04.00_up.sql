@@ -1,4 +1,5 @@
-CREATE PROCEDURE [List].[GetNotesHeaderByCustomerNumberBranch]
+CREATE PROCEDURE [List].[GetFavoritesHeaderByUserIdCustomerNumberBranch]
+	@UserId			[uniqueidentifier], 
 	@CustomerNumber	NVARCHAR (10),
 	@BranchId		NVARCHAR (10)
 AS
@@ -8,10 +9,13 @@ AS
 
 	SELECT
 		[Id],
+		CONVERT(nvarchar(50),[UserId]),
 		[CustomerNumber],
 		[BranchId],
+		[Name],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[NotesHeader] 
-	WHERE	[CustomerNumber] = @CustomerNumber
+	FROM [List].[FavoritesHeaders] 
+	WHERE	[UserId] = @UserId
+	        AND [CustomerNumber] = @CustomerNumber
 			AND [BranchId] = @BranchId

@@ -29,7 +29,7 @@ AS
 		VALUES 
 			(@UserId, @CustomerNumber, @BranchId, N'Favorites')
 
-	MERGE INTO [BEK_Commerce_AppData].[List].[RecentlyViewedHeader] A
+	MERGE INTO [BEK_Commerce_AppData].[List].[RecentlyViewedHeaders] A
 	USING @Header B ON (A.[UserId] = B.[UserId] and A.[CustomerNumber] = B.[CustomerNumber] and A.[BranchId] = B.[BranchId])
 	WHEN NOT MATCHED THEN
 		INSERT ([UserId], [CustomerNumber], [BranchId], [Name]) 
@@ -39,7 +39,7 @@ AS
 		(
 		SELECT
 			[Id]
-		FROM [List].[RecentlyViewedHeader] 
+		FROM [List].[RecentlyViewedHeaders] 
 		WHERE	[UserId] = @UserId
 				AND [CustomerNumber] = @CustomerNumber
 				AND [BranchId] = @BranchId
@@ -64,7 +64,7 @@ AS
 		VALUES 
 			(@ParentRecentlyViewedHeaderId, @ItemNumber, @Each, @CatalogId, @Active)
 
-	MERGE INTO [BEK_Commerce_AppData].[List].[RecentlyViewedDetail] A
+	MERGE INTO [BEK_Commerce_AppData].[List].[RecentlyViewedDetails] A
 	USING @Detail B ON (A.[ParentRecentlyViewedHeaderId] = B.[ParentRecentlyViewedHeaderId] and A.[ItemNumber] = B.[ItemNumber] and A.[Each] = B.[Each] and A.[CatalogId] = B.[CatalogId])
 	WHEN NOT MATCHED THEN
 		INSERT

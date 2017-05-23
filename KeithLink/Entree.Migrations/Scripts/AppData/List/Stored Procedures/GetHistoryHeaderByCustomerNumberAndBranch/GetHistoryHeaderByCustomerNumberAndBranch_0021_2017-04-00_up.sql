@@ -13,6 +13,6 @@ AS
 		[Name],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[HistoryHeader] 
+	FROM [List].[HistoryHeaders] 
 	WHERE	[CustomerNumber] = @CustomerNumber
 			AND [BranchId] = @BranchId

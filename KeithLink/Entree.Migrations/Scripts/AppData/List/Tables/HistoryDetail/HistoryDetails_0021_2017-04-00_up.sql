@@ -1,4 +1,4 @@
-CREATE TABLE [List].[HistoryDetail] (
+CREATE TABLE [List].[HistoryDetails] (
     [Id]					BIGINT			PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [ParentHistoryHeaderId] BIGINT          DEFAULT 0 NOT NULL,
 	[LineNumber]			[int]			NOT NULL DEFAULT ((0)),

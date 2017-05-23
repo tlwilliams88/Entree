@@ -1,4 +1,4 @@
-CREATE TABLE [List].[FavoritesHeader] (
+CREATE TABLE [List].[RecentlyViewedHeaders] (
     [Id]				BIGINT			   PRIMARY KEY IDENTITY(1,1) NOT NULL,
 	[UserId]            [uniqueidentifier] NULL,
     [CustomerNumber]    [nvarchar](10)	   NULL,

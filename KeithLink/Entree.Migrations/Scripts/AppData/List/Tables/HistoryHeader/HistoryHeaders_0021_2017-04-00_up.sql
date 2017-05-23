@@ -1,4 +1,4 @@
-CREATE TABLE [List].[HistoryHeader] (
+CREATE TABLE [List].[HistoryHeaders] (
     [Id]				BIGINT			PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [CustomerNumber]    [nvarchar](10)	NULL,
     [BranchId]		    [nvarchar](10)	NULL,

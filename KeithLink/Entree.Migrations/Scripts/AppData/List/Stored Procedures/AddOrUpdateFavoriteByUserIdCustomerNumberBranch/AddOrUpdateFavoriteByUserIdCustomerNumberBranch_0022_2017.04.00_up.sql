@@ -29,7 +29,7 @@ AS
 		VALUES 
 			(@UserId, @CustomerNumber, @BranchId, N'Favorites')
 
-	MERGE INTO [BEK_Commerce_AppData].[List].[FavoritesHeader] A
+	MERGE INTO [BEK_Commerce_AppData].[List].[FavoritesHeaders] A
 	USING @Header B ON (A.[UserId] = B.[UserId] and A.[CustomerNumber] = B.[CustomerNumber] and A.[BranchId] = B.[BranchId])
 	WHEN NOT MATCHED THEN
 		INSERT ([UserId], [CustomerNumber], [BranchId], [Name]) 
@@ -64,7 +64,7 @@ AS
 		VALUES 
 			(@ParentFavoritesHeaderId, @ItemNumber, @Each, @CatalogId, @Active)
 
-	MERGE INTO [BEK_Commerce_AppData].[List].[FavoritesDetail] A
+	MERGE INTO [BEK_Commerce_AppData].[List].[FavoritesDetails] A
 	USING @Detail B ON (A.[ParentFavoritesHeaderId] = B.[ParentFavoritesHeaderId] and A.[ItemNumber] = B.[ItemNumber] and A.[Each] = B.[Each] and A.[CatalogId] = B.[CatalogId])
 	WHEN NOT MATCHED THEN
 		INSERT

@@ -1,4 +1,4 @@
-CREATE TABLE [List].[FavoritesDetail] (
+CREATE TABLE [List].[FavoritesDetails] (
     [Id]					  BIGINT			PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [ParentFavoritesHeaderId] BIGINT            DEFAULT 0 NOT NULL,
 	[ItemNumber]			  [nvarchar](15)	NOT NULL,
