@@ -1,4 +1,4 @@
-CREATE PROCEDURE [List].[GetFavoritesHeaderByUserIdCustomerNumberBranch]
+CREATE PROCEDURE [List].[GetRecentlyViewedHeaderByUserIdCustomerNumberBranch]
 	@UserId			[uniqueidentifier], 
 	@CustomerNumber	NVARCHAR (10),
 	@BranchId		NVARCHAR (10)
@@ -15,7 +15,7 @@ AS
 		[Name],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[FavoritesHeader] 
+	FROM [List].[RecentlyViewedHeader] 
 	WHERE	[UserId] = @UserId
 	        AND [CustomerNumber] = @CustomerNumber
 			AND [BranchId] = @BranchId

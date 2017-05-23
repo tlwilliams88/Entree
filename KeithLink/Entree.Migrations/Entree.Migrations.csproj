@@ -67,6 +67,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0022.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0021.cs" />
     <Compile Include="Migrations\v2017.03.00\Migration0020.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0025.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0024.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0023.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -180,6 +181,10 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateFavoriteByUserIdCustomerNumberBranch\AddOrUpdateFavoriteByUserIdCustomerNumberBranch_0022_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch\AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch_0025_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch\AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch_0025_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0008_2017-02-00_down.sql">
@@ -203,6 +208,10 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\GetNotesHeaderByCustomerNumberBranch\GetNotesHeaderByCustomerNumberBranch_0024_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017-04-00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\MigrateNotesList\MigrateNotesList_0024_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -216,6 +225,10 @@
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByParentId\ReadNotesDetailsByParentId_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByParentId\ReadNotesDetailsByParentId_0021_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyViewedDetailsByParentId\ReadRecentlyViewedDetailsByParentId_0025_2017-04-00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyViewedDetailsByParentId\ReadRecentlyViewedDetailsByParentId_0025_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0023_2017.04.00_down.sql" />
@@ -241,9 +254,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\FavoritesHeader\FavoritesHeader_0022_2017-04-00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Tables\FavoritesHeader\Indexes\IX_ListFavoritesHeader_UserIdCustomerNumberBranch_0022_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\HistoryDetail\HistoryDetail_0021_2017-04-00_down.sql">
@@ -279,6 +289,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeader_0024_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedDetail\RecentlyViewedDetail_0025_2017-04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedDetail\RecentlyViewedDetail_0025_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedHeader\RecentlyViewedHeader_0025_2017-04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedHeader\RecentlyViewedHeader_0025_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Marketing\Marketing_0001_0001.11.00_up.sql" />

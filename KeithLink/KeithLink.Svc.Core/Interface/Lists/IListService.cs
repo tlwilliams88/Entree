@@ -12,6 +12,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListService
     {
+        List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
+
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id,
             bool includePrice = true);
 

@@ -26,26 +26,31 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IListRepository _listRepo;
         private readonly IHistoryListLogic _historyListLogic;
         private readonly IFavoritesListLogic _favoritesLogic;
+        private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
         private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly IPriceLogic _priceLogic;
+        private readonly IProductImageRepository _productImageRepo;
         private readonly IEventLogRepository _log;
         #endregion
 
         #region ctor
         public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
-                                IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic, IEventLogRepository log)
+                                IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
+                                IRecentlyViewedListLogic recentlyViewedLogic, IProductImageRepository productImageRepo, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
             _listRepo = listRepo;
             // specific lists -
             _historyListLogic = historyListLogic;
             _favoritesLogic = favoritesLogic;
+            _recentlyViewedLogic = recentlyViewedLogic;
             _notesLogic = notesLogic;
             _catalogLogic = catalogLogic;
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
+            _productImageRepo = productImageRepo;
             _log = log;
         }
         #endregion
@@ -77,11 +82,19 @@ namespace KeithLink.Svc.Impl.Service.List
 
             AddHistoryList(user, catalogInfo, headerOnly, list);
 
+            AddFavoritesList(user, catalogInfo, headerOnly, list);
+
             // Add a favorite
             //_favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId, true);
 
             // read favorites
             //var favorites = _favoritesLogic.GetFavoritedItemNumbers(user, catalogInfo);
+
+            // Add a recently viewed
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
+
+            // read recently viewed
+            //var recentlyViewed = ReadRecent(user, catalogInfo);
 
             // Add a note
             //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
@@ -119,7 +132,12 @@ namespace KeithLink.Svc.Impl.Service.List
             switch (type)
             {
                 case ListType.Worksheet:
-                    return _historyListLogic.GetListModel(user, catalogInfo, Id);
+                    ListModel list = _historyListLogic.GetListModel(user, catalogInfo, Id);
+
+                    FillOutProducts(user, catalogInfo, new List<ListModel>() { list }, true);
+
+                    return list;
+
                 default:
                     return _genericListLogic.ReadList(user, catalogInfo, Id, includePrice);
             }
@@ -165,11 +183,29 @@ namespace KeithLink.Svc.Impl.Service.List
             return pagedList;
         }
 
+        public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            var list = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
+
+            var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
+                                  .ToList();
+
+            LookupProductDetails(user, catalogInfo, returnItems);
+
+            returnItems.ForEach(delegate (RecentItem item)
+            {
+                item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
+            });
+
+            return returnItems.OrderByDescending(l => l.ModifiedOn)
+                              .ToList();
+        }
+
         private void AddOtherLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
             List<ListModel> list)
         {
             List<ListModel> theRest = _genericListLogic.ReadUserList(user, catalogInfo, headerOnly);
-            list.AddRange(theRest.Where(l => l.Type != ListType.Worksheet));
+            list.AddRange(theRest.Where(l => l.Type != ListType.Worksheet && l.Type != ListType.Favorite));
             //except what we already define in the specific lists (add other types we define)
         }
 
@@ -186,6 +222,19 @@ namespace KeithLink.Svc.Impl.Service.List
             list.AddRange(worksheet);
         }
 
+        private void AddFavoritesList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
+            List<ListModel> list)
+        {
+            List<ListModel> favorites = _favoritesLogic.ReadList(user, catalogInfo, headerOnly);
+
+            if (favorites != null && favorites.Count > 0)
+            {
+                FillOutProducts(user, catalogInfo, favorites, true);
+            }
+
+            list.AddRange(favorites);
+        }
+
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)
         {
 //Lookup product details for each item
@@ -199,6 +248,37 @@ namespace KeithLink.Svc.Impl.Service.List
                     LookupPrices(user, tempList.Items, catalogInfo);
                 }
             }
+        }
+
+        private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, List<RecentItem> list)
+        {
+            if (list == null || list.Count == 0)
+                return;
+
+            ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
+
+            {
+                var batch = list.Select(i => i.ItemNumber)
+                                .ToList();
+
+                var tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
+
+                products.Products.AddRange(tempProducts.Products);
+            }
+
+            var productHash = products.Products.GroupBy(p => p.ItemNumber)
+                                               .Select(i => i.First())
+                                               .ToDictionary(p => p.ItemNumber);
+
+            Parallel.ForEach(list, listItem =>
+            {
+                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+
+                if (prod != null)
+                {
+                    listItem.Name = prod.Name;
+                }
+            });
         }
 
         private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
