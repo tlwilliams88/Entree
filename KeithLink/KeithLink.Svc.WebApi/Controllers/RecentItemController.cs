@@ -100,7 +100,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _repo.DeleteRecent(this.AuthenticatedUser, this.SelectedUserContext);
+                _recentlyViewedLogic.DeleteRecentlyViewed(this.AuthenticatedUser, this.SelectedUserContext);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = true;
             }

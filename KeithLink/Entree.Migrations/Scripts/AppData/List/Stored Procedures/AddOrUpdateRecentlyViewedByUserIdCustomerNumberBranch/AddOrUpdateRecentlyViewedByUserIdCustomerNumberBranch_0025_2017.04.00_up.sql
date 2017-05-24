@@ -5,7 +5,8 @@ CREATE PROCEDURE [List].[AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch]
 	@ItemNumber		NVARCHAR (15),
 	@Each           BIT,
 	@CatalogId      NVARCHAR (24),
-	@Active         BIT
+	@Active         BIT,
+	@NumberToKeep	INT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -71,3 +72,17 @@ AS
 			([ParentRecentlyViewedHeaderId], [ItemNumber], [Each], [CatalogId], [Active]) 
 		VALUES 
 			(B.ParentRecentlyViewedHeaderId, B.ItemNumber, B.Each, B.CatalogId, B.Active);
+
+	DECLARE @Count AS INT = (
+	SELECT count([Id]) FROM [BEK_Commerce_AppData].[List].[RecentlyViewedDetails] WHERE [ParentRecentlyViewedHeaderId] = @ParentRecentlyViewedHeaderId
+	)
+
+	if(@Count > @NumberToKeep)
+		DELETE FROM [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
+			WHERE [Id] IN
+			(
+				SELECT TOP (@Count - @NumberToKeep) [Id]
+				FROM [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
+				WHERE [ParentRecentlyViewedHeaderId] = @ParentRecentlyViewedHeaderId
+				ORDER BY [ModifiedUtc] ASC
+			)

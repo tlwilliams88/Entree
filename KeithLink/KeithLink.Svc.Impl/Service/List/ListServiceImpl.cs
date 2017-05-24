@@ -91,7 +91,18 @@ namespace KeithLink.Svc.Impl.Service.List
             //var favorites = _favoritesLogic.GetFavoritedItemNumbers(user, catalogInfo);
 
             // Add a recently viewed
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693002", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693003", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693004", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693005", false, catalogInfo.BranchId, true);
             //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "692006", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "692007", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693007", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693008", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693009", false, catalogInfo.BranchId, true);
+            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693010", false, catalogInfo.BranchId, true);
 
             // Empty recently viewed
             //_recentlyViewedLogic.DeleteRecentlyViewed(user, catalogInfo);

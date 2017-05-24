@@ -70,7 +70,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                     @ItemNumber = itemNumber,
                     @Each = each,
                     @CatalogId = catalogId,
-                    @Active = active
+                    @Active = active,
+                    @NumberToKeep = Configuration.RecentItemsToKeep
                 }, commandType: CommandType.StoredProcedure));   
         }
 
