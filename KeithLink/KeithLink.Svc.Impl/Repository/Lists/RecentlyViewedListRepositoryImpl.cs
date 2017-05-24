@@ -19,7 +19,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #region attributes
         private const string COMMAND_GETHEADER = "[List].[GetRecentlyViewedHeaderByUserIdCustomerNumberBranch]";
         private const string COMMAND_GETDETAILS = "[List].[ReadRecentlyViewedDetailsByParentId]";
-        private const string COMMAND_ADDFAVORITE = "[List].[AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch]";
+        private const string COMMAND_ADDDETAIL = "[List].[AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch]";
+        private const string COMMAND_DELETEDETAILS = "[List].[DeleteRecentlyViewedDetails]";
         #endregion
         #region constructor
         public RecentlyViewedListRepositoryImpl() : base(Configuration.BEKDBConnectionString)
@@ -36,7 +37,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                                 commandType: CommandType.StoredProcedure
                             ));
 
-            if (headerOnly == false)
+            if (header != null && headerOnly == false)
             {
                 header.Items = Read<RecentlyViewedListDetail>(new CommandDefinition(
                                     COMMAND_GETDETAILS,
@@ -45,7 +46,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                                 ));
             }
 
-            return new List<ListModel>() { header.ToListModel(catalogInfo) };
+            if (header != null)
+            {
+                return new List<ListModel>() { header.ToListModel(catalogInfo) };
+            }
+            return null;
         }
 
         public void AddOrUpdateRecentlyViewed(string userId,
@@ -56,7 +61,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                                 string catalogId,
                                 bool active)
         {
-            ExecuteCommand(new CommandDefinition(COMMAND_ADDFAVORITE,
+            ExecuteCommand(new CommandDefinition(COMMAND_ADDDETAIL,
                 new
                 {
                     @UserId = userId,
@@ -67,6 +72,19 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                     @CatalogId = catalogId,
                     @Active = active
                 }, commandType: CommandType.StoredProcedure));   
+        }
+
+        public void DeleteRecentlyViewed(string userId,
+                                string customerNumber,
+                                string branchId)
+        {
+            ExecuteCommand(new CommandDefinition(COMMAND_DELETEDETAILS,
+                new
+                {
+                    @UserId = userId,
+                    @CustomerNumber = customerNumber,
+                    @BranchId = branchId
+                }, commandType: CommandType.StoredProcedure));
         }
         #endregion
     }

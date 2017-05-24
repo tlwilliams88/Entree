@@ -93,6 +93,9 @@ namespace KeithLink.Svc.Impl.Service.List
             // Add a recently viewed
             //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
 
+            // Empty recently viewed
+            //_recentlyViewedLogic.DeleteRecentlyViewed(user, catalogInfo);
+
             // read recently viewed
             //var recentlyViewed = ReadRecent(user, catalogInfo);
 
@@ -187,18 +190,22 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             var list = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
 
-            var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
-                                  .ToList();
-
-            LookupProductDetails(user, catalogInfo, returnItems);
-
-            returnItems.ForEach(delegate (RecentItem item)
+            if (list != null)
             {
-                item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
-            });
+                var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
+                                      .ToList();
 
-            return returnItems.OrderByDescending(l => l.ModifiedOn)
-                              .ToList();
+                LookupProductDetails(user, catalogInfo, returnItems);
+
+                returnItems.ForEach(delegate (RecentItem item)
+                {
+                    item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
+                });
+
+                return returnItems.OrderByDescending(l => l.ModifiedOn)
+                                  .ToList();
+            }
+            return null;
         }
 
         private void AddOtherLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
@@ -217,9 +224,9 @@ namespace KeithLink.Svc.Impl.Service.List
             if (worksheet != null && worksheet.Count > 0)
             {
                 FillOutProducts(user, catalogInfo, worksheet, true);
-            }
 
-            list.AddRange(worksheet);
+                list.AddRange(worksheet);
+            }
         }
 
         private void AddFavoritesList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
@@ -230,9 +237,9 @@ namespace KeithLink.Svc.Impl.Service.List
             if (favorites != null && favorites.Count > 0)
             {
                 FillOutProducts(user, catalogInfo, favorites, true);
-            }
 
-            list.AddRange(favorites);
+                list.AddRange(favorites);
+            }
         }
 
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)

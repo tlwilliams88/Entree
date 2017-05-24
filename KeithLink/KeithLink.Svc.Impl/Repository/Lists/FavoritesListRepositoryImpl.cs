@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                                 commandType: CommandType.StoredProcedure
                             ));
 
-            if (headerOnly == false)
+            if (header != null && headerOnly == false)
             {
                 header.Items = Read<FavoritesListDetail>(new CommandDefinition(
                                     COMMAND_GETDETAILS,
@@ -45,7 +45,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                                 ));
             }
 
-            return new List<ListModel>() { header.ToListModel(catalogInfo) };
+            if (header != null)
+            {
+                return new List<ListModel>() {header.ToListModel(catalogInfo)};
+            }
+            return null;
         }
 
         public void AddOrUpdateFavorite(string userId,

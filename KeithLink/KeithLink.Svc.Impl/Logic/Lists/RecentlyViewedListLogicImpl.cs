@@ -63,6 +63,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         {
             throw new NotImplementedException();
         }
+
+        public void DeleteRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            _recentlyViewedRepo.DeleteRecentlyViewed(user.UserId.ToString(), catalogInfo.CustomerId, catalogInfo.BranchId);
+        }
         #endregion
     }
 }

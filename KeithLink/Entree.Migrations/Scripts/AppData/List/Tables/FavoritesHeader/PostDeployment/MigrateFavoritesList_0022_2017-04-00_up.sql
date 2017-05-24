@@ -5,7 +5,7 @@
        -- =============================================
 
 	INSERT -- create customer favorite lists
-		INTO [BEK_Commerce_AppData].[List].[FavoritesHeader]
+		INTO [BEK_Commerce_AppData].[List].[FavoritesHeaders]
             ([CustomerNumber]
             ,[BranchId]
 			,[UserId]
@@ -23,7 +23,7 @@
 			NOT EXISTS (
 				SELECT 
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[FavoritesHeader]
+					FROM [BEK_Commerce_AppData].[List].[FavoritesHeaders]
 					WHERE [CustomerNumber] = l.[CustomerId]
 						AND [BranchId] = l.[BranchId]
 						AND [UserId] = l.[UserId]
@@ -31,7 +31,7 @@
 		
 
     INSERT
-		INTO [BEK_Commerce_AppData].[List].[FavoritesDetail]
+		INTO [BEK_Commerce_AppData].[List].[FavoritesDetails]
 			([ParentFavoritesHeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
@@ -45,15 +45,15 @@
 			,1
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-		INNER JOIN List.[FavoritesHeader] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[UserId] = l.[UserId]
+		INNER JOIN List.[FavoritesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[UserId] = l.[UserId]
 		WHERE
 			l.Type = 1 and
 			NOT EXISTS (
 				SELECT
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[FavoritesDetail]
+					FROM [BEK_Commerce_AppData].[List].[FavoritesDetails]
 					INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-					INNER JOIN List.[FavoritesHeader] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[UserId] = l.[UserId]
+					INNER JOIN List.[FavoritesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[UserId] = l.[UserId]
 					WHERE [ItemNumber] = li.[ItemNumber]
 						AND [Each] = li.[Each]
 						AND [CatalogId] = li.[CatalogId])

@@ -196,11 +196,12 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0006_2017-01-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_down.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyViewedDetails\DeleteRecentlyViewedDetails_0025_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyViewedDetails\DeleteRecentlyViewedDetails_0025_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeadersByCustomerAndBranch_0023_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeadersByCustomerAndBranch_0023_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_up.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0022_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0022_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_up.sql">
@@ -216,11 +217,6 @@
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\PostDeployment\MigrateNotesList_0024_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateFavoritesList\MigrateFavoritesList_0022_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateNotesList\MigrateNotesList_0024_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateNotesList\MigrateNotesList_0024_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadFavoritesDetailsByParentId\ReadFavoritesDetailsByParentId_0022_2017.04.00_down.sql" />
@@ -255,9 +251,6 @@
     </Content>
     <Content Include="Scripts\AppData\List\Tables\FavoritesHeader\PostDeployment\MigrateFavoritesList_0022_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\FavoritesDetails_0022_2017-04-00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\MigrateFavoritesList\MigrateFavoritesList_0022_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\FavoritesHeaders\FavoritesHeaders_0022_2017-04-00_down.sql">
@@ -730,9 +723,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Scripts\AppData\List\Stored Procedures\EmptyRecentlyViewedList\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(ProjectDir)Scripts" "$(TargetDir)Scripts" /E /Y</PostBuildEvent>

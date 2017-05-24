@@ -15,5 +15,9 @@ namespace KeithLink.Svc.Core.Interface.Lists
             bool each,
             string catalogId,
             bool active);
+
+        void DeleteRecentlyViewed(string userId,
+            string customerNumber,
+            string branchId);
     }
 }

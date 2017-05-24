@@ -5,7 +5,7 @@
        -- =============================================
 
 	INSERT -- create customer favorite lists
-		INTO [BEK_Commerce_AppData].[List].[NotesHeader]
+		INTO [BEK_Commerce_AppData].[List].[NotesHeaders]
             ([CustomerNumber]
             ,[BranchId]
             ,[Name])
@@ -20,14 +20,14 @@
 			NOT EXISTS (
 				SELECT 
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[NotesHeader]
+					FROM [BEK_Commerce_AppData].[List].[NotesHeaders]
 					WHERE [CustomerNumber] = l.[CustomerId]
 						AND [BranchId] = l.[BranchId]
 						AND l.[Type] = 4)
 		
 
     INSERT
-		INTO [BEK_Commerce_AppData].[List].[NotesDetail]
+		INTO [BEK_Commerce_AppData].[List].[NotesDetails]
 			([ParentNotesHeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
@@ -41,15 +41,15 @@
 			,li.Note
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-		INNER JOIN List.[NotesHeader] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
+		INNER JOIN List.[NotesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
 		WHERE
 			l.Type = 1 and
 			NOT EXISTS (
 				SELECT
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[NotesDetail]
+					FROM [BEK_Commerce_AppData].[List].[NotesDetails]
 					INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-					INNER JOIN List.[NotesHeader] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
+					INNER JOIN List.[NotesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
 					WHERE [ItemNumber] = li.[ItemNumber]
 						AND [Each] = li.[Each]
 						AND [CatalogId] = li.[CatalogId])

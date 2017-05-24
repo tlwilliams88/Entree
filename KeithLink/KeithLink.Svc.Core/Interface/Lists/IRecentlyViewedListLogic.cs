@@ -20,5 +20,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
             string catalogId,
             bool active);
 
+        void DeleteRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo);
     }
 }
