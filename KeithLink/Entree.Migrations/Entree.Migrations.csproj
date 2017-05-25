@@ -67,6 +67,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0022.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0021.cs" />
     <Compile Include="Migrations\v2017.03.00\Migration0020.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0027.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0026.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0025.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0024.cs" />
@@ -264,7 +265,7 @@
     <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\FavoritesDetails_0022_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\FavoritesHeader\PostDeployment\MigrateFavoritesList_0022_2017-04-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesHeaders\PostDeployment\MigrateFavoritesList_0022_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\FavoritesDetails_0022_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -309,16 +310,16 @@
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeaders_0024_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\RecentlyOrderedDetail\RecentlyOrderedDetails_0026_2017.04.00_down.sql">
+    <Content Include="Scripts\AppData\List\Tables\RecentlyOrderedDetails\RecentlyOrderedDetails_0026_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\RecentlyOrderedDetail\RecentlyOrderedDetails_0026_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Tables\RecentlyOrderedDetails\RecentlyOrderedDetails_0026_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedDetail\RecentlyViewedDetails_0025_2017.04.00_down.sql">
+    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedDetails\RecentlyViewedDetails_0025_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedDetail\RecentlyViewedDetails_0025_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Tables\RecentlyViewedDetails\RecentlyViewedDetails_0025_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\RecentlyOrderedHeaders\RecentlyOrderedHeaders_0026_2017.04.00_down.sql">
