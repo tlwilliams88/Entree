@@ -118,7 +118,7 @@
           Subtotal
         </div>
       </div>
-      <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
+      <div ng-show="cartsHeaders && cartsHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
@@ -136,7 +136,7 @@
         </div>
       </div>
       <div class="text-center hidden-xs hidden-sm" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
-      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartHeaders.length > 0 || loadingCarts">
+      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartsHeaders.length > 0 || loadingCarts">
         No Carts to Display
       </p>
       <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
