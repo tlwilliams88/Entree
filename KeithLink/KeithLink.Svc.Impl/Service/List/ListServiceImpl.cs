@@ -29,6 +29,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IFavoritesListLogic _favoritesLogic;
         private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
         private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
+        private readonly IRecommendedItemsListLogic _recommendedItemsLogic;
         private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
@@ -41,7 +42,8 @@ namespace KeithLink.Svc.Impl.Service.List
         #region ctor
         public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
-                                IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic,
+                                IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
+                                IRecommendedItemsListLogic recommendedItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
@@ -51,6 +53,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _favoritesLogic = favoritesLogic;
             _recentlyViewedLogic = recentlyViewedLogic;
             _recentlyOrderedLogic = recentlyOrderedLogic;
+            _recommendedItemsLogic = recommendedItemsLogic;
             _notesLogic = notesLogic;
             _catalogLogic = catalogLogic;
             _externalCatalogRepo = externalCatalogRepo;
@@ -117,24 +120,44 @@ namespace KeithLink.Svc.Impl.Service.List
             //var recentlyViewed = ReadRecent(user, catalogInfo);
 
             // Add a recently Ordered
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693002", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693003", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693004", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693005", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693007", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693008", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693009", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987677", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987676", false, catalogInfo.BranchId, true);
-            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987675", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693002", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693003", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693004", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693005", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693007", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693008", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693009", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987677", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987676", false, catalogInfo.BranchId, true);
+            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987675", false, catalogInfo.BranchId, true);
 
             // Empty recently viewed
             //_recentlyOrderedLogic.DeleteRecentlyOrdered(user, catalogInfo);
 
             // read recently Ordered
-            var recentlyOrdered = ReadRecentOrder(user, catalogInfo, catalogInfo.BranchId);
+            //var recentlyOrdered = ReadRecentOrder(user, catalogInfo, catalogInfo.BranchId);
+
+            // Add a recommended Items
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693005", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693006", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693007", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693008", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693009", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987677", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
+
+            // Empty recommended Items
+            _recommendedItemsLogic.DeleteRecentlyOrdered(user, catalogInfo);
+
+            // read recommended Items
+            var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
 
             // Add a note
             //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);

@@ -244,6 +244,9 @@
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
+    <Compile Include="Interface\Lists\IRecommendedItemsListDetailsRepository.cs" />
+    <Compile Include="Interface\Lists\IRecommendedItemsListHeadersRepository.cs" />
+    <Compile Include="Interface\Lists\IRecommendedItemListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
@@ -358,6 +361,8 @@
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
+    <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetail.cs" />
+    <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListHeader.cs" />
     <Compile Include="Models\Lists\Notes\NotesListDetail.cs" />
     <Compile Include="Models\Lists\Notes\NotesListHeader.cs" />
     <Compile Include="Models\Lists\PrintListModel.cs" />
