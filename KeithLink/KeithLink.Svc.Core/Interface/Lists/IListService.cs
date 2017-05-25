@@ -14,6 +14,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
+        RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog);
+
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id,
             bool includePrice = true);
 

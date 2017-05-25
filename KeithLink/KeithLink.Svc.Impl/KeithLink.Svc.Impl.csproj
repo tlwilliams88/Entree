@@ -311,6 +311,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Lists\RecentlyOrderedListLogicImpl.cs" />
     <Compile Include="Logic\Lists\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryListLogicImpl.cs" />
     <Compile Include="Logic\Lists\NotesListLogicImpl.cs" />
@@ -413,6 +414,8 @@
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecentlyOrderedListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecentlyOrderedListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyViewedListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\FavoritesListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\HistoryListRepositoryImpl.cs" />

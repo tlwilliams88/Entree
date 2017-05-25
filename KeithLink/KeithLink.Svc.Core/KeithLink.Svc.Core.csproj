@@ -244,8 +244,11 @@
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
+    <Compile Include="Interface\Lists\IRecentlyOrderedListLogic.cs" />
+    <Compile Include="Interface\Lists\IRecentlyOrderedListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
     <Compile Include="Interface\Lists\IFavoritesListLogic.cs" />
+    <Compile Include="Interface\Lists\IRecentlyOrderedListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListRepository.cs" />
     <Compile Include="Interface\Lists\IFavoritesListRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryListLogic.cs" />
@@ -358,6 +361,8 @@
     <Compile Include="Models\Lists\Notes\NotesListDetail.cs" />
     <Compile Include="Models\Lists\Notes\NotesListHeader.cs" />
     <Compile Include="Models\Lists\PrintListModel.cs" />
+    <Compile Include="Models\Lists\RecentlyOrdered\RecentlyOrderedListDetail.cs" />
+    <Compile Include="Models\Lists\RecentlyOrdered\RecentlyOrderedListHeader.cs" />
     <Compile Include="Models\Lists\RecentlyViewed\RecentlyViewedListDetail.cs" />
     <Compile Include="Models\Lists\RecentlyViewed\RecentlyViewedListHeader.cs" />
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />

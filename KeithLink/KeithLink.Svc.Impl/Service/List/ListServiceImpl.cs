@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Impl.Helpers;
 
@@ -27,8 +28,10 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IHistoryListLogic _historyListLogic;
         private readonly IFavoritesListLogic _favoritesLogic;
         private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
+        private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
         private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
+        private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly IPriceLogic _priceLogic;
         private readonly IProductImageRepository _productImageRepo;
@@ -38,7 +41,8 @@ namespace KeithLink.Svc.Impl.Service.List
         #region ctor
         public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
-                                IRecentlyViewedListLogic recentlyViewedLogic, IProductImageRepository productImageRepo, IEventLogRepository log)
+                                IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic,
+                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
             _listRepo = listRepo;
@@ -46,8 +50,10 @@ namespace KeithLink.Svc.Impl.Service.List
             _historyListLogic = historyListLogic;
             _favoritesLogic = favoritesLogic;
             _recentlyViewedLogic = recentlyViewedLogic;
+            _recentlyOrderedLogic = recentlyOrderedLogic;
             _notesLogic = notesLogic;
             _catalogLogic = catalogLogic;
+            _externalCatalogRepo = externalCatalogRepo;
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
             _productImageRepo = productImageRepo;
@@ -109,6 +115,26 @@ namespace KeithLink.Svc.Impl.Service.List
 
             // read recently viewed
             //var recentlyViewed = ReadRecent(user, catalogInfo);
+
+            // Add a recently Ordered
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693002", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693003", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693004", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693005", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693007", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693008", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693009", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987677", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987676", false, catalogInfo.BranchId, true);
+            _recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987675", false, catalogInfo.BranchId, true);
+
+            // Empty recently viewed
+            //_recentlyOrderedLogic.DeleteRecentlyOrdered(user, catalogInfo);
+
+            // read recently Ordered
+            var recentlyOrdered = ReadRecentOrder(user, catalogInfo, catalogInfo.BranchId);
 
             // Add a note
             //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
@@ -217,6 +243,60 @@ namespace KeithLink.Svc.Impl.Service.List
                                   .ToList();
             }
             return null;
+        }
+
+        public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog)
+        {
+            List<ListModel> recentOrders = _recentlyOrderedLogic.ReadList(user,
+                new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalog}, false);
+
+            // Identify specific warehouse - needed for product lookup
+            Dictionary<string, string> externalCatalogDict =
+                _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
+
+            List<RecentNonBEKItem> returnItems = recentOrders.SelectMany(i => i.Items
+                .Select(l => new RecentNonBEKItem()
+                {
+                    ItemNumber = l.ItemNumber,
+                    CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
+                    ModifiedOn = l.ModifiedUtc
+                }))
+                .ToList();
+
+            if (returnItems.Count > 0)
+            {
+                PopulateProductDetails(returnItems);
+
+                returnItems.ForEach(delegate (RecentNonBEKItem item)
+                {
+                    if (item.Upc != null)
+                    {
+                        item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
+                    }
+                });
+            }
+
+            return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
+        }
+
+        private void PopulateProductDetails(List<RecentNonBEKItem> returnList)
+        {
+            if (returnList == null)
+                return;
+
+            var products = _catalogLogic.GetProductsByIds(returnList[0].CatalogId,
+                                                          returnList.Select(i => i.ItemNumber)
+                                                                    .Distinct()
+                                                                    .ToList());
+            returnList.ForEach(delegate (RecentNonBEKItem item) {
+                var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber))
+                                               .FirstOrDefault();
+                if (product != null)
+                {
+                    item.Name = product.Name;
+                    item.Upc = product.UPC;
+                }
+            });
         }
 
         private void AddOtherLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,

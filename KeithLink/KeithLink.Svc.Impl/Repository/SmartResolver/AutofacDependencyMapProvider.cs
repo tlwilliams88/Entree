@@ -155,6 +155,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<FavoritesListRepositoryImpl>().As<IFavoritesListRepository>();
             builder.RegisterType<NotesListRepositoryImpl>().As<INotesListRepository>();
             builder.RegisterType<RecentlyViewedListRepositoryImpl>().As<IRecentlyViewedListRepository>();
+            builder.RegisterType<RecentlyOrderedListHeadersRepositoryImpl>().As<IRecentlyOrderedListHeadersRepository>();
+            builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>();
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<HistoryListRepositoryImpl>().As<IHistoryListRepository>();
             builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
@@ -246,6 +248,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<FavoritesListLogicImpl>().As<IFavoritesListLogic>();
             builder.RegisterType<NotesListLogicImpl>().As<INotesListLogic>();
             builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
+            builder.RegisterType<RecentlyOrderedListLogicImpl>().As<IRecentlyOrderedListLogic>();
             builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();
             builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();

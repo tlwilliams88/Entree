@@ -1,0 +1,2 @@
+DROP PROCEDURE [List].[AddOrUpdateRecentlyOrderedByUserIdCustomerNumberBranch]
+GO
