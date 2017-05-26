@@ -244,6 +244,9 @@
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
+    <Compile Include="Interface\Lists\IMandatoryItemListLogic.cs" />
+    <Compile Include="Interface\Lists\IMandatoryItemsListDetailsRepository.cs" />
+    <Compile Include="Interface\Lists\IMandatoryItemsListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IRemindersListLogic.cs" />
     <Compile Include="Interface\Lists\IRemindersListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IRecommendedItemsListDetailsRepository.cs" />
@@ -364,6 +367,8 @@
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
+    <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListDetail.cs" />
+    <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListHeader.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetail.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListHeader.cs" />
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetail.cs" />

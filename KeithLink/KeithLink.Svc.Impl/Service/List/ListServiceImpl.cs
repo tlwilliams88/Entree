@@ -30,6 +30,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
         private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
         private readonly IRecommendedItemsListLogic _recommendedItemsLogic;
+        private readonly IMandatoryItemsListLogic _mandatoryItemsLogic;
         private readonly IRemindersListLogic _reminderItemsLogic;
         private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
@@ -45,7 +46,9 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
                                 IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
-                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IEventLogRepository log)
+                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
+                                IMandatoryItemsListLogic mandatoryItemsLogic,
+                                IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
             _listRepo = listRepo;
@@ -56,6 +59,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _recentlyOrderedLogic = recentlyOrderedLogic;
             _recommendedItemsLogic = recommendedItemsLogic;
             _reminderItemsLogic = reminderItemsLogic;
+            _mandatoryItemsLogic = mandatoryItemsLogic;
             _notesLogic = notesLogic;
             _catalogLogic = catalogLogic;
             _externalCatalogRepo = externalCatalogRepo;
@@ -159,7 +163,7 @@ namespace KeithLink.Svc.Impl.Service.List
             //var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
 
             // Add a reminder Items
-            _reminderItemsLogic.AddOrUpdateReminder(catalogInfo, "987678", false, catalogInfo.BranchId, true);
+            //_reminderItemsLogic.AddOrUpdateReminder(catalogInfo, "987678", false, catalogInfo.BranchId, true);
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
@@ -173,7 +177,24 @@ namespace KeithLink.Svc.Impl.Service.List
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
 
             // read reminder Items
-            var reminderItems = _reminderItemsLogic.GetRemindersNumbers(user, catalogInfo);
+            //var reminderItems = _reminderItemsLogic.GetRemindersNumbers(user, catalogInfo);
+
+            // Add a mandatory Items
+            _mandatoryItemsLogic.AddOrUpdateMandatoryItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693005", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693006", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693007", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693008", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693009", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987677", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
+
+            // read mandatory Items
+            var mandatoryItems = _mandatoryItemsLogic.GetMandatoryItemNumbers(user, catalogInfo);
 
             // Add a note
             //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);

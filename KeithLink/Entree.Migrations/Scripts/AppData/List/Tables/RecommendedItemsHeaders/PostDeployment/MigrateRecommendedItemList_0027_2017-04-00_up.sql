@@ -41,7 +41,7 @@
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 		INNER JOIN List.[RecommendedItemsHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
 		WHERE
-			l.Type = 1 and
+			l.Type = 10 and
 			NOT EXISTS (
 				SELECT
 					'x'
