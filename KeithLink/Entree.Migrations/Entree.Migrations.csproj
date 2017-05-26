@@ -213,6 +213,8 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyOrderedDetails\DeleteRecentlyOrderedDetails_0026_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyOrderedDetails\DeleteRecentlyOrderedDetails_0026_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteReminderItemDetails\DeleteReminderItemDetails_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteReminderItemDetails\DeleteReminderItemDetails_0028_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyViewedDetails\DeleteRecentlyViewedDetails_0025_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyViewedDetails\DeleteRecentlyViewedDetails_0025_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeadersByCustomerAndBranch_0023_2017.04.00_down.sql" />

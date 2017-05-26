@@ -159,6 +159,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>();
             builder.RegisterType<RecommendedItemsListHeadersRepositoryImpl>().As<IRecommendedItemsListHeadersRepository>();
             builder.RegisterType<RecommendedItemsListDetailsRepositoryImpl>().As<IRecommendedItemsListDetailsRepository>();
+            builder.RegisterType<ReminderItemsListDetailsRepositoryImpl>().As<IRemindersListDetailsRepository>();
+            builder.RegisterType<ReminderItemsListHeadersRepositoryImpl>().As<IRemindersListHeadersRepository>();
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<HistoryListRepositoryImpl>().As<IHistoryListRepository>();
             builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
@@ -250,6 +252,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<FavoritesListLogicImpl>().As<IFavoritesListLogic>();
             builder.RegisterType<NotesListLogicImpl>().As<INotesListLogic>();
             builder.RegisterType<RecommendedItemsListLogicImpl>().As<IRecommendedItemsListLogic>();
+            builder.RegisterType<ReminderItemsListLogicImpl>().As<IRemindersListLogic>();
             builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
             builder.RegisterType<RecentlyOrderedListLogicImpl>().As<IRecentlyOrderedListLogic>();
             builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();

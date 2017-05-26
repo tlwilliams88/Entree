@@ -30,6 +30,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
         private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
         private readonly IRecommendedItemsListLogic _recommendedItemsLogic;
+        private readonly IRemindersListLogic _reminderItemsLogic;
         private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
@@ -43,7 +44,7 @@ namespace KeithLink.Svc.Impl.Service.List
         public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
                                 IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
-                                IRecommendedItemsListLogic recommendedItemsLogic,
+                                IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
@@ -54,6 +55,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _recentlyViewedLogic = recentlyViewedLogic;
             _recentlyOrderedLogic = recentlyOrderedLogic;
             _recommendedItemsLogic = recommendedItemsLogic;
+            _reminderItemsLogic = reminderItemsLogic;
             _notesLogic = notesLogic;
             _catalogLogic = catalogLogic;
             _externalCatalogRepo = externalCatalogRepo;
@@ -154,7 +156,24 @@ namespace KeithLink.Svc.Impl.Service.List
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
 
             // read recommended Items
-            var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
+            //var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
+
+            // Add a reminder Items
+            _reminderItemsLogic.AddOrUpdateReminder(catalogInfo, "987678", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693005", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693006", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693007", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693008", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693009", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987677", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
+            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
+
+            // read reminder Items
+            var reminderItems = _reminderItemsLogic.GetRemindersNumbers(user, catalogInfo);
 
             // Add a note
             //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
