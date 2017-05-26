@@ -67,6 +67,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0022.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0021.cs" />
     <Compile Include="Migrations\v2017.03.00\Migration0020.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration00278.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0027.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0026.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0025.cs" />
@@ -175,6 +176,10 @@
     <Content Include="Scripts\AppData\Invoice\Tables\Invoices\Invoices_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\Invoice\Tables\Terms\Terms_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\List\List_0001_0001.11.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderByCustomerNumberBranch\AddOrUpdateReminderByCustomerNumberBranch_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderByCustomerNumberBranch\AddOrUpdateReminderByCustomerNumberBranch_0028_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemByCustomerNumberBranch\AddOrUpdateRecommendedItemByCustomerNumberBranch_0027_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemByCustomerNumberBranch\AddOrUpdateRecommendedItemByCustomerNumberBranch_0027_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -222,6 +227,10 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0022_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetRemindersHeaderByCustomerNumberBranch\GetRemindersHeaderByCustomerNumberBranch_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetRemindersHeaderByCustomerNumberBranch\GetRemindersHeaderByCustomerNumberBranch_0028_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecommendedItemsHeaderByCustomerNumberBranch\GetRecommendedItemsHeaderByCustomerNumberBranch_0027_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecommendedItemsHeaderByCustomerNumberBranch\GetRecommendedItemsHeaderByCustomerNumberBranch_0027_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -232,6 +241,10 @@
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch_0026_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch_0026_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadReminderDetailsByParentId\ReadReminderDetailsByParentId_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadReminderDetailsByParentId\ReadReminderDetailsByParentId_0028_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecommendedItemDetailsByParentId\ReadRecommendedItemDetailsByParentId_0027_2017.04.00_down.sql" />
@@ -328,10 +341,23 @@
     <Content Include="Scripts\AppData\List\Tables\RecentlyOrderedDetails\RecentlyOrderedDetails_0026_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\ReminderDetail\ReminderDetails_0028_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\ReminderDetail\ReminderDetails_0028_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\RecommendedItemDetails\RecommendedItemDetails_0027_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\RecommendedItemDetails\RecommendedItemDetails_0027_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\RemindersHeaders\PostDeployment\MigrateRemindersList_0028_2017-04-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\RemindersHeaders\RemindersHeaders_0028_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\RemindersHeaders\RemindersHeaders_0028_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\RecommendedItemsHeaders\PostDeployment\MigrateRecommendedItemList_0027_2017-04-00_up.sql" />

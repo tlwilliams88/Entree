@@ -153,9 +153,6 @@ namespace KeithLink.Svc.Impl.Service.List
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
 
-            // Empty recommended Items
-            _recommendedItemsLogic.DeleteRecentlyOrdered(user, catalogInfo);
-
             // read recommended Items
             var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
 
