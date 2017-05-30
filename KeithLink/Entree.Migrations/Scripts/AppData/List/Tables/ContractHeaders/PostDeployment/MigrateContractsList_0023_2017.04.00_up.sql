@@ -5,49 +5,142 @@
 -- =============================================
 	   
 -- Migrate Header
-INSERT INTO [List].[ContractHeaders]
-(
-	[ContractId],
-	[BranchId],
-	[CustomerNumber],
-	[Name]
-)
-SELECT 
-	LTRIM(RTRIM(SUBSTRING([DisplayName], 11, 10))), --Need to get the ContractId
-	BranchId,
-	CustomerId, 
-	DisplayName
-FROM
-	[List].[Lists]
-WHERE
-	[Type] = 2
+	INSERT -- create customer contract lists from staging customerbids if they don't exist 
+		INTO [BEK_Commerce_AppData].[List].[ContractHeaders]
+            ([Name]
+            ,[CustomerNumber]
+            ,[BranchId]
+            ,[CreatedUtc]
+            ,[ModifiedUtc])
+        SELECT DISTINCT
+            'Contract - ' + LTRIM(RTRIM(cb.[BidNumber]))
+            ,LTRIM(RTRIM(cb.[CustomerNumber]))
+            ,LTRIM(RTRIM(cb.[DivisionNumber]))
+            ,GETUTCDATE()
+            ,GETUTCDATE()
+        FROM 
+            [BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] as cb
+		WHERE 
+			NOT EXISTS (
+				SELECT 
+					'x'
+					FROM [BEK_Commerce_AppData].[List].[ContractHeaders]
+					WHERE [CustomerNumber] = LTRIM(RTRIM(cb.[CustomerNumber]))
+						AND [BranchId] = LTRIM(RTRIM(cb.[DivisionNumber])))
 
--- Migrate Detail
-INSERT INTO [List].[ContractDetails]
-(
-	[ParentContractHeaderId],
-	[LineNumber],
-	[ItemNumber],
-	[FromDate],
-	[ToDate],
-	[Each],
-	[Category],
-	[CatalogId],
-	[CreatedUtc],
-	[ModifiedUtc]
-)
-SELECT 
-	h.Id,
-	i.Position,
-	i.ItemNumber,
-	i.FromDate,
-	i.ToDate,
-	i.Each,
-	i.Category,
-	i.CatalogId,
-	GETUTCDATE(),
-	GETUTCDATE()
-FROM [List].[ListItems] i
-LEFT JOIN [List].[Lists] h ON h.Id = i.ParentList_id
-WHERE i.FromDate IS NOT NULL
-AND i.ToDate IS NOT NULL
+    INSERT -- insert new items into all customer lists
+		INTO [BEK_Commerce_AppData].[List].[ContractDetails]
+			([ItemNumber]
+            ,[CreatedUtc]
+            ,[ParentContractHeaderId]
+            ,[ModifiedUtc]
+            ,[Category]
+            ,[LineNumber]
+            ,[Each]
+            ,[CatalogId]
+            ,[ToDate])
+        SELECT
+			LTRIM(RTRIM(bcd.ItemNumber))
+			,GETUTCDATE()
+			,l.Id
+			,GETUTCDATE()
+			,LTRIM(RTRIM(bcd.CategoryDescription))
+			,CAST(bcd.BidLineNumber as int)
+			,CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END
+			,LTRIM(RTRIM(cb.DivisionNumber))
+			,DATEADD(day, 1, GETDATE())
+			FROM 
+				[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			INNER JOIN 
+				[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+				ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+			INNER JOIN 
+				[BEK_Commerce_AppData].List.[ContractHeaders] l
+				ON l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+			WHERE
+				NOT EXISTS (
+					SELECT
+						'x'
+						FROM [BEK_Commerce_AppData].[List].[ContractDetails] li
+						WHERE li.[ParentContractHeaderId] = l.Id 
+							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
+							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
+
+       UPDATE
+             [BEK_Commerce_AppData].[List].[ContractHeaders]
+             SET 
+                    Name = 'Contract - ' + ltrim(rtrim(cb.BidNumber))
+             FROM 
+                    [BEK_Commerce_AppData].[List].[ContractHeaders] l
+             INNER JOIN 
+                    [BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+                    ON  l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+                           AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber))
+             WHERE
+                    l.Name <> 'Contract - ' + ltrim(rtrim(cb.BidNumber))
+
+	UPDATE
+		[BEK_Commerce_AppData].[List].[ContractDetails]
+		SET 
+			[LineNumber] = CAST(bcd.BidLineNumber as int) 
+			, Category = LTRIM(RTRIM(bcd.CategoryDescription))
+			, ToDate = DATEADD(day, 3, GETDATE())
+		FROM 
+			[BEK_Commerce_AppData].[List].[ContractDetails] li
+		INNER JOIN 
+			[BEK_Commerce_AppData].List.[ContractHeaders] l
+			ON l.Id = li.[ParentContractHeaderId]
+		INNER JOIN
+			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
+			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
+		INNER JOIN 
+			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			ON cb.BidNumber=bcd.BidNumber 
+				AND cb.DivisionNumber = bcd.DivisionNumber
+				AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+
+	UPDATE
+		[BEK_Commerce_AppData].[List].[ContractDetails]
+		SET 
+			ToDate = DATEADD(day, -14, GETDATE())
+		FROM 
+			[BEK_Commerce_AppData].[List].[ContractDetails] li
+		INNER JOIN 
+			[BEK_Commerce_AppData].List.[ContractHeaders] l
+			ON l.Id = li.[ParentContractHeaderId]
+		LEFT OUTER JOIN
+			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
+			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
+		LEFT OUTER JOIN 
+			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			ON cb.BidNumber=bcd.BidNumber 
+				AND cb.DivisionNumber = bcd.DivisionNumber
+				AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+		WHERE bcd.ItemNumber is null and li.ToDate is null
+
+	DELETE TOP (50000)
+		FROM [BEK_Commerce_AppData].[List].[ContractDetails]
+		FROM [BEK_Commerce_AppData].[List].[ContractDetails] li
+			INNER JOIN [BEK_Commerce_AppData].[List].[ContractHeaders] l
+			ON li.[ParentContractHeaderId] = l.Id
+	WHERE 
+		NOT EXISTS (
+			SELECT
+				'x'
+				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				INNER JOIN 
+					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+				INNER JOIN 
+					[BEK_Commerce_AppData].List.[ContractHeaders] l
+					ON l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+				WHERE
+					ltrim(rtrim(ItemNumber)) = li.ItemNumber
+					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = li.Each
+					AND ltrim(rtrim(cb.CustomerNumber)) = l.[CustomerNumber] 
+					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
+			)
+			--AND ToDate < DATEADD(day, -13, GETDATE())
+			--remove delayed delete

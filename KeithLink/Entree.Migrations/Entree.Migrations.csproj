@@ -371,7 +371,7 @@
     <Content Include="Scripts\AppData\List\Tables\HistoryDetail\HistoryDetails_0021_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\HistoryHeades_0021_2017-04-00_down.sql">
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\HistoryHeaders_0021_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\HistoryHeader\HistoryHeaders_0021_2017-04-00_up.sql">

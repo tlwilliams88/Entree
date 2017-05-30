@@ -8,7 +8,7 @@ AS
 		ch.BranchId,
 		ch.CustomerNumber,
 		ch.Name,
-		ch.CreatedAt,
+		ch.CreatedUtc,
 		ch.ModifiedUtc
 	FROM
 		[List].[ContractHeaders] ch
