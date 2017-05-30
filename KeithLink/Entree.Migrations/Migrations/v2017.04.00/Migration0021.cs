@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Entree.Migrations {
-    [Migration(21, "Build and use new history lists")]
+    [Migration(21, "New history lists")]
     public class Migration0021 : Core.BaseMigrationClass {
         public Migration0021() {
             base.MigrationNumber = "0021";

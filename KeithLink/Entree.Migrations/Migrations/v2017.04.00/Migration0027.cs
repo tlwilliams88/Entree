@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Entree.Migrations {
-    [Migration(27, "Build and use new recommendeditems lists")]
+    [Migration(27, "New recommendeditems lists")]
     public class Migration0027 : Core.BaseMigrationClass {
         public Migration0027() {
             base.MigrationNumber = "0027";

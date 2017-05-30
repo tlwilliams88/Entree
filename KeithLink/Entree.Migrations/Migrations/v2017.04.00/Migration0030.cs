@@ -9,10 +9,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Entree.Migrations {
-    [Migration(25, "New recentlyviewed lists")]
-    public class Migration0025 : Core.BaseMigrationClass {
-        public Migration0025() {
-            base.MigrationNumber = "0025";
+    [Migration(30, "New inventory valuation lists")]
+    public class Migration0030 : Core.BaseMigrationClass {
+        public Migration0030() {
+            base.MigrationNumber = "0030";
         }
     }
 }

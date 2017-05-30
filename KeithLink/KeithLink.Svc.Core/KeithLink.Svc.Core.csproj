@@ -247,6 +247,9 @@
     <Compile Include="Interface\Lists\IMandatoryItemListLogic.cs" />
     <Compile Include="Interface\Lists\IMandatoryItemsListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IMandatoryItemsListHeadersRepository.cs" />
+    <Compile Include="Interface\Lists\IInventoryValuationListDetailsRepository.cs" />
+    <Compile Include="Interface\Lists\IInventoryValuationListHeadersRepository.cs" />
+    <Compile Include="Interface\Lists\IInventoryValuationListLogic.cs" />
     <Compile Include="Interface\Lists\IRemindersListLogic.cs" />
     <Compile Include="Interface\Lists\IRemindersListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IRecommendedItemsListDetailsRepository.cs" />
@@ -361,6 +364,8 @@
     <Compile Include="Models\Lists\History\HistoryListDetail.cs" />
     <Compile Include="Models\Lists\History\HistoryListHeader.cs" />
     <Compile Include="Models\Lists\InHistoryReturnModel.cs" />
+    <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListDetail.cs" />
+    <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListHeader.cs" />
     <Compile Include="Models\Lists\ListCopyResultModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportFileModel.cs" />

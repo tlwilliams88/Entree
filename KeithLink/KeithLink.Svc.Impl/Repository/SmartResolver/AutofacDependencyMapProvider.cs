@@ -159,6 +159,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>();
             builder.RegisterType<RecommendedItemsListHeadersRepositoryImpl>().As<IRecommendedItemsListHeadersRepository>();
             builder.RegisterType<RecommendedItemsListDetailsRepositoryImpl>().As<IRecommendedItemsListDetailsRepository>();
+            builder.RegisterType<InventoryValuationListHeadersRepositoryImpl>().As<IInventoryValuationListHeadersRepository>();
+            builder.RegisterType<InventoryValuationListDetailsRepositoryImpl>().As<IInventoryValuationListDetailsRepository>();
             builder.RegisterType<ReminderItemsListDetailsRepositoryImpl>().As<IRemindersListDetailsRepository>();
             builder.RegisterType<ReminderItemsListHeadersRepositoryImpl>().As<IRemindersListHeadersRepository>();
             builder.RegisterType<MandatoryItemsListHeadersRepositoryImpl>().As<IMandatoryItemsListHeadersRepository>();
@@ -258,6 +260,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<MandatoryItemsListLogicImpl>().As<IMandatoryItemsListLogic>();
             builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
             builder.RegisterType<RecentlyOrderedListLogicImpl>().As<IRecentlyOrderedListLogic>();
+            builder.RegisterType<InventoryValuationListLogicImpl>().As<IInventoryValuationListLogic>();
             builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();
             builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();

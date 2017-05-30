@@ -311,6 +311,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Lists\InventoryValuationListLogicImpl.cs" />
     <Compile Include="Logic\Lists\MandatoryItemsListLogicImpl.cs" />
     <Compile Include="Logic\Lists\ReminderItemsListLogicImpl.cs" />
     <Compile Include="Logic\Lists\RecommendedItemsListLogicImpl.cs" />
@@ -418,6 +419,8 @@
     </Compile>
     <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\InventoryValuationListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\InventoryValuationListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ReminderItemsListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecommendedItemsListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListHeadersRepositoryImpl.cs" />
