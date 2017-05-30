@@ -259,6 +259,13 @@ namespace KeithLink.Svc.Impl.Service.List
 
                     return historylist;
 
+                case ListType.Contract:
+                    ListModel contractlist = _contractListLogic.GetListModel(user, catalogInfo, Id);
+
+                    FillOutProducts(user, catalogInfo, new List<ListModel>() { contractlist }, true);
+
+                    return contractlist;
+
                 case ListType.Favorite:
                     ListModel favoritelist = _favoritesLogic.GetListModel(user, catalogInfo, Id);
 
