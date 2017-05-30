@@ -244,6 +244,12 @@
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
+    <Compile Include="Interface\Lists\ICustomListDetailsRepository.cs" />
+    <Compile Include="Interface\Lists\ICustomListHeadersRepository.cs" />
+    <Compile Include="Interface\Lists\ICustomListLogic.cs" />
+    <Compile Include="Interface\Lists\IContractListLogic.cs" />
+    <Compile Include="Interface\Lists\IContractListHeadersRepository.cs" />
+    <Compile Include="Interface\Lists\IContractListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IMandatoryItemListLogic.cs" />
     <Compile Include="Interface\Lists\IMandatoryItemsListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IMandatoryItemsListHeadersRepository.cs" />
@@ -361,9 +367,13 @@
     <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
     <Compile Include="Models\Lists\Favorites\FavoritesListDetail.cs" />
     <Compile Include="Models\Lists\Favorites\FavoritesListHeader.cs" />
+    <Compile Include="Models\Lists\Contract\ContractListDetail.cs" />
+    <Compile Include="Models\Lists\Contract\ContractListHeader.cs" />
     <Compile Include="Models\Lists\History\HistoryListDetail.cs" />
     <Compile Include="Models\Lists\History\HistoryListHeader.cs" />
     <Compile Include="Models\Lists\InHistoryReturnModel.cs" />
+    <Compile Include="Models\Lists\CustomList\CustomListDetail.cs" />
+    <Compile Include="Models\Lists\CustomList\CustomListHeader.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListDetail.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListHeader.cs" />
     <Compile Include="Models\Lists\ListCopyResultModel.cs" />

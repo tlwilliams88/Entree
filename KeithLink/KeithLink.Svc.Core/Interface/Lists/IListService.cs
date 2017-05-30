@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 
         PagedListModel ReadPagedList(UserProfile user,
                                      UserSelectedContext catalogInfo,
+                                     ListType type,
                                      long Id,
                                      Core.Models.Paging.PagingModel paging);
     }

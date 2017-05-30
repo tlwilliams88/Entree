@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [List].[GetContractHeadersByCustomerAndBranch]
+﻿CREATE PROCEDURE [List].[GetContractHeaderByCustomerAndBranch]
 	@CustomerNumber CHAR(6),
 	@BranchId CHAR(3)
 AS

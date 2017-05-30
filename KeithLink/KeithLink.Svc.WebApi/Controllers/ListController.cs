@@ -438,15 +438,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return ret;
         }
 
-        /// <summary>
-        /// Retrieve paged list details for specific list
-        /// </summary>
-        /// <param name="listId">List Id</param>
-        /// <param name="paging">Paging options</param>
-        /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("list/{listId}")]
-        public OperationReturnModel<PagedListModel> pagedList(long listId, PagingModel paging) {
+        [ApiKeyedRoute("list/{type}/{listId}")]
+        public OperationReturnModel<PagedListModel> pagedList(long listId, ListType type, PagingModel paging) {
             OperationReturnModel<PagedListModel> ret = new OperationReturnModel<PagedListModel>();
             try
             {
@@ -498,7 +492,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 }
                 //var stopWatch = new System.Diagnostics.Stopwatch(); //Temp: Remove
                 //stopWatch.Start();
-                var list = _listService.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, paging);
+                var list = _listService.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, paging);
                 //stopWatch.Stop();
                 //elRepo.WriteInformationLog(string.Format("Total time to retrieve List {0}: {1}ms", listId, stopWatch.ElapsedMilliseconds));
 

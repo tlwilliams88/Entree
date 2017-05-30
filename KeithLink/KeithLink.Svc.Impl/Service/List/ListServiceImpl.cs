@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Service.List
     {
         #region attributes
         private readonly IListLogic _genericListLogic;
-        private readonly IListRepository _listRepo;
+        private readonly IContractListLogic _contractListLogic;
         private readonly IHistoryListLogic _historyListLogic;
         private readonly IFavoritesListLogic _favoritesLogic;
         private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
@@ -49,11 +49,11 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IEventLogRepository log)
+                                IContractListLogic contractListLogic, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
-            _listRepo = listRepo;
             // specific lists -
+            _contractListLogic = contractListLogic;
             _historyListLogic = historyListLogic;
             _favoritesLogic = favoritesLogic;
             _recentlyViewedLogic = recentlyViewedLogic;
@@ -96,6 +96,8 @@ namespace KeithLink.Svc.Impl.Service.List
         public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
         {
             List<ListModel> list = new List<ListModel>();
+
+            AddContractList(user, catalogInfo, headerOnly, list);
 
             AddHistoryList(user, catalogInfo, headerOnly, list);
 
@@ -213,7 +215,7 @@ namespace KeithLink.Svc.Impl.Service.List
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
 
             // read mandatory Items
-            var inventoryValuationLists = _inventoryValuationLogic.ReadLists(user, catalogInfo, false);
+            //var inventoryValuationLists = _inventoryValuationLogic.ReadLists(user, catalogInfo, false);
 
             // Add a note
             //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
@@ -221,7 +223,7 @@ namespace KeithLink.Svc.Impl.Service.List
             // read notes
             //var notes = _notesLogic.GetNotesDictionary(user, catalogInfo);            
 
-            AddOtherLists(user, catalogInfo, headerOnly, list);
+            //AddOtherLists(user, catalogInfo, headerOnly, list);
 
             if (headerOnly)
                 return list.Select(l => new ListModel()
@@ -251,11 +253,18 @@ namespace KeithLink.Svc.Impl.Service.List
             switch (type)
             {
                 case ListType.Worksheet:
-                    ListModel list = _historyListLogic.GetListModel(user, catalogInfo, Id);
+                    ListModel historylist = _historyListLogic.GetListModel(user, catalogInfo, Id);
 
-                    FillOutProducts(user, catalogInfo, new List<ListModel>() { list }, true);
+                    FillOutProducts(user, catalogInfo, new List<ListModel>() { historylist }, true);
 
-                    return list;
+                    return historylist;
+
+                case ListType.Favorite:
+                    ListModel favoritelist = _favoritesLogic.GetListModel(user, catalogInfo, Id);
+
+                    FillOutProducts(user, catalogInfo, new List<ListModel>() { favoritelist }, true);
+
+                    return favoritelist;
 
                 default:
                     return _genericListLogic.ReadList(user, catalogInfo, Id, includePrice);
@@ -265,20 +274,34 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public PagedListModel ReadPagedList(UserProfile user,
                                             UserSelectedContext catalogInfo,
+                                            ListType type,
                                             long Id,
                                             Core.Models.Paging.PagingModel paging)
         {
             System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             ListModel returnList = null;
 
+            switch (type)
             {
-                ListModel historyList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-                if (historyList != null && historyList.ListId == Id)
-                {
-                    FillOutProducts(user, catalogInfo, new List<ListModel>() { historyList }, true);
+                case ListType.Worksheet:
+                    ListModel historyList = _historyListLogic.GetListModel(user, catalogInfo, Id);
+                    if (historyList != null && historyList.ListId == Id)
+                    {
+                        FillOutProducts(user, catalogInfo, new List<ListModel>() { historyList }, true);
 
-                    returnList = historyList;
-                }
+                        returnList = historyList;
+                    }
+                    break;
+
+                case ListType.Favorite:
+                    ListModel favoritelist = _favoritesLogic.GetListModel(user, catalogInfo, Id);
+                    if (favoritelist != null && favoritelist.ListId == Id)
+                    {
+                        FillOutProducts(user, catalogInfo, new List<ListModel>() { favoritelist }, true);
+
+                        returnList = favoritelist;
+                    }
+                    break;
             }
 
             if (returnList == null)
@@ -396,6 +419,19 @@ namespace KeithLink.Svc.Impl.Service.List
                 FillOutProducts(user, catalogInfo, worksheet, true);
 
                 list.AddRange(worksheet);
+            }
+        }
+
+        private void AddContractList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
+            List<ListModel> list)
+        {
+            List<ListModel> contract = _contractListLogic.ReadList(user, catalogInfo, headerOnly);
+
+            if (contract != null && contract.Count > 0)
+            {
+                FillOutProducts(user, catalogInfo, contract, true);
+
+                list.AddRange(contract);
             }
         }
 

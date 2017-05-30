@@ -1,1 +1,0 @@
-﻿DROP PROCEDURE [List].[GetContractHeadersByCustomerAndBranch]
