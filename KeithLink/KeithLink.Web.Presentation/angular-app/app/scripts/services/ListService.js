@@ -32,7 +32,7 @@ angular.module('bekApp')
       ??canCreateList
       canDeleteItems          -- can remove items from list
       canAddItems             -- can add items via drag/drop and context menu
-      canRenameList           -- 
+      canRenameList           --
       canSeeLabels            -- show label column
       canEditLabels           -- read only label
       canSeeParlevel          -- show parlevel column
@@ -63,8 +63,8 @@ angular.module('bekApp')
         // CONTRACT, WORKSHEET / HISTORY
          } else if (list.is_contract_list || list.isworksheet) {
           if(list.is_contract_list){
-            //Set Hedader and fields for wildcard columns on lists page. 
-            //Contract items have two: Contract Category and read-only Each. 
+            //Set Hedader and fields for wildcard columns on lists page.
+            //Contract items have two: Contract Category and read-only Each.
             //History has one: read-only Each.
             permissions.alternativeFieldName = 'category';
             permissions.alternativeFieldHeader = 'Contract Category';
@@ -112,7 +112,7 @@ angular.module('bekApp')
           permissions.canDeleteItems = true;
           permissions.canReorderItems = true;
           permissions.canAddNonBEKItems = false;
-        
+
         // CUSTOM LISTS (only these can be shared/copied)
         } else {
 
@@ -122,7 +122,7 @@ angular.module('bekApp')
             permissions.canSeeLabels = true;
             permissions.canSeeParlevel = true;
             // permissions.canEditParlevel = true;
-            permissions.canAddNonBEKItems = false;         
+            permissions.canAddNonBEKItems = false;
 
           // OWNER OF LIST
           } else {
@@ -157,7 +157,7 @@ angular.module('bekApp')
           permissions.canAddNonBEKItems = false;
         }
 
-        list.permissions = permissions;        
+        list.permissions = permissions;
       }
 
       var Service = {
@@ -209,7 +209,7 @@ angular.module('bekApp')
 
         getListHeaders: function() {
           return Service.getAllLists({ header: true });
-        },    
+        },
 
         getParamsObject: function(params, page) {
           var deferred = $q.defer();
@@ -224,11 +224,11 @@ angular.module('bekApp')
              { 'field': 'notes', 'order': ''},
              { 'field': 'label', 'order': ''},
              { 'field': 'parlevel', 'order': ''}];
-             
+
              //Decode stored sort preferences and buils params sort object with it.
              //A description of how this works exists on the BEK ecommerce wiki under the title: Default Sort String: Explaination
 
-             if(filterObject && filterObject.length > 6){        
+             if(filterObject && filterObject.length > 6){
               var settings = [];
               if(page === 'addToOrder'){
                 settings = filterObject.slice(filterObject.indexOf('a') + 3, filterObject.length);
@@ -237,19 +237,19 @@ angular.module('bekApp')
               if(page === 'lists'){
                 settings = filterObject.slice(3, filterObject.indexOf('a'));
               }
-              
+
                 for (var i = 0;  i < settings.length; i++) {
                   if(settings[i] !== 'y' && settings[i] !== 'n'){
                     fields[settings[i]].order = (settings[i + 1] === 'n') ? 'asc':'desc';
                     params.sort.push(fields[settings[i]]);
                   }
-                } 
+                }
              }
              deferred.resolve(params);
              return deferred.promise;
         },
 
-      
+
         getCustomListHeaders: function() {
           return $http.get('/list/type/custom', { params: { headerOnly: true } }).then(function(response) {
             return response.data.successResponse;
@@ -283,7 +283,7 @@ angular.module('bekApp')
             if(params.includePrice){
               PricingService.updateCaculatedFields(list.items);
             }
-            
+
             updateListPermissions(list);
 
             Service.updateCache(list);
@@ -294,20 +294,20 @@ angular.module('bekApp')
 
         // accepts listId (guid), paging params
         // returns paged list object
-        getList: function(listId, params) {
+        getList: function(list, params) {
 
             getCurrentUserProfile();
 
             if (!params) {
-              var pageSize = LocalStorage.getPageSize();             
+              var pageSize = LocalStorage.getPageSize();
               params = {
                 size: pageSize,
                 from: 0
-              };             
+              };
             }
 
             Service.sortObject = params.sort;
-            return $http.post('/list/' + listId, params).then(function(response) {
+            return $http.post('/list/' + list.listType + '/' + list.listId, params).then(function(response) {
               var list = response.data.successResponse;
               if (!list) {
                 return $q.reject('No list found.');
@@ -332,7 +332,7 @@ angular.module('bekApp')
 
               return list;
             });
-                              
+
         },
 
         findListById: function(listId) {
@@ -342,7 +342,7 @@ angular.module('bekApp')
           Service.getAllLists().then(function(){
             return UtilityService.findObjectByField(Service.lists, 'listid', listId);
           });
-          
+
         },
 
         /********************
@@ -395,7 +395,7 @@ angular.module('bekApp')
             updateListPermissions(customInventory);
 
             return customInventory;
-            
+
           }, function(error) {
             toaster.pop('error', null, 'Error saving Non BEK Items list.');
           });
@@ -510,9 +510,9 @@ angular.module('bekApp')
               item.onhand=null;
             }
             }
-          } 
+          }
         },
-        
+
         remapItems: function(item) {
           return {
             itemnumber: item.itemnumber,
@@ -521,7 +521,7 @@ angular.module('bekApp')
             category: item.category
           };
         },
-        
+
         beforeCreateList: function(items, params) {
           if (!params) {
             params = {};
@@ -547,8 +547,8 @@ angular.module('bekApp')
           }
           else{
             newList.name = UtilityService.generateName('New List', Service.lists);
-          }          
-          
+          }
+
           return newList;
         },
 
@@ -618,7 +618,7 @@ angular.module('bekApp')
 
           return List.update(null, list).$promise.then(function(response) {
             var list = response.successResponse;
-            
+
             // update labels
             angular.forEach(list.items, function(item, index) {
               if (item.label && Service.labels.indexOf(item.label) === -1) {
@@ -739,7 +739,7 @@ angular.module('bekApp')
         // accepts listId (guid) and an array of items to add
         // params: allowDuplicates
         addMultipleItems: function(listId, items) {
-          
+
           var newItems = [];
           items.forEach(function(item) {
             newItems.push({
@@ -773,9 +773,9 @@ angular.module('bekApp')
             listItemIds.push(item.listitemid);
           });
 
-          return $http.delete('/list/' + listId + '/item', { 
+          return $http.delete('/list/' + listId + '/item', {
             headers: {'Content-Type': 'application/json'},
-            data: listItemIds 
+            data: listItemIds
           }).then(function() {
             // TODO: unfavorite all items if favorites list
             toaster.pop('success', null, 'Successfully deleted ' + items.length + ' from list.');
@@ -821,7 +821,7 @@ angular.module('bekApp')
         *****************************/
 
         createMandatoryList: function(items) {
-          // Type 9 == Mandatory 
+          // Type 9 == Mandatory
           var params = { type: 9 };
           return Service.createList(items, params);
         },
@@ -932,7 +932,7 @@ angular.module('bekApp')
             if(!allSets || (allSets[0] && !allSets[0].timeset)){
               allSets = [];
             }
-     
+
             var matchFound = false;
             if(orderList.cartId !== 'New'){
               allSets.forEach(function(set){
