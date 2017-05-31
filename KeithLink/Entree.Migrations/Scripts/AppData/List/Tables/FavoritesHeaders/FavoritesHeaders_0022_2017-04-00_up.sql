@@ -3,7 +3,7 @@ CREATE TABLE [List].[FavoritesHeaders] (
 	[UserId]            [uniqueidentifier] NULL,
     [CustomerNumber]    [nvarchar](10)	   NULL,
     [BranchId]		    [nvarchar](10)	   NULL,
-    [Name]			    [nvarchar](max)	   NULL,
+    [Name]			    [nvarchar](40)	   NULL DEFAULT 'Favorites',
     [CreatedUtc]        DATETIME           DEFAULT (getutcdate()) NOT NULL,
     [ModifiedUtc]       DATETIME           DEFAULT (getutcdate()) NOT NULL
 );

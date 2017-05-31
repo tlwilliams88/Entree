@@ -15,7 +15,6 @@ AS
 		[Id]             BIGINT           IDENTITY (1, 1) NOT NULL,
 		[CustomerNumber] NVARCHAR (10)    NULL,
 		[BranchId]       NVARCHAR (10)    NULL,
-		[Name]           NVARCHAR (MAX)   NULL,
 		[CreatedUtc]     DATETIME         DEFAULT (getutcdate()) NOT NULL,
 		[ModifiedUtc]    DATETIME         DEFAULT (getutcdate()) NOT NULL,
 		PRIMARY KEY CLUSTERED ([Id] ASC)
@@ -23,15 +22,15 @@ AS
 
 	INSERT 
 		INTO @Header 
-			([CustomerNumber], [BranchId], [Name]) 
+			([CustomerNumber], [BranchId]) 
 		VALUES 
-			(@CustomerNumber, @BranchId, N'Notes')
+			(@CustomerNumber, @BranchId)
 
 	MERGE INTO [BEK_Commerce_AppData].[List].[RecommendedItemsHeaders] A
 	USING @Header B ON (A.[CustomerNumber] = B.[CustomerNumber] and A.[BranchId] = B.[BranchId])
 	WHEN NOT MATCHED THEN
-		INSERT ([CustomerNumber], [BranchId], [Name]) 
-		VALUES (B.CustomerNumber, B.BranchId, B.Name);
+		INSERT ([CustomerNumber], [BranchId]) 
+		VALUES (B.CustomerNumber, B.BranchId);
 	  		
 	declare @ParentRecommendedItemsHeaderId as bigint =
 		(
