@@ -1,5 +1,4 @@
-CREATE PROCEDURE [List].[GetCustomListHeaderByUserIdCustomerNumberBranch]
-	@UserId			[uniqueidentifier], 
+CREATE PROCEDURE [List].[GetCustomListHeadersByCustomerNumberBranch]
 	@CustomerNumber	NVARCHAR (10),
 	@BranchId		NVARCHAR (10)
 AS
@@ -16,6 +15,5 @@ AS
 		[CreatedUtc],
 		[ModifiedUtc]
 	FROM [List].[CustomListHeaders] 
-	WHERE	[UserId] = @UserId
-	        AND [CustomerNumber] = @CustomerNumber
+	WHERE	[CustomerNumber] = @CustomerNumber
 			AND [BranchId] = @BranchId

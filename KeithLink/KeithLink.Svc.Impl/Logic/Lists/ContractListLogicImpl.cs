@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
         {
-            throw new NotImplementedException();
+            return ReadList(user, catalogInfo, false)[0];
         }
         #endregion
     }

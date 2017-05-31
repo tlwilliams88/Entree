@@ -131,6 +131,7 @@ namespace KeithLink.Svc.Core.Extensions
                     header.Items.Select(i => new ListItemModel()
                     {
                         ListItemId = i.Id,
+                        Type = ListType.Contract,
                         Category = i.Category,
                         ItemNumber = i.ItemNumber,
                         //        Delta = (i.CreatedUtc.AddDays
@@ -168,8 +169,9 @@ namespace KeithLink.Svc.Core.Extensions
                 Items = header.Items == null ? null :
                     header.Items.Select(i => new ListItemModel()
                     {
-                        ListItemId = i.Id, 
-                //        Category = i.Category,
+                        ListItemId = i.Id,
+                        Type = ListType.Worksheet,
+                        //        Category = i.Category,
                         ItemNumber = i.ItemNumber,
                         //        Delta = (i.CreatedUtc.AddDays
                         //            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
@@ -208,7 +210,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.Favorite,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,
@@ -245,7 +247,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.Notes,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,
@@ -280,7 +282,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.RecommendedItems,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,
@@ -316,7 +318,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.Recent,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,
@@ -353,7 +355,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.InventoryValuation,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,
@@ -395,7 +397,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.RecentOrderedNonBEK,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,
@@ -443,7 +445,7 @@ namespace KeithLink.Svc.Core.Extensions
                     header.Items.Select(i => new ListItemModel()
                     {
                         ListItemId = i.Id,
-                        //        Category = i.Category,
+                        Type = ListType.Reminder,
                         //        Type = header.Type,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
@@ -494,7 +496,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.Mandatory,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,
@@ -544,7 +546,7 @@ namespace KeithLink.Svc.Core.Extensions
                     {
                         ListItemId = i.Id,
                         //        Category = i.Category,
-                        //        Type = header.Type,
+                        Type = ListType.Custom,
                         ItemNumber = i.ItemNumber,
                         //        Label = i.Label,
                         //        ParLevel = i.Par,

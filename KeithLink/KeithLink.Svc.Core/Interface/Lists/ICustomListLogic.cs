@@ -16,12 +16,10 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         List<ListModel> ReadList(long reportId, UserSelectedContext catalogInfo, bool headerOnly);
 
-        void AddOrUpdateInventoryValuationItem(UserSelectedContext catalogInfo,
-                                long listId,
-                                string listName,
+        void AddOrUpdateCustomListItem(long listId,
                                 string itemNumber,
                                 bool each,
-                                decimal quantity,
+                                decimal par,
                                 string catalogId,
                                 bool active);
     }

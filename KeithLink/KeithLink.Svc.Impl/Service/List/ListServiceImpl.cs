@@ -34,6 +34,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IMandatoryItemsListLogic _mandatoryItemsLogic;
         private readonly IInventoryValuationListLogic _inventoryValuationLogic;
         private readonly IRemindersListLogic _reminderItemsLogic;
+        private readonly ICustomListLogic _customListLogic;
         private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
@@ -50,7 +51,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, IEventLogRepository log)
+                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
             // specific lists -
@@ -63,6 +64,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _reminderItemsLogic = reminderItemsLogic;
             _mandatoryItemsLogic = mandatoryItemsLogic;
             _inventoryValuationLogic = inventoryValuationLogic;
+            _customListLogic = customListLogic;
             _notesLogic = notesLogic;
             _catalogLogic = catalogLogic;
             _externalCatalogRepo = externalCatalogRepo;
@@ -104,7 +106,7 @@ namespace KeithLink.Svc.Impl.Service.List
             AddList(user, catalogInfo, headerOnly, list, ListType.Reminder);
             AddList(user, catalogInfo, headerOnly, list, ListType.RecommendedItems);
             AddList(user, catalogInfo, headerOnly, list, ListType.Mandatory);
-
+            AddCustomLists(user, catalogInfo, headerOnly, list);
             // Add a favorite
             //_favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId, true);
 
@@ -403,9 +405,16 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Mandatory:
                     tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
+
+                case ListType.Custom:
+                    tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
             }
 
-            FillOutProducts(user, catalogInfo, new List<ListModel>() { tempList }, true);
+            if (tempList != null && tempList.Items != null && tempList.Items.Count > 0)
+            {
+                FillOutProducts(user, catalogInfo, new List<ListModel>() { tempList }, true);
+            }
 
             return tempList;
         }
@@ -442,10 +451,32 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
 
-            if (tempList != null && tempList.Count > 0)
+            if (tempList != null && tempList.Count > 0 && tempList[0].Items != null && tempList[0].Items.Count > 0)
             {
                 FillOutProducts(user, catalogInfo, tempList, true);
+            }
 
+            if (tempList != null)
+            {
+                list.AddRange(tempList);
+            }
+        }
+
+        private void AddCustomLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
+            List<ListModel> list)
+        {
+            List<ListModel> tempList = _customListLogic.ReadList(user, catalogInfo, true);
+
+            if (tempList != null && tempList.Count > 0 && tempList[0].Items != null && tempList[0].Items.Count > 0)
+            {
+                foreach (ListModel tlist in tempList)
+                {
+                    FillOutProducts(user, catalogInfo, new List<ListModel>() { tlist }, true);
+                }
+            }
+
+            if (tempList != null)
+            {
                 list.AddRange(tempList);
             }
         }

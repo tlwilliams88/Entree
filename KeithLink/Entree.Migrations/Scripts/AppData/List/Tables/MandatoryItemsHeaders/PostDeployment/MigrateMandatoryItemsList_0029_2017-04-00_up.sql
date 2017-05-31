@@ -12,7 +12,7 @@
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
-            ,'Reminders'
+            ,'Mandatory Items'
         FROM 
             [BEK_Commerce_AppData].[List].[Lists] as l
 		WHERE 
