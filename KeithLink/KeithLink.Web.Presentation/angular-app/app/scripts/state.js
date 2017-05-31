@@ -467,13 +467,14 @@ angular.module('bekApp')
 
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: []},
-              listId = $stateParams.listId.listId ? $stateParams.listId.listId : $stateParams.listId,
+              listToBeUsed = {},
               historyList = $filter('filter')(lists, {name: 'history'})[0],
               favoritesList = $filter('filter')(lists, {name: 'favorites'})[0],
               listHeader;
 
-          listId = listId ? listId : LocalStorage.getLastList();
-          listHeader = listId.listId ? $filter('filter')(lists, {listid: listId.listId})[0] : $filter('filter')(lists, {listid: listId})[0];
+          listToBeUsed.listId = $stateParams.listId.listId ? $stateParams.listId.listId : $stateParams.listId;
+          listToBeUsed.listId = listToBeUsed.listId ? listId : LocalStorage.getLastList();
+          listHeader = listToBeUsed.listId.listId ? $filter('filter')(lists, {listid: listToBeUsed.listId.listId})[0] : $filter('filter')(lists, {listid: listToBeUsed.listId})[0];
 
           if(!listHeader) {
 
@@ -485,7 +486,8 @@ angular.module('bekApp')
 
           }
 
-          listId = listHeader.listid;
+          listToBeUsed.listId = listHeader.listid;
+          listToBeUsed.listId = listHeader.type;
 
           if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
@@ -494,7 +496,7 @@ angular.module('bekApp')
             });
           }
 
-          return ListService.getList(listId, params);
+          return ListService.getList(listToBeUsed, params);
         }]
       }
     })
