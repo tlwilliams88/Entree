@@ -27,11 +27,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         }
         #endregion
         #region methods
-        public CustomListHeader GetCustomListHeader(long reportId)
+        public CustomListHeader GetCustomListHeader(long Id)
         {
             return ReadOne<CustomListHeader>(new CommandDefinition(
                                 COMMAND_GETHEADER,
-                                new { @ListId = reportId },
+                                new { @Id = Id },
                                 commandType: CommandType.StoredProcedure
                             ));
         }
