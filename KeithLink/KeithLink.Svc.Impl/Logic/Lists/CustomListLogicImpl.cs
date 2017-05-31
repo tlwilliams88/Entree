@@ -42,7 +42,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     {
                         header.Items = _detailsRepo.GetCustomListDetails(header.Id);
                     }
-                    list.Add(header.ToListModel(catalogInfo));
+                    if (header != null && header.Name != null && header.Items.Count > 0)
+                    {
+                        list.Add(header.ToListModel(catalogInfo));
+                    }
                 }
                 return list;
             }
