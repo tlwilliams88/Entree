@@ -102,7 +102,7 @@ angular.module('bekApp')
         }
     }
     detectIE();
-   
+
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -112,12 +112,12 @@ angular.module('bekApp')
     }
 
     //Toggle scope variable to render Reports side panel when screen is resized
-    $(window).resize(function(){ 
-      $scope.$apply(function(){ 
+    $(window).resize(function(){
+      $scope.$apply(function(){
         $scope.renderSidePanel();
       });
     });
-  
+
     $scope.renderSidePanel = function(){
       $scope.resized = window.innerWidth > 991;
     };
@@ -132,7 +132,7 @@ angular.module('bekApp')
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
       $scope.itemCountOffset = 0;
-      if(resetPage){        
+      if(resetPage){
         $scope.currentPage = 1;
       }
     };
@@ -173,7 +173,7 @@ angular.module('bekApp')
 
     $scope.blockUIAndChangePage = function(page){
       $scope.startingPoint = 0;
-      $scope.endPoint = 0;       
+      $scope.endPoint = 0;
       var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
       blockUI.start('Loading List...').then(function(){
         if(visited.length > 0){
@@ -188,10 +188,10 @@ angular.module('bekApp')
       });
     };
 
-    $scope.pageChanged = function(page) {      
+    $scope.pageChanged = function(page) {
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
-      $scope.loadingPage = true;    
+      $scope.loadingPage = true;
       $scope.currentPage = page.currentPage;
       $scope.startingPoint = ((page.currentPage - 1)*$scope.pagingPageSize) + 1;
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
@@ -206,8 +206,8 @@ angular.module('bekApp')
         }
       });
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
-      if(!visited.length){             
-        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);       
+      if(!visited.length){
+        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);
       } else {
         $scope.setStartAndEndPoints(visited[0]);
         if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
@@ -230,13 +230,13 @@ angular.module('bekApp')
         if(!foundStartPoint){
           appendListItems(page);
         }
-        //We need two calls for stop here because we have two paging directives on the view. If the page change is triggered 
+        //We need two calls for stop here because we have two paging directives on the view. If the page change is triggered
         //automatically (deleting all items on page/saving) the event will fire twice and two loading overlays will be generated.
         blockUI.stop();
         blockUI.stop();
      };
 
-    $scope.setRange = function(){    
+    $scope.setRange = function(){
       $scope.rangeStart = (($scope.currentPage - 1)*$scope.pagingPageSize) + 1;
       $scope.rangeEnd = $scope.rangeStart + $scope.pagingPageSize;
       $scope.rangeEnd = ($scope.rangeEnd > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.rangeEnd -1;
@@ -262,7 +262,7 @@ angular.module('bekApp')
       $scope.rangeEndOffset = 0;
       $scope.setStartAndEndPoints(list);
 
-      if(initialPageLoad){      
+      if(initialPageLoad){
         $scope.currentPage = 1;
         $scope.visitedPages.push({page: 1, items: $scope.selectedList.items, deletedCount: 0});
         updateItemPositions();
@@ -293,10 +293,10 @@ angular.module('bekApp')
 
       $scope.visitedPages.push({page: $scope.currentPage, items: list.items, deletedCount: 0});
       //Since pages can be visited out of order, sort visited pages into numeric order.
-      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
-        var sorterval1 = obj1.page;      
-        var sorterval2 = obj2.page;       
-        return sorterval1 - sorterval2;         
+      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){
+        var sorterval1 = obj1.page;
+        var sorterval2 = obj2.page;
+        return sorterval1 - sorterval2;
       });
       //Rebuild selectedList with all items currently in the controller, in the correct order.
       $scope.selectedList.items = [];
@@ -315,7 +315,7 @@ angular.module('bekApp')
       if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
         $scope.selectedList.allSelected = true;
       }
-      
+
     }
 
     function startLoading() {
@@ -335,7 +335,7 @@ angular.module('bekApp')
       $scope.sort = $stateParams.sortingParams.sort;
     }
 
-    var listPagingModel = new ListPagingModel( 
+    var listPagingModel = new ListPagingModel(
       originalList.listid,
       resetPage,
       appendListItems,
@@ -345,38 +345,39 @@ angular.module('bekApp')
     );
 
     // LIST INTERACTIONS
-    $scope.goToList = function(listid) {
+    $scope.goToList = function(listid, listtype) {
       if($scope.selectedList.iscustominventory){
         $scope.isCustomInventoryList = false;
       }
 
       var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-    
+
       var lastlist ={
-          listId: listid,          
+          listId: listid,
+          listType: listtype,
           timeset: timeset
       };
-      
+
       LocalStorage.setLastList(lastlist);
       if($scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm) {
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listId: listid, renameList: false});
+          return $state.go('menu.lists.items', {listType: listtype, listId: listid, renameList: false});
         });
       }
     };
-    
+
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.forms.listForm.$setPristine();
      var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
      var lastlist ={
-          listId: newList.listid,          
+          listId: newList.listid,
           timeset: timeset
          };
-    
+
       LocalStorage.setLastList(lastlist);
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
@@ -388,11 +389,11 @@ angular.module('bekApp')
     $scope.unsavedChangesConfirmation = function(){
       if($scope.forms.listForm && $scope.forms.listForm.$dirty){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
-          return r;   
+          return r;
       }
       else{
         return true;
-      }  
+      }
     };
 
 
@@ -411,10 +412,10 @@ angular.module('bekApp')
         listPagingModel.filterListItems();
       }
     };
-    
+
     $scope.sortList = function(sortBy, sortOrder) {
-      if($scope.unsavedChangesConfirmation()){         
-        $scope.initPagingValues(true);        
+      if($scope.unsavedChangesConfirmation()){
+        $scope.initPagingValues(true);
         if (sortBy === $scope.sort[0].field) {
          sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
         } else {
@@ -424,8 +425,8 @@ angular.module('bekApp')
           field: sortBy,
           order: sortOrder
         }];
-        listPagingModel.sortListItems($scope.sort); 
-      } 
+        listPagingModel.sortListItems($scope.sort);
+      }
     };
 
     /**********
@@ -607,7 +608,7 @@ angular.module('bekApp')
       });
     }
 
-    $scope.deleteItem = function(item) {    
+    $scope.deleteItem = function(item) {
       $scope.forms.listForm.$setDirty();
       item.isdeleted = true;
       updateDeletedCount();
@@ -748,7 +749,7 @@ angular.module('bekApp')
       } else {
         return $filter('filter')($scope.selectedList.items, {isSelected: 'true', isdeleted:'!true', catalog_id:'!CUSTOM'});
       }
-      
+
     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
@@ -762,7 +763,7 @@ angular.module('bekApp')
       // multiple items selected
       if (multipleItemsSelectedList.length > 0 && selectedItem.hasClass('item-selected')) {
         dragItemSelection = multipleItemsSelectedList;
-      
+
       // single item selected
       } else {
         dragItemSelection = selectedItem.data('product');
@@ -775,9 +776,9 @@ angular.module('bekApp')
     $scope.changeAllSelectedItems = function(allSelected) {
       if($scope.selectedList.iscustominventory){
         $scope.startingPoint = 0;
-      } 
+      }
       angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.selectedList.items.length) , function(item, index) {
-        if (item.itemnumber) {      
+        if (item.itemnumber) {
           item.isSelected = !allSelected;
         }
       });
@@ -794,8 +795,8 @@ angular.module('bekApp')
 
     $scope.isDragEnabled();
 
-    $(window).resize(function(){ 
-      $scope.$apply(function(){ 
+    $(window).resize(function(){
+      $scope.$apply(function(){
         $scope.isDragEnabled();
       });
     });
@@ -884,7 +885,7 @@ angular.module('bekApp')
       }
 
     };
-   
+
     /******
     MODALS
     ******/
@@ -961,15 +962,15 @@ angular.module('bekApp')
         if(clearSearch){
           $scope.listSearchTerm = '';
         }
-        
+
         $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
         $scope.selectedFilter = '';
-        $scope.filterItems( $scope.listSearchTerm );       
-      }    
+        $scope.filterItems( $scope.listSearchTerm );
+      }
     };
 
-    $scope.initParLvl = function(item) {  
-      if(!item.parlevel){   
+    $scope.initParLvl = function(item) {
+      if(!item.parlevel){
         item.parlevel='0';
       }
     };
@@ -987,7 +988,7 @@ angular.module('bekApp')
             return false;
           },
           pagingModelOptions: function() {
-            return { 
+            return {
               sort: $scope.sort,
               terms: $scope.listSearchTerm
             };

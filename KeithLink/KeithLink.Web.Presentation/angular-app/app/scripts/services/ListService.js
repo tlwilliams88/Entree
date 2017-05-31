@@ -309,6 +309,7 @@ angular.module('bekApp')
             Service.sortObject = params.sort;
             return $http.post('/list/' + list.listType + '/' + list.listId, params).then(function(response) {
               var list = response.data.successResponse;
+              console.log(list)
               if (!list) {
                 return $q.reject('No list found.');
               }

@@ -269,7 +269,10 @@ angular.module('bekApp')
       }
     })
     .state('menu.lists.items', {
-      url: ':listType/:listId/?renameList',
+      url: ':listId/?renameList',
+      params: {
+        listType : null
+      },
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
@@ -292,42 +295,32 @@ angular.module('bekApp')
               stillExists = false,
               pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'},
-              listToBeUsed = [];
+              listToBeUsed = {},
+              listHeader = {};
 
           ListService.lists.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
-              var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
-              if(last.timeset < timeoutDate){
-                stillExists = false;
-              }
+              listHeader = $filter('filter')(lists, {listid: last.listId})[0];
             }
           });
 
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
-            last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-            LocalStorage.setLastList(last);
             listToBeUsed.listId = last.listId.listid ? last.listId.listid : last.listId;
+            listToBeUsed.listType = last.listId.listtype ? last.listId.listtype : last.listType;
           }
-          else{
-            LocalStorage.setLastList({});
-            listToBeUsed.listId = validListId;
-           }
-
-          var listHeader = $filter('filter')(lists, {listid: listToBeUsed.listId})[0];
-
-          listToBeUsed.listType = listHeader.type;
 
           if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
-              ListService.getParamsObject(params, 'lists').then(function(storedParams){
+            ListService.getParamsObject(params, 'lists').then(function(storedParams){
               $stateParams.sortingParams = storedParams;
               params = storedParams;
             });
           }
 
-          listToBeUsed.listId = parseInt(listToBeUsed.listId, 10);
+          listToBeUsed.listId = listToBeUsed.listId != 'nonbeklist' ? parseInt(listToBeUsed.listId, 10) : listToBeUsed.listId;
+          listToBeUsed.listType = listHeader ? listHeader.type : listToBeUsed.listType;
 
-          if((isNaN(listToBeUsed.listId) || !listHeader)){
+          if((isNaN(listToBeUsed.listId) || !listHeader) && listToBeUsed.listId != 'nonbeklist'){
             var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
                 favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
 
@@ -335,7 +328,7 @@ angular.module('bekApp')
             listToBeUsed.listType = historyList.length ? historyList[0].type : favoritesList[0].type;
           }
 
-          if(listToBeUsed == 'nonbeklist'){
+          if(listToBeUsed.listId == 'nonbeklist'){
             return ListService.getCustomInventoryList();
           } else {
             LocalStorage.setLastList(listToBeUsed);
