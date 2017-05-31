@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ADODB;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
@@ -97,11 +98,12 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> list = new List<ListModel>();
 
-            AddContractList(user, catalogInfo, headerOnly, list);
-
-            AddHistoryList(user, catalogInfo, headerOnly, list);
-
-            AddFavoritesList(user, catalogInfo, headerOnly, list);
+            AddList(user, catalogInfo, headerOnly, list, ListType.Worksheet);
+            AddList(user, catalogInfo, headerOnly, list, ListType.Contract);
+            AddList(user, catalogInfo, headerOnly, list, ListType.Favorite);
+            AddList(user, catalogInfo, headerOnly, list, ListType.Reminder);
+            AddList(user, catalogInfo, headerOnly, list, ListType.RecommendedItems);
+            AddList(user, catalogInfo, headerOnly, list, ListType.Mandatory);
 
             // Add a favorite
             //_favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId, true);
@@ -250,34 +252,8 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id, bool includePrice = true)
         {
-            switch (type)
-            {
-                case ListType.Worksheet:
-                    ListModel historylist = _historyListLogic.GetListModel(user, catalogInfo, Id);
-
-                    FillOutProducts(user, catalogInfo, new List<ListModel>() { historylist }, true);
-
-                    return historylist;
-
-                case ListType.Contract:
-                    ListModel contractlist = _contractListLogic.GetListModel(user, catalogInfo, Id);
-
-                    FillOutProducts(user, catalogInfo, new List<ListModel>() { contractlist }, true);
-
-                    return contractlist;
-
-                case ListType.Favorite:
-                    ListModel favoritelist = _favoritesLogic.GetListModel(user, catalogInfo, Id);
-
-                    FillOutProducts(user, catalogInfo, new List<ListModel>() { favoritelist }, true);
-
-                    return favoritelist;
-
-                default:
-                    return _genericListLogic.ReadList(user, catalogInfo, Id, includePrice);
-            }
+            return ReadListByType(user, catalogInfo, Id, type);
         }
-
 
         public PagedListModel ReadPagedList(UserProfile user,
                                             UserSelectedContext catalogInfo,
@@ -288,42 +264,53 @@ namespace KeithLink.Svc.Impl.Service.List
             System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             ListModel returnList = null;
 
-            switch (type)
-            {
-                case ListType.Worksheet:
-                    ListModel historyList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-                    if (historyList != null && historyList.ListId == Id)
-                    {
-                        FillOutProducts(user, catalogInfo, new List<ListModel>() { historyList }, true);
+            returnList = ReadListByType(user, catalogInfo, Id, type);
+            //switch (type)
+            //{
+            //    case ListType.Worksheet:
+            //        ListModel historyList = _historyListLogic.GetListModel(user, catalogInfo, Id);
+            //        if (historyList != null && historyList.ListId == Id)
+            //        {
+            //            FillOutProducts(user, catalogInfo, new List<ListModel>() { historyList }, true);
 
-                        returnList = historyList;
-                    }
-                    break;
+            //            returnList = historyList;
+            //        }
+            //        break;
 
-                case ListType.Favorite:
-                    ListModel favoritelist = _favoritesLogic.GetListModel(user, catalogInfo, Id);
-                    if (favoritelist != null && favoritelist.ListId == Id)
-                    {
-                        FillOutProducts(user, catalogInfo, new List<ListModel>() { favoritelist }, true);
+            //    case ListType.Contract:
+            //        ListModel contractList = _historyListLogic.GetListModel(user, catalogInfo, Id);
+            //        if (contractList != null && contractList.ListId == Id)
+            //        {
+            //            FillOutProducts(user, catalogInfo, new List<ListModel>() { contractList }, true);
 
-                        returnList = favoritelist;
-                    }
-                    break;
-            }
+            //            returnList = contractList;
+            //        }
+            //        break;
 
-            if (returnList == null)
-            {
-                List<ListModel> otherLists = _genericListLogic.ReadUserList(user, catalogInfo)
-                                                              .Where(l => l.Type != ListType.Worksheet) //except what we already define in the specific lists (add other types we define)
-                                                              .ToList();
-                foreach (ListModel list in otherLists)
-                {
-                    if (returnList == null && list.ListId == Id)
-                    {
-                        returnList = list;
-                    }
-                }
-            }
+            //    case ListType.Favorite:
+            //        ListModel favoritelist = _favoritesLogic.GetListModel(user, catalogInfo, Id);
+            //        if (favoritelist != null && favoritelist.ListId == Id)
+            //        {
+            //            FillOutProducts(user, catalogInfo, new List<ListModel>() { favoritelist }, true);
+
+            //            returnList = favoritelist;
+            //        }
+            //        break;
+            //}
+
+            //if (returnList == null)
+            //{
+            //    List<ListModel> otherLists = _genericListLogic.ReadUserList(user, catalogInfo)
+            //                                                  .Where(l => l.Type != ListType.Worksheet) //except what we already define in the specific lists (add other types we define)
+            //                                                  .ToList();
+            //    foreach (ListModel list in otherLists)
+            //    {
+            //        if (returnList == null && list.ListId == Id)
+            //        {
+            //            returnList = list;
+            //        }
+            //    }
+            //}
             stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
             PagedListModel pagedList = returnList.ToPagedList(paging);
@@ -388,6 +375,81 @@ namespace KeithLink.Svc.Impl.Service.List
             return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
         }
 
+        private ListModel ReadListByType(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
+        {
+            ListModel tempList = null;
+            switch (type)
+            {
+                case ListType.Worksheet:
+                    tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Contract:
+                    tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Favorite:
+                    tempList = _favoritesLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Reminder:
+                    tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.RecommendedItems:
+                    tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Mandatory:
+                    tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+            }
+
+            FillOutProducts(user, catalogInfo, new List<ListModel>() { tempList }, true);
+
+            return tempList;
+        }
+
+        private void AddList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
+            List<ListModel> list, ListType type)
+        {
+            List<ListModel> tempList = null;
+            switch (type)
+            {
+                case ListType.Worksheet:
+                    tempList = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
+                    break;
+
+                case ListType.Contract:
+                    tempList = _contractListLogic.ReadList(user, catalogInfo, headerOnly);
+                    break;
+
+                case ListType.Favorite:
+                    tempList = _favoritesLogic.ReadList(user, catalogInfo, headerOnly);
+                    break;
+
+                case ListType.Reminder:
+                    tempList = _reminderItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    break;
+
+                case ListType.RecommendedItems:
+                    tempList = _recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    break;
+
+                case ListType.Mandatory:
+                    tempList = _mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    break;
+            }
+
+
+            if (tempList != null && tempList.Count > 0)
+            {
+                FillOutProducts(user, catalogInfo, tempList, true);
+
+                list.AddRange(tempList);
+            }
+        }
+
         private void PopulateProductDetails(List<RecentNonBEKItem> returnList)
         {
             if (returnList == null)
@@ -414,45 +476,6 @@ namespace KeithLink.Svc.Impl.Service.List
             List<ListModel> theRest = _genericListLogic.ReadUserList(user, catalogInfo, headerOnly);
             list.AddRange(theRest.Where(l => l.Type != ListType.Worksheet && l.Type != ListType.Favorite));
             //except what we already define in the specific lists (add other types we define)
-        }
-
-        private void AddHistoryList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list)
-        {
-            List<ListModel> worksheet = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
-
-            if (worksheet != null && worksheet.Count > 0)
-            {
-                FillOutProducts(user, catalogInfo, worksheet, true);
-
-                list.AddRange(worksheet);
-            }
-        }
-
-        private void AddContractList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list)
-        {
-            List<ListModel> contract = _contractListLogic.ReadList(user, catalogInfo, headerOnly);
-
-            if (contract != null && contract.Count > 0)
-            {
-                FillOutProducts(user, catalogInfo, contract, true);
-
-                list.AddRange(contract);
-            }
-        }
-
-        private void AddFavoritesList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list)
-        {
-            List<ListModel> favorites = _favoritesLogic.ReadList(user, catalogInfo, headerOnly);
-
-            if (favorites != null && favorites.Count > 0)
-            {
-                FillOutProducts(user, catalogInfo, favorites, true);
-
-                list.AddRange(favorites);
-            }
         }
 
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)

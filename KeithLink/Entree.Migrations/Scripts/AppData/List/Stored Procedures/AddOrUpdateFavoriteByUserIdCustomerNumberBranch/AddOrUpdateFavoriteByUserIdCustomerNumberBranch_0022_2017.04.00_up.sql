@@ -17,7 +17,6 @@ AS
 		[UserId]         UNIQUEIDENTIFIER NULL,
 		[CustomerNumber] NVARCHAR (10)    NULL,
 		[BranchId]       NVARCHAR (10)    NULL,
-		[Name]           NVARCHAR (MAX)   NULL,
 		[CreatedUtc]     DATETIME         DEFAULT (getutcdate()) NOT NULL,
 		[ModifiedUtc]    DATETIME         DEFAULT (getutcdate()) NOT NULL,
 		PRIMARY KEY CLUSTERED ([Id] ASC)
@@ -25,15 +24,15 @@ AS
 
 	INSERT 
 		INTO @Header 
-			([UserId], [CustomerNumber], [BranchId], [Name]) 
+			([UserId], [CustomerNumber], [BranchId]) 
 		VALUES 
-			(@UserId, @CustomerNumber, @BranchId, N'Favorites')
+			(@UserId, @CustomerNumber, @BranchId)
 
 	MERGE INTO [BEK_Commerce_AppData].[List].[FavoritesHeaders] A
 	USING @Header B ON (A.[UserId] = B.[UserId] and A.[CustomerNumber] = B.[CustomerNumber] and A.[BranchId] = B.[BranchId])
 	WHEN NOT MATCHED THEN
-		INSERT ([UserId], [CustomerNumber], [BranchId], [Name]) 
-		VALUES (B.UserId, B.CustomerNumber, B.BranchId, B.Name);
+		INSERT ([UserId], [CustomerNumber], [BranchId]) 
+		VALUES (B.UserId, B.CustomerNumber, B.BranchId);
 	  		
 	declare @ParentFavoritesHeaderId as bigint =
 		(
