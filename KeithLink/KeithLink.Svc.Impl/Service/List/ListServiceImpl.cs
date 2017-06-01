@@ -267,55 +267,13 @@ namespace KeithLink.Svc.Impl.Service.List
             ListModel returnList = null;
 
             returnList = ReadListByType(user, catalogInfo, Id, type);
-            //switch (type)
-            //{
-            //    case ListType.Worksheet:
-            //        ListModel historyList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-            //        if (historyList != null && historyList.ListId == Id)
-            //        {
-            //            FillOutProducts(user, catalogInfo, new List<ListModel>() { historyList }, true);
-
-            //            returnList = historyList;
-            //        }
-            //        break;
-
-            //    case ListType.Contract:
-            //        ListModel contractList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-            //        if (contractList != null && contractList.ListId == Id)
-            //        {
-            //            FillOutProducts(user, catalogInfo, new List<ListModel>() { contractList }, true);
-
-            //            returnList = contractList;
-            //        }
-            //        break;
-
-            //    case ListType.Favorite:
-            //        ListModel favoritelist = _favoritesLogic.GetListModel(user, catalogInfo, Id);
-            //        if (favoritelist != null && favoritelist.ListId == Id)
-            //        {
-            //            FillOutProducts(user, catalogInfo, new List<ListModel>() { favoritelist }, true);
-
-            //            returnList = favoritelist;
-            //        }
-            //        break;
-            //}
-
-            //if (returnList == null)
-            //{
-            //    List<ListModel> otherLists = _genericListLogic.ReadUserList(user, catalogInfo)
-            //                                                  .Where(l => l.Type != ListType.Worksheet) //except what we already define in the specific lists (add other types we define)
-            //                                                  .ToList();
-            //    foreach (ListModel list in otherLists)
-            //    {
-            //        if (returnList == null && list.ListId == Id)
-            //        {
-            //            returnList = list;
-            //        }
-            //    }
-            //}
             stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
-            PagedListModel pagedList = returnList.ToPagedList(paging);
+            PagedListModel pagedList = null;
+            if (returnList != null && returnList.Items != null && returnList.Items.Count > 0)
+            {
+                pagedList = returnList.ToPagedList(paging);
+            }
             stopWatch.Read(_log, "ReadPagedList - ToPagedList");
 
             return pagedList;
