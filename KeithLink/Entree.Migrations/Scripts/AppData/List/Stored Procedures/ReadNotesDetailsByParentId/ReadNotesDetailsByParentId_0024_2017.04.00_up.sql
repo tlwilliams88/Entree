@@ -15,3 +15,4 @@ AS
 		[ModifiedUtc]
 	FROM [List].[NotesDetails] 
 	WHERE	[ParentNotesHeaderId] = @ParentNotesHeaderId
+ 		    AND [Active] = 1

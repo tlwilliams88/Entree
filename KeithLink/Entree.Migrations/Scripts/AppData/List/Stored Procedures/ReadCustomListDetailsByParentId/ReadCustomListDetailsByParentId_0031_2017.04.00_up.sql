@@ -14,3 +14,4 @@ AS
 		[ModifiedUtc]
 	FROM [List].[CustomListDetails] 
 	WHERE	[ParentCustomListHeaderId] = @ParentCustomListHeaderId
+			AND [Active] = 1

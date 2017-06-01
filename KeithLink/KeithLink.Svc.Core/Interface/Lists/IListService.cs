@@ -28,5 +28,10 @@ namespace KeithLink.Svc.Core.Interface.Lists
                                      ListType type,
                                      long Id,
                                      Core.Models.Paging.PagingModel paging);
+
+        long AddOrUpdateItem(UserProfile user,
+                             UserSelectedContext catalogInfo,
+                             ListType type,
+                             dynamic genericItemProperties);
     }
 }

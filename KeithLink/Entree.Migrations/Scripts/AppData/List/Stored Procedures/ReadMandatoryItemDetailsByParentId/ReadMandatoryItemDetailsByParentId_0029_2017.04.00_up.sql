@@ -14,3 +14,4 @@ AS
 		[ModifiedUtc]
 	FROM [List].[MandatoryItemsDetails] 
 	WHERE	[ParentMandatoryItemsHeaderId] = @ParentMandatoryItemsHeaderId
+			AND [Active] = 1

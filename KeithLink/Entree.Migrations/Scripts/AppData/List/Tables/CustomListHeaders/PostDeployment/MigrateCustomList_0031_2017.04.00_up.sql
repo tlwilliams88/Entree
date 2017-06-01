@@ -32,13 +32,15 @@
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]
-			 ,[Par])
+			 ,[Par]
+			 ,[CustomInventoryItemId])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
 			,li.[CatalogId]
 			,li.Each
 			,li.Par
+			,li.CustomInventoryItemId
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 		INNER JOIN List.[CustomListHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[Name] = l.[DisplayName]

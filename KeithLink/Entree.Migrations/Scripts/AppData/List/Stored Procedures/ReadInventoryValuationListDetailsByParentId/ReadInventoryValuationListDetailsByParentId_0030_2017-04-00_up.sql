@@ -16,3 +16,4 @@ AS
 		[ModifiedUtc]
 	FROM [List].[InventoryValuationListDetails] 
 	WHERE	[ParentInventoryValuationListHeaderId] = @ParentInventoryValuationListHeaderId
+			AND [Active] = 1

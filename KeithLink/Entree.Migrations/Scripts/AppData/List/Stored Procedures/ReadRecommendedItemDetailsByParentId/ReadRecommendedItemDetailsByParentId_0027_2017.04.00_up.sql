@@ -14,3 +14,4 @@ AS
 		[ModifiedUtc]
 	FROM [List].[RecommendedItemDetails] 
 	WHERE	[ParentRecommendedItemsHeaderId] = @ParentRecommendedItemsHeaderId
+			AND [Active] = 1

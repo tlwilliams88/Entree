@@ -14,3 +14,4 @@ AS
 		[ModifiedUtc]
 	FROM [List].[FavoritesDetails] 
 	WHERE	[ParentFavoritesHeaderId] = @ParentFavoritesHeaderId
+			AND [Active] = 1

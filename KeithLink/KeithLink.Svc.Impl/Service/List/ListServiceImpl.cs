@@ -107,6 +107,7 @@ namespace KeithLink.Svc.Impl.Service.List
             AddList(user, catalogInfo, headerOnly, list, ListType.RecommendedItems);
             AddList(user, catalogInfo, headerOnly, list, ListType.Mandatory);
             AddCustomLists(user, catalogInfo, headerOnly, list);
+
             // Add a favorite
             //_favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId, true);
 
@@ -337,6 +338,46 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
+        }
+
+        public long AddOrUpdateItem(UserProfile user, 
+                                    UserSelectedContext catalogInfo,
+                                    ListType type,
+                                    dynamic genericItemProperties)
+        {
+            switch (type)
+            {
+                case ListType.Worksheet:
+                    //tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Contract:
+                    //tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Favorite:
+                    ListItem li = genericItemProperties;
+                    _favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, li.ItemNumber, li.Each.Value, li.CatalogId, true);
+                    break;
+
+                case ListType.Reminder:
+                    //tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.RecommendedItems:
+                    //tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Mandatory:
+                    //tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Custom:
+                    //tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+            }
+
+            return 0;
         }
 
         private ListModel ReadListByType(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)

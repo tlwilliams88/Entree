@@ -14,3 +14,4 @@ AS
 		[ModifiedUtc]
 	FROM [List].[ReminderDetails] 
 	WHERE	[ParentRemindersHeaderId] = @ParentRemindersHeaderId
+			AND [Active] = 1

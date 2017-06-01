@@ -76,8 +76,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="exportRequest"></param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("list/export/{listId}")]
-        public HttpResponseMessage ExportList(long listId, ExportRequestModel exportRequest) {
+        [ApiKeyedRoute("list/export/{type}/{listId}")]
+        public HttpResponseMessage ExportList(ListType type, long listId, ExportRequestModel exportRequest) {
             HttpResponseMessage ret;
             try
             {
@@ -296,12 +296,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="newItem">New item</param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("list/{listId}/item")]
-        public OperationReturnModel<NewListItem> AddItem(long listId, ListItemModel newItem) {
+        [ApiKeyedRoute("list/{type}/{listId}/item")]
+        public OperationReturnModel<NewListItem> AddItem(ListType type, long listId, ListItemModel newItem) {
             OperationReturnModel<NewListItem> ret = new OperationReturnModel<NewListItem>();
             try
             {
-                var nlist = new NewListItem() { Id = _listLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, listId, newItem) };
+                var nlist = new NewListItem() { Id = _listService.AddOrUpdateItem(this.AuthenticatedUser, 
+                                                                                  this.SelectedUserContext, 
+                                                                                  newItem.Type, 
+                                                                                  newItem) };
                 ret.SuccessResponse = nlist;
                 ret.IsSuccess = true;
             }
@@ -322,8 +325,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="allowDuplicates">Allow duplicate item numbers?</param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("list/{listId}/items")]
-        public OperationReturnModel<ListModel> AddItems(long listId, List<ListItemModel> newItems, bool allowDuplicates = false) {
+        [ApiKeyedRoute("list/{type}/{listId}/items")]
+        public OperationReturnModel<ListModel> AddItems(ListType type, long listId, List<ListItemModel> newItems, bool allowDuplicates = false) {
             OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
@@ -347,8 +350,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="customInventoryId"></param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("list/{listId}/custominventoryitem/{customInventoryId}")]
-        public OperationReturnModel<NewListItem> AddCustomInventoryItem(long listId, long customInventoryId) {
+        [ApiKeyedRoute("list/{type}/{listId}/custominventoryitem/{customInventoryId}")]
+        public OperationReturnModel<NewListItem> AddCustomInventoryItem(ListType type, long listId, long customInventoryId) {
             OperationReturnModel<NewListItem> returnValue = new OperationReturnModel<NewListItem>();
 
             try {
@@ -371,8 +374,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="customInventoryIds"></param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("list/{listId}/custominventoryitem")]
-        public OperationReturnModel<bool> AddCustomInventoryItems(long listId, List<long> customInventoryIds) {
+        [ApiKeyedRoute("list/{type}/{listId}/custominventoryitem")]
+        public OperationReturnModel<bool> AddCustomInventoryItems(ListType type, long listId, List<long> customInventoryIds) {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
 
             try {
@@ -559,8 +562,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// </summary>
         /// <param name="listId">List Id to delete</param>
         [HttpDelete]
-        [ApiKeyedRoute("list/{listId}")]
-        public OperationReturnModel<string> DeleteList(long listId) {
+        [ApiKeyedRoute("list/{type}/{listId}")]
+        public OperationReturnModel<string> DeleteList(ListType type, long listId) {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try
             {
@@ -587,7 +590,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// </summary>
         /// <param name="listIds">Array of list ids to delete</param>
         [HttpDelete]
-        [ApiKeyedRoute("list/")]
+        [ApiKeyedRoute("list/{type}/")]
         public OperationReturnModel<string> DeleteList(List<long> listIds) {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try
@@ -617,8 +620,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// </summary>
         /// <param name="itemId">Item id to delete</param>
         [HttpDelete]
-        [ApiKeyedRoute("list/item/{itemId}")]
-        public OperationReturnModel<string> DeleteItem(long itemId) {
+        [ApiKeyedRoute("list/{type}/item/{itemId}")]
+        public OperationReturnModel<string> DeleteItem(ListType type, long itemId) {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try
             {
@@ -665,8 +668,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="itemNumber">Itemnumber to delete</param>
         /// <returns></returns>
         [HttpDelete]
-        [ApiKeyedRoute("list/{Id}/item/{itemNumber}")]
-        public OperationReturnModel<bool> DeleteItemNumberFromList(long Id, string itemNumber) {
+        [ApiKeyedRoute("list/{type}/{Id}/item/{itemNumber}")]
+        public OperationReturnModel<bool> DeleteItemNumberFromList(ListType type, long Id, string itemNumber) {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
             try
             {
@@ -688,8 +691,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="listId">List Id</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("list/barcode/{listId}")]
-        public HttpResponseMessage Barcode(long listId) {
+        [ApiKeyedRoute("list/barcode/{type}/{listId}")]
+        public HttpResponseMessage Barcode(ListType type, long listId) {
             HttpResponseMessage ret;
             try
             {
@@ -736,8 +739,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="options">Paging options</param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("list/print/{listId}")]
-        public HttpResponseMessage Print(long listId, PrintListModel options) {
+        [ApiKeyedRoute("list/print/{type}/{listId}")]
+        public HttpResponseMessage Print(ListType type, long listId, PrintListModel options) {
             HttpResponseMessage ret;
             try
             {

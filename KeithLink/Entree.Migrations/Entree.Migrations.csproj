@@ -67,6 +67,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0022.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0021.cs" />
     <Compile Include="Migrations\v2017.03.00\Migration0020.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0032.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0031.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0030.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0029.cs" />
@@ -183,8 +184,12 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListItemById\AddOrUpdateCustomListItemById_0031_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListShareByCustomerNumberBranch\AddOrUpdateCustomListShareByCustomerNumberBranch_0032_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListShareByCustomerNumberBranch\AddOrUpdateCustomListShareByCustomerNumberBranch_0032_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationItemByCustomerNumberBranch\AddOrUpdateInventoryValuationItemByCustomerNumberBranch_0030_2017.04.00_down.sql" />
@@ -312,6 +317,13 @@
     </Content>
     <Content Include="Scripts\AppData\List\Tables\CustomListDetails\CustomListDetails_0031_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListDetails\CustomListDetails_0031_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\CustomListShares_0032_2017-04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\CustomListShares_0032_2017-04-00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\PostDeployment\MigrateFavoritesList_0022_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListHeaders\CustomListHeaders_0031_2017.04.00_down.sql" />
