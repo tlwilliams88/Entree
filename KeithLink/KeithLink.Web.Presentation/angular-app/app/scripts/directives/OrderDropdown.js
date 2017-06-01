@@ -66,14 +66,14 @@ angular.module('bekApp')
             }
           }
         });
-   
+
         modalInstance.result.then(function(cart) {
           if(cart.type && cart.type == 'QuickAdd'){
             $state.go('menu.cart.items', {cartId: cart.id});
           } else if(cart.type && cart.type == 'Import') {
             $state.go('menu.cart.items', { cartId: cart.listid });
           } else {
-            $state.go('menu.addtoorder.items', { listId: cart.listid, cartId: cart.id});
+            $state.go('menu.addtoorder.items', { listId: cart.listId, listType: cart.listType, cartId: cart.id});
           }
         });
       };
@@ -90,12 +90,12 @@ angular.module('bekApp')
             }
           }
         });
-   
+
         modalInstance.result.then(function(cartId) {
           $state.go('menu.cart.items', {cartId: cartId});
         });
       };
-   
+
       $scope.openOrderImportModal = function () {
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/orderimportmodal.html',

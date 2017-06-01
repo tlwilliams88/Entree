@@ -501,9 +501,9 @@ angular.module('bekApp')
     DELETE LIST
     **********/
 
-    $scope.deleteList = function(listId) {
-      ListService.deleteList(listId).then(function(list) {
-        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === listId) {
+    $scope.deleteList = function(list) {
+      ListService.deleteList(list).then(function(list) {
+        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === list.listid) {
           $scope.hideMandatoryListCreateButton = false;
         }
         return list;
@@ -674,9 +674,9 @@ angular.module('bekApp')
       }
 
       if($scope.isCustomInventoryList){
-        ListService.addNewItemsFromCustomInventoryList(list.listid, items);
+        ListService.addNewItemsFromCustomInventoryList(list, items);
       } else {
-        ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
+        ListService.addMultipleItems(list, items).then(function(updatedList) {
           if ($scope.selectedList.listid === updatedList.listid) {
             $scope.selectedList = list;
           }

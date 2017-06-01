@@ -280,16 +280,8 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        validListId: ['$stateParams', 'ResolveService', 'lists', '$filter', function($stateParams, ResolveService, lists, $filter) {
-          var existingList = $filter('filter')(lists, {listid: $stateParams.listId})[0],
-              list = existingList ? existingList : $stateParams.listId;
-
-          if(list) {
-            return list.listid ? list.listid : list;
-          }
-        }],
-        originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
-         function($stateParams, $filter, validListId, lists, ListService, DateService, Constants, LocalStorage, ENV) {
+        originalList: ['$stateParams', '$filter', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
+         function($stateParams, $filter, lists, ListService, DateService, Constants, LocalStorage, ENV) {
 
           var last = LocalStorage.getLastList(),
               stillExists = false,
@@ -301,13 +293,13 @@ angular.module('bekApp')
           ListService.lists.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
-              listHeader = $filter('filter')(lists, {listid: last.listId})[0];
+              listHeader = $filter('filter')(lists, {listid: last.listId, type: last.listType})[0];
             }
           });
 
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
-            listToBeUsed.listId = last.listId.listid ? last.listId.listid : last.listId;
-            listToBeUsed.listType = last.listId.listtype ? last.listId.listtype : last.listType;
+            listToBeUsed.listId = last.listId;
+            listToBeUsed.listType = last.listType;
           }
 
           if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
@@ -427,7 +419,10 @@ angular.module('bekApp')
     })
     .state('menu.addtoorder.items', {
       url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage/?pageLoaded',
-      params: {listItems: null},
+      params: {
+        listItems: null,
+        listType: null
+      },
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
@@ -436,14 +431,6 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        // validBasketId: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
-        //   return ResolveService.validateBasket($stateParams.cartId, changeOrders);
-        // }],
-        // selectedCart: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
-        //   if ($stateParams.cartId !== 'New') {
-        //     return ResolveService.selectValidBasket(validBasketId, changeOrders);
-        //   }
-        // }],
         selectedCart: ['$stateParams', 'CartService', 'OrderService', function($stateParams, CartService, OrderService) {
 
           if ($stateParams.cartId !== 'New') {
@@ -455,15 +442,8 @@ angular.module('bekApp')
             }
           }
         }],
-        validListId: ['$stateParams', 'ResolveService', 'LocalStorage', function($stateParams, ResolveService, LocalStorage) {
-          var lastList;
-
-          lastList = $stateParams.listId ? $stateParams.listId : LocalStorage.getLastList();
-
-          return ResolveService.validateList(lastList, 'isworksheet');
-        }],
-        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
-         function($stateParams, $filter, lists, validListId, ListService, DateService, Constants, LocalStorage, ENV) {
+        selectedList: ['$stateParams', '$filter', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
+         function($stateParams, $filter, lists, ListService, DateService, Constants, LocalStorage, ENV) {
 
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: []},
@@ -472,9 +452,7 @@ angular.module('bekApp')
               favoritesList = $filter('filter')(lists, {name: 'favorites'})[0],
               listHeader;
 
-          listToBeUsed.listId = $stateParams.listId.listId ? $stateParams.listId.listId : $stateParams.listId;
-          listToBeUsed.listId = listToBeUsed.listId ? listId : LocalStorage.getLastList();
-          listHeader = listToBeUsed.listId.listId ? $filter('filter')(lists, {listid: listToBeUsed.listId.listId})[0] : $filter('filter')(lists, {listid: listToBeUsed.listId})[0];
+          listHeader = $filter('filter')(lists, {listid: $stateParams.listId, type: $stateParams.listType})[0];
 
           if(!listHeader) {
 
@@ -487,7 +465,7 @@ angular.module('bekApp')
           }
 
           listToBeUsed.listId = listHeader.listid;
-          listToBeUsed.listId = listHeader.type;
+          listToBeUsed.listType = listHeader.type;
 
           if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){

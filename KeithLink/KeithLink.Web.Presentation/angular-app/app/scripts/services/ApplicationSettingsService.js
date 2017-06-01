@@ -2,7 +2,7 @@
 
 angular.module('bekApp')
   .factory('ApplicationSettingsService', [ '$http', '$q', 'toaster', 'UtilityService', function ($http, $q, toaster, UtilityService) {
-    
+
 
         /****************************
           Notification Preferences
@@ -38,7 +38,7 @@ angular.module('bekApp')
 
     var Service = {
 
-      
+
       getNotificationPreferencesForCustomer: function(customerNumber, customerBranch) {
         var promise = $http.get('/messaging/preferences/' + customerNumber + '/' + customerBranch);
         return UtilityService.resolvePromise(promise).then(function(customerPreferences) {
@@ -52,7 +52,7 @@ angular.module('bekApp')
       getNotificationPreferencesAndFilterByCustomerNumber: function(customerNumber) {
         var promise = $http.get('/messaging/preferences');
         return UtilityService.resolvePromise(promise).then(function (userPreferences) {
-          
+
           var customerPreferencesFound;
 
           userPreferences.forEach(function(customerPreferences) {
@@ -67,7 +67,7 @@ angular.module('bekApp')
           toaster.pop('error', null, 'An error occurred while reading user preferences' + error);
           return $q.reject(error);
         });
-      }, 
+      },
 
       updateNotificationPreferences: function(preferences, customerNumber, branchId) {
 
@@ -79,7 +79,7 @@ angular.module('bekApp')
 
         // for each topic format object accordingly by pushing only trues to the array
         preferences.forEach(function (preference) {
-          
+
           var preferenceTransformed = {
             description: preference.description,
             notificationType: preference.notificationType,
@@ -112,9 +112,9 @@ angular.module('bekApp')
         /****************************
               Page Size Preferences
         *****************************/
-    
+
       saveApplicationSettings: function(payload) {
-        return $http.post('/profile/settings', payload).then(function(response) {           
+        return $http.post('/profile/settings', payload).then(function(response) {
           if (!response) {
             return $q.reject('An error occurred while saving your preferences.');
           }
@@ -140,14 +140,15 @@ angular.module('bekApp')
       },
 
       setDefaultOrderList: function(list){
-        var listid = { 
-          listid: list 
+        var defaultList = {
+          listid: list.listId,
+          listtype: list.listType
         };
-        return $http.post('/profile/defaultorderlist', listid);
+        return $http.post('/profile/defaultorderlist', defaultList);
       },
 
       getDefaultOrderList: function() {
-        var promise = $http.get('/profile/defaultorderlist'); 
+        var promise = $http.get('/profile/defaultorderlist');
         return UtilityService.resolvePromise(promise).then(function(resp) {
             return resp;
         });
@@ -156,5 +157,3 @@ angular.module('bekApp')
 
     return Service;
   }]);
-
-

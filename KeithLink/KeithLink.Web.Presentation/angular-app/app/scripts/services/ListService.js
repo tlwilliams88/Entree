@@ -264,7 +264,7 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getListWithItems: function(listId, params, displayMessage) {
+        getListWithItems: function(list, params, displayMessage) {
           var savingOrLoadingItems = displayMessage ? displayMessage : 'Loading Items...';
           Service.userProfile = UserProfileService.getCurrentUserProfile(savingOrLoadingItems);
           if (!params) {
@@ -275,7 +275,7 @@ angular.module('bekApp')
           var data = {
             params: params
           };
-          return $http.get('/list/' + listId, data).then(function(response) {
+          return $http.get('/list/' + list.listType, + '/' + list.listId, data).then(function(response) {
             var list = response.data.successResponse;
             if (!list) {
               return $q.reject('No list found.');
@@ -306,8 +306,11 @@ angular.module('bekApp')
               };
             }
 
+            var listType = list.type != null ? list.type : list.listType,
+                listId = list.listid != null ? list.listid : list.listId;
+
             Service.sortObject = params.sort;
-            return $http.post('/list/' + list.listType + '/' + list.listId, params).then(function(response) {
+            return $http.post('/list/' + listType + '/' + listId, params).then(function(response) {
               var list = response.data.successResponse;
               if (!list) {
                 return $q.reject('No list found.');
@@ -363,21 +366,21 @@ angular.module('bekApp')
         },
 
         addNewItemFromCustomInventoryList: function(listitem) {
-          return $http.post('/custominventoryitem', listitem).then(function(response){
+          return $http.post('/list/' +  list.type + '/' + list.listid + '/custominventoryitem', listitem).then(function(response){
             var customInventoryItems = response.data.successResponse.items;
 
             return customInventoryItems;
           });
         },
 
-        addNewItemsFromCustomInventoryList: function(listid, listitems) {
+        addNewItemsFromCustomInventoryList: function(list, listitems) {
           var itemsToAdd = [];
 
           listitems.forEach(function(item){
             itemsToAdd.push(item.id);
           });
 
-          return $http.post('/list/'+ listid + '/custominventoryitem', itemsToAdd).then(function() {
+          return $http.post('/list/' +  list.type + '/' + list.listid + '/custominventoryitem', itemsToAdd).then(function() {
             toaster.pop('success', null, 'Successfully added items to list.');
           }, function(error) {
             toaster.pop('error', null, 'Error adding items to list.');
@@ -628,9 +631,9 @@ angular.module('bekApp')
 
             var promise;
             if (getEntireList) {
-              promise = Service.getListWithItems(list.listid, { includePrice: false }, 'Saving List...');
+              promise = Service.getListWithItems(list, { includePrice: false }, 'Saving List...');
             } else {
-              promise = Service.getList(list.listid, params);
+              promise = Service.getList(list, params);
             }
             return promise.then(function(list) {
               if(!addingItem){
@@ -647,12 +650,13 @@ angular.module('bekApp')
         },
 
         // accepts listId (guid)
-        deleteList: function(listId) {
+        deleteList: function(list) {
           return List.delete({
-            listId: listId
+            listId: list.listid,
+            listType: list.type
           }).$promise.then(function(response) {
             // TODO: can I clean this up?
-            var deletedList = Service.findListById(listId);
+            var deletedList = Service.findListById(list.listid);
             var idx = Service.lists.indexOf(deletedList);
             if (idx > -1) {
               Service.lists.splice(idx, 1);
@@ -738,7 +742,7 @@ angular.module('bekApp')
 
         // accepts listId (guid) and an array of items to add
         // params: allowDuplicates
-        addMultipleItems: function(listId, items) {
+        addMultipleItems: function(list, items) {
 
           var newItems = [];
           items.forEach(function(item) {
@@ -752,11 +756,12 @@ angular.module('bekApp')
           });
 
           return List.addMultipleItems({
-            listId: listId
+            listId: list.listid,
+            listType: list.type
           }, newItems).$promise.then(function() {
             // TODO: favorite all items if favorites list
             toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
-            return Service.getList(listId);
+            return Service.getList(list);
           }, function(error) {
             toaster.pop('error', null, 'Error adding ' + items.length + ' items to list.');
             return $q.reject(error);
@@ -765,7 +770,7 @@ angular.module('bekApp')
 
         // accepts listId (guid) and an array of items
         // NOTE $resource does not accept deletes with payloads
-        deleteMultipleItems: function(listId, items) {
+        deleteMultipleItems: function(list, items) {
 
           // create array of list item ids
           var listItemIds = [];
@@ -773,7 +778,7 @@ angular.module('bekApp')
             listItemIds.push(item.listitemid);
           });
 
-          return $http.delete('/list/' + listId + '/item', {
+          return $http.delete('/list/' + list.type + '/' + list.listid + '/item', {
             headers: {'Content-Type': 'application/json'},
             data: listItemIds
           }).then(function() {
@@ -919,13 +924,12 @@ angular.module('bekApp')
         /*******************
         SET LAST ORDER LIST
         *******************/
-        setLastOrderList: function(listId, cart){
+        setLastOrderList: function(listId, listType, cart){
           var cartId = cart,
-              timeset = DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
               orderList = {
                 listId: listId,
+                listType: listType,
                 cartId: cartId,
-                timeset: timeset
               },
               allSets = [],
               allSets = LocalStorage.getLastOrderList();
@@ -938,7 +942,7 @@ angular.module('bekApp')
               allSets.forEach(function(set){
                 if(set.cartId === orderList.cartId){
                   set.listId = orderList.listId;
-                  set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
+                  set.listType = orderList.listType;
                   matchFound = true;
                 }
               });
