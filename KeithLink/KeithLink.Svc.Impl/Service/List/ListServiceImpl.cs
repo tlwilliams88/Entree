@@ -274,6 +274,10 @@ namespace KeithLink.Svc.Impl.Service.List
             {
                 pagedList = returnList.ToPagedList(paging);
             }
+            else
+            {
+                pagedList = new PagedListModel();
+            }
             stopWatch.Read(_log, "ReadPagedList - ToPagedList");
 
             return pagedList;
