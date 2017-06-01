@@ -55,6 +55,25 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
 
             var sharedwithme = _customListSharesRepository.GetCustomListShares(catalogInfo);
+            if (sharedwithme != null)
+            {
+                foreach (var share in sharedwithme)
+                {
+                    CustomListHeader header = _headersRepo.GetCustomListHeader(share.ParentCustomListHeaderId);
+
+                    if (headerOnly == false)
+                    {
+                        header.Items = _detailsRepo.GetCustomListDetails(header.Id);
+                    }
+                    if (header != null)
+                    {
+                        var sharedwithothers = _customListSharesRepository.GetCustomListShares(header.Id);
+                        header.Shares = sharedwithothers;
+
+                        list.Add(header.ToListModel(catalogInfo));
+                    }
+                }
+            }
 
             return list;
         }
@@ -69,6 +88,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
             if (header != null)
             {
+                var sharedwithothers = _customListSharesRepository.GetCustomListShares(header.Id);
+                header.Shares = sharedwithothers;
+
                 return new List<ListModel>() { header.ToListModel(catalogInfo)};
             }
             return null;
