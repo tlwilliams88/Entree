@@ -46,14 +46,17 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     }
                     if (header != null)
                     {
-                        var sharedwithme = _customListSharesRepository.GetCustomListShares(catalogInfo);
+                        var sharedwithothers = _customListSharesRepository.GetCustomListShares(header.Id);
+                        header.Shares = sharedwithothers;
 
                         list.Add(header.ToListModel(catalogInfo));
                     }
                 }
-                return list;
             }
-            return null;
+
+            var sharedwithme = _customListSharesRepository.GetCustomListShares(catalogInfo);
+
+            return list;
         }
 
         public List<ListModel> ReadList(long listId, UserSelectedContext catalogInfo, bool headerOnly)

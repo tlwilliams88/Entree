@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class CustomListSharesRepositoryImpl : DapperDatabaseConnection, ICustomListSharesRepository
     {
         #region attributes
-        private const string COMMAND_GETHEADERS = "[List].[GetCustomListShareById]";
+        private const string COMMAND_GETHEADERS = "[List].[GetCustomListSharesByListId]";
         private const string COMMAND_GETHEADERS2 = "[List].[GetCustomListSharesByCustomerNumberBranch]";
         #endregion
         #region constructor

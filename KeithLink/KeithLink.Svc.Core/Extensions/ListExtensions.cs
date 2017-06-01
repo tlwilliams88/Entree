@@ -533,7 +533,7 @@ namespace KeithLink.Svc.Core.Extensions
                 IsRecommended = false,
                 IsCustomInventory = false,
                 Type = ListType.Custom,
-                //SharedWith = list.Shares != null ? list.Shares.Select(s => s.CustomerId).ToList() : null,
+                SharedWith = header.Shares != null ? header.Shares.Select(s => s.CustomerNumber).ToList() : null,
                 ListId = header.Id,
                 Name = header.Name,
                 ReadOnly = false,

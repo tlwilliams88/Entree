@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Lists.CustomListShares;
 
 namespace KeithLink.Svc.Core.Models.Lists.CustomList
 {
@@ -12,6 +13,7 @@ namespace KeithLink.Svc.Core.Models.Lists.CustomList
         public string CustomerNumber { get; set; }
         public string BranchId { get; set; }
         public string Name { get; set; }
+        public List<CustomListShare> Shares { get; set; }
         public DateTime CreatedUtc { get; set; }
         public DateTime ModifiedUtc { get; set; }
         public List<CustomListDetail> Items { get; set; }
