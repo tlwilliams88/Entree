@@ -18,13 +18,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #region attributes
         private readonly ICustomListDetailsRepository _detailsRepo;
         private readonly ICustomListHeadersRepository _headersRepo;
+        private readonly ICustomListSharesRepository _customListSharesRepository;
         #endregion
 
         #region ctor
-        public CustomListLogicImpl(ICustomListHeadersRepository headersRepo, ICustomListDetailsRepository detailsRepo)
+        public CustomListLogicImpl(ICustomListSharesRepository customListSharesRepository, ICustomListHeadersRepository headersRepo, ICustomListDetailsRepository detailsRepo)
         {
             _headersRepo = headersRepo;
             _detailsRepo = detailsRepo;
+            _customListSharesRepository = customListSharesRepository;
         }
         #endregion
 
@@ -33,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             List<CustomListHeader> headers = _headersRepo.GetCustomListHeaders(catalogInfo);
             List<ListModel> list = new List<ListModel>();
-
+            
             if (headers != null)
             {
                 foreach (var header in headers)
@@ -44,6 +46,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     }
                     if (header != null)
                     {
+                        var sharedwithme = _customListSharesRepository.GetCustomListShares(catalogInfo);
+
                         list.Add(header.ToListModel(catalogInfo));
                     }
                 }

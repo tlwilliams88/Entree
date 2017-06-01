@@ -151,28 +151,29 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
 
             // lists
-            builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
-            builder.RegisterType<FavoritesListRepositoryImpl>().As<IFavoritesListRepository>();
-            builder.RegisterType<NotesListRepositoryImpl>().As<INotesListRepository>();
-            builder.RegisterType<RecentlyViewedListRepositoryImpl>().As<IRecentlyViewedListRepository>();
-            builder.RegisterType<RecentlyOrderedListHeadersRepositoryImpl>().As<IRecentlyOrderedListHeadersRepository>();
-            builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>();
-            builder.RegisterType<RecommendedItemsListHeadersRepositoryImpl>().As<IRecommendedItemsListHeadersRepository>();
-            builder.RegisterType<RecommendedItemsListDetailsRepositoryImpl>().As<IRecommendedItemsListDetailsRepository>();
-            builder.RegisterType<InventoryValuationListHeadersRepositoryImpl>().As<IInventoryValuationListHeadersRepository>();
-            builder.RegisterType<InventoryValuationListDetailsRepositoryImpl>().As<IInventoryValuationListDetailsRepository>();
-            builder.RegisterType<ContractListHeadersRepositoryImpl>().As<IContractListHeadersRepository>();
-            builder.RegisterType<ContractListDetailsRepositoryImpl>().As<IContractListDetailsRepository>();
-            builder.RegisterType<ReminderItemsListDetailsRepositoryImpl>().As<IRemindersListDetailsRepository>();
-            builder.RegisterType<ReminderItemsListHeadersRepositoryImpl>().As<IRemindersListHeadersRepository>();
-            builder.RegisterType<MandatoryItemsListHeadersRepositoryImpl>().As<IMandatoryItemsListHeadersRepository>();
-            builder.RegisterType<MandatoryItemsListDetailsRepositoryImpl>().As<IMandatoryItemsListDetailsRepository>();
-            builder.RegisterType<CustomListHeadersRepositoryImpl>().As<ICustomListHeadersRepository>();
-            builder.RegisterType<CustomListDetailsRepositoryImpl>().As<ICustomListDetailsRepository>();
-            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
-            builder.RegisterType<HistoryListRepositoryImpl>().As<IHistoryListRepository>();
-            builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
-            builder.RegisterType<CustomInventoryItemsRepositoryImpl>().As<ICustomInventoryItemsRepository>();
+            builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>().SingleInstance();
+            builder.RegisterType<FavoritesListRepositoryImpl>().As<IFavoritesListRepository>().SingleInstance();
+            builder.RegisterType<NotesListRepositoryImpl>().As<INotesListRepository>().SingleInstance();
+            builder.RegisterType<RecentlyViewedListRepositoryImpl>().As<IRecentlyViewedListRepository>().SingleInstance();
+            builder.RegisterType<RecentlyOrderedListHeadersRepositoryImpl>().As<IRecentlyOrderedListHeadersRepository>().SingleInstance();
+            builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>().SingleInstance();
+            builder.RegisterType<RecommendedItemsListHeadersRepositoryImpl>().As<IRecommendedItemsListHeadersRepository>().SingleInstance();
+            builder.RegisterType<RecommendedItemsListDetailsRepositoryImpl>().As<IRecommendedItemsListDetailsRepository>().SingleInstance();
+            builder.RegisterType<InventoryValuationListHeadersRepositoryImpl>().As<IInventoryValuationListHeadersRepository>().SingleInstance();
+            builder.RegisterType<InventoryValuationListDetailsRepositoryImpl>().As<IInventoryValuationListDetailsRepository>().SingleInstance();
+            builder.RegisterType<ContractListHeadersRepositoryImpl>().As<IContractListHeadersRepository>().SingleInstance();
+            builder.RegisterType<ContractListDetailsRepositoryImpl>().As<IContractListDetailsRepository>().SingleInstance();
+            builder.RegisterType<ReminderItemsListDetailsRepositoryImpl>().As<IRemindersListDetailsRepository>().SingleInstance();
+            builder.RegisterType<ReminderItemsListHeadersRepositoryImpl>().As<IRemindersListHeadersRepository>().SingleInstance();
+            builder.RegisterType<MandatoryItemsListHeadersRepositoryImpl>().As<IMandatoryItemsListHeadersRepository>().SingleInstance();
+            builder.RegisterType<MandatoryItemsListDetailsRepositoryImpl>().As<IMandatoryItemsListDetailsRepository>().SingleInstance();
+            builder.RegisterType<CustomListHeadersRepositoryImpl>().As<ICustomListHeadersRepository>().SingleInstance();
+            builder.RegisterType<CustomListDetailsRepositoryImpl>().As<ICustomListDetailsRepository>().SingleInstance();
+            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>().SingleInstance();
+            builder.RegisterType<HistoryListRepositoryImpl>().As<IHistoryListRepository>().SingleInstance();
+            builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>().SingleInstance();
+            builder.RegisterType<CustomInventoryItemsRepositoryImpl>().As<ICustomInventoryItemsRepository>().SingleInstance();
+            builder.RegisterType<CustomListSharesRepositoryImpl>().As<ICustomListSharesRepository>().SingleInstance();
 
             // marketing
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
@@ -257,20 +258,20 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             // lists
-            builder.RegisterType<FavoritesListLogicImpl>().As<IFavoritesListLogic>();
-            builder.RegisterType<NotesListLogicImpl>().As<INotesListLogic>();
-            builder.RegisterType<RecommendedItemsListLogicImpl>().As<IRecommendedItemsListLogic>();
-            builder.RegisterType<ReminderItemsListLogicImpl>().As<IRemindersListLogic>();
-            builder.RegisterType<MandatoryItemsListLogicImpl>().As<IMandatoryItemsListLogic>();
-            builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
-            builder.RegisterType<RecentlyOrderedListLogicImpl>().As<IRecentlyOrderedListLogic>();
-            builder.RegisterType<InventoryValuationListLogicImpl>().As<IInventoryValuationListLogic>();
-            builder.RegisterType<ContractListLogicImpl>().As<IContractListLogic>();
-            builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();
-            builder.RegisterType<CustomListLogicImpl>().As<ICustomListLogic>();
-            builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
-            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
-            builder.RegisterType<NoteLogicImpl>().As<INoteLogic>();
+            builder.RegisterType<FavoritesListLogicImpl>().As<IFavoritesListLogic>().SingleInstance();
+            builder.RegisterType<NotesListLogicImpl>().As<INotesListLogic>().SingleInstance();
+            builder.RegisterType<RecommendedItemsListLogicImpl>().As<IRecommendedItemsListLogic>().SingleInstance();
+            builder.RegisterType<ReminderItemsListLogicImpl>().As<IRemindersListLogic>().SingleInstance();
+            builder.RegisterType<MandatoryItemsListLogicImpl>().As<IMandatoryItemsListLogic>().SingleInstance();
+            builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>().SingleInstance();
+            builder.RegisterType<RecentlyOrderedListLogicImpl>().As<IRecentlyOrderedListLogic>().SingleInstance();
+            builder.RegisterType<InventoryValuationListLogicImpl>().As<IInventoryValuationListLogic>().SingleInstance();
+            builder.RegisterType<ContractListLogicImpl>().As<IContractListLogic>().SingleInstance();
+            builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>().SingleInstance();
+            builder.RegisterType<CustomListLogicImpl>().As<ICustomListLogic>().SingleInstance();
+            builder.RegisterType<HistoryLogic>().As<IHistoryLogic>().SingleInstance();
+            builder.RegisterType<ListLogicImpl>().As<IListLogic>().SingleInstance();
+            builder.RegisterType<NoteLogicImpl>().As<INoteLogic>().SingleInstance();
 
             //marketing 
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();

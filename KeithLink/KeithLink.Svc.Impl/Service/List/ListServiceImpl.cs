@@ -51,7 +51,8 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, IEventLogRepository log)
+                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, 
+                                IEventLogRepository log)
         {
             _genericListLogic = genericListLogic;
             // specific lists -

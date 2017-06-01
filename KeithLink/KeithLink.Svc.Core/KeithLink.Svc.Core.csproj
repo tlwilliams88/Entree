@@ -245,6 +245,7 @@
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
     <Compile Include="Interface\Lists\ICustomListDetailsRepository.cs" />
+    <Compile Include="Interface\Lists\ICustomListSharesRepository.cs" />
     <Compile Include="Interface\Lists\ICustomListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\ICustomListLogic.cs" />
     <Compile Include="Interface\Lists\IContractListLogic.cs" />
@@ -365,6 +366,7 @@
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
     <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
+    <Compile Include="Models\Lists\CustomListShares\CustomListShare.cs" />
     <Compile Include="Models\Lists\Favorites\FavoritesListDetail.cs" />
     <Compile Include="Models\Lists\Favorites\FavoritesListHeader.cs" />
     <Compile Include="Models\Lists\Contract\ContractListDetail.cs" />

@@ -529,7 +529,7 @@ namespace KeithLink.Svc.Core.Extensions
                 IsFavorite = false,
                 IsWorksheet = false,
                 IsReminder = false,
-                IsMandatory = true,
+                IsMandatory = false,
                 IsRecommended = false,
                 IsCustomInventory = false,
                 Type = ListType.Custom,

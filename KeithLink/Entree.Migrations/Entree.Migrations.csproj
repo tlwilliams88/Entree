@@ -247,6 +247,14 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeaderByCustomerAndBranch_0023_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListSharesByCustomerNumberBranch\GetCustomListSharesByCustomerNumberBranch_0032_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListSharesByCustomerNumberBranch\GetCustomListSharesByCustomerNumberBranch_0032_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListSharesByListId\GetCustomListSharesByListId_0032_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListSharesByListId\GetCustomListSharesByListId_0032_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListHeaderByListId\GetCustomListHeaderByListId_0031_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListHeaderByListId\GetCustomListHeaderByListId_0031_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -323,7 +331,7 @@
     <Content Include="Scripts\AppData\List\Tables\CustomListShares\CustomListShares_0032_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\CustomListShares\PostDeployment\MigrateFavoritesList_0022_2017-04-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\PostDeployment\MigrateCustomListShares_0032_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListHeaders\CustomListHeaders_0031_2017.04.00_down.sql" />

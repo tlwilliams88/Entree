@@ -423,6 +423,7 @@
     <Compile Include="Repository\Lists\ContractListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ContractListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\CustomListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\CustomListSharesRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\CustomListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListDetailsRepositoryImpl.cs" />
