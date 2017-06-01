@@ -270,7 +270,7 @@ namespace KeithLink.Svc.Impl.Service.List
             stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
             PagedListModel pagedList = null;
-            if (returnList != null && returnList.Items != null && returnList.Items.Count > 0)
+            if (returnList != null && returnList.Items != null)
             {
                 pagedList = returnList.ToPagedList(paging);
             }
