@@ -162,7 +162,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     ReadOnly = l.ReadOnly || (!user.IsInternalUser && l.Type.Equals(ListType.RecommendedItems) || (!user.IsInternalUser && l.Type.Equals(ListType.Mandatory))),
                     SharedWith = l.SharedWith,
                     IsSharing = l.IsSharing,
-                    IsShared = !l.IsShared,
+                    IsShared = l.IsShared,
                     //IsCustomInventory = l.Type == ListType.CustomInventory,
                     Type = l.Type
                 })
