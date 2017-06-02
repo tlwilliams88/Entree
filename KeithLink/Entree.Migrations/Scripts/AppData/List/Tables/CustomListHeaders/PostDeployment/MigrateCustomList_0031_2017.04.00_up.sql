@@ -33,6 +33,7 @@
              ,[CatalogId]
              ,[Each]
 			 ,[Par]
+			 ,[Label]
 			 ,[CustomInventoryItemId])
 		SELECT
  			fh.[Id]
@@ -40,6 +41,7 @@
 			,li.[CatalogId]
 			,li.Each
 			,li.Par
+			,li.Label
 			,li.CustomInventoryItemId
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id

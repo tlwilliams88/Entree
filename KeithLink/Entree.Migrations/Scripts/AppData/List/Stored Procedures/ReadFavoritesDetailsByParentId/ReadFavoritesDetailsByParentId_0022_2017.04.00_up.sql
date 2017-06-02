@@ -9,6 +9,7 @@ AS
 		[Id],
 		[ItemNumber],
 		[Each],
+		[Label],
 		[CatalogId],
 		[CreatedUtc],
 		[ModifiedUtc]

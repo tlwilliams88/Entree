@@ -112,22 +112,8 @@ namespace KeithLink.Svc.Impl.Service.List
             // Add a favorite
             //_favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId, true);
 
-            // read favorites
-            //var favorites = _favoritesLogic.GetFavoritedItemNumbers(user, catalogInfo);
-
             // Add a recently viewed
             //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693002", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693003", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693004", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693005", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "692006", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "692007", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693007", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693008", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693009", false, catalogInfo.BranchId, true);
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "693010", false, catalogInfo.BranchId, true);
 
             // Empty recently viewed
             //_recentlyViewedLogic.DeleteRecentlyViewed(user, catalogInfo);
@@ -137,19 +123,8 @@ namespace KeithLink.Svc.Impl.Service.List
 
             // Add a recently Ordered
             //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693002", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693003", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693004", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693005", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693006", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693007", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693008", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "693009", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987677", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987676", false, catalogInfo.BranchId, true);
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987675", false, catalogInfo.BranchId, true);
 
-            // Empty recently viewed
+            // Empty recently Ordered
             //_recentlyOrderedLogic.DeleteRecentlyOrdered(user, catalogInfo);
 
             // read recently Ordered
@@ -157,79 +132,21 @@ namespace KeithLink.Svc.Impl.Service.List
 
             // Add a recommended Items
             //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693005", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693006", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693007", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693008", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693009", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987677", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
 
             // read recommended Items
             //var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
 
             // Add a reminder Items
             //_reminderItemsLogic.AddOrUpdateReminder(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693005", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693006", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693007", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693008", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693009", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987677", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
-
-            // read reminder Items
-            //var reminderItems = _reminderItemsLogic.GetRemindersNumbers(user, catalogInfo);
 
             // Add a mandatory Items
             //_mandatoryItemsLogic.AddOrUpdateMandatoryItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693005", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693006", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693007", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693008", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693009", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987677", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
-
-            // read mandatory Items
-            //var mandatoryItems = _mandatoryItemsLogic.GetMandatoryItemNumbers(user, catalogInfo);
-
-            // Add a mandatory Items
-            //_mandatoryItemsLogic.AddOrUpdateMandatoryItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693002", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693003", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693004", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693005", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693006", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693007", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693008", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "693009", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987677", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987676", false, catalogInfo.BranchId, true);
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987675", false, catalogInfo.BranchId, true);
-
-            // read mandatory Items
-            //var inventoryValuationLists = _inventoryValuationLogic.ReadLists(user, catalogInfo, false);
 
             // Add a note
             //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
 
             // read notes
             //var notes = _notesLogic.GetNotesDictionary(user, catalogInfo);            
-
-            //AddOtherLists(user, catalogInfo, headerOnly, list);
 
             if (headerOnly)
                 return list.Select(l => new ListModel()
@@ -252,6 +169,19 @@ namespace KeithLink.Svc.Impl.Service.List
                            .ToList();
 
             return list;
+        }
+
+        public List<string> ReadLabels(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            List<ListModel> list = new List<ListModel>();
+
+            AddList(user, catalogInfo, false, list, ListType.Favorite);
+            AddCustomLists(user, catalogInfo, false, list);
+
+            //List<ListItem> items = list.Select(l => l.Items).ToList();
+            //List<string> labels = ;
+
+            return new List<string>();
         }
 
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id, bool includePrice = true)

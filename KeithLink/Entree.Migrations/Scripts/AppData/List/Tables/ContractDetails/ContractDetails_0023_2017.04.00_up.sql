@@ -3,7 +3,7 @@
 	[Id] INT PRIMARY KEY IDENTITY(1,1),
 	[ParentContractHeaderId] INT NOT NULL,
 	[LineNumber] INT NOT NULL,
-	[ItemNumber] CHAR(10) NOT NULL,
+	[ItemNumber] VARCHAR(10) NOT NULL,
 	[FromDate] DATETIME NULL,
 	[ToDate] DATETIME NULL,
 	[Each] BIT NULL,

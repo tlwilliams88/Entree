@@ -36,12 +36,14 @@
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]
+			 ,[Label]
 			 ,[Active])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
 			,li.[CatalogId]
 			,li.Each
+			,li.Label
 			,1
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id

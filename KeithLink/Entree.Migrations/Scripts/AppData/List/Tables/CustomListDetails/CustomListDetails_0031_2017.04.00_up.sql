@@ -5,6 +5,7 @@
 	[ItemNumber] NVARCHAR(10) NOT NULL,
 	[Each] BIT NULL,
     [Par] DECIMAL (18, 2) DEFAULT ((0)) NOT NULL,
+	[Label] [varchar](150) NULL,
 	[CatalogId] NVARCHAR(24) NULL,
 	[CustomInventoryItemId] bigint null,
 	[Active] BIT DEFAULT (1) NOT NULL,

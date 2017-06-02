@@ -41,7 +41,7 @@
             ,[ToDate])
         SELECT
 			LTRIM(RTRIM(bcd.ItemNumber))
-			,GETUTCDATE()
+			,'5/1/2017'
 			,l.Id
 			,GETUTCDATE()
 			,LTRIM(RTRIM(bcd.CategoryDescription))
