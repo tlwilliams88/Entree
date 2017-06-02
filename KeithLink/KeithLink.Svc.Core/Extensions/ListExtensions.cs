@@ -536,7 +536,7 @@ namespace KeithLink.Svc.Core.Extensions
                 SharedWith = header.Shares != null ? header.Shares.Select(s => s.CustomerNumber).ToList() : null,
                 ListId = header.Id,
                 Name = header.Name,
-                ReadOnly = header.CustomerNumber.Equals(catalogInfo.CustomerId),
+                ReadOnly = !header.CustomerNumber.Equals(catalogInfo.CustomerId),
                 IsSharing = header.Shares != null ? (header.Shares.Any() && header.CustomerNumber.Equals(catalogInfo.CustomerId) &&
                                                    header.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
                                                 : false,
