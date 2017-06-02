@@ -77,7 +77,7 @@ angular.module('bekApp')
       }
     ];
 
-    $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
+    $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
@@ -337,6 +337,7 @@ angular.module('bekApp')
 
     var listPagingModel = new ListPagingModel(
       originalList.listid,
+      originalList.type,
       resetPage,
       appendListItems,
       startLoading,
@@ -963,7 +964,7 @@ angular.module('bekApp')
           $scope.listSearchTerm = '';
         }
 
-        $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
+        $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
         $scope.selectedFilter = '';
         $scope.filterItems( $scope.listSearchTerm );
       }

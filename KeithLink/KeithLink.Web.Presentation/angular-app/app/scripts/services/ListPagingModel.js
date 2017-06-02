@@ -49,8 +49,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
 
       this.startLoading();
       return ListService.getList(
-        this.listId,
-        this.listType,
+        this,
         params
       ).then(setData).finally(this.stopLoading);
     },
