@@ -536,11 +536,11 @@ namespace KeithLink.Svc.Core.Extensions
                 SharedWith = header.Shares != null ? header.Shares.Select(s => s.CustomerNumber).ToList() : null,
                 ListId = header.Id,
                 Name = header.Name,
-                ReadOnly = false,
-                //IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) &&
-                //                                   list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
-                //                                : false,
-                //IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
+                ReadOnly = header.CustomerNumber.Equals(catalogInfo.CustomerId),
+                IsSharing = header.Shares != null ? (header.Shares.Any() && header.CustomerNumber.Equals(catalogInfo.CustomerId) &&
+                                                   header.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
+                                                : false,
+                IsShared = !header.CustomerNumber.Equals(catalogInfo.CustomerId),
                 Items = header.Items == null ? null :
                     header.Items.Select(i => new ListItemModel()
                     {
