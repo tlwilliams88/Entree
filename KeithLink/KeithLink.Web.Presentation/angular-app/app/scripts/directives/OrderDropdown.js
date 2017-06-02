@@ -17,7 +17,7 @@ angular.module('bekApp')
       var currentCustomer = LocalStorage.getCurrentCustomer(),
           shipDates = CartService.getShipDates(),
           cartHeaders = CartService.cartHeaders ? CartService.cartHeaders : CartService.getCartHeaders(),
-          listHeaders = ListService.getListHeaders(),
+          listHeaders = ListService.listHeaders.length > 0 ? ListService.listHeaders : ListService.getListHeaders(),
           isOffline = CartService.isOffline,
           selectedList,
           customListHeaders;

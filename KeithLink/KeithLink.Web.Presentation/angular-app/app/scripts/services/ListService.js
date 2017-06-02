@@ -51,19 +51,26 @@ angular.module('bekApp')
           getCurrentUserProfile();
         }
 
-        // FAVORITES
-        if (list.isfavorite) {
+        // FAVORITES - RECOMMENDED - MANDATORY FOR INTERNAL USE - REMINDER
+        if (list.isfavorite || list.isrecommended || (list.ismandatory && Service.isInternalUser) || list.isreminder) {
           permissions.canEditList = true;
           permissions.canDeleteItems = true;
           permissions.canAddItems = true;
-          permissions.specialDisplay = true;
           permissions.canReorderItems = true;
           permissions.canAddNonBEKItems = false;
-
+          if(list.isrecommended && list.ismandatory) {
+            permissions.canDeleteList = true;
+          } else if(list.isfavorite) {
+            permissions.specialDisplay = true;
+          } else if(list.ismandatory) {
+            permissions.canEditParlevel = true;
+            permissions.canSeeParlevel = true;
+            permissions.alternativeParHeader = 'Required Qty';
+          }
         // CONTRACT, WORKSHEET / HISTORY
-         } else if (list.is_contract_list || list.isworksheet) {
+        } else if (list.is_contract_list || list.isworksheet) {
           if(list.is_contract_list){
-            //Set Hedader and fields for wildcard columns on lists page.
+            //Set Header and fields for wildcard columns on lists page.
             //Contract items have two: Contract Category and read-only Each.
             //History has one: read-only Each.
             permissions.alternativeFieldName = 'category';
@@ -76,52 +83,22 @@ angular.module('bekApp')
             });
           }
 
-        // RECOMMENDED
-        } else if (list.isrecommended) {
-          permissions.canEditList = true;
-          permissions.canDeleteList = true;
-          permissions.canAddItems = true;
-          permissions.canDeleteItems = true;
-          permissions.canDeleteList = true;
-          permissions.canReorderItems = true;
-          permissions.canAddNonBEKItems = false;
-
-        // MANDATORY -- only editable by internal users
-        } else if (list.ismandatory) {
-          if(Service.isInternalUser){
-            permissions.canDeleteList = true;
-            permissions.canAddItems = true;
-            permissions.canEditList = true;
-            permissions.canDeleteItems = true;
-            permissions.canEditParlevel = true;
-          } else {
+        // MANDATORY NON-INTERNAL USE -- only editable by internal users
+        } else if (list.ismandatory && !Service.isInternalUser) {
             permissions.canDeleteList = false;
             permissions.canAddItems = false;
             permissions.canEditList = false;
             permissions.canDeleteItems = false;
             permissions.canEditParlevel = false;
-          }
-          permissions.canSeeParlevel = true;
-          permissions.alternativeParHeader = 'Required Qty';
+            permissions.canSeeParlevel = true;
+            permissions.alternativeParHeader = 'Required Qty';
 
-
-        // REMINDER
-        } else if (list.isreminder) {
-          permissions.canEditList = true;
-          permissions.canAddItems = true;
-          permissions.canDeleteItems = true;
-          permissions.canReorderItems = true;
-          permissions.canAddNonBEKItems = false;
-
-        // CUSTOM LISTS (only these can be shared/copied)
         } else {
 
           // SHARED WITH ME
           if (list.isshared) {
-            // permissions.canEditList = true;
             permissions.canSeeLabels = true;
             permissions.canSeeParlevel = true;
-            // permissions.canEditParlevel = true;
             permissions.canAddNonBEKItems = false;
 
           // OWNER OF LIST
@@ -567,6 +544,7 @@ angular.module('bekApp')
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
+            ListService.getListHeaders();
             toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.successResponse.listitemid);
           }, function(error) {
