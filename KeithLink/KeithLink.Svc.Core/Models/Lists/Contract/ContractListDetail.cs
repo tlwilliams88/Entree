@@ -14,6 +14,8 @@ namespace KeithLink.Svc.Core.Models.Lists.Contract
         public bool? Each { get; set; }
         public string Category { get; set; }
         public string CatalogId { get; set; }
+        public DateTime? ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
         public DateTime CreatedUtc { get; set; }
         public DateTime ModifiedUtc { get; set; }
     }

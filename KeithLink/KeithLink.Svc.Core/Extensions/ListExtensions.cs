@@ -134,13 +134,13 @@ namespace KeithLink.Svc.Core.Extensions
                         Type = ListType.Contract,
                         Category = i.Category,
                         ItemNumber = i.ItemNumber,
-                        //        Delta = (i.CreatedUtc.AddDays
-                        //            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
-                        //                " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
-                        //            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
-                        //            Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
-                        //        FromDate = i.FromDate,
-                        //        ToDate = i.ToDate,
+                        Delta = (i.CreatedUtc.AddDays
+                                    (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
+                                        " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
+                                    (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
+                                    Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
+                        FromDate = i.FromDate,
+                        ToDate = i.ToDate,
                         Position = i.LineNumber,
                         ModifiedUtc = i.ModifiedUtc,
                         CreatedUtc = i.CreatedUtc,
