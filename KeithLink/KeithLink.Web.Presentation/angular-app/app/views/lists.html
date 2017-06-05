@@ -479,7 +479,7 @@
           </thead>
 
           <tbody
-              ng-class="{ 'item-selected': item.isSelected, 'border-left-orange': item.custominventoryitemid, 'border-left-green': item.delta == 'newly added active' || item.delta == 'active' && selectedList.is_contract_list, 'border-left-red': item.delta == 'newly deleted' || item.delta == 'deleted' && selectedList.is_contract_list }"
+              ng-class="{ 'item-selected': item.isSelected, 'border-left-orange': item.custominventoryitemid, 'border-left-green': (item.delta == 'newly added active' || item.delta == 'active') && selectedList.is_contract_list, 'border-left-red': (item.delta == 'newly deleted' || item.delta == 'deleted') && selectedList.is_contract_list }"
               fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}"
               data-product="{{item}}"
               data-drag="dragEnabled"
