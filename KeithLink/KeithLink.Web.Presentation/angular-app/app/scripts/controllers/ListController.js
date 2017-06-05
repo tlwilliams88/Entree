@@ -462,7 +462,7 @@ angular.module('bekApp')
         customerBranch: $scope.selectedUserContext.customer.customerBranch
       }];
       ListService.duplicateList(list, customers).then(function(newListId) {
-        $state.go('menu.lists.items', { listId: newListId});
+        $state.go('menu.lists.items', { listId: newListId });
       });
     };
 
@@ -925,7 +925,7 @@ angular.module('bekApp')
             return ListService.exportList;
           },
           exportConfig: function() {
-            return ListService.getExportConfig($scope.selectedList.listid);
+            return ListService.getExportConfig($scope.selectedList);
           },
           exportParams: function() {
             return $scope.selectedList.listid;

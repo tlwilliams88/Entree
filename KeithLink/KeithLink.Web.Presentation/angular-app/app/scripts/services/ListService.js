@@ -436,26 +436,27 @@ angular.module('bekApp')
         EXPORT
         ********************/
 
-        getExportConfig: function(listId) {
+        getExportConfig: function(list) {
           return List.exportConfig({
-            listId: listId
+            listId: list.listid,
+            listType: list.type
           }).$promise.then(function(resp){
             return resp.successResponse;
           });
         },
 
-        exportList: function(config, listId) {
-          ExportService.export('/list/export/' + listId, config);
+        exportList: function(config, list) {
+          ExportService.export('/list/export/' + list.type + '/' + list.listid, config);
         },
 
-        printBarcodes: function(listId) {
-          var promise = $http.get('/list/barcode/' + listId, {
+        printBarcodes: function(list) {
+          var promise = $http.get('/list/barcode/' + list.type + '/' + list.listid, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);
         },
 
-        printList: function(listId, landscape, showparvalues, options, shownotes, prices) {
+        printList: function(list, landscape, showparvalues, options, shownotes, prices) {
 
             var printparams = {
               landscape: landscape,
@@ -466,7 +467,7 @@ angular.module('bekApp')
             };
 
 
-          var promise = $http.post('/list/print/' + listId, printparams, {
+          var promise = $http.post('/list/print/' + list.type + '/' + list.listid, printparams, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);
@@ -544,7 +545,7 @@ angular.module('bekApp')
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
-            ListService.getListHeaders();
+            Service.getListHeaders();
             toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.successResponse.listitemid);
           }, function(error) {
@@ -662,14 +663,15 @@ angular.module('bekApp')
         // accepts listId (guid) and item object
         // returns promise and listitemid
         // Only context menu uses this function
-        addItem: function (listId, item) {
+        addItem: function (list, item) {
           delete item.listitemid;
           item.position = 0;
           item.label = null;
           item.parlevel = null;
 
           return List.addItem({
-            listId: listId
+            listId: list.listid,
+            listType: list.type
           }, item).$promise.then(function(response) {
             item.listitemid = response.successResponse.listitemid;
             item.editPosition = 0;
@@ -701,9 +703,10 @@ angular.module('bekApp')
           });
         },
 
-        deleteItemByItemNumber: function(listId, itemNumber) {
+        deleteItemByItemNumber: function(list, itemNumber) {
           return List.deleteItemByItemNumber({
-            listId: listId,
+            listId: list.listid,
+            listType: list.type,
             itemNumber: itemNumber
           }).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully removed item from list.');
@@ -791,12 +794,12 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.deleteItemByItemNumber(favoritesList.listid, itemNumber);
+          return Service.deleteItemByItemNumber(favoritesList, itemNumber);
         },
 
         addItemToFavorites: function(item) {
           $analytics.eventTrack('Add Favorite', {  category: 'Lists'});
-          return Service.addItem(Service.getFavoritesList().listid, item, true);
+          return Service.addItem(Service.getFavoritesList(), item, true);
         },
 
         /*****************************
@@ -860,6 +863,7 @@ angular.module('bekApp')
         shareList: function(list, customers) {
           var copyListData = {
             listid: list.listid,
+            listtype: list.type,
             customers: customers
           };
 
@@ -875,6 +879,7 @@ angular.module('bekApp')
         copyList: function(list, customers) {
           var copyListData = {
             listid: list.listid,
+            listtype: list.type,
             customers: customers
           };
 
@@ -893,6 +898,7 @@ angular.module('bekApp')
             var newList = lists[0];
             Service.lists.push({
               listid: newList.newlistid,
+              listtype: newList.newtype,
               name: 'Copied - ' + list.name
             });
             return newList.newlistid;

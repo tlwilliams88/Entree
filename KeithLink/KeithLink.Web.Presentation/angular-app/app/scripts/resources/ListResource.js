@@ -27,7 +27,7 @@ angular.module('bekApp')
 
       // postData is the item
       addItem: {
-        url: '/list/:listId/item',
+        url: '/list/:listType/:listId/item',
         method: 'POST'
       },
 
@@ -43,7 +43,7 @@ angular.module('bekApp')
       },
 
       deleteItemByItemNumber: {
-        url: '/list/:listId/item/:itemNumber',
+        url: '/list/:listType/:listId/item/:itemNumber',
         method: 'DELETE'
       },
 
@@ -77,7 +77,7 @@ angular.module('bekApp')
       },
 
       exportConfig: {
-        url: '/list/export/:listId',
+        url: '/list/export/:listType/:listId',
         method: 'GET'
       }
 

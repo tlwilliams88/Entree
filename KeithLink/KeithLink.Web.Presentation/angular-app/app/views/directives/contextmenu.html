@@ -1,6 +1,6 @@
 <div>
   <span ng-transclude>
-    
+
   </span>
 
 <div class="context-menu">
@@ -9,7 +9,7 @@
     <button type="button" favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn btn-default text-uppercase">To Favorites</button>
 
     <!-- <button type="button" ng-repeat="list in lists | sortLists" ng-click="addItemToReminderList(item)" ng-if="list.isSpecialList && !list.isFavoritesList" class="btn btn-default text-uppercase">To {{list.name}}</button> -->
-    
+
     <!-- CARTS -->
     <div ng-if="item.nonstock !== 'Y' && canCreateOrders && !isCustomInventoryList" ng-mouseenter="status.isopen1 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
       <button type="button" class="btn btn-default dropdown-toggle">
@@ -30,7 +30,7 @@
       </button>
       <ul class="dropdown-menu context-menu-dropdown reposition-dropdown" role="menu">
         <div class="btn-group-vertical context-menu-margin-top" style="margin-top: 150px;">
-          <button ng-repeat="list in lists | sortLists" ng-if="::list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.name, list.listid, item, selectedList)">{{list.name}}</button>
+          <button ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list, item, selectedList)">{{list.name}}</button>
           <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>
