@@ -69,7 +69,7 @@
             <span >Categories</span><i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
           </accordion-heading>
           <accordion close-others="true">
-            <accordion-group ng-repeat="parentcategory in parentcategories.available" is-open="parentcategory.isOpen" class="mobile-accordion">
+            <accordion-group ng-repeat="parentcategory in parentcategories.available | orderBy : 'code'" is-open="parentcategory.isOpen" class="mobile-accordion">
               <accordion-heading>
                 <div>
                   <div class="pull-left">
@@ -229,7 +229,7 @@
       <div class="col-sm-12" id="categoriesSection">
         <h3>Categories<span ng-show="filterCount > 0" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
           <ul class="nav search-results__category"  >
-            <li class="margin-left-10" ng-repeat="parentcategory in parentcategories.available">
+            <li class="margin-left-10" ng-repeat="parentcategory in parentcategories.available | orderBy : 'code'">
             <div>
               <input
                 type="checkbox"

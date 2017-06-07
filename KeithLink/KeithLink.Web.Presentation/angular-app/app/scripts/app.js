@@ -45,7 +45,7 @@ angular
   //googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
   //googleAnalyticsCordovaProvider.debug = true; // default: false
 
-  AnalyticsProvider.setAccount('UA-58495462-2');
+  AnalyticsProvider.setAccount(ENV.googleAnalytics);
   AnalyticsProvider.useECommerce(true, false);
 
   // configure loading bar
@@ -91,13 +91,20 @@ angular
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
-  $rootScope.displayMessage = function(type, message) {
-    toaster.pop(type, null, message);
-  };
+  $rootScope.displayMessage = function (type, message) {
+    toaster.pop(type, null, message)
+  }
 
   $rootScope.redirectUserToCorrectHomepage = function() {
-    if ( AccessService.isOrderEntryCustomer() ) {
+    var returnToStateName = $rootScope.returnToStateName,
+        returnToStateItemNumber = $rootScope.returnToStateItemNumber;
+
+    if ( AccessService.isOrderEntryCustomer() && !returnToStateItemNumber) {
       $state.go('menu.home');
+    } else if( AccessService.isOrderEntryCustomer() && returnToStateItemNumber != null) {
+      $state.go(returnToStateName, {
+        itemNumber: returnToStateItemNumber
+      });
     } else {
       $state.go('menu.catalog.home');
     }
@@ -117,6 +124,15 @@ angular
 
   var bypass;
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+
+    if ($rootScope.returnToStateName != null && toState.name === 'menu.catalog.products.details' && $rootScope.directedToProduct === true) {
+      $rootScope.returnToStateName = '';
+      $rootScope.returnToStateItemNumber = '';
+    } else if(toState.name == "menu.catalog.products.details") {
+      $rootScope.directedToProduct = true;
+      $rootScope.returnToStateName = toState.name;
+      $rootScope.returnToStateItemNumber = toParams.itemNumber;
+    }
 
     function isStateRestricted(stateData) {
       return stateData && stateData.authorize;
