@@ -686,7 +686,7 @@ angular.module('bekApp')
           return List.addItem({
             listId: listId
           }, item).$promise.then(function(response) {
-            ListService.getListHeaders().then(function(listheaders){
+            Service.getListHeaders().then(function(listheaders){
               $rootScope.listHeaders = listheaders;
             })
             item.listitemid = response.successResponse.listitemid;
