@@ -425,6 +425,8 @@
     <Compile Include="Repository\Lists\CustomListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\CustomListSharesRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\CustomListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\FavoriteListDetailRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\FavoriteListHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListHeadersRepositoryImpl.cs" />

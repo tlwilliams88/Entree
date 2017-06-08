@@ -1,12 +1,12 @@
 ﻿CREATE TABLE [List].[CustomListHeaders]
 (
-	[Id] int PRIMARY KEY IDENTITY(1,1),
-	[UserId] [uniqueidentifier] NULL,
-	[BranchId] VARCHAR(5) NOT NULL,
-	[CustomerNumber] VARCHAR(10) NOT NULL,
-	[Name] VARCHAR(200) NULL DEFAULT 'Custom',
-	[Active] BIT DEFAULT (1) NOT NULL,
-	[CreatedUtc] DATETIME NOT NULL DEFAULT GETUTCDATE(),
-	[ModifiedUtc] DATETIME NOT NULL DEFAULT GETUTCDATE()
+	[Id]				INT					NOT NULL	PRIMARY KEY IDENTITY(1,1),
+	[UserId]			UNIQUEIDENTIFIER	NULL,
+	[BranchId]			CHAR(3)				NOT NULL,
+	[CustomerNumber]	CHAR(6)				NOT NULL,
+	[Name]				NVARCHAR(100)		NULL		DEFAULT 'Custom',
+	[Active]			BIT					NOT NULL	DEFAULT (1),
+	[CreatedUtc]		DATETIME			NOT NULL	DEFAULT GETUTCDATE(),
+	[ModifiedUtc]		DATETIME			NOT NULL	DEFAULT GETUTCDATE()
 );
 

@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[GetCustomListHeaderById]
-	@Id			bigint
+	@Id			BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -7,11 +7,14 @@ AS
 
 	SELECT
 		[Id],
-		CONVERT(nvarchar(50),[UserId]),
-		[CustomerNumber],
+		[UserId],
 		[BranchId],
+		[CustomerNumber],
 		[Name],
+        [Active],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[CustomListHeaders] 
-	WHERE	[Id] = @Id
+	FROM 
+        [List].[CustomListHeaders] 
+	WHERE	
+        [Id] = @Id

@@ -1,6 +1,6 @@
 ﻿CREATE PROCEDURE [List].[GetContractHeaderByCustomerAndBranch]
-	@CustomerNumber CHAR(6),
-	@BranchId CHAR(3)
+	@BranchId		CHAR(3),
+	@CustomerNumber CHAR(6)
 AS
 	SELECT 
 		ch.Id,
@@ -13,7 +13,7 @@ AS
 	FROM
 		[List].[ContractHeaders] ch
 	WHERE
-		ch.CustomerNumber = @CustomerNumber AND
 		ch.BranchId = @BranchId
-
+	AND
+		ch.CustomerNumber = @CustomerNumber
 GO

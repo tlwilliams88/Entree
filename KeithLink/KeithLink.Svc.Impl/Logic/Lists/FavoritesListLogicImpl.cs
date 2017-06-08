@@ -9,27 +9,44 @@ using System.Collections.Generic;
 using System.Linq;
 using KeithLink.Svc.Core.Models.Lists;
 using System;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Models.Lists.Favorites;
 
 namespace KeithLink.Svc.Impl.Logic.Lists {
     public class FavoritesListLogicImpl : IFavoritesListLogic {
         #region attributes
-        private readonly IFavoritesListRepository _favoritesRepo;
+        private readonly IFavoriteListDetailRepository _detailRepo;
+        private readonly IFavoriteListHeaderRepository _headerRepo;
         #endregion
 
         #region ctor
-        public FavoritesListLogicImpl(IFavoritesListRepository favoritesRepo)
-        {
-            _favoritesRepo = favoritesRepo;
+        public FavoritesListLogicImpl(IFavoriteListDetailRepository detailRepository, IFavoriteListHeaderRepository headerRepository) {
+            _detailRepo = detailRepository;
+            _headerRepo = headerRepository;
         }
         #endregion
 
         #region methods
 
-        public List<string> GetFavoritedItemNumbers(UserProfile user, UserSelectedContext catalogInfo)
-        {
-            List<ListModel> list = ReadList(user, catalogInfo, false);
+        public List<string> GetFavoritedItemNumbers(UserProfile user, UserSelectedContext catalogInfo) {
+            return GetFavoritesList(user.UserName, catalogInfo, true)
+                        .Items
+                        .Select(i => i.ItemNumber)
+                        .ToList();
+        }
 
-            return list[0].Items.Select(i => i.ItemNumber).ToList();
+        public ListModel GetFavoritesList(string userId, UserSelectedContext catalogInfo, bool headerOnly) {
+            FavoritesListHeader header = _headerRepo.GetFavoritesList(userId, catalogInfo);
+
+            if (header == null) {
+                return null;
+            } else {
+                if(!headerOnly) {
+                    header.Items = _detailRepo.GetFavoritesListDetails(header.Id);
+                }
+
+                return header.ToListModel(catalogInfo);
+            }
         }
 
         public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
