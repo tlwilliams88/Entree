@@ -1,10 +1,10 @@
 CREATE TABLE [List].[RecentlyOrderedHeaders] (
-    [Id]				BIGINT			   PRIMARY KEY IDENTITY(1,1) NOT NULL,
-	[UserId]            [uniqueidentifier] NULL,
-    [CustomerNumber]    [nvarchar](10)	   NULL,
-    [BranchId]		    [nvarchar](10)	   NULL,
-    [Name]			    [nvarchar](max)	   NULL,
-    [CreatedUtc]        DATETIME           DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]       DATETIME           DEFAULT (getutcdate()) NOT NULL
+    [Id]                BIGINT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    [UserId]            UNIQUEIDENTIFIER NOT NULL,
+    [CustomerNumber]    CHAR(6) NOT NULL,
+    [BranchId]          CHAR(3) NOT NULL,
+    [Name]              VARCHAR(20) DEFAULT 'Recently Ordered',
+    [CreatedUtc]        DATETIME DEFAULT (getutcdate()) NOT NULL,
+    [ModifiedUtc]       DATETIME DEFAULT (getutcdate()) NOT NULL
 );
 GO
