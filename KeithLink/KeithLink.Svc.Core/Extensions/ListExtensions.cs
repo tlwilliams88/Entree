@@ -29,10 +29,7 @@ namespace KeithLink.Svc.Core.Extensions
 {
     public static class ListExtensions
     {
-        #region attributes
-        private const string LISTNAME_REMINDER = "Reminders";
-        #endregion
-
+ 
         #region methods
         /// <summary>
         /// convert the ListModel to a List object
@@ -263,56 +260,6 @@ namespace KeithLink.Svc.Core.Extensions
                         //        FromDate = i.FromDate,
                         //        ToDate = i.ToDate,
                         Each = i.Each ?? false,
-                        //        Quantity = i.Quantity,
-                        CatalogId = i.CatalogId
-                        //        CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
-                    }).OrderBy(l => l.Position).ToList()
-            };
-        }
-
-        public static ListModel ToListModel(this ReminderItemsListHeader header, UserSelectedContext catalogInfo)
-        {
-            return new ListModel()
-            {
-                BranchId = header.BranchId,
-                IsContractList = false,
-                IsFavorite = false,
-                IsWorksheet = false,
-                IsReminder = true,
-                IsMandatory = false,
-                IsRecommended = false,
-                IsCustomInventory = false,
-                Type = ListType.Reminder,
-                //SharedWith = list.Shares != null ? list.Shares.Select(s => s.CustomerId).ToList() : null,
-                ListId = header.Id,
-                Name = header.Name,
-                ReadOnly = false,
-                //IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) &&
-                //                                   list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
-                //                                : false,
-                //IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
-                Items = header.Items == null ? null :
-                    header.Items.Select(i => new ListItemModel()
-                    {
-                        ListItemId = i.Id,
-                        Type = ListType.Reminder,
-                        //        Type = header.Type,
-                        ItemNumber = i.ItemNumber,
-                        //        Label = i.Label,
-                        //        ParLevel = i.Par,
-                        //        ListItemId = i.Id,
-                        //        Position = i.LineNumber,
-                        ModifiedUtc = i.ModifiedUtc,
-                        CreatedUtc = i.CreatedUtc,
-                        //        Delta = (i.CreatedUtc.AddDays
-                        //            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
-                        //                " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
-                        //            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
-                        //            Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
-                        //        FromDate = i.FromDate,
-                        //        ToDate = i.ToDate,
-                        Each = i.Each ?? false,
-                        Notes = i.Note,
                         //        Quantity = i.Quantity,
                         CatalogId = i.CatalogId
                         //        CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
