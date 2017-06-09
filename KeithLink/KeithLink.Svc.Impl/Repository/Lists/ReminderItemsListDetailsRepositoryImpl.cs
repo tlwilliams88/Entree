@@ -1,72 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.DataConnection;
-using System.Data;
+﻿using System.Collections.Generic;
+
 using Dapper;
-using KeithLink.Svc.Core.Extensions;
+
 using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.ReminderItem;
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
+using KeithLink.Svc.Impl.Repository.DataConnection;
 
 namespace KeithLink.Svc.Impl.Repository.Lists
 {
     public class ReminderItemsListDetailsRepositoryImpl : DapperDatabaseConnection, IRemindersListDetailsRepository
     {
         #region attributes
-        private const string COMMAND_GETDETAILS = "[List].[ReadReminderDetailsByParentId]";
-        private const string COMMAND_ADDDETAIL = "[List].[AddOrUpdateReminderByCustomerNumberBranch]";
-        private const string COMMAND_DELETEDETAILS = "[List].[DeleteReminderItemDetails]";
+        private const string PARMNAME_ACTIVE = "Active";
+        private const string PARMNAME_CATALOG = "CatalogId";
+        private const string PARMNAME_EACH = "Each";
+        private const string PARMNAME_HEADERID = "HeaderId";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_ITEMNUM = "ItemNumber";
+
+        private const string SPNAME_DELETE = "[List].[DeleteReminderItemDetails]";
+        private const string SPNAME_GETALL = "[List].[ReadReminderDetailsByParentId]";
+        private const string SPNAME_SAVE = "[List].[AddOrUpdateReminderByCustomerNumberBranch]";
         #endregion
+        
         #region constructor
         public ReminderItemsListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString)
         {
 
         }
         #endregion
+
         #region methods
-        public List<ReminderItemsListDetail> GetRemindersDetails(long parentHeaderId)
-        {
-            return Read<ReminderItemsListDetail>(new CommandDefinition(
-                COMMAND_GETDETAILS,
-                new { @ParentRemindersHeaderId = parentHeaderId },
-                commandType: CommandType.StoredProcedure
-            ));
+        public void DeleteReminderListDetail(long id) {
+            ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
-        public void AddOrUpdateReminder(string customerNumber,
-                                string branchId,
-                                string itemNumber,
-                                bool each,
-                                string catalogId,
-                                bool active)
-        {
-            ExecuteCommand(new CommandDefinition(COMMAND_ADDDETAIL,
-                new
-                {
-                    @CustomerNumber = customerNumber,
-                    @BranchId = branchId,
-                    @ItemNumber = itemNumber,
-                    @Each = each,
-                    @CatalogId = catalogId,
-                    @Active = active
-                }, commandType: CommandType.StoredProcedure));   
+        public List<ReminderItemsListDetail> GetRemindersDetails(long parentHeaderId) {
+            return Read<ReminderItemsListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, parentHeaderId);
         }
 
-        public void DeleteReminders(string userId,
-                                string customerNumber,
-                                string branchId)
-        {
-            ExecuteCommand(new CommandDefinition(COMMAND_DELETEDETAILS,
-                new
-                {
-                    @UserId = userId,
-                    @CustomerNumber = customerNumber,
-                    @BranchId = branchId
-                }, commandType: CommandType.StoredProcedure));
+        public void SaveReminderListDetail(ReminderItemsListDetail model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ACTIVE, model.Active);
+            parms.Add(PARMNAME_CATALOG, model.CatalogId);
+            parms.Add(PARMNAME_EACH, model.Each);
+            parms.Add(PARMNAME_HEADERID, model.ParentRemindersHeaderId);
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
         #endregion
     }

@@ -23,9 +23,9 @@ using KeithLink.Svc.Core.Models.Lists.Notes;
 using KeithLink.Svc.Core.Models.Lists.RecentlyViewed;
 using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
 using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
-using KeithLink.Svc.Core.Models.Lists.ReminderItem;
 using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
 using KeithLink.Svc.Core.Models.Lists.CustomList;
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 
 namespace KeithLink.Svc.Core.Extensions
 {

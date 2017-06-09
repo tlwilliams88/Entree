@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_BRANCH = "BranchId";
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
 
-        private const string SPNAME_GETONE = "";
+        private const string SPNAME_GETONE = "[List].[GetHistoryHeaderByCustomerNumberAndBranch]";
         #endregion
 
         #region ctor

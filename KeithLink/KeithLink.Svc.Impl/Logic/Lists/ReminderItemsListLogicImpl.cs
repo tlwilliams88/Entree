@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.Lists.ReminderItem;
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
