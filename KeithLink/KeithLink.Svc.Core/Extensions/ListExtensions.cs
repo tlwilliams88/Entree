@@ -1,4 +1,8 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations.List;
 
 using KeithLink.Svc.Core.Helpers;
@@ -7,15 +11,9 @@ using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.History;
 using KeithLink.Svc.Core.Models.Paging;
-using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists.Contract;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
@@ -31,6 +29,11 @@ namespace KeithLink.Svc.Core.Extensions
 {
     public static class ListExtensions
     {
+        #region attributes
+        private const string LISTNAME_FAVORITE = "Favorites";
+        private const string LISTNAME_REMINDER = "Reminders";
+        #endregion
+
         #region methods
         /// <summary>
         /// convert the ListModel to a List object
@@ -111,83 +114,7 @@ namespace KeithLink.Svc.Core.Extensions
             };
         }
 
-        public static ListModel ToListModel(this ContractListHeader header, UserSelectedContext catalogInfo)
-        {
-            return new ListModel()
-            {
-                BranchId = header.BranchId,
-                IsContractList = true,
-                IsFavorite = false,
-                IsWorksheet = false,
-                IsReminder = false,
-                IsMandatory = false,
-                IsRecommended = false,
-                IsCustomInventory = false,
-                Type = ListType.Contract,
-                ListId = header.Id,
-                Name = header.Name,
-                ReadOnly = true,
-                Items = header.Items == null ? null :
-                    header.Items.Select(i => new ListItemModel()
-                    {
-                        ListItemId = i.Id,
-                        Type = ListType.Contract,
-                        Category = i.Category,
-                        ItemNumber = i.ItemNumber,
-                        Delta = (i.CreatedUtc.AddDays
-                                    (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
-                                        " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
-                                    (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
-                                    Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
-                        FromDate = i.FromDate,
-                        ToDate = i.ToDate,
-                        Position = i.LineNumber,
-                        ModifiedUtc = i.ModifiedUtc,
-                        CreatedUtc = i.CreatedUtc,
-                        Each = i.Each ?? false,
-                        CatalogId = i.CatalogId
-                    }).OrderBy(l => l.Position).ToList()
-            };
-        }
 
-        public static ListModel ToListModel(this HistoryListHeader header, UserSelectedContext catalogInfo)
-        {
-            return new ListModel()
-            {
-                BranchId = header.BranchId,
-                IsContractList = false,
-                IsFavorite = false,
-                IsWorksheet = true,
-                IsReminder = false,
-                IsMandatory = false,
-                IsRecommended = false,
-                IsCustomInventory = false,
-                Type = ListType.Worksheet,
-                ListId = header.Id,
-                Name = header.Name,
-                ReadOnly = true,
-                Items = header.Items == null ? null :
-                    header.Items.Select(i => new ListItemModel()
-                    {
-                        ListItemId = i.Id,
-                        Type = ListType.Worksheet,
-                        //        Category = i.Category,
-                        ItemNumber = i.ItemNumber,
-                        //        Delta = (i.CreatedUtc.AddDays
-                        //            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
-                        //                " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
-                        //            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
-                        //            Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
-                        //        FromDate = i.FromDate,
-                        //        ToDate = i.ToDate,
-                        Position = i.LineNumber,
-                        ModifiedUtc = i.ModifiedUtc,
-                        CreatedUtc = i.CreatedUtc,
-                        Each = i.Each ?? false,
-                        CatalogId = i.CatalogId
-                    }).OrderBy(l => l.Position).ToList()
-            };
-        }
 
         public static ListModel ToListModel(this FavoritesListHeader header, UserSelectedContext catalogInfo)
         {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Contract;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Extensions.Lists {
     public static class ContractHeaderExtensions {
@@ -16,7 +12,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         #endregion
 
         #region methods
-        public static ListModel ToListModel(this ContractListHeader header, UserSelectedContext catalogInfo) {
+        public static ListModel ToListModel(this ContractListHeader header) {
             return new ListModel() {
                 BranchId = header.BranchId,
                 IsContractList = true,
@@ -34,8 +30,8 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
             };
         }
 
-        public static ListModel ToListModel(this ContractListHeader header, UserSelectedContext catalogInfo, List<ContractListDetail> items) {
-            ListModel retVal = ToListModel(header, catalogInfo);
+        public static ListModel ToListModel(this ContractListHeader header, List<ContractListDetail> items) {
+            ListModel retVal = ToListModel(header);
             retVal.Items = items.Select(i => i.ToWebModel())
                                 .OrderBy(i => i.Position)
                                 .ToList();
@@ -43,8 +39,8 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
             return retVal;
         }
 
-        public static ListModel ToListModel(this ContractListHeader header, UserSelectedContext catalogInfo, List<ListItemModel> items) {
-            ListModel retVal = ToListModel(header, catalogInfo);
+        public static ListModel ToListModel(this ContractListHeader header, List<ListItemModel> items) {
+            ListModel retVal = ToListModel(header);
             retVal.Items = items.OrderBy(i => i.Position)
                                 .ToList();
 
