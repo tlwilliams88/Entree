@@ -7,13 +7,13 @@
 -- Migrate Header
 	INSERT -- create customer contract lists from staging customerbids if they don't exist 
 		INTO [BEK_Commerce_AppData].[List].[ContractHeaders]
-            ([Name]
+            ([ContractId]
             ,[CustomerNumber]
             ,[BranchId]
             ,[CreatedUtc]
             ,[ModifiedUtc])
         SELECT DISTINCT
-            'Contract - ' + LTRIM(RTRIM(cb.[BidNumber]))
+             LTRIM(RTRIM(cb.[BidNumber]))
             ,LTRIM(RTRIM(cb.[CustomerNumber]))
             ,LTRIM(RTRIM(cb.[DivisionNumber]))
             ,GETUTCDATE()
@@ -67,17 +67,17 @@
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
        UPDATE
-             [BEK_Commerce_AppData].[List].[ContractHeaders]
-             SET 
-                    Name = 'Contract - ' + ltrim(rtrim(cb.BidNumber))
-             FROM 
-                    [BEK_Commerce_AppData].[List].[ContractHeaders] l
-             INNER JOIN 
-                    [BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
-                    ON  l.BranchId = ltrim(rtrim(cb.DivisionNumber))
-                           AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber))
-             WHERE
-                    l.Name <> 'Contract - ' + ltrim(rtrim(cb.BidNumber))
+           [BEK_Commerce_AppData].[List].[ContractHeaders]
+       SET 
+           ContractId = ltrim(rtrim(cb.BidNumber))
+       FROM 
+           [BEK_Commerce_AppData].[List].[ContractHeaders] l
+       INNER JOIN 
+           [BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+           ON  l.BranchId = ltrim(rtrim(cb.DivisionNumber))
+                   AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber))
+       WHERE
+           l.ContractId <> ltrim(rtrim(cb.BidNumber))
 
 	UPDATE
 		[BEK_Commerce_AppData].[List].[ContractDetails]
