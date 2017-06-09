@@ -1,9 +1,9 @@
-CREATE PROCEDURE [List].[AddOrUpdateRecentlyOrderedByUserIdCustomerNumberBranch] 
+CREATE PROCEDURE [List].[AddOrUpdateRecentlyOrderedDetails] 
     @Id                             BIGINT,
     @ParentRecentlyOrderedHeaderId  BIGINT,
     @ItemNumber                     VARCHAR(6),
     @Each                           BIT,
-    @CatalogId                      VARCHAR(10),
+    @CatalogId                      VARCHAR(10)
 AS
 
 IF @Id > 0
