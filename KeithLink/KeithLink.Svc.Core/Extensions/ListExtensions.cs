@@ -116,42 +116,6 @@ namespace KeithLink.Svc.Core.Extensions
 
 
 
-        public static ListModel ToListModel(this FavoritesListHeader header, UserSelectedContext catalogInfo)
-        {
-            return new ListModel()
-            {
-                BranchId = header.BranchId,
-                IsContractList = false,
-                IsFavorite = true,
-                IsWorksheet = false,
-                IsReminder = false,
-                IsMandatory = false,
-                IsRecommended = false,
-                IsCustomInventory = false,
-                Type = ListType.Favorite,
-                ListId = header.Id,
-                Name = header.Name,
-                ReadOnly = false,
-                Items = header.Items == null ? null :
-                    header.Items.Select(i => new ListItemModel()
-                    {
-                        ListItemId = i.Id,
-                        //        Category = i.Category,
-                        Type = ListType.Favorite,
-                        ItemNumber = i.ItemNumber,
-                        //        Label = i.Label,
-                        //        ParLevel = i.Par,
-                        //        ListItemId = i.Id,
-                        //        Position = i.LineNumber,
-                        ModifiedUtc = i.ModifiedUtc,
-                        CreatedUtc = i.CreatedUtc,
-                        Each = i.Each ?? false,
-                        //        Quantity = i.Quantity,
-                        CatalogId = i.CatalogId
-                        //        CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
-                    }).OrderBy(l => l.Position).ToList()
-            };
-        }
 
         public static ListModel ToListModel(this NotesListHeader header, UserSelectedContext catalogInfo)
         {
