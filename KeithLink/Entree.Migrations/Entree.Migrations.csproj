@@ -186,7 +186,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsDetails\AddOrUpdateMandatoryItemsDetails_0029_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsDetails\AddOrUpdateMandatoryItemsDetails_0029_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsDetails\AddOrUpdateMandatoryItemsDetails_0029_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddFavoriteListHeader\AddFavoriteListHeader_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationHeader\AddOrUpdateInventoryValuationHeader_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationHeader\AddOrUpdateInventoryValuationHeader_0033_2017.04.00_up.sql" />

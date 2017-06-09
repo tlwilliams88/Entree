@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[GetRemindersHeaderByCustomerNumberBranch]
-	@CustomerNumber	NVARCHAR (10),
-	@BranchId		NVARCHAR (10)
+	@BranchId		CHAR(3),
+	@CustomerNumber	CHAR(6)
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -8,11 +8,13 @@ AS
 
 	SELECT
 		[Id],
-		[CustomerNumber],
 		[BranchId],
-		[Name],
+		[CustomerNumber],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[RemindersHeaders] 
-	WHERE	[CustomerNumber] = @CustomerNumber
-			AND [BranchId] = @BranchId
+	FROM 
+        [List].[RemindersHeaders] 
+	WHERE	
+        [BranchId] = @BranchId
+	AND 
+        [CustomerNumber] = @CustomerNumber

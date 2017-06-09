@@ -1,18 +1,14 @@
 CREATE PROCEDURE [List].[DeleteReminderItemDetails] 
-	@CustomerNumber	NVARCHAR (10),
-	@BranchId		NVARCHAR (10)
+	@Id BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-	declare @ParentReminderItemsHeaderId as bigint =
-		(
-		SELECT
-			[Id]
-		FROM [List].[RemindersHeaders] 
-		WHERE	[CustomerNumber] = @CustomerNumber
-				AND [BranchId] = @BranchId
-		)
-
-	DELETE FROM [BEK_Commerce_AppData].[List].[RemindersDetails] WHERE  [ParentRemindersHeaderId] = @ParentReminderItemsHeaderId
+	UPDATE
+        [List].[ReminderDetails]
+    SET
+        [Active] = 0,
+        [ModifiedUtc] = GETUTCDATE()
+    WHERE
+        [Id] = @Id

@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadReminderDetailsByParentId] 
-	@ParentRemindersHeaderId	bigint
+	@HeaderId	BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -12,6 +12,9 @@ AS
 		[CatalogId],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[ReminderDetails] 
-	WHERE	[ParentRemindersHeaderId] = @ParentRemindersHeaderId
-			AND [Active] = 1
+	FROM 
+        [List].[ReminderDetails] 
+	WHERE
+        [ParentRemindersHeaderId] = @HeaderId
+	AND 
+        [Active] = 1
