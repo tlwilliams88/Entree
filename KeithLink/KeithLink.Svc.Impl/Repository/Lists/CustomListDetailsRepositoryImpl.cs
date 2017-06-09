@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 using System.Data;
+using System.Web.UI.WebControls.WebParts;
 using Amazon.CognitoIdentity.Model;
 using CommerceServer.Core.Inventory;
 using Dapper;
@@ -19,43 +20,42 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class CustomListDetailsRepositoryImpl : DapperDatabaseConnection, ICustomListDetailsRepository
     {
         #region attributes
-        private const string COMMAND_GETDETAILS = "[List].[ReadCustomListDetailsByParentId]";
-        private const string COMMAND_ADDDETAIL = "[List].[AddOrUpdateCustomListItemById]";
+
+        private const string PARMNAME_ACTIVE = "Active";
+        private const string PARMNAME_CATALOG = "CatalogId";
+        private const string PARMNAME_EACH = "Each";
+        private const string PARMNAME_HEADERID = "ParentCustomListHeaderId";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_INVID = "CustomInventoryItemId";
+        private const string PARMNAME_ITEMNUM = "ItemNumber";
+        private const string PARMNAME_LABEL = "Label";
+        private const string PARMNAME_PAR = "Par";
+
+        private const string SPNAME_GETBYHEADER = "[List].[ReadCustomListDetailsByParentId]";
+        private const string SPNAME_SAVE= "[List].[AddOrUpdateCustomListItemById]";
         #endregion
+
         #region constructor
-        public CustomListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString)
-        {
-
-        }
+        public CustomListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
         #endregion
+
         #region methods
-        public List<CustomListDetail> GetCustomListDetails(long parentHeaderId)
-        {
-            return Read<CustomListDetail>(new CommandDefinition(
-                COMMAND_GETDETAILS,
-                new { @ParentCustomListHeaderId = parentHeaderId },
-                commandType: CommandType.StoredProcedure
-            ));
+        public List<CustomListDetail> GetCustomListDetails(long headerId) {
+            return Read<CustomListDetail>(SPNAME_GETBYHEADER, PARMNAME_ID, headerId);
         }
 
-        public void AddOrUpdateCustomListItem(
-            long parentCustomListHeaderId,
-            string itemNumber,
-	        bool each,
-            decimal par,
-	        string catalogId,
-            bool active)
-        {
-            ExecuteCommand(new CommandDefinition(COMMAND_ADDDETAIL,
-                new
-                {
-                    @ParentCustomListHeaderId = parentCustomListHeaderId,
-                    @ItemNumber = itemNumber,
-                    @Each = each,
-                    @Par = par,
-                    @CatalogId = catalogId,
-                    @Active = active
-                }, commandType: CommandType.StoredProcedure));   
+        public void SaveCustomListDetail(CustomListDetail model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ACTIVE, model.Active);
+            parms.Add(PARMNAME_CATALOG, model.CatalogId);
+            parms.Add(PARMNAME_EACH, model.Each);
+            parms.Add(PARMNAME_HEADERID, model.ParentCustomListHeaderId);
+            parms.Add(PARMNAME_INVID, model.CustomInventoryItemId);
+            parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
+            parms.Add(PARMNAME_LABEL, model.Label);
+            parms.Add(PARMNAME_PAR, model.Par);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
         #endregion
     }

@@ -5,14 +5,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface ICustomListDetailsRepository
     {
-        List<CustomListDetail> GetCustomListDetails(long parentHeaderId);
+        List<CustomListDetail> GetCustomListDetails(long headerId);
 
-        void AddOrUpdateCustomListItem(
-            long parentCustomListHeaderId,
-            string itemNumber,
-            bool each,
-            decimal par,
-            string catalogId,
-            bool active);
+        void SaveCustomListDetail(CustomListDetail model);
     }
 }

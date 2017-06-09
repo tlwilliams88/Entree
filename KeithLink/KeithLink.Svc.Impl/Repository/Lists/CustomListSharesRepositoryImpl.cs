@@ -17,33 +17,49 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class CustomListSharesRepositoryImpl : DapperDatabaseConnection, ICustomListSharesRepository
     {
         #region attributes
-        private const string COMMAND_GETHEADERS = "[List].[GetCustomListSharesByListId]";
-        private const string COMMAND_GETHEADERS2 = "[List].[GetCustomListSharesByCustomerNumberBranch]";
+
+        private const string PARMNAME_BRANCH = "BranchId";
+        private const string PARMNAME_CUSTNUM = "CustomerNumber";
+        private const string PARMNAME_HEADERID = "ParentCustomListHeaderId";
+        private const string PARMNAME_ID = "Id";
+
+        private const string SPNAME_DELETE = "[List].[DeleteCustomListShare]";
+        private const string SPNAME_GETBYCUST = "[List].[GetCustomListSharesByCustomerNumberBranch]";
+        private const string SPNAME_GETONE = "[List].[GetCustomListSharesByListId]";
+        private const string SPNAME_SAVE = "[List].[AddOrUpdateCustomListShareByCustomerNumberBranch]";
         #endregion
+
         #region constructor
-        public CustomListSharesRepositoryImpl() : base(Configuration.BEKDBConnectionString)
-        {
-
-        }
+        public CustomListSharesRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
         #endregion
+
         #region methods
-        public List<CustomListShare> GetCustomListShares(UserSelectedContext catalogInfo)
-        {
-            return Read<CustomListShare>(new CommandDefinition(
-                                COMMAND_GETHEADERS2,
-                                new { @CustomerNumber = catalogInfo.CustomerId, @BranchId = catalogInfo.BranchId },
-                                commandType: CommandType.StoredProcedure
-                            ));
+
+        public void DeleteCustomListShares(long id) {
+            ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
-        public List<CustomListShare> GetCustomListShares(long Id)
-        {
-            return Read<CustomListShare>(new CommandDefinition(
-                       COMMAND_GETHEADERS,
-                       new { @ListId = Id },
-                       commandType: CommandType.StoredProcedure
-                   ));
+        public List<CustomListShare> GetCustomListShares(UserSelectedContext catalogInfo) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
+            parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
+
+            return Read<CustomListShare>(SPNAME_GETBYCUST, parms);
         }
+
+        public List<CustomListShare> GetCustomListShares(long Id) {
+            return Read<CustomListShare>(SPNAME_GETONE, PARMNAME_ID, Id);
+        }
+
+        public void SaveCustomListShare(CustomListShare model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCH, model.BranchId);
+            parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
+            parms.Add(PARMNAME_HEADERID, model.ParentCustomListHeaderId);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
+        }
+
         #endregion
     }
 }

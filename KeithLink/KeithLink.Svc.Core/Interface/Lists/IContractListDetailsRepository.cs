@@ -1,9 +1,10 @@
-﻿using KeithLink.Svc.Core.Models.Lists.Contract;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using KeithLink.Svc.Core.Models.Lists.Contract;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IContractListDetailsRepository
     {
-        List<ContractListDetail> ReadContractListDetails(long parentHeaderId);
+        List<ContractListDetail> GetContractListDetails(long parentHeaderId);
     }
 }

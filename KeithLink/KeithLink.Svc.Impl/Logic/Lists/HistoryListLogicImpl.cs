@@ -10,32 +10,34 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
     public class HistoryListLogicImpl : IHistoryListLogic
     {
         #region attributes
-        private readonly IHistoryListRepository _historyListrepo;
-        private readonly IEventLogRepository _log;
+        private readonly IHistoryListDetailRepository _detailRepo;
+        private readonly IHistoryListHeaderRepository _headerRepo;
+        private readonly IEventLogRepository          _log;
         #endregion
 
         #region ctor
-        public HistoryListLogicImpl(IHistoryListRepository historyListrepo, IEventLogRepository log)
-        {
-            _historyListrepo = historyListrepo;
-            _log = log;
+        public HistoryListLogicImpl(IHistoryListDetailRepository detailRepository, IHistoryListHeaderRepository headerRepository, IEventLogRepository log) {
+            _detailRepo = detailRepository;
+            _headerRepo = headerRepository;
+            _log        = log;
         }
         #endregion
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
-        {
-            return _historyListrepo.ReadListForCustomer(catalogInfo, headerOnly);
+
+        #region methods
+        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
+            //return _historyListrepo.ReadListForCustomer(catalogInfo, headerOnly);
         }
 
-        public ListModel GetListModel (UserProfile user,
-                                       UserSelectedContext catalogInfo,
-                                       long Id)
-        {
+        public ListModel GetListModel(UserProfile user,
+            UserSelectedContext catalogInfo,
+            long Id) {
             System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             ListModel returnList = null;
             //ListModel cachedList = _cache.GetItem<ListModel>(CACHE_GROUPNAME,
@@ -57,22 +59,24 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             //}
             //else
             //{
-            var list = _historyListrepo.ReadListForCustomer(catalogInfo, false); // Not returned catalog ID here
-                stopWatch.Read(_log, "HistoryListLogicImpl/GetListModel - _listRepo.Read");
+            var list = _headerRepo.GetHistoryListHeader(catalogInfo); // Not returned catalog ID here
+            stopWatch.Read(_log, "HistoryListLogicImpl/GetListModel - _listRepo.Read");
 
-            if (list == null)
-                return null;
-            if (list != null && list.Count==0)
-                return null;
-            if (list != null && list.Count > 0 && list[0].ListId != Id)
-                return null;
+            //if(list == null)
+            //    return null;
+            //if(list != null && list.Count == 0)
+            //    return null;
+            //if(list != null && list.Count > 0 && list[0].ListId != Id)
+            //    return null;
 
-            ListModel tempList = list[0];
-                stopWatch.Read(_log, "HistoryListLogicImpl/GetListModel - ToListModel");
+            ListModel tempList = list.ToListModel(catalogInfo);
+            stopWatch.Read(_log, "HistoryListLogicImpl/GetListModel - ToListModel");
 
-                returnList = tempList.ShallowCopy();
+            returnList = tempList.ShallowCopy();
             //}
             return returnList;
         }
+
+        #endregion
     }
 }

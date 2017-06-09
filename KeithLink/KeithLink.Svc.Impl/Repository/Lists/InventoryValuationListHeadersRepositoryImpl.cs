@@ -17,32 +17,41 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class InventoryValuationListHeadersRepositoryImpl : DapperDatabaseConnection, IInventoryValuationListHeadersRepository
     {
         #region attributes
-        private const string COMMAND_GETHEADER = "[List].[GetInventoryValuationListHeaderById]";
-        private const string COMMAND_GETHEADERS = "[List].[GetInventoryValuationListHeadersByCustomerNumberBranch]";
+        private const string PARMNAME_BRANCH = "BranchId";
+        private const string PARMNAME_CUSTNUM = "CustomerNumber";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_NAME = "Name";
+
+        private const string SPNAME_GETONE = "[List].[GetInventoryValuationListHeaderById]";
+        private const string SPNAME_GETALL = "[List].[GetInventoryValuationListHeadersByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[AddOrUpdateInventoryValuationHeader]";
         #endregion
+
         #region constructor
-        public InventoryValuationListHeadersRepositoryImpl() : base(Configuration.BEKDBConnectionString)
-        {
-
-        }
+        public InventoryValuationListHeadersRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
         #endregion
+
         #region methods
-        public InventoryValuationListHeader GetInventoryValuationListHeader(long reportId)
-        {
-            return ReadOne<InventoryValuationListHeader>(new CommandDefinition(
-                                COMMAND_GETHEADER,
-                                new { @ListId = reportId },
-                                commandType: CommandType.StoredProcedure
-                            ));
+        public InventoryValuationListHeader GetInventoryValuationListHeader(long id) {
+            return ReadOne<InventoryValuationListHeader>(SPNAME_GETONE, PARMNAME_ID, id);
         }
 
-        public List<InventoryValuationListHeader> GetInventoryValuationListHeaders(UserSelectedContext catalogInfo)
-        {
-            return Read<InventoryValuationListHeader>(new CommandDefinition(
-                       COMMAND_GETHEADERS,
-                       new { @CustomerNumber = catalogInfo.CustomerId, @BranchId = catalogInfo.BranchId },
-                       commandType: CommandType.StoredProcedure
-                   ));
+        public List<InventoryValuationListHeader> GetInventoryValuationListHeaders(UserSelectedContext catalogInfo) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
+            parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
+
+            return Read<InventoryValuationListHeader>(SPNAME_GETALL, parms);
+        }
+
+        public void SaveInventoryValudationListHeader(InventoryValuationListHeader model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCH, model.BranchId);
+            parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_NAME, model.Name);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
         #endregion
     }

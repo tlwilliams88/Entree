@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 using System.Data;
 using Amazon.CognitoIdentity.Model;
+using Amazon.ElasticLoadBalancing.Model.Internal.MarshallTransformations;
 using CommerceServer.Core.Inventory;
 using Dapper;
 using KeithLink.Svc.Core.Extensions;
@@ -19,48 +20,43 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class InventoryValuationListDetailsRepositoryImpl : DapperDatabaseConnection, IInventoryValuationListDetailsRepository
     {
         #region attributes
-        private const string COMMAND_GETDETAILS = "[List].[ReadInventoryValuationListDetailsByParentId]";
-        private const string COMMAND_ADDDETAIL = "[List].[AddOrUpdateInventoryValuationItemByCustomerNumberBranch]";
+        private const string PARMNAME_ACTIVE = "Active";
+        private const string PARMNAME_CATALOG = "CatalogId";
+        private const string PARMNAME_EACH = "Each";
+        private const string PARMNAME_HEADERID = "HeaderId";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_ITEMNUM = "ItemNumber";
+        private const string PARMNAME_INVID = "CustomInventoryItemid";
+        private const string PARMNAME_QTY = "Quantity";
+
+        private const string SPNAME_GETDETAILS = "[List].[ReadInventoryValuationListDetailsByParentId]";
+        private const string SPNAME_SAVE = "[List].[AddOrUpdateInventoryValuationItemByCustomerNumberBranch]";
         #endregion
+
         #region constructor
         public InventoryValuationListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString)
         {
 
         }
         #endregion
+
         #region methods
-        public List<InventoryValuationListDetail> GetInventoryValuationDetails(long parentHeaderId)
-        {
-            return Read<InventoryValuationListDetail>(new CommandDefinition(
-                COMMAND_GETDETAILS,
-                new { @ParentInventoryValuationListHeaderId = parentHeaderId },
-                commandType: CommandType.StoredProcedure
-            ));
+        public List<InventoryValuationListDetail> GetInventoryValuationDetails(long headerId) {
+            return Read<InventoryValuationListDetail>(SPNAME_GETDETAILS, PARMNAME_HEADERID, headerId);
         }
 
-        public void AddOrUpdateRecommendedItem(string customerNumber,
-                                string branchId,
-                                long listId,
-                                string listName,
-                                string itemNumber,
-                                bool each,
-                                decimal quantity,
-                                string catalogId,
-                                bool active)
-        {
-            ExecuteCommand(new CommandDefinition(COMMAND_ADDDETAIL,
-                new
-                {
-                    @CustomerNumber = customerNumber,
-                    @BranchId = branchId,
-                    @ListId = listId,
-                    @ListName = listName,
-                    @ItemNumber = itemNumber,
-                    @Each = each,
-                    @Quantity = quantity,
-                    @CatalogId = catalogId,
-                    @Active = active
-                }, commandType: CommandType.StoredProcedure));   
+        public void SaveInventoryValudationDetail(InventoryValuationListDetail model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ACTIVE, model.Active);
+            parms.Add(PARMNAME_CATALOG, model.CatalogId);
+            parms.Add(PARMNAME_EACH, model.Each);
+            parms.Add(PARMNAME_HEADERID, model.ParentInventoryValuationListHeaderId);
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
+            parms.Add(PARMNAME_INVID, model.CustomInventoryItemId);
+            parms.Add(PARMNAME_QTY, model.Quantity);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
         #endregion
     }

@@ -12,42 +12,40 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
     public class FavoriteListDetailRepositoryImpl : DapperDatabaseConnection, IFavoriteListDetailRepository {
         #region attributes
         private const string PARMNAME_ACTIVE = "Active";
-        private const string PARMNAME_BRANCH = "BranchId";
         private const string PARMNAME_CATALOGID = "CatalogId";
-        private const string PARMNAME_CUSTNUM = "CustomerNumber";
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_HEADERID = "ParentFavoritesHeaderId";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_ITEMNUM = "ItemNumber";
-        private const string PARMNAME_USERID = "UserId";
 
         private const string SPNAME_GET = "[List].[ReadFavoritesDetailsByParentId]";
         private const string SPNAME_SAVE = "[List].[AddOrUpdateFavoriteByUserIdCustomerNumberBranch]";
         #endregion
 
         #region ctor
-        public FavoriteListDetailRepositoryImpl(string connectionString) : base(connectionString) {}
+        public FavoriteListDetailRepositoryImpl() : base(Configuration.BEKDBConnectionString) {}
         #endregion
 
         #region methods
+        public List<FavoritesListDetail> GetFavoritesListDetails(long headerId) {
+            return Read<FavoritesListDetail>(SPNAME_GET, PARMNAME_HEADERID, headerId);
+        }
 
-        public void AddOrUpdateFavorite(string userId, string customerNumber, string branchId, 
-                                        string itemNumber, bool each, string catalogId, 
-                                        bool active) {
+        public void SaveFavoriteListDetail(FavoritesListDetail model)
+        {
             DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_ACTIVE, active);
-            parms.Add(PARMNAME_BRANCH, branchId);
-            parms.Add(PARMNAME_CATALOGID, catalogId);
-            parms.Add(PARMNAME_CUSTNUM, customerNumber);
-            parms.Add(PARMNAME_EACH, each);
-            parms.Add(PARMNAME_ITEMNUM, itemNumber);
-            parms.Add(PARMNAME_USERID, userId);
+            parms.Add(PARMNAME_ACTIVE, model.Active);
+            parms.Add(PARMNAME_CATALOGID, model.CatalogId);
+            parms.Add(PARMNAME_EACH, model.Each);
+            parms.Add(PARMNAME_HEADERID, model.ParentFavoritesHeaderId);
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
+            parms.Add(PARMNAME_LABEL, model.Label);
 
             ExecuteCommand(SPNAME_SAVE, parms);
         }
 
-        public List<FavoritesListDetail> GetFavoritesListDetails(long headerId) {
-            return Read<FavoritesListDetail>(SPNAME_GET, PARMNAME_HEADERID, headerId);
-        }
         #endregion
     }
 }

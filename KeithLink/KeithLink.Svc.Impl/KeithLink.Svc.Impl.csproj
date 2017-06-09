@@ -427,6 +427,8 @@
     <Compile Include="Repository\Lists\CustomListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\FavoriteListDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\FavoriteListHeaderRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\HistoryListDetailRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\HistoryListHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListHeadersRepositoryImpl.cs" />
@@ -439,7 +441,6 @@
     <Compile Include="Repository\Lists\RecentlyOrderedListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyViewedListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\FavoritesListRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\HistoryListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NotesListRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />

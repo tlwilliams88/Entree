@@ -3,8 +3,7 @@ using KeithLink.Svc.Core.Models.Lists.Contract;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {
-    public interface IContractListHeadersRepository
-    {
+    public interface IContractListHeadersRepository {
         ContractListHeader GetListHeaderForCustomer(UserSelectedContext catalogInfo);
     }
 }

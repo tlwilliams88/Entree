@@ -6,7 +6,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IInventoryValuationListHeadersRepository
     {
-        InventoryValuationListHeader GetInventoryValuationListHeader(long reportId);
+        InventoryValuationListHeader GetInventoryValuationListHeader(long listId);
         List<InventoryValuationListHeader> GetInventoryValuationListHeaders(UserSelectedContext catalogInfo);
+        void SaveInventoryValudationListHeader(InventoryValuationListHeader model);
     }
 }

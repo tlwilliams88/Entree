@@ -5,16 +5,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IInventoryValuationListDetailsRepository
     {
-        List<InventoryValuationListDetail> GetInventoryValuationDetails(long parentHeaderId);
+        List<InventoryValuationListDetail> GetInventoryValuationDetails(long headerId);
 
-        void AddOrUpdateRecommendedItem(string customerNumber,
-                                string branchId,
-                                long listId,
-                                string listName,
-                                string itemNumber,
-                                bool each,
-                                decimal quantity,
-                                string catalogId,
-                                bool active);
+        void SaveInventoryValudationDetail(InventoryValuationListDetail model);
     }
 }

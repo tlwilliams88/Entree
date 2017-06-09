@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
     public class FavoriteListHeaderRepositoryImpl : DapperDatabaseConnection, IFavoriteListHeaderRepository {
         #region attributes
         private const string SPNAME_GETHEADER = "[List].[GetFavoritesHeaderByUserIdCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[AddFavoriteListHeader]";
 
         private const string PARMNAME_BRANCH = "Branch";
         private const string PARMNAME_CUSTID = "CustomerId";
@@ -16,7 +17,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #endregion
 
         #region ctor
-        public FavoriteListHeaderRepositoryImpl(string connectionString) : base(connectionString) {}
+        public FavoriteListHeaderRepositoryImpl() : base(Configuration.BEKDBConnectionString) {}
         #endregion
 
         #region method
@@ -28,6 +29,16 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_USERID, userId);
 
             return ReadOne<FavoritesListHeader>(SPNAME_GETHEADER, parms);
+        }
+
+        public void SaveFavoriteListHeader(FavoritesListHeader model)
+        {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCH, model.BranchId);
+            parms.Add(PARMNAME_CUSTID, model.CustomerNumber);
+            parms.Add(PARMNAME_USERID, model.UserId);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
         #endregion
     }

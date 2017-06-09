@@ -282,10 +282,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0030_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0030_2017.04.00_up - Copy.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0033_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0030_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetMandatoryItemsHeaderByCustomerNumberBranch\GetMandatoryItemsHeaderByCustomerNumberBranch_0029_2017.04.00_down.sql" />

@@ -1,7 +1,6 @@
 CREATE PROCEDURE [List].[AddOrUpdateFavoriteDetails]
     @Id                         BIGINT,
     @ParentFavoritesHeaderId    BIGINT,
-	@UserId			            UNIQUEIDENTIFIER, 
 	@ItemNumber		            CHAR(6),
 	@Each                       BIT,
     @Label                      NVARCHAR(150),
