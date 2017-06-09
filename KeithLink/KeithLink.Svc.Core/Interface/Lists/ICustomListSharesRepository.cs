@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.CustomListShares;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 

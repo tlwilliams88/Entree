@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[GetCustomListSharesByCustomerNumberBranch]
-	@CustomerNumber	varchar(10),
-	@BranchId varchar(10)
+	@BranchId       CHAR(3),
+	@CustomerNumber	CHAR(7)
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -8,12 +8,17 @@ AS
 
 	SELECT
 	    [Id],
-	    [CustomerNumber],
 	    [BranchId],
+	    [CustomerNumber],
 	    [ParentCustomListHeaderId],
+        [Active]
 	    [CreatedUtc],
 	    [ModifiedUtc]
-	FROM [List].[CustomListShares] 
-	WHERE	[CustomerNumber] = @CustomerNumber
-			AND [BranchId] = @BranchId
-			AND [Active] = 1
+	FROM 
+        [List].[CustomListShares] 
+	WHERE	
+	    [BranchId] = @BranchId
+    AND
+        [CustomerNumber] = @CustomerNumber
+    AND
+		[Active] = 1

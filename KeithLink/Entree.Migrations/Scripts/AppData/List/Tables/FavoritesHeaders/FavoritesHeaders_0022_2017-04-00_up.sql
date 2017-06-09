@@ -1,10 +1,10 @@
 CREATE TABLE [List].[FavoritesHeaders] (
-    [Id]				BIGINT			   PRIMARY KEY IDENTITY(1,1) NOT NULL,
-	[UserId]            [uniqueidentifier] NULL,
-    [CustomerNumber]    [nvarchar](10)	   NULL,
-    [BranchId]		    [nvarchar](10)	   NULL,
-    [Name]			    [nvarchar](40)	   NULL DEFAULT 'Favorites',
-    [CreatedUtc]        DATETIME           DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]       DATETIME           DEFAULT (getutcdate()) NOT NULL
-);
+    [Id]				BIGINT			    NOT NULL     PRIMARY KEY IDENTITY(1,1),
+	[UserId]            UNIQUEIDENTIFIER    NULL,
+    [BranchId]          CHAR(3)             NOT NULL,
+    [CustomerNumber]    CHAR(6)             NOT NULL,
+    [Name]			    CHAR(9) 	        NULL         DEFAULT 'Favorites',
+    [CreatedUtc]        DATETIME            NOT NULL     DEFAULT (getutcdate()),
+    [ModifiedUtc]       DATETIME            NOT NULL     DEFAULT (getutcdate())
+)
 GO

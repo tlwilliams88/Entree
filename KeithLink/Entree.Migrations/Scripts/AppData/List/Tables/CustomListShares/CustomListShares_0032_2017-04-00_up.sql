@@ -1,10 +1,9 @@
 CREATE TABLE [List].[CustomListShares] (
-    [Id]				BIGINT			   PRIMARY KEY IDENTITY(1,1) NOT NULL,
-    [CustomerNumber]    [nvarchar](10)	   NULL,
-    [BranchId]		    [nvarchar](10)	   NULL,
-    [ParentCustomListHeaderId]	   	       bigint	   NOT NULL,
-	[Active] BIT DEFAULT (1) NOT NULL,
-    [CreatedUtc]        DATETIME           DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]       DATETIME           DEFAULT (getutcdate()) NOT NULL
-);
-GO
+    [Id]				        BIGINT	    NOT NULL    PRIMARY KEY IDENTITY(1,1),
+    [BranchId]		            CHAR(3)	    NULL,
+    [CustomerNumber]            CHAR(6)	    NULL,
+    [ParentCustomListHeaderId]  BIGINT      NOT NULL,
+	[Active]                    BIT         NOT NULL    DEFAULT (1),
+    [CreatedUtc]                DATETIME    NOT NULL    DEFAULT (GETUTCDATE()),
+    [ModifiedUtc]               DATETIME    NOT NULL    DEFAULT (GETUTCDATE())
+)

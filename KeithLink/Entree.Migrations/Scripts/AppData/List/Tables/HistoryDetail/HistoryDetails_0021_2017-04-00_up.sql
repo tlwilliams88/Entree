@@ -1,11 +1,11 @@
 CREATE TABLE [List].[HistoryDetails] (
-    [Id]					BIGINT			PRIMARY KEY IDENTITY(1,1) NOT NULL,
-    [ParentHistoryHeaderId] BIGINT          DEFAULT 0 NOT NULL,
-	[LineNumber]			[int]			NOT NULL DEFAULT ((0)),
-	[ItemNumber]			[nvarchar](15)	NOT NULL,
-	[Each]					[bit]			NULL,
-	[CatalogId]				[nvarchar](24)	NULL,
-    [CreatedUtc]			DATETIME        DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]			DATETIME        DEFAULT (getutcdate()) NOT NULL
-);
+    [Id]					BIGINT			NOT NULL    PRIMARY KEY IDENTITY(1,1),
+    [ParentHistoryHeaderId] BIGINT          NOT NULL    DEFAULT 0,
+	[LineNumber]			INT             NOT NULL    DEFAULT 0,
+	[ItemNumber]			CHAR(6)     	NOT NULL,
+	[Each]					BIT 			NULL,
+	[CatalogId]				VARCHAR(10) 	NULL,
+    [CreatedUtc]			DATETIME        NOT NULL    DEFAULT (GETUTCDATE()),
+    [ModifiedUtc]			DATETIME        NOT NULL    DEFAULT (GETUTCDATE()) 
+)
 GO

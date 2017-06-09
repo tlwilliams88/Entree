@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadFavoritesDetailsByParentId] 
-	@ParentFavoritesHeaderId	bigint
+	@ParentFavoritesHeaderId	BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -13,6 +13,9 @@ AS
 		[CatalogId],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[FavoritesDetails] 
-	WHERE	[ParentFavoritesHeaderId] = @ParentFavoritesHeaderId
-			AND [Active] = 1
+	FROM 
+        [List].[FavoritesDetails] 
+	WHERE	
+        [ParentFavoritesHeaderId] = @ParentFavoritesHeaderId
+	AND 
+        [Active] = 1

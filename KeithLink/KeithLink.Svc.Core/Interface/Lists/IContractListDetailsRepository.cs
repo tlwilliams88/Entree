@@ -1,7 +1,4 @@
-﻿using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.Contract;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-
+﻿using KeithLink.Svc.Core.Models.Lists.Contract;
 using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Lists {

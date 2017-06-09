@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadInventoryValuationListDetailsByParentId] 
-	@ParentInventoryValuationListHeaderId	bigint
+	@HeaderId	BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -14,6 +14,9 @@ AS
 		[Active],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[InventoryValuationListDetails] 
-	WHERE	[ParentInventoryValuationListHeaderId] = @ParentInventoryValuationListHeaderId
-			AND [Active] = 1
+	FROM 
+        [List].[InventoryValuationListDetails] 
+	WHERE	
+        [ParentInventoryValuationListHeaderId] = @HeaderId
+	AND 
+        [Active] = 1

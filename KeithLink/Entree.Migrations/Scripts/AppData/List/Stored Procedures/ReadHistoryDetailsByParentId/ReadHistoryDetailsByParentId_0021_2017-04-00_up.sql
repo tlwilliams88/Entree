@@ -7,11 +7,14 @@ AS
 
 	SELECT
 		[Id],
+        [ParentHistoryHeaderId],
 		[LineNumber],
 		[ItemNumber],
 		[Each],
 		[CatalogId],
 		[CreatedUtc],
 		[ModifiedUtc]
-	FROM [List].[HistoryDetails] 
-	WHERE	[ParentHistoryHeaderId] = @ParentHistoryHeaderId
+	FROM 
+        [List].[HistoryDetails] 
+	WHERE	
+        [ParentHistoryHeaderId] = @ParentHistoryHeaderId

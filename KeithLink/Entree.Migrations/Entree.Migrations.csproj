@@ -180,20 +180,26 @@
     <Content Include="Scripts\AppData\Invoice\Tables\Invoices\Invoices_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\Invoice\Tables\Terms\Terms_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\List\List_0001_0001.11.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddFavoriteListHeader\AddFavoriteListHeader_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListItemById\AddOrUpdateCustomListItemById_0031_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListItemById\AddOrUpdateCustomListItemById_0031_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsDetails\AddOrUpdateMandatoryItemsDetails_0029_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsDetails\AddOrUpdateMandatoryItemsDetails_0029_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddFavoriteListHeader\AddFavoriteListHeader_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationHeader\AddOrUpdateInventoryValuationHeader_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationHeader\AddOrUpdateInventoryValuationHeader_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListShareByCustomerNumberBranch\AddOrUpdateCustomListShareByCustomerNumberBranch_0032_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListShareByCustomerNumberBranch\AddOrUpdateCustomListShareByCustomerNumberBranch_0032_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationItemByCustomerNumberBranch\AddOrUpdateInventoryValuationItemByCustomerNumberBranch_0030_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationItemByCustomerNumberBranch\AddOrUpdateInventoryValuationItemByCustomerNumberBranch_0030_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationItem\AddOrUpdateInventoryValuationItem_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationItem\AddOrUpdateInventoryValuationItem_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsHeaders\AddOrUpdateMandatoryItemsHeaders_0029_2017.04.00_down.sql" />
@@ -209,11 +215,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateNotesByCustomerNumberBranch\AddOrUpdateNotesByCustomerNumberBranch_0024_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateFavoriteByUserIdCustomerNumberBranch\AddOrUpdateFavoriteByUserIdCustomerNumberBranch_0022_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateFavoriteDetails\AddOrUpdateFavoriteDetails_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateNotesByCustomerNumberBranch\AddOrUpdateNotesByCustomerNumberBranch_0024_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateFavoriteByUserIdCustomerNumberBranch\AddOrUpdateFavoriteByUserIdCustomerNumberBranch_0022_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateFavoriteDetails\AddOrUpdateFavoriteDetails_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecentlyOrderedByUserIdCustomerNumberBranch\AddOrUpdateRecentlyOrderedByUserIdCustomerNumberBranch_0026_2017.04.00_down.sql" />
@@ -239,6 +245,8 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadPDMData\ReadPDMData_0006_2017-01-00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_down.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomListShare\DeleteCustomListShare_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomListShare\DeleteCustomListShare_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyOrderedDetails\DeleteRecentlyOrderedDetails_0026_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyOrderedDetails\DeleteRecentlyOrderedDetails_0026_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteMandatoryItemDetails\DeleteMandatoryItemDetails_0029_2017.04.00_down.sql" />
@@ -267,12 +275,12 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListHeadersByCustomerNumberBranch\GetCustomListHeadersByCustomerNumberBranch_0031_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0022_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0022_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoritesHeaderByUserIdCustomerNumberBranch\GetFavoritesHeaderByUserIdCustomerNumberBranch_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeaderById\GetInventoryValuationListHeaderById_0030_2017.04.00_down.sql" />
@@ -280,7 +288,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0030_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0030_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0030_2017.04.00_up - Copy.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetInventoryValuationListHeadersByCustomerNumberBranch\GetInventoryValuationListHeadersByCustomerNumberBranch_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetMandatoryItemsHeaderByCustomerNumberBranch\GetMandatoryItemsHeaderByCustomerNumberBranch_0029_2017.04.00_down.sql" />
@@ -329,18 +340,44 @@
     </Content>
     <Content Include="Scripts\AppData\List\Tables\CustomListDetails\CustomListDetails_0031_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListDetails\CustomListDetails_0031_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListDetails\Indexes\idx_ParentListHeaderId_0033_2017.04.00_downy.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListDetails\Indexes\idx_ParentListHeaderId_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListDetails\Indexes\idx_ParentListHeaderId_Active_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListDetails\Indexes\idx_ParentListHeaderId_Active_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListHeaders\Indexes\idx_BranchCustomerNumber_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListHeaders\Indexes\idx_BranchCustomerNumber_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListShares\CustomListShares_0032_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\CustomListShares\CustomListShares_0032_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\Indexes\idx_BranchId_CustomerNumber_ParentHeaderId_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\Indexes\idx_ParentHeaderId_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\Indexes\idx_ParentHeaderId_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\CustomListShares\Indexes\idx_BranchId_CustomerNumber_ParentHeaderId_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListShares\PostDeployment\MigrateCustomListShares_0032_2017-04-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\Indexes\idx_ParentFavoriteHeaderId_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\Indexes\idx_ParentFavoriteHeaderId_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\Indexes\idx_ParentFavoriteHeaderId_Active_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\Indexes\idx_ParentFavoriteHeaderId_Active_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesHeaders\Indexes\idx_BranchId_CustomerNumber_UserId_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\FavoritesHeaders\Indexes\idx_BranchId_CustomerNumber_UserId_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Indexes\idx_ParentHistoryHeaderId_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Indexes\idx_ParentHistoryHeaderId_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\Indexes\idx_ParentInventoryValudationHeaderId_Active_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\Indexes\idx_ParentInventoryValudationHeaderId_Active_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListHeaders\CustomListHeaders_0031_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListHeaders\CustomListHeaders_0031_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomListHeaders\PostDeployment\MigrateCustomList_0031_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\Indexes\idx_BranchId_CustomerNumber_0033_2017.03.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\Indexes\idx_BranchId_CustomerNumber_0033_2017.03.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\InventoryValuationListHeaders_0030_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\InventoryValuationListHeaders_0030_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\PostDeployment\MigrateInventoryValuationList_0030_2017.04.00_up.sql" />
