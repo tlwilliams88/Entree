@@ -8,13 +8,11 @@
 		INTO [BEK_Commerce_AppData].[List].[FavoritesHeaders]
             ([CustomerNumber]
             ,[BranchId]
-			,[UserId]
-            ,[Name])
+			,[UserId])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
 			,l.[UserId]
-            ,'Favorites'
         FROM 
             [BEK_Commerce_AppData].[List].[Lists] as l
 		WHERE 
