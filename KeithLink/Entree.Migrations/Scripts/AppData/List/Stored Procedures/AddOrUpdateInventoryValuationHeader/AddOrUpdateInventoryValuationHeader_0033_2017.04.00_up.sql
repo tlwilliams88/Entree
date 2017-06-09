@@ -2,7 +2,7 @@
     @Id                INT,
 	@BranchId          CHAR(3),
 	@CustomerNumber    CHAR(6),
-	@Name              VARCHAR(100)
+	@Name              NVARCHAR(150)
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
