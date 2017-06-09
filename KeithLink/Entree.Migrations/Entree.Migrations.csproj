@@ -184,8 +184,8 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListItemById\AddOrUpdateCustomListItemById_0031_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsDetails\AddOrUpdateMandatoryItemsDetails_0029_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsDetails\AddOrUpdateMandatoryItemsDetails_0029_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListShareByCustomerNumberBranch\AddOrUpdateCustomListShareByCustomerNumberBranch_0032_2017.04.00_down.sql" />
@@ -194,6 +194,10 @@
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationItemByCustomerNumberBranch\AddOrUpdateInventoryValuationItemByCustomerNumberBranch_0030_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationItemByCustomerNumberBranch\AddOrUpdateInventoryValuationItemByCustomerNumberBranch_0030_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsHeaders\AddOrUpdateMandatoryItemsHeaders_0029_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemsHeaders\AddOrUpdateMandatoryItemsHeaders_0029_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderByCustomerNumberBranch\AddOrUpdateReminderByCustomerNumberBranch_0028_2017.04.00_down.sql" />
@@ -340,6 +344,9 @@
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\InventoryValuationListHeaders_0030_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\InventoryValuationListHeaders_0030_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\PostDeployment\MigrateInventoryValuationList_0030_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\MandatoryItemsHeaders\Indexes\MandatoryItemsHeadersIndex_0029_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\PostDeployment\MigrateNotesList_0024_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017.04.00_up.sql">
@@ -900,7 +907,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\AppData\List\Tables\MandatoryItemsDetail\Indexes\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(ProjectDir)Scripts" "$(TargetDir)Scripts" /E /Y</PostBuildEvent>
