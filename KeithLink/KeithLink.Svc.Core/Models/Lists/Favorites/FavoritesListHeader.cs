@@ -12,7 +12,6 @@ namespace KeithLink.Svc.Core.Models.Lists.Favorites
         public Guid? UserId { get; set; }
         public string BranchId { get; set; }
         public string CustomerNumber { get; set; }
-        public string Name { get; set; }
         public DateTime CreatedUtc { get; set; }
         public DateTime ModifiedUtc { get; set; }
     }

@@ -7,7 +7,6 @@ AS
 		ch.ContractId,
 		ch.BranchId,
 		ch.CustomerNumber,
-		ch.Name,
 		ch.CreatedUtc,
 		ch.ModifiedUtc
 	FROM

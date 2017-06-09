@@ -10,7 +10,6 @@ AS
 		[Id],
 		[BranchId],
 		[CustomerNumber],
-		[Name],
 		[CreatedUtc],
 		[ModifiedUtc]
 	FROM 

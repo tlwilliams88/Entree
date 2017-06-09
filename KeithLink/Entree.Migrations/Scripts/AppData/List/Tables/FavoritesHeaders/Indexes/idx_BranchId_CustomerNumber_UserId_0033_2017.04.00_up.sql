@@ -1,4 +1,4 @@
-﻿CREATE INDEX idx_BranchId_CustomerNumber_UserId
+﻿CREATE UNIQUE INDEX idx_BranchId_CustomerNumber_UserId
 	ON [List].[FavoritesHeaders] (
 		[BranchId],
 		[CustomerNumber],
