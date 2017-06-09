@@ -8,6 +8,8 @@ using KeithLink.Svc.Core.Models.Lists.Favorites;
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IFavoriteListDetailRepository
     {
+        void DeleteFavoriteListDetail(long id);
+
         List<FavoritesListDetail> GetFavoritesListDetails(long headerId);
 
         void SaveFavoriteListDetail(FavoritesListDetail model);
