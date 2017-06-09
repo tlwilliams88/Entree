@@ -19,6 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_ITEMNUM = "ItemNumber";
 
+        private const string SPNAME_DELETE = "[List].[DeleteFavoriteDetail]";
         private const string SPNAME_GET = "[List].[ReadFavoritesDetailsByParentId]";
         private const string SPNAME_SAVE = "[List].[AddOrUpdateFavoriteByUserIdCustomerNumberBranch]";
         #endregion
@@ -28,6 +29,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #endregion
 
         #region methods
+
+        public void DeleteFavoriteListDetail(long id) {
+            ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
+        }
+
         public List<FavoritesListDetail> GetFavoritesListDetails(long headerId) {
             return Read<FavoritesListDetail>(SPNAME_GET, PARMNAME_HEADERID, headerId);
         }

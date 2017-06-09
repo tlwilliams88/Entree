@@ -232,6 +232,8 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListHeader\AddOrUpdateCustomListHeader_0031_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminder\AddOrUpdateReminder_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminder\AddOrUpdateReminder_0028_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0008_2017-02-00_down.sql">
@@ -245,6 +247,8 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadProprietaryItems\ReadProprietaryItems_0012_2017-1-00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomListShare\DeleteCustomListShare_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomListShare\DeleteCustomListShare_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteFavoriteDetail\DeleteFavoriteDetail_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteFavoriteDetail\DeleteFavoriteDetail_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteOldRecentlyOrderedDetails\DeleteOldRecentlyOrderedDetails_0026_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteOldRecentlyOrderedDetails\DeleteOldRecentlyOrderedDetails_0026_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteOldRecentlyViewedDetails\DeleteOldRecentlyViewedDetails_0025_2017.04.00_down.sql" />
@@ -494,6 +498,8 @@
     <Content Include="Scripts\AppData\List\Tables\RecentlyViewedHeaders\Indexes\RecentlyViewedHeadersIndexes_0025_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\ReminderDetail\Indexes\idx_ParentRemindersHeaderId_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\ReminderDetail\Indexes\idx_ParentRemindersHeaderId_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ReminderDetail\ReminderDetails_0028_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -513,6 +519,8 @@
     <Content Include="Scripts\AppData\List\Tables\MandatoryItemsHeaders\MandatoryItemsHeaders_0029_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\RemindersHeaders\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\RemindersHeaders\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\RemindersHeaders\PostDeployment\MigrateRemindersList_0028_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\RemindersHeaders\RemindersHeaders_0028_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -1,21 +1,13 @@
 ﻿using System.Collections.Generic;
-using KeithLink.Svc.Core.Models.Lists.ReminderItem;
 
-namespace KeithLink.Svc.Core.Interface.Lists
-{
-    public interface IRemindersListDetailsRepository
-    {
-        List<ReminderItemsListDetail> GetRemindersDetails(long parentHeaderId);
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 
-        void AddOrUpdateReminder(string customerNumber,
-            string branchId,
-            string itemNumber,
-            bool each,
-            string catalogId,
-            bool active);
+namespace KeithLink.Svc.Core.Interface.Lists {
+    public interface IRemindersListDetailsRepository {
+        void DeleteReminderListDetail(long id);
 
-        void DeleteReminders(string userId,
-            string customerNumber,
-            string branchId);
+        List<ReminderItemsListDetail> GetRemindersDetails(long headerId);
+
+        void SaveReminderListDetail(ReminderItemsListDetail model);
     }
 }
