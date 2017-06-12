@@ -254,6 +254,7 @@
     <Compile Include="Interface\Invoices\ITermLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
+    <Compile Include="Interface\Lists\IBaseMultiListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsRepository.cs" />
     <Compile Include="Interface\Lists\ICustomListDetailsRepository.cs" />
