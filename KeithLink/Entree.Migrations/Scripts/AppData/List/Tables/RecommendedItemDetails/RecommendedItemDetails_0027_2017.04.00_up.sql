@@ -1,4 +1,4 @@
-CREATE TABLE [List].[RecommendedItemDetails] (
+CREATE TABLE [List].[RecommendedItemsDetails] (
     [Id]                                BIGINT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     [ParentRecommendedItemsHeaderId]    BIGINT NOT NULL,
     [ItemNumber]                        VARCHAR(6) NOT NULL,

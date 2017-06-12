@@ -1,4 +1,4 @@
-CREATE INDEX [IX_RecommendedItemsDetail] ON [List].[RecommendedItemsDetail]
+CREATE INDEX [IX_RecommendedItemsDetail] ON [List].[RecommendedItemsDetails]
 (
     [ParentRecommendedItemsHeaderId]
 )

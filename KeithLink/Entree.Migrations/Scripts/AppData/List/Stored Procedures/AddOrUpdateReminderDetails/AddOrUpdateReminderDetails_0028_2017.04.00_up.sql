@@ -1,4 +1,4 @@
-CREATE PROCEDURE [List].[AddOrUpdateReminder] 
+CREATE PROCEDURE [List].[AddOrUpdateRemindersDetails] 
     @Id             BIGINT,
     @HeaderId       BIGINT,
 	@ItemNumber		CHAR(6),
@@ -10,8 +10,9 @@ AS
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
+IF @Id > 0
     UPDATE
-        [List].[RemindersHeaders]
+        [List].[RemindersDetails]
     SET
         ParentRemindersHeaderId = @HeaderId,
         ItemNumber = @ItemNumber,
@@ -22,10 +23,10 @@ AS
     WHERE
         Id = @Id
 
-    IF @@ROWCOUNT = 0
+ELSE
       BEGIN
         INSERT INTO
-            [List].[RemindersHeaders] (
+            [List].[RemindersDetails] (
                 ParentRemindersHeaderId,
                 ItemNumber,
                 Each,
@@ -43,4 +44,3 @@ AS
                 GETUTCDATE()
             )
       END
-GO		

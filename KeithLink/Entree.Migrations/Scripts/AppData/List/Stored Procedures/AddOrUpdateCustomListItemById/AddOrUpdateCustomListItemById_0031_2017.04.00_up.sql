@@ -22,7 +22,7 @@ AS
         [Par]                      = @Par, 
         [Label]                    = @Label,
         [CatalogId]                = @CatalogId,
-        [CustomInventoryItemId]    = @CustomerInventoryItemId,
+        [CustomInventoryItemId]    = @CustomInventoryItemId,
         [Active]                   = @Active, 
         [ModifiedUtc]              = GETUTCDATE()
     WHERE

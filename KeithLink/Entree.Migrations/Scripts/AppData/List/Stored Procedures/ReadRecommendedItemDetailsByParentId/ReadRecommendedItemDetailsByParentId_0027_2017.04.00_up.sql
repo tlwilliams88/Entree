@@ -7,13 +7,13 @@ AS
 
     SELECT
         [Id],
+        [ParentRecommendedItemsHeaderId],
         [ItemNumber],
         [Each],
         [CatalogId],
         [CreatedUtc],
         [ModifiedUtc]
     FROM
-        [List].[RecommendedItemDetails] 
+        [List].[RecommendedItemsDetails] 
     WHERE
         [ParentRecommendedItemsHeaderId] = @ParentRecommendedItemsHeaderId
-    AND [Active] = 1

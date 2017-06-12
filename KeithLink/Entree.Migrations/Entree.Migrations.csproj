@@ -190,10 +190,6 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\AddFavoriteListHeader\AddFavoriteListHeader_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationHeader\AddOrUpdateInventoryValuationHeader_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateInventoryValuationHeader\AddOrUpdateInventoryValuationHeader_0033_2017.04.00_up.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateMandatoryItemByCustomerNumberBranch - Copy\AddOrUpdateMandatoryItemByCustomerNumberBranch_0029_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListShareByCustomerNumberBranch\AddOrUpdateCustomListShareByCustomerNumberBranch_0032_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListShareByCustomerNumberBranch\AddOrUpdateCustomListShareByCustomerNumberBranch_0032_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -208,14 +204,10 @@
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecentlyOrderedDetails\AddOrUpdateRecentlyOrderedDetails_0026_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecentlyOrderedDetails\AddOrUpdateRecentlyOrderedDetails_0026_2017.04.00_up.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderByCustomerNumberBranch\AddOrUpdateReminderByCustomerNumberBranch_0028_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderByCustomerNumberBranch\AddOrUpdateReminderByCustomerNumberBranch_0028_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemByCustomerNumberBranch\AddOrUpdateRecommendedItemByCustomerNumberBranch_0027_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemByCustomerNumberBranch\AddOrUpdateRecommendedItemByCustomerNumberBranch_0027_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemsDetails\AddOrUpdateRecommendedItemsDetails_0027_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemsDetails\AddOrUpdateRecommendedItemsDetails_0027_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemsHeader\AddOrUpdateRecommendedItemsHeader_0027_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateRecommendedItemsHeader\AddOrUpdateRecommendedItemsHeader_0027_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateNotesByCustomerNumberBranch\AddOrUpdateNotesByCustomerNumberBranch_0024_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateFavoriteDetails\AddOrUpdateFavoriteDetails_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateNotesByCustomerNumberBranch\AddOrUpdateNotesByCustomerNumberBranch_0024_2017.04.00_up.sql">
@@ -232,8 +224,10 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateCustomListHeader\AddOrUpdateCustomListHeader_0031_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminder\AddOrUpdateReminder_0028_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminder\AddOrUpdateReminder_0028_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderHeaders\AddOrUpdateReminderHeaders_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderHeaders\AddOrUpdateReminderHeaders_0028_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderDetails\AddOrUpdateReminderDetails_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\AddOrUpdateReminderDetails\AddOrUpdateReminderDetails_0028_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteCustomInventoryItems\DeleteCustomInventoryItems_0004_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadFullItemData\ReadFullItemData_0008_2017-02-00_down.sql">
@@ -498,6 +492,10 @@
     <Content Include="Scripts\AppData\List\Tables\RecentlyViewedHeaders\Indexes\RecentlyViewedHeadersIndexes_0025_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\RecommendedItemDetails\Indexes\RecommendedItemsDetailsIndex_0027_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\RecommendedItemDetails\Indexes\RecommendedItemsDetailsIndex_0027_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Tables\RecommendedItemsHeaders\Indexes\RecommendedItemsHeadersIndex_0027_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Tables\RecommendedItemsHeaders\Indexes\RecommendedItemsHeadersIndex_0027_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ReminderDetail\Indexes\idx_ParentRemindersHeaderId_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\ReminderDetail\Indexes\idx_ParentRemindersHeaderId_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\ReminderDetail\ReminderDetails_0028_2017.04.00_down.sql">

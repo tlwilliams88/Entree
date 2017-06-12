@@ -1,2 +1,3 @@
-DROP INDEX [IX_RecommendedItemsDetail]
-GO
+--DROP INDEX [IX_RecommendedItemsDetail]
+--GO
+-- Index will be dropped with table

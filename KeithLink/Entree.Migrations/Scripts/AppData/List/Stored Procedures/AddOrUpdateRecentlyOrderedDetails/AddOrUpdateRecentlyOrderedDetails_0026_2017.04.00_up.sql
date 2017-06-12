@@ -24,7 +24,7 @@ ELSE
             [ParentRecentlyOrderedHeaderId],
             [ItemNumber],
             [Each],
-            [CatalogId],
+            [CatalogId]
         )
         VALUES
         (

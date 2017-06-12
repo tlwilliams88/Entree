@@ -1,11 +1,9 @@
 CREATE PROCEDURE [List].[AddOrUpdateRecentlyViewedDetails] 
-    @Id             BIGINT,
-    @UserId         UNIQUEIDENTIFIER, 
-    @CustomerNumber CHAR (6),
-    @BranchId       CHAR (3),
-    @ItemNumber     VARCHAR (6),
-    @Each           BIT,
-    @CatalogId      VARCHAR (10),
+    @Id                             BIGINT,
+    @ParentRecentlyViewedHeaderId   BIGINT,
+    @ItemNumber                     VARCHAR (6),
+    @Each                           BIT,
+    @CatalogId                      VARCHAR (10)
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -14,9 +12,7 @@ AS
 IF @Id > 0
     UPDATE [List].[RecentlyViewedDetails]
     SET
-        [UserId] = @UserId,
-        [CustomerNumber] = @CustomerNumber,
-        [BranchId] = @BranchId,
+        [ParentRecentlyViewedHeaderId] = @ParentRecentlyViewedHeaderId,
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [CatalogId] = @CatalogId
@@ -25,16 +21,12 @@ IF @Id > 0
 ELSE
     INSERT INTO [List].[RecentlyViewedDetails]
     (
-        [UserId],
-        [CustomerNumber],
-        [BranchId],
+        [ParentRecentlyViewedHeaderId],
         [ItemNumber],
         [Each],
         [CatalogId] 
     ) VALUES (
-        @UserId,
-        @CustomerNumber,
-        @BranchId,
+        @ParentRecentlyViewedHeaderId,
         @ItemNumber,
         @Each,
         @CatalogId 

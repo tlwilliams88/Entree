@@ -1,8 +1,6 @@
 CREATE PROCEDURE [List].[AddOrUpdateNotesByCustomerNumberBranch] 
     @Id                     BIGINT,
     @ParentNotesHeaderId    BIGINT,
-    @CustomerNumber         CHAR(6),
-    @BranchId               CHAR(3),
     @ItemNumber             CHAR(6),
     @Each                   BIT,
     @CatalogId              VARCHAR(10),
@@ -14,8 +12,6 @@ IF @Id > 0
     BEGIN
         UPDATE [List].[NotesDetails] SET
             [ParentNotesHeaderId] = @ParentNotesHeaderId,
-            [CustomerNumber] = @CustomerNumber,
-            [BranchId] = @BranchId,
             [ItemNumber] = @ItemNumber,
             [Each] = @Each,
             [CatalogId] = @CatalogId,
@@ -29,8 +25,6 @@ ELSE
         INSERT INTO [List].[NotesDetails]
         (
             [ParentNotesHeaderId],
-            [CustomerNumber],
-            [BranchId],
             [ItemNumber],
             [Each],
             [CatalogId],
@@ -38,12 +32,10 @@ ELSE
             [Active]
         ) VALUES (
             @ParentNotesHeaderId,
-            @CustomerNumber,
-            @BranchId,
             @ItemNumber,
             @Each,
             @CatalogId,
-            @note,
+            @Note,
             @Active
         )
     END

@@ -1,2 +1,2 @@
-DROP PROCEDURE [List].[AddOrUpdateRecentlyViewedByUserIdCustomerNumberBranch]
+DROP PROCEDURE [List].[AddOrUpdateRecentlyViewedDetails]
 GO

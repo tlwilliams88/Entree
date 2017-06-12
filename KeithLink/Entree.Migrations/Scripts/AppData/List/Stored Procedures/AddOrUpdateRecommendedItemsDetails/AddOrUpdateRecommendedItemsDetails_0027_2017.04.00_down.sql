@@ -1,4 +1,2 @@
-
-GO
-DROP PROCEDURE [List].[AddOrUpdateRecommendedItemByCustomerNumberBranch]
+DROP PROCEDURE [List].[AddOrUpdateRecommendedItemsDetail]
 GO

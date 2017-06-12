@@ -1,2 +1,2 @@
-DROP TABLE [List].[RecommendedItemDetails]
+DROP TABLE [List].[RecommendedItemsDetails]
 GO
