@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
@@ -270,45 +271,26 @@ namespace KeithLink.Svc.Impl.Service.List
             return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
         }
 
-        public long AddOrUpdateItem(UserProfile user, 
-                                    UserSelectedContext catalogInfo,
-                                    ListType type,
-                                    dynamic genericItemProperties)
-        {
+        public long SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                             ListItemModel item) {
             switch (type)
             {
                 case ListType.Worksheet:
-                    //tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
                 case ListType.Contract:
-                    //tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
+                    // cannot add items to contracts or worksheets
                     break;
-
                 case ListType.Favorite:
-                    ListItem li = genericItemProperties;
-                    FavoritesListDetail item = new FavoritesListDetail() {
-                        Active = true,
-                        CatalogId = li.CatalogId,
-                        Each = li.Each ?? false,
-                        ItemNumber = li.ItemNumber,
-                        Label = li.Label
-                    };
-                    _favoritesLogic.Save(user, catalogInfo, item);
+                    _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail());
                     break;
-
                 case ListType.Reminder:
                     //tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
-
                 case ListType.RecommendedItems:
                     //tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
-
                 case ListType.Mandatory:
                     //tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
-
                 case ListType.Custom:
                     //tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
                     break;
@@ -384,14 +366,13 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
             }
 
-            if(tempList != null && 
-               tempList.Count > 0 && 
+            if(tempList.Count > 0 && 
                tempList[0].Items != null && 
                tempList[0].Items.Count > 0) {
                 FillOutProducts(user, catalogInfo, tempList, true);
             }
 
-            if (tempList != null) {
+            if (tempList.Count > 0) {
                 list.AddRange(tempList);
             }
         }

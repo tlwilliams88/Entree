@@ -15,5 +15,18 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 CatalogId = value.CatalogId
             };
         }
+
+        public static FavoritesListDetail ToFavoritesListDetail(this ListItemModel model) {
+            FavoritesListDetail item = new FavoritesListDetail() {
+                Active = true,
+                CatalogId = model.CatalogId,
+                Each = model.Each ?? false,
+                Id = model.ListItemId,
+                ItemNumber = model.ItemNumber,
+                Label = model.Label,
+            };
+
+            return item;
+        }
     }
 }

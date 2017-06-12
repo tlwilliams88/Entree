@@ -288,10 +288,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
             return ret;
         }
 
-
         /// <summary>
         /// Add item to a specific list
         /// </summary>
+        /// <param name="type">list type</param>
         /// <param name="listId">List Id</param>
         /// <param name="newItem">New item</param>
         /// <returns></returns>
@@ -299,21 +299,18 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [ApiKeyedRoute("list/{type}/{listId}/item")]
         public OperationReturnModel<NewListItem> AddItem(ListType type, long listId, ListItemModel newItem) {
             OperationReturnModel<NewListItem> ret = new OperationReturnModel<NewListItem>();
-            try
-            {
-                var nlist = new NewListItem() { Id = _listService.AddOrUpdateItem(this.AuthenticatedUser, 
-                                                                                  this.SelectedUserContext, 
-                                                                                  newItem.Type, 
-                                                                                  newItem) };
+            try {
+                NewListItem nlist = new NewListItem() { Id = _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, newItem.Type, 
+                                                                                   newItem) };
                 ret.SuccessResponse = nlist;
                 ret.IsSuccess = true;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
+
                 _elRepo.WriteErrorLog("AddItem", ex);
             }
+
             return ret;
         }
 
