@@ -84,7 +84,7 @@ namespace KeithLink.Svc.Impl.Service.List
             {
                 case ListType.Worksheet:
                 {
-                    returnList = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
+                    returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
 
                     FillOutProducts(user, catalogInfo, returnList, true);
                 }
@@ -354,44 +354,38 @@ namespace KeithLink.Svc.Impl.Service.List
         }
 
         private void AddList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list, ListType type)
-        {
-            List<ListModel> tempList = null;
-            switch (type)
-            {
+                             List<ListModel> list, ListType type) {
+            List<ListModel> tempList = new List<ListModel>();
+
+            switch (type) {
                 case ListType.Worksheet:
-                    tempList = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Contract:
-                    tempList = _contractListLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Favorite:
-                    tempList = _favoritesLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_favoritesLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Reminder:
-                    tempList = _reminderItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.RecommendedItems:
-                    tempList = _recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_recommendedItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Mandatory:
-                    tempList = _mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_mandatoryItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
             }
 
-
-            if (tempList != null && tempList.Count > 0 && tempList[0].Items != null && tempList[0].Items.Count > 0)
-            {
+            if(tempList != null && 
+               tempList.Count > 0 && 
+               tempList[0].Items != null && 
+               tempList[0].Items.Count > 0) {
                 FillOutProducts(user, catalogInfo, tempList, true);
             }
 
-            if (tempList != null)
-            {
+            if (tempList != null) {
                 list.AddRange(tempList);
             }
         }
