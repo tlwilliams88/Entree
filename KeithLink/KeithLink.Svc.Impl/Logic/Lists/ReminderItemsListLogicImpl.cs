@@ -2,6 +2,7 @@
 using System.Linq;
 
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
@@ -26,53 +27,23 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #endregion
 
         #region methods
-        public List<string> GetRemindersNumbers(UserProfile user, UserSelectedContext catalogInfo)
-        {
-            List<ListModel> list = ReadList(user, catalogInfo, false);
+        public List<string> GetRemindersNumbers(UserProfile user, UserSelectedContext catalogInfo) {
+            ListModel list = GetListModel(user, catalogInfo, 0);
 
-            return list[0].Items.Select(i => i.ItemNumber).ToList();
+            return list?.Items.Select(i => i.ItemNumber).ToList();
         }
 
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
-        {
-            ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(user.UserId.ToString(), catalogInfo, headerOnly);
+        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+            ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
 
-            if (header != null && headerOnly == false)
-            {
-                header.Items = _detailsRepo.GetRemindersDetails(header.Id);
+            if (header == null) {
+                return null;
+            } else {
+                List<ReminderItemsListDetail> items = _detailsRepo.GetRemindersDetails(header.Id);
+
+                return header.ToListModel(items);
             }
-
-            if (header != null)
-            {
-                return new List<ListModel>() { header.ToListModel(catalogInfo) };
-            }
-            return null;
         }
-
-        public void AddOrUpdateReminder(UserSelectedContext catalogInfo,
-                                string itemNumber,
-                                bool each,
-                                string catalogId,
-                                bool active)
-        {
-            _detailsRepo.AddOrUpdateReminder(catalogInfo.CustomerId,
-                catalogInfo.BranchId,
-                itemNumber,
-                each,
-                catalogId,
-                active);
-        }
-
-        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
-        {
-            return ReadList(user, catalogInfo, false)[0];
-        }
-
-        public void DeleteReminderItems(UserProfile user, UserSelectedContext catalogInfo)
-        {
-            _detailsRepo.DeleteReminders(user.UserId.ToString(), catalogInfo.CustomerId, catalogInfo.BranchId);
-        }
-
         #endregion
     }
 }
