@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #endregion
 
         #region methods
-        public List<HistoryListDetail> GetAllHistoryDetails(int listId) {
+        public List<HistoryListDetail> GetAllHistoryDetails(long listId) {
             return Read<HistoryListDetail>(SPNAME_GETALL, PARMNAME_LISTID, listId);
         }
         #endregion

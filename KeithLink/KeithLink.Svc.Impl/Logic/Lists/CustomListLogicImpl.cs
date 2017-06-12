@@ -5,11 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Amazon.CloudFront.Model;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists.CustomList;
+using KeithLink.Svc.Core.Models.Lists.CustomListShares;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
@@ -18,7 +20,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #region attributes
         private readonly ICustomListDetailsRepository _detailsRepo;
         private readonly ICustomListHeadersRepository _headersRepo;
-        private readonly ICustomListSharesRepository _customListSharesRepository;
+        private readonly ICustomListSharesRepository _sharesRepo;
         #endregion
 
         #region ctor
@@ -26,94 +28,44 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             _headersRepo = headersRepo;
             _detailsRepo = detailsRepo;
-            _customListSharesRepository = customListSharesRepository;
+            _sharesRepo = customListSharesRepository;
         }
         #endregion
 
         #region methods
-        public List<ListModel> ReadLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
-        {
-            List<CustomListHeader> headers = _headersRepo.GetCustomListHeaders(catalogInfo);
+
+        private ListModel GetCompletedModel(CustomListHeader header, UserSelectedContext catalogInfo, bool headerOnly) {
+            List<CustomListDetail> items = null;
+            List<CustomListShare> shares = null;
+
+            if(!headerOnly) {
+                items = _detailsRepo.GetCustomListDetails(header.Id);
+                shares = _sharesRepo.GetCustomListShares(header.Id);
+            }
+
+            return header.ToListModel(catalogInfo, shares, items);
+        }
+
+        public List<ListModel> ReadLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly) {
+            List<CustomListHeader> headers = _headersRepo.GetCustomListHeadersByCustomer(catalogInfo);
             List<ListModel> list = new List<ListModel>();
             
-            if (headers != null)
-            {
-                foreach (var header in headers)
-                {
-                    if (headerOnly == false)
-                    {
-                        header.Items = _detailsRepo.GetCustomListDetails(header.Id);
-                    }
-                    if (header != null)
-                    {
-                        var sharedwithothers = _customListSharesRepository.GetCustomListShares(header.Id);
-                        header.Shares = sharedwithothers;
-
-                        list.Add(header.ToListModel(catalogInfo));
-                    }
-                }
-            }
-
-            var sharedwithme = _customListSharesRepository.GetCustomListShares(catalogInfo);
-            if (sharedwithme != null)
-            {
-                foreach (var share in sharedwithme)
-                {
-                    CustomListHeader header = _headersRepo.GetCustomListHeader(share.ParentCustomListHeaderId);
-
-                    if (headerOnly == false)
-                    {
-                        header.Items = _detailsRepo.GetCustomListDetails(header.Id);
-                    }
-                    if (header != null)
-                    {
-                        var sharedwithothers = _customListSharesRepository.GetCustomListShares(header.Id);
-                        header.Shares = sharedwithothers;
-
-                        list.Add(header.ToListModel(catalogInfo));
-                    }
-                }
-            }
+            headers.ForEach(h => {
+                list.Add(GetCompletedModel(h, catalogInfo, headerOnly));
+            });
 
             return list;
         }
 
-        public List<ListModel> ReadList(long listId, UserSelectedContext catalogInfo, bool headerOnly)
-        {
+        public ListModel ReadList(long listId, UserSelectedContext catalogInfo, bool headerOnly) {
             CustomListHeader header = _headersRepo.GetCustomListHeader(listId);
 
-            if (header != null && headerOnly == false)
-            {
-               header.Items = _detailsRepo.GetCustomListDetails(header.Id);
-            }
-            if (header != null)
-            {
-                var sharedwithothers = _customListSharesRepository.GetCustomListShares(header.Id);
-                header.Shares = sharedwithothers;
-
-                return new List<ListModel>() { header.ToListModel(catalogInfo)};
-            }
-            return null;
-        }
-
-        public void AddOrUpdateCustomListItem(long listId,
-                                string itemNumber,
-                                bool each,
-                                decimal par,
-                                string catalogId,
-                                bool active)
-        {
-            _detailsRepo.AddOrUpdateCustomListItem(listId,
-                itemNumber,
-                each,
-                par,
-                catalogId,
-                active);
+            return header == null ? null : GetCompletedModel(header, catalogInfo, headerOnly);
         }
 
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
         {
-            return ReadList(Id, catalogInfo, false)[0];
+            return ReadList(Id, catalogInfo, false);
         }
 
         public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)

@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System;
+using Dapper;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
@@ -21,8 +22,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #endregion
 
         #region method
-        public FavoritesListHeader GetFavoritesList(string userId, UserSelectedContext catalogInfo)
-        {
+        public FavoritesListHeader GetFavoritesList(Guid userId, UserSelectedContext catalogInfo){
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTID, catalogInfo.CustomerId);
