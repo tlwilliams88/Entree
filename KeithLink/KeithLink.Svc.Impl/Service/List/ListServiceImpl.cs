@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ADODB;
+
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
@@ -13,10 +13,9 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Service.List
@@ -288,7 +287,14 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 case ListType.Favorite:
                     ListItem li = genericItemProperties;
-                    _favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, li.ItemNumber, li.Each.Value, li.CatalogId, true);
+                    FavoritesListDetail item = new FavoritesListDetail() {
+                        Active = true,
+                        CatalogId = li.CatalogId,
+                        Each = li.Each ?? false,
+                        ItemNumber = li.ItemNumber,
+                        Label = li.Label
+                    };
+                    _favoritesLogic.Save(user, catalogInfo, item);
                     break;
 
                 case ListType.Reminder:

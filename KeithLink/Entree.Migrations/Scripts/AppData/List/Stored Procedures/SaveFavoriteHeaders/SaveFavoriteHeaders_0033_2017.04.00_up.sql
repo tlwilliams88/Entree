@@ -29,5 +29,7 @@ AS
                 GETUTCDATE(),
                 GETUTCDATE()
             )
+
+        RETURN @@IDENTITY
 GO
     
