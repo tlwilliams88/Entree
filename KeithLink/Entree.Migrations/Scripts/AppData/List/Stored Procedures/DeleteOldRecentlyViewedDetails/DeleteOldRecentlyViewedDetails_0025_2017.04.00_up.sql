@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[DeleteOldRecentlyViewedDetails] 
-    @ParentRecentlyViewedHeaderId,
+    @ParentRecentlyViewedHeaderId BIGINT,
     @NumberToKeep BIGINT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
@@ -8,7 +8,7 @@ AS
 
     DECLARE @Count AS INT = (
         SELECT 
-            count([Id])
+            COUNT([Id])
         FROM 
             [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
         WHERE

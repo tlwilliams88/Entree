@@ -1,5 +1,5 @@
 ﻿CREATE INDEX idx_ParentRemindersHeaderListId
-    ON [List].[ReminderDetails] (
+    ON [List].[RemindersDetails] (
         [ParentRemindersHeaderId]
     )
 GO

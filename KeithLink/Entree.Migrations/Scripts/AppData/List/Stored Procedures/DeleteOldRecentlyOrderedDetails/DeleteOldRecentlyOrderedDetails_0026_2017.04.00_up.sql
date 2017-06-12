@@ -17,12 +17,8 @@ IF(@Count > @NumberToKeep)
         [BEK_Commerce_AppData].[List].[RecentlyOrderedDetails]
     WHERE [Id] IN
     (
-        SELECT TOP 
-            (@Count - @NumberToKeep) [Id]
-        FROM 
-            [BEK_Commerce_AppData].[List].[RecentlyOrderedDetails]
-        WHERE 
-            [ParentRecentlyOrderedHeaderId] = @ParentRecentlyOrderedHeaderId
-        ORDER BY 
-            [ModifiedUtc] ASC
+        SELECT TOP (@Count - @NumberToKeep) [Id]
+        FROM [BEK_Commerce_AppData].[List].[RecentlyOrderedDetails]
+        WHERE [ParentRecentlyOrderedHeaderId] = @ParentRecentlyOrderedHeaderId
+        ORDER BY [ModifiedUtc] ASC
     )

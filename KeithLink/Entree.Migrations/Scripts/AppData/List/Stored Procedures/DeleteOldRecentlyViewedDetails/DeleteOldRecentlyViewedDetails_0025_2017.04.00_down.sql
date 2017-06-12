@@ -1,2 +1,2 @@
-DROP PROCEDURE [List].[DeleteOldRecentlyViewedItems]
+DROP PROCEDURE [List].[DeleteOldRecentlyViewedDetails]
 GO

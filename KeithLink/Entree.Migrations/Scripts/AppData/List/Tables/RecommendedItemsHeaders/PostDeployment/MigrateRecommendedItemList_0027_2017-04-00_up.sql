@@ -7,12 +7,10 @@
 	INSERT -- create customer favorite lists
 		INTO [BEK_Commerce_AppData].[List].[RecommendedItemsHeaders]
             ([CustomerNumber]
-            ,[BranchId]
-            ,[Name])
+            ,[BranchId])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
-            ,'RecommendedItems'
         FROM 
             [BEK_Commerce_AppData].[List].[Lists] as l
 		WHERE 
@@ -27,7 +25,7 @@
 		
 
     INSERT
-		INTO [BEK_Commerce_AppData].[List].[RecommendedItemDetails]
+		INTO [BEK_Commerce_AppData].[List].[RecommendedItemsDetails]
 			([ParentRecommendedItemsHeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
@@ -45,7 +43,7 @@
 			NOT EXISTS (
 				SELECT
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[RecommendedItemDetails]
+					FROM [BEK_Commerce_AppData].[List].[RecommendedItemsDetails]
 					INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 					INNER JOIN List.[RecommendedItemsHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
 					WHERE [ItemNumber] = li.[ItemNumber]

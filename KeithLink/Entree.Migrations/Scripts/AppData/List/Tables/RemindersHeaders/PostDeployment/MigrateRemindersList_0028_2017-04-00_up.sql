@@ -15,6 +15,7 @@
             [BEK_Commerce_AppData].[List].[Lists] as l
 		WHERE 
 			l.[Type] = 8 AND
+            l.[CustomerId] IS NOT NULL AND
 			NOT EXISTS (
 				SELECT 
 					'x'
@@ -39,7 +40,8 @@
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 		INNER JOIN List.[RemindersHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
 		WHERE
-			l.Type = 8 and
+			l.[Type] = 8 AND
+            l.[CustomerId] IS NOT NULL AND
 			NOT EXISTS (
 				SELECT
 					'x'

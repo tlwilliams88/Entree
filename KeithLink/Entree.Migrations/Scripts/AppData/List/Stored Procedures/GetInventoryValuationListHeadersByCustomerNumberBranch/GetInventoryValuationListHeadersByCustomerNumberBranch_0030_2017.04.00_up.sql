@@ -1,4 +1,4 @@
-ALTER PROCEDURE [List].[GetInventoryValuationListHeadersByCustomerNumberBranch]
+CREATE PROCEDURE [List].[GetInventoryValuationListHeadersByCustomerNumberBranch]
 	@BranchId		CHAR (3),
 	@CustomerNumber	CHAR (6)
 AS
