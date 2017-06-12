@@ -7,7 +7,7 @@ module.exports = function(config) {
     basePath: '../',
 
     // testing framework to use (jasmine/mocha/qunit/...)
-    frameworks: ['jasmine'],
+    frameworks: ['mocha', 'chai'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -46,6 +46,10 @@ module.exports = function(config) {
       'test/unit/**/*.js'
     ],
 
+    specReporter: {
+      suppressSkipped: false
+    },
+
     // list of files / patterns to exclude
     exclude: [],
 
@@ -60,7 +64,7 @@ module.exports = function(config) {
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
 
-    reporters: ['dots', 'junit'],
+    reporters: ['dots', 'junit', 'spec'],
     junitReporter: {
       outputFile: 'test/test-results/test-results.xml'
     },
