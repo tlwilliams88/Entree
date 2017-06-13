@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
             };
         }
 
-        public static FavoritesListDetail ToFavoritesListDetail(this ListItemModel model) {
+        public static FavoritesListDetail ToFavoritesListDetail(this ListItemModel model, long headerId = 0) {
             FavoritesListDetail item = new FavoritesListDetail() {
                 Active = true,
                 CatalogId = model.CatalogId,
@@ -24,6 +24,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Id = model.ListItemId,
                 ItemNumber = model.ItemNumber,
                 Label = model.Label,
+                ParentFavoritesHeaderId = headerId
             };
 
             return item;

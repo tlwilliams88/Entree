@@ -271,16 +271,15 @@ namespace KeithLink.Svc.Impl.Service.List
             return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
         }
 
-        public long SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                             ListItemModel item) {
-            switch (type)
-            {
+        public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                             long headerId, ListItemModel item) {
+            switch (type) {
                 case ListType.Worksheet:
                 case ListType.Contract:
                     // cannot add items to contracts or worksheets
                     break;
                 case ListType.Favorite:
-                    _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail());
+                    _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail(headerId));
                     break;
                 case ListType.Reminder:
                     //tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
@@ -292,11 +291,9 @@ namespace KeithLink.Svc.Impl.Service.List
                     //tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
                 case ListType.Custom:
-                    //tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
+                    _customListLogic.SaveItem(user, catalogInfo, headerId, item.ToCustomListDetail(headerId));
                     break;
             }
-
-            return 0;
         }
 
         private ListModel ReadListByType(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)

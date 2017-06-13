@@ -63,14 +63,23 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             return header == null ? null : GetCompletedModel(header, catalogInfo, headerOnly);
         }
 
-        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
-        {
+        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
             return ReadList(Id, catalogInfo, false);
         }
 
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
-        {
+        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
             return ReadLists(user, catalogInfo, headerOnly);
+        }
+
+        public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
+                             CustomListDetail item) {
+            // try to find the parent header id if it is not in the model
+            if(item.ParentCustomListHeaderId == 0) {
+                const string HEADER_MISSING_TEXT = "No header id was set";
+                throw new ArgumentException(HEADER_MISSING_TEXT, nameof(item.ParentCustomListHeaderId));
+            }
+
+            _detailsRepo.SaveCustomListDetail(item);
         }
         #endregion
     }

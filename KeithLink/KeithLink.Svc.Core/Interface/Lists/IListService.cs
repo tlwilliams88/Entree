@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                                      long Id, PagingModel paging);
 
-        long SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                      ListItemModel genericItemProperties);
+        void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                      long headerId, ListItemModel genericItemProperties);
     }
 }

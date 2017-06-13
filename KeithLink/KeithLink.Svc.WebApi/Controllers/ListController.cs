@@ -297,14 +297,16 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/{type}/{listId}/item")]
-        public OperationReturnModel<NewListItem> AddItem(ListType type, long listId, ListItemModel newItem) {
-            OperationReturnModel<NewListItem> ret = new OperationReturnModel<NewListItem>();
+        public OperationReturnModel<bool> AddItem(ListType type, long listId, ListItemModel newItem) {
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+
             try {
-                NewListItem nlist = new NewListItem() { Id = _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, newItem.Type, 
-                                                                                   newItem) };
-                ret.SuccessResponse = nlist;
+                _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, newItem.Type, 
+                                      listId, newItem);
+                ret.SuccessResponse = true;
                 ret.IsSuccess = true;
             } catch (Exception ex) {
+                ret.SuccessResponse = false;
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
 

@@ -8,6 +8,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         CustomListHeader GetCustomListHeader(long id);
         List<CustomListHeader> GetCustomListHeadersByCustomer(UserSelectedContext catalogInfo);
-        void SaveCustomListHeader(CustomListHeader model);
+        long SaveCustomListHeader(CustomListHeader model);
     }
 }

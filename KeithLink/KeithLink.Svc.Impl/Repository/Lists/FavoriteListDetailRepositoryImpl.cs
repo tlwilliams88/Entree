@@ -38,8 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             return Read<FavoritesListDetail>(SPNAME_GET, PARMNAME_HEADERID, headerId);
         }
 
-        public void SaveFavoriteListDetail(FavoritesListDetail model)
-        {
+        public void SaveFavoriteListDetail(FavoritesListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOGID, model.CatalogId);

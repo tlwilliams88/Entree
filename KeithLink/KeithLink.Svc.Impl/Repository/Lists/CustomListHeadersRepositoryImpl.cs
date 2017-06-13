@@ -23,6 +23,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_NAME = "Name";
+        private const string PARMNAME_RETVAL = "ReturnValue";
         private const string PARMNAME_USERID = "UserId";
 
         private const string SPNAME_GETBYCUST = "[List].[GetCustomListHeadersByCustomerNumberBranch]";
@@ -50,7 +51,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<CustomListHeader>(SPNAME_GETBYCUST, parms);
         }
 
-        public void SaveCustomListHeader(CustomListHeader model) {
+        public long SaveCustomListHeader(CustomListHeader model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_BRANCH, model.BranchId);
@@ -58,8 +59,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_NAME, model.Name);
             parms.Add(PARMNAME_USERID, model.UserId);
+            parms.Add(PARMNAME_RETVAL, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETVAL);
         }
         #endregion
     }

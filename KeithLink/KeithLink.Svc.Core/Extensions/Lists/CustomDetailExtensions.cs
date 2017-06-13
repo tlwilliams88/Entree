@@ -15,5 +15,18 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 CatalogId = value.CatalogId
             };
         }
+
+        public static CustomListDetail ToCustomListDetail(this ListItemModel value, long headerId = 0) {
+            return new CustomListDetail() {
+                CatalogId = value.CatalogId,
+                CustomInventoryItemId = value.CustomInventoryItemId,
+                Each = value.Each,
+                Id = value.ListItemId,
+                ItemNumber = value.ItemNumber,
+                Label = value.Label,
+                Par = value.ParLevel,
+                ParentCustomListHeaderId = headerId
+            };
+        }
     }
 }
