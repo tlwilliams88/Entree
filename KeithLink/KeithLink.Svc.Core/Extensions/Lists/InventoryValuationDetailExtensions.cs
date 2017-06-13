@@ -15,5 +15,17 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 CatalogId = value.CatalogId
             };
         }
+
+        public static InventoryValuationListDetail ToInventoryValuationListDetail(this ListItemModel value, long headerId = 0) {
+            return new InventoryValuationListDetail() {
+                CatalogId = value.CatalogId,
+                CustomInventoryItemId = value.CustomInventoryItemId,
+                Each = value.Each,
+                Id = value.ListItemId,
+                ItemNumber = value.ItemNumber,
+                ParentInventoryValuationListHeaderId = headerId,
+                Quantity = value.Quantity
+            };
+        }
     }
 }
