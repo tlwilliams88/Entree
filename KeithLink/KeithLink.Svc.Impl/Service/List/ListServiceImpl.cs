@@ -293,6 +293,16 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Custom:
                     _customListLogic.SaveItem(user, catalogInfo, headerId, item.ToCustomListDetail(headerId));
                     break;
+                case ListType.Recent:
+                    break;
+                case ListType.Notes:
+                    break;
+                case ListType.InventoryValuation:
+                    break;
+                case ListType.RecentOrderedNonBEK:
+                    break;
+                case ListType.CustomInventory:
+                    break;
             }
         }
 
