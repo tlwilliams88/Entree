@@ -23,6 +23,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_NAME = "Name";
 
+        private const string PARMNAME_RETURNVALUE = "ReturnValue";
+
         private const string SPNAME_GET = "[List].[GetMandatoryItemsHeaderByCustomerNumberBranch]";
         private const string SPNAME_SAVE = "[List].[SaveMandatoryItemsHeaders]";
         #endregion
@@ -32,7 +34,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #endregion
 
         #region methods
-        public MandatoryItemsListHeader GetMandatoryItemsHeader(UserSelectedContext catalogInfo)
+        public MandatoryItemsListHeader GetListHeaderForCustomer(UserSelectedContext catalogInfo)
         {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCHID, catalogInfo.BranchId);
@@ -41,14 +43,17 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return ReadOne<MandatoryItemsListHeader>(SPNAME_GET, parms);
         }
 
-        public void SaveMandatoryItemsHeader(MandatoryItemsListHeader model) {
+        public long SaveMandatoryItemsHeader(MandatoryItemsListHeader model) {
             DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_BRANCHID, parms);
-            parms.Add(PARMNAME_CUSTNUM, parms);
-            parms.Add(PARMNAME_NAME, parms);
-            parms.Add(PARMNAME_ID, parms);
+            parms.Add(PARMNAME_BRANCHID, model.BranchId);
+            parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
+            parms.Add(PARMNAME_NAME, model.Name);
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_RETURNVALUE, direction:ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
         #endregion
     }

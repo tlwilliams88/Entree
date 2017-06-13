@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
@@ -28,55 +28,56 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #endregion
 
         #region methods
-        public List<string> GetMandatoryItemNumbers(UserProfile user, UserSelectedContext catalogInfo)
+        public List<string> GetMandatoryItemNumbers(UserSelectedContext catalogInfo)
         {
-            List<ListModel> list = ReadList(user, catalogInfo, false);
+            List<string> returnValue = new List<string>();
+            ListModel list = ReadList(catalogInfo, false);
 
-            if (list != null)
-            {
-                return list[0].Items.Select(i => i.ItemNumber).ToList();
+            if (list != null) {
+                returnValue.AddRange(list.Items.Select(i => i.ItemNumber).ToList());
             }
-            return new List<string>();
+
+            return returnValue;
         }
 
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+        public ListModel GetListModel(UserProfile profile, UserSelectedContext catalogInfo, long id) {
+            return ReadList(catalogInfo, false);
+        }
+
+        public ListModel ReadList(UserSelectedContext catalogInfo, bool headerOnly)
         {
-            MandatoryItemsListHeader header = _headersRepo.GetMandatoryItemsHeader(user.UserId.ToString(), catalogInfo, headerOnly);
+            MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
+            List<MandatoryItemsListDetail> items = null;
 
             if (header != null && headerOnly == false)
             {
-                header.Items = _detailsRepo.GetMandatoryItemsDetails(header.Id);
+                items = _detailsRepo.GetAllByParent(header.Id);
             }
 
-            if (header != null)
-            {
-                return new List<ListModel>() { header.ToListModel(catalogInfo) };
+            return header.ToListModel(items);
+        }
+
+        public void SaveDetail(UserSelectedContext catalogInfo, MandatoryItemsListDetail detail) {
+            if (detail.ParentMandatoryItemsHeaderId == 0) {
+                MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
+
+                if (header == null) {
+                    detail.ParentMandatoryItemsHeaderId = 
+                        _headersRepo.SaveMandatoryItemsHeader(new MandatoryItemsListHeader() {
+                            BranchId = catalogInfo.BranchId,
+                            CustomerNumber = catalogInfo.CustomerId
+                        });
+                }
+                else {
+                    detail.ParentMandatoryItemsHeaderId = header.Id;
+                }
             }
-            return null;
+
+            _detailsRepo.Save(detail);
         }
 
-        public void AddOrUpdateMandatoryItem(UserSelectedContext catalogInfo,
-                                string itemNumber,
-                                bool each,
-                                string catalogId,
-                                bool active)
-        {
-            _detailsRepo.AddOrUpdateMandatoryItem(catalogInfo.CustomerId,
-                catalogInfo.BranchId,
-                itemNumber,
-                each,
-                catalogId,
-                active);
-        }
-
-        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
-        {
-            return ReadList(user, catalogInfo, false)[0];
-        }
-
-        public void DeleteReminderItems(UserProfile user, UserSelectedContext catalogInfo)
-        {
-            _detailsRepo.DeleteMandatoryItems(user.UserId.ToString(), catalogInfo.CustomerId, catalogInfo.BranchId);
+        public void DeleteReminderItems(MandatoryItemsListDetail detail) {
+            _detailsRepo.Delete(detail.Id);
         }
         #endregion
     }
