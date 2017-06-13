@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using ADODB;
+
+using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
@@ -13,10 +14,9 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Service.List
@@ -84,7 +84,7 @@ namespace KeithLink.Svc.Impl.Service.List
             {
                 case ListType.Worksheet:
                 {
-                    returnList = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
+                    returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
 
                     FillOutProducts(user, catalogInfo, returnList, true);
                 }
@@ -271,38 +271,26 @@ namespace KeithLink.Svc.Impl.Service.List
             return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
         }
 
-        public long AddOrUpdateItem(UserProfile user, 
-                                    UserSelectedContext catalogInfo,
-                                    ListType type,
-                                    dynamic genericItemProperties)
-        {
+        public long SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                             ListItemModel item) {
             switch (type)
             {
                 case ListType.Worksheet:
-                    //tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
                 case ListType.Contract:
-                    //tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
+                    // cannot add items to contracts or worksheets
                     break;
-
                 case ListType.Favorite:
-                    ListItem li = genericItemProperties;
-                    _favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, li.ItemNumber, li.Each.Value, li.CatalogId, true);
+                    _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail());
                     break;
-
                 case ListType.Reminder:
                     //tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
-
                 case ListType.RecommendedItems:
                     //tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
-
                 case ListType.Mandatory:
                     //tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
                     break;
-
                 case ListType.Custom:
                     //tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
                     break;
@@ -354,44 +342,37 @@ namespace KeithLink.Svc.Impl.Service.List
         }
 
         private void AddList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list, ListType type)
-        {
-            List<ListModel> tempList = null;
-            switch (type)
-            {
+                             List<ListModel> list, ListType type) {
+            List<ListModel> tempList = new List<ListModel>();
+
+            switch (type) {
                 case ListType.Worksheet:
-                    tempList = _historyListLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Contract:
-                    tempList = _contractListLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Favorite:
-                    tempList = _favoritesLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_favoritesLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Reminder:
-                    tempList = _reminderItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.RecommendedItems:
-                    tempList = _recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_recommendedItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
-
                 case ListType.Mandatory:
-                    tempList = _mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly);
+                    tempList.Add(_mandatoryItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
             }
 
-
-            if (tempList != null && tempList.Count > 0 && tempList[0].Items != null && tempList[0].Items.Count > 0)
-            {
+            if(tempList.Count > 0 && 
+               tempList[0].Items != null && 
+               tempList[0].Items.Count > 0) {
                 FillOutProducts(user, catalogInfo, tempList, true);
             }
 
-            if (tempList != null)
-            {
+            if (tempList.Count > 0) {
                 list.AddRange(tempList);
             }
         }

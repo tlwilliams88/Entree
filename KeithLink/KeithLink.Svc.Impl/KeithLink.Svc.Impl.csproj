@@ -440,7 +440,6 @@
     <Compile Include="Repository\Lists\RecentlyOrderedListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyViewedListRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\FavoritesListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NotesListRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />

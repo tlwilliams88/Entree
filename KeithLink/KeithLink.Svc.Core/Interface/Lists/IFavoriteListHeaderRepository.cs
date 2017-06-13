@@ -8,6 +8,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
     {
         FavoritesListHeader GetFavoritesList(Guid userId, UserSelectedContext catalogInfo);
 
-        void SaveFavoriteListHeader(FavoritesListHeader model);
+        long SaveFavoriteListHeader(FavoritesListHeader model);
     }
 }

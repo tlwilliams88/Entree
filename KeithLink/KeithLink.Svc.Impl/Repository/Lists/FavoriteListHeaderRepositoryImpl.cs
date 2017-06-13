@@ -31,14 +31,13 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             return ReadOne<FavoritesListHeader>(SPNAME_GETHEADER, parms);
         }
 
-        public void SaveFavoriteListHeader(FavoritesListHeader model)
-        {
+        public long SaveFavoriteListHeader(FavoritesListHeader model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, model.BranchId);
             parms.Add(PARMNAME_CUSTID, model.CustomerNumber);
             parms.Add(PARMNAME_USERID, model.UserId);
 
-            ExecuteCommand(SPNAME_SAVE, parms);
+            return ExecuteScalarCommand<long>(SPNAME_SAVE, parms);
         }
         #endregion
     }

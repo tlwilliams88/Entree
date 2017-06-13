@@ -286,7 +286,6 @@
     <Compile Include="Interface\Lists\IFavoritesListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListRepository.cs" />
-    <Compile Include="Interface\Lists\IFavoritesListRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryListLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
