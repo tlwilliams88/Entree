@@ -302,8 +302,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
                 case ListType.RecentOrderedNonBEK:
                     break;
-                case ListType.CustomInventory:
-                    break;
             }
         }
 
