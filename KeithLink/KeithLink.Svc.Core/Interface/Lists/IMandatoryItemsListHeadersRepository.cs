@@ -5,6 +5,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IMandatoryItemsListHeadersRepository
     {
-        MandatoryItemsListHeader GetMandatoryItemsHeader(string userId, UserSelectedContext catalogInfo, bool headerOnly);
+        MandatoryItemsListHeader GetMandatoryItemsHeader(UserSelectedContext catalogInfo);
+        void SaveMandatoryItemsHeader(MandatoryItemsListHeader model);
     }
 }

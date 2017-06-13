@@ -17,22 +17,38 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class MandatoryItemsListHeadersRepositoryImpl : DapperDatabaseConnection, IMandatoryItemsListHeadersRepository
     {
         #region attributes
-        private const string COMMAND_GETHEADER = "[List].[GetMandatoryItemsHeaderByCustomerNumberBranch]";
-        #endregion
-        #region constructor
-        public MandatoryItemsListHeadersRepositoryImpl() : base(Configuration.BEKDBConnectionString)
-        {
+        private const string PARMNAME_BRANCHID = "BranchId";
+        private const string PARMNAME_CUSTNUM = "CustomerNumber";
 
-        }
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_NAME = "Name";
+
+        private const string SPNAME_GET = "[List].[GetMandatoryItemsHeaderByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveMandatoryItemsHeaders]";
         #endregion
+
+        #region constructor
+        public MandatoryItemsListHeadersRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
+        #endregion
+
         #region methods
-        public MandatoryItemsListHeader GetMandatoryItemsHeader(string userId, UserSelectedContext catalogInfo, bool headerOnly)
+        public MandatoryItemsListHeader GetMandatoryItemsHeader(UserSelectedContext catalogInfo)
         {
-            return ReadOne<MandatoryItemsListHeader>(new CommandDefinition(
-                                COMMAND_GETHEADER,
-                                new { @CustomerNumber = catalogInfo.CustomerId, @BranchId = catalogInfo.BranchId },
-                                commandType: CommandType.StoredProcedure
-                            ));
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCHID, catalogInfo.BranchId);
+            parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
+
+            return ReadOne<MandatoryItemsListHeader>(SPNAME_GET, parms);
+        }
+
+        public void SaveMandatoryItemsHeader(MandatoryItemsListHeader model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCHID, parms);
+            parms.Add(PARMNAME_CUSTNUM, parms);
+            parms.Add(PARMNAME_NAME, parms);
+            parms.Add(PARMNAME_ID, parms);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
         #endregion
     }

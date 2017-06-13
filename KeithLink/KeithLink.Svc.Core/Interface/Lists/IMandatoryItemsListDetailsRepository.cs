@@ -5,17 +5,10 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IMandatoryItemsListDetailsRepository
     {
-        List<MandatoryItemsListDetail> GetMandatoryItemsDetails(long parentHeaderId);
+        List<MandatoryItemsListDetail> GetAll(long parentHeaderId);
 
-        void AddOrUpdateMandatoryItem(string customerNumber,
-            string branchId,
-            string itemNumber,
-            bool each,
-            string catalogId,
-            bool active);
+        void Save(MandatoryItemsListDetail model);
 
-        void DeleteMandatoryItems(string userId,
-            string customerNumber,
-            string branchId);
+        void Delete(long id);
     }
 }
