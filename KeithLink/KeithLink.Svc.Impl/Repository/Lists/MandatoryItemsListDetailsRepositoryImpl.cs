@@ -17,56 +17,47 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class MandatoryItemsListDetailsRepositoryImpl : DapperDatabaseConnection, IMandatoryItemsListDetailsRepository
     {
         #region attributes
-        private const string COMMAND_GETDETAILS = "[List].[ReadMandatoryItemDetailsByParentId]";
-        private const string COMMAND_ADDDETAIL = "[List].[AddOrUpdateMandatoryItemByCustomerNumberBranch]";
-        private const string COMMAND_DELETEDETAILS = "[List].[DeleteMandatoryItemDetails]";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID = "ParentMandatoryItemsHeaderId";
+        private const string PARMNAME_ITEMNUMBER = "ItemNumber";
+        private const string PARMNAME_EACH = "Each";
+        private const string PARMNAME_CATALOG_ID = "CatalogId";
+        private const string PARMNAME_ACTIVE = "Active";
+
+        private const string SPNAME_GET = "[List].[ReadMandatoryItemDetailsByParentId]";
+        private const string SPNAME_SAVE = "[List].[SaveMandatoryItemByCustomerNumberBranch]";
+        private const string SPNAME_DELETE = "[List].[DeleteMandatoryItemDetails]";
         #endregion
+
         #region constructor
-        public MandatoryItemsListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString)
-        {
-
-        }
+        public MandatoryItemsListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
         #endregion
+
         #region methods
-        public List<MandatoryItemsListDetail> GetMandatoryItemsDetails(long parentHeaderId)
-        {
-            return Read<MandatoryItemsListDetail>(new CommandDefinition(
-                COMMAND_GETDETAILS,
-                new { @ParentMandatoryItemsHeaderId = parentHeaderId },
-                commandType: CommandType.StoredProcedure
-            ));
+        public List<MandatoryItemsListDetail> GetAll(long parentHeaderId) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID, parentHeaderId);
+
+            return Read<MandatoryItemsListDetail>(SPNAME_GET, parms);
         }
 
-        public void AddOrUpdateMandatoryItem(string customerNumber,
-                                string branchId,
-                                string itemNumber,
-                                bool each,
-                                string catalogId,
-                                bool active)
-        {
-            ExecuteCommand(new CommandDefinition(COMMAND_ADDDETAIL,
-                new
-                {
-                    @CustomerNumber = customerNumber,
-                    @BranchId = branchId,
-                    @ItemNumber = itemNumber,
-                    @Each = each,
-                    @CatalogId = catalogId,
-                    @Active = active
-                }, commandType: CommandType.StoredProcedure));   
+        public void Save(MandatoryItemsListDetail model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID, model.ParentMandatoryItemsHeaderId);
+            parms.Add(PARMNAME_ITEMNUMBER, model.ItemNumber);
+            parms.Add(PARMNAME_EACH, model.Each);
+            parms.Add(PARMNAME_CATALOG_ID, model.CatalogId);
+            parms.Add(PARMNAME_ACTIVE, model.Active);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
 
-        public void DeleteMandatoryItems(string userId,
-                                string customerNumber,
-                                string branchId)
-        {
-            ExecuteCommand(new CommandDefinition(COMMAND_DELETEDETAILS,
-                new
-                {
-                    @UserId = userId,
-                    @CustomerNumber = customerNumber,
-                    @BranchId = branchId
-                }, commandType: CommandType.StoredProcedure));
+        public void Delete(long id) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, id);
+
+            ExecuteCommand(SPNAME_DELETE, parms);
         }
         #endregion
     }
