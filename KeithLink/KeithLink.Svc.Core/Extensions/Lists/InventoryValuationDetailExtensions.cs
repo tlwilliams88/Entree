@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
 
         public static InventoryValuationListDetail ToInventoryValuationListDetail(this ListItemModel value, long headerId = 0) {
             return new InventoryValuationListDetail() {
+                Active = true,
                 CatalogId = value.CatalogId,
                 CustomInventoryItemId = value.CustomInventoryItemId,
                 Each = value.Each,

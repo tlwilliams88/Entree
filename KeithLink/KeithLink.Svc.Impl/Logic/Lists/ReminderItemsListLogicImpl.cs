@@ -44,6 +44,25 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 return header.ToListModel(items);
             }
         }
+
+        public void Save(UserProfile user, UserSelectedContext catalogInfo, ReminderItemsListDetail model) {
+            // try to find the parent header id if it is not in the model
+            if(model.ParentRemindersHeaderId == 0) {
+                ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
+
+                if(header == null) {
+                    // create the header
+                    model.ParentRemindersHeaderId = _headersRepo.SaveReminderListHeader(new ReminderItemsListHeader() {
+                                                                                            BranchId = catalogInfo.BranchId,
+                                                                                            CustomerNumber = catalogInfo.CustomerId
+                                                                                        });
+                } else {
+                    model.ParentRemindersHeaderId = header.Id;
+                }
+            }
+
+            _detailsRepo.SaveReminderListDetail(model);
+        }
         #endregion
     }
 }

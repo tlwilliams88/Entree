@@ -1,7 +1,7 @@
 ﻿CREATE TABLE [List].[InventoryValuationListDetails]
 (
-	[Id]                                    INT             NOT NULL    PRIMARY KEY IDENTITY(1,1),
-	[ParentInventoryValuationListHeaderId]  INT             NOT NULL,
+	[Id]                                    BIGINT          NOT NULL    PRIMARY KEY IDENTITY(1,1),
+	[ParentInventoryValuationListHeaderId]  BIGINT          NOT NULL,
 	[CustomInventoryItemId]		            BIGINT			NULL,   
 	[ItemNumber]                            CHAR(6)         NOT NULL,
 	[Each]                                  BIT             NULL,

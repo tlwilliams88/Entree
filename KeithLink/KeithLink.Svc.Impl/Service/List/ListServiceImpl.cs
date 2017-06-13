@@ -282,7 +282,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail(headerId));
                     break;
                 case ListType.Reminder:
-                    //tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
+                    _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
                     break;
                 case ListType.RecommendedItems:
                     //tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);

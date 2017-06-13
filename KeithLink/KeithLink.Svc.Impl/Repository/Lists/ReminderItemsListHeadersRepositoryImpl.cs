@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
+
+using Dapper;
+
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.DataConnection;
-using System.Data;
-using Dapper;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 
-namespace KeithLink.Svc.Impl.Repository.Lists
-{
-    public class ReminderItemsListHeadersRepositoryImpl : DapperDatabaseConnection, IRemindersListHeadersRepository
-    {
+namespace KeithLink.Svc.Impl.Repository.Lists {
+    public class ReminderItemsListHeadersRepositoryImpl : DapperDatabaseConnection, IRemindersListHeadersRepository {
         #region attributes
         private const string PARMNAME_BRANCH = "BranchId";
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_RETVAL = "ReturnValue";
 
         private const string SPNAME_GETONE = "[List].[GetRemindersHeaderByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveRemindersHeaders]";
         #endregion
 
         #region constructor
@@ -35,8 +31,18 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
             return ReadOne<ReminderItemsListHeader>(SPNAME_GETONE, parms);
         }
-        #endregion
 
-        
+        public long SaveReminderListHeader(ReminderItemsListHeader model) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCH, model.BranchId);
+            parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_RETVAL, direction: ParameterDirection.Output);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETVAL);
+        }
+        #endregion
     }
 }

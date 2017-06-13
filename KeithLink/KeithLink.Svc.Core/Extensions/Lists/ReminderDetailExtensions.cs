@@ -15,5 +15,16 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 CatalogId = value.CatalogId
             };
         }
+
+        public static ReminderItemsListDetail ToReminderItemsListDetail(this ListItemModel model, long headerId = 0) {
+            return new ReminderItemsListDetail() {
+                Active = true,
+                CatalogId = model.CatalogId,
+                Each = model.Each ?? false,
+                Id = model.ListItemId,
+                ItemNumber = model.ItemNumber,
+                ParentRemindersHeaderId = headerId
+            };
+        }
     }
 }

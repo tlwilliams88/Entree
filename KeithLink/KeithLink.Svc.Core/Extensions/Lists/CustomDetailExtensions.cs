@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
 
         public static CustomListDetail ToCustomListDetail(this ListItemModel value, long headerId = 0) {
             return new CustomListDetail() {
+                Active = true,
                 CatalogId = value.CatalogId,
                 CustomInventoryItemId = value.CustomInventoryItemId,
                 Each = value.Each,
