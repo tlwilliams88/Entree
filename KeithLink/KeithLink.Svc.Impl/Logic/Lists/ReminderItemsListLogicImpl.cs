@@ -45,7 +45,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
         }
 
-        public void Save(UserProfile user, UserSelectedContext catalogInfo, ReminderItemsListDetail model) {
+        public void Save(UserSelectedContext catalogInfo, ReminderItemsListDetail model) {
             // try to find the parent header id if it is not in the model
             if(model.ParentRemindersHeaderId == 0) {
                 ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
