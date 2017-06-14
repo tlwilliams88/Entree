@@ -110,40 +110,40 @@ namespace KeithLink.Svc.Core.Extensions
             };
         }
 
-        public static ListModel ToListModel(this NotesListHeader header, UserSelectedContext catalogInfo)
-        {
-            return new ListModel()
-            {
-                BranchId = header.BranchId,
-                IsContractList = false,
-                IsFavorite = false,
-                IsWorksheet = false,
-                IsReminder = false,
-                IsMandatory = false,
-                IsRecommended = false,
-                IsCustomInventory = false,
-                Type = ListType.Notes,
-                ListId = header.Id,
-                Name = header.Name,
-                ReadOnly = false,
-                Items = header.Items == null ? null :
-                    header.Items.Select(i => new ListItemModel()
-                    {
-                        ListItemId = i.Id,
-                        //        Category = i.Category,
-                        Type = ListType.Notes,
-                        ItemNumber = i.ItemNumber,
-                        //        Label = i.Label,
-                        //        ParLevel = i.Par,
-                        ModifiedUtc = i.ModifiedUtc,
-                        CreatedUtc = i.CreatedUtc,
-                        Each = i.Each ?? false,
-                        Notes = i.Note,
-                        //        Quantity = i.Quantity,
-                        CatalogId = i.CatalogId
-                    }).OrderBy(l => l.Position).ToList()
-            };
-        }
+        //public static ListModel ToListModel(this NotesListHeader header, UserSelectedContext catalogInfo)
+        //{
+        //    return new ListModel()
+        //    {
+        //        BranchId = header.BranchId,
+        //        IsContractList = false,
+        //        IsFavorite = false,
+        //        IsWorksheet = false,
+        //        IsReminder = false,
+        //        IsMandatory = false,
+        //        IsRecommended = false,
+        //        IsCustomInventory = false,
+        //        Type = ListType.Notes,
+        //        ListId = header.Id,
+        //        Name = header.Name,
+        //        ReadOnly = false,
+        //        Items = header.Items == null ? null :
+        //            header.Items.Select(i => new ListItemModel()
+        //            {
+        //                ListItemId = i.Id,
+        //                //        Category = i.Category,
+        //                Type = ListType.Notes,
+        //                ItemNumber = i.ItemNumber,
+        //                //        Label = i.Label,
+        //                //        ParLevel = i.Par,
+        //                ModifiedUtc = i.ModifiedUtc,
+        //                CreatedUtc = i.CreatedUtc,
+        //                Each = i.Each ?? false,
+        //                Notes = i.Notes,
+        //                //        Quantity = i.Quantity,
+        //                CatalogId = i.CatalogId
+        //            }).OrderBy(l => l.Position).ToList()
+        //    };
+        //}
 
         public static ListModel ToListModel(this RecommendedItemsListHeader header, UserSelectedContext catalogInfo)
         {

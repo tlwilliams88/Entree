@@ -1,0 +1,35 @@
+﻿using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Lists.Notes;
+
+namespace KeithLink.Svc.Core.Extensions.Lists {
+    public static class NotesDetailsListExtensions {
+        public static ListItemModel ToWebModel(this NotesListDetail value) {
+            return new ListItemModel {
+                                         Active = value.Active,
+                                         ListItemId = value.Id,
+                                         Type = ListType.Notes,
+                                         ItemNumber = value.ItemNumber,
+                                         Notes = value.Note,
+                                         Each = value.Each ?? false,
+                                         CatalogId = value.CatalogId,
+                                         ModifiedUtc = value.ModifiedUtc,
+                                         CreatedUtc = value.CreatedUtc
+                                     };
+        }
+
+        public static NotesListDetail ToMandatoryItemsListDetail(this ListItemModel model, long headerId = 0) {
+            NotesListDetail item = new NotesListDetail {
+                                                           Active = model.Active,
+                                                           CatalogId = model.CatalogId,
+                                                           Each = model.Each ?? false,
+                                                           Id = model.ListItemId,
+                                                           ItemNumber = model.ItemNumber,
+                                                           Note = model.Notes,
+                                                           ParentNotesHeaderId = headerId
+                                                       };
+
+            return item;
+        }
+    }
+}
