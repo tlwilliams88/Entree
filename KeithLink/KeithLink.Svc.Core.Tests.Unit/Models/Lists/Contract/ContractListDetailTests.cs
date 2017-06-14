@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using FluentAssertions;
-using KeithLink.Svc.Core.Models.Lists.Contract;
-using KeithLink.Svc.Core.Models.Lists.CustomList;
 using Xunit;
+
+using KeithLink.Svc.Core.Models.Lists.Contract;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
     public class ContractListDetailTests {

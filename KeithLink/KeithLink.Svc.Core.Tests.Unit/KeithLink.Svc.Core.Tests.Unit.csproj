@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Lists\Contract\ContractListDetailTests.cs" />
+    <Compile Include="Models\Lists\Contract\ContractListHeaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
