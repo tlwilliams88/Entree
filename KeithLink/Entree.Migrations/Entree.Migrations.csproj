@@ -353,8 +353,6 @@
     <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\Indexes\idx_ParentFavoriteHeaderId_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\Indexes\idx_ParentFavoriteHeaderId_Active_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\FavoritesDetail\Indexes\idx_ParentFavoriteHeaderId_Active_0033_2017.04.00_up.sql" />
-    <Content Include="Scripts\AppData\List\Tables\FavoritesHeaders\Indexes\idx_BranchId_CustomerNumber_UserId_0033_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\FavoritesHeaders\Indexes\idx_BranchId_CustomerNumber_UserId_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Indexes\idx_ParentHistoryHeaderId_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\HistoryDetail\Indexes\idx_ParentHistoryHeaderId_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_down.sql" />
@@ -446,9 +444,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesDetail\NotesDetails_0024_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Tables\NotesHeader\Indexes\IX_ListNotesHeaders_UserIdCustomerNumberBranch_0024_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeaders_0024_2017.04.00_down.sql">
@@ -959,7 +954,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Scripts\AppData\List\Tables\FavoritesHeaders\Indexes\" />
+    <Folder Include="Scripts\AppData\List\Tables\NotesHeader\Indexes\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(ProjectDir)Scripts" "$(TargetDir)Scripts" /E /Y</PostBuildEvent>
