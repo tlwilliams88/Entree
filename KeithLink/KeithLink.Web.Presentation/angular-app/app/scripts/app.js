@@ -167,6 +167,8 @@ angular
 
     event.preventDefault();
 
+    $rootScope.$$watchers = [];
+
     // Validate the state the user is trying to access
 
     if (AccessService.isLoggedIn()) {

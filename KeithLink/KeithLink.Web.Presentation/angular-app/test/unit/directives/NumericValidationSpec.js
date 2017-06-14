@@ -14,7 +14,7 @@ describe('Directive: NumericValidation', function () {
   var $scope, form;
 
   beforeEach(inject(function($compile, $rootScope) {
-    $scope = $rootScope;
+    $scope = $rootScope.$new();
     var element = angular.element(
       '<form name="form">' +
         '<input ng-model="model.somenum" type="text" name="somenum" numeric-validation />' +
