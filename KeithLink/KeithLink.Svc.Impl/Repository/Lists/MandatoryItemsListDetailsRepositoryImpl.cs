@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #endregion
 
         #region methods
-        public List<MandatoryItemsListDetail> GetAll(long parentHeaderId) {
+        public List<MandatoryItemsListDetail> GetAllByHeader(long parentHeaderId) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID, parentHeaderId);
 

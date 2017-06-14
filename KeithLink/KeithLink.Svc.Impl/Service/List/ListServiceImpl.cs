@@ -289,6 +289,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
                 case ListType.Mandatory:
                     //tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
+                    _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
                     break;
                 case ListType.Custom:
                     _customListLogic.SaveItem(user, catalogInfo, headerId, item.ToCustomListDetail(headerId));
