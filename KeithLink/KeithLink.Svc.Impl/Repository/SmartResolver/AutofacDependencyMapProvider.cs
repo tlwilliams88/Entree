@@ -152,7 +152,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // lists
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
-            builder.RegisterType<NotesListRepositoryImpl>().As<INotesListRepository>();
+            builder.RegisterType<NotesHeadersRepositoryImpl>().As<INotesListRepository>();
             builder.RegisterType<RecentlyViewedListRepositoryImpl>().As<IRecentlyViewedListRepository>();
             builder.RegisterType<RecentlyOrderedListHeadersRepositoryImpl>().As<IRecentlyOrderedListHeadersRepository>();
             builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>();
