@@ -18,14 +18,12 @@ AS
                 [UserId],
                 [BranchId],
                 [CustomerNumber],
-                [Name],
                 [CreatedUtc],
                 [ModifiedUtc]
             ) VALUES (
                 @UserId,
                 @BranchId,
                 @CustomerNumber,
-                'Favorites',
                 GETUTCDATE(),
                 GETUTCDATE()
             )

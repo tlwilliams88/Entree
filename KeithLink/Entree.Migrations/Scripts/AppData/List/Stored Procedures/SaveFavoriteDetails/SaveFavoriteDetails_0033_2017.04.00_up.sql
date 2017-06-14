@@ -38,7 +38,6 @@ AS
                 [ModifiedUtc]
             ) VALUES (
                 @ParentFavoritesHeaderId,
-                @BranchId,
 	            @ItemNumber,
 	            @Each,
 	            @Label,

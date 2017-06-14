@@ -17,7 +17,7 @@ AS
     WHERE
         [Id] = @Id
 
-    IF @@ROWCOUTN > 0 
+    IF @@ROWCOUNT > 0 
       BEGIN
         INSERT INTO
             [List].[InventoryValuationListHeaders] (

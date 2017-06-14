@@ -1,5 +1,5 @@
 ﻿CREATE INDEX idx_BranchId_CustomerNumber
-	ON [List].[InventoryValuationListDetails](
+	ON [List].[InventoryValuationListHeaders](
 		[BranchId],
 		[CustomerNumber]
 	)
