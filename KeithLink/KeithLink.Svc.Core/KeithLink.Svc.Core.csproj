@@ -180,8 +180,10 @@
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
+    <Compile Include="Extensions\Lists\NotesDetailsListExtensions.cs" />
     <Compile Include="Extensions\Lists\MandatoryItemDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\ContractDetailExtensions.cs" />
+    <Compile Include="Extensions\Lists\NotesHeadersListExtensions.cs" />
     <Compile Include="Extensions\Lists\MandatoryItemHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\ContractHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\CustomDetailExtensions.cs" />

@@ -21,6 +21,8 @@ namespace KeithLink.Svc.Core.Models.Lists
     {
 
         #region properties
+        [DataMember(Name = "active")]
+        public bool Active { get; set; }
 
         [DataMember(Name = "listitemid")]
         public long ListItemId { get; set; }

@@ -4,58 +4,55 @@ using System.Data;
 using Dapper;
 
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Notes;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 
 namespace KeithLink.Svc.Impl.Repository.Lists {
-    public class NotesDetailsRepositoryImpl : DapperDatabaseConnection, INoteDetailsListRepository {
+    public class NotesDetailsRepositoryImpl : DapperDatabaseConnection, INotesDetailsListRepository {
         #region constructor
-        public NotesHeadersRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
+        public NotesDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
         #endregion
 
         #region attributes
-        private const string COMMAND_GETHEADER = "[List].[GetNotesHeaderByCustomerNumberBranch]";
-        private const string COMMAND_GETDETAILS = "[List].[ReadNotesDetailsByParentId]";
-        private const string COMMAND_ADDFAVORITE = "[List].[AddOrUpdateNotesByCustomerNumberBranch]";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_PARENTNOTESHEADERID = "ParentNotesHeaderId";
+        private const string PARMNAME_ITEMNUMBER = "ItemNumber";
+        private const string PARMNAME_EACH = "Each";
+        private const string PARMNAME_CATALOGID = "CatalogId";
+        private const string PARMNAME_NOTE = "Note";
+        private const string PARMNAME_ACTIVE = "Active";
+        private const string PARMNAME_RETURNVALUE = "ReturnValue";
+            
+
+        private const string SPNAME_GET = "[List].[GetNotesHeaderByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[AddOrUpdateNotesByCustomerNumberBranch]";
         #endregion
 
         #region methods
-        public List<ListModel> GetNotesList(UserSelectedContext catalogInfo, bool headerOnly) {
-            NotesListHeader header = ReadOne<NotesListHeader>(new CommandDefinition(
-                                                                                    COMMAND_GETHEADER,
-                                                                                    new {CustomerNumber = catalogInfo.CustomerId, catalogInfo.BranchId},
-                                                                                    commandType: CommandType.StoredProcedure
-                                                                                   ));
+        public List<NotesListDetail> Get(long parentHeaderId) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_PARENTNOTESHEADERID, parentHeaderId);
 
-            if (headerOnly == false)
-                header.Items = Read<NotesListDetail>(new CommandDefinition(
-                                                                           COMMAND_GETDETAILS,
-                                                                           new {ParentNotesHeaderId = header.Id},
-                                                                           commandType: CommandType.StoredProcedure
-                                                                          ));
-
-            return new List<ListModel> {header.ToListModel(catalogInfo)};
+            return Read<NotesListDetail>(SPNAME_GET, parms);
         }
 
-        public void AddOrUpdateNote(string customerNumber,
-                                    string branchId,
-                                    string itemNumber,
-                                    bool each,
-                                    string catalogId,
-                                    string note,
-                                    bool active) {
-            ExecuteCommand(new CommandDefinition(COMMAND_ADDFAVORITE,
-                                                 new {
-                                                         CustomerNumber = customerNumber,
-                                                         BranchId = branchId,
-                                                         ItemNumber = itemNumber,
-                                                         Each = each,
-                                                         CatalogId = catalogId,
-                                                         Note = note,
-                                                         Active = active
-                                                     }, commandType: CommandType.StoredProcedure));
+        public long Save(NotesListDetail detail) { 
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, detail.Id);
+            parms.Add(PARMNAME_PARENTNOTESHEADERID, detail.ParentNotesHeaderId);
+            parms.Add(PARMNAME_ITEMNUMBER, detail.ItemNumber);
+            parms.Add(PARMNAME_EACH, detail.Each);
+            parms.Add(PARMNAME_CATALOGID, detail.CatalogId);
+            parms.Add(PARMNAME_NOTE, detail.Note);
+            parms.Add(PARMNAME_ACTIVE, detail.Active);
+            parms.Add(PARMNAME_RETURNVALUE, direction:ParameterDirection.Output);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
         #endregion
     }
