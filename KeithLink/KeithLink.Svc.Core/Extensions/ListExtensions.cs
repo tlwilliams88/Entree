@@ -269,52 +269,53 @@ namespace KeithLink.Svc.Core.Extensions
 
         public static ListModel ToListModel(this MandatoryItemsListHeader header, UserSelectedContext catalogInfo)
         {
-            return new ListModel()
-            {
-                BranchId = header.BranchId,
-                IsContractList = false,
-                IsFavorite = false,
-                IsWorksheet = false,
-                IsReminder = false,
-                IsMandatory = true,
-                IsRecommended = false,
-                IsCustomInventory = false,
-                Type = ListType.Mandatory,
-                //SharedWith = list.Shares != null ? list.Shares.Select(s => s.CustomerId).ToList() : null,
-                ListId = header.Id,
-                Name = header.Name,
-                ReadOnly = false,
-                //IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) &&
-                //                                   list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
-                //                                : false,
-                //IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
-                Items = header.Items == null ? null :
-                    header.Items.Select(i => new ListItemModel()
-                    {
-                        ListItemId = i.Id,
-                        //        Category = i.Category,
-                        Type = ListType.Mandatory,
-                        ItemNumber = i.ItemNumber,
-                        //        Label = i.Label,
-                        //        ParLevel = i.Par,
-                        //        ListItemId = i.Id,
-                        //        Position = i.LineNumber,
-                        ModifiedUtc = i.ModifiedUtc,
-                        CreatedUtc = i.CreatedUtc,
-                        //        Delta = (i.CreatedUtc.AddDays
-                        //            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
-                        //                " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
-                        //            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
-                        //            Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
-                        //        FromDate = i.FromDate,
-                        //        ToDate = i.ToDate,
-                        Each = i.Each ?? false,
-                        Notes = i.Note,
-                        //        Quantity = i.Quantity,
-                        CatalogId = i.CatalogId
-                        //        CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
-                    }).OrderBy(l => l.Position).ToList()
-            };
+            //return new ListModel()
+            //{
+            //    BranchId = header.BranchId,
+            //    IsContractList = false,
+            //    IsFavorite = false,
+            //    IsWorksheet = false,
+            //    IsReminder = false,
+            //    IsMandatory = true,
+            //    IsRecommended = false,
+            //    IsCustomInventory = false,
+            //    Type = ListType.Mandatory,
+            //    //SharedWith = list.Shares != null ? list.Shares.Select(s => s.CustomerId).ToList() : null,
+            //    ListId = header.Id,
+            //    Name = header.Name,
+            //    ReadOnly = false,
+            //    //IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) &&
+            //    //                                   list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
+            //    //                                : false,
+            //    //IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
+            //    Items = header.Items == null ? null :
+            //        header.Items.Select(i => new ListItemModel()
+            //        {
+            //            ListItemId = i.Id,
+            //            //        Category = i.Category,
+            //            Type = ListType.Mandatory,
+            //            ItemNumber = i.ItemNumber,
+            //            //        Label = i.Label,
+            //            //        ParLevel = i.Par,
+            //            //        ListItemId = i.Id,
+            //            //        Position = i.LineNumber,
+            //            ModifiedUtc = i.ModifiedUtc,
+            //            CreatedUtc = i.CreatedUtc,
+            //            //        Delta = (i.CreatedUtc.AddDays
+            //            //            (Constants.CONTENTMGMT_CONTRACTITEMS_THRESHOLD) > DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWADDED +
+            //            //                " " + Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE :
+            //            //            (i.ToDate != null && i.ToDate.Value < DateTime.Now) ? Constants.CONTENTMGMT_CONTRACTITEMS_NEWDELETED :
+            //            //            Constants.CONTENTMGMT_CONTRACTITEMS_ACTIVE,
+            //            //        FromDate = i.FromDate,
+            //            //        ToDate = i.ToDate,
+            //            Each = i.Each ?? false,
+            //            Notes = i.Note,
+            //            //        Quantity = i.Quantity,
+            //            CatalogId = i.CatalogId
+            //            //        CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
+            //        }).OrderBy(l => l.Position).ToList()
+            //};
+            return new ListModel();
         }
 
         public static PagedListModel ToPagedList(this ListModel returnList, PagingModel paging)
