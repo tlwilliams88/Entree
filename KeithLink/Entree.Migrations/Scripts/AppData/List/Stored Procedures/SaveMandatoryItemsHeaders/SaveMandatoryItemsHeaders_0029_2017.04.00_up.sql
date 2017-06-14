@@ -2,7 +2,8 @@ CREATE PROCEDURE [List].[SaveMandatoryItemsHeaders]
     @Id             BIGINT,
     @CustomerNumber	CHAR (6),
     @BranchId       CHAR (3),
-    @Name           VARCHAR (40)
+    @Name           VARCHAR (40),
+    @ReturnValue    BIGINT OUTPUT
 AS
 
 IF @Id > 0
@@ -35,3 +36,5 @@ ELSE
             GETUTCDATE()
         )
     END
+
+SET @ReturnValue = SCOPE_IDENTITY()

@@ -276,6 +276,7 @@
     <Compile Include="Interface\Lists\IInventoryValuationListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IInventoryValuationListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IInventoryValuationListLogic.cs" />
+    <Compile Include="Interface\Lists\INoteDetailsListRepository.cs" />
     <Compile Include="Interface\Lists\IRemindersListLogic.cs" />
     <Compile Include="Interface\Lists\IRemindersListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IRecommendedItemsListDetailsRepository.cs" />
@@ -295,7 +296,7 @@
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Lists\INoteLogic.cs" />
     <Compile Include="Interface\Lists\INotesListLogic.cs" />
-    <Compile Include="Interface\Lists\INotesListRepository.cs" />
+    <Compile Include="Interface\Lists\INotesHeadersListRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignHeaderRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignItemRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignLogic.cs" />

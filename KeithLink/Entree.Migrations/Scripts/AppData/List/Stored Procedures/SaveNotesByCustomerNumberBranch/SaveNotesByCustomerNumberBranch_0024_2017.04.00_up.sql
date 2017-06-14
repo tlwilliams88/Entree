@@ -5,7 +5,8 @@ CREATE PROCEDURE [List].[SaveNotesByCustomerNumberBranch]
     @Each                   BIT,
     @CatalogId              VARCHAR(10),
     @Note                   NVARCHAR(500),
-    @Active                 BIT
+    @Active                 BIT,
+    @ReturnValue            BIGINT OUTPUT
 AS
 
 IF @Id > 0
@@ -40,3 +41,4 @@ ELSE
         )
     END
 
+SET @ReturnValue = SCOPE_IDENTITY()
