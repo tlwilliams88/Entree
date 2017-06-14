@@ -1,3 +1,3 @@
-﻿DROP PROC [List].[SaveFavoritesHeaders]
+﻿DROP PROC [List].[SaveFavoritesHeader]
 GO
     
