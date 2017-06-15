@@ -268,8 +268,8 @@
     <Compile Include="Interface\Lists\IContractListLogic.cs" />
     <Compile Include="Interface\Lists\IContractListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IContractListDetailsRepository.cs" />
-    <Compile Include="Interface\Lists\IFavoriteListDetailRepository.cs" />
-    <Compile Include="Interface\Lists\IFavoriteListHeaderRepository.cs" />
+    <Compile Include="Interface\Lists\IFavoriteListDetailsRepository.cs" />
+    <Compile Include="Interface\Lists\IFavoriteListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryListDetailRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryListHeaderRepository.cs" />
     <Compile Include="Interface\Lists\IMandatoryItemListLogic.cs" />

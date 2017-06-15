@@ -9,7 +9,7 @@ using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 
 namespace KeithLink.Svc.Impl.Repository.Lists {
-    public class FavoriteListDetailRepositoryImpl : DapperDatabaseConnection, IFavoriteListDetailRepository {
+    public class FavoriteListDetailRepositoryImpl : DapperDatabaseConnection, IFavoriteListDetailsRepository {
         #region attributes
         private const string PARMNAME_ACTIVE = "Active";
         private const string PARMNAME_CATALOGID = "CatalogId";

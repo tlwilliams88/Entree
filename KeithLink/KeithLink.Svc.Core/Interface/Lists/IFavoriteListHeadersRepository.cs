@@ -4,7 +4,7 @@ using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
-    public interface IFavoriteListHeaderRepository
+    public interface IFavoriteListHeadersRepository
     {
         FavoritesListHeader GetFavoritesList(Guid userId, UserSelectedContext catalogInfo);
 
