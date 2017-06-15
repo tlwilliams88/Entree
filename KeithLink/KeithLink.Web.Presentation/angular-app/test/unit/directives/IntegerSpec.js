@@ -12,7 +12,8 @@ describe('Directive: Integer', function() {
   var $scope, form;
 
   beforeEach(inject(function($compile, $rootScope) {
-    $scope = $rootScope;
+    $scope = $rootScope.$new();
+    $rootScope.$$watchers = [];
     var element = angular.element(
       '<form name="form">' +
         '<input ng-model="model.somenum" type="text" name="somenum" integer />' +
