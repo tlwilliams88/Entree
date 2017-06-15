@@ -74,6 +74,7 @@
     <Compile Include="Models\Lists\CustomList\CustomListDetailTests.cs" />
     <Compile Include="Models\Lists\CustomList\CustomListHeaderTests.cs" />
     <Compile Include="Models\Lists\Favorites\FavoriteListDetailTests.cs" />
+    <Compile Include="Models\Lists\Favorites\FavoritesListHeaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
