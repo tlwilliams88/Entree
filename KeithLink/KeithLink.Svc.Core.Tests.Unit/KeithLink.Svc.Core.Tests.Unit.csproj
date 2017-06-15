@@ -66,6 +66,8 @@
   <ItemGroup>
     <Compile Include="Models\Lists\Contract\ContractListDetailTests.cs" />
     <Compile Include="Models\Lists\Contract\ContractListHeaderTests.cs" />
+    <Compile Include="Models\Lists\CustomList\CustomListDetailTests.cs" />
+    <Compile Include="Models\Lists\CustomList\CustomListHeaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +87,6 @@
     <Folder Include="Models\ImportFiles\" />
     <Folder Include="Models\Invoices\" />
     <Folder Include="Models\Lists\CustomListShares\" />
-    <Folder Include="Models\Lists\CustomList\" />
     <Folder Include="Models\Lists\Favorites\" />
     <Folder Include="Models\Lists\History\" />
     <Folder Include="Models\Lists\InventoryValuationList\" />
