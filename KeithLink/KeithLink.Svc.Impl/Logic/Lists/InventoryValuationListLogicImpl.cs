@@ -66,9 +66,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
                              InventoryValuationListDetail item) {
             // try to find the parent header id if it is not in the model
-            if(item.ParentInventoryValuationListHeaderId == 0) {
+            if(item.HeaderId  == 0) {
                 const string HEADER_MISSING_TEXT = "No header id was set";
-                throw new ArgumentException(HEADER_MISSING_TEXT, nameof(item.ParentInventoryValuationListHeaderId));
+                throw new ArgumentException(HEADER_MISSING_TEXT, nameof(item.HeaderId));
             }
 
             _detailsRepo.SaveInventoryValudationDetail(item);

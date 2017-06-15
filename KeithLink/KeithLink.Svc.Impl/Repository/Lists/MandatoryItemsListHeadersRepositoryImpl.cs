@@ -17,7 +17,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_BRANCHID = "BranchId";
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
         private const string PARMNAME_ID = "Id";
-        private const string PARMNAME_NAME = "Name";
 
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
@@ -38,7 +37,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCHID, model.BranchId);
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
-            parms.Add(PARMNAME_NAME, model.Name);
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output);
 

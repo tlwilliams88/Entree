@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ItemNumber = value.ItemNumber,
                 Label = value.Label,
                 Par = value.ParLevel,
-                ParentCustomListHeaderId = headerId
+                HeaderId = headerId
             };
         }
     }

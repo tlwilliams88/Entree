@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                                                            Id = model.ListItemId,
                                                            ItemNumber = model.ItemNumber,
                                                            Note = model.Notes,
-                                                           ParentNotesHeaderId = headerId
+                                                           HeaderId = headerId
                                                        };
 
             return item;

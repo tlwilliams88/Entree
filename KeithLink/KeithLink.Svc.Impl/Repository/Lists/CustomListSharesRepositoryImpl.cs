@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, model.BranchId);
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
-            parms.Add(PARMNAME_HEADERID, model.ParentCustomListHeaderId);
+            parms.Add(PARMNAME_HEADERID, model.HeaderId);
 
             ExecuteCommand(SPNAME_SAVE, parms);
         }

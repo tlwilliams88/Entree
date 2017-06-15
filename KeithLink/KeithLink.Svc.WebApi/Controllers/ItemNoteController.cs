@@ -50,7 +50,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _notesLogic.AddOrUpdateNote(this.SelectedUserContext, newNote.ItemNumber, false, newNote.CatalogId, newNote.Note, true);
+                //_notesLogic.AddOrUpdateNote(this.SelectedUserContext, newNote.ItemNumber, false, newNote.CatalogId, newNote.Note, true);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }

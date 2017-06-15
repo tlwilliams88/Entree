@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
+﻿using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists

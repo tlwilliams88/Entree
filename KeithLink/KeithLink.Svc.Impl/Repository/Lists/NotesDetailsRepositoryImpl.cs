@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         public long Save(NotesListDetail detail) { 
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, detail.Id);
-            parms.Add(PARMNAME_PARENTNOTESHEADERID, detail.ParentNotesHeaderId);
+            parms.Add(PARMNAME_PARENTNOTESHEADERID, detail.HeaderId);
             parms.Add(PARMNAME_ITEMNUMBER, detail.ItemNumber);
             parms.Add(PARMNAME_EACH, detail.Each);
             parms.Add(PARMNAME_CATALOGID, detail.CatalogId);

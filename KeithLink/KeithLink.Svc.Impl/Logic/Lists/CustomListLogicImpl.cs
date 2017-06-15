@@ -74,9 +74,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
                              CustomListDetail item) {
             // try to find the parent header id if it is not in the model
-            if(item.ParentCustomListHeaderId == 0) {
+            if(item.HeaderId == 0) {
                 const string HEADER_MISSING_TEXT = "No header id was set";
-                throw new ArgumentException(HEADER_MISSING_TEXT, nameof(item.ParentCustomListHeaderId));
+                throw new ArgumentException(HEADER_MISSING_TEXT, nameof(item.HeaderId));
             }
 
             _detailsRepo.SaveCustomListDetail(item);

@@ -50,17 +50,17 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         }
 
         public void SaveDetail(UserSelectedContext catalogInfo, MandatoryItemsListDetail detail) {
-            if (detail.ParentMandatoryItemsHeaderId == 0) {
+            if (detail.HeaderId == 0) {
                 MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
 
                 if (header == null)
-                    detail.ParentMandatoryItemsHeaderId =
+                    detail.HeaderId =
                             _headersRepo.SaveMandatoryItemsHeader(new MandatoryItemsListHeader {
                                                                                                    BranchId = catalogInfo.BranchId,
                                                                                                    CustomerNumber = catalogInfo.CustomerId
                                                                                                });
                 else
-                    detail.ParentMandatoryItemsHeaderId = header.Id;
+                    detail.HeaderId = header.Id;
             }
 
             _detailsRepo.Save(detail);

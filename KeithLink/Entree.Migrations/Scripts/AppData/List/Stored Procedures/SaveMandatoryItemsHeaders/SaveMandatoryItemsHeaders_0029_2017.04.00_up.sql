@@ -2,7 +2,6 @@ CREATE PROCEDURE [List].[SaveMandatoryItemsHeaders]
     @Id             BIGINT,
     @CustomerNumber	CHAR (6),
     @BranchId       CHAR (3),
-    @Name           VARCHAR (40),
     @ReturnValue    BIGINT OUTPUT
 AS
 
@@ -11,8 +10,7 @@ IF @Id > 0
     UPDATE [List].[MandatoryItemsHeaders]
         SET
             [CustomerNumber] = @CustomerNumber,
-            [BranchId] = @BranchId,
-            [Name] = @Name
+            [BranchId] = @BranchId
         WHERE
             [CustomerNumber] = @CustomerNumber
         AND [BranchId] = @BranchId
@@ -23,7 +21,6 @@ ELSE
         (
             [CustomerNumber],
             [BranchId],
-            [Name],
             [CreatedUtc],
             [ModifiedUtc]
         )
@@ -31,7 +28,6 @@ ELSE
         (
             @CustomerNumber,
             @BranchId,
-            @Name,
             GETUTCDATE(),
             GETUTCDATE()
         )

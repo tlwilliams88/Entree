@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
+using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
@@ -41,7 +38,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if (header != null && headerOnly == false)
             {
-                header.Items = _detailsRepo.GetRecommendedItemsDetails(header.Id);
+                //header.Items = _detailsRepo.GetRecommendedItemsDetails(header.Id);
             }
 
             if (header != null)

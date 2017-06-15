@@ -10,7 +10,6 @@ AS
         [Id],
         [CustomerNumber],
         [BranchId],
-        [Name],
         [CreatedUtc],
         [ModifiedUtc]
     FROM [List].[MandatoryItemsHeaders] 

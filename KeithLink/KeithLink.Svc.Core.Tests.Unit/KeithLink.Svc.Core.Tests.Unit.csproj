@@ -64,6 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AuditableEntityTests.cs" />
+    <Compile Include="Models\EntityTests.cs" />
+    <Compile Include="Models\Lists\BaseListDetailTests.cs" />
+    <Compile Include="Models\Lists\BaseListHeaderTests.cs" />
     <Compile Include="Models\Lists\Contract\ContractListDetailTests.cs" />
     <Compile Include="Models\Lists\Contract\ContractListHeaderTests.cs" />
     <Compile Include="Models\Lists\CustomListShares\CustomListShareTests.cs" />

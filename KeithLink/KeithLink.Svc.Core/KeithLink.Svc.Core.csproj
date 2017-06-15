@@ -356,6 +356,7 @@
     <Compile Include="Interface\Templates\ITemplatesRepository.cs" />
     <Compile Include="Models\ApplicationHealth\QueuesToCheckModel.cs" />
     <Compile Include="Models\ApplicationHealth\QueueToCheckModel.cs" />
+    <Compile Include="Models\AuditableEntity.cs" />
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExternalCatalog.cs" />
@@ -374,6 +375,7 @@
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\ElasticSearch\ESItem.cs" />
+    <Compile Include="Models\Entity.cs" />
     <Compile Include="Models\Invoices\CustomerWithInvoices.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\Base64Image.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowPageReturnModel.cs" />
@@ -384,6 +386,8 @@
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowDocumentReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ImageNowViewQueryReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
+    <Compile Include="Models\Lists\BaseListDetail.cs" />
+    <Compile Include="Models\Lists\BaseListHeader.cs" />
     <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
     <Compile Include="Models\Lists\CustomListShares\CustomListShare.cs" />

@@ -39,11 +39,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
             if (header != null && headerOnly == false)
             {
-                header.Items = Read<RecentlyViewedListDetail>(new CommandDefinition(
-                                    COMMAND_GETDETAILS,
-                                    new { @ParentRecentlyViewedHeaderId = header.Id },
-                                    commandType: CommandType.StoredProcedure
-                                ));
+                //header.Items = Read<RecentlyViewedListDetail>(new CommandDefinition(
+                //                    COMMAND_GETDETAILS,
+                //                    new { @ParentRecentlyViewedHeaderId = header.Id },
+                //                    commandType: CommandType.StoredProcedure
+                //                ));
             }
 
             if (header != null)
