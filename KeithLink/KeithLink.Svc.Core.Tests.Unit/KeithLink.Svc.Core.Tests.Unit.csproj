@@ -78,6 +78,7 @@
     <Compile Include="Models\Lists\History\HistoryListDetailTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValidationListHeaderTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValudationDetailTests.cs" />
+    <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -101,7 +102,6 @@
     <Folder Include="Models\Lists\RecentlyOrdered\" />
     <Folder Include="Models\Lists\RecentlyViewed\" />
     <Folder Include="Models\Lists\RecommendedItems\" />
-    <Folder Include="Models\Lists\ReminderItems\" />
     <Folder Include="Models\Marketing\" />
     <Folder Include="Models\Messaging\" />
     <Folder Include="Models\ModelExport\" />
