@@ -11,7 +11,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 
 namespace KeithLink.Svc.Impl.Repository.Lists {
-    public class NotesHeadersRepositoryImpl : DapperDatabaseConnection, INotesListHeadersRepository {
+    public class NotesHeadersRepositoryImpl : DapperDatabaseConnection, INotesHeadersListRepository {
         #region attributes
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_CUSTOMERNUMBER = "CustomerNumber";

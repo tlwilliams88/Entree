@@ -1,41 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
 
-namespace KeithLink.Svc.Impl.Logic.Lists
-{
-    public class MandatoryItemsListLogicImpl : IMandatoryItemsListLogic
-    {
-        #region attributes
-        private readonly IMandatoryItemsListDetailsRepository _detailsRepo;
-        private readonly IMandatoryItemsListHeadersRepository _headersRepo;
-        #endregion
-
+namespace KeithLink.Svc.Impl.Logic.Lists {
+    public class MandatoryItemsListLogicImpl : IMandatoryItemsListLogic {
         #region ctor
-        public MandatoryItemsListLogicImpl(IMandatoryItemsListHeadersRepository headersRepo, IMandatoryItemsListDetailsRepository detailsRepo)
-        {
+        public MandatoryItemsListLogicImpl(IMandatoryItemsListHeadersRepository headersRepo, IMandatoryItemsListDetailsRepository detailsRepo) {
             _headersRepo = headersRepo;
             _detailsRepo = detailsRepo;
         }
         #endregion
 
+        #region attributes
+        private readonly IMandatoryItemsListDetailsRepository _detailsRepo;
+        private readonly IMandatoryItemsListHeadersRepository _headersRepo;
+        #endregion
+
         #region methods
-        public List<string> GetMandatoryItemNumbers(UserSelectedContext catalogInfo)
-        {
+        public List<string> GetMandatoryItemNumbers(UserSelectedContext catalogInfo) {
             List<string> returnValue = new List<string>();
             ListModel list = ReadList(catalogInfo, false);
 
-            if (list != null) {
-                returnValue.AddRange(list.Items.Select(i => i.ItemNumber).ToList());
-            }
+            if (list != null)
+                returnValue.AddRange(list.Items.Select(i => i.ItemNumber)
+                                         .ToList());
 
             return returnValue;
         }
@@ -44,15 +38,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             return ReadList(catalogInfo, false);
         }
 
-        public ListModel ReadList(UserSelectedContext catalogInfo, bool headerOnly)
-        {
+        public ListModel ReadList(UserSelectedContext catalogInfo, bool headerOnly) {
             MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
             List<MandatoryItemsListDetail> items = null;
 
-            if (header != null && headerOnly == false)
-            {
-                items = _detailsRepo.GetAllByParent(header.Id);
-            }
+            if (header != null &&
+                headerOnly == false)
+                items = _detailsRepo.GetAllByHeader(header.Id);
 
             return header.ToListModel(items);
         }
@@ -61,16 +53,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             if (detail.ParentMandatoryItemsHeaderId == 0) {
                 MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
 
-                if (header == null) {
-                    detail.ParentMandatoryItemsHeaderId = 
-                        _headersRepo.SaveMandatoryItemsHeader(new MandatoryItemsListHeader() {
-                            BranchId = catalogInfo.BranchId,
-                            CustomerNumber = catalogInfo.CustomerId
-                        });
-                }
-                else {
+                if (header == null)
+                    detail.ParentMandatoryItemsHeaderId =
+                            _headersRepo.SaveMandatoryItemsHeader(new MandatoryItemsListHeader {
+                                                                                                   BranchId = catalogInfo.BranchId,
+                                                                                                   CustomerNumber = catalogInfo.CustomerId
+                                                                                               });
+                else
                     detail.ParentMandatoryItemsHeaderId = header.Id;
-                }
             }
 
             _detailsRepo.Save(detail);

@@ -27,18 +27,27 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
             
 
-        private const string SPNAME_GET = "[List].[GetNotesHeaderByCustomerNumberBranch]";
-        private const string SPNAME_SAVE = "[List].[AddOrUpdateNotesByCustomerNumberBranch]";
+        private const string SPNAME_GET = "[List].[ReadNoteDetailByParentIdAndItemNumber]";
+        private const string SPNAME_GETALL = "[List].[ReadNotesDetailsByParentId]";
+        private const string SPNAME_SAVE = "[List].[SaveNotesByCustomerNumberBranch]";
         #endregion
 
         #region methods
-        public List<NotesListDetail> Get(long parentHeaderId) {
+        public NotesListDetail Get(long parentHeaderId, string itemNumber) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_PARENTNOTESHEADERID, parentHeaderId);
+            parms.Add(PARMNAME_ITEMNUMBER, itemNumber);
+
+            return ReadOne<NotesListDetail>(SPNAME_GET, parms);
+        }
+
+        public List<NotesListDetail> GetAll(long parentHeaderId) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_PARENTNOTESHEADERID, parentHeaderId);
 
-            return Read<NotesListDetail>(SPNAME_GET, parms);
+            return Read<NotesListDetail>(SPNAME_GETALL, parms);
         }
-
+        
         public long Save(NotesListDetail detail) { 
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, detail.Id);
@@ -47,7 +56,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_EACH, detail.Each);
             parms.Add(PARMNAME_CATALOGID, detail.CatalogId);
             parms.Add(PARMNAME_NOTE, detail.Note);
-            parms.Add(PARMNAME_ACTIVE, detail.Active);
             parms.Add(PARMNAME_RETURNVALUE, direction:ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);

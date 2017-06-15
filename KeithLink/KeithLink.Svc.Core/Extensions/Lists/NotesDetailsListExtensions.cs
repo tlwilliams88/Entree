@@ -6,7 +6,6 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
     public static class NotesDetailsListExtensions {
         public static ListItemModel ToWebModel(this NotesListDetail value) {
             return new ListItemModel {
-                                         Active = value.Active,
                                          ListItemId = value.Id,
                                          Type = ListType.Notes,
                                          ItemNumber = value.ItemNumber,
@@ -18,9 +17,8 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                                      };
         }
 
-        public static NotesListDetail ToMandatoryItemsListDetail(this ListItemModel model, long headerId = 0) {
+        public static NotesListDetail ToListModel(this ListItemModel model, long headerId = 0) {
             NotesListDetail item = new NotesListDetail {
-                                                           Active = model.Active,
                                                            CatalogId = model.CatalogId,
                                                            Each = model.Each ?? false,
                                                            Id = model.ListItemId,
