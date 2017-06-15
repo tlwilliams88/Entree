@@ -76,6 +76,7 @@
     <Compile Include="Models\Lists\Favorites\FavoriteListDetailTests.cs" />
     <Compile Include="Models\Lists\Favorites\FavoritesListHeaderTests.cs" />
     <Compile Include="Models\Lists\History\HistoryListDetailTests.cs" />
+    <Compile Include="Models\Lists\InventoryValuationList\InventoryValidationListHeaderTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValudationDetailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
