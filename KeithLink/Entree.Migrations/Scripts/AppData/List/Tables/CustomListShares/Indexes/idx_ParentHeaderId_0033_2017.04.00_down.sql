@@ -1,5 +1,3 @@
-﻿CREATE INDEX idx_ParentHeaderId
-    ON [List].[CustomListShares] (
-        [ParentCustomListHeaderId]
-    )
+﻿DROP  INDEX idx_ParentHeaderId
+    ON [List].[CustomListShares]
 GO
