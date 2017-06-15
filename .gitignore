@@ -195,6 +195,7 @@ node_modules/
 /KeithLink/KeithLink.Web.Presentation/angular-app/test/test-results/
 /KeithLink/packages/
 /KeithLink/KeithLink.Web.Presentation/app/
+/KeithLink/KeithLink.Web.Presentation/angular-app/config.json
 /KeithLink/KeithLink.Web.Presentation/angular-app/app/newrelic/newrelic.js
 /KeithLink/KeithLink.Web.Presentation/angular-app/app/scripts/configenv.js
 /KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap/build
@@ -206,5 +207,5 @@ node_modules/
 grunt_log.txt
 KeithLink/KeithLink.Svc.InternalSvc/logs/
 
-# WebStorm Config 
+# WebStorm Config
 .idea

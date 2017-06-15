@@ -13,6 +13,7 @@ describe('Directive: UpdateQuantityFromParlevel', function() {
 
   beforeEach(inject(function($compile, $rootScope) {
     $scope = $rootScope.$new();
+    $rootScope.$$watchers = [];
     element = angular.element(
       '<form name="form">' +
         '<input ng-model="model.onhand" type="text" name="onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity" />' +
