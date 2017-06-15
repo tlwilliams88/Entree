@@ -76,6 +76,7 @@
     <Compile Include="Models\Lists\Favorites\FavoriteListDetailTests.cs" />
     <Compile Include="Models\Lists\Favorites\FavoritesListHeaderTests.cs" />
     <Compile Include="Models\Lists\History\HistoryListDetailTests.cs" />
+    <Compile Include="Models\Lists\InventoryValuationList\InventoryValudationDetailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -94,7 +95,6 @@
     <Folder Include="Models\ElasticSearch\" />
     <Folder Include="Models\ImportFiles\" />
     <Folder Include="Models\Invoices\" />
-    <Folder Include="Models\Lists\InventoryValuationList\" />
     <Folder Include="Models\Lists\MandatoryItems\" />
     <Folder Include="Models\Lists\Notes\" />
     <Folder Include="Models\Lists\RecentlyOrdered\" />
