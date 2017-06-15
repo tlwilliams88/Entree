@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[SaveNotesByCustomerNumberBranch] 
     @Id                     BIGINT,
-    @HeaderId    BIGINT,
+    @HeaderId               BIGINT,
     @ItemNumber             CHAR(6),
     @Each                   BIT,
     @CatalogId              VARCHAR(10),
@@ -15,8 +15,7 @@ IF @Id > 0
             [ItemNumber] = @ItemNumber,
             [Each] = @Each,
             [CatalogId] = @CatalogId,
-            [Note] = @Note,
-            [Active] = @Active
+            [Note] = @Note
         WHERE
             [Id] = @Id
     END
