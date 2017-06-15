@@ -33,7 +33,6 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         public static ListModel ToListModel(this NotesListHeader header, List<NotesListDetail> items) {
             ListModel retVal = ToListModel(header);
             retVal.Items = items.Select(i => i.ToWebModel())
-                                .OrderBy(i => i.Position)
                                 .ToList();
 
             return retVal;

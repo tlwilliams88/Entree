@@ -1,60 +1,66 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Lists.Notes;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
-namespace KeithLink.Svc.Impl.Logic.Lists
-{
-    public class NotesListLogicImpl : INotesListLogic
-    {
+namespace KeithLink.Svc.Impl.Logic.Lists {
+    public class NotesListLogicImpl : INotesListLogic {
         #region attributes
-        private readonly INotesListRepository _notesRepo;
+        private readonly INotesHeadersListRepository _headerRepo;
+        private readonly INotesDetailsListRepository _detailRepo;
         #endregion
 
         #region ctor
-        public NotesListLogicImpl(INotesListRepository notesRepo)
-        {
-            _notesRepo = notesRepo;
+        public NotesListLogicImpl(INotesHeadersListRepository headerRepo, INotesDetailsListRepository detailRepo) {
+            _headerRepo = headerRepo;
+            _detailRepo = detailRepo;
         }
         #endregion
 
         #region methods
-        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
-        {
-            throw new NotImplementedException();
+        public ListItemModel GetNote(UserSelectedContext catalogInfo, string itemNumber) {
+            ListItemModel returnValue = null;
+            NotesListHeader header = _headerRepo.GetHeadersForCustomer(catalogInfo);
+
+            if (header != null) {
+                 returnValue = _detailRepo.Get(header.Id, itemNumber)
+                                                    .ToWebModel();
+            }
+
+            return returnValue;
+        }
+        public ListModel GetList(UserSelectedContext catalogInfo) {
+            NotesListHeader header = _headerRepo.GetHeadersForCustomer(catalogInfo);
+            List<NotesListDetail> details = new List<NotesListDetail>();
+
+            if (header != null) {
+                details = _detailRepo.GetAll(header.Id);
+            }
+
+            return header.ToListModel(details);
         }
 
-        public Dictionary<string,string> GetNotesDictionary(UserProfile user, UserSelectedContext catalogInfo)
-        {
-            List<ListModel> list = ReadList(user, catalogInfo, false);
+        public long SaveNote(UserSelectedContext catalogInfo, ListItemModel detail) {
+            NotesListHeader header = _headerRepo.GetHeadersForCustomer(catalogInfo);
 
-            return list[0].Items.ToDictionary(i => i.ItemNumber, i => i.Notes);
-        }
+            if (header == null) {
+                // Create a new header for the customer
+                header = new NotesListHeader() {
+                                                   BranchId = catalogInfo.BranchId,
+                                                   CustomerNumber = catalogInfo.CustomerId
+                                               };
 
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
-        {
-            return _notesRepo.GetNotesList(catalogInfo, false);
-        }
+                header.Id = _headerRepo.Save(header);
+            }
 
-        public void AddOrUpdateNote(UserSelectedContext catalogInfo,
-                                string itemNumber,
-                                bool each,
-                                string catalogId,
-                                string note,
-                                bool active)
-        {
-            _notesRepo.AddOrUpdateNote(catalogInfo.CustomerId,
-                catalogInfo.BranchId,
-                itemNumber,
-                each,
-                catalogId,
-                note, 
-                active);
+
+            return _detailRepo.Save(detail.ToListModel(header.Id));
         }
 
         #endregion

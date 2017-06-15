@@ -5,7 +5,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IMandatoryItemsListDetailsRepository
     {
-        List<MandatoryItemsListDetail> GetAllByParent(long parentHeaderId);
+        List<MandatoryItemsListDetail> GetAllByHeader(long parentHeaderId);
 
         void Save(MandatoryItemsListDetail model);
 

@@ -5,7 +5,6 @@ CREATE PROCEDURE [List].[SaveNotesByCustomerNumberBranch]
     @Each                   BIT,
     @CatalogId              VARCHAR(10),
     @Note                   NVARCHAR(500),
-    @Active                 BIT,
     @ReturnValue            BIGINT OUTPUT
 AS
 
@@ -29,15 +28,13 @@ ELSE
             [ItemNumber],
             [Each],
             [CatalogId],
-            [Note],
-            [Active]
+            [Note]
         ) VALUES (
             @ParentNotesHeaderId,
             @ItemNumber,
             @Each,
             @CatalogId,
-            @Note,
-            @Active
+            @Note
         )
     END
 

@@ -5,7 +5,8 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface INotesDetailsListRepository {
-        List<NotesListDetail> Get(long parentHeaderId);
+        NotesListDetail Get(long parentHeaderId, string itemNumber);
+        List<NotesListDetail> GetAll(long parentHeaderId);
         long Save(NotesListDetail detail);
     }
 }
