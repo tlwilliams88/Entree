@@ -32,7 +32,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         {
             return Read<RecommendedItemsListDetail>(new CommandDefinition(
                 COMMAND_GETDETAILS,
-                new { @ParentRecommendedItemsHeaderId = parentHeaderId },
+                new { @HeaderId = parentHeaderId },
                 commandType: CommandType.StoredProcedure
             ));
         }

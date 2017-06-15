@@ -1,5 +1,5 @@
-CREATE PROCEDURE [List].[ReadRecommendedItemDetailsByParentId] 
-    @ParentRecommendedItemsHeaderId bigint
+CREATE PROCEDURE [List].[ReadRecentlyViewedDetailsByParentId] 
+    @HeaderId BIGINT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -7,13 +7,12 @@ AS
 
     SELECT
         [Id],
-        [ParentRecommendedItemsHeaderId],
         [ItemNumber],
         [Each],
         [CatalogId],
         [CreatedUtc],
         [ModifiedUtc]
     FROM
-        [List].[RecommendedItemsDetails] 
+        [List].[RecentlyViewedDetails] 
     WHERE
-        [ParentRecommendedItemsHeaderId] = @ParentRecommendedItemsHeaderId
+        [HeaderId] = @HeaderId

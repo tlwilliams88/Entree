@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOG, model.CatalogId);
             parms.Add(PARMNAME_EACH, model.Each);
-            parms.Add(PARMNAME_HEADERID, model.ParentRemindersHeaderId);
+            parms.Add(PARMNAME_HEADERID, model.HeaderId);
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
 

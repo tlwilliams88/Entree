@@ -9,9 +9,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class ContractListDetailsRepositoryImpl : DapperDatabaseConnection, IContractListDetailsRepository
     {
         #region attributes
-        private const string PARMNAME_HEADERID = "ParentContractHeaderId";
+        private const string PARMNAME_HEADERID = "HeaderId";
 
-        private const string SPNAME_GET = "[List].[GetContractItemsByParentContractHeaderId]";
+        private const string SPNAME_GET = "[List].[GetContractItemsByHeaderId]";
         #endregion
 
         #region constructor

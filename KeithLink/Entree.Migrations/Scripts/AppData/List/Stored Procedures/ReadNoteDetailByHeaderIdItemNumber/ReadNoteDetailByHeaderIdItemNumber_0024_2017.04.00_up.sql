@@ -1,5 +1,6 @@
-CREATE PROCEDURE [List].[ReadNotesDetailsByParentId] 
-    @ParentNotesHeaderId    BIGINT
+CREATE PROCEDURE [List].[ReadNoteDetailByParentIdAndItemNumber] 
+    @HeaderId           BIGINT,
+    @ItemNumber         VARCHAR(6)
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -15,4 +16,5 @@ AS
         [ModifiedUtc]
     FROM [List].[NotesDetails] 
     WHERE   
-        [ParentNotesHeaderId] = @ParentNotesHeaderId
+        [HeaderId] = @HeaderId
+    AND [ItemNumber] = @ItemNumber

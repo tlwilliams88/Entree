@@ -14,7 +14,7 @@ IF @Id > 0
     UPDATE
         [List].[RemindersDetails]
     SET
-        ParentRemindersHeaderId = @HeaderId,
+        HeaderId = @HeaderId,
         ItemNumber = @ItemNumber,
         Each = @Each,
         CatalogId = @CatalogId,
@@ -27,7 +27,7 @@ ELSE
       BEGIN
         INSERT INTO
             [List].[RemindersDetails] (
-                ParentRemindersHeaderId,
+                HeaderId,
                 ItemNumber,
                 Each,
                 CatalogId,

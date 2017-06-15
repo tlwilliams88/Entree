@@ -1,4 +1,4 @@
-﻿CREATE INDEX idx_ParentListHeaderId_Active
+﻿CREATE INDEX idx_HeaderId_Active
 	ON	[List].[CustomListDetails] (
 		ParentCustomListHeaderId,
 		Active

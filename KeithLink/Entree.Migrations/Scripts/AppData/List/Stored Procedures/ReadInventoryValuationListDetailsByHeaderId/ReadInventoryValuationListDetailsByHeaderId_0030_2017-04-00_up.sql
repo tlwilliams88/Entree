@@ -1,5 +1,5 @@
-CREATE PROCEDURE [List].[ReadFavoritesDetailsByParentId] 
-	@ParentFavoritesHeaderId	BIGINT
+CREATE PROCEDURE [List].[ReadInventoryValuationListDetailsByParentId] 
+	@HeaderId	BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -9,13 +9,14 @@ AS
 		[Id],
 		[ItemNumber],
 		[Each],
-		[Label],
+		[Quantity],
 		[CatalogId],
+		[Active],
 		[CreatedUtc],
 		[ModifiedUtc]
 	FROM 
-        [List].[FavoritesDetails] 
+        [List].[InventoryValuationListDetails] 
 	WHERE	
-        [ParentFavoritesHeaderId] = @ParentFavoritesHeaderId
+        [HeaderId] = @HeaderId
 	AND 
         [Active] = 1

@@ -7,7 +7,7 @@ using KeithLink.Svc.Impl.Repository.DataConnection;
 namespace KeithLink.Svc.Impl.Repository.Lists {
     public class HistoryListDetailRepositoryImpl : DapperDatabaseConnection, IHistoryListDetailRepository {
         #region attributes
-        private const string PARMNAME_LISTID = "ParentHistoryHeaderId";
+        private const string PARMNAME_LISTID = "HeaderId";
 
         private const string SPNAME_GETALL = "[List].[ReadHistoryDetailsByParentId]";
         #endregion

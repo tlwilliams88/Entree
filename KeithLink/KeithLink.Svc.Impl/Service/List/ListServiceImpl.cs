@@ -178,10 +178,18 @@ namespace KeithLink.Svc.Impl.Service.List
             AddList(user, catalogInfo, false, list, ListType.Favorite);
             AddCustomLists(user, catalogInfo, false, list);
 
-            //List<ListItem> items = list.Select(l => l.Items).ToList();
-            //List<string> labels = ;
+            List<ListItemModel> items = new List<ListItemModel>();
+            foreach (ListModel lst in list) {
+                if (lst.Items != null &&
+                    lst.Items.Count > 0) {
+                    items.AddRange(lst.Items);
+                }
+            }
+            List<string> labels = items.Select(l => l.Label).Distinct().Where(x => x != null).ToList();
 
-            return new List<string>();
+            labels.Sort();
+
+            return labels;
         }
 
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id, bool includePrice = true)
@@ -388,7 +396,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private void AddCustomLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
             List<ListModel> list)
         {
-            List<ListModel> tempList = _customListLogic.ReadList(user, catalogInfo, true);
+            List<ListModel> tempList = _customListLogic.ReadList(user, catalogInfo, headerOnly);
 
             if (tempList != null && tempList.Count > 0 && tempList[0].Items != null && tempList[0].Items.Count > 0)
             {

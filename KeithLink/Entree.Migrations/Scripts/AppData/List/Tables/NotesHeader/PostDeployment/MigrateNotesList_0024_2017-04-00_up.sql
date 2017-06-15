@@ -26,7 +26,7 @@
 
     INSERT
 		INTO [BEK_Commerce_AppData].[List].[NotesDetails]
-			([ParentNotesHeaderId]
+			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]

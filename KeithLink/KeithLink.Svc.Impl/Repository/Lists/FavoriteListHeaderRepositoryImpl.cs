@@ -7,13 +7,13 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 
 namespace KeithLink.Svc.Impl.Repository.Lists {
-    public class FavoriteListHeaderRepositoryImpl : DapperDatabaseConnection, IFavoriteListHeaderRepository {
+    public class FavoriteListHeaderRepositoryImpl : DapperDatabaseConnection, IFavoriteListHeadersRepository {
         #region attributes
         private const string SPNAME_GETHEADER = "[List].[GetFavoritesHeaderByUserIdCustomerNumberBranch]";
         private const string SPNAME_SAVE = "[List].[AddFavoriteListHeader]";
 
-        private const string PARMNAME_BRANCH = "Branch";
-        private const string PARMNAME_CUSTID = "CustomerId";
+        private const string PARMNAME_BRANCH = "BranchId";
+        private const string PARMNAME_CUSTID = "CustomerNumber";
         private const string PARMNAME_USERID = "UserId";
         #endregion
 

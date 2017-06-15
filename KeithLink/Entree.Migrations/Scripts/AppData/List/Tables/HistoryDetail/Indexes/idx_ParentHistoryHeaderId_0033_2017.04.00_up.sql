@@ -1,5 +1,5 @@
-﻿CREATE INDEX idx_ParentHistoryHeaderId
+﻿CREATE INDEX idx_HeaderId
 	ON [List].[HistoryDetails] (
-		[ParentHistoryHeaderId]
+		[HeaderId]
 	)
 GO

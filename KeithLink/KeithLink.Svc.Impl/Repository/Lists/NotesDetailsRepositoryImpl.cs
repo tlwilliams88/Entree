@@ -18,12 +18,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
         #region attributes
         private const string PARMNAME_ID = "Id";
-        private const string PARMNAME_PARENTNOTESHEADERID = "ParentNotesHeaderId";
+        private const string PARMNAME_HEADERID = "HeaderId";
         private const string PARMNAME_ITEMNUMBER = "ItemNumber";
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_CATALOGID = "CatalogId";
         private const string PARMNAME_NOTE = "Note";
-        private const string PARMNAME_ACTIVE = "Active";
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
             
 
@@ -35,7 +34,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #region methods
         public NotesListDetail Get(long parentHeaderId, string itemNumber) {
             DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_PARENTNOTESHEADERID, parentHeaderId);
+            parms.Add(PARMNAME_HEADERID, parentHeaderId);
             parms.Add(PARMNAME_ITEMNUMBER, itemNumber);
 
             return ReadOne<NotesListDetail>(SPNAME_GET, parms);
@@ -43,7 +42,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
         public List<NotesListDetail> GetAll(long parentHeaderId) {
             DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_PARENTNOTESHEADERID, parentHeaderId);
+            parms.Add(PARMNAME_HEADERID, parentHeaderId);
 
             return Read<NotesListDetail>(SPNAME_GETALL, parms);
         }
@@ -51,7 +50,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         public long Save(NotesListDetail detail) { 
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, detail.Id);
-            parms.Add(PARMNAME_PARENTNOTESHEADERID, detail.HeaderId);
+            parms.Add(PARMNAME_HEADERID, detail.HeaderId);
             parms.Add(PARMNAME_ITEMNUMBER, detail.ItemNumber);
             parms.Add(PARMNAME_EACH, detail.Each);
             parms.Add(PARMNAME_CATALOGID, detail.CatalogId);

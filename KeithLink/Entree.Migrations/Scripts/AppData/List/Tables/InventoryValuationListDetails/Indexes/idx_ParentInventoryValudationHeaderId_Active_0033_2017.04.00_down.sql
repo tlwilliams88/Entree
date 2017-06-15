@@ -1,3 +1,3 @@
-﻿DROP INDEX idx_ParentInventoryValudationHeaderId_Active
+﻿DROP INDEX idx_HeaderId_Active
 	ON [List].[InventoryValuationListDetails] 
 GO

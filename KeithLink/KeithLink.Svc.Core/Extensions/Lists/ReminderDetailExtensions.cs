@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Each = model.Each ?? false,
                 Id = model.ListItemId,
                 ItemNumber = model.ItemNumber,
-                ParentRemindersHeaderId = headerId
+                HeaderId = headerId
             };
         }
     }

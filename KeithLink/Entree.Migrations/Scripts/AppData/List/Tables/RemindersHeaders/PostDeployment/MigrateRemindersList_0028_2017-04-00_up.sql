@@ -27,7 +27,7 @@
 
     INSERT
 		INTO [BEK_Commerce_AppData].[List].[ReminderDetails]
-			([ParentRemindersHeaderId]
+			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each])

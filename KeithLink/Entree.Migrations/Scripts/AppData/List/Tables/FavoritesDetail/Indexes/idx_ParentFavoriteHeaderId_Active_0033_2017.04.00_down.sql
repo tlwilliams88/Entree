@@ -1,3 +1,3 @@
-﻿DROP INDEX idx_ParentFavoriteHeaderId_Active
+﻿DROP INDEX idx_HeaderId_Active
 	ON [List].[FavoritesDetails] 
 GO

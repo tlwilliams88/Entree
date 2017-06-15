@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[SaveRecentlyViewedDetails] 
     @Id                             BIGINT,
-    @ParentRecentlyViewedHeaderId   BIGINT,
+    @HeaderId   BIGINT,
     @ItemNumber                     VARCHAR (6),
     @Each                           BIT,
     @CatalogId                      VARCHAR (10)
@@ -12,7 +12,7 @@ AS
 IF @Id > 0
     UPDATE [List].[RecentlyViewedDetails]
     SET
-        [ParentRecentlyViewedHeaderId] = @ParentRecentlyViewedHeaderId,
+        [HeaderId] = @HeaderId,
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [CatalogId] = @CatalogId
@@ -21,12 +21,12 @@ IF @Id > 0
 ELSE
     INSERT INTO [List].[RecentlyViewedDetails]
     (
-        [ParentRecentlyViewedHeaderId],
+        [HeaderId],
         [ItemNumber],
         [Each],
         [CatalogId] 
     ) VALUES (
-        @ParentRecentlyViewedHeaderId,
+        @HeaderId,
         @ItemNumber,
         @Each,
         @CatalogId 

@@ -9,12 +9,12 @@ using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 
 namespace KeithLink.Svc.Impl.Repository.Lists {
-    public class FavoriteListDetailRepositoryImpl : DapperDatabaseConnection, IFavoriteListDetailRepository {
+    public class FavoriteListDetailRepositoryImpl : DapperDatabaseConnection, IFavoriteListDetailsRepository {
         #region attributes
         private const string PARMNAME_ACTIVE = "Active";
         private const string PARMNAME_CATALOGID = "CatalogId";
         private const string PARMNAME_EACH = "Each";
-        private const string PARMNAME_HEADERID = "ParentFavoritesHeaderId";
+        private const string PARMNAME_HEADERID = "HeaderId";
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_ITEMNUM = "ItemNumber";

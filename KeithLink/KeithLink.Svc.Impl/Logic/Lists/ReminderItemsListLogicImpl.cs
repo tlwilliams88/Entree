@@ -47,17 +47,17 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public void Save(UserSelectedContext catalogInfo, ReminderItemsListDetail model) {
             // try to find the parent header id if it is not in the model
-            if(model.ParentRemindersHeaderId == 0) {
+            if(model.HeaderId == 0) {
                 ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
 
                 if(header == null) {
                     // create the header
-                    model.ParentRemindersHeaderId = _headersRepo.SaveReminderListHeader(new ReminderItemsListHeader() {
+                    model.HeaderId = _headersRepo.SaveReminderListHeader(new ReminderItemsListHeader() {
                                                                                             BranchId = catalogInfo.BranchId,
                                                                                             CustomerNumber = catalogInfo.CustomerId
                                                                                         });
                 } else {
-                    model.ParentRemindersHeaderId = header.Id;
+                    model.HeaderId = header.Id;
                 }
             }
 

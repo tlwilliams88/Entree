@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[DeleteOldRecentlyOrderedDetails] 
-    @ParentRecentlyOrderedHeaderId BIGINT,
+    @HeaderId BIGINT,
     @NumberToKeep   INT
 AS
 
@@ -9,7 +9,7 @@ DECLARE @Count AS INT = (
     FROM 
         [BEK_Commerce_AppData].[List].[RecentlyOrderedDetails] 
     WHERE
-        [ParentRecentlyOrderedHeaderId] = @ParentRecentlyOrderedHeaderId
+        [HeaderId] = @HeaderId
 )
 
 IF(@Count > @NumberToKeep)
@@ -19,6 +19,6 @@ IF(@Count > @NumberToKeep)
     (
         SELECT TOP (@Count - @NumberToKeep) [Id]
         FROM [BEK_Commerce_AppData].[List].[RecentlyOrderedDetails]
-        WHERE [ParentRecentlyOrderedHeaderId] = @ParentRecentlyOrderedHeaderId
+        WHERE [HeaderId] = @HeaderId
         ORDER BY [ModifiedUtc] ASC
     )

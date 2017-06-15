@@ -78,7 +78,7 @@ BEGIN
             INSERT INTO [BEK_Commerce_AppData].[List].[HistoryDetails]
                        ([ItemNumber]
                        ,[CreatedUtc]
-                       ,[ParentHistoryHeaderId]
+                       ,[HeaderId]
                        ,[ModifiedUtc]
                        ,[LineNumber]
                        ,[Each]
@@ -115,7 +115,7 @@ BEGIN
                 NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].[HistoryDetails] li 
                                 WHERE li.ItemNumber = LTRIM(RTRIM(w.ItemNumber)) 
                                     AND li.Each = CASE WHEN w.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END 
-                                    AND li.[ParentHistoryHeaderId] = @existingHistoryHeaderId)                      
+                                    AND li.[HeaderId] = @existingHistoryHeaderId)                      
 
             --Find items being deleted
             INSERT INTO @DeletedItems (ItemNumber, Each)
@@ -125,7 +125,7 @@ BEGIN
             FROM
                 [BEK_Commerce_AppData].[List].[HistoryDetails] l
             WHERE
-                l.[ParentHistoryHeaderId] = @existingHistoryHeaderId AND
+                l.[HeaderId] = @existingHistoryHeaderId AND
                 NOT EXISTS(SELECT 
                         'x'
                     FROM
@@ -142,7 +142,7 @@ BEGIN
                 INSERT INTO [BEK_Commerce_AppData].[List].[HistoryDetails]
                            ([ItemNumber]
                            ,[CreatedUtc]
-                           ,[ParentHistoryHeaderId]
+                           ,[HeaderId]
                            ,[ModifiedUtc]
                            ,[LineNumber]
                            ,[Each]
@@ -166,7 +166,7 @@ BEGIN
                     --DELETE Item
                     DELETE [BEK_Commerce_AppData].[List].[HistoryDetails]
                     FROM [BEK_Commerce_AppData].[List].[HistoryDetails] li INNER JOIN
-                        @DeletedItems d on li.ItemNumber = d.ItemNumber AND li.Each = d.Each AND [ParentHistoryHeaderId] = @existingHistoryHeaderId
+                        @DeletedItems d on li.ItemNumber = d.ItemNumber AND li.Each = d.Each AND [HeaderId] = @existingHistoryHeaderId
                                         
                 END     
             
@@ -181,15 +181,15 @@ BEGIN
                     (
                         SELECT
                             ItemNumber 'p_ItemNumber', 
-                            [ParentHistoryHeaderId] 'p_ListId',
+                            [HeaderId] 'p_ListId',
                             RANK() OVER (ORDER BY ItemNumber) Positions
                         FROM
                              [BEK_Commerce_AppData].[List].[HistoryDetails]
                         WHERE
-                             [ParentHistoryHeaderId] = @existingHistoryHeaderId
+                             [HeaderId] = @existingHistoryHeaderId
                     ) as p
                 ON ItemNumber = p.p_ItemNumber
-                AND [ParentHistoryHeaderId] = p.p_ListId
+                AND [HeaderId] = p.p_ListId
         END
 
     SET @existingHistoryHeaderId = null

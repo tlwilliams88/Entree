@@ -26,7 +26,7 @@
 
     INSERT
 		INTO [BEK_Commerce_AppData].[List].[RecommendedItemsDetails]
-			([ParentRecommendedItemsHeaderId]
+			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each])

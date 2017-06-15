@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     {
         #region attributes
         private const string PARMNAME_ID = "Id";
-        private const string PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID = "ParentMandatoryItemsHeaderId";
+        private const string PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID = "HeaderId";
         private const string PARMNAME_ITEMNUMBER = "ItemNumber";
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_CATALOG_ID = "CatalogId";

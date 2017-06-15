@@ -1,4 +1,4 @@
-CREATE PROCEDURE [List].[ReadInventoryValuationListDetailsByParentId] 
+CREATE PROCEDURE [List].[ReadReminderDetailsByParentId] 
 	@HeaderId	BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -9,14 +9,12 @@ AS
 		[Id],
 		[ItemNumber],
 		[Each],
-		[Quantity],
 		[CatalogId],
-		[Active],
 		[CreatedUtc],
 		[ModifiedUtc]
 	FROM 
-        [List].[InventoryValuationListDetails] 
-	WHERE	
-        [ParentInventoryValuationListHeaderId] = @HeaderId
+        [List].[ReminderDetails] 
+	WHERE
+        [HeaderId] = @HeaderId
 	AND 
         [Active] = 1

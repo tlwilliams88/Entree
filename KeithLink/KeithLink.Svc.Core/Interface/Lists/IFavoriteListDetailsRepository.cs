@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
-    public interface IFavoriteListDetailRepository
+    public interface IFavoriteListDetailsRepository
     {
         void DeleteFavoriteListDetail(long id);
 

@@ -227,7 +227,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<string>> ret = new OperationReturnModel<List<string>>();
             try
             {
-                var list = _listLogic.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
+                var list = _listService.ReadLabels(this.AuthenticatedUser, this.SelectedUserContext);
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
             }

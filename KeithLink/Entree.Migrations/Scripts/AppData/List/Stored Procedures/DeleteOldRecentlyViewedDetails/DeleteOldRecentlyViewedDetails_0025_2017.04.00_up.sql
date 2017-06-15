@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[DeleteOldRecentlyViewedDetails] 
-    @ParentRecentlyViewedHeaderId BIGINT,
+    @HeaderId BIGINT,
     @NumberToKeep BIGINT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
@@ -12,7 +12,7 @@ AS
         FROM 
             [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
         WHERE
-            [ParentRecentlyViewedHeaderId] = @ParentRecentlyViewedHeaderId
+            [HeaderId] = @HeaderId
     )
 
     if(@Count > @NumberToKeep)
@@ -21,6 +21,6 @@ AS
             (
                 SELECT TOP (@Count - @NumberToKeep) [Id]
                 FROM [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
-                WHERE [ParentRecentlyViewedHeaderId] = @ParentRecentlyViewedHeaderId
+                WHERE [HeaderId] = @HeaderId
                 ORDER BY [ModifiedUtc] ASC
             )

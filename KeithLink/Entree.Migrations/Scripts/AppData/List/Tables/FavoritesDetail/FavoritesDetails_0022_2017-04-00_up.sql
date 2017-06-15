@@ -1,6 +1,6 @@
 CREATE TABLE [List].[FavoritesDetails] (
     [Id]					  BIGINT			NOT NULL    PRIMARY KEY IDENTITY(1,1),
-    [ParentFavoritesHeaderId] BIGINT            NOT NULL    DEFAULT 0,
+    [HeaderId] BIGINT            NOT NULL    DEFAULT 0,
     [ItemNumber]			  CHAR(6)           NOT NULL,
 	[Each]					  BIT	    		NULL,
 	[Label]                   NVARCHAR(150)     NULL,

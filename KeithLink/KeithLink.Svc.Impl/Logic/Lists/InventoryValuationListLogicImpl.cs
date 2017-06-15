@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Amazon.CloudFront.Model;
-using KeithLink.Svc.Core.Extensions;
+
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
@@ -66,7 +62,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
                              InventoryValuationListDetail item) {
             // try to find the parent header id if it is not in the model
-            if(item.HeaderId  == 0) {
+            if(item.HeaderId == 0) {
                 const string HEADER_MISSING_TEXT = "No header id was set";
                 throw new ArgumentException(HEADER_MISSING_TEXT, nameof(item.HeaderId));
             }

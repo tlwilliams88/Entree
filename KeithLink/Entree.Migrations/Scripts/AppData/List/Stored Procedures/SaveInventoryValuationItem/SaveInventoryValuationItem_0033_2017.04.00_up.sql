@@ -29,7 +29,7 @@ AS
       BEGIN
         INSERT INTO 
             [List].[InventoryValuationListDetails] (
-	            [ParentInventoryValuationListHeaderId],
+	            [HeaderId],
 	            [CustomInventoryItemId],
 	            [ItemNumber],
 	            [Each],

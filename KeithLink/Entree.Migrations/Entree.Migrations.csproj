@@ -181,10 +181,30 @@
     <Content Include="Scripts\AppData\Invoice\Tables\Invoices\Invoices_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\Invoice\Tables\Terms\Terms_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\List\List_0001_0001.11.00_up.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNoteDetailByParentIdAndItemNumber\ReadNoteDetailByParentIdAndItemNumber_0024_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNoteDetailByParentIdAndItemNumber\ReadNoteDetailByParentIdAndItemNumber_0024_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByHeaderId\GetContractItemsByHeaderId_0023_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByHeaderId\GetContractItemsByHeaderId_0023_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadCustomListDetailsByHeaderId\ReadCustomListDetailsByHeaderId_0031_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadCustomListDetailsByHeaderId\ReadCustomListDetailsByHeaderId_0031_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadFavoritesDetailsByHeaderId\ReadFavoritesDetailsByHeaderId_0022_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadFavoritesDetailsByHeaderId\ReadFavoritesDetailsByHeaderId_0022_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadHistoryDetailsByHeaderId\ReadHistoryDetailsByHeaderId_0021_2017-04-00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadHistoryDetailsByHeaderId\ReadHistoryDetailsByHeaderId_0021_2017-04-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0030_2017-04-00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0030_2017-04-00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadMandatoryItemDetailsByHeaderId\ReadMandatoryItemDetailsByHeaderId_0029_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadMandatoryItemDetailsByHeaderId\ReadMandatoryItemDetailsByHeaderId_0029_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNoteDetailByHeaderIdItemNumber\ReadNoteDetailByHeaderIdItemNumber_0024_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNoteDetailByHeaderIdItemNumber\ReadNoteDetailByHeaderIdItemNumber_0024_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByHeaderId\ReadNotesDetailsByHeaderId_0024_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByHeaderId\ReadNotesDetailsByHeaderId_0024_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyOrderedDetailsByHeaderId\ReadRecentlyOrderedDetailsByHeaderId_0026_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyOrderedDetailsByHeaderId\ReadRecentlyOrderedDetailsByHeaderId_0026_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyViewedDetailsByHeaderId\ReadRecentlyViewedDetailsByHeaderId_0025_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyViewedDetailsByHeaderId\ReadRecentlyViewedDetailsByHeaderId_0025_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecommendedItemDetailsByHeaderId\ReadRecommendedItemDetailsByHeaderId_0027_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecommendedItemDetailsByHeaderId\ReadRecommendedItemDetailsByHeaderId_0027_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadReminderDetailsByHeaderId\ReadReminderDetailsByHeaderId_0028_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadReminderDetailsByHeaderId\ReadReminderDetailsByHeaderId_0028_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteDetails\SaveFavoriteDetails_0033_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteDetails\SaveFavoriteDetails_0033_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteHeaders\SaveFavoriteHeaders_0033_2017.04.00_down.sql" />
@@ -232,8 +252,6 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyViewedDetails\DeleteRecentlyViewedDetails_0025_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeaderByCustomerAndBranch_0023_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetContractHeaderByCustomerAndBranch\GetContractHeaderByCustomerAndBranch_0023_2017.04.00_up.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\GetContractItemsByParentContractHeaderId\GetContractItemsByParentContractHeaderId_0023_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListSharesByCustomerNumberBranch\GetCustomListSharesByCustomerNumberBranch_0032_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListSharesByCustomerNumberBranch\GetCustomListSharesByCustomerNumberBranch_0032_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -284,30 +302,6 @@
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch_0026_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch\GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch_0026_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadCustomListDetailsByParentId\ReadCustomListDetailsByParentId_0031_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadCustomListDetailsByParentId\ReadCustomListDetailsByParentId_0031_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByParentId\ReadInventoryValuationListDetailsByParentId_0030_2017-04-00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByParentId\ReadInventoryValuationListDetailsByParentId_0030_2017-04-00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadMandatoryItemDetailsByParentId\ReadMandatoryItemDetailsByParentId_0029_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadMandatoryItemDetailsByParentId\ReadMandatoryItemDetailsByParentId_0029_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadReminderDetailsByParentId\ReadReminderDetailsByParentId_0028_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadReminderDetailsByParentId\ReadReminderDetailsByParentId_0028_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecommendedItemDetailsByParentId\ReadRecommendedItemDetailsByParentId_0027_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecommendedItemDetailsByParentId\ReadRecommendedItemDetailsByParentId_0027_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyOrderedDetailsByParentId\ReadRecentlyOrderedDetailsByParentId_0026_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyOrderedDetailsByParentId\ReadRecentlyOrderedDetailsByParentId_0026_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveInventoryValuationHeader\SaveInventoryValuationHeader_0033_2017.04.00_down.sql" />
@@ -386,22 +380,6 @@
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\PostDeployment\MigrateNotesList_0024_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch\GetRecentlyViewedHeaderByUserIdCustomerNumberBranch_0025_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadFavoritesDetailsByParentId\ReadFavoritesDetailsByParentId_0022_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadFavoritesDetailsByParentId\ReadFavoritesDetailsByParentId_0022_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadHistoryDetailsByParentId\ReadHistoryDetailsByParentId_0021_2017-04-00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadHistoryDetailsByParentId\ReadHistoryDetailsByParentId_0021_2017-04-00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByParentId\ReadNotesDetailsByParentId_0024_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNotesDetailsByParentId\ReadNotesDetailsByParentId_0024_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyViewedDetailsByParentId\ReadRecentlyViewedDetailsByParentId_0025_2017.04.00_down.sql" />
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadRecentlyViewedDetailsByParentId\ReadRecentlyViewedDetailsByParentId_0025_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0023_2017.04.00_down.sql" />

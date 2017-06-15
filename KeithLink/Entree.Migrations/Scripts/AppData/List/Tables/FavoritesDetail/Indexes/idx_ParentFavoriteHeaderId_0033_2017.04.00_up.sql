@@ -1,5 +1,5 @@
-﻿CREATE INDEX idx_ParentFavoriteHeaderId
+﻿CREATE INDEX idx_HeaderId
 	ON [List].[FavoritesDetails] (
-		[ParentFavoritesHeaderId]
+		[HeaderId]
 	)
 GO
