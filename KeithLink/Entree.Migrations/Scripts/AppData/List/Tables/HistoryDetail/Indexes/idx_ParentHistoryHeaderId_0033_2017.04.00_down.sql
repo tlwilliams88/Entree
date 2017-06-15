@@ -1,3 +1,3 @@
-﻿DROP INDEX idx_ParentHistoryHeaderId
+﻿DROP INDEX idx_HeaderId
 	ON [List].[HistoryDetails]
 GO

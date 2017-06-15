@@ -9,7 +9,7 @@ namespace KeithLink.Svc.Core.Models.Lists.InventoryValuationList
     public class InventoryValuationListDetail
     {
         public long Id { get; set; }
-        public long ParentInventoryValuationListHeaderId { get; set; }
+        public long HeaderId { get; set; }
         public long? CustomInventoryItemId { get; set; }
         public string ItemNumber { get; set; }
         public bool? Each { get; set; }

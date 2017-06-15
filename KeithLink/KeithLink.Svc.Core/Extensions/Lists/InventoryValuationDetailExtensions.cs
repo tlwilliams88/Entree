@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Each = value.Each,
                 Id = value.ListItemId,
                 ItemNumber = value.ItemNumber,
-                ParentInventoryValuationListHeaderId = headerId,
+                HeaderId = headerId,
                 Quantity = value.Quantity
             };
         }

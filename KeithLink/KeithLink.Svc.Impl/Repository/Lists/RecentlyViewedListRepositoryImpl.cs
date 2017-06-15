@@ -41,7 +41,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             {
                 header.Items = Read<RecentlyViewedListDetail>(new CommandDefinition(
                                     COMMAND_GETDETAILS,
-                                    new { @ParentRecentlyViewedHeaderId = header.Id },
+                                    new { @HeaderId = header.Id },
                                     commandType: CommandType.StoredProcedure
                                 ));
             }

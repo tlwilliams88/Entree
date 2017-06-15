@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadNotesDetailsByParentId] 
-    @ParentNotesHeaderId    BIGINT
+    @HeaderId    BIGINT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -15,4 +15,4 @@ AS
         [ModifiedUtc]
     FROM [List].[NotesDetails] 
     WHERE   
-        [ParentNotesHeaderId] = @ParentNotesHeaderId
+        [HeaderId] = @HeaderId

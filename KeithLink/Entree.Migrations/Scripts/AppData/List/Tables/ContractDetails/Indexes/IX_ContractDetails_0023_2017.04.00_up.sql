@@ -1,2 +1,2 @@
-﻿CREATE INDEX IX_ContractDetails_ParentalContractHeaderId ON [List].[ContractDetails]
-([ParentContractHeaderId])
+﻿CREATE INDEX IX_ContractDetails_HeaderId ON [List].[ContractDetails]
+([HeaderId])

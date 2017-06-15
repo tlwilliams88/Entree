@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[SaveRecentlyOrderedDetails] 
     @Id                             BIGINT,
-    @ParentRecentlyOrderedHeaderId  BIGINT,
+    @HeaderId  BIGINT,
     @ItemNumber                     VARCHAR(6),
     @Each                           BIT,
     @CatalogId                      VARCHAR(10)
@@ -10,7 +10,7 @@ IF @Id > 0
     BEGIN
         UPDATE [List].[RecentlyOrderedDetails]
         SET
-            [ParentRecentlyOrderedHeaderId] = @ParentRecentlyOrderedHeaderId,
+            [HeaderId] = @HeaderId,
             [ItemNumber] = @ItemNumber,
             [Each] = @Each,
             [CatalogId] = @CatalogId
@@ -21,14 +21,14 @@ ELSE
     BEGIN
         INSERT INTO [List].[RecentlyOrderedDetails]
         (
-            [ParentRecentlyOrderedHeaderId],
+            [HeaderId],
             [ItemNumber],
             [Each],
             [CatalogId]
         )
         VALUES
         (
-            @ParentRecentlyOrderedHeaderId,
+            @HeaderId,
             @ItemNumber,
             @Each,
             @CatalogId

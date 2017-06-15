@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadRecentlyOrderedDetailsByParentId] 
-    @ParentRecentlyOrderedHeaderId  bigint
+    @HeaderId  bigint
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -14,4 +14,4 @@ AS
         [ModifiedUtc]
     FROM [List].[RecentlyOrderedDetails] 
     WHERE
-        [ParentRecentlyOrderedHeaderId] = @ParentRecentlyOrderedHeaderId
+        [HeaderId] = @HeaderId

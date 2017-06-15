@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
                 ItemNumber = "Fake ItemNumber",
                 Label = "Fake Label",
                 ModifiedUtc = new DateTime(2017, 6, 15, 10, 44, 0, DateTimeKind.Utc),
-                ParentFavoritesHeaderId = 6
+                HeaderId = 6
             };
         }
 
@@ -321,7 +321,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
             }
         }
 
-        public class Get_ParentFavoritesHeaderId {
+        public class Get_HeaderId {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
@@ -331,7 +331,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
                 // act
 
                 // assert
-                fakeItem.ParentFavoritesHeaderId
+                fakeItem.HeaderId
                         .Should()
                         .Be(expected);
             }
@@ -345,7 +345,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
                 // act
 
                 // assert
-                test.ParentFavoritesHeaderId
+                test.HeaderId
                     .Should()
                     .Be(expected);
             }

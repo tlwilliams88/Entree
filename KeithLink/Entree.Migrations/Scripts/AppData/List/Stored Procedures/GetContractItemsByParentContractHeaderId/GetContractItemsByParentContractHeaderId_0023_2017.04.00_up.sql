@@ -1,9 +1,9 @@
-﻿CREATE PROCEDURE [List].[GetContractItemsByParentContractHeaderId]
-	@ParentContractHeaderId INT
+﻿CREATE PROCEDURE [List].[GetContractItemsByHeaderId]
+	@HeaderId INT
 AS 
 	SELECT
 		ci.Id,
-		ci.ParentContractHeaderId,
+		ci.HeaderId,
 		ci.LineNumber,
 		ci.ItemNumber,
 		ci.FromDate,
@@ -16,4 +16,4 @@ AS
 	FROM
 		[List].[ContractDetails] ci
 	WHERE
-		ci.ParentContractHeaderId = @ParentContractHeaderId
+		ci.HeaderId = @HeaderId

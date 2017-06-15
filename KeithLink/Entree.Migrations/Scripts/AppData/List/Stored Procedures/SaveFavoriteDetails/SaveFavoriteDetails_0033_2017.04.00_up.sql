@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[SaveFavoriteDetails]
     @Id                         BIGINT,
-    @ParentFavoritesHeaderId    BIGINT,
+    @HeaderId    BIGINT,
 	@ItemNumber		            CHAR(6),
 	@Each                       BIT,
     @Label                      NVARCHAR(150),
@@ -14,7 +14,7 @@ AS
     UPDATE			
         [List].[FavoritesDetails]
     SET
-        [ParentFavoritesHeaderId] = @ParentFavoritesHeaderId,
+        [HeaderId] = @HeaderId,
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [Label] = @Label,
@@ -28,7 +28,7 @@ AS
       BEGIN
         INSERT INTO
             [List].[FavoritesDetails] (
-                [ParentFavoritesHeaderId],
+                [HeaderId],
 	            [ItemNumber],
 	            [Each],
 	            [Label],
@@ -37,7 +37,7 @@ AS
                 [CreatedUtc],
                 [ModifiedUtc]
             ) VALUES (
-                @ParentFavoritesHeaderId,
+                @HeaderId,
 	            @ItemNumber,
 	            @Each,
 	            @Label,

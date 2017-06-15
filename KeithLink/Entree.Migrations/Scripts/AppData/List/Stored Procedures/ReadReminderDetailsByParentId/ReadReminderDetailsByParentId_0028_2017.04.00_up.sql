@@ -15,6 +15,6 @@ AS
 	FROM 
         [List].[ReminderDetails] 
 	WHERE
-        [ParentRemindersHeaderId] = @HeaderId
+        [HeaderId] = @HeaderId
 	AND 
         [Active] = 1

@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[SaveRecommendedItemsDetail] 
     @Id                             BIGINT,
-    @ParentRecommendedItemsHeaderId BIGINT,
+    @HeaderId BIGINT,
     @ItemNumber                     VARCHAR (6),
     @Each                           BIT,
     @CatalogId                      VARCHAR (10)
@@ -9,7 +9,7 @@ AS
 IF @Id > 0
     UPDATE [List].[RecommendedItemsDetail]
     SET
-        [ParentRecommendedItemsHeaderId] = @ParentRecommendedItemsHeaderId,
+        [HeaderId] = @HeaderId,
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [CatalogId] = @CatalogId
@@ -18,12 +18,12 @@ IF @Id > 0
 ELSE
     INSERT INTO [List].[SaveRecommendedItemsDetail]
     (
-        [ParentRecommendedItemsHeaderId],
+        [HeaderId],
         [ItemNumber],
         [Each],
         [CatalogId]
     ) VALUES (
-        @ParentRecommendedItemsHeaderId,
+        @HeaderId,
         @ItemNumber,
         @Each,
         @CatalogId

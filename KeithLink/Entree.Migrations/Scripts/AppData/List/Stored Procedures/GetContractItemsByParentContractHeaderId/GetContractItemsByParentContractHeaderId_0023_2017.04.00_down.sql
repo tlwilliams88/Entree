@@ -1,1 +1,1 @@
-﻿DROP PROCEDURE [List].[GetContractItemsByParentContractHeaderId];
+﻿DROP PROCEDURE [List].[GetContractItemsByHeaderId];

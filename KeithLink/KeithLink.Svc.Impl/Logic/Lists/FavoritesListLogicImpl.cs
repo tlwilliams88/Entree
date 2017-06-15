@@ -53,19 +53,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
         public void Save(UserProfile user, UserSelectedContext catalogInfo, FavoritesListDetail model) {
             // try to find the parent header id if it is not in the model
-            if (model.ParentFavoritesHeaderId == 0) {
+            if (model.HeaderId == 0) {
                 FavoritesListHeader header = _headerRepo.GetFavoritesList(user.UserId, catalogInfo);
 
                 if (header == null) {
                     // create the header
-                    model.ParentFavoritesHeaderId = _headerRepo.SaveFavoriteListHeader(new FavoritesListHeader()
+                    model.HeaderId = _headerRepo.SaveFavoriteListHeader(new FavoritesListHeader()
                     {
                         BranchId = catalogInfo.BranchId,
                         CustomerNumber = catalogInfo.CustomerId,
                         UserId = user.UserId
                     });
                 } else {
-                    model.ParentFavoritesHeaderId = header.Id;
+                    model.HeaderId = header.Id;
                 }
             }
 

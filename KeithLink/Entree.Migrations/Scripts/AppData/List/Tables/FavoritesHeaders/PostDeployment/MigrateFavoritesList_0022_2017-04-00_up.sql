@@ -30,7 +30,7 @@
 
     INSERT
 		INTO [BEK_Commerce_AppData].[List].[FavoritesDetails]
-			([ParentFavoritesHeaderId]
+			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]

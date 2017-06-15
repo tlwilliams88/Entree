@@ -32,7 +32,7 @@
 		INTO [BEK_Commerce_AppData].[List].[ContractDetails]
 			([ItemNumber]
             ,[CreatedUtc]
-            ,[ParentContractHeaderId]
+            ,[HeaderId]
             ,[ModifiedUtc]
             ,[Category]
             ,[LineNumber]
@@ -62,7 +62,7 @@
 					SELECT
 						'x'
 						FROM [BEK_Commerce_AppData].[List].[ContractDetails] li
-						WHERE li.[ParentContractHeaderId] = l.Id 
+						WHERE li.[HeaderId] = l.Id 
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
@@ -89,7 +89,7 @@
 			[BEK_Commerce_AppData].[List].[ContractDetails] li
 		INNER JOIN 
 			[BEK_Commerce_AppData].List.[ContractHeaders] l
-			ON l.Id = li.[ParentContractHeaderId]
+			ON l.Id = li.[HeaderId]
 		INNER JOIN
 			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
 			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
@@ -108,7 +108,7 @@
 			[BEK_Commerce_AppData].[List].[ContractDetails] li
 		INNER JOIN 
 			[BEK_Commerce_AppData].List.[ContractHeaders] l
-			ON l.Id = li.[ParentContractHeaderId]
+			ON l.Id = li.[HeaderId]
 		LEFT OUTER JOIN
 			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
 			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
@@ -124,7 +124,7 @@
 		FROM [BEK_Commerce_AppData].[List].[ContractDetails]
 		FROM [BEK_Commerce_AppData].[List].[ContractDetails] li
 			INNER JOIN [BEK_Commerce_AppData].[List].[ContractHeaders] l
-			ON li.[ParentContractHeaderId] = l.Id
+			ON li.[HeaderId] = l.Id
 	WHERE 
 		NOT EXISTS (
 			SELECT

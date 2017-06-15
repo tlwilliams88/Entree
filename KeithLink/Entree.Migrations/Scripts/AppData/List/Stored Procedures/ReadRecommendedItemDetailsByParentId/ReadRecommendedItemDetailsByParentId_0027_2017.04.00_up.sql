@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadRecommendedItemDetailsByParentId] 
-    @ParentRecommendedItemsHeaderId bigint
+    @HeaderId bigint
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -7,7 +7,7 @@ AS
 
     SELECT
         [Id],
-        [ParentRecommendedItemsHeaderId],
+        [HeaderId],
         [ItemNumber],
         [Each],
         [CatalogId],
@@ -16,4 +16,4 @@ AS
     FROM
         [List].[RecommendedItemsDetails] 
     WHERE
-        [ParentRecommendedItemsHeaderId] = @ParentRecommendedItemsHeaderId
+        [HeaderId] = @HeaderId

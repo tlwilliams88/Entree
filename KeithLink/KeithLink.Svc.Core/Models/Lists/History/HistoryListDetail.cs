@@ -9,7 +9,7 @@ namespace KeithLink.Svc.Core.Models.Lists.History
     public class HistoryListDetail
     {
         public long Id { get; set; }
-        public long ParentHistoryHeaderId { get; set; }
+        public long HeaderId { get; set; }
         public int LineNumber { get; set; }
         public string ItemNumber { get; set; }
         public bool? Each { get; set; }

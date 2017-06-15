@@ -1,6 +1,6 @@
 CREATE UNIQUE INDEX [IX_MandatoryItemsDetails_CustomerNumberAndBranch] ON [List].[MandatoryItemsDetails]
 (
     [ItemNumber],
-    [ParentMandatoryItemsHeaderId],
+    [HeaderId],
     [Active]
 )

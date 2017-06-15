@@ -1,6 +1,6 @@
-﻿CREATE INDEX idx_ParentInventoryValudationHeaderId_Active
+﻿CREATE INDEX idx_HeaderId_Active
 	ON [List].[InventoryValuationListDetails] (
-		[ParentInventoryValuationListHeaderId],
+		[HeaderId],
 		[Active]
 	)
 GO

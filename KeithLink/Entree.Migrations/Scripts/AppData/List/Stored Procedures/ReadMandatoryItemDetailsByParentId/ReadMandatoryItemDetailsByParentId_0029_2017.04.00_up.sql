@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadMandatoryItemDetailsByParentId] 
-    @ParentMandatoryItemsHeaderId   BIGINT
+    @HeaderId   BIGINT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -14,5 +14,5 @@ AS
         [ModifiedUtc]
     FROM [List].[MandatoryItemsDetails] 
     WHERE
-        [ParentMandatoryItemsHeaderId] = @ParentMandatoryItemsHeaderId
+        [HeaderId] = @HeaderId
     AND [Active] = 1

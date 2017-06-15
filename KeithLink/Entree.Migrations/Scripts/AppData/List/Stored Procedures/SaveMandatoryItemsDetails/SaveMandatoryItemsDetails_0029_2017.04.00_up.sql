@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[SaveMandatoryItemByCustomerNumberBranch] 
     @Id                             BIGINT,
-    @ParentMandatoryItemsHeaderId   BIGINT,
+    @HeaderId   BIGINT,
     @ItemNumber                     CHAR (6),
     @Each                           BIT,
     @CatalogId                      VARCHAR (10),
@@ -11,7 +11,7 @@ AS
 IF @Id > 0
     UPDATE [List].[MandatoryItemsDetails]
     SET
-        [ParentMAndatoryItemsHeaderId] = @ParentMandatoryItemsHeaderId,
+        [HeaderId] = @HeaderId,
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [CatalogId] = @CatalogId,
@@ -21,7 +21,7 @@ IF @Id > 0
 ELSE
     INSERT INTO [List].[MandatoryItemsDetails]
     (
-        [ParentMandatoryItemsHeaderId],
+        [HeaderId],
         [ItemNumber],
         [Each],
         [CatalogId],
@@ -29,7 +29,7 @@ ELSE
     )
     VALUES
     (
-        @ParentMandatoryItemsHeaderId,
+        @HeaderId,
         @ItemNumber,
         @Each,
         @CatalogId,

@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
                 ItemNumber = "Fake ItemNumber",
                 LineNumber = 1023,
                 ModifiedUtc = new DateTime(2017, 6, 13, 16, 39, 00, DateTimeKind.Utc),
-                ParentContractHeaderId = 19,
+                HeaderId = 19,
                 ToDate = new DateTime(2017, 6, 13, 16, 52, 0)
             };
         }
@@ -364,7 +364,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
         }
 
-        public class Get_ParentContractHeaderId {
+        public class Get_HeaderId {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
@@ -374,7 +374,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
                 // act
 
                 // assert
-                fakeItem.ParentContractHeaderId
+                fakeItem.HeaderId
                         .Should()
                         .Be(expected);
             }
@@ -388,7 +388,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
                 // act
 
                 // assert
-                test.ParentContractHeaderId
+                test.HeaderId
                     .Should()
                     .Be(expected);
             }

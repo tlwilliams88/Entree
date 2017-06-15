@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     {
         #region attributes
         private const string PARMNAME_ID = "Id";
-        private const string PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID = "ParentMandatoryItemsHeaderId";
+        private const string PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID = "HeaderId";
         private const string PARMNAME_ITEMNUMBER = "ItemNumber";
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_CATALOG_ID = "CatalogId";
@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         public void Save(MandatoryItemsListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, model.Id);
-            parms.Add(PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID, model.ParentMandatoryItemsHeaderId);
+            parms.Add(PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID, model.HeaderId);
             parms.Add(PARMNAME_ITEMNUMBER, model.ItemNumber);
             parms.Add(PARMNAME_EACH, model.Each);
             parms.Add(PARMNAME_CATALOG_ID, model.CatalogId);

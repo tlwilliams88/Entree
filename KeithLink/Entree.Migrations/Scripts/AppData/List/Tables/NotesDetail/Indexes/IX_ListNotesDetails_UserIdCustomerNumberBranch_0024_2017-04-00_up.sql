@@ -1,5 +1,5 @@
-CREATE INDEX [IX_ListNotesDetails_ParentNotesHeaderId] ON [List].[NotesDetails]
+CREATE INDEX [IX_ListNotesDetails_HeaderId] ON [List].[NotesDetails]
 (
-	[ParentNotesHeaderId]
+	[HeaderId]
 )
 GO

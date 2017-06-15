@@ -17,6 +17,6 @@ AS
 	FROM 
         [List].[InventoryValuationListDetails] 
 	WHERE	
-        [ParentInventoryValuationListHeaderId] = @HeaderId
+        [HeaderId] = @HeaderId
 	AND 
         [Active] = 1

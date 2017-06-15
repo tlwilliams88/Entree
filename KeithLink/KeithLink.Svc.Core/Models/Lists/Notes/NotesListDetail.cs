@@ -9,7 +9,7 @@ namespace KeithLink.Svc.Core.Models.Lists.Notes
     public class NotesListDetail
     {
         public long Id { get; set; }
-        public long ParentNotesHeaderId { get; set; }
+        public long HeaderId { get; set; }
         public string ItemNumber { get; set; }
         public bool? Each { get; set; }
         public string CatalogId { get; set; }

@@ -1,6 +1,6 @@
 CREATE TABLE [List].[ReminderDetails] (
     [Id]                      BIGINT            NOT NULL    PRIMARY KEY IDENTITY(1,1),
-    [ParentRemindersHeaderId] BIGINT            NOT NULL    DEFAULT 0,
+    [HeaderId] BIGINT            NOT NULL    DEFAULT 0,
     [ItemNumber]              CHAR(6)           NOT NULL,
     [Each]                    BIT               NULL,
     [CatalogId]               VARCHAR(10)       NULL,

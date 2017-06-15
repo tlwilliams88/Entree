@@ -28,7 +28,7 @@
 
     INSERT
 		INTO [BEK_Commerce_AppData].[List].[MandatoryItemsDetails]
-			([ParentMandatoryItemsHeaderId]
+			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each])
