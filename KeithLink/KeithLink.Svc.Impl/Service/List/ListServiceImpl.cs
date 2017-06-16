@@ -91,8 +91,19 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Contract:
                     returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
+                //case ListType.Recent:
+                //    returnList.AddRange(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                //    break;
+                case ListType.Notes: 
+                    returnList.Add(_notesLogic.GetList(catalogInfo));
+                    break;
                 case ListType.Worksheet:
                     returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                    break;
+                // no contract items added lists
+                // no contract items deleted lists
+                case ListType.Reminder:
+                    returnList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
             }
 
@@ -624,6 +635,40 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
             });
         }
+
+        //private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+        //{
+        //    if (list.Items == null || list.Items.Count == 0)
+        //        return;
+
+        //    var notes = _notesLogic.;
+        //    var favorites = _listRepo.Read(l => l.UserId == user.UserId &&
+        //                                        l.CustomerId.Equals(catalogInfo.CustomerId) &&
+        //                                        l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) &&
+        //                                        l.Type == ListType.Favorite,
+        //                                   i => i.Items)
+        //                             .FirstOrDefault();
+
+        //    var notesHash = new Dictionary<string, ListItem>();
+        //    var favHash = new Dictionary<string, ListItem>();
+
+        //    if (notes != null &&
+        //       notes.Items != null)
+        //        notesHash = notes.Items
+        //                         .GroupBy(i => i.ItemNumber)
+        //                         .ToDictionary(n => n.Key, n => n.First());
+        //    if (favorites != null &&
+        //       favorites.Items != null)
+        //        favHash = favorites.Items
+        //                           .GroupBy(i => i.ItemNumber)
+        //                           .ToDictionary(f => f.Key, f => f.First());
+
+        //    Parallel.ForEach(list.Items, listItem =>
+        //    {
+        //        listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
+        //        listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;
+        //    });
+        //}
 
     }
 }

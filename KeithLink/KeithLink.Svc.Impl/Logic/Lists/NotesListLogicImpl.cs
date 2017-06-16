@@ -41,9 +41,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
             if (header != null) {
                 details = _detailRepo.GetAll(header.Id);
+                return header.ToListModel(details);
             }
-
-            return header.ToListModel(details);
+            return null;
         }
 
         public long SaveNote(UserSelectedContext catalogInfo, ListItemModel detail) {
