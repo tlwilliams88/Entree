@@ -2,6 +2,8 @@
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System.Collections.Generic;
 
+using KeithLink.Svc.Core.Models.Lists;
+
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IRecentlyViewedListLogic : IBaseListLogic
     {
@@ -15,5 +17,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
             bool active);
 
         void DeleteRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo);
+
+        List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
     }
 }

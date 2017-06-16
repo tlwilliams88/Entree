@@ -14,11 +14,13 @@ BEGIN
 		INTO [BEK_Commerce_AppData].[List].[ContractHeaders]
             ([CustomerNumber]
             ,[BranchId]
+            ,[ContractId]
             ,[CreatedUtc]
             ,[ModifiedUtc])
         SELECT DISTINCT
              LTRIM(RTRIM(cb.[CustomerNumber]))
             ,LTRIM(RTRIM(cb.[DivisionNumber]))
+            ,LTRIM(RTRIM(cb.[BidNumber]))
             ,GETUTCDATE()
             ,GETUTCDATE()
         FROM 
