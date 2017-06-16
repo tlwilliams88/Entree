@@ -82,16 +82,22 @@ namespace KeithLink.Svc.Impl.Service.List
 
             switch (type)
             {
+                case ListType.Custom:
+                    returnList.AddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
+                    break;
+                case ListType.Favorite:
+                    returnList.Add(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
+                    break;
+                case ListType.Contract:
+                    returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
+                    break;
                 case ListType.Worksheet:
-                {
                     returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                    break;
+            }
 
-                    FillOutProducts(user, catalogInfo, returnList, true);
-                }
-                    break;
-                default: // plug in legacy list implementation
-                    returnList = _genericListLogic.ReadListByType(user, catalogInfo, type, headerOnly);
-                    break;
+            if (returnList != null) {
+                FillOutProducts(user, catalogInfo, returnList, true);
             }
 
             return returnList;
@@ -443,14 +449,21 @@ namespace KeithLink.Svc.Impl.Service.List
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)
         {
 //Lookup product details for each item
-            returnList.ForEach(delegate(ListModel listItem) { LookupProductDetails(user, listItem, catalogInfo); });
+            returnList.ForEach(delegate(ListModel listItem) {
+                if (listItem != null) {
+                    LookupProductDetails(user, listItem, catalogInfo);
+                }
+            });
 
             if (getprices)
             {
                 //Lookup prices for each item
                 foreach (var tempList in returnList)
                 {
-                    LookupPrices(user, tempList.Items, catalogInfo);
+                    if (tempList != null &&
+                        tempList.Items != null) {
+                        LookupPrices(user, tempList.Items, catalogInfo);
+                    }
                 }
             }
         }

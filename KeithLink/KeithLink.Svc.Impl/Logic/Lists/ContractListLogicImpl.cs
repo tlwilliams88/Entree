@@ -28,9 +28,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
             if (header != null) {
                 items = _detailsRepo.GetContractListDetails(header.Id);
+                return header.ToListModel(items);
             }
-
-            return header.ToListModel(items);
+            return null;
         }
         #endregion
     }
