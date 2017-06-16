@@ -105,6 +105,21 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Reminder:
                     returnList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
+                case ListType.Mandatory:
+                    returnList.Add(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
+                    break;
+                //case ListType.RecommendedItems:
+                //    returnList.Add(_recommendedItemsLogic.GetListModel(user, catalogInfo, 0));
+                //    break;
+                case ListType.InventoryValuation:
+                    returnList.AddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+                    break;
+                //case ListType.RecentOrderedNonBEK:
+                //    returnList.Add(_recentlyOrderedLogic.GetListModel(user, catalogInfo, 0));
+                //    break;
+                //case ListType.CustomInventory: //uses its own controller and works a little differently
+                //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
+                //    break;
             }
 
             if (returnList != null) {
