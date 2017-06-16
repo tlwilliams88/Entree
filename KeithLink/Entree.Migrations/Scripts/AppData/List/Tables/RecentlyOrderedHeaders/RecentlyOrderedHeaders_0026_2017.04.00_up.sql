@@ -3,7 +3,6 @@ CREATE TABLE [List].[RecentlyOrderedHeaders] (
     [UserId]            UNIQUEIDENTIFIER NOT NULL,
     [CustomerNumber]    CHAR(6) NOT NULL,
     [BranchId]          CHAR(3) NOT NULL,
-    [Name]              VARCHAR(20) DEFAULT 'Recently Ordered',
     [CreatedUtc]        DATETIME DEFAULT (getutcdate()) NOT NULL,
     [ModifiedUtc]       DATETIME DEFAULT (getutcdate()) NOT NULL
 );

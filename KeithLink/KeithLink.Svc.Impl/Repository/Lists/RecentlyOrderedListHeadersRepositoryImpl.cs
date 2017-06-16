@@ -1,38 +1,54 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
+
+using Dapper;
+
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.DataConnection;
-using System.Data;
-using Dapper;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
 
-namespace KeithLink.Svc.Impl.Repository.Lists
-{
-    public class RecentlyOrderedListHeadersRepositoryImpl : DapperDatabaseConnection, IRecentlyOrderedListHeadersRepository
-    {
+namespace KeithLink.Svc.Impl.Repository.Lists {
+    public class RecentlyOrderedListHeadersRepositoryImpl : DapperDatabaseConnection, IRecentlyOrderedListHeadersRepository {
         #region attributes
-        private const string COMMAND_GETHEADER = "[List].[GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch]";
-        #endregion
-        #region constructor
-        public RecentlyOrderedListHeadersRepositoryImpl() : base(Configuration.BEKDBConnectionString)
-        {
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_BRANCHID = "BranchId";
+        private const string PARMNAME_CUSTOMERNUMBER = "CustomerNumber";
+        private const string PARMNAME_USERID = "UserId";
 
-        }
+        private const string PARMNAME_RETURNVALUE = "ReturnValue";
+
+        private const string SPNAME_GET = "[List].[GetRecentlyOrderedHeaderByUserIdCustomerNumberBranch";
+        private const string SPNAME_SAVE = "[List].[SaveRecentlyOrderedHeader]";
         #endregion
+
+        #region constructor
+        public RecentlyOrderedListHeadersRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
+        #endregion
+
         #region methods
-        public RecentlyOrderedListHeader GetRecentlyOrderedHeader(string userId, UserSelectedContext catalogInfo, bool headerOnly)
-        {
-            return ReadOne<RecentlyOrderedListHeader>(new CommandDefinition(
-                                COMMAND_GETHEADER,
-                                new { @UserId = userId, @CustomerNumber = catalogInfo.CustomerId, @BranchId = catalogInfo.BranchId },
-                                commandType: CommandType.StoredProcedure
-                            ));
+        public RecentlyOrderedListHeader GetRecentlyOrderedHeader(Guid userId, UserSelectedContext catalogInfo) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_BRANCHID, catalogInfo.BranchId);
+            parms.Add(PARMNAME_CUSTOMERNUMBER, catalogInfo.BranchId);
+            parms.Add(PARMNAME_USERID, userId);
+
+            return ReadOne<RecentlyOrderedListHeader>(SPNAME_GET, parms);
+        }
+
+        public long Save(RecentlyOrderedListHeader header, Guid userId) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, header.Id);
+            parms.Add(PARMNAME_BRANCHID, header.BranchId);
+            parms.Add(PARMNAME_CUSTOMERNUMBER, header.CustomerNumber);
+            parms.Add(PARMNAME_USERID, userId);
+            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETURNVALUE);
+
         }
         #endregion
     }

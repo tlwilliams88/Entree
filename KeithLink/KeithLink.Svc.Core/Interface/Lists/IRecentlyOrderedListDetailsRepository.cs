@@ -1,22 +1,14 @@
 ﻿using System.Collections.Generic;
+
 using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
 
-namespace KeithLink.Svc.Core.Interface.Lists
-{
-    public interface IRecentlyOrderedListDetailsRepository
-    {
-        List<RecentlyOrderedListDetail> GetRecentlyOrderedDetails(long parentHeaderId);
+namespace KeithLink.Svc.Core.Interface.Lists {
+    public interface IRecentlyOrderedListDetailsRepository {
+        List<RecentlyOrderedListDetail> GetRecentlyOrderedjetails(long parentHeaderId);
 
-        void AddOrUpdateRecentlyOrdered(string userId,
-            string customerNumber,
-            string branchId,
-            string itemNumber,
-            bool each,
-            string catalogId,
-            bool active);
+        long Save(RecentlyOrderedListDetail details);
 
-        void DeleteRecentlyOrdered(string userId,
-            string customerNumber,
-            string branchId);
+        void DeleteRecentlyOrdered(RecentlyOrderedListDetail details);
+        void DeleteOldRecentlyOrdered(RecentlyOrderedListDetail details);
     }
 }

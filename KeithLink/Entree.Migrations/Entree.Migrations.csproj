@@ -314,6 +314,8 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveMandatoryItemsHeaders\SaveMandatoryItemsHeaders_0029_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveNotesByCustomerNumberBranch\SaveNotesByCustomerNumberBranch_0024_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveNotesByCustomerNumberBranch\SaveNotesByCustomerNumberBranch_0024_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveRecentlyOrderedHeader\SaveRecentlyOrderedHeader_0026_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveRecentlyOrderedHeader\SaveRecentlyOrderedHeader_0026_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveRecentlyOrderedDetails\SaveRecentlyOrderedDetails_0026_2017.04.00_down.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveRecentlyOrderedDetails\SaveRecentlyOrderedDetails_0026_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveRecentlyViewedDetails\SaveRecentlyViewedByUserIdCustomerNumberBranch_0025_2017.04.00_down.sql" />

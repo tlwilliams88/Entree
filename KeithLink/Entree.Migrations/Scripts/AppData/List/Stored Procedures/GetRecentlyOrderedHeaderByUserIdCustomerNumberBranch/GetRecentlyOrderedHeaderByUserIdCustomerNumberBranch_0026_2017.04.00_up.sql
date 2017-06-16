@@ -12,7 +12,6 @@ AS
         [UserId],
         [CustomerNumber],
         [BranchId],
-        [Name],
         [CreatedUtc],
         [ModifiedUtc]
     FROM [List].[RecentlyOrderedHeaders] 
