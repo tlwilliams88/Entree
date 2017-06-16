@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 
 using Dapper;
@@ -20,8 +21,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_CATALOGID = "CatalogId";
 
-        // Change the amount of history to keep
-        private const int NUMBER_TO_KEEP = 7;
         private const string PARMNAME_NUMBERTOKEEP = "NumberToKeep";
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
@@ -32,8 +31,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #endregion
 
         #region methods
-        #endregion
-
         public List<RecentlyOrderedListDetail> GetRecentlyOrderedjetails(long headerId) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_HEADERID, headerId);
@@ -55,7 +52,19 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         }
 
         public void DeleteRecentlyOrdered(RecentlyOrderedListDetail details) {
-            
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, details.Id);
+
+            ExecuteCommand(SPNAME_DELETE, parms);
         }
+
+        public void DeleteOldRecentlyOrdered(long headerId, int numberToKeep = 7) {
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_HEADERID, headerId);
+            parms.Add(PARMNAME_NUMBERTOKEEP, numberToKeep);
+
+            ExecuteCommand(SPNAME_DELETE_OLD, parms);
+        }
+        #endregion
     }
 }

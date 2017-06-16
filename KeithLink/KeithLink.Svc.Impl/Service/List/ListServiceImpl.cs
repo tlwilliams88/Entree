@@ -310,7 +310,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.InventoryValuation:
                     _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
                     break;
-                case ListType.RecentOrderedNonBEK:
+                case ListType.RecentlyOrdered:
                     break;
             }
         }

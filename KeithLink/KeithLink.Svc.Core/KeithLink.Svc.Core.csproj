@@ -194,7 +194,9 @@
     <Compile Include="Extensions\Lists\HistoryHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\InventoryValuationDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\InventoryValuationHeaderExtensions.cs" />
+    <Compile Include="Extensions\Lists\RecentlyOrderedDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\ReminderDetailExtensions.cs" />
+    <Compile Include="Extensions\Lists\RecentlyOrderedHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\ReminderHeaderExtensions.cs" />
     <Compile Include="Extensions\Marketing\CatalogCampaignHeaderExtensions.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
