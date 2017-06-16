@@ -9,47 +9,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
     public class ContractListDetailTests {
         private static ContractListDetail MakeContractListDetail() {
             return new ContractListDetail() {
-                CatalogId = "Fake CatalogId",
                 Category = "Fake Category",
-                CreatedUtc = new DateTime(2017, 6, 13, 16, 38, 0, DateTimeKind.Utc),
-                Each = true,
                 FromDate = new DateTime(2017, 6, 13, 16, 50, 00),
-                Id = 127,
-                ItemNumber = "Fake ItemNumber",
                 LineNumber = 1023,
-                ModifiedUtc = new DateTime(2017, 6, 13, 16, 39, 00, DateTimeKind.Utc),
-                HeaderId = 19,
                 ToDate = new DateTime(2017, 6, 13, 16, 52, 0)
             };
-        }
-
-        public class Get_CatalogId {
-            [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = "Fake CatalogId";
-
-                // act
-
-                // assert
-                fakeItem.CatalogId
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
-                // arrange
-                var test = new ContractListDetail();
-
-                // act
-
-                // assert
-                test.CatalogId
-                    .Should()
-                    .BeNull();
-            }
         }
 
         public class Get_Category {
@@ -76,95 +40,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
 
                 // assert
                 test.Category
-                    .Should()
-                    .BeNull();
-            }
-        }
-
-        public class Get_CreatedUtc {
-            [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = new DateTime(2017, 6, 13, 16, 38, 0, DateTimeKind.Utc);
-
-                // act
-
-                // assert
-                fakeItem.CreatedUtc
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedDateTimeKind() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = DateTimeKind.Utc;
-
-                // act
-
-                // assert
-                fakeItem.CreatedUtc
-                        .Kind
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
-                // arrange
-                var test = new ContractListDetail();
-                var expected = DateTime.MinValue;
-
-                // act
-
-                // assert
-                test.CreatedUtc
-                    .Should()
-                    .Be(expected);
-            }
-
-            [Fact]
-            public void InitializedDetail_HeadDefaultDateTimeKind() {
-                // arrange
-                var test = new ContractListDetail();
-                var expected = DateTimeKind.Unspecified;
-
-                // act
-
-                // assert
-                test.CreatedUtc
-                    .Kind
-                    .Should()
-                    .Be(expected);
-            }
-        }
-
-        public class Get_Each {
-            [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = true;
-
-                // act
-
-                // assert
-                fakeItem.Each
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
-                // arrange
-                var test = new ContractListDetail();
-
-                // act
-
-                // assert
-                test.Each
                     .Should()
                     .BeNull();
             }
@@ -215,65 +90,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
         }
 
-        public class Get_Id {
-            [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = 127;
-
-                // act
-
-                // assert
-                fakeItem.Id
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
-                // arrange
-                var test = new ContractListDetail();
-                var expected = 0;
-
-                // act
-
-                // assert
-                test.Id
-                    .Should()
-                    .Be(expected);
-            }
-        }
-
-        public class Get_ItemNumber {
-            [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = "Fake ItemNumber";
-
-                // act
-
-                // assert
-                fakeItem.ItemNumber
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
-                // arrange
-                var test = new ContractListDetail();
-
-                // act
-
-                // assert
-                test.ItemNumber
-                    .Should()
-                    .BeNull();
-            }
-        }
-
         public class Get_LineNumber {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
@@ -299,96 +115,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
 
                 // assert
                 test.LineNumber
-                    .Should()
-                    .Be(expected);
-            }
-        }
-
-        public class Get_ModifiedUtc {
-            [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = new DateTime(2017, 6, 13, 16, 39, 00, DateTimeKind.Utc);
-
-                // act
-
-                // assert
-                fakeItem.ModifiedUtc
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedDateTimeKind() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = DateTimeKind.Utc;
-
-                // act
-
-                // assert
-                fakeItem.ModifiedUtc
-                        .Kind
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
-                // arrange
-                var test = new ContractListDetail();
-                var expected = DateTime.MinValue;
-
-                // act
-
-                // assert
-                test.ModifiedUtc
-                    .Should()
-                    .Be(expected);
-            }
-
-            [Fact]
-            public void InitializedDetail_HeadDefaultDateTimeKind() {
-                // arrange
-                var test = new ContractListDetail();
-                var expected = DateTimeKind.Unspecified;
-
-                // act
-
-                // assert
-                test.ModifiedUtc
-                    .Kind
-                    .Should()
-                    .Be(expected);
-            }
-        }
-
-        public class Get_HeaderId {
-            [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
-                // arrange
-                var fakeItem = MakeContractListDetail();
-                var expected = 19;
-
-                // act
-
-                // assert
-                fakeItem.HeaderId
-                        .Should()
-                        .Be(expected);
-            }
-
-            [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
-                // arrange
-                var test = new ContractListDetail();
-                var expected = 0;
-
-                // act
-
-                // assert
-                test.HeaderId
                     .Should()
                     .Be(expected);
             }

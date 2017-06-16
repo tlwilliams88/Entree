@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListItemId = value.Id,
                 Type = ListType.Favorite,
                 ItemNumber = value.ItemNumber,
+                Label = value.Label,
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,
                 Each = value.Each ?? false,

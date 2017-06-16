@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_BRANCH = "BranchId";
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
         private const string PARMNAME_HEADERID = "ParentCustomListHeaderId";
-        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_ID = "ListId";
 
         private const string SPNAME_DELETE = "[List].[DeleteCustomListShare]";
         private const string SPNAME_GETBYCUST = "[List].[GetCustomListSharesByCustomerNumberBranch]";
@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, model.BranchId);
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
-            parms.Add(PARMNAME_HEADERID, model.ParentCustomListHeaderId);
+            parms.Add(PARMNAME_HEADERID, model.HeaderId);
 
             ExecuteCommand(SPNAME_SAVE, parms);
         }

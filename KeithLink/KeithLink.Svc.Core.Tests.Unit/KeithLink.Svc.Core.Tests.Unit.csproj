@@ -64,12 +64,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AuditableEntityTests.cs" />
+    <Compile Include="Models\EntityTests.cs" />
+    <Compile Include="Models\Lists\BaseListDetailTests.cs" />
+    <Compile Include="Models\Lists\BaseListHeaderTests.cs" />
     <Compile Include="Models\Lists\Contract\ContractListDetailTests.cs" />
     <Compile Include="Models\Lists\Contract\ContractListHeaderTests.cs" />
     <Compile Include="Models\Lists\CustomListShares\CustomListShareTests.cs" />
     <Compile Include="Models\Lists\CustomList\CustomListDetailTests.cs" />
     <Compile Include="Models\Lists\CustomList\CustomListHeaderTests.cs" />
     <Compile Include="Models\Lists\Favorites\FavoriteListDetailTests.cs" />
+    <Compile Include="Models\Lists\Favorites\FavoritesListHeaderTests.cs" />
+    <Compile Include="Models\Lists\History\HistoryListDetailTests.cs" />
+    <Compile Include="Models\Lists\InventoryValuationList\InventoryValidationListHeaderTests.cs" />
+    <Compile Include="Models\Lists\InventoryValuationList\InventoryValudationDetailTests.cs" />
+    <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -88,14 +97,11 @@
     <Folder Include="Models\ElasticSearch\" />
     <Folder Include="Models\ImportFiles\" />
     <Folder Include="Models\Invoices\" />
-    <Folder Include="Models\Lists\History\" />
-    <Folder Include="Models\Lists\InventoryValuationList\" />
     <Folder Include="Models\Lists\MandatoryItems\" />
     <Folder Include="Models\Lists\Notes\" />
     <Folder Include="Models\Lists\RecentlyOrdered\" />
     <Folder Include="Models\Lists\RecentlyViewed\" />
     <Folder Include="Models\Lists\RecommendedItems\" />
-    <Folder Include="Models\Lists\ReminderItems\" />
     <Folder Include="Models\Marketing\" />
     <Folder Include="Models\Messaging\" />
     <Folder Include="Models\ModelExport\" />

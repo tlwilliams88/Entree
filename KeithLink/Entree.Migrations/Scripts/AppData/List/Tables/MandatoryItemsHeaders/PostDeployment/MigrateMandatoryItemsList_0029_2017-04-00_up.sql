@@ -7,12 +7,10 @@
 	INSERT -- create customer favorite lists
 		INTO [BEK_Commerce_AppData].[List].[MandatoryItemsHeaders]
             ([CustomerNumber]
-            ,[BranchId]
-            ,[Name])
+            ,[BranchId])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
-            ,'Mandatory Items'
         FROM 
             [BEK_Commerce_AppData].[List].[Lists] as l
 		WHERE 

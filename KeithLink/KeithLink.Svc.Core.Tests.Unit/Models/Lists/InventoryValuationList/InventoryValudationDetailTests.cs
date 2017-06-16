@@ -1,17 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 using FluentAssertions;
 using Xunit;
 
-using KeithLink.Svc.Core.Models.Lists.CustomList;
+using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
-    public class CustomListHeaderTests {
-        private static CustomListHeader MakeHeader() {
-            return new CustomListHeader() {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
+    public class InventoryValudationDetailTests {
+        private static InventoryValuationListDetail MakeItem() {
+            return new InventoryValuationListDetail() {
                 Active = true,
-                Name = "Fake Name",
-                UserId = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3")
+                CustomInventoryItemId = 15,
+                Quantity = 7.37m
             };
         }
 
@@ -19,7 +23,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeHeader();
+                var fakeItem = MakeItem();
                 var expected = true;
 
                 // act
@@ -33,7 +37,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListHeader();
+                var test = new InventoryValuationListDetail();
                 var expected = false;
 
                 // act
@@ -45,17 +49,17 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
         }
 
-        public class Get_Name {
+        public class Get_CustomInventoryItemId {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeHeader();
-                var expected = "Fake Name";
+                var fakeItem = MakeItem();
+                var expected = 15;
 
                 // act
 
                 // assert
-                fakeItem.Name
+                fakeItem.CustomInventoryItemId
                         .Should()
                         .Be(expected);
             }
@@ -63,28 +67,28 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListHeader();
+                var test = new InventoryValuationListDetail();
 
                 // act
 
                 // assert
-                test.Name
+                test.CustomInventoryItemId
                     .Should()
                     .BeNull();
             }
         }
 
-        public class Get_UserId {
+        public class Get_Quantity {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeHeader();
-                var expected = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3");
+                var fakeItem = MakeItem();
+                var expected = 7.37m;
 
                 // act
 
                 // assert
-                fakeItem.UserId
+                fakeItem.Quantity
                         .Should()
                         .Be(expected);
             }
@@ -92,14 +96,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListHeader();
+                var test = new InventoryValuationListDetail();
+                var expected = 0;
 
                 // act
 
                 // assert
-                test.UserId
+                test.Quantity
                     .Should()
-                    .BeNull();
+                    .Be(expected);
             }
         }
     }

@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
             if (header != null && headerOnly == false)
             {
-                header.Items = _detailsRepo.GetRecentlyOrderedDetails(header.Id);
+                //header.Items = _detailsRepo.GetRecentlyOrderedDetails(header.Id);
             }
 
             if (header != null)

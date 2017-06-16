@@ -178,10 +178,18 @@ namespace KeithLink.Svc.Impl.Service.List
             AddList(user, catalogInfo, false, list, ListType.Favorite);
             AddCustomLists(user, catalogInfo, false, list);
 
-            //List<ListItem> items = list.Select(l => l.Items).ToList();
-            //List<string> labels = ;
+            List<ListItemModel> items = new List<ListItemModel>();
+            foreach (ListModel lst in list) {
+                if (lst.Items != null &&
+                    lst.Items.Count > 0) {
+                    items.AddRange(lst.Items);
+                }
+            }
+            List<string> labels = items.Select(l => l.Label).Distinct().Where(x => x != null).ToList();
 
-            return new List<string>();
+            labels.Sort();
+
+            return labels;
         }
 
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id, bool includePrice = true)
@@ -217,58 +225,59 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
         {
-            var list = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
+            //var list = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
 
-            if (list != null)
-            {
-                var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
-                                      .ToList();
+            //if (list != null)
+            //{
+            //    var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
+            //                          .ToList();
 
-                LookupProductDetails(user, catalogInfo, returnItems);
+            //    LookupProductDetails(user, catalogInfo, returnItems);
 
-                returnItems.ForEach(delegate (RecentItem item)
-                {
-                    item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
-                });
+            //    returnItems.ForEach(delegate (RecentItem item)
+            //    {
+            //        item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
+            //    });
 
-                return returnItems.OrderByDescending(l => l.ModifiedOn)
-                                  .ToList();
-            }
+            //    return returnItems.OrderByDescending(l => l.ModifiedOn)
+            //                      .ToList();
+            //}
             return null;
         }
 
         public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog)
         {
-            List<ListModel> recentOrders = _recentlyOrderedLogic.ReadList(user,
-                new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalog}, false);
+            //List<ListModel> recentOrders = _recentlyOrderedLogic.ReadList(user,
+            //    new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalog}, false);
 
-            // Identify specific warehouse - needed for product lookup
-            Dictionary<string, string> externalCatalogDict =
-                _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
+            //// Identify specific warehouse - needed for product lookup
+            //Dictionary<string, string> externalCatalogDict =
+            //    _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
 
-            List<RecentNonBEKItem> returnItems = recentOrders.SelectMany(i => i.Items
-                .Select(l => new RecentNonBEKItem()
-                {
-                    ItemNumber = l.ItemNumber,
-                    CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
-                    ModifiedOn = l.ModifiedUtc
-                }))
-                .ToList();
+            //List<RecentNonBEKItem> returnItems = recentOrders.SelectMany(i => i.Items
+            //    .Select(l => new RecentNonBEKItem()
+            //    {
+            //        ItemNumber = l.ItemNumber,
+            //        CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
+            //        ModifiedOn = l.ModifiedUtc
+            //    }))
+            //    .ToList();
 
-            if (returnItems.Count > 0)
-            {
-                PopulateProductDetails(returnItems);
+            //if (returnItems.Count > 0)
+            //{
+            //    PopulateProductDetails(returnItems);
 
-                returnItems.ForEach(delegate (RecentNonBEKItem item)
-                {
-                    if (item.Upc != null)
-                    {
-                        item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
-                    }
-                });
-            }
+            //    returnItems.ForEach(delegate (RecentNonBEKItem item)
+            //    {
+            //        if (item.Upc != null)
+            //        {
+            //            item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
+            //        }
+            //    });
+            //}
 
-            return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
+            //return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
+            return null;
         }
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
@@ -387,7 +396,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private void AddCustomLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
             List<ListModel> list)
         {
-            List<ListModel> tempList = _customListLogic.ReadList(user, catalogInfo, true);
+            List<ListModel> tempList = _customListLogic.ReadList(user, catalogInfo, headerOnly);
 
             if (tempList != null && tempList.Count > 0 && tempList[0].Items != null && tempList[0].Items.Count > 0)
             {

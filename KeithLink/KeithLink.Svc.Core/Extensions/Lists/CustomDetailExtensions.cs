@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListItemId = value.Id,
                 Type = ListType.Custom,
                 ItemNumber = value.ItemNumber,
+                Label = value.Label,
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,
                 Each = value.Each ?? false,
@@ -26,7 +27,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ItemNumber = value.ItemNumber,
                 Label = value.Label,
                 Par = value.ParLevel,
-                ParentCustomListHeaderId = headerId
+                HeaderId = headerId
             };
         }
     }

@@ -12,12 +12,12 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 namespace KeithLink.Svc.Impl.Logic.Lists {
     public class FavoritesListLogicImpl : IFavoritesListLogic {
         #region attributes
-        private readonly IFavoriteListDetailRepository _detailRepo;
-        private readonly IFavoriteListHeaderRepository _headerRepo;
+        private readonly IFavoriteListDetailsRepository _detailRepo;
+        private readonly IFavoriteListHeadersRepository _headerRepo;
         #endregion
 
         #region ctor
-        public FavoritesListLogicImpl(IFavoriteListDetailRepository detailRepository, IFavoriteListHeaderRepository headerRepository) {
+        public FavoritesListLogicImpl(IFavoriteListDetailsRepository detailRepository, IFavoriteListHeadersRepository headerRepository) {
             _detailRepo = detailRepository;
             _headerRepo = headerRepository;
         }

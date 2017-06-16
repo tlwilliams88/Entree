@@ -41,7 +41,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         #region methods
         public List<CustomListDetail> GetCustomListDetails(long headerId) {
-            return Read<CustomListDetail>(SPNAME_GETBYHEADER, PARMNAME_ID, headerId);
+            return Read<CustomListDetail>(SPNAME_GETBYHEADER, PARMNAME_HEADERID, headerId);
         }
 
         public void SaveCustomListDetail(CustomListDetail model) {
@@ -49,7 +49,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOG, model.CatalogId);
             parms.Add(PARMNAME_EACH, model.Each);
-            parms.Add(PARMNAME_HEADERID, model.ParentCustomListHeaderId);
+            parms.Add(PARMNAME_HEADERID, model.HeaderId);
             parms.Add(PARMNAME_INVID, model.CustomInventoryItemId);
             parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
             parms.Add(PARMNAME_LABEL, model.Label);
