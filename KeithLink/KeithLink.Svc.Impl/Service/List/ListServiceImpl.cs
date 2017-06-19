@@ -85,38 +85,50 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Custom:
                     returnList.AddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
                     break;
+
                 case ListType.Favorite:
                     returnList.Add(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
                     break;
+
                 case ListType.Contract:
                     returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
+
                 //case ListType.Recent:
                 //    returnList.AddRange(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
                 //    break;
+
                 case ListType.Notes: 
                     returnList.Add(_notesLogic.GetList(catalogInfo));
                     break;
+
                 case ListType.Worksheet:
                     returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
                     break;
+
                 // no contract items added lists
                 // no contract items deleted lists
+
                 case ListType.Reminder:
                     returnList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
+
                 case ListType.Mandatory:
                     returnList.Add(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
                     break;
+
                 //case ListType.RecommendedItems:
                 //    returnList.Add(_recommendedItemsLogic.GetListModel(user, catalogInfo, 0));
                 //    break;
+
                 case ListType.InventoryValuation:
                     returnList.AddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
                     break;
-                //case ListType.RecentOrderedNonBEK:
-                //    returnList.Add(_recentlyOrderedLogic.GetListModel(user, catalogInfo, 0));
-                //    break;
+
+                case ListType.RecentlyOrdered:
+                    returnList.Add(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
+
                 //case ListType.CustomInventory: //uses its own controller and works a little differently
                 //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
                 //    break;
@@ -177,7 +189,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     tempList = _inventoryValuationLogic.ReadList(Id, catalogInfo, false);
                     break;
 
-                case ListType.RecentOrderedNonBEK:
+                case ListType.RecentlyOrdered:
                     ////    returnList.Add(_recentlyOrderedLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
@@ -345,37 +357,36 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog)
         {
-            //List<ListModel> recentOrders = _recentlyOrderedLogic.ReadList(user,
-            //    new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalog}, false);
+            ListModel recentOrders = _recentlyOrderedLogic.ReadList(user,
+                new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = catalog }, false);
 
-            //// Identify specific warehouse - needed for product lookup
-            //Dictionary<string, string> externalCatalogDict =
-            //    _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
+            // Identify specific warehouse - needed for product lookup
+            Dictionary<string, string> externalCatalogDict =
+                _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
 
-            //List<RecentNonBEKItem> returnItems = recentOrders.SelectMany(i => i.Items
-            //    .Select(l => new RecentNonBEKItem()
-            //    {
-            //        ItemNumber = l.ItemNumber,
-            //        CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
-            //        ModifiedOn = l.ModifiedUtc
-            //    }))
-            //    .ToList();
+            List<RecentNonBEKItem> returnItems = recentOrders.Items
+                .Select(l => new RecentNonBEKItem()
+                {
+                    ItemNumber = l.ItemNumber,
+                    CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
+                    ModifiedOn = l.ModifiedUtc
+                })
+                .ToList();
 
-            //if (returnItems.Count > 0)
-            //{
-            //    PopulateProductDetails(returnItems);
+            if (returnItems.Count > 0)
+            {
+                PopulateProductDetails(returnItems);
 
-            //    returnItems.ForEach(delegate (RecentNonBEKItem item)
-            //    {
-            //        if (item.Upc != null)
-            //        {
-            //            item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
-            //        }
-            //    });
-            //}
+                returnItems.ForEach(delegate (RecentNonBEKItem item)
+                {
+                    if (item.Upc != null)
+                    {
+                        item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
+                    }
+                });
+            }
 
-            //return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
-            return null;
+            return new RecentNonBEKList() { Catalog = catalog, Items = returnItems };
         }
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,

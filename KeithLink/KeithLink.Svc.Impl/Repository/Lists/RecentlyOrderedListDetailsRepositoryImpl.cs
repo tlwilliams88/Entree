@@ -41,14 +41,14 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         public long Save(RecentlyOrderedListDetail details) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, details.Id);
+            parms.Add(PARMNAME_HEADERID, details.HeaderId);
             parms.Add(PARMNAME_ITEMNUMBER, details.ItemNumber);
             parms.Add(PARMNAME_EACH, details.Each);
             parms.Add(PARMNAME_CATALOGID, details.CatalogId);
-            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output);
 
-            ExecuteCommand(SPNAME_SAVE);
+            ExecuteCommand(SPNAME_SAVE, parms);
 
-            return parms.Get<long>(PARMNAME_RETURNVALUE);
+            return 0;
         }
 
         public void DeleteRecentlyOrdered(RecentlyOrderedListDetail details) {

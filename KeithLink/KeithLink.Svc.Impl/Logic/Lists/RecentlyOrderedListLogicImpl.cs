@@ -40,7 +40,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return returnValue.ToListModel(details);
         }
 
-        public void Save(UserProfile user,
+        public void PostRecentOrder(UserProfile user,
+                                    UserSelectedContext catalogInfo,
+                                    RecentNonBEKList list) {
+            long headerid = 0;
+
+            foreach (RecentNonBEKItem order in list.Items) {
+                headerid = Save(user, catalogInfo, order.ItemNumber, false, order.CatalogId);
+            }
+
+            DeleteOldRecentlyOrdered(user, catalogInfo, headerid);
+        }
+
+        public long Save(UserProfile user,
                          UserSelectedContext catalogInfo,
                          string itemNumber,
                          bool each,
@@ -64,8 +76,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             }
 
             detail.HeaderId = header.Id;
+            detail.CatalogId = catalogInfo.BranchId;
 
             _detailsRepo.Save(detail);
+
+            return header.Id;
+        }
+
+        public void DeleteAll(UserProfile user,
+                              UserSelectedContext catalogInfo)
+        {
+            RecentlyOrderedListHeader header = _headersRepo.GetRecentlyOrderedHeader(user.UserId, catalogInfo);
+
+            _detailsRepo.DeleteOldRecentlyOrdered(header.Id, 0);
         }
 
         public void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo, RecentlyOrderedListDetail details) {

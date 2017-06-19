@@ -1,8 +1,8 @@
 CREATE PROCEDURE [List].[SaveRecentlyOrderedHeader] 
     @Id                             BIGINT,
     @UserId                         UNIQUEIDENTIFIER,
+	@CustomerNumber					CHAR(6),
     @BranchId                       CHAR(3),
-    @ItemNumber                     VARCHAR(6),
     @ReturnValue                    BIGINT OUTPUT
 AS
 
