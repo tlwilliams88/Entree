@@ -26,5 +26,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
                       long headerId, ListItemModel genericItemProperties);
 
         List<string> ReadLabels(UserProfile user, UserSelectedContext catalogInfo);
+
+        List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
     }
 }

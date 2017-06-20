@@ -1,4 +1,4 @@
 
 GO
-DROP PROCEDURE [List].[ReadRecommendedItemDetailsByParentId]
+DROP PROCEDURE [List].[ReadRecommendedItemDetailsByHeaderId]
 GO

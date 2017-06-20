@@ -129,7 +129,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<RecommendedItemModel>> ret = new OperationReturnModel<List<RecommendedItemModel>>();
             try
             {
-                ret.SuccessResponse = _listLogic.ReadRecommendedItemsList(this.SelectedUserContext);
+                ret.SuccessResponse = _listService.ReadRecommendedItemsList(this.SelectedUserContext);
                 ret.IsSuccess = true;
             }catch(Exception ex)
             {

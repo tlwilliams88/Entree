@@ -117,9 +117,9 @@ namespace KeithLink.Svc.Impl.Service.List
                     returnList.Add(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
                     break;
 
-                //case ListType.RecommendedItems:
-                //    returnList.Add(_recommendedItemsLogic.GetListModel(user, catalogInfo, 0));
-                //    break;
+                case ListType.RecommendedItems:
+                    returnList.Add(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
 
                 case ListType.InventoryValuation:
                     returnList.AddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
@@ -215,7 +215,7 @@ namespace KeithLink.Svc.Impl.Service.List
             list.AddRange(ReadListByType(user, catalogInfo, ListType.Contract, headerOnly));
             list.AddRange(ReadListByType(user, catalogInfo, ListType.Favorite, headerOnly));
             list.AddRange(ReadListByType(user, catalogInfo, ListType.Reminder, headerOnly));
-            //list.AddRange(ReadListByType(user, catalogInfo, ListType.RecommendedItems, headerOnly));
+            list.AddRange(ReadListByType(user, catalogInfo, ListType.RecommendedItems, headerOnly));
             list.AddRange(ReadListByType(user, catalogInfo, ListType.Mandatory, headerOnly));
             list.AddRange(ReadListByType(user, catalogInfo, ListType.Custom, headerOnly));
 
@@ -403,10 +403,9 @@ namespace KeithLink.Svc.Impl.Service.List
                     _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
                     break;
                 case ListType.RecommendedItems:
-                    //tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
+                    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                     break;
                 case ListType.Mandatory:
-                    //tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
                     _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
                     break;
                 case ListType.Custom:
@@ -621,6 +620,12 @@ namespace KeithLink.Svc.Impl.Service.List
                     listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
                 }
             });
+        }
+
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+            ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
+
+            return new List<RecommendedItemModel>();
         }
 
         //private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)

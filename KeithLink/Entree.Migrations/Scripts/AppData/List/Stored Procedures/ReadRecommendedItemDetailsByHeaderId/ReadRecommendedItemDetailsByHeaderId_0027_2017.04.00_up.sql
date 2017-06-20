@@ -1,4 +1,4 @@
-CREATE PROCEDURE [List].[ReadRecommendedItemDetailsByParentId] 
+CREATE PROCEDURE [List].[ReadRecommendedItemDetailsByHeaderId] 
     @HeaderId bigint
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from

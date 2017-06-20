@@ -5,17 +5,10 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IRecommendedItemsListDetailsRepository
     {
-        List<RecommendedItemsListDetail> GetRecommendedItemsDetails(long parentHeaderId);
+        List<RecommendedItemsListDetail> GetAllByHeader(long parentHeaderId);
 
-        void AddOrUpdateRecommendedItem(string customerNumber,
-            string branchId,
-            string itemNumber,
-            bool each,
-            string catalogId,
-            bool active);
+        void Save(RecommendedItemsListDetail model);
 
-        void DeleteRecommendedItems(string userId,
-            string customerNumber,
-            string branchId);
+        void Delete(long id);
     }
 }
