@@ -105,13 +105,13 @@ angular.module('bekApp')
       }
     }
 
-    var watches = [];
+    $scope.watches = [];
     $scope.addItemWatches = function(startingIndex, endingIndex) {
-      watches = [];
+      $scope.watches = [];
       endingIndex = ($scope.selectedList.itemCount < (startingIndex + (endingIndex - startingIndex))) ? $scope.selectedList.itemCount : endingIndex;
       for (var i = startingIndex; i < endingIndex; i++) {
-        watches.push($scope.$watchCollection('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
-        watches.push($scope.$watchCollection('selectedList.items[' + i + '].each', onItemQuantityChanged));
+        $scope.watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
+        $scope.watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
       }
     };
 
@@ -126,8 +126,8 @@ angular.module('bekApp')
     $scope.addCartWatches = function() {
       if($scope.selectedCart && $scope.selectedCart.items){
         for (var i = 0; i < $scope.selectedCart.items.length; i++) {
-          cartWatches.push($scope.$watchCollection('selectedCart.items[' + i + '].quantity', onItemQuantityChanged));
-          cartWatches.push($scope.$watchCollection('selectedCart.items[' + i + '].each', onItemQuantityChanged));
+          cartWatches.push($scope.$watch('selectedCart.items[' + i + '].quantity', onItemQuantityChanged));
+          cartWatches.push($scope.$watch('selectedCart.items[' + i + '].each', onItemQuantityChanged));
         }
       }
     };
