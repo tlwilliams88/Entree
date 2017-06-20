@@ -105,13 +105,13 @@ angular.module('bekApp')
       }
     }
 
-    $scope.watches = [];
+    var watches = [];
     $scope.addItemWatches = function(startingIndex, endingIndex) {
-      $scope.watches = [];
+      watches = [];
       endingIndex = ($scope.selectedList.itemCount < (startingIndex + (endingIndex - startingIndex))) ? $scope.selectedList.itemCount : endingIndex;
       for (var i = startingIndex; i < endingIndex; i++) {
-        $scope.watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
-        $scope.watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
+        watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
+        watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
       }
     };
 
