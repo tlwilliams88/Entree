@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.Custom,
                 SharedWith = shares?.Select(s => s.CustomerNumber).ToList(),
                 ListId = header.Id,
-                Name = header.Name,
+                Name = (header!=null && header.Name!=null)?header.Name:"(No set name)",
                 ReadOnly = !header.CustomerNumber.Equals(catalogInfo.CustomerId),
                 IsSharing = shares != null && 
                                      (shares.Any() && 
@@ -38,11 +38,13 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         public static ListModel ToListModel(this CustomListHeader header, UserSelectedContext catalogInfo, List<CustomListShare> shares, 
                                             List<CustomListDetail> items) {
             ListModel retVal = header.ToListModel(catalogInfo, shares);
+
             if (items != null) {
                 retVal.Items = items.Select(i => i.ToWebModel())
                                     .OrderBy(l => l.Position)
                                     .ToList();
             }
+
             return retVal;
         }
 

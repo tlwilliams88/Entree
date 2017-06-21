@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Configurations {
     public interface IExportSettingLogic {
-        ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId);
+        ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, ListType listType);
 
         void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration, string exportFormat);
 
