@@ -9,7 +9,7 @@ AS
 	    [Id],
 	    [BranchId],
 	    [CustomerNumber],
-	    [ParentCustomListHeaderId],
+	    [ParentCustomListHeaderId] as HeaderId,
         [Active]
 	    [CreatedUtc],
 	    [ModifiedUtc]
