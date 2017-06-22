@@ -14,11 +14,13 @@ BEGIN
 		INTO [List].[ContractHeaders]
             ([CustomerNumber]
             ,[BranchId]
+            ,[ContractId]
             ,[CreatedUtc]
             ,[ModifiedUtc])
         SELECT DISTINCT
              LTRIM(RTRIM(cb.[CustomerNumber]))
             ,LTRIM(RTRIM(cb.[DivisionNumber]))
+            ,LTRIM(RTRIM(cb.[BidNumber]))
             ,GETUTCDATE()
             ,GETUTCDATE()
         FROM 

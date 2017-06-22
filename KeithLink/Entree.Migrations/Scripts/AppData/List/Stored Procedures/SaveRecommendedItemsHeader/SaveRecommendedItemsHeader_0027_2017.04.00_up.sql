@@ -1,7 +1,8 @@
 CREATE PROCEDURE [List].[SaveRecommendedItemHeaderByCustomerNumberBranch] 
     @Id             BIGINT,
     @CustomerNumber CHAR (6),
-    @BranchId       CHAR (3)
+    @BranchId       CHAR (3),
+    @ReturnValue                    BIGINT OUTPUT
 AS
 
 IF @Id > 0
@@ -20,3 +21,5 @@ ELSE
         @CustomerNumber,
         @BranchId
     )
+	
+SET @ReturnValue = SCOPE_IDENTITY()

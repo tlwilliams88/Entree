@@ -328,7 +328,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist) {
             List list = _listRepo.Read(i => i.UserId == user.UserId && 
-                                           i.Type == ListType.RecentOrderedNonBEK &&
+                                           i.Type == ListType.RecentlyOrdered &&
                                            i.BranchId == newlist.Catalog &&
                                            i.CustomerId.Equals(catalogInfo.CustomerId), 
                                       l => l.Items)
@@ -341,10 +341,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     Name = "Recent Orders",
                     BranchId = newlist.Catalog,
                     Items = new List<ListItemModel>()
-                }, ListType.RecentOrderedNonBEK);
+                }, ListType.RecentlyOrdered);
                 // grab a pointer to the newly created list
                 list = _listRepo.Read(i => i.UserId == user.UserId &&
-                               i.Type == ListType.RecentOrderedNonBEK &&
+                               i.Type == ListType.RecentlyOrdered &&
                                i.BranchId == newlist.Catalog &&
                                i.CustomerId.Equals(catalogInfo.CustomerId),
                           l => l.Items)
@@ -608,14 +608,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                catalogInfo.CustomerId != null)
                 listcol =
                     _listRepo.Read(i => i.UserId == user.UserId &&
-                                        i.Type == ListType.RecentOrderedNonBEK &&
+                                        i.Type == ListType.RecentlyOrdered &&
                                         i.CustomerId.Equals(catalogInfo.CustomerId),
                                    l => l.Items)
                              .ToList();
             else
                 listcol =
                     _listRepo.Read(i => i.UserId == user.UserId &&
-                                        i.Type == ListType.RecentOrderedNonBEK,
+                                        i.Type == ListType.RecentlyOrdered,
                                    l => l.Items)
                              .ToList();
 
@@ -1320,7 +1320,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             try
             {
                 var list = _listRepo.Read(i => i.UserId == user.UserId &&
-                                          i.Type == ListType.RecentOrderedNonBEK &&
+                                          i.Type == ListType.RecentlyOrdered &&
                                           i.BranchId.Equals(catalogInfo.BranchId) &&
                                           i.CustomerId.Equals(catalogInfo.CustomerId),
                                           l => l.Items).ToList();

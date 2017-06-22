@@ -76,107 +76,169 @@ namespace KeithLink.Svc.Impl.Service.List
         }
         #endregion
 
+        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+
+        }
+
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
             List<ListModel> returnList = new List<ListModel>();
 
             switch (type)
             {
-                case ListType.Worksheet:
-                {
-                    returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                case ListType.Custom:
+                    returnList.AddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
+                    break;
 
-                    FillOutProducts(user, catalogInfo, returnList, true);
-                }
+                case ListType.Favorite:
+                    returnList.Add(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
                     break;
-                default: // plug in legacy list implementation
-                    returnList = _genericListLogic.ReadListByType(user, catalogInfo, type, headerOnly);
+
+                case ListType.Contract:
+                    returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
+
+                case ListType.Notes: 
+                    returnList.Add(_notesLogic.GetList(catalogInfo));
+                    break;
+
+                case ListType.Worksheet:
+                    returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                    break;
+
+                // no contract items added lists
+                // no contract items deleted lists
+
+                case ListType.Reminder:
+                    returnList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
+                    break;
+
+                case ListType.Mandatory:
+                    returnList.Add(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
+                    break;
+
+                case ListType.RecommendedItems:
+                    returnList.Add(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
+
+                case ListType.InventoryValuation:
+                    returnList.AddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+                    break;
+
+                case ListType.RecentlyOrdered:
+                    returnList.Add(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
+
+                case ListType.RecentlyViewed:
+                    returnList.Add(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
+
+                    //case ListType.CustomInventory: //uses its own controller and works a little differently
+                    //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
+                    //    break;
+            }
+
+            if (returnList != null) {
+                FillOutProducts(user, catalogInfo, returnList, true);
             }
 
             return returnList;
+        }
+
+        private ListModel ReadListByType(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
+        {
+            ListModel tempList = null;
+            switch (type)
+            {
+                case ListType.Custom:
+                    tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Favorite:
+                    tempList = _favoritesLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Contract:
+                    tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Recent:
+                //    returnList.AddRange(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
+
+                case ListType.Notes:
+                    tempList = _notesLogic.GetList(catalogInfo);
+                    break;
+
+                case ListType.Worksheet:
+                    tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                //// no contract items added lists
+                //// no contract items deleted lists
+
+                case ListType.Reminder:
+                    tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.Mandatory:
+                    tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.RecommendedItems:
+                    tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
+                    break;
+
+                case ListType.InventoryValuation:
+                    tempList = _inventoryValuationLogic.ReadList(Id, catalogInfo, false);
+                    break;
+
+                case ListType.RecentlyOrdered:
+                    ////    returnList.Add(_recentlyOrderedLogic.GetListModel(user, catalogInfo, 0));
+                    break;
+
+                    ////case ListType.CustomInventory: //uses its own controller and works a little differently
+                    ////    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
+                    ////    break;
+
+            }
+
+            if (tempList != null && tempList.Items != null && tempList.Items.Count > 0)
+            {
+                FillOutProducts(user, catalogInfo, new List<ListModel>() { tempList }, true);
+            }
+
+            return tempList;
         }
 
         public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
         {
             List<ListModel> list = new List<ListModel>();
 
-            AddList(user, catalogInfo, headerOnly, list, ListType.Worksheet);
-            AddList(user, catalogInfo, headerOnly, list, ListType.Contract);
-            AddList(user, catalogInfo, headerOnly, list, ListType.Favorite);
-            AddList(user, catalogInfo, headerOnly, list, ListType.Reminder);
-            AddList(user, catalogInfo, headerOnly, list, ListType.RecommendedItems);
-            AddList(user, catalogInfo, headerOnly, list, ListType.Mandatory);
-            AddCustomLists(user, catalogInfo, headerOnly, list);
-
-            // Add a favorite
-            //_favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId, true);
-
-            // Add a recently viewed
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Empty recently viewed
-            //_recentlyViewedLogic.DeleteRecentlyViewed(user, catalogInfo);
-
-            // read recently viewed
-            //var recentlyViewed = ReadRecent(user, catalogInfo);
-
-            // Add a recently Ordered
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Empty recently Ordered
-            //_recentlyOrderedLogic.DeleteRecentlyOrdered(user, catalogInfo);
-
-            // read recently Ordered
-            //var recentlyOrdered = ReadRecentOrder(user, catalogInfo, catalogInfo.BranchId);
-
-            // Add a recommended Items
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // read recommended Items
-            //var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
-
-            // Add a reminder Items
-            //_reminderItemsLogic.AddOrUpdateReminder(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Add a mandatory Items
-            //_mandatoryItemsLogic.AddOrUpdateMandatoryItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Add a note
-            //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
-
-            // read notes
-            //var notes = _notesLogic.GetNotesDictionary(user, catalogInfo);            
-
-            if (headerOnly)
-                return list.Select(l => new ListModel()
-                {
-                    ListId = l.ListId,
-                    Name = l.Name,
-                    IsContractList = l.Type == ListType.Contract,
-                    IsFavorite = l.Type == ListType.Favorite,
-                    IsWorksheet = l.Type == ListType.Worksheet,
-                    IsReminder = l.Type == ListType.Reminder,
-                    IsMandatory = l.Type == ListType.Mandatory,
-                    IsRecommended = l.Type == ListType.RecommendedItems,
-                    ReadOnly = l.ReadOnly || (!user.IsInternalUser && l.Type.Equals(ListType.RecommendedItems) || (!user.IsInternalUser && l.Type.Equals(ListType.Mandatory))),
-                    SharedWith = l.SharedWith,
-                    IsSharing = l.IsSharing,
-                    IsShared = l.IsShared,
-                    //IsCustomInventory = l.Type == ListType.CustomInventory,
-                    Type = l.Type
-                })
-                           .ToList();
+            AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.RecommendedItems, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
             return list;
+        }
+
+        private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly) {
+            List<ListModel> tmpList = ReadListByType(user, catalogInfo, type, headerOnly);
+            if (tmpList != null && tmpList[0] != null) {
+                list.AddRange(tmpList);
+            }
         }
 
         public List<string> ReadLabels(UserProfile user, UserSelectedContext catalogInfo)
         {
             List<ListModel> list = new List<ListModel>();
 
-            AddList(user, catalogInfo, false, list, ListType.Favorite);
-            AddCustomLists(user, catalogInfo, false, list);
+            list.AddRange(ReadListByType(user, catalogInfo, ListType.Favorite, false));
+            list.AddRange(ReadListByType(user, catalogInfo, ListType.Custom, false));
 
             List<ListItemModel> items = new List<ListItemModel>();
             foreach (ListModel lst in list) {
@@ -247,37 +309,36 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog)
         {
-            //List<ListModel> recentOrders = _recentlyOrderedLogic.ReadList(user,
-            //    new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalog}, false);
+            ListModel recentOrders = _recentlyOrderedLogic.ReadList(user,
+                new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = catalog }, false);
 
-            //// Identify specific warehouse - needed for product lookup
-            //Dictionary<string, string> externalCatalogDict =
-            //    _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
+            // Identify specific warehouse - needed for product lookup
+            Dictionary<string, string> externalCatalogDict =
+                _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
 
-            //List<RecentNonBEKItem> returnItems = recentOrders.SelectMany(i => i.Items
-            //    .Select(l => new RecentNonBEKItem()
-            //    {
-            //        ItemNumber = l.ItemNumber,
-            //        CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
-            //        ModifiedOn = l.ModifiedUtc
-            //    }))
-            //    .ToList();
+            List<RecentNonBEKItem> returnItems = recentOrders.Items
+                .Select(l => new RecentNonBEKItem()
+                {
+                    ItemNumber = l.ItemNumber,
+                    CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
+                    ModifiedOn = l.ModifiedUtc
+                })
+                .ToList();
 
-            //if (returnItems.Count > 0)
-            //{
-            //    PopulateProductDetails(returnItems);
+            if (returnItems.Count > 0)
+            {
+                PopulateProductDetails(returnItems);
 
-            //    returnItems.ForEach(delegate (RecentNonBEKItem item)
-            //    {
-            //        if (item.Upc != null)
-            //        {
-            //            item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
-            //        }
-            //    });
-            //}
+                returnItems.ForEach(delegate (RecentNonBEKItem item)
+                {
+                    if (item.Upc != null)
+                    {
+                        item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
+                    }
+                });
+            }
 
-            //return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
-            return null;
+            return new RecentNonBEKList() { Catalog = catalog, Items = returnItems };
         }
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
@@ -294,10 +355,9 @@ namespace KeithLink.Svc.Impl.Service.List
                     _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
                     break;
                 case ListType.RecommendedItems:
-                    //tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
+                    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                     break;
                 case ListType.Mandatory:
-                    //tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
                     _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
                     break;
                 case ListType.Custom:
@@ -310,105 +370,8 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.InventoryValuation:
                     _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
                     break;
-                case ListType.RecentOrderedNonBEK:
+                case ListType.RecentlyOrdered:
                     break;
-            }
-        }
-
-        private ListModel ReadListByType(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
-        {
-            ListModel tempList = null;
-            switch (type)
-            {
-                case ListType.Worksheet:
-                    tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
-                case ListType.Contract:
-                    tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
-                case ListType.Favorite:
-                    tempList = _favoritesLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
-                case ListType.Reminder:
-                    tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
-                case ListType.RecommendedItems:
-                    tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
-                case ListType.Mandatory:
-                    tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-
-                case ListType.Custom:
-                    tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
-            }
-
-            if (tempList != null && tempList.Items != null && tempList.Items.Count > 0)
-            {
-                FillOutProducts(user, catalogInfo, new List<ListModel>() { tempList }, true);
-            }
-
-            return tempList;
-        }
-
-        private void AddList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-                             List<ListModel> list, ListType type) {
-            List<ListModel> tempList = new List<ListModel>();
-
-            switch (type) {
-                case ListType.Worksheet:
-                    tempList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
-                    break;
-                case ListType.Contract:
-                    tempList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
-                    break;
-                case ListType.Favorite:
-                    tempList.Add(_favoritesLogic.GetListModel(user, catalogInfo, 0));
-                    break;
-                case ListType.Reminder:
-                    tempList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
-                    break;
-                case ListType.RecommendedItems:
-                    tempList.Add(_recommendedItemsLogic.GetListModel(user, catalogInfo, 0));
-                    break;
-                case ListType.Mandatory:
-                    tempList.Add(_mandatoryItemsLogic.GetListModel(user, catalogInfo, 0));
-                    break;
-            }
-
-            if(tempList.Count > 0 && 
-               tempList[0].Items != null && 
-               tempList[0].Items.Count > 0) {
-                FillOutProducts(user, catalogInfo, tempList, true);
-            }
-
-            if (tempList.Count > 0) {
-                list.AddRange(tempList);
-            }
-        }
-
-        private void AddCustomLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list)
-        {
-            List<ListModel> tempList = _customListLogic.ReadList(user, catalogInfo, headerOnly);
-
-            if (tempList != null && tempList.Count > 0 && tempList[0].Items != null && tempList[0].Items.Count > 0)
-            {
-                foreach (ListModel tlist in tempList)
-                {
-                    FillOutProducts(user, catalogInfo, new List<ListModel>() { tlist }, true);
-                }
-            }
-
-            if (tempList != null)
-            {
-                list.AddRange(tempList);
             }
         }
 
@@ -432,25 +395,24 @@ namespace KeithLink.Svc.Impl.Service.List
             });
         }
 
-        private void AddOtherLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly,
-            List<ListModel> list)
-        {
-            List<ListModel> theRest = _genericListLogic.ReadUserList(user, catalogInfo, headerOnly);
-            list.AddRange(theRest.Where(l => l.Type != ListType.Worksheet && l.Type != ListType.Favorite));
-            //except what we already define in the specific lists (add other types we define)
-        }
-
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)
         {
 //Lookup product details for each item
-            returnList.ForEach(delegate(ListModel listItem) { LookupProductDetails(user, listItem, catalogInfo); });
+            returnList.ForEach(delegate(ListModel listItem) {
+                if (listItem != null) {
+                    LookupProductDetails(user, listItem, catalogInfo);
+                }
+            });
 
             if (getprices)
             {
                 //Lookup prices for each item
                 foreach (var tempList in returnList)
                 {
-                    LookupPrices(user, tempList.Items, catalogInfo);
+                    if (tempList != null &&
+                        tempList.Items != null) {
+                        LookupPrices(user, tempList.Items, catalogInfo);
+                    }
                 }
             }
         }
@@ -611,6 +573,46 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
             });
         }
+
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+            ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
+
+            return new List<RecommendedItemModel>();
+        }
+
+        //private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+        //{
+        //    if (list.Items == null || list.Items.Count == 0)
+        //        return;
+
+        //    var notes = _notesLogic.;
+        //    var favorites = _listRepo.Read(l => l.UserId == user.UserId &&
+        //                                        l.CustomerId.Equals(catalogInfo.CustomerId) &&
+        //                                        l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) &&
+        //                                        l.Type == ListType.Favorite,
+        //                                   i => i.Items)
+        //                             .FirstOrDefault();
+
+        //    var notesHash = new Dictionary<string, ListItem>();
+        //    var favHash = new Dictionary<string, ListItem>();
+
+        //    if (notes != null &&
+        //       notes.Items != null)
+        //        notesHash = notes.Items
+        //                         .GroupBy(i => i.ItemNumber)
+        //                         .ToDictionary(n => n.Key, n => n.First());
+        //    if (favorites != null &&
+        //       favorites.Items != null)
+        //        favHash = favorites.Items
+        //                           .GroupBy(i => i.ItemNumber)
+        //                           .ToDictionary(f => f.Key, f => f.First());
+
+        //    Parallel.ForEach(list.Items, listItem =>
+        //    {
+        //        listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
+        //        listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;
+        //    });
+        //}
 
     }
 }

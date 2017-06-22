@@ -1,9 +1,10 @@
 CREATE PROCEDURE [List].[SaveRecentlyViewedDetails] 
     @Id                             BIGINT,
-    @HeaderId   BIGINT,
+    @HeaderId                       BIGINT,
     @ItemNumber                     VARCHAR (6),
     @Each                           BIT,
-    @CatalogId                      VARCHAR (10)
+    @CatalogId                      VARCHAR (10),
+    @ReturnValue                    BIGINT OUTPUT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -31,3 +32,5 @@ ELSE
         @Each,
         @CatalogId 
     )
+
+SET @ReturnValue = SCOPE_IDENTITY();

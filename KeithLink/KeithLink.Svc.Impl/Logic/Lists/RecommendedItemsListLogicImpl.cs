@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
@@ -27,49 +28,55 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #region methods
         public List<string> GetRecommendedItemNumbers(UserProfile user, UserSelectedContext catalogInfo)
         {
-            List<ListModel> list = ReadList(user, catalogInfo, false);
+            ListModel list = ReadList(user, catalogInfo, false);
 
-            return list[0].Items.Select(i => i.ItemNumber).ToList();
+            return list.Items.Select(i => i.ItemNumber).ToList();
         }
 
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
         {
-            RecommendedItemsListHeader header = _headersRepo.GetRecommendedItemsHeader(user.UserId.ToString(), catalogInfo, headerOnly);
+            RecommendedItemsListHeader header = _headersRepo.GetRecommendedItemsHeaderByCustomerNumberBranch(catalogInfo);
+            List<RecommendedItemsListDetail> items = null;
 
-            if (header != null && headerOnly == false)
-            {
-                //header.Items = _detailsRepo.GetRecommendedItemsDetails(header.Id);
-            }
+            if (header != null &&
+                headerOnly == false)
+                items = _detailsRepo.GetAllByHeader(header.Id);
 
-            if (header != null)
-            {
-                return new List<ListModel>() { header.ToListModel(catalogInfo) };
+            if (header != null) {
+                return header.ToListModel(items);
             }
             return null;
         }
 
-        public void AddOrUpdateRecommendedItem(UserSelectedContext catalogInfo,
-                                string itemNumber,
-                                bool each,
-                                string catalogId,
-                                bool active)
+        public void SaveDetail(UserSelectedContext catalogInfo, RecommendedItemsListDetail detail)
         {
-            _detailsRepo.AddOrUpdateRecommendedItem(catalogInfo.CustomerId,
-                catalogInfo.BranchId,
-                itemNumber,
-                each,
-                catalogId,
-                active);
+            if (detail.HeaderId == 0)
+            {
+                RecommendedItemsListHeader header = _headersRepo.GetRecommendedItemsHeaderByCustomerNumberBranch(catalogInfo);
+
+                if (header == null)
+                    detail.HeaderId =
+                            _headersRepo.SaveRecommendedItemsHeader(new RecommendedItemsListHeader
+                            {
+                                BranchId = catalogInfo.BranchId,
+                                CustomerNumber = catalogInfo.CustomerId
+                            });
+                else
+                    detail.HeaderId = header.Id;
+            }
+
+            _detailsRepo.Save(detail);
         }
 
-        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
-        {
-            return ReadList(user, catalogInfo, false)[0];
+        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+            return ReadList(user, catalogInfo, false);
         }
 
-        public void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo)
+        public void DeleteRecommendedItems(UserProfile user, UserSelectedContext catalogInfo)
         {
-            _detailsRepo.DeleteRecommendedItems(user.UserId.ToString(), catalogInfo.CustomerId, catalogInfo.BranchId);
+            RecommendedItemsListHeader header = _headersRepo.GetRecommendedItemsHeaderByCustomerNumberBranch(catalogInfo);
+
+            _detailsRepo.Delete(header.Id);
         }
 
         #endregion

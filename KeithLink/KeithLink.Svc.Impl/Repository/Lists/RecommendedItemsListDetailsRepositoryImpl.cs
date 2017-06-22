@@ -17,9 +17,15 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class RecommendedItemsListDetailsRepositoryImpl : DapperDatabaseConnection, IRecommendedItemsListDetailsRepository
     {
         #region attributes
-        private const string COMMAND_GETDETAILS = "[List].[ReadRecommendedItemDetailsByParentId]";
-        private const string COMMAND_ADDDETAIL = "[List].[AddOrUpdateRecommendedItemByCustomerNumberBranch]";
-        private const string COMMAND_DELETEDETAILS = "[List].[DeleteRecommendedItemsDetails]";
+        private const string PARMNAME_ID = "Id";
+        private const string PARMNAME_PARENT_HEADER_ID = "HeaderId";
+        private const string PARMNAME_ITEMNUMBER = "ItemNumber";
+        private const string PARMNAME_EACH = "Each";
+        private const string PARMNAME_CATALOG_ID = "CatalogId";
+
+        private const string SPNAME_GET = "[List].[ReadRecommendedItemDetailsByHeaderId]";
+        private const string SPNAME_SAVE = "[List].[SaveRecommendedItemByCustomerNumberBranch]";
+        private const string SPNAME_DELETE = "[List].[DeleteRecommendedItemDetails]";
         #endregion
         #region constructor
         public RecommendedItemsListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString)
@@ -28,45 +34,32 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         }
         #endregion
         #region methods
-        public List<RecommendedItemsListDetail> GetRecommendedItemsDetails(long parentHeaderId)
+        public List<RecommendedItemsListDetail> GetAllByHeader(long parentHeaderId)
         {
-            return Read<RecommendedItemsListDetail>(new CommandDefinition(
-                COMMAND_GETDETAILS,
-                new { @HeaderId = parentHeaderId },
-                commandType: CommandType.StoredProcedure
-            ));
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_PARENT_HEADER_ID, parentHeaderId);
+
+            return Read<RecommendedItemsListDetail>(SPNAME_GET, parms);
         }
 
-        public void AddOrUpdateRecommendedItem(string customerNumber,
-                                string branchId,
-                                string itemNumber,
-                                bool each,
-                                string catalogId,
-                                bool active)
+        public void Save(RecommendedItemsListDetail model)
         {
-            ExecuteCommand(new CommandDefinition(COMMAND_ADDDETAIL,
-                new
-                {
-                    @CustomerNumber = customerNumber,
-                    @BranchId = branchId,
-                    @ItemNumber = itemNumber,
-                    @Each = each,
-                    @CatalogId = catalogId,
-                    @Active = active
-                }, commandType: CommandType.StoredProcedure));   
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, model.Id);
+            parms.Add(PARMNAME_PARENT_HEADER_ID, model.HeaderId);
+            parms.Add(PARMNAME_ITEMNUMBER, model.ItemNumber);
+            parms.Add(PARMNAME_EACH, model.Each);
+            parms.Add(PARMNAME_CATALOG_ID, model.CatalogId);
+
+            ExecuteCommand(SPNAME_SAVE, parms);
         }
 
-        public void DeleteRecommendedItems(string userId,
-                                string customerNumber,
-                                string branchId)
+        public void Delete(long id)
         {
-            ExecuteCommand(new CommandDefinition(COMMAND_DELETEDETAILS,
-                new
-                {
-                    @UserId = userId,
-                    @CustomerNumber = customerNumber,
-                    @BranchId = branchId
-                }, commandType: CommandType.StoredProcedure));
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, id);
+
+            ExecuteCommand(SPNAME_DELETE, parms);
         }
         #endregion
     }

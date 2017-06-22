@@ -1,5 +1,6 @@
-CREATE INDEX [IX_ListNotesDetails_HeaderId] ON [List].[NotesDetails]
+CREATE UNIQUE INDEX [IX_ListNotesDetails_HeaderId] ON [List].[NotesDetails]
 (
-	[HeaderId]
+	[HeaderId],
+	[ItemNumber]
 )
 GO

@@ -104,7 +104,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _recentlyViewedLogic.DeleteRecentlyViewed(this.AuthenticatedUser, this.SelectedUserContext);
+                //_recentlyViewedLogic.DeleteRecentlyViewed(this.AuthenticatedUser, this.SelectedUserContext);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = true;
             }
@@ -129,7 +129,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _recentlyOrderedLogic.DeleteRecentlyOrdered(this.AuthenticatedUser,
+                _recentlyOrderedLogic.DeleteAll(this.AuthenticatedUser,
                     new Core.Models.SiteCatalog.UserSelectedContext()
                     {
                         CustomerId = SelectedUserContext.CustomerId,
@@ -158,12 +158,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _recentlyViewedLogic.AddOrUpdateRecentlyViewed(this.AuthenticatedUser, 
-                                                               this.SelectedUserContext,
-                                                               itemnumber,
-                                                               false/*each*/,
-                                                               this.SelectedUserContext.BranchId,
-                                                               true/*active*/);
+                //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(this.AuthenticatedUser, 
+                //                                               this.SelectedUserContext,
+                //                                               itemnumber,
+                //                                               false/*each*/,
+                //                                               this.SelectedUserContext.BranchId,
+                //                                               true/*active*/);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }
@@ -188,7 +188,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _recentlyOrderedLogic.AddRecentlyOrderedItems(this.AuthenticatedUser, 
+                _recentlyOrderedLogic.PostRecentOrder(this.AuthenticatedUser, 
                     new UserSelectedContext() { CustomerId = SelectedUserContext.CustomerId, BranchId = list.Catalog }, list);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;

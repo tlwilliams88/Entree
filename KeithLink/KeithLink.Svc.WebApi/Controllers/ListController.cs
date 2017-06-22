@@ -102,12 +102,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="listId">List Id</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("list/export/{listId}")]
-        public OperationReturnModel<ExportOptionsModel> ExportList(long listId) {
+        [ApiKeyedRoute("list/export/{type}")]
+        public OperationReturnModel<ExportOptionsModel> ExportList(ListType type) {
             OperationReturnModel<ExportOptionsModel> ret = new OperationReturnModel<ExportOptionsModel>();
             try
             {
-                ret.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, listId);
+                ret.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, type);
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
@@ -129,7 +129,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<RecommendedItemModel>> ret = new OperationReturnModel<List<RecommendedItemModel>>();
             try
             {
-                ret.SuccessResponse = _listLogic.ReadRecommendedItemsList(this.SelectedUserContext);
+                ret.SuccessResponse = _listService.ReadRecommendedItemsList(this.SelectedUserContext);
                 ret.IsSuccess = true;
             }catch(Exception ex)
             {
