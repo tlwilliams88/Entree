@@ -1,8 +1,7 @@
 CREATE PROCEDURE [List].[GetRecentlyViewedHeaderByUserIdCustomerNumberBranch]
     @UserId         UNIQUEIDENTIFIER, 
     @CustomerNumber CHAR (6),
-    @BranchId       CHAR (3),
-    @ReturnValue    BIGINT OUTPUT
+    @BranchId       CHAR (3)
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
     -- interfering with SELECT statements.
@@ -21,5 +20,3 @@ AS
         [UserId] = @UserId
     AND [CustomerNumber] = @CustomerNumber
     AND [BranchId] = @BranchId
-
-    SET @ReturnValue = SCOPE_IDENTITY();

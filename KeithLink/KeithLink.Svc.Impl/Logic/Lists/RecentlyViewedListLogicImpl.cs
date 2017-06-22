@@ -37,7 +37,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 headerOnly == false)
                 details = _detailsRepo.GetRecentlyViewedDetails(returnValue.Id);
 
-            return returnValue.ToListModel(details);
+            if (returnValue != null) {
+                return returnValue.ToListModel(details);
+            }
+            return null;
         }
 
         public void PostRecentOrder(UserProfile user,

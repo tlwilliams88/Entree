@@ -98,10 +98,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
-                //case ListType.Recent:
-                //    returnList.AddRange(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
-                //    break;
-
                 case ListType.Notes: 
                     returnList.Add(_notesLogic.GetList(catalogInfo));
                     break;
@@ -133,9 +129,13 @@ namespace KeithLink.Svc.Impl.Service.List
                     returnList.Add(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
-                //case ListType.CustomInventory: //uses its own controller and works a little differently
-                //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
-                //    break;
+                case ListType.RecentlyViewed:
+                    returnList.Add(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
+
+                    //case ListType.CustomInventory: //uses its own controller and works a little differently
+                    //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
+                    //    break;
             }
 
             if (returnList != null) {
