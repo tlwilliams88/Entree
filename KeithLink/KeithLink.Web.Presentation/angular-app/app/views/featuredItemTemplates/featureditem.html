@@ -1,30 +1,8 @@
 <div class="hidden-lg">
   <div class="no-padding text-left">
-    <img class="featured-item-height" ng-if="item.imageurl" src="images/Oreo-July-2017-Banner_2.png" alt="image">
+    <img class="featured-item-height" ng-if="item.imageurl" src="images/Oreo-July-2017-Banner_2.jpg" alt="image">
     <img class="featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
   </div>
-  <!-- <div class="col-xs-8 no-padding featured-item-mobile__detail">
-    <div>{{item.tagline}}</div>
-    <a
-      ng-if="item.targeturl"
-      ng-click="openExternalLink(item.targeturl)"
-      class="text-uppercase"
-      target="_system">
-      {{item.targeturltext}}
-    </a>
-    <a
-      ng-if="item.productid"
-      ui-sref="menu.catalog.products.details({ itemId: item.productid})"
-      class="text-uppercase">
-      {{item.targeturltext}}
-    </a>
-    <a
-      ng-if="!item.targeturl && !item.productid && item.content"
-      ng-click="showPromoItemContent(item)"
-      class="text-uppercase">
-      {{item.targeturltext}}
-    </a>
-  </div> -->
 </div>
 
 <div class="text-center box visible-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)" style="background:transparent;">

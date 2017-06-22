@@ -51,45 +51,6 @@
       <!-- end Account Summary -->
     </div>
     <div class="col-md-8 col-md-pull-4">
-      <!-- Cart Summary -->
-      <!-- <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
-        <div class="col-md-3">
-          Pending Orders
-        </div>
-        <div class="col-md-3 nowrap">
-          Ship Date
-        </div>
-        <div class="col-md-3 nowrap">
-          Item Count
-        </div>
-        <div class="col-md-3">
-          Subtotal
-        </div>
-      </div>
-      <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
-        <div class="row no-margin">
-          <div class="col-md-3 order-col">
-            <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
-            <span class="order-col__date" style="font-size:11px;">{{cart.createddate | formatDateWithTimezone}}</span>
-          </div>
-          <div class="col-md-3 table-col">
-            <span>{{(cart.requestedshipdate || 'N/A') | formatDate}}</span>
-          </div>
-          <div class="col-md-3 table-col">
-            {{cart.itemcount}}
-          </div>
-          <div class="col-md-3 table-col">
-            {{cart.subtotal | currency}}
-          </div>
-        </div>
-      </div>
-      <div class="text-center hidden-xs hidden-sm" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
-      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartHeaders.length > 0 || loadingCarts">
-        No Carts to Display
-      </p>
-      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
-        <a class="view-all" ui-sref="menu.order">View All</a>
-      </div> -->
       <!-- Order Summary -->
       <div ng-if="canViewOrders">
         <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin" style="margin-top:10px;">
@@ -159,55 +120,6 @@
           No Recent Orders
         </div>
         <div class="text-red hidden-xs hidden-sm" ng-show="ordersMessage">{{ordersMessage}}</div>
-      </div>
-      <div ng-if="canCreateOrders">
-        <div class="row sub-content visible-xs visible-sm">
-          <div class="col-xs-8">
-            <h3>Pending Orders</h3>
-          </div>
-          <div class="col-xs-4">
-            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">View All</a>
-          </div>
-        </div>
-        <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2">
-          <div class="order-col">
-            <div class="row">
-              <div class="col-xs-6">
-                <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
-                <div class="order-col__number" order-link></div>
-              </div>
-              <div class="col-xs-6 order-col__date">
-                <span class="icon-calendar"></span> {{cart.createddate | formatDateWithTimezone}}
-              </div>
-            </div>
-          </div>
-          <div class="order-details">
-            <div class="details-item">
-              <div class="item-title">
-                Ship Date
-              </div>
-              <div class="item-value">
-                {{(cart.requestedshipdate || 'N/A') | formatDate}}
-              </div>
-            </div>
-            <div class="details-item">
-              <div class="item-title">
-                Item Count
-              </div>
-              <div class="item-value">
-                {{cart.itemcount}}
-              </div>
-            </div>
-            <div class="details-item">
-              <div class="item-title">
-                Subtotal
-              </div>
-              <div class="item-value highlight-col">
-                {{cart.subtotal | currency}}
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
       <div ng-if="canViewOrders">
         <div class="row sub-content visible-xs visible-sm">
