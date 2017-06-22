@@ -75,21 +75,38 @@ angular.module('bekApp')
       });
     }
 
-    // get promo/marketing items
-    $scope.loadingPromoItems = true;
-    MarketingService.getPromoItems().then(function(items) {
-      $scope.promoItems = items;
-      delete $scope.promoMessage;
-    }, function(errorMessage) {
-      $scope.promoMessage = errorMessage;
-    }).finally(function() {
-      $scope.loadingPromoItems = false;
-
-      // If Tutorial Should not show remove onboarding-focus class for icon element
-      if(!$scope.runTutorial){
-        $('.onboarding-focus').removeClass('onboarding-focus');
+    $scope.promoItems = [
+      {
+        imageurl: {
+          desktop: 'images/Oreo-July-2017-Banner.jpg',
+          mobile: 'images/Oreo-July-2017-Banner_2.jpg',
+        },
+        targeturl: ''
+      },
+      {
+        imageurl: {
+          desktop: 'images/KeithKitchenEssentials.png',
+          mobile: 'images/KeithKitchenEssentials.png'
+        },
+        targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })"
       }
-    });
+    ];
+
+    // // get promo/marketing items
+    // $scope.loadingPromoItems = true;
+    // MarketingService.getPromoItems().then(function(items) {
+    //   $scope.promoItems = items;
+    //   delete $scope.promoMessage;
+    // }, function(errorMessage) {
+    //   $scope.promoMessage = errorMessage;
+    // }).finally(function() {
+    //   $scope.loadingPromoItems = false;
+    //
+    //   // If Tutorial Should not show remove onboarding-focus class for icon element
+    //   if(!$scope.runTutorial){
+    //     $('.onboarding-focus').removeClass('onboarding-focus');
+    //   }
+    // });
 
     // get account info
     $scope.loadingAccountBalance = true;
