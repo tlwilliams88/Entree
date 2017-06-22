@@ -117,6 +117,7 @@ namespace KeithLink.Svc.Core.Models.Lists
                         Pack = item.Pack,
                         PackSize = item.PackSize,
                         Label = item.Label,
+                        Quantity = item.Quantity,
                         ParLevel = item.ParLevel,
                         Position = item.Position,
                         TempZone = item.TempZone,

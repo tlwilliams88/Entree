@@ -50,7 +50,7 @@ angular.module('bekApp')
               return cartHeaders;
             },
             Lists: function() {
-              return listHeaders;
+              return ListService.getListHeaders();
             },
             CustomListHeaders: function() {
               return customListHeaders;

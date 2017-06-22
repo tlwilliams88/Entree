@@ -14,7 +14,8 @@ describe('Directive: NumericValidation', function () {
   var $scope, form;
 
   beforeEach(inject(function($compile, $rootScope) {
-    $scope = $rootScope;
+    $scope = $rootScope.$new();
+    $rootScope.$$watchers = [];
     var element = angular.element(
       '<form name="form">' +
         '<input ng-model="model.somenum" type="text" name="somenum" numeric-validation />' +
@@ -29,41 +30,41 @@ describe('Directive: NumericValidation', function () {
   it('should pass with integer', function() {
     var testNum = 3;
     form.somenum.$setViewValue(testNum);
-    expect($scope.model.somenum).toEqual(testNum);
-    expect(form.somenum.$valid).toBe(true);
+    expect($scope.model.somenum).to.equal(testNum);
+    expect(form.somenum.$valid).to.be.true;
   });
 
   it('should pass with a decimal with one decimal place', function() {
     var testNum = 4.0;
     form.somenum.$setViewValue(testNum);
-    expect($scope.model.somenum).toEqual(testNum);
-    expect(form.somenum.$valid).toBe(true);
+    expect($scope.model.somenum).to.equal(testNum);
+    expect(form.somenum.$valid).to.be.true;
   });
 
   it('should pass when blank', function() {
     var testNum = '';
     form.somenum.$setViewValue(testNum);
-    expect(form.somenum.$valid).toBe(true);
+    expect(form.somenum.$valid).to.be.true;
   });
 
   it('should fail with a number ending in a decimal', function() {
     var testNum = '5.';
     form.somenum.$setViewValue(testNum);
-    expect($scope.model.somenum).toBeUndefined();
-    expect(form.somenum.$valid).toBe(false);
+    expect($scope.model.somenum).to.be.undefined;
+    expect(form.somenum.$valid).to.be.false;
   });
 
   it('should take the absolute value of a negative number', function() {
     var testNum = -8;
     form.somenum.$setViewValue(testNum);
-    expect($scope.model.somenum).toBe(8);
-    expect(form.somenum.$valid).toBe(true);
+    expect($scope.model.somenum).to.equal(8);
+    expect(form.somenum.$valid).to.be.true;
   });
 
   it('should pass with a decimal with more than one decimal place, but truncate it to one place if not indicated to allow two', function() {
     var testNum = 3.45;
     form.somenum.$setViewValue(testNum);
-    expect($scope.model.somenum).toBe(3.4);
-    expect(form.somenum.$valid).toBe(true);
+    expect($scope.model.somenum).to.equal(3.4);
+    expect(form.somenum.$valid).to.be.true;
   });
 });
