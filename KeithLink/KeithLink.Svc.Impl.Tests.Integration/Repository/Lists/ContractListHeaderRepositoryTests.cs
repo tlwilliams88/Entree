@@ -79,6 +79,84 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                       .Should()
                       .Be(expected);
             }
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedCreatedUtc() {
+                // arrange
+                var repo = MakeRepo();
+                var expected = new DateTime(2017, 6, 16, 15, 28, 0, DateTimeKind.Utc);
+                UserSelectedContext customerInfo = new UserSelectedContext() {
+                                                                                 BranchId = "FDF",
+                                                                                 CustomerId = "123456"
+                                                                             };
+
+                // act
+                var result = repo.GetListHeaderForCustomer(customerInfo);
+
+                // assert
+                result.CreatedUtc
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedCreatedUtcKind() {
+                // arrange
+                var repo = MakeRepo();
+                var expected = DateTimeKind.Utc;
+                UserSelectedContext customerInfo = new UserSelectedContext() {
+                                                                                 BranchId = "FDF",
+                                                                                 CustomerId = "123456"
+                                                                             };
+
+                // act
+                var result = repo.GetListHeaderForCustomer(customerInfo);
+
+                // assert
+                result.CreatedUtc
+                      .Kind
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedModifiedUtc() {
+                // arrange
+                var repo = MakeRepo();
+                var expected = new DateTime(2017, 6, 16, 15, 28, 0, DateTimeKind.Utc);
+                UserSelectedContext customerInfo = new UserSelectedContext() {
+                                                                                 BranchId = "FDF",
+                                                                                 CustomerId = "123456"
+                                                                             };
+
+                // act
+                var result = repo.GetListHeaderForCustomer(customerInfo);
+
+                // assert
+                result.ModifiedUtc
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedModifiedUtcKind() {
+                // arrange
+                var repo = MakeRepo();
+                var expected = DateTimeKind.Utc;
+                UserSelectedContext customerInfo = new UserSelectedContext() {
+                                                                                 BranchId = "FDF",
+                                                                                 CustomerId = "123456"
+                                                                             };
+
+                // act
+                var result = repo.GetListHeaderForCustomer(customerInfo);
+
+                // assert
+                result.ModifiedUtc
+                      .Kind
+                      .Should()
+                      .Be(expected);
+            }
         }
     }
 }

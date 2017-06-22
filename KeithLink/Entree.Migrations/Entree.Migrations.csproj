@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Migrations\Core\BaseMigrationClass.cs" />
-    <Compile Include="Migrations\Data\TestAppSettings.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Configuration\AppSettings.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
@@ -79,7 +79,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0024.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0023.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
-    <Compile Include="Migrations\Data\TestSeedData.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +108,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Migrations\Data\IntegrationTests\BranchSupport\" />
+    <Folder Include="Migrations\Data\IntegrationTests\Customers\" />
+    <Folder Include="Migrations\Data\IntegrationTests\dbo\" />
+    <Folder Include="Migrations\Data\IntegrationTests\ETL\" />
+    <Folder Include="Migrations\Data\IntegrationTests\Invoice\" />
+    <Folder Include="Migrations\Data\IntegrationTests\Marketing\" />
+    <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
+    <Folder Include="Migrations\Data\IntegrationTests\Orders\" />
+    <Folder Include="Migrations\Data\IntegrationTests\Profile\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

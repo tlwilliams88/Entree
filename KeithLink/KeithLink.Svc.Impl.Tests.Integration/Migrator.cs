@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration {
             var announcer = new TextWriterAnnouncer(s => System.Diagnostics.Debug.WriteLine(s));
 
             var migrationContext = new RunnerContext(announcer) {
-                Profile = "IntegrationTest",
+                Profile = "IntegrationTests",
                 ApplicationContext = "BaselineSetup"
             };
             
