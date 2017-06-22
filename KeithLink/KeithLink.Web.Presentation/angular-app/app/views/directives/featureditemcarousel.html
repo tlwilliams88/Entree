@@ -1,6 +1,6 @@
 <!--Used for Home Page Mobile-->
 <div ng-if="!isCatalog" class="featured-item-mobile hidden-lg">
-  <ul rn-carousel  class="featured-item-carousel featured-item-width featured-item-height">
+  <ul rn-carousel rn-carousel rn-carousel-controls-allow-loop rn-carousel-auto-slide="8" rn-carousel-easing rn-carousel-duration="900" rn-carousel-index="carouselIndex" class="featured-item-carousel featured-item-width featured-item-height">
     <li ng-repeat="item in itemList | orderBy:'-'">
       <div ng-include="template"></div>
     </li>
