@@ -194,7 +194,9 @@
     <Compile Include="Extensions\Lists\HistoryHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\InventoryValuationDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\InventoryValuationHeaderExtensions.cs" />
+    <Compile Include="Extensions\Lists\RecentlyViewedDetailsExtensions.cs" />
     <Compile Include="Extensions\Lists\RecentlyOrderedDetailExtensions.cs" />
+    <Compile Include="Extensions\Lists\RecentlyViewedHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\RecommendedDetailExtension.cs" />
     <Compile Include="Extensions\Lists\RecommendedHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\ReminderDetailExtensions.cs" />
@@ -284,6 +286,9 @@
     <Compile Include="Interface\Lists\IInventoryValuationListLogic.cs" />
     <Compile Include="Interface\Lists\INoteDetailsListRepository.cs" />
     <Compile Include="Interface\Lists\INoteLogic.cs" />
+    <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
+    <Compile Include="Interface\Lists\IRecentlyViewedListDetailsRepository.cs" />
+    <Compile Include="Interface\Lists\IRecentlyViewedListHeadersRepository.cs" />
     <Compile Include="Interface\Lists\IRemindersListLogic.cs" />
     <Compile Include="Interface\Lists\IRemindersListDetailsRepository.cs" />
     <Compile Include="Interface\Lists\IRecommendedItemsListDetailsRepository.cs" />
@@ -292,10 +297,8 @@
     <Compile Include="Interface\Lists\IRecommendedItemListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListHeadersRepository.cs" />
-    <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
     <Compile Include="Interface\Lists\IFavoritesListLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyOrderedListDetailsRepository.cs" />
-    <Compile Include="Interface\Lists\IRecentlyViewedListRepository.cs" />
     <Compile Include="Interface\Lists\IHistoryListLogic.cs" />
     <Compile Include="Interface\Lists\IHistoryLogic.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />

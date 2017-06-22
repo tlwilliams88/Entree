@@ -156,7 +156,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<FavoriteListDetailRepositoryImpl>().As<IFavoriteListDetailsRepository>();
             builder.RegisterType<NotesHeadersRepositoryImpl>().As<INotesHeadersListRepository>();
             builder.RegisterType<NotesDetailsRepositoryImpl>().As<INotesDetailsListRepository>();
-            builder.RegisterType<RecentlyViewedListRepositoryImpl>().As<IRecentlyViewedListRepository>();
+            builder.RegisterType<RecentlyViewedListHeadersRepositoryImpl>().As<IRecentlyViewedListHeadersRepository>();
+            builder.RegisterType<RecentlyViewedListDetailsRepositoryImpl>().As<IRecentlyViewedListDetailsRepository>();
             builder.RegisterType<RecentlyOrderedListHeadersRepositoryImpl>().As<IRecentlyOrderedListHeadersRepository>();
             builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>();
             builder.RegisterType<RecommendedItemsListHeadersRepositoryImpl>().As<IRecommendedItemsListHeadersRepository>();

@@ -35,6 +35,7 @@ namespace KeithLink.Svc.Core.Enumerations.List
 		RecommendedItems,
 		InventoryValuation,
         RecentlyOrdered,
+        RecentlyViewed,
         CustomInventory
     }
 }

@@ -1,23 +1,28 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Lists.RecentlyViewed;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
-    public interface IRecentlyViewedListLogic : IBaseListLogic
-    {
-        List<string> GetRecentlyViewedItemNumbers(UserProfile user, UserSelectedContext catalogInfo);
+    public interface IRecentlyViewedListLogic {
+        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
 
-        void AddOrUpdateRecentlyViewed(UserProfile user,
-            UserSelectedContext catalogInfo,
-            string itemNumber,
-            bool each,
-            string catalogId,
-            bool active);
+        long Save(UserProfile user,
+                  UserSelectedContext catalogInfo,
+                  string itemNumber,
+                  bool each,
+                  string catalogId);
 
-        void DeleteRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo);
+        void PostRecentOrder(UserProfile user, 
+                             UserSelectedContext catalogInfo,
+                             RecentNonBEKList list);
 
-        List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
+        void DeleteRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo, RecentlyViewedListDetail details);
+        void DeleteOldRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo, long headerId);
+
+        void DeleteAll(UserProfile user,
+                       UserSelectedContext catalogInfo);
     }
 }

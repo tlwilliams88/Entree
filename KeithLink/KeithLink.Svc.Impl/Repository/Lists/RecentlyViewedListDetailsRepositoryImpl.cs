@@ -5,13 +5,13 @@ using System.Data;
 using Dapper;
 
 using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
+using KeithLink.Svc.Core.Models.Lists.RecentlyViewed;
 using KeithLink.Svc.Impl.Repository.DataConnection;
 
 namespace KeithLink.Svc.Impl.Repository.Lists {
-    public class RecentlyOrderedListDetailsRepositoryImpl : DapperDatabaseConnection, IRecentlyOrderedListDetailsRepository {
+    public class RecentlyViewedListDetailsRepositoryImpl : DapperDatabaseConnection, IRecentlyViewedListDetailsRepository {
         #region constructor
-        public RecentlyOrderedListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
+        public RecentlyViewedListDetailsRepositoryImpl() : base(Configuration.BEKDBConnectionString) { }
         #endregion
 
         #region attributes
@@ -24,41 +24,42 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_NUMBERTOKEEP = "NumberToKeep";
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
-        private const string SPNAME_GET = "[List].[ReadRecentlyOrderedDetailsbyParentId]";
-        private const string SPNAME_SAVE = "[List].[SaveRecentlyOrderedDetails]";
-        private const string SPNAME_DELETE = "[List].[DeleteRecentlyOrderedDetails]";
-        private const string SPNAME_DELETE_OLD = "[List].[DeleteOldRecentlyOrderedDetails]";
+        private const string SPNAME_GET = "[List].[ReadRecentlyViewedDetailsbyHeaderId]";
+        private const string SPNAME_SAVE = "[List].[SaveRecentlyViewedDetails]";
+        private const string SPNAME_DELETE = "[List].[DeleteRecentlyViewedDetails]";
+        private const string SPNAME_DELETE_OLD = "[List].[DeleteOldRecentlyViewedDetails]";
         #endregion
 
         #region methods
-        public List<RecentlyOrderedListDetail> GetRecentlyOrderedDetails(long headerId) {
+        public List<RecentlyViewedListDetail> GetRecentlyViewedDetails(long headerId) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_HEADERID, headerId);
 
-            return Read<RecentlyOrderedListDetail>(SPNAME_GET, parms);
+            return Read<RecentlyViewedListDetail>(SPNAME_GET, parms);
         }
 
-        public long Save(RecentlyOrderedListDetail details) {
+        public long Save(RecentlyViewedListDetail details) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, details.Id);
             parms.Add(PARMNAME_HEADERID, details.HeaderId);
             parms.Add(PARMNAME_ITEMNUMBER, details.ItemNumber);
             parms.Add(PARMNAME_EACH, details.Each);
             parms.Add(PARMNAME_CATALOGID, details.CatalogId);
+            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
 
-            return 0;
+            return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
 
-        public void DeleteRecentlyOrdered(RecentlyOrderedListDetail details) {
+        public void DeleteRecentlyViewed(RecentlyViewedListDetail details) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, details.Id);
 
             ExecuteCommand(SPNAME_DELETE, parms);
         }
 
-        public void DeleteOldRecentlyOrdered(long headerId, int numberToKeep = 7) {
+        public void DeleteOldRecentlyViewed(long headerId, int numberToKeep = 7) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_HEADERID, headerId);
             parms.Add(PARMNAME_NUMBERTOKEEP, numberToKeep);

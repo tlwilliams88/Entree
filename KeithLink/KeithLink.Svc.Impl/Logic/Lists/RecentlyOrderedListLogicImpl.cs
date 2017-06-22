@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
             if (returnValue != null &&
                 headerOnly == false)
-                details = _detailsRepo.GetRecentlyOrderedjetails(returnValue.Id);
+                details = _detailsRepo.GetRecentlyOrderedDetails(returnValue.Id);
 
             return returnValue.ToListModel(details);
         }
