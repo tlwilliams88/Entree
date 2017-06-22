@@ -1,41 +1,18 @@
-<!-- For E&S Catalog Event -->
-<div page-header-bar-home>
-  <div header-message>
-    <div>
-      <div class="pull-left max-width-1003-min-width-400px max-width-991px max-width-763px display-icon-landscape hide-icon-landscape background-color-white" style="height: 60px; width:180px;">
-        <img class="hand-pointer max-width-1003-min-width-400px margin-top-3" style="height: auto; max-width: 100%;" src="images/KeithKitchenEssentials_100px.png" ui-sref="menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })"/>
-      </div>
-      <div class="margin-top-5-max-width-360px margin-left-5 inline-block-display" style="display: -webkit-inline-box; margin-top: 20px;">
-        <a class="color-white max-width-1003 padding-left-5" ui-sref="menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })" style="font-size: 14px;">
-          <span class="max-width-891 max-width-1269">Click To </span>
-          Order Equipment And Supplies!
-        </a>
-        <div class="margin-left-10 margin-right-10 vertical-line">
-        </div>
-        <!-- <a class=" padding-left-5 padding-right-5" style="color: #F7B834; font-size: 28px; margin-top: 20px;">|</a> -->
-        <a class="color-white max-width-991px max-width-712 padding-right-5" style="font-size: 14px;" href="http://www.benekeith.com/food/products/keith-kitchen-essentials" ng-click="window.open('http://www.benekeith.com/food/products/keith-kitchen-essentials', '_system')" target="_blank"> View <span class="max-width-1269 max-width-1015 max-width-891">2017</span> <span class="hidden-xs">Digital </span>Catalog</a>
-      </div>
-    </div>
-  </div>
-<!--   <div class="background-color-white pull-right hidden-xs hidden-sm hidden-print max-width-1006px min-width-1007px" style="height: 60px; width:260px;">
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right margin-top-10 margin-right-10"></order-dropdown>
-    <div header-buttons>
-      <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
-    </div>
-  </div> -->
-</div>
+<!-- Featured Items -->
+<div class="row">
+    <!-- <h3>Latest From Ben E. Keith</h3> -->
+    <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
+    <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
+    <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
 
-<!-- <div page-header-bar>
-  <div header-message>
-    <span class="hidden-xs hidden-sm">Welcome Back </span>{{::userProfile.displayname}}<span class="hidden-xs hidden-sm">!</span>
-    <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-xs hidden-sm hidden-print hidden-md hidden-lg pull-right"></order-dropdown>
-  </div>
-  <div class="pull-right hidden-xs hidden-sm hidden-print">
-    <div header-buttons>
-      <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
+    <div ng-if="promoItems.length > 0 && !loadingPromoItems">
+
+      <div class="page-header-bar-home">
+        <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
+      </div>
+
     </div>
-  </div>
-</div> -->
+</div>
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
 <div class="page-content">
   <div class="row">
@@ -72,39 +49,10 @@
         <div id="chart_div" style="height:140px;width:100%;"></div>
       </div>
       <!-- end Account Summary -->
-      <!-- Recent Activity -->
-      <div class="hidden-xs hidden-sm">
-        <h3>Recent Activity</h3>
-        <p ng-show="dates && dates.length === 0">No recent activity found for this customer.</p>
-        <div ng-repeat="date in dates">
-          <div class="notification notification--date">
-            <div class="notification__icon">
-              <span class="icon-record"></span>
-            </div>
-            <div class="notification__date">{{date | formatDate}} </div>
-          </div>
-          <div ng-repeat="notification in notificationDates[date]">
-            <div class="notification notification--activity hand" ng-click="showAdditionalInfo(notification)">
-              <div class="notification__icon">
-                <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>
-                <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
-                <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
-                <div class="icon" ng-show="notification.displayType === 'Mail'"><span class="icon-mail"></span></div>
-              </div>
-              <div class="notification__message">
-                {{notification.subject}}
-                <div class="timestamp"> {{notification.messagecreated | formatDateWithTimezone: 'h:mma'}}</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div loading-spinner="loadingRecentActivity"></div>
-      </div>
-      <!-- end Recent Activity -->
     </div>
     <div class="col-md-8 col-md-pull-4">
       <!-- Cart Summary -->
-      <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
+      <!-- <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
         <div class="col-md-3">
           Pending Orders
         </div>
@@ -118,7 +66,7 @@
           Subtotal
         </div>
       </div>
-      <div ng-show="cartsHeaders && cartsHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
+      <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
@@ -136,12 +84,12 @@
         </div>
       </div>
       <div class="text-center hidden-xs hidden-sm" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
-      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartsHeaders.length > 0 || loadingCarts">
+      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartHeaders.length > 0 || loadingCarts">
         No Carts to Display
       </p>
-      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartsHeaders.length === 0">
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
         <a class="view-all" ui-sref="menu.order">View All</a>
-      </div>
+      </div> -->
       <!-- Order Summary -->
       <div ng-if="canViewOrders">
         <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin" style="margin-top:10px;">
@@ -218,10 +166,10 @@
             <h3>Pending Orders</h3>
           </div>
           <div class="col-xs-4">
-            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingCarts || cartMessage || cartsHeaders.length === 0">View All</a>
+            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">View All</a>
           </div>
         </div>
-        <div ng-show="cartsHeaders && cartsHeaders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: 2">
+        <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2">
           <div class="order-col">
             <div class="row">
               <div class="col-xs-6">
@@ -337,22 +285,6 @@
         </div>
       </div>
       <!-- end Order Summary -->
-      <!-- Featured Items -->
-      <div class="row">
-        <div class="col-sm-12">
-          <h3>Latest From Ben E. Keith</h3>
-          <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
-          <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
-          <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
 
-          <div ng-if="promoItems.length > 0 && !loadingPromoItems">
-
-            <div class="col-xs-12">
-              <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
-            </div>
-
-          </div>
-        </div>
-      </div>
     </div>
   </div>

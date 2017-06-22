@@ -38,7 +38,7 @@
 
         <div featured-item-carousel="recentlyViewedItems" catalog="true" template="{{'views/featuredItemTemplates/product.html'}}"></div>
       </div>
-      <h4 ng-if="recentlyViewedItems.length === 0">No recently viewed items to display.</h4>
+      <h4 ng-if="recentlyViewItems == null && !loadingRecentlyViewedItems">No recently viewed items to display.</h4>
 
   	</div>
   </div>  <!-- end Recently Viewed Items -->
