@@ -1,1 +1,1 @@
-ALTER TABLE [List].[CustomInventoryItems] DROP COLUMN Label
+DROP TABLE [List].[CustomInventoryItems]

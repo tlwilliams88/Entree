@@ -1,14 +1,13 @@
 ﻿declare @Settings as TABLE 
 ( 
-    [Id]                 BIGINT         IDENTITY (1, 1) NOT NULL,
+    [Id]                 BIGINT         NOT NULL    PRIMARY KEY    IDENTITY (1, 1),
     [BranchName]         NVARCHAR (MAX) NULL,
     [BranchId]           NVARCHAR (MAX) NULL,
     [SupportPhoneNumber] NVARCHAR (MAX) NULL,
     [TollFreeNumber]     NVARCHAR (MAX) NULL,
     [Email]              NVARCHAR (MAX) NULL,
     [CreatedUtc]         DATETIME       DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]        DATETIME       DEFAULT (getutcdate()) NOT NULL,
-    CONSTRAINT [PK_BranchSupport.BranchSupports] PRIMARY KEY CLUSTERED ([Id] ASC)
+    [ModifiedUtc]        DATETIME       DEFAULT (getutcdate()) NOT NULL
 )
 
 INSERT 
@@ -17,8 +16,8 @@ INSERT
 	VALUES 
 		('Elba', 'FEL', '3348530384', '', 'Fel-dis-itadmin@benekeith.com')
 
-MERGE INTO [BEK_Commerce_AppData].[BranchSupports].[BranchSupport] A
-USING @AppSettings B ON (A.[BranchId] = B.[BranchId])
+MERGE INTO [BranchSupport].[BranchSupports] A
+USING @Settings B ON (A.[BranchId] = B.[BranchId])
 WHEN MATCHED THEN
     UPDATE SET A.[BranchName] = B.[BranchName], A.[SupportPhoneNumber] = B.[SupportPhoneNumber], A.[TollFreeNumber] = B.[TollFreeNumber], A.[Email] = B.[Email], A.[ModifiedUtc] = GetDate()
 WHEN NOT MATCHED THEN

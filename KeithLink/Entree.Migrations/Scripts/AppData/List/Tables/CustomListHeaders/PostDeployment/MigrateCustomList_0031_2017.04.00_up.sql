@@ -5,7 +5,7 @@
        -- =============================================
 
 	INSERT -- create customer custom lists
-		INTO [BEK_Commerce_AppData].[List].[CustomListHeaders]
+		INTO [List].[CustomListHeaders]
             ([CustomerNumber]
             ,[BranchId]
             ,[Name])
@@ -14,20 +14,20 @@
             ,l.[BranchId]
             ,l.[DisplayName]
         FROM 
-            [BEK_Commerce_AppData].[List].[Lists] as l
+            [List].[Lists] as l
 		WHERE 
 			l.[Type] = 0 AND
 			NOT EXISTS (
 				SELECT 
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[CustomListHeaders]
+					FROM [List].[CustomListHeaders]
 					WHERE [CustomerNumber] = l.[CustomerId]
 						AND [BranchId] = l.[BranchId]
 						AND l.[Type] = 0)
 		
 
     INSERT
-		INTO [BEK_Commerce_AppData].[List].[CustomListDetails]
+		INTO [List].[CustomListDetails]
 			([ParentCustomListHeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
@@ -51,7 +51,7 @@
 			NOT EXISTS (
 				SELECT
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[CustomListDetails]
+					FROM [List].[CustomListDetails]
 					INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 					INNER JOIN List.[InventoryValuationListHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
 					WHERE [ItemNumber] = li.[ItemNumber]

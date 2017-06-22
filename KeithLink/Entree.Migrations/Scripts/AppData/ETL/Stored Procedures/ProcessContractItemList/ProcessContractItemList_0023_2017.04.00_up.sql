@@ -11,7 +11,7 @@ BEGIN
     SET NOCOUNT ON
 
 	INSERT -- create customer contract lists from staging customerbids if they don't exist 
-		INTO [BEK_Commerce_AppData].[List].[ContractHeaders]
+		INTO [List].[ContractHeaders]
             ([CustomerNumber]
             ,[BranchId]
             ,[CreatedUtc]
@@ -22,17 +22,17 @@ BEGIN
             ,GETUTCDATE()
             ,GETUTCDATE()
         FROM 
-            [BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] as cb
+            [ETL].[Staging_CustomerBid] as cb
 		WHERE 
 			NOT EXISTS (
 				SELECT 
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[ContractHeaders]
+					FROM [List].[ContractHeaders]
 					WHERE [CustomerNumber] = LTRIM(RTRIM(cb.[CustomerNumber]))
 						AND [BranchId] = LTRIM(RTRIM(cb.[DivisionNumber])))
 
     INSERT -- insert new items into all customer lists
-		INTO [BEK_Commerce_AppData].[List].[ContractDetails]
+		INTO [List].[ContractDetails]
 			([ItemNumber]
             ,[CreatedUtc]
             ,[HeaderId]
@@ -53,79 +53,79 @@ BEGIN
 			,LTRIM(RTRIM(cb.DivisionNumber))
 			,DATEADD(day, 1, GETDATE())
 			FROM 
-				[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				[ETL].[Staging_BidContractDetail] bcd
 			INNER JOIN 
-				[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+				[ETL].[Staging_CustomerBid] cb
 				ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
 			INNER JOIN 
-				[BEK_Commerce_AppData].List.[ContractHeaders] l
+				List.[ContractHeaders] l
 				ON l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 			WHERE
 				NOT EXISTS (
 					SELECT
 						'x'
-						FROM [BEK_Commerce_AppData].[List].[ContractDetails] li
+						FROM [List].[ContractDetails] li
 						WHERE li.[HeaderId] = l.Id 
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
 
 	UPDATE
-		[BEK_Commerce_AppData].[List].[ContractDetails]
+		[List].[ContractDetails]
 		SET 
 			[LineNumber] = CAST(bcd.BidLineNumber as int) 
 			, Category = LTRIM(RTRIM(bcd.CategoryDescription))
 			, ToDate = DATEADD(day, 3, GETDATE())
 		FROM 
-			[BEK_Commerce_AppData].[List].[ContractDetails] li
+			[List].[ContractDetails] li
 		INNER JOIN 
-			[BEK_Commerce_AppData].List.[ContractHeaders] l
+			List.[ContractHeaders] l
 			ON l.Id = li.[HeaderId]
 		INNER JOIN
-			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			[ETL].[Staging_BidContractDetail] bcd
 			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
 			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
 		INNER JOIN 
-			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			[ETL].[Staging_CustomerBid] cb
 			ON cb.BidNumber=bcd.BidNumber 
 				AND cb.DivisionNumber = bcd.DivisionNumber
 				AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 
 	UPDATE
-		[BEK_Commerce_AppData].[List].[ContractDetails]
+		[List].[ContractDetails]
 		SET 
 			ToDate = DATEADD(day, -14, GETDATE())
 		FROM 
-			[BEK_Commerce_AppData].[List].[ContractDetails] li
+			[List].[ContractDetails] li
 		INNER JOIN 
-			[BEK_Commerce_AppData].List.[ContractHeaders] l
+			List.[ContractHeaders] l
 			ON l.Id = li.[HeaderId]
 		LEFT OUTER JOIN
-			[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			[ETL].[Staging_BidContractDetail] bcd
 			ON ltrim(rtrim(bcd.ItemNumber)) = li.ItemNumber
 			AND CASE WHEN ltrim(rtrim(bcd.ForceEachOrCaseOnly)) = 'B' THEN 1 ELSE 0 END = li.Each
 		LEFT OUTER JOIN 
-			[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+			[ETL].[Staging_CustomerBid] cb
 			ON cb.BidNumber=bcd.BidNumber 
 				AND cb.DivisionNumber = bcd.DivisionNumber
 				AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 		WHERE bcd.ItemNumber is null and li.ToDate is null
 
 	DELETE TOP (50000)
-		FROM [BEK_Commerce_AppData].[List].[ContractDetails]
-		FROM [BEK_Commerce_AppData].[List].[ContractDetails] li
-			INNER JOIN [BEK_Commerce_AppData].[List].[ContractHeaders] l
+		FROM [List].[ContractDetails]
+		FROM [List].[ContractDetails] li
+			INNER JOIN [List].[ContractHeaders] l
 			ON li.[HeaderId] = l.Id
 	WHERE 
 		NOT EXISTS (
 			SELECT
 				'x'
-				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				FROM [ETL].[Staging_BidContractDetail] bcd
 				INNER JOIN 
-					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+					[ETL].[Staging_CustomerBid] cb
 					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
 				INNER JOIN 
-					[BEK_Commerce_AppData].List.[ContractHeaders] l
+					List.[ContractHeaders] l
 					ON l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 				WHERE
 					ltrim(rtrim(ItemNumber)) = li.ItemNumber
