@@ -41,7 +41,7 @@ div.rn-carousel-indicator span {
   cursor: pointer;
   color: #666; }
   div.rn-carousel-indicator span.active {
-    color: #D3D3D3; }
+    color: white; }
 
 /* prev/next controls */
 .rn-carousel-control {
