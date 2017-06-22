@@ -79,14 +79,16 @@ angular.module('bekApp')
       {
         imageurl: {
           desktop: 'images/Oreo-July-2017-Banner.jpg',
-          mobile: 'images/Oreo-July-2017-Banner_2.jpg'
-        }
+          mobile: 'images/Oreo-July-2017-Banner_2.jpg',
+        },
+        targeturl: ''
       },
       {
         imageurl: {
           desktop: 'images/KeithKitchenEssentials.png',
           mobile: 'images/KeithKitchenEssentials.png'
-        }
+        },
+        targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })"
       }
     ];
 

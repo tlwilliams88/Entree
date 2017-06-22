@@ -1,13 +1,13 @@
 <div class="hidden-lg">
   <div class="no-padding text-left">
-    <img class="featured-item-height" ng-if="item.imageurl" ng-src="{{item.imageurl.mobile}}" alt="image">
+    <img class="featured-item-height" ng-if="item.imageurl" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image">
     <img class="featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
   </div>
 </div>
 
 <div class="text-center box visible-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)" style="background:transparent;">
   <div style="display:inline-block">
-    <img class="item-image featured-item-height" ng-if="item.imageurl" ng-src="{{item.imageurl.desktop}}" ng-click="openExternalLink(item.targeturl)" alt="image">
+    <img class="item-image featured-item-height" ng-if="item.imageurl" ng-src="{{item.imageurl.desktop}}" ui-sref="{{item.targeturl}}" alt="image">
     <img class="item-image featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
   </div>
 </div>
