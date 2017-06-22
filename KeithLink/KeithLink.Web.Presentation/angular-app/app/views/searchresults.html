@@ -238,6 +238,7 @@
                 value="categoryValue_{{parentcategory.name}}"
                 id="categoryId_{{parentcategory.name}}"
                 ng-disabled="tutorialRunning"
+                ng-checked="  parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                 ng-click="toggleSelection(true, parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
               <label
                 ng-class="{active:   parentcategories.selected.indexOf(parentcategory.name) > -1}">
@@ -255,6 +256,7 @@
                     type="checkbox"
                     ng-disabled="tutorialRunning"
                     ng-click="toggleSelection(false, subcategories.selected, category.name, parentcategory.name)"
+                    ng-checked="  subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText || category.isSelected"
                     class="input-margin-5px">
                   <label
                     ng-if="!tutorialRunning"
@@ -450,8 +452,13 @@
                         <span ng-if="isOrderEntryCustomer" class="large-icon" favorite-icons></span>
                       </div>
                       <h5 class="block-display">
-                        <span ng-if="item.brand_extended_description && !item.marketing_brand"><a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })"><a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
-                          {{item.brand_extended_description}}</a>
+                        <span ng-if="item.brand_extended_description && !item.marketing_brand">
+                          <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })">
+                            {{item.brand_extended_description}}
+                          </a>
+                          <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+                            {{item.brand_extended_description}}
+                          </a>
                         </span>
                         <span ng-if="!item.brand_extended_description && !item.marketing_brand">{{item.brand}}</span>
                         <span ng-if="item.marketing_brand">{{item.marketing_brand}}</span>

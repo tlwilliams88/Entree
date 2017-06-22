@@ -14,7 +14,6 @@ AS
 	    [Label],
 	    [CatalogId],
 	    [CustomInventoryItemId],
-	    [Active],
 	    [CreatedUtc],
 	    [ModifiedUtc]
 	FROM 

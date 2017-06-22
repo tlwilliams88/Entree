@@ -502,9 +502,12 @@ angular.module('bekApp')
     DELETE LIST
     **********/
 
-    $scope.deleteList = function(list) {
-      ListService.deleteList(list).then(function(list) {
-        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === list.listid) {
+    $scope.deleteList = function(listId) {
+      ListService.deleteList(listId).then(function(list) {
+        ListService.getListHeaders().then(function(lists){
+          $scope.lists = lists;
+        })
+        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === listId) {
           $scope.hideMandatoryListCreateButton = false;
         }
         return list;

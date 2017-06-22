@@ -15,7 +15,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
     this.listId = listId;
     this.listType = listType;
 
-    this.pageSize = LocalStorage.getPageSize();
+    this.pageSize = pageSize ? pageSize : LocalStorage.getPageSize();
     this.pageIndex = 0;
     this.searchTerm = '';
     this.sort = sort;

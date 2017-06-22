@@ -21,3 +21,5 @@ AS
         [BranchId] = @BranchId
     AND
         [CustomerNumber] = @CustomerNumber
+	AND
+		[Active] = 1

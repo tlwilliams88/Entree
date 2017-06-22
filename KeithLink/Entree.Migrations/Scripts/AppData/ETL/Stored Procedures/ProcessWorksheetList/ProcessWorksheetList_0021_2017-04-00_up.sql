@@ -40,7 +40,7 @@ DECLARE worksheet_Cursor CURSOR FAST_FORWARD FOR
         [CustomerNumber],
         [DivisionNumber]
     FROM 
-        [BEK_Commerce_AppData].[ETL].[Staging_WorksheetItems]
+        [ETL].[Staging_WorksheetItems]
     GROUP BY
         [CustomerNumber],
         [DivisionNumber]
@@ -53,14 +53,14 @@ WHILE @@FETCH_STATUS = 0
 BEGIN
     --Find existing worksheet list for the customer
     SELECT @existingHistoryHeaderId = [Id] 
-        from [BEK_Commerce_AppData].[List].[HistoryHeaders] 
+        from [List].[HistoryHeaders] 
         WHERE   [CustomerNumber] = LTRIM(RTRIM(@customerId)) 
                 AND [BranchId] = LTRIM(RTRIM(@branchID))
     
     IF @existingHistoryHeaderId IS NULL
         BEGIN
             --List doesn't exist -- Create list
-            INSERT INTO [BEK_Commerce_AppData].[List].[HistoryHeaders]
+            INSERT INTO [List].[HistoryHeaders]
                 ([CustomerNumber]
                 ,[BranchId]
                 ,[CreatedUtc]
@@ -75,7 +75,7 @@ BEGIN
             SET @existingHistoryHeaderId = SCOPE_IDENTITY();
 
             --Insert items into the new list
-            INSERT INTO [BEK_Commerce_AppData].[List].[HistoryDetails]
+            INSERT INTO [List].[HistoryDetails]
                        ([ItemNumber]
                        ,[CreatedUtc]
                        ,[HeaderId]
@@ -92,7 +92,7 @@ BEGIN
                 CASE WHEN BrokenCaseCode = 'Y' THEN 1 ELSE 0 END,
                 @branchID
             FROM 
-                [BEK_Commerce_AppData].[ETL].[Staging_WorksheetItems]
+                [ETL].[Staging_WorksheetItems]
             WHERE
                 [CustomerNumber] = @customerId 
                 AND [DivisionNumber] = @branchID
@@ -108,11 +108,11 @@ BEGIN
                 LTRIM(RTRIM(w.ItemNumber)), 
                 CASE WHEN w.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END
             FROM
-                [BEK_Commerce_AppData].[ETL].[Staging_WorksheetItems] w
+                [ETL].[Staging_WorksheetItems] w
             WHERE
                 w.CustomerNumber = @customerId AND
                 w.DivisionNumber = @branchID AND
-                NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].[HistoryDetails] li 
+                NOT EXISTS(SELECT 'x' FROM [List].[HistoryDetails] li 
                                 WHERE li.ItemNumber = LTRIM(RTRIM(w.ItemNumber)) 
                                     AND li.Each = CASE WHEN w.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END 
                                     AND li.[HeaderId] = @existingHistoryHeaderId)                      
@@ -123,13 +123,13 @@ BEGIN
                 l.ItemNumber,
                 l.Each
             FROM
-                [BEK_Commerce_AppData].[List].[HistoryDetails] l
+                [List].[HistoryDetails] l
             WHERE
                 l.[HeaderId] = @existingHistoryHeaderId AND
                 NOT EXISTS(SELECT 
                         'x'
                     FROM
-                        [BEK_Commerce_AppData].[ETL].[Staging_WorksheetItems] w
+                        [ETL].[Staging_WorksheetItems] w
                     WHERE
                         LTRIM(RTRIM(w.ItemNumber)) = l.ItemNumber AND
                         CASE WHEN w.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END = l.Each AND
@@ -139,7 +139,7 @@ BEGIN
             IF EXISTS(SELECT 'x' FROM @AddedItems)
                 BEGIN
                     --Insert items into the list
-                INSERT INTO [BEK_Commerce_AppData].[List].[HistoryDetails]
+                INSERT INTO [List].[HistoryDetails]
                            ([ItemNumber]
                            ,[CreatedUtc]
                            ,[HeaderId]
@@ -164,8 +164,8 @@ BEGIN
             IF EXISTS(SELECT 'x' FROM @DeletedItems)
                 BEGIN
                     --DELETE Item
-                    DELETE [BEK_Commerce_AppData].[List].[HistoryDetails]
-                    FROM [BEK_Commerce_AppData].[List].[HistoryDetails] li INNER JOIN
+                    DELETE [List].[HistoryDetails]
+                    FROM [List].[HistoryDetails] li INNER JOIN
                         @DeletedItems d on li.ItemNumber = d.ItemNumber AND li.Each = d.Each AND [HeaderId] = @existingHistoryHeaderId
                                         
                 END     
@@ -173,10 +173,10 @@ BEGIN
 
             --update all list position numbers 
             -- also update the catalog id to make sure that they get set
-            UPDATE [BEK_Commerce_AppData].[List].[HistoryDetails] 
+            UPDATE [List].[HistoryDetails] 
             SET [LineNumber] = p.Positions
                 , CatalogId = @branchID
-            FROM [BEK_Commerce_AppData].[List].[HistoryDetails]
+            FROM [List].[HistoryDetails]
                 INNER JOIN
                     (
                         SELECT
@@ -184,7 +184,7 @@ BEGIN
                             [HeaderId] 'p_ListId',
                             RANK() OVER (ORDER BY ItemNumber) Positions
                         FROM
-                             [BEK_Commerce_AppData].[List].[HistoryDetails]
+                             [List].[HistoryDetails]
                         WHERE
                              [HeaderId] = @existingHistoryHeaderId
                     ) as p

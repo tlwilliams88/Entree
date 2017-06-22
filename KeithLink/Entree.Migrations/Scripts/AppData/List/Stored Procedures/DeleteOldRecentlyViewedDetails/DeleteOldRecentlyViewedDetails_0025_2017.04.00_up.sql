@@ -10,17 +10,17 @@ AS
         SELECT 
             COUNT([Id])
         FROM 
-            [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
+            [List].[RecentlyViewedDetails]
         WHERE
             [HeaderId] = @HeaderId
     )
 
     if(@Count > @NumberToKeep)
-        DELETE FROM [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
+        DELETE FROM [List].[RecentlyViewedDetails]
             WHERE [Id] IN
             (
                 SELECT TOP (@Count - @NumberToKeep) [Id]
-                FROM [BEK_Commerce_AppData].[List].[RecentlyViewedDetails]
+                FROM [List].[RecentlyViewedDetails]
                 WHERE [HeaderId] = @HeaderId
                 ORDER BY [ModifiedUtc] ASC
             )

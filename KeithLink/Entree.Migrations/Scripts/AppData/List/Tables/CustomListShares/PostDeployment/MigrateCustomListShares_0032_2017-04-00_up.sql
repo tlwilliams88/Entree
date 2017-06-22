@@ -5,7 +5,7 @@
        -- =============================================
 
 	INSERT -- create customer favorite lists
-		INTO [BEK_Commerce_AppData].[List].[CustomListShares]
+		INTO [List].[CustomListShares]
             ([CustomerNumber]
             ,[BranchId]
 			,[ParentCustomListHeaderId])
@@ -14,8 +14,8 @@
             ,ls.[BranchId]
 			,clh.[Id]
         FROM 
-            [BEK_Commerce_AppData].[List].[ListShares] as ls
-			INNER JOIN [BEK_Commerce_AppData].[List].[Lists] l ON l.Id = ls.SharedList_Id
-			INNER JOIN [BEK_Commerce_AppData].[List].[CustomListHeaders] clh ON clh.[CustomerNumber] = l.[CustomerId]
+            [List].[ListShares] as ls
+			INNER JOIN [List].[Lists] l ON l.Id = ls.SharedList_Id
+			INNER JOIN [List].[CustomListHeaders] clh ON clh.[CustomerNumber] = l.[CustomerId]
 																				AND clh.[BranchId] = l.[BranchId]
 																				AND clh.[Name] = l.[DisplayName]

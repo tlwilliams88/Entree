@@ -5,27 +5,27 @@
        -- =============================================
 
 	INSERT -- create customer favorite lists
-		INTO [BEK_Commerce_AppData].[List].[NotesHeaders]
+		INTO [List].[NotesHeaders]
             ([CustomerNumber]
             ,[BranchId])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
         FROM 
-            [BEK_Commerce_AppData].[List].[Lists] as l
+            [List].[Lists] as l
 		WHERE 
 			l.[Type] = 4 AND
 			NOT EXISTS (
 				SELECT 
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[NotesHeaders]
+					FROM [List].[NotesHeaders]
 					WHERE [CustomerNumber] = l.[CustomerId]
 						AND [BranchId] = l.[BranchId]
 						AND l.[Type] = 4)
 		
 
     INSERT
-		INTO [BEK_Commerce_AppData].[List].[NotesDetails]
+		INTO [List].[NotesDetails]
 			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
@@ -45,7 +45,7 @@
 			NOT EXISTS (
 				SELECT
 					'x'
-					FROM [BEK_Commerce_AppData].[List].[NotesDetails]
+					FROM [List].[NotesDetails]
 					INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 					INNER JOIN List.[NotesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
 					WHERE [ItemNumber] = li.[ItemNumber]

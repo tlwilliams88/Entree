@@ -10,8 +10,8 @@
 angular.module('bekApp')
 .directive('numericValidation',function(){
   var directive = {
-    require: 'ngModel', 
-    restrict: 'A', 
+    require: 'ngModel',
+    restrict: 'A',
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
         if(!viewValue){
@@ -22,11 +22,11 @@ angular.module('bekApp')
         if (typeof viewValue !== 'string') {
           viewValue = viewValue.toString();
         }
-    
+
           if(viewValue.indexOf('.') === 0){
-            viewValue = '0' + viewValue; 
-            ctrl.$setViewValue(viewValue);   
-            ctrl.$render();  
+            viewValue = '0' + viewValue;
+            ctrl.$setViewValue(viewValue);
+            ctrl.$render();
           }
           //Allow '0.' as an option, but keep it invalid
           if(viewValue ==='0.'){
@@ -36,7 +36,7 @@ angular.module('bekApp')
           }
 
         var truncatedVal ='';
-        var allowTwoDecimals = (attrs.id === 'inventoryRep' || attrs.id==='parlevel'  || attrs.id==='onHand' || attrs.id == 'casePrice' || attrs.id == 'packagePrice' || (attrs.id && attrs.id.indexOf('defaultElement') != -1));
+        var allowTwoDecimals = (attrs.name === 'inventoryRep' || attrs.id==='parlevel'  || attrs.id==='onHand' || attrs.id == 'casePrice' || attrs.id == 'packagePrice' || (attrs.id && attrs.id.indexOf('defaultElement') != -1));
         if (allowTwoDecimals) {
           //allows for 2 decimal places
           truncatedVal = truncateViewValue(2,viewValue);
@@ -65,23 +65,23 @@ angular.module('bekApp')
            if(typeof viewVal === 'string'){
             if(viewVal.length>1 && viewVal.indexOf(0) === 0 && viewVal[1] !== '.'){
               viewVal = viewVal.slice(1,viewVal.length);
-                ctrl.$setViewValue(viewVal);   
-                ctrl.$render(); 
+                ctrl.$setViewValue(viewVal);
+                ctrl.$render();
             }
 
             for (var i = 0, length = viewVal.length; i < length; i++) {
               if(['1','2','3','4','5','6','7','8','9','0','.'].indexOf(viewVal[i]) === -1){
-                viewVal = viewVal.replace(viewVal[i], '');         
-                ctrl.$setViewValue(viewVal);   
-                ctrl.$render();    
+                viewVal = viewVal.replace(viewVal[i], '');
+                ctrl.$setViewValue(viewVal);
+                ctrl.$render();
               }
-            }            
-        } 
+            }
+        }
         //truncate decimals to correct length
-         if(viewVal && typeof viewVal === 'string' && viewVal.indexOf('.') !== -1 && viewVal.slice(viewVal.indexOf('.'),(viewVal.length-1)).length > limit ){             
-            viewVal = viewVal.slice(0,(viewVal.indexOf('.') + limit + 1)); 
-             ctrl.$setViewValue(viewVal);   
-             ctrl.$render();         
+         if(viewVal && typeof viewVal === 'string' && viewVal.indexOf('.') !== -1 && viewVal.slice(viewVal.indexOf('.'),(viewVal.length-1)).length > limit ){
+            viewVal = viewVal.slice(0,(viewVal.indexOf('.') + limit + 1));
+             ctrl.$setViewValue(viewVal);
+             ctrl.$render();
           }
         if(!viewVal.length || viewVal === '0.0' || viewVal === '0.00'){
           viewVal = '0';
@@ -91,9 +91,9 @@ angular.module('bekApp')
 
       ctrl.$parsers.unshift(checkValidity);
       ctrl.$formatters.unshift(checkValidity);
-    }, 
+    },
     REGEXP : /^([1-9]\d*|0)(\.\d)?$/,
-    REGEXP2 : /^([1-9]\d*|0)(\.\d\d)?$/ 
+    REGEXP2 : /^([1-9]\d*|0)(\.\d\d)?$/
   };
 
   return directive;

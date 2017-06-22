@@ -98,10 +98,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
-                //case ListType.Recent:
-                //    returnList.AddRange(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
-                //    break;
-
                 case ListType.Notes: 
                     returnList.Add(_notesLogic.GetList(catalogInfo));
                     break;
@@ -133,9 +129,13 @@ namespace KeithLink.Svc.Impl.Service.List
                     returnList.Add(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
-                //case ListType.CustomInventory: //uses its own controller and works a little differently
-                //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
-                //    break;
+                case ListType.RecentlyViewed:
+                    returnList.Add(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                    break;
+
+                    //case ListType.CustomInventory: //uses its own controller and works a little differently
+                    //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
+                    //    break;
             }
 
             if (returnList != null) {
@@ -580,39 +580,34 @@ namespace KeithLink.Svc.Impl.Service.List
             return new List<RecommendedItemModel>();
         }
 
-        //private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
-        //{
-        //    if (list.Items == null || list.Items.Count == 0)
-        //        return;
+        private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+        {
+            if (list.Items == null || list.Items.Count == 0)
+                return;
 
-        //    var notes = _notesLogic.;
-        //    var favorites = _listRepo.Read(l => l.UserId == user.UserId &&
-        //                                        l.CustomerId.Equals(catalogInfo.CustomerId) &&
-        //                                        l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) &&
-        //                                        l.Type == ListType.Favorite,
-        //                                   i => i.Items)
-        //                             .FirstOrDefault();
+            ListModel notes = _notesLogic.GetList(catalogInfo);
+            ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
 
-        //    var notesHash = new Dictionary<string, ListItem>();
-        //    var favHash = new Dictionary<string, ListItem>();
+            var notesHash = new Dictionary<string, ListItemModel>();
+            var favHash = new Dictionary<string, ListItemModel>();
 
-        //    if (notes != null &&
-        //       notes.Items != null)
-        //        notesHash = notes.Items
-        //                         .GroupBy(i => i.ItemNumber)
-        //                         .ToDictionary(n => n.Key, n => n.First());
-        //    if (favorites != null &&
-        //       favorites.Items != null)
-        //        favHash = favorites.Items
-        //                           .GroupBy(i => i.ItemNumber)
-        //                           .ToDictionary(f => f.Key, f => f.First());
+            if (notes != null &&
+               notes.Items != null)
+                notesHash = notes.Items
+                                 .GroupBy(i => i.ItemNumber)
+                                 .ToDictionary(n => n.Key, n => n.First());
+            if (favorites != null &&
+               favorites.Items != null)
+                favHash = favorites.Items
+                                   .GroupBy(i => i.ItemNumber)
+                                   .ToDictionary(f => f.Key, f => f.First());
 
-        //    Parallel.ForEach(list.Items, listItem =>
-        //    {
-        //        listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
-        //        listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;
-        //    });
-        //}
+            Parallel.ForEach(list.Items, listItem =>
+            {
+                listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
+                listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Notes : null;
+            });
+        }
 
     }
 }

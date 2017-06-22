@@ -1,2 +1,2 @@
-﻿DELETE FROM [BEK_Commerce_AppData].[BranchSupports].[BranchSupport]
+﻿DELETE FROM [BranchSupport].[BranchSupports]
 WHERE [BranchId] = 'FEL'

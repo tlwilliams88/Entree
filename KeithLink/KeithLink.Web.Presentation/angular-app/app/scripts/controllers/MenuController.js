@@ -51,9 +51,7 @@ angular.module('bekApp')
   });
 
   $scope.$on('ListCreatedFromContextMenu', function() {
-    ListService.getListHeaders().then(function(lists) {
-      $scope.lists = lists;
-    });
+    $scope.lists = ListService.lists;
   });
 
 
@@ -70,9 +68,7 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
 
-  $scope.webVersionNum = '2017.2.0';
-  $scope.androidVersionNum = '2017.2.0';
-  $scope.iOSVersionNum = '2017.2.0';
+  $scope.versionNum = ENV.version;
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;

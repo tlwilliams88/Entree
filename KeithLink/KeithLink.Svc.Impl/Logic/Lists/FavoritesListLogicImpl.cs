@@ -25,10 +25,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
         #region methods
         public List<string> GetFavoritedItemNumbers(UserProfile user, UserSelectedContext catalogInfo) {
-            return GetFavoritesList(user.UserId, catalogInfo, true)
+            ListModel list = GetFavoritesList(user.UserId, catalogInfo, true);
+            if (list != null & list.Items != null) {
+                return list
                         .Items
                         .Select(i => i.ItemNumber)
                         .ToList();
+            }
+
+            return new List<string>();
         }
 
         public ListModel GetFavoritesList(Guid userId, UserSelectedContext catalogInfo, bool headerOnly) {

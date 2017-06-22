@@ -47,7 +47,7 @@ angular.module('bekApp')
     } else {
       LocalStorage.setDefaultUserName('');
     }
-    
+
     AuthenticationService.login(loginInfo.username, loginInfo.password)
       .then(UserProfileService.getCurrentUserProfile)
       .then(function(profile) {
@@ -64,10 +64,10 @@ angular.module('bekApp')
   $scope.forgotPassword = function(email) {
     $scope.checkForInternalEmail(email);
     if(!$scope.isInternalEmail){
-      UserProfileService.resetPassword(email).then(function(data){      
+      UserProfileService.resetPassword(email).then(function(data){
        toaster.pop('success', null, 'We have sent a password reset request if the email was verified');
       },function(error) {
-      toaster.pop('error', null, 'Error resetting password.');        
+      toaster.pop('error', null, 'Error resetting password.');
       });
     } else {
       return false;
@@ -83,10 +83,10 @@ angular.module('bekApp')
     $scope.signUpBool = !signUpBool;
   };
 
-  $scope.checkForInternalEmail = function(email) {    
+  $scope.checkForInternalEmail = function(email) {
     if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === "@benekeith.com"){
       $scope.isInternalEmail = true;
-      $scope.$apply(); // Needed to use $apply to update view
+      $scope.$digest();
     }else{
       $scope.isInternalEmail = false;
     }
@@ -97,7 +97,7 @@ angular.module('bekApp')
     if (!processingRegistration) {
       processingRegistration = true;
       $scope.registrationErrorMessage = null;
-      
+
       UserProfileService.createUser(userProfile).then(function(data) {
 
         // log user in
