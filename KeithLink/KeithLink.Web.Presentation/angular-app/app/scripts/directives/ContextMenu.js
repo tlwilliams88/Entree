@@ -71,10 +71,14 @@ angular.module('bekApp')
       };
 
       $scope.createListWithItem = function(item) {
+        var newListItem = item;
         $q.all([
-          ListService.createList(item),
-          ListService.addItemToFavorites(item)
+          ListService.createList(newListItem),
+          ListService.addItemToFavorites(newListItem)
         ]).then(function(data) {
+          ListService.getListHeaders().then(function(listheaders){
+            $rootScope.listHeaders = listheaders;
+          })
           $rootScope.$broadcast('ListCreatedFromContextMenu');
           closeModal();
         });

@@ -35,8 +35,8 @@ angular.module('bekApp')
     }
     function addItemWatches(startingIndex) {
       for (var i = startingIndex; i < $scope.currentCart.items.length; i++) {
-        watches.push($scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange));
-        watches.push($scope.$watch('currentCart.items[' + i + '].each', onQuantityChange));
+        watches.push($scope.$watchCollection('currentCart.items[' + i + '].quantity', onQuantityChange));
+        watches.push($scope.$watchCollection('currentCart.items[' + i + '].each', onQuantityChange));
       }
     }
     function clearItemWatches() {
@@ -59,7 +59,7 @@ angular.module('bekApp')
       originalBasket.items =  OrderService.filterDeletedOrderItems(originalBasket);
     }
     $scope.currentCart = angular.copy(originalBasket);
-    $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);    
+    $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     $scope.isMobile = ENV.mobileApp;
     $scope.invalidSelectedDate = false;
     $scope.$watch(function () {
@@ -77,7 +77,7 @@ angular.module('bekApp')
       }
       else{
         $scope.recentlyOrderedUnfiItems = [];
-      }      
+      }
     });
 
     if (!$scope.isChangeOrder) {
@@ -199,7 +199,7 @@ angular.module('bekApp')
         if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK' || item.status.toUpperCase() !== 'DELETED')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
-        } else if(item.isMandatory && item.status && item.quantity == 0 && $scope.isChangeOrder && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK' && item.status.toUpperCase() !== 'DELETED')){ 
+        } else if(item.isMandatory && item.status && item.quantity == 0 && $scope.isChangeOrder && (item.status && item.status.toUpperCase() !== 'OUT OF STOCK' && item.status.toUpperCase() !== 'DELETED')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
         }
@@ -243,12 +243,12 @@ angular.module('bekApp')
         });
       }
     };
-   
+
     var processingSubmitOrder = false;
     $scope.submitOrder = function(cart) {
       var invalidItemFound =  invalidItemCheck(cart.items);
       if (!processingSaveCart && !invalidItemFound) {
-        processingSubmitOrder = true;        
+        processingSubmitOrder = true;
 
         if($scope.validateShipDate($scope.selectedShipDate)){
         return;
@@ -297,7 +297,7 @@ angular.module('bekApp')
                   message  = 'Successfully submitted order.';
                 }
               }
-            
+
             analyticsRecordTransaction(orderNumber, cart)
 
             $state.go('menu.orderitems', { invoiceNumber: orderNumber });
@@ -326,7 +326,7 @@ angular.module('bekApp')
           if(itemsAdded){
             OrderService.UpdateRecentlyOrderedUNFIItems($scope.recentlyOrderedUnfiItems);
           }
-        }        
+        }
       }
     };
 
@@ -569,11 +569,11 @@ angular.module('bekApp')
           }
           else{
             $scope.saveCart($scope.currentCart);
-          }          
+          }
         }
         else{
-          $state.go('menu.order'); 
-        }  
+          $state.go('menu.order');
+        }
       });
     };
 

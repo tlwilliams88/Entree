@@ -93,12 +93,22 @@ angular.module('bekApp')
             permissions.canSeeParlevel = true;
             permissions.alternativeParHeader = 'Required Qty';
 
+        // REMINDER
+        } else if (list.isreminder) {
+          permissions.canEditList = true;
+          permissions.canAddItems = true;
+          permissions.canDeleteItems = true;
+          permissions.canReorderItems = true;
+          permissions.canAddNonBEKItems = false;
+
+        // CUSTOM LISTS (only these can be shared/copied)
         } else {
 
           // SHARED WITH ME
           if (list.isshared) {
             permissions.canSeeLabels = true;
             permissions.canSeeParlevel = true;
+            // permissions.canEditParlevel = true;
             permissions.canAddNonBEKItems = false;
 
           // OWNER OF LIST
@@ -673,6 +683,9 @@ angular.module('bekApp')
             listId: list.listid,
             listType: list.type
           }, item).$promise.then(function(response) {
+            Service.getListHeaders().then(function(listheaders){
+              $rootScope.listHeaders = listheaders;
+            })
             item.listitemid = response.successResponse.listitemid;
             item.editPosition = 0;
             return item;

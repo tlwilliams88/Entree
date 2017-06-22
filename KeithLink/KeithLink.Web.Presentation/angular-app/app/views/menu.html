@@ -275,9 +275,7 @@
         <a ng-if="!iOS" href="https://play.google.com/store/apps/details?id=com.benekeith.entreeprod" target="_blank">Android App</a>
       </div>
       <div>
-        <span ng-if="!iOS && !Android">Version: {{webVersionNum}}</span>
-        <span id='iOS' ng-if="iOS">Version: {{iOSVersionNum}}</span>
-        <span id='Android' ng-if="Android">Version: {{androidVersionNum}}</span>
+        <span>Version: {{versionNum}}</span>
       </div>
       <span style="display:block;">Copyright 2017 Ben E. Keith</span>
       <a href="http://www.benekeith.com" target="blank">benekeith.com</a>
@@ -292,6 +290,7 @@
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li class="mobile-menu-item"><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu">
+          <a class="hidden-xs" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li class="mobile-menu-item"><span class="icon-comment" style="font-size: 20px;"></span></li></a>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li class="mobile-menu-item"><span class="icon-search"></span></li></a>
           <li class="mobile-menu-item" ng-if="canCreateOrders">
             <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
@@ -304,7 +303,7 @@
               </button>
               <ul class="dropdown-menu truck-dropdown">
                 <li class="heading"><h3>Current Carts</h3></li>
-                <li class="cart" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2">
+                <li class="cart" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: 2">
                   <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
                   <div class="cart-dropdown__info">
                     <strong>{{cart.name}}</strong>
@@ -397,6 +396,10 @@
         </div>
 
         <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10 margin-top-3 margin-right-5" style="margin-left:none; padding-left:none; display:inline-flex;">
+
+          <div style="margin-top: 2%; margin-right: 10px;">
+            <a class="hidden-md" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback" tooltip="Submit Feedback" tooltip-placement="left"><span class="icon-comment margin-right-5" style="font-size: 20px;"></span><span class="show-icon-only" style="width:80%"></span></a>
+          </div>
 
           <div class="mobile-margin-right-15 desktop-margin-right-10" style="display: inline-flex; width: 200px;">
             <div header-buttons>

@@ -14,7 +14,9 @@ describe('Directive: NoDuplicates', function () {
   var $scope, form;
 
   beforeEach(inject(function($compile, $rootScope) {
-    $scope = $rootScope;
+
+    $scope = $rootScope.$new();
+    $rootScope.$$watchers = [];
     var element = angular.element(
       '<form name="form">' +
         '<input ng-model="model.title" type="text" name="title" no-duplicates="title" collection="list" />' +
@@ -27,22 +29,24 @@ describe('Directive: NoDuplicates', function () {
       { title: 'Third Name' }
     ];
     $compile(element)($scope);
-    $scope.$digest();
+    // $scope.$apply();
     form = $scope.form;
   }));
 
   it('should pass with new title', function() {
     var testTitle = 'New Name';
     form.title.$setViewValue(testTitle);
-    expect($scope.model.title).toEqual(testTitle);
-    expect(form.title.$valid).toBe(true);
+    $scope.$digest();
+    expect($scope.model.title).to.equal(testTitle);
+    expect(form.title.$valid).to.be.true;
   });
 
   it('should pass when model has not changed', function() {
     var testTitle = 'Second Name';
     form.title.$setViewValue(testTitle);
-    expect($scope.model.title).toEqual(testTitle);
-    expect(form.title.$valid).toBe(true);
+    $scope.$digest();
+    expect($scope.model.title).to.equal(testTitle);
+    expect(form.title.$valid).to.be.true;
   });
 
   // it('should pass when name is changed back to the original model value', function() {
@@ -56,14 +60,16 @@ describe('Directive: NoDuplicates', function () {
   it('should fail with a duplicate title', function() {
     var testTitle = 'First Name';
     form.title.$setViewValue(testTitle);
-    expect($scope.model.title).toEqual($scope.model.title);
-    expect(form.title.$valid).toBe(false);
+    // $scope.$digest();
+    expect($scope.model.title).to.equal($scope.model.title);
+    expect(form.title.$valid).to.be.false;
   });
 
   it('should fail with a duplicate title different case', function() {
     var testTitle = 'first name';
     form.title.$setViewValue(testTitle);
-    expect($scope.model.title).toEqual($scope.model.title);
-    expect(form.title.$valid).toBe(false);
+    // $scope.$digest();
+    expect($scope.model.title).to.equal($scope.model.title);
+    expect(form.title.$valid).to.be.false;
   });
 });
