@@ -8,6 +8,8 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IListService {
+        void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel list);
+
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
         RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog);

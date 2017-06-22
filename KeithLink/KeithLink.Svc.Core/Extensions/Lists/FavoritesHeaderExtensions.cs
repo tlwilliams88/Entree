@@ -36,9 +36,13 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
 
         public static ListModel ToListModel(this FavoritesListHeader header, List<FavoritesListDetail> items) {
             ListModel retVal = header.ToListModel();
-            retVal.Items = items.Select(i => i.ToWebModel())
-                                .OrderBy(l => l.Position)
-                                .ToList();
+
+            if (items != null) {
+                retVal.Items = items.Select(i => i.ToWebModel())
+                                    .OrderBy(l => l.Position)
+                                    .ToList();
+            }
+
             return retVal;
         }
 

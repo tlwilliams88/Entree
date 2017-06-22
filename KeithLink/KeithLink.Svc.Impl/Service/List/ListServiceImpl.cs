@@ -76,6 +76,10 @@ namespace KeithLink.Svc.Impl.Service.List
         }
         #endregion
 
+        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+
+        }
+
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
             List<ListModel> returnList = new List<ListModel>();
@@ -211,74 +215,22 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> list = new List<ListModel>();
 
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Worksheet, headerOnly));
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Contract, headerOnly));
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Favorite, headerOnly));
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Reminder, headerOnly));
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.RecommendedItems, headerOnly));
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Mandatory, headerOnly));
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Custom, headerOnly));
-
-            // Add a favorite
-            //_favoritesLogic.AddOrUpdateFavorite(user, catalogInfo, "025026", false, catalogInfo.BranchId, true);
-
-            // Add a recently viewed
-            //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Empty recently viewed
-            //_recentlyViewedLogic.DeleteRecentlyViewed(user, catalogInfo);
-
-            // read recently viewed
-            //var recentlyViewed = ReadRecent(user, catalogInfo);
-
-            // Add a recently Ordered
-            //_recentlyOrderedLogic.AddOrUpdateRecentlyOrdered(user, catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Empty recently Ordered
-            //_recentlyOrderedLogic.DeleteRecentlyOrdered(user, catalogInfo);
-
-            // read recently Ordered
-            //var recentlyOrdered = ReadRecentOrder(user, catalogInfo, catalogInfo.BranchId);
-
-            // Add a recommended Items
-            //_recommendedItemsLogic.AddOrUpdateRecommendedItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // read recommended Items
-            //var recommendedItems = _recommendedItemsLogic.GetRecommendedItemNumbers(user, catalogInfo);
-
-            // Add a reminder Items
-            //_reminderItemsLogic.AddOrUpdateReminder(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Add a mandatory Items
-            //_mandatoryItemsLogic.AddOrUpdateMandatoryItem(catalogInfo, "987678", false, catalogInfo.BranchId, true);
-
-            // Add a note
-            //_notesLogic.AddOrUpdateNote(catalogInfo, "082082", true, catalogInfo.BranchId, "There can be only one", true);
-
-            // read notes
-            //var notes = _notesLogic.GetNotesDictionary(user, catalogInfo);            
-
-            if (headerOnly)
-                return list.Select(l => new ListModel()
-                {
-                    ListId = l.ListId,
-                    Name = l.Name,
-                    IsContractList = l.Type == ListType.Contract,
-                    IsFavorite = l.Type == ListType.Favorite,
-                    IsWorksheet = l.Type == ListType.Worksheet,
-                    IsReminder = l.Type == ListType.Reminder,
-                    IsMandatory = l.Type == ListType.Mandatory,
-                    IsRecommended = l.Type == ListType.RecommendedItems,
-                    ReadOnly = l.ReadOnly || (!user.IsInternalUser && l.Type.Equals(ListType.RecommendedItems) || (!user.IsInternalUser && l.Type.Equals(ListType.Mandatory))),
-                    SharedWith = l.SharedWith,
-                    IsSharing = l.IsSharing,
-                    IsShared = l.IsShared,
-                    //IsCustomInventory = l.Type == ListType.CustomInventory,
-                    Type = l.Type
-                })
-                           .ToList();
+            AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.RecommendedItems, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
+            AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
             return list;
+        }
+
+        private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly) {
+            List<ListModel> tmpList = ReadListByType(user, catalogInfo, type, headerOnly);
+            if (tmpList != null && tmpList[0] != null) {
+                list.AddRange(tmpList);
+            }
         }
 
         public List<string> ReadLabels(UserProfile user, UserSelectedContext catalogInfo)

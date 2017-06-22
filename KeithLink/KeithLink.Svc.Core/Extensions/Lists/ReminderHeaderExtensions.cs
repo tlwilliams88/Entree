@@ -35,9 +35,13 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
 
         public static ListModel ToListModel(this ReminderItemsListHeader header, List<ReminderItemsListDetail> items) {
             ListModel retVal = header.ToListModel();
-            retVal.Items = items.Select(i => i.ToWebModel())
-                                .OrderBy(i => i.Position)
-                                .ToList();
+
+            if (items != null) {
+                retVal.Items = items.Select(i => i.ToWebModel())
+                                    .OrderBy(i => i.Position)
+                                    .ToList();
+            }
+
             return retVal;
         }
 

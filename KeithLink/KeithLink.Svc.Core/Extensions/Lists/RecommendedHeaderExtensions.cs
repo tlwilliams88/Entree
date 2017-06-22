@@ -42,9 +42,13 @@ namespace KeithLink.Svc.Core.Extensions.Lists
         public static ListModel ToListModel(this RecommendedItemsListHeader header, List<RecommendedItemsListDetail> items)
         {
             ListModel retVal = header.ToListModel();
-            retVal.Items = items.Select(i => i.ToWebModel())
-                                .OrderBy(i => i.Position)
-                                .ToList();
+
+            if (items != null) {
+                retVal.Items = items.Select(i => i.ToWebModel())
+                                    .OrderBy(i => i.Position)
+                                    .ToList();
+            }
+
             return retVal;
         }
 

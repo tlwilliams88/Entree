@@ -31,10 +31,17 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         }
 
         public static ListModel ToListModel(this MandatoryItemsListHeader header, List<MandatoryItemsListDetail> items) {
-            ListModel retVal = ToListModel(header);
-            retVal.Items = items.Select(i => i.ToWebModel())
-                                .OrderBy(i => i.Position)
-                                .ToList();
+            ListModel retVal = null;
+            if (header != null)
+            {
+                retVal = ToListModel(header);
+            }
+
+            if (items != null) {
+                retVal.Items = items.Select(i => i.ToWebModel())
+                                    .OrderBy(i => i.Position)
+                                    .ToList();
+            }
 
             return retVal;
         }
