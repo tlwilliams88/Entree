@@ -87,11 +87,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         }
 
         public void DeleteAll(UserProfile user,
-                              UserSelectedContext catalogInfo)
-        {
+                              UserSelectedContext catalogInfo) {
             RecentlyViewedListHeader header = _headersRepo.GetRecentlyViewedHeader(user.UserId, catalogInfo);
 
-            _detailsRepo.DeleteOldRecentlyViewed(header.Id, 0);
+            int daysToKeep = 0;
+            _detailsRepo.DeleteOldRecentlyViewed(header.Id, daysToKeep);
         }
 
         public void DeleteRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo, RecentlyViewedListDetail details) {

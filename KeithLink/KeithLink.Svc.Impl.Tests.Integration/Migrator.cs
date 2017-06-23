@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 
 using FluentMigrator;
@@ -22,11 +23,23 @@ namespace KeithLink.Svc.Impl.Tests.Integration {
             public string ProviderSwitches { get; }
         }
 
+        private IAnnouncer GetAnnouncer() {
+            IAnnouncer retVal = null;
+
+            if (Environment.UserInteractive) {
+                retVal = new TextWriterAnnouncer(s => Debug.WriteLine(s));
+            } else {
+                retVal = new NullAnnouncer();
+            }
+
+            return retVal;
+        }
+
         public void Migrate(Assembly assembly, Action<IMigrationRunner> runnerAction) {
             var options = new MigrationOptions {PreviewOnly = false, Timeout = 0};
             var factory = new FluentMigrator.Runner.Processors.SqlServer.SqlServer2012ProcessorFactory();
 
-            var announcer = new TextWriterAnnouncer(s => System.Diagnostics.Debug.WriteLine(s));
+            var announcer = GetAnnouncer();
 
             var migrationContext = new RunnerContext(announcer) {
                 Profile = "IntegrationTests",
