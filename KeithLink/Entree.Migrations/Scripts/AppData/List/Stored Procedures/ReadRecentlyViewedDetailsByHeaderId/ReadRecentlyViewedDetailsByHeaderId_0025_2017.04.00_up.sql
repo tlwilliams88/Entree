@@ -1,4 +1,4 @@
-CREATE PROCEDURE [List].[ReadRecentlyViewedDetailsByParentId] 
+CREATE PROCEDURE [List].[ReadRecentlyViewedDetailsByHeaderId] 
     @HeaderId BIGINT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from

@@ -1,2 +1,2 @@
-DROP PROCEDURE [List].[ReadRecentlyViewedDetailsByParentId]
+DROP PROCEDURE [List].[ReadRecentlyViewedDetailsByHeaderId]
 GO

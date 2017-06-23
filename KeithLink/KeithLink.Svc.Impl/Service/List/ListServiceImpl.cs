@@ -162,8 +162,8 @@ namespace KeithLink.Svc.Impl.Service.List
                     tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
                     break;
 
-                case ListType.Recent:
-                //    returnList.AddRange(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                case ListType.RecentlyViewed:
+                    tempList = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
                     break;
 
                 case ListType.Notes:
