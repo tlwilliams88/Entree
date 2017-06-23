@@ -45,5 +45,5 @@ AS
 			GETUTCDATE()
 		)
 
-        SET @ReturnValue = SCOPE_IDENTITY()
+        SET @ReturnValue = CAST(scope_identity() AS bigint)
 	  END		

@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if(!headerOnly) {
                 items = _detailsRepo.GetCustomListDetails(header.Id);
-                shares = _sharesRepo.GetCustomListShares(header.Id);
+                //shares = _sharesRepo.GetCustomListShares(header.Id);
             }
 
             return header.ToListModel(catalogInfo, shares, items);
@@ -80,6 +80,21 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
 
             _detailsRepo.SaveCustomListDetail(item);
+        }
+
+        public long CreateOrUpdateList(UserProfile user, 
+                                       UserSelectedContext catalogInfo, 
+                                       long id,
+                                       string name,
+                                       bool active) {
+            return _headersRepo.SaveCustomListHeader(new CustomListHeader() {
+                                                                         Id = id,
+                                                                         UserId = user.UserId,
+                                                                         CustomerNumber = catalogInfo.CustomerId,
+                                                                         BranchId = catalogInfo.BranchId,
+                                                                         Name = name,
+                                                                         Active = active
+                                                                     });
         }
         #endregion
     }

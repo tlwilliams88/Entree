@@ -271,11 +271,11 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/")]
-        public OperationReturnModel<NewListItem> List(ListModel list, [FromUri] ListType type = ListType.Custom) {
-            OperationReturnModel<NewListItem> ret = new OperationReturnModel<NewListItem>();
+        public OperationReturnModel<NewList> List(ListModel list, [FromUri] ListType type = ListType.Custom) {
+            OperationReturnModel<NewList> ret = new OperationReturnModel<NewList>();
             try
             {
-                var nlist = new NewListItem() { Id = _listLogic.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, type) };
+                var nlist = new NewList() { Id = _listService.CreateList(this.AuthenticatedUser, this.SelectedUserContext, type, list) };
                 ret.SuccessResponse = nlist;
                 ret.IsSuccess = true;
             }

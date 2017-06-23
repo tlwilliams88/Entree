@@ -228,7 +228,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly) {
             List<ListModel> tmpList = ReadListByType(user, catalogInfo, type, headerOnly);
-            if (tmpList != null && tmpList[0] != null) {
+            if (tmpList != null && tmpList.Count > 0 && tmpList[0] != null) {
                 list.AddRange(tmpList);
             }
         }
@@ -373,6 +373,22 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.RecentlyOrdered:
                     break;
             }
+        }
+
+        public long CreateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list) {
+            long id = 0;
+            switch (type)
+            {
+                case ListType.Custom:
+                    id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    break;
+                case ListType.InventoryValuation:
+                    id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    break;
+            }
+
+            return id;
         }
 
         private void PopulateProductDetails(List<RecentNonBEKItem> returnList)

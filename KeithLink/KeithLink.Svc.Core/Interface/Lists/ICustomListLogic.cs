@@ -6,6 +6,12 @@ using KeithLink.Svc.Core.Models.Lists.CustomList;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface ICustomListLogic : IBaseMultiListLogic {
+        long CreateOrUpdateList(UserProfile user,
+                                UserSelectedContext catalogInfo,
+                                long id,
+                                string name,
+                                bool active);
+
         List<ListModel> ReadLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
 
         ListModel ReadList(long reportId, UserSelectedContext catalogInfo, bool headerOnly);

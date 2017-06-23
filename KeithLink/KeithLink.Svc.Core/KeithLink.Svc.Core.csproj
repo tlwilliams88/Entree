@@ -417,6 +417,7 @@
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListDetail.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListHeader.cs" />
+    <Compile Include="Models\Lists\NewListItem.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetail.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListHeader.cs" />
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetail.cs" />
@@ -661,7 +662,7 @@
     <Compile Include="Models\SiteCatalog\BranchSupportModel.cs" />
     <Compile Include="Models\SiteCatalog\Division.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
-    <Compile Include="Models\Lists\NewItem.cs" />
+    <Compile Include="Models\Lists\NewList.cs" />
     <Compile Include="Models\SiteCatalog\Gs1.cs" />
     <Compile Include="Models\Lists\ListItemModel.cs" />
     <Compile Include="Models\SiteCatalog\ItemNote.cs" />

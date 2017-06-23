@@ -58,6 +58,21 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
             return ReadLists(user, catalogInfo, headerOnly);
         }
+        public long CreateOrUpdateList(UserProfile user,
+                                       UserSelectedContext catalogInfo,
+                                       long id,
+                                       string name,
+                                       bool active)
+        {
+            return _headersRepo.SaveInventoryValudationListHeader(new InventoryValuationListHeader()
+            {
+                Id = id,
+                CustomerNumber = catalogInfo.CustomerId,
+                BranchId = catalogInfo.BranchId,
+                Name = name
+            });
+        }
+
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
                              InventoryValuationListDetail item) {
