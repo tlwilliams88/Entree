@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
 using FluentAssertions;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 using Xunit;
 
-using KeithLink.Svc.Impl.Repository.Lists;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
     public class ContractListHeaderRepositoryTests {
         private static IContractListHeadersRepository MakeRepo() {
-            IContainer diMap = DependencyMapFactory.GetWebApiContainer()
+            IContainer diMap = DependencyMapFactory.GetTestsContainer()
                                                    .Build();
             return diMap.Resolve<IContractListHeadersRepository>();
         }
@@ -156,6 +150,40 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                       .Kind
                       .Should()
                       .Be(expected);
+            }
+
+            [Fact]
+            public void BadCustomer_ReturnsNull() {
+                // arrange
+                var repo = MakeRepo();
+                var customerInfo = new UserSelectedContext() {
+                    BranchId = "FDF",
+                    CustomerId = "999999"
+                };
+
+                // act
+                var result = repo.GetListHeaderForCustomer(customerInfo);
+
+                // assert
+                result.Should()
+                      .BeNull();
+            }
+
+            [Fact]
+            public void BadBranch_ReturnsNull() {
+                // arrange
+                var repo = MakeRepo();
+                var customerInfo = new UserSelectedContext() {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+
+                // act
+                var result = repo.GetListHeaderForCustomer(customerInfo);
+
+                // assert
+                result.Should()
+                      .BeNull();
             }
         }
     }
