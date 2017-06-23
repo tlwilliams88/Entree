@@ -81,7 +81,7 @@ angular.module('bekApp')
           desktop: 'images/Oreo-July-2017-Banner.jpg',
           mobile: 'images/Oreo-July-2017-Banner_2.jpg',
         },
-        targeturl: ''
+        targeturl: "menu.catalog.products.list({ type: 'search', id: 'Oreo', dept: '4', deptName: 'Grocery', category: null, brand: null })"
       },
       {
         imageurl: {
