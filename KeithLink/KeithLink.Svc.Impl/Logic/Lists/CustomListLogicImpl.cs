@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if(!headerOnly) {
                 items = _detailsRepo.GetCustomListDetails(header.Id);
-                //shares = _sharesRepo.GetCustomListShares(header.Id);
+                shares = _sharesRepo.GetCustomListShares(header.Id);
             }
 
             return header.ToListModel(catalogInfo, shares, items);
@@ -61,6 +61,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             CustomListHeader header = _headersRepo.GetCustomListHeader(listId);
 
             return header == null ? null : GetCompletedModel(header, catalogInfo, headerOnly);
+        }
+
+        public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, true);
+            foreach (var item in list.Items)
+            {
+                CustomListDetail detail = item.ToCustomListDetail(list.ListId);
+                detail.Active = !item.IsDelete;
+                SaveItem(user, catalogInfo, list.ListId, detail);
+            }
+
+            return ReadList(list.ListId, catalogInfo, false);
         }
 
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {

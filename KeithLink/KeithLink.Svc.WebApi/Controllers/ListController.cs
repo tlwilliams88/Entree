@@ -543,7 +543,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
-                _listLogic.UpdateList(this.AuthenticatedUser, this.SelectedUserContext, updatedList);
+                _listService.UpdateList(this.AuthenticatedUser, this.SelectedUserContext, updatedList.Type, updatedList);
                 ret.SuccessResponse = updatedList;
                 ret.IsSuccess = true;
             }

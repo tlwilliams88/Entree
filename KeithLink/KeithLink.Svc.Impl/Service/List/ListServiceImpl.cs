@@ -76,10 +76,6 @@ namespace KeithLink.Svc.Impl.Service.List
         }
         #endregion
 
-        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
-
-        }
-
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
             List<ListModel> returnList = new List<ListModel>();
@@ -339,6 +335,44 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             return new RecentNonBEKList() { Catalog = catalog, Items = returnItems };
+        }
+
+        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                             ListModel list)
+        {
+            switch (type)
+            {
+                case ListType.Worksheet:
+                case ListType.Contract:
+                    // cannot add items to contracts or worksheets
+                    break;
+                //case ListType.Favorite:
+                //    foreach (var item in list.Items) {
+                //        _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail(headerId));
+                //    }
+                //    break;
+                //case ListType.Reminder:
+                //    _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
+                //    break;
+                //case ListType.RecommendedItems:
+                //    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
+                //    break;
+                //case ListType.Mandatory:
+                //    _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
+                //    break;
+                case ListType.Custom:
+                    _customListLogic.SaveList(user, catalogInfo, list);
+                    break;
+                //case ListType.Recent:
+                //    break;
+                //case ListType.Notes:
+                //    break;
+                //case ListType.InventoryValuation:
+                //    _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
+                //    break;
+                //case ListType.RecentlyOrdered:
+                //    break;
+            }
         }
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
