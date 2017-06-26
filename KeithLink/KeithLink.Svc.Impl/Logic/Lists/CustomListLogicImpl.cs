@@ -63,6 +63,24 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             return header == null ? null : GetCompletedModel(header, catalogInfo, headerOnly);
         }
 
+        public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, true);
+            foreach (var item in list.Items)
+            {
+                CustomListDetail detail = item.ToCustomListDetail(list.ListId);
+                detail.Active = !item.IsDelete;
+                SaveItem(user, catalogInfo, list.ListId, detail);
+            }
+
+            return ReadList(list.ListId, catalogInfo, false);
+        }
+
+        public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, false);
+        }
+
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
             return ReadList(Id, catalogInfo, false);
         }
@@ -80,6 +98,21 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
 
             _detailsRepo.SaveCustomListDetail(item);
+        }
+
+        public long CreateOrUpdateList(UserProfile user, 
+                                       UserSelectedContext catalogInfo, 
+                                       long id,
+                                       string name,
+                                       bool active) {
+            return _headersRepo.SaveCustomListHeader(new CustomListHeader() {
+                                                                         Id = id,
+                                                                         UserId = user.UserId,
+                                                                         CustomerNumber = catalogInfo.CustomerId,
+                                                                         BranchId = catalogInfo.BranchId,
+                                                                         Name = name,
+                                                                         Active = active
+                                                                     });
         }
         #endregion
     }

@@ -66,8 +66,18 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             _detailsRepo.Save(detail);
         }
 
-        public void DeleteReminderItems(MandatoryItemsListDetail detail) {
+        public void DeleteMandatoryItems(MandatoryItemsListDetail detail) {
             _detailsRepo.Delete(detail.Id);
+        }
+
+        public long CreateList(UserProfile user,
+                               UserSelectedContext catalogInfo)
+        {
+            return _headersRepo.SaveMandatoryItemsHeader(new MandatoryItemsListHeader()
+            {
+                CustomerNumber = catalogInfo.CustomerId,
+                BranchId = catalogInfo.BranchId
+            });
         }
         #endregion
     }

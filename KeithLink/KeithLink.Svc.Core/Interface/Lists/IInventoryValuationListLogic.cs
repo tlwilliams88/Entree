@@ -11,6 +11,12 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         ListModel ReadList(long reportId, UserSelectedContext catalogInfo, bool headerOnly);
 
+        long CreateOrUpdateList(UserProfile user,
+                                UserSelectedContext catalogInfo,
+                                long id,
+                                string name,
+                                bool active);
+
         void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
                       InventoryValuationListDetail item);
     }

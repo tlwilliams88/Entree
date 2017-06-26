@@ -56,6 +56,32 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return GetFavoritesList(user.UserId, catalogInfo, false);
         }
 
+        public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            FavoritesListHeader header = _headerRepo.GetFavoritesList(user.UserId, catalogInfo);
+
+            if (header == null)
+            {
+                foreach (var item in list.Items)
+                {
+                    FavoritesListDetail detail = item.ToFavoritesListDetail(0);
+                    detail.Active = !item.IsDelete;
+                    Save(user, catalogInfo, detail);
+                }
+            }
+            else
+            {
+                foreach (var item in list.Items)
+                {
+                    FavoritesListDetail detail = item.ToFavoritesListDetail(header.Id);
+                    detail.Active = !item.IsDelete;
+                    Save(user, catalogInfo, detail);
+                }
+            }
+
+            return GetFavoritesList(user.UserId, catalogInfo, false);
+        }
+
         public void Save(UserProfile user, UserSelectedContext catalogInfo, FavoritesListDetail model) {
             // try to find the parent header id if it is not in the model
             if (model.HeaderId == 0) {

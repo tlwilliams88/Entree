@@ -76,10 +76,6 @@ namespace KeithLink.Svc.Impl.Service.List
         }
         #endregion
 
-        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
-
-        }
-
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
             List<ListModel> returnList = new List<ListModel>();
@@ -162,8 +158,8 @@ namespace KeithLink.Svc.Impl.Service.List
                     tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
                     break;
 
-                case ListType.Recent:
-                //    returnList.AddRange(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                case ListType.RecentlyViewed:
+                    tempList = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
                     break;
 
                 case ListType.Notes:
@@ -228,7 +224,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly) {
             List<ListModel> tmpList = ReadListByType(user, catalogInfo, type, headerOnly);
-            if (tmpList != null && tmpList[0] != null) {
+            if (tmpList != null && tmpList.Count > 0 && tmpList[0] != null) {
                 list.AddRange(tmpList);
             }
         }
@@ -341,6 +337,42 @@ namespace KeithLink.Svc.Impl.Service.List
             return new RecentNonBEKList() { Catalog = catalog, Items = returnItems };
         }
 
+        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                             ListModel list)
+        {
+            switch (type)
+            {
+                case ListType.Worksheet:
+                case ListType.Contract:
+                    // cannot add items to contracts or worksheets
+                    break;
+                case ListType.Favorite:
+                    _favoritesLogic.SaveList(user, catalogInfo, list);
+                    break;
+                //case ListType.Reminder:
+                //    _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
+                //    break;
+                //case ListType.RecommendedItems:
+                //    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
+                //    break;
+                //case ListType.Mandatory:
+                //    _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
+                //    break;
+                case ListType.Custom:
+                    _customListLogic.SaveList(user, catalogInfo, list);
+                    break;
+                //case ListType.Recent:
+                //    break;
+                //case ListType.Notes:
+                //    break;
+                //case ListType.InventoryValuation:
+                //    _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
+                //    break;
+                //case ListType.RecentlyOrdered:
+                //    break;
+            }
+        }
+
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                              long headerId, ListItemModel item) {
             switch (type) {
@@ -371,6 +403,52 @@ namespace KeithLink.Svc.Impl.Service.List
                     _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
                     break;
                 case ListType.RecentlyOrdered:
+                    break;
+            }
+        }
+
+        public long CreateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list) {
+            long id = 0;
+            switch (type)
+            {
+                case ListType.Mandatory:
+                    _mandatoryItemsLogic.CreateList(user, catalogInfo);
+                    break;
+                case ListType.Custom:
+                    id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    break;
+                case ListType.InventoryValuation:
+                    id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    break;
+            }
+
+            return id;
+        }
+
+        public void CopyList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list)
+        {
+            //switch (type)
+            //{
+            //    case ListType.Custom:
+            //        id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+            //        break;
+            //}
+
+            //return id;
+        }
+
+        public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list)
+        {
+            switch (type)
+            {
+                case ListType.Custom:
+                    _customListLogic.DeleteList(user, catalogInfo, list);
+                    break;
+                case ListType.InventoryValuation:
+                    //id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
                     break;
             }
         }

@@ -30,9 +30,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         #region methods
         public RecentlyViewedListHeader GetRecentlyViewedHeader(Guid userId, UserSelectedContext catalogInfo) {
             DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_USERID, userId);
-            parms.Add(PARMNAME_BRANCHID, (catalogInfo.BranchId));
+            parms.Add(PARMNAME_BRANCHID, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTOMERNUMBER, catalogInfo.CustomerId);
+            parms.Add(PARMNAME_USERID, userId);
 
             return ReadOne<RecentlyViewedListHeader>(SPNAME_GET, parms);
         }
@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_USERID, userId);
             parms.Add(PARMNAME_BRANCHID, header.BranchId);
             parms.Add(PARMNAME_CUSTOMERNUMBER, header.CustomerNumber);
-            parms.Add(PARMNAME_RETURNVALUE, 0, direction: ParameterDirection.Output);
+            parms.Add(PARMNAME_RETURNVALUE, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
 

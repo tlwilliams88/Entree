@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_BRANCHID, model.BranchId);
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
             parms.Add(PARMNAME_ID, model.Id);
-            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output);
+            parms.Add(PARMNAME_RETURNVALUE, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
 

@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.Custom,
                 ItemNumber = value.ItemNumber,
                 Label = value.Label,
+                ParLevel = value.Par,
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,
                 Each = value.Each ?? false,

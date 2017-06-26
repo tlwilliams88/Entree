@@ -22,9 +22,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_NAME = "Name";
 
+        private const string PARMNAME_RETVAL = "ReturnValue";
+
         private const string SPNAME_GETONE = "[List].[GetInventoryValuationListHeaderById]";
         private const string SPNAME_GETALL = "[List].[GetInventoryValuationListHeadersByCustomerNumberBranch]";
-        private const string SPNAME_SAVE = "[List].[AddOrUpdateInventoryValuationHeader]";
+        private const string SPNAME_SAVE = "[List].[SaveInventoryValuationHeader]";
         #endregion
 
         #region constructor
@@ -44,14 +46,17 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<InventoryValuationListHeader>(SPNAME_GETALL, parms);
         }
 
-        public void SaveInventoryValudationListHeader(InventoryValuationListHeader model) {
+        public long SaveInventoryValudationListHeader(InventoryValuationListHeader model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, model.BranchId);
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_NAME, model.Name);
+            parms.Add(PARMNAME_RETVAL, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETVAL);
         }
         #endregion
     }

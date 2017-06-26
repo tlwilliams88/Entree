@@ -32,7 +32,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_PAR = "Par";
 
         private const string SPNAME_GETBYHEADER = "[List].[ReadCustomListDetailsByParentId]";
-        private const string SPNAME_SAVE= "[List].[AddOrUpdateCustomListItemById]";
+        private const string SPNAME_SAVE= "[List].[SaveCustomListDetails]";
         #endregion
 
         #region constructor
@@ -46,6 +46,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         public void SaveCustomListDetail(CustomListDetail model) {
             DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOG, model.CatalogId);
             parms.Add(PARMNAME_EACH, model.Each);
