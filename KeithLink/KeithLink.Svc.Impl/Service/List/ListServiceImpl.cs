@@ -83,50 +83,50 @@ namespace KeithLink.Svc.Impl.Service.List
             switch (type)
             {
                 case ListType.Custom:
-                    returnList.AddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
+                    returnList.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.Favorite:
-                    returnList.Add(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
+                    returnList.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
                     break;
 
                 case ListType.Contract:
-                    returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
                 case ListType.Notes: 
-                    returnList.Add(_notesLogic.GetList(catalogInfo));
+                    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
                     break;
 
                 case ListType.Worksheet:
-                    returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_historyListLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
                 // no contract items added lists
                 // no contract items deleted lists
 
                 case ListType.Reminder:
-                    returnList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
                 case ListType.Mandatory:
-                    returnList.Add(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
+                    returnList.TryAdd(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
                     break;
 
                 case ListType.RecommendedItems:
-                    returnList.Add(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                    returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.InventoryValuation:
-                    returnList.AddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+                    returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.RecentlyOrdered:
-                    returnList.Add(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
+                    returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.RecentlyViewed:
-                    returnList.Add(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                    returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                     //case ListType.CustomInventory: //uses its own controller and works a little differently
@@ -134,14 +134,14 @@ namespace KeithLink.Svc.Impl.Service.List
                     //    break;
             }
 
-            if (returnList != null) {
+            if (returnList.Count > 0) {
                 FillOutProducts(user, catalogInfo, returnList, true);
             }
 
             return returnList;
         }
 
-        private ListModel ReadListByType(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
+        private ListModel ReadListById(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
         {
             ListModel tempList = null;
             switch (type)
@@ -224,7 +224,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly) {
             List<ListModel> tmpList = ReadListByType(user, catalogInfo, type, headerOnly);
-            if (tmpList != null && tmpList.Count > 0 && tmpList[0] != null) {
+            if (tmpList != null && tmpList.Count > 0) {
                 list.AddRange(tmpList);
             }
         }
@@ -252,7 +252,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id, bool includePrice = true)
         {
-            return ReadListByType(user, catalogInfo, Id, type);
+            return ReadListById(user, catalogInfo, Id, type);
         }
 
         public PagedListModel ReadPagedList(UserProfile user,
@@ -264,7 +264,7 @@ namespace KeithLink.Svc.Impl.Service.List
             System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             ListModel returnList = null;
 
-            returnList = ReadListByType(user, catalogInfo, Id, type);
+            returnList = ReadListById(user, catalogInfo, Id, type);
             stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
             PagedListModel pagedList = null;
