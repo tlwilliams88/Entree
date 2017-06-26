@@ -13,5 +13,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         ListModel GetFavoritesList(Guid userId, UserSelectedContext catalogInfo, bool headerOnly);
 
         void Save(UserProfile user, UserSelectedContext catalogInfo, FavoritesListDetail model);
+
+        ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list);
     }
 }

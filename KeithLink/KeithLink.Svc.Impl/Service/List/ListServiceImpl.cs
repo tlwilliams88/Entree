@@ -346,11 +346,9 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Contract:
                     // cannot add items to contracts or worksheets
                     break;
-                //case ListType.Favorite:
-                //    foreach (var item in list.Items) {
-                //        _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail(headerId));
-                //    }
-                //    break;
+                case ListType.Favorite:
+                    _favoritesLogic.SaveList(user, catalogInfo, list);
+                    break;
                 //case ListType.Reminder:
                 //    _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
                 //    break;
