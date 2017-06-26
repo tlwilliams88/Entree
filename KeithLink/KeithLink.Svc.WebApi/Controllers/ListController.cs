@@ -83,7 +83,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             HttpResponseMessage ret;
             try
             {
-                var list = _listLogic.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+                var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
 
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,
@@ -252,7 +252,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
             try
             {
-                var list = _listLogic.ReadReminders(this.AuthenticatedUser, this.SelectedUserContext);
+                var list = _listService.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, ListType.Reminder, false);
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
             }
@@ -315,32 +315,6 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _elRepo.WriteErrorLog("AddItem", ex);
             }
 
-            return ret;
-        }
-
-        /// <summary>
-        /// Add multiple items to a specific list
-        /// </summary>
-        /// <param name="listId">List Id</param>
-        /// <param name="newItems">Array of new items</param>
-        /// <param name="allowDuplicates">Allow duplicate item numbers?</param>
-        /// <returns></returns>
-        [HttpPost]
-        [ApiKeyedRoute("list/{type}/{listId}/items")]
-        public OperationReturnModel<ListModel> AddItems(ListType type, long listId, List<ListItemModel> newItems, bool allowDuplicates = false) {
-            OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
-            try
-            {
-                var list = _listLogic.AddItems(this.AuthenticatedUser, this.SelectedUserContext, listId, newItems);
-                ret.SuccessResponse = list;
-                ret.IsSuccess = true;
-            }
-            catch (Exception ex)
-            {
-                ret.IsSuccess = false;
-                ret.ErrorMessage = ex.Message;
-                _elRepo.WriteErrorLog("AddItems", ex);
-            }
             return ret;
         }
 
