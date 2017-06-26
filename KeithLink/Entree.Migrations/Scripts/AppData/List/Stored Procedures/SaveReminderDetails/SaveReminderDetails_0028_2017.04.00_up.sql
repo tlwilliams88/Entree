@@ -12,7 +12,7 @@ AS
 
 IF @Id > 0
     UPDATE
-        [List].[RemindersDetails]
+        [List].[ReminderDetails]
     SET
         HeaderId = @HeaderId,
         ItemNumber = @ItemNumber,
@@ -26,7 +26,7 @@ IF @Id > 0
 ELSE
       BEGIN
         INSERT INTO
-            [List].[RemindersDetails] (
+            [List].[ReminderDetails] (
                 HeaderId,
                 ItemNumber,
                 Each,

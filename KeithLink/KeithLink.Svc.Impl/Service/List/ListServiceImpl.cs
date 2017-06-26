@@ -349,9 +349,9 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Favorite:
                     _favoritesLogic.SaveList(user, catalogInfo, list);
                     break;
-                //case ListType.Reminder:
-                //    _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
-                //    break;
+                case ListType.Reminder:
+                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
+                    break;
                 //case ListType.RecommendedItems:
                 //    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                 //    break;
