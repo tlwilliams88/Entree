@@ -3,8 +3,8 @@ CREATE PROCEDURE [List].[SaveCustomListHeader]
 	@UserId			UNIQUEIDENTIFIER,
 	@BranchId		CHAR(3),
 	@CustomerNumber CHAR(6),
-	@Name			NVARCHAR(100),
-	@Active         BIT,
+	@Name			NVARCHAR(100)       = 'Custom',
+	@Active         BIT, 
     @ReturnValue    BIGINT              OUTPUT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from

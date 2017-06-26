@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         private const string SPNAME_GETBYCUST = "[List].[GetCustomListHeadersByCustomerNumberBranch]";
         private const string SPNAME_GETONE = "[List].[GetCustomListHeaderById]";
-        private const string SPNAME_SAVE = "[List].[AddOrUpdateCustomListHeader]";
+        private const string SPNAME_SAVE = "[List].[SaveCustomListHeader]";
         #endregion
 
         #region constructor
@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_NAME, model.Name);
             parms.Add(PARMNAME_USERID, model.UserId);
-            parms.Add(PARMNAME_RETVAL, direction: ParameterDirection.Output);
+            parms.Add(PARMNAME_RETVAL, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
             ExecuteCommand(SPNAME_SAVE, parms);
 

@@ -49,6 +49,7 @@
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractDetails.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListHeaders.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
     <Compile Include="Migrations\v0001.12.00\Migration0003.cs" />
