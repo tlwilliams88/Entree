@@ -3,11 +3,12 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using System.Collections.Generic;
 
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
+using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
-    public interface IRecommendedItemsListLogic : IBaseListLogic
-    {
+    public interface IRecommendedItemsListLogic : IBaseListLogic {
+        long CreateList(UserSelectedContext catalogInfo);
+
         List<string> GetRecommendedItemNumbers(UserProfile user, UserSelectedContext catalogInfo);
 
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);

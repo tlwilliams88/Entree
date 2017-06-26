@@ -3,7 +3,6 @@ using System.Linq;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
@@ -66,6 +65,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
 
             _detailsRepo.Save(detail);
+        }
+
+        public long CreateList(UserSelectedContext catalogInfo)
+        {
+            return _headersRepo.SaveRecommendedItemsHeader(new RecommendedItemsListHeader() {
+                                                                                                BranchId = catalogInfo.BranchId,
+                                                                                                CustomerNumber = catalogInfo.CustomerId
+                                                                                            });
         }
 
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {

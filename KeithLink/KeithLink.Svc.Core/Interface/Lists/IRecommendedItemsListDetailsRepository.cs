@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
+using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {

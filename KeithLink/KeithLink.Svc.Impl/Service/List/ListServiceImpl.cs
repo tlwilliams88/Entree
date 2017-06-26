@@ -412,6 +412,9 @@ namespace KeithLink.Svc.Impl.Service.List
             long id = 0;
             switch (type)
             {
+                case ListType.RecommendedItems:
+                    _recommendedItemsLogic.CreateList(catalogInfo);
+                    break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
                     break;
