@@ -12,6 +12,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
                                 string name,
                                 bool active);
 
+        void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListModel list);
+
         List<ListModel> ReadLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
 
         ListModel ReadList(long reportId, UserSelectedContext catalogInfo, bool headerOnly);

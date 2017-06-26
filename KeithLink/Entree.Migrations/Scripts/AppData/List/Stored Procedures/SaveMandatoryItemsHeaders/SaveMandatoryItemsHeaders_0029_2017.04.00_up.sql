@@ -17,7 +17,7 @@ IF @Id > 0
     END
 ELSE
     BEGIN
-        INSERT INTO [List].[MandatoryItemsHead]
+        INSERT INTO [List].[MandatoryItemsHeaders]
         (
             [CustomerNumber],
             [BranchId],

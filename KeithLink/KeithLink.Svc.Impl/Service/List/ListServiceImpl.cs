@@ -412,6 +412,9 @@ namespace KeithLink.Svc.Impl.Service.List
             long id = 0;
             switch (type)
             {
+                case ListType.Mandatory:
+                    _mandatoryItemsLogic.CreateList(user, catalogInfo);
+                    break;
                 case ListType.Custom:
                     id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
                     break;
@@ -421,6 +424,33 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             return id;
+        }
+
+        public void CopyList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list)
+        {
+            //switch (type)
+            //{
+            //    case ListType.Custom:
+            //        id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+            //        break;
+            //}
+
+            //return id;
+        }
+
+        public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list)
+        {
+            switch (type)
+            {
+                case ListType.Custom:
+                    _customListLogic.DeleteList(user, catalogInfo, list);
+                    break;
+                case ListType.InventoryValuation:
+                    //id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    break;
+            }
         }
 
         private void PopulateProductDetails(List<RecentNonBEKItem> returnList)
