@@ -650,6 +650,10 @@ namespace KeithLink.Svc.Impl.Service.List
                 {
                     listItem.PackagePrice = price.PackagePrice.ToString();
                     listItem.CasePrice = price.CasePrice.ToString();
+                    if (listItem.CasePrice.Equals("0") & listItem.PackagePrice.Equals("0"))
+                    {
+                        listItem.IsValid = false;
+                    }
                     listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
                 }
             });
