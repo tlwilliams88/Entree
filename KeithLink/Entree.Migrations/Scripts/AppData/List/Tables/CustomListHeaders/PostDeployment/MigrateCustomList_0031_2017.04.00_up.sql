@@ -15,7 +15,7 @@
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
-            ,case when l.[DisplayName] is null then 'Custom' else l.[DisplayName] end
+            ,case when l.[DisplayName] is null then 'Custom' else left(l.[DisplayName],100) end
 			,1
 			,GetUtcDate()
 			,GetUtcDate()
