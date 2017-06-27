@@ -74,7 +74,7 @@ angular.module('bekApp')
       basketId = 'New';
     }
     if ($stateParams.cartId !== basketId.toString() || ($stateParams.cartId !== 'New' && $stateParams.listId !== selectedList.listid.toString())) {
-      $state.go('menu.addtoorder.items', {cartId: basketId, listType: selectedList.type, listId: selectedList.listid, pageLoaded: true}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid, pageLoaded: true}, {location:'replace', inherit:false, notify: false});
     }
 
     $scope.basketId = basketId;
@@ -457,7 +457,6 @@ angular.module('bekApp')
 
     var listPagingModel = new ListPagingModel(
       selectedList.listid,
-      selectedList.type,
       setSelectedList,
       appendListItems,
       startLoading,
@@ -593,14 +592,14 @@ angular.module('bekApp')
       }
     };
 
-    $scope.saveBeforeListChange = function(list, cart){
+    $scope.saveBeforeListChange = function(listId, cart){
 
       if(($scope.addToOrderForm.$dirty || $scope.tempCartName) && $scope.addToOrderForm.$valid){
         $scope.saveAndRetainQuantity().then(function(){
-          redirect(list, cart);
+          redirect(listId, cart);
         });
       } else if($scope.addToOrderForm.$valid) {
-        redirect(list, cart);
+        redirect(listId, cart);
       } else {
         return;
       }
@@ -608,7 +607,7 @@ angular.module('bekApp')
       calculatePieces(selectedCart.items);
     };
 
-    function redirect(list, cart) {
+    function redirect(listId, cart) {
       $scope.addToOrderForm.$setPristine();
       var cartId;
       if ($scope.isChangeOrder) {
@@ -616,14 +615,14 @@ angular.module('bekApp')
       } else {
         cartId = cart.id;
       }
-      ListService.setLastOrderList(list.listid, list.type, cartId);
+      ListService.setLastOrderList(listId, cartId);
        var searchTerm = '';
         if($scope.orderSearchTerm && $scope.creatingCart){
          searchTerm = $scope.orderSearchTerm;
         }
 
       var sameListItems= [];
-      if($scope.selectedList && list.listid === $scope.selectedList.listid){
+      if($scope.selectedList && listId === $scope.selectedList.listid){
         sameListItems = $scope.selectedList.items;
       }
       else{
@@ -633,8 +632,7 @@ angular.module('bekApp')
 
       blockUI.start('Loading List...').then(function(){
         $state.go('menu.addtoorder.items', {
-          listId: list.listid,
-          listType: list.type,
+          listId: listId,
           cartId: cartId,
           useParlevel: $scope.useParlevel,
           continueToCart: continueToCart,

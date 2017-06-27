@@ -30,7 +30,7 @@
       </button>
       <ul class="dropdown-menu context-menu-dropdown reposition-dropdown" role="menu">
         <div class="btn-group-vertical context-menu-margin-top" style="margin-top: 150px;">
-          <button ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list, item, selectedList)">{{list.name}}</button>
+          <button ng-repeat="list in lists | sortLists" ng-if="::list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.name, list.listid, item, selectedList)">{{list.name}}</button>
           <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>
