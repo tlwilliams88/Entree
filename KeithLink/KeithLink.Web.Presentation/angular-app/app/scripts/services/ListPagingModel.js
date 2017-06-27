@@ -10,10 +10,9 @@
 angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorage', function (ListService, LocalStorage) {
 
   // Define the constructor function.
-  function ListPagingModel( listId, listType, setListItems, appendListItems, startLoading, stopLoading, sort ) {
+  function ListPagingModel( listId, setListItems, appendListItems, startLoading, stopLoading, sort, pageSize ) {
 
     this.listId = listId;
-    this.listType = listType;
 
     this.pageSize = pageSize ? pageSize : LocalStorage.getPageSize();
     this.pageIndex = 0;
@@ -49,7 +48,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
 
       this.startLoading();
       return ListService.getList(
-        this,
+        this.listId,
         params
       ).then(setData).finally(this.stopLoading);
     },
