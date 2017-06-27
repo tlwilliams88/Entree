@@ -188,7 +188,7 @@ angular
       }
     }
 
-    $rootScope.$$listeners.$stateChangeStart = [];
+    // $rootScope.$$listeners.$stateChangeStart = [];
   });
 
   /**********

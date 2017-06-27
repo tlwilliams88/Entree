@@ -44,28 +44,28 @@ angular.module('bekApp')
       LISTS
       *************/
 
-      $scope.addItemToList = function(listName, listId, item, selectedList) {
+      $scope.addItemToList = function(list, item, selectedList) {
       var newItem = angular.copy(item);
         if(selectedList && selectedList.iscustominventory){
           var newItem = [
             item
           ];
           $q.all([
-            ListService.addNewItemsFromCustomInventoryList(listId, newItem),
+            ListService.addNewItemsFromCustomInventoryList(list, newItem),
           ]).then(function(data) {
             item.favorite = true;
             closeModal();
           });
         } else {
           $q.all([
-            ListService.addItem(listId, newItem),
+            ListService.addItem(list, newItem),
             ListService.addItemToFavorites(newItem)
           ]).then(function(data) {
             item.favorite = true;
             closeModal();
-            $scope.displayMessage('success', 'Successfully added item to list ' + listName + '.');
+            $scope.displayMessage('success', 'Successfully added item to list ' + list.name + '.');
           }, function() {
-            $scope.displayMessage('error', 'Error adding item to list ' + listName + '.');
+            $scope.displayMessage('error', 'Error adding item to list ' + list.name + '.');
           });
         }
       };

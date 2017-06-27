@@ -13,10 +13,10 @@ angular.module('bekApp')
   $scope.cartHeaders = CartHeaders;
   $scope.customListHeaders = CustomListHeaders;
   $scope.listIsOpen = true;
-  $scope.quickAddIsOpen = false; 
+  $scope.quickAddIsOpen = false;
   $scope.importIsOpen = false;
   $scope.isOffline = IsOffline;
-  
+
   $scope.selectedCart = {
     name: UtilityService.generateName(SessionService.userProfile.firstname, $scope.cartHeaders),
     ponumber: '',
@@ -48,16 +48,16 @@ angular.module('bekApp')
 
   $scope.toggleOpenTab = function(tab) {
     if(tab == 'List'){
-      $scope.listIsOpen = true; 
-      $scope.quickAddIsOpen = false; 
+      $scope.listIsOpen = true;
+      $scope.quickAddIsOpen = false;
       $scope.importIsOpen = false;
     } else if(tab == 'Quick Add'){
-      $scope.quickAddIsOpen = true; 
-      $scope.listIsOpen = false; 
+      $scope.quickAddIsOpen = true;
+      $scope.listIsOpen = false;
       $scope.importIsOpen = false;
     } else {
-      $scope.importIsOpen = true; 
-      $scope.listIsOpen = false; 
+      $scope.importIsOpen = true;
+      $scope.listIsOpen = false;
       $scope.quickAddIsOpen = false;
     }
   };
@@ -68,15 +68,20 @@ angular.module('bekApp')
 
   $scope.createCart = function(cart, fromFunction) {
     if($scope.defaultList && $('.defaultCheckbox')[0] && $('.defaultCheckbox')[0].checked && $scope.listIsOpen){
-      ApplicationSettingsService.setDefaultOrderList($scope.selectedList.listid);
+      var selectedList = {
+        listId: $scope.selectedList.listid,
+        listType: $scope.selectedList.type
+      }
+      ApplicationSettingsService.setDefaultOrderList(selectedList);
     }
 
     CartService.createCart(cart.items, cart.requestedshipdate, cart.name, cart.ponumber).then(function(cart) {
       if(fromFunction == 'QuickAdd'){
         cart.type = 'QuickAdd';
       }
-      cart.listid = $scope.selectedList.listid;
-      ListService.setLastOrderList(cart.listid, cart.id);
+      cart.listId = $scope.selectedList.listid;
+      cart.listType = $scope.selectedList.type;
+      ListService.setLastOrderList(cart.listId, cart.listType, cart.id);
       $modalInstance.close(cart);
       $scope.displayMessage('success', 'Successfully created new cart.');
     }, function(error) {
@@ -117,7 +122,7 @@ angular.module('bekApp')
 
   function getRowsWithQuantity(items) {
     return $filter('filter')( items, function(item) {
-      return item.quantity > 0 && item.itemnumber && item.itemnumber.length > 0; 
+      return item.quantity > 0 && item.itemnumber && item.itemnumber.length > 0;
     });
   }
 
@@ -161,7 +166,7 @@ angular.module('bekApp')
 
             if (validatedItem.valid === false) {
               invalidItemsExist = true;
-            } 
+            }
 
             if (validatedItem.reason === 0) {
               item.reason = 'Invalid item number';
@@ -179,7 +184,7 @@ angular.module('bekApp')
           return [];
         }
       });
-    } else {    
+    } else {
       $scope.enableSubmit = false;
       deferred.resolve([]);
       $scope.isValidating = false;
@@ -212,7 +217,7 @@ angular.module('bekApp')
 
   /*********************
     CREATE FROM IMPORT
-  *********************/  
+  *********************/
 
   $scope.onFileSelect = function($files) {
      if(!$files.length){
@@ -221,10 +226,10 @@ angular.module('bekApp')
     $scope.files = [];
     var filetype = $files[0].name.slice($files[0].name.length -5,$files[0].name.length);
     filetype = filetype.slice(filetype.indexOf('.'), filetype.length);
-   $scope.invalidType = (filetype !== '.xlsx' && filetype !== '.xls' && filetype !== '.csv' && filetype !== '.txt');             
+   $scope.invalidType = (filetype !== '.xlsx' && filetype !== '.xls' && filetype !== '.csv' && filetype !== '.txt');
 
-    for (var i = 0; i < $files.length; i++) {     
-      $scope.files.push($files[i]);      
+    for (var i = 0; i < $files.length; i++) {
+      $scope.files.push($files[i]);
     }
   };
 

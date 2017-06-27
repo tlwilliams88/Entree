@@ -137,8 +137,3 @@
 .negative-margin-left-10 {
   margin-left: -10px;
 }
-
-@mixin make-row($gutter: $grid-gutter-width) {
-  margin-right: 0;
-  @include clearfix;
- }
