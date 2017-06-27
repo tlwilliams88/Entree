@@ -2,6 +2,7 @@
 (
 	[Id]						BIGINT			NOT NULL	PRIMARY KEY IDENTITY(1,1),
 	[ParentCustomListHeaderId]	BIGINT			NOT NULL,
+	[LineNumber]	  		    INT				NOT NULL,
 	[ItemNumber]				CHAR(6)		    NULL,
 	[Each]						BIT				NULL,
     [Par]						DECIMAL (18, 2) NOT NULL	DEFAULT (0),

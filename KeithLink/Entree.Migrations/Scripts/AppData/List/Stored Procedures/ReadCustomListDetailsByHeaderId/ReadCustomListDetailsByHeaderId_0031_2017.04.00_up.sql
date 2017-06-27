@@ -9,6 +9,7 @@ AS
 	    [Id],
 	    [ParentCustomListHeaderId],
 	    [ItemNumber],
+		[LineNumber],
 	    [Each],
         [Par],
 	    [Label],

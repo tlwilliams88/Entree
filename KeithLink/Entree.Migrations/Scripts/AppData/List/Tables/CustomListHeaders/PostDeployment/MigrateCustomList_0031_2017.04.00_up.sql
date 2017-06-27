@@ -36,6 +36,7 @@
 		INTO [List].[CustomListDetails]
 			([ParentCustomListHeaderId]
 			 ,[ItemNumber]
+			 ,[LineNumber]
              ,[CatalogId]
              ,[Each]
 			 ,[Par]
@@ -47,6 +48,7 @@
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
+			,li.[Position]
 			,li.[CatalogId]
 			,li.Each
 			,li.Par
