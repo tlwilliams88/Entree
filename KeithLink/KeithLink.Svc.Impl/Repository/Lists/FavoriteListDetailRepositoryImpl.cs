@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
         private const string SPNAME_DELETE = "[List].[DeleteFavoriteDetail]";
         private const string SPNAME_GET = "[List].[ReadFavoritesDetailsByParentId]";
-        private const string SPNAME_SAVE = "[List].[AddOrUpdateFavoriteByUserIdCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveFavoriteDetails]";
         #endregion
 
         #region ctor

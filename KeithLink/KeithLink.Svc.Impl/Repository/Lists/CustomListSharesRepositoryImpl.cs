@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string SPNAME_DELETE = "[List].[DeleteCustomListShare]";
         private const string SPNAME_GETBYCUST = "[List].[GetCustomListSharesByCustomerNumberBranch]";
         private const string SPNAME_GETONE = "[List].[GetCustomListSharesByListId]";
-        private const string SPNAME_SAVE = "[List].[AddOrUpdateCustomListShareByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveCustomListShareByCustomerNumberBranch]";
         #endregion
 
         #region constructor

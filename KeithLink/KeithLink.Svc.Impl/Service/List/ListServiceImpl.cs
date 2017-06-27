@@ -346,14 +346,12 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Contract:
                     // cannot add items to contracts or worksheets
                     break;
-                //case ListType.Favorite:
-                //    foreach (var item in list.Items) {
-                //        _favoritesLogic.Save(user, catalogInfo, item.ToFavoritesListDetail(headerId));
-                //    }
-                //    break;
-                //case ListType.Reminder:
-                //    _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
-                //    break;
+                case ListType.Favorite:
+                    _favoritesLogic.SaveList(user, catalogInfo, list);
+                    break;
+                case ListType.Reminder:
+                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
+                    break;
                 //case ListType.RecommendedItems:
                 //    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                 //    break;
@@ -414,6 +412,12 @@ namespace KeithLink.Svc.Impl.Service.List
             long id = 0;
             switch (type)
             {
+                case ListType.RecommendedItems:
+                    _recommendedItemsLogic.CreateList(catalogInfo);
+                    break;
+                case ListType.Mandatory:
+                    _mandatoryItemsLogic.CreateList(user, catalogInfo);
+                    break;
                 case ListType.Custom:
                     id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
                     break;
@@ -423,6 +427,33 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             return id;
+        }
+
+        public void CopyList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list)
+        {
+            //switch (type)
+            //{
+            //    case ListType.Custom:
+            //        id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+            //        break;
+            //}
+
+            //return id;
+        }
+
+        public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                      ListModel list)
+        {
+            switch (type)
+            {
+                case ListType.Custom:
+                    _customListLogic.DeleteList(user, catalogInfo, list);
+                    break;
+                case ListType.InventoryValuation:
+                    //id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    break;
+            }
         }
 
         private void PopulateProductDetails(List<RecentNonBEKItem> returnList)

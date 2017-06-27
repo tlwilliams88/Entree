@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_NAME, model.Name);
             parms.Add(PARMNAME_USERID, model.UserId);
-            parms.Add(PARMNAME_RETVAL, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
+            parms.Add(PARMNAME_RETVAL, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
             ExecuteCommand(SPNAME_SAVE, parms);
 

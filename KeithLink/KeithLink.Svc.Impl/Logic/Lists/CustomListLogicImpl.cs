@@ -76,6 +76,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             return ReadList(list.ListId, catalogInfo, false);
         }
 
+        public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, false);
+        }
+
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
             return ReadList(Id, catalogInfo, false);
         }
