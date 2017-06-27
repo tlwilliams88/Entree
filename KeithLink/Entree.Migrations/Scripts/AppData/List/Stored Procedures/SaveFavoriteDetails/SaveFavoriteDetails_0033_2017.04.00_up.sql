@@ -2,6 +2,7 @@ CREATE PROCEDURE [List].[SaveFavoriteDetails]
     @Id                         BIGINT,
     @HeaderId    BIGINT,
 	@ItemNumber		            CHAR(6),
+	@LineNumber					INT,
 	@Each                       BIT,
     @Label                      NVARCHAR(150),
 	@CatalogId                  VARCHAR(10),
@@ -16,6 +17,7 @@ AS
     SET
         [HeaderId] = @HeaderId,
         [ItemNumber] = @ItemNumber,
+		[LineNumber]			   = @LineNumber,
         [Each] = @Each,
         [Label] = @Label,
         [CatalogId] = @CatalogId,
@@ -30,6 +32,7 @@ AS
             [List].[FavoritesDetails] (
                 [HeaderId],
 	            [ItemNumber],
+				[LineNumber],
 	            [Each],
 	            [Label],
 	            [CatalogId],
@@ -39,6 +42,7 @@ AS
             ) VALUES (
                 @HeaderId,
 	            @ItemNumber,
+			@LineNumber,
 	            @Each,
 	            @Label,
 	            @CatalogId,

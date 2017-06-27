@@ -8,6 +8,7 @@ AS
 	SELECT
 		[Id],
 		[ItemNumber],
+		[LineNumber],
 		[Each],
 		[Label],
 		[CatalogId],

@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListItemId = value.Id,
                 Type = ListType.Favorite,
                 ItemNumber = value.ItemNumber,
+                Position = value.LineNumber,
                 Label = value.Label,
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,
@@ -24,6 +25,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Each = model.Each ?? false,
                 Id = model.ListItemId,
                 ItemNumber = model.ItemNumber,
+                LineNumber = model.Position,
                 Label = model.Label,
                 HeaderId = headerId
             };
