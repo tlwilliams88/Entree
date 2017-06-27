@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_QTY = "Quantity";
 
         private const string SPNAME_GETDETAILS = "[List].[ReadInventoryValuationListDetailsByParentId]";
-        private const string SPNAME_SAVE = "[List].[AddOrUpdateInventoryValuationItemByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveInventoryValuationItem]";
         #endregion
 
         #region constructor

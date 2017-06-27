@@ -283,23 +283,23 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
         {
-            //var list = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
+            var list = ReadListByType(user, catalogInfo, ListType.RecentlyViewed, false);
 
-            //if (list != null)
-            //{
-            //    var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
-            //                          .ToList();
+            if (list != null)
+            {
+                var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
+                                      .ToList();
 
-            //    LookupProductDetails(user, catalogInfo, returnItems);
+                LookupProductDetails(user, catalogInfo, returnItems);
 
-            //    returnItems.ForEach(delegate (RecentItem item)
-            //    {
-            //        item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
-            //    });
+                returnItems.ForEach(delegate (RecentItem item)
+                {
+                    item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
+                });
 
-            //    return returnItems.OrderByDescending(l => l.ModifiedOn)
-            //                      .ToList();
-            //}
+                return returnItems.OrderByDescending(l => l.ModifiedOn)
+                                  .ToList();
+            }
             return null;
         }
 
@@ -365,11 +365,11 @@ namespace KeithLink.Svc.Impl.Service.List
                 //    break;
                 //case ListType.Notes:
                 //    break;
-                //case ListType.InventoryValuation:
-                //    _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
-                //    break;
-                //case ListType.RecentlyOrdered:
-                //    break;
+                case ListType.InventoryValuation:
+                    _inventoryValuationLogic.SaveList(user, catalogInfo, list);
+                    break;
+                    //case ListType.RecentlyOrdered:
+                    //    break;
             }
         }
 

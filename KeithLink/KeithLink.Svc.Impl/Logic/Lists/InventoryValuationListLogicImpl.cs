@@ -85,6 +85,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             _detailsRepo.SaveInventoryValudationDetail(item);
         }
 
+        public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, true);
+            foreach (var item in list.Items)
+            {
+                InventoryValuationListDetail detail = item.ToInventoryValuationListDetail(list.ListId);
+                detail.Active = !item.IsDelete;
+                SaveItem(user, catalogInfo, list.ListId, detail);
+            }
+
+            return ReadList(list.ListId, catalogInfo, false);
+        }
+
         #endregion
     }
 }
