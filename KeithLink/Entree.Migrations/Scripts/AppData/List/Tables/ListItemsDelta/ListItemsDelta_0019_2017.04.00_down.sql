@@ -1,1 +1,1 @@
-﻿DROP TABLE [List].[InventoryValuationListHeaders];
+﻿DROP TABLE [List].[ListItemsDelta];
