@@ -13,7 +13,7 @@ INSERT INTO @Templates
 VALUES ('NotifHeader', '', 1, '<table style="width: 100%;">
 <tr>
 <td>|LOGO|</td>
-<td><h3>{Subject}</h3></td>
+<td style="text-align:center;"><h3>{Subject}</h3></td>
 <td style="text-align:right;">
 <table>
 <tr>

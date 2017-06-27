@@ -165,6 +165,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
         private const string KEY_CUTOFFTIME_BILLPAY = "BillPayCutOffTime";
         private const string KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS = "CartOrOrder2ListIdPurgeDays";
+        private const string KEY_CONTRACTCHANGES_PURGEDAYS = "ContractChangesPurgeDays";
 
         //Email
         private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -206,6 +207,9 @@ namespace KeithLink.Svc.Impl
         private const string KEY_UNFI_WHITELIST_CUSTOMERS = "UNFIWhitelistCustomers";
         private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
         private const string KEY_UNFI_WHITELIST_BRANCHES = "UNFIWhitelistBranches";
+
+        // Queue Service Functions
+        private const string KEY_QUEUE_SERVICE_PROCESSCONTRACTCHANGES = "ProcessContractChanges";
 
         // Monitor Service Functions
         private const string KEY_MONITOR_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
@@ -1525,6 +1529,14 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string ProcessContractChanges
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_PROCESSCONTRACTCHANGES, string.Empty);
+            }
+        }
+
         public static string CheckLostOrders
         {
             get
@@ -1678,6 +1690,21 @@ namespace KeithLink.Svc.Impl
                 try
                 {
                     return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_CARTORDERLIST_ASSOCIATION_PURGEDAYS, "-7"));
+                }
+                catch
+                {
+                    return -7;
+                }
+            }
+        }
+
+        public static int ContractChangesPurgeDays
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_CONTRACTCHANGES_PURGEDAYS, "-7"));
                 }
                 catch
                 {

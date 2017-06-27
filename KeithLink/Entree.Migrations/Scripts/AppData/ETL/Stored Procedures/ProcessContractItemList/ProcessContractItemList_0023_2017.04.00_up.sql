@@ -71,6 +71,39 @@ BEGIN
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
+    INSERT -- insert shadow item into delta list
+		INTO [BEK_Commerce_AppData].[List].[ListItemsDelta]
+			([ItemNumber]
+            ,[Each]
+            ,[ParentList_Id]
+            ,[CreatedUtc]
+            ,[ModifiedUtc]
+            ,[CatalogId]
+            ,[Status])
+        SELECT
+			LTRIM(RTRIM(bcd.ItemNumber))
+			,CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END
+			,l.Id
+			,GETUTCDATE()
+			,GETUTCDATE()
+			,LTRIM(RTRIM(cb.DivisionNumber))
+			,'Added'
+			FROM 
+				[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+			INNER JOIN 
+				[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+				ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+			INNER JOIN 
+				[BEK_Commerce_AppData].List.Lists l
+				ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
+			WHERE
+				NOT EXISTS (
+					SELECT
+						'x'
+						FROM [BEK_Commerce_AppData].[List].[ListItems] li
+						WHERE li.ParentList_Id = l.Id 
+							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
+							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
 	UPDATE
 		[List].[ContractDetails]
@@ -112,6 +145,56 @@ BEGIN
 				AND cb.DivisionNumber = bcd.DivisionNumber
 				AND l.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 		WHERE bcd.ItemNumber is null and li.ToDate is null
+
+    INSERT -- insert shadow item into delta list
+		INTO [BEK_Commerce_AppData].[List].[ListItemsDelta]
+			([ItemNumber]
+            ,[Each]
+            ,[ParentList_Id]
+            ,[CreatedUtc]
+            ,[ModifiedUtc]
+            ,[CatalogId]
+            ,[Status])
+        SELECT
+			li.ItemNumber
+			,li.Each
+			,l.Id
+			,GETUTCDATE()
+			,GETUTCDATE()
+			,l.BranchId
+			,'Deleted'
+		FROM [BEK_Commerce_AppData].[List].[ListItems] li
+			INNER JOIN [BEK_Commerce_AppData].[List].[Lists] l
+			ON li.ParentList_Id = l.Id
+			AND l.[Type] = 2
+	WHERE 
+		NOT EXISTS (
+			SELECT
+				'x'
+				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				INNER JOIN 
+					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+				INNER JOIN 
+					[BEK_Commerce_AppData].List.Lists l
+					ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
+				WHERE
+					ltrim(rtrim(ItemNumber)) = li.ItemNumber
+					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = li.Each
+					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerId 
+					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
+			)
+		AND NOT EXISTS (
+			SELECT
+				'x'
+				FROM [BEK_Commerce_AppData].[List].[ListItemsDelta] lid
+				WHERE
+					lid.ItemNumber = li.ItemNumber
+					AND lid.Each = li.Each
+					AND lid.[Status] = 'Deleted' 
+					AND lid.ParentList_Id = li.ParentList_Id
+			)
+
 
 	DELETE TOP (50000)
 		FROM [List].[ContractDetails]

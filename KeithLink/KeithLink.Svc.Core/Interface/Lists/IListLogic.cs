@@ -11,7 +11,10 @@ using System;
 using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
-    public interface IListLogic {
+    public interface IListLogic
+    {
+        void ProcessContractChanges();
+
         long? AddItem(UserProfile user, UserSelectedContext catalogInfo, long listId, ListItemModel item);
 
         long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, long listId, long customInventoryItemId);
