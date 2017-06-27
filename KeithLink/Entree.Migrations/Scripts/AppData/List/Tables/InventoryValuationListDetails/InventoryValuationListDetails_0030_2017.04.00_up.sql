@@ -4,6 +4,7 @@
 	[HeaderId]  BIGINT          NOT NULL,
 	[CustomInventoryItemId]		            BIGINT			NULL,   
 	[ItemNumber]                            CHAR(6)         NOT NULL,
+	[LineNumber]	  		    INT				NOT NULL,
 	[Each]                                  BIT             NULL,
     [Quantity]                              DECIMAL (18, 2) NOT NULL    DEFAULT 0,
 	[CatalogId]                             VARCHAR(10)     NULL,

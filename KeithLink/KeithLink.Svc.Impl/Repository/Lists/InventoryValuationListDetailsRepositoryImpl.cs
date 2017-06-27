@@ -26,6 +26,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_HEADERID = "HeaderId";
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_ITEMNUM = "ItemNumber";
+        private const string PARMNAME_LINENUM = "LineNumber";
         private const string PARMNAME_INVID = "CustomInventoryItemid";
         private const string PARMNAME_QTY = "Quantity";
 
@@ -53,6 +54,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_HEADERID, model.HeaderId);
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
+            parms.Add(PARMNAME_LINENUM, model.LineNumber);
             parms.Add(PARMNAME_INVID, model.CustomInventoryItemId);
             parms.Add(PARMNAME_QTY, model.Quantity);
 

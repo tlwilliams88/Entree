@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListItemId = value.Id,
                 Type = ListType.InventoryValuation,
                 ItemNumber = value.ItemNumber,
+                Position = value.LineNumber,
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,
                 Each = value.Each ?? false,
@@ -24,6 +25,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Each = value.Each,
                 Id = value.ListItemId,
                 ItemNumber = value.ItemNumber,
+                LineNumber = value.Position,
                 HeaderId = headerId,
                 Quantity = value.Quantity
             };
