@@ -15,7 +15,8 @@ IF @Id > 0
             [ItemNumber] = @ItemNumber,
             [Each] = @Each,
             [CatalogId] = @CatalogId,
-            [Note] = @Note
+            [Note] = @Note,
+			[ModifiedUtc] = GETUTCDATE()
         WHERE
             [Id] = @Id
     END
@@ -27,13 +28,17 @@ ELSE
             [ItemNumber],
             [Each],
             [CatalogId],
-            [Note]
+            [Note],
+			[CreatedUtc],
+			[ModifiedUtc]
         ) VALUES (
             @HeaderId,
             @ItemNumber,
             @Each,
             @CatalogId,
-            @Note
+            @Note,
+			GETUTCDATE(),
+			GETUTCDATE()
         )
     END
 

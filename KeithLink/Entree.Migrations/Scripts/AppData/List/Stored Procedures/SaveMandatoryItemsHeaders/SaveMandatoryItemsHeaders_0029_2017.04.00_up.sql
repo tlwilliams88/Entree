@@ -10,7 +10,8 @@ IF @Id > 0
     UPDATE [List].[MandatoryItemsHeaders]
         SET
             [CustomerNumber] = @CustomerNumber,
-            [BranchId] = @BranchId
+            [BranchId] = @BranchId,
+			[ModifiedUtc] = GETUTCDATE()
         WHERE
             [CustomerNumber] = @CustomerNumber
         AND [BranchId] = @BranchId

@@ -342,7 +342,8 @@ angular.module('bekApp')
       appendListItems,
       startLoading,
       stopLoading,
-      $scope.sort
+      $scope.sort,
+      $scope.pagingPageSize
     );
 
     // LIST INTERACTIONS

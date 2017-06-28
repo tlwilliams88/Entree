@@ -12,7 +12,8 @@ IF @Id > 0
         SET
             [UserId] = @UserId,
             [BranchId] = @BranchId,
-            [CustomerNumber] = @CustomerNumber
+            [CustomerNumber] = @CustomerNumber,
+			[ModifiedUtc] = GETUTCDATE()
         WHERE
             [Id] = @Id
     END
@@ -22,13 +23,17 @@ ELSE
         (
             [UserId],
             [BranchId],
-            [CustomerNumber]
+            [CustomerNumber],
+			[CreatedUtc],
+			[ModifiedUtc]
         )
         VALUES
         (
             @UserId,
             @BranchId,
-            @CustomerNumber
+            @CustomerNumber,
+			GETUTCDATE(),
+			GETUTCDATE()
         )
     END
 

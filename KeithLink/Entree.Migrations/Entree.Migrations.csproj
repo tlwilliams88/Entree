@@ -1712,9 +1712,6 @@
     <Content Include="Scripts\AppData\Profile\Tables\Settings\Settings_0001_0001.11.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL\**">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\Seed\bakillins.local.configuration.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1797,18 +1794,6 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0019_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL\v2017.1.0\up\templates\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\appsettings\ValidPublicApiTokens_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\appsettings\BrandsToExclude_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ProcessContractItemList_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadUNFIDistinctWarehouses\ReadUNFIDistinctWarehouses_0001_0001.11.00_up.sql" />
     <Content Include="Scripts\AppData\ETL\Tables\Staging_Departments\Staging_Departments_0013_2017.02.00_up.sql" />
     <Content Include="Scripts\AppData\Invoice\Invoice_0001_0001.11.00_up.sql" />
@@ -1831,10 +1816,6 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\GetHistoryHeaderByCustomerNumberAndBranch\GetHistoryHeaderByCustomerNumberAndBranch_0021_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\ContractHeaders_0021_2017-04-00_up.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_down.sql" />
-    <Content Include="Scripts\AppData\List\Tables\ContractItems\ContractItems_0021_2017-04-00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_0001.12.00_down.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_0001.12.00_up.sql" />
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0004_0001.12.00_down.sql" />
@@ -1913,166 +1894,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Profile\Profile_0001_0001.11.00_up.sql" />
-    <Content Include="SQL\v2017.1.0\up\templates\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
-    <Content Include="SQL\v2017.2.0\down\appsettings\ValidPublicApiTokens_down.sql" />
-    <Content Include="SQL\v2017.2.0\down\appsettings\BrandsToExclude_down.sql" />
-    <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ProcessContractItemList_down.sql" />
-    <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadFullItemData_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\ETL.ReadAllDepartments_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignHeader_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.AddCatalogCampaignItemByHeader_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.GetAllCatalogCampaignHeader_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignHeader_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.PurgeOrderListAssociation_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.ReadOrderListAssociation_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\stored procedures\Orders.WriteOrderListAssociation_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\tables\ETL.Staging_Departments_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\tables\Marketing.CatalogCampaignHeader_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\down\tables\Orders.OrderedFromList_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\appsettings\ValidPublicApiTokens_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\appsettings\BrandsToExclude_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ProcessContractItemList_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadFullItemData_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\ETL.ReadAllDepartments_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\appsettings\Configuration.AppSettings.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.GetAllCatalogCampaignHeader_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignItemByHeader_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignItemByHeader_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.UpdateCatalogCampaignHeader_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.PurgeOrderListAssociation_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Marketing.AddCatalogCampaignHeader_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.WriteOrderListAssociation_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.ReadOrderListAssociation_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\tables\Marketing.CatalogCampaignHeader_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\tables\Orders.OrderedFromList_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Configs\bakillins.local.configuration.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Configs\Configuration.AppSettings.Bootstrap.Beta.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Configs\Configuration.AppSettings.Bootstrap.local.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Configs\Configuration.AppSettings.Bootstrap.Production.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Configs\Configuration.AppSettings.Bootstrap.QA.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Configs\jeremy.local.configuration.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Configs\matt.local.configuration.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\Messaging\Configuration.MessageTemplates.Bootstrap.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData_Seed.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.12.0\v1.12.0-down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.12.0\v1.12.0-custom-inventory-label-column-up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.12.0\v1.12.0-up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.1.0\down\stored procedures\ETL.ReadProprietaryItems.sql" />
-    <Content Include="SQL\v2017.1.0\down\stored procedures\ReadPDMData.sql" />
-    <Content Include="SQL\v2017.1.0\down\tables\Staging_PDM_EnrichedProducts.sql" />
-    <Content Include="SQL\v2017.1.0\up\Configuration.MessageTemplates-AddSpecialOrderConfirmations.sql" />
-    <Content Include="SQL\v2017.1.0\up\stored procedures\ETL.ReadProprietaryItems.sql" />
-    <Content Include="SQL\v2017.1.0\up\stored procedures\ETL.ProcessContractItemList.sql" />
-    <Content Include="SQL\v2017.1.0\up\stored procedures\ReadPDMData.sql" />
-    <Content Include="SQL\v2017.1.0\down\stored procedures\ETL.ProcessContractItemList.sql" />
-    <Content Include="SQL\v2017.1.0\up\tables\Staging_PDM_EnrichedProducts.sql" />
-    <Content Include="SQL\v1.12.2\down\Migration10-ES_Catalog_uri_name-down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.12.2\down\Migration9-ES_Catalog_schema-down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.12.2\up\Migration10-ES_Catalog_uri_name-up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v1.12.2\up\Migration9-ES_Catalog_schema-up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.PurgeOrderListAssociation.sql" />
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.ReadOrderListAssociation.sql" />
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.WriteOrderListAssociation.sql" />
-    <Content Include="SQL\v2017.2.0\up\stored procedures\Orders.DeleteOrderListAssociation.sql" />
-    <Content Include="SQL\v2017.2.0\up\tables\ETL.Staging_Departments_up.sql" />
-    <Content Include="SQL\v2017.2.0\up\templates\Configuration.AppSettings.sql" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Migrations\Data\IntegrationTests\BranchSupport\" />
