@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', '$filter', 'toaster', 'UserProfileService', 'CustomerGroupService', 'MessagingService',
+  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', '$filter', 'toaster', 'UserProfileService', 'CustomerGroupService', 'MessagingService', 'BranchService',
     function (
       $scope, $q, $log, // angular
       $stateParams, $state, $modal, $filter, toaster,// ui router
-      UserProfileService, CustomerGroupService, MessagingService // custom bek services
+      UserProfileService, CustomerGroupService, MessagingService, BranchService // custom bek services
     ) {
 
   function getCustomerGroupDetails(customerGroupId) {
@@ -389,11 +389,12 @@ angular.module('bekApp')
     if(!$scope.branches) {
       BranchService.getBranches().then(function(resp) {
         $scope.branches = resp;
+
+        $scope.branches.forEach(function(branch){
+          $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
+        });
       })
     }
-    $scope.branches.forEach(function(branch){
-      $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
-    });
   };
 
   $scope.resetMessageFields();
