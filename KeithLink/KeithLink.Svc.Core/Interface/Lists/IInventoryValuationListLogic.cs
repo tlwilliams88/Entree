@@ -19,5 +19,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
                       InventoryValuationListDetail item);
+
+        ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list);
     }
 }

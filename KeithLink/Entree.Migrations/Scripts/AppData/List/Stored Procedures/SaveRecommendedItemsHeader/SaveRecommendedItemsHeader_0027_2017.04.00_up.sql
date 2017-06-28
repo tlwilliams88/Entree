@@ -9,17 +9,22 @@ IF @Id > 0
     UPDATE [List].[RecommendedItemsHeaders]
     SET
         [CustomerNumber] = @CustomerNumber,
-        @BranchId = @BranchId
+        [BranchId] = @BranchId,
+		[ModifiedUtc] = GETUTCDATE()
     WHERE
         [Id] = @Id
 ELSE
     INSERT INTO [List].[RecommendedItemsHeaders]
     (
         [CustomerNumber],
-        [BranchId]
+        [BranchId],
+		[CreatedUtc],
+		[ModifiedUtc]
     ) VALUES (
         @CustomerNumber,
-        @BranchId
+        @BranchId,
+		GETUTCDATE(),
+		GETUTCDATE()
     )
 	
 SET @ReturnValue = SCOPE_IDENTITY()

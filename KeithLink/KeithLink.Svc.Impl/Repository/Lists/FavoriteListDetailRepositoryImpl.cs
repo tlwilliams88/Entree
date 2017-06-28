@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_ITEMNUM = "ItemNumber";
+        private const string PARMNAME_LINENUM = "LineNumber";
 
         private const string SPNAME_DELETE = "[List].[DeleteFavoriteDetail]";
         private const string SPNAME_GET = "[List].[ReadFavoritesDetailsByParentId]";
@@ -46,6 +47,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_HEADERID, model.HeaderId);
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
+            parms.Add(PARMNAME_LINENUM, model.LineNumber);
             parms.Add(PARMNAME_LABEL, model.Label);
 
             ExecuteCommand(SPNAME_SAVE, parms);

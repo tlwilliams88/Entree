@@ -10,7 +10,7 @@ using Dapper;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
+using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 
 namespace KeithLink.Svc.Impl.Repository.Lists
 {

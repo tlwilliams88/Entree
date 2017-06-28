@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItem;
 using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 
 namespace KeithLink.Svc.Core.Extensions.Lists

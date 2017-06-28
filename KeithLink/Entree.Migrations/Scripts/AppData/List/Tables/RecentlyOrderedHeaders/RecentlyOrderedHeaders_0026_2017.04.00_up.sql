@@ -3,7 +3,7 @@ CREATE TABLE [List].[RecentlyOrderedHeaders] (
     [UserId]            UNIQUEIDENTIFIER NOT NULL,
     [CustomerNumber]    CHAR(6) NOT NULL,
     [BranchId]          CHAR(3) NOT NULL,
-    [CreatedUtc]        DATETIME DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]       DATETIME DEFAULT (getutcdate()) NOT NULL
+    [CreatedUtc]        DATETIME ,
+    [ModifiedUtc]       DATETIME 
 );
 GO

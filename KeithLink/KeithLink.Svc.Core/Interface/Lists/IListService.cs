@@ -32,6 +32,9 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                       long headerId, ListItemModel genericItemProperties);
 
+        void SaveItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                       long headerId, List<ListItemModel> items);
+
         List<string> ReadLabels(UserProfile user, UserSelectedContext catalogInfo);
 
         List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);

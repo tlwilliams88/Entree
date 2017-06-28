@@ -30,12 +30,14 @@
 		INTO [List].[InventoryValuationListDetails]
 			([HeaderId]
 			 ,[ItemNumber]
+			 ,[LineNumber]
              ,[CatalogId]
              ,[Each]
 			 ,[Quantity])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
+			,li.[Position]
 			,li.[CatalogId]
 			,li.Each
 			,li.Quantity

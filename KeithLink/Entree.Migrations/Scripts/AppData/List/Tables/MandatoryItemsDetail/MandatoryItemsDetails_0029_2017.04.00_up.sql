@@ -4,8 +4,8 @@ CREATE TABLE [List].[MandatoryItemsDetails] (
     [ItemNumber]                    CHAR(6) NOT NULL,
     [Each]                          BIT NULL,
     [CatalogId]                     VARCHAR(10) NULL,
-    [Active]                        BIT DEFAULT (1) NOT NULL,
-    [CreatedUtc]                    DATETIME DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]                   DATETIME DEFAULT (getutcdate()) NOT NULL
+    [Active]                        BIT NOT NULL,
+    [CreatedUtc]                    DATETIME ,
+    [ModifiedUtc]                   DATETIME 
 );
 GO

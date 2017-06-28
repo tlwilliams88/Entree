@@ -32,6 +32,7 @@
 		INTO [List].[FavoritesDetails]
 			([HeaderId]
 			 ,[ItemNumber]
+			 ,[LineNumber]
              ,[CatalogId]
              ,[Each]
 			 ,[Label]
@@ -39,6 +40,7 @@
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
+			,li.[Position]
 			,li.[CatalogId]
 			,li.Each
 			,li.Label

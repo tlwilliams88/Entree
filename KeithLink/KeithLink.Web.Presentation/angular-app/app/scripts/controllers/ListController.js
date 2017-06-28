@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList',
-   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService',
+   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService', '$rootScope',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
-     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService) {
+     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService, $rootScope) {
 
     if(originalList.name == 'Non BEK Items'){
       originalList.listid = 'nonbeklist';
@@ -23,7 +23,7 @@ angular.module('bekApp')
 
     var orderBy = $filter('orderBy');
 
-    $scope.lists = ListService.lists;
+    $scope.lists = ListService.getAllLists();
     $scope.labels = ListService.labels;
 
     // used for the 'Show More' button
@@ -342,7 +342,8 @@ angular.module('bekApp')
       appendListItems,
       startLoading,
       stopLoading,
-      $scope.sort
+      $scope.sort,
+      $scope.pagingPageSize
     );
 
     // LIST INTERACTIONS

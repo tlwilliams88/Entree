@@ -15,7 +15,8 @@ IF @Id > 0
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [CatalogId] = @CatalogId,
-        [Active] = @Active
+        [Active] = @Active,
+		[ModifiedUtc] = GETUTCDATE()
     WHERE
         [Id] = @Id
 ELSE
@@ -25,7 +26,9 @@ ELSE
         [ItemNumber],
         [Each],
         [CatalogId],
-        [Active]
+        [Active],
+		[CreatedUtc],
+		[ModifiedUtc]
     )
     VALUES
     (
@@ -33,7 +36,9 @@ ELSE
         @ItemNumber,
         @Each,
         @CatalogId,
-        @Active
+        @Active,
+		GETUTCDATE(),
+		GETUTCDATE()
     )
 
 SET @ReturnValue = SCOPE_IDENTITY()

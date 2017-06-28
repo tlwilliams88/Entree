@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         private const string SPNAME_DELETE = "[List].[DeleteReminderItemDetails]";
         private const string SPNAME_GETALL = "[List].[ReadReminderDetailsByParentId]";
-        private const string SPNAME_SAVE = "[List].[AddOrUpdateReminderByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveRemindersDetails]";
         #endregion
         
         #region constructor

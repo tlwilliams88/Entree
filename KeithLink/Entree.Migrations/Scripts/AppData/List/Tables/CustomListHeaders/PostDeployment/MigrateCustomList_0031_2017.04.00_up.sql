@@ -8,11 +8,17 @@
 		INTO [List].[CustomListHeaders]
             ([CustomerNumber]
             ,[BranchId]
-            ,[Name])
+            ,[Name]
+			,[Active]
+			,[ModifiedUtc]
+			,[CreatedUtc])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
-            ,l.[DisplayName]
+            ,case when l.[DisplayName] is null then 'Custom' else left(l.[DisplayName],100) end
+			,1
+			,GetUtcDate()
+			,GetUtcDate()
         FROM 
             [List].[Lists] as l
 		WHERE 
@@ -30,19 +36,27 @@
 		INTO [List].[CustomListDetails]
 			([HeaderId]
 			 ,[ItemNumber]
+			 ,[LineNumber]
              ,[CatalogId]
              ,[Each]
 			 ,[Par]
 			 ,[Label]
-			 ,[CustomInventoryItemId])
+			 ,[CustomInventoryItemId]
+			 ,[Active]
+			,[ModifiedUtc]
+			,[CreatedUtc])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
+			,li.[Position]
 			,li.[CatalogId]
 			,li.Each
 			,li.Par
 			,li.Label
 			,li.CustomInventoryItemId
+			,1
+			,GetUtcDate()
+			,GetUtcDate()
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 		INNER JOIN List.[CustomListHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId and fh.[Name] = l.[DisplayName]

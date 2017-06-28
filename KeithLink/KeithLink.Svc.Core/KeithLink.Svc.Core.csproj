@@ -180,6 +180,7 @@
     <Compile Include="Exceptions\Queue\QueueDataError.cs" />
     <Compile Include="Extensions\CustomInventoryItems\CustomInventoryItemExtensionscs.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
+    <Compile Include="Extensions\Lists\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\Lists\NotesDetailsListExtensions.cs" />
     <Compile Include="Extensions\Lists\MandatoryItemDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\ContractDetailExtensions.cs" />
@@ -263,6 +264,7 @@
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
     <Compile Include="Interface\Invoices\ITermLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
+    <Compile Include="Interface\Lists\IContractChangesRepository.cs" />
     <Compile Include="Interface\Lists\IBaseListLogic.cs" />
     <Compile Include="Interface\Lists\IBaseMultiListLogic.cs" />
     <Compile Include="Interface\Lists\ICustomInventoryItemsLogic.cs" />
@@ -395,6 +397,7 @@
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
     <Compile Include="Models\Lists\BaseListDetail.cs" />
     <Compile Include="Models\Lists\BaseListHeader.cs" />
+    <Compile Include="Models\Lists\ContractChange.cs" />
     <Compile Include="Models\Lists\CustomInventoryHeaderReturnModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryItemReturnModel.cs" />
     <Compile Include="Models\Lists\CustomListShares\CustomListShare.cs" />

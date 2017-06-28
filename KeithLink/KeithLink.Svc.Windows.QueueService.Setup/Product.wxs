@@ -52,7 +52,8 @@
 							<File Id="Nest" Name="Nest.dll" DiskId="1" Source="$(var.SourcePath)\Nest.dll" KeyPath="no" Vital="yes"/>
 							<File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
 							<File Id="RabbitMQ_Client" Name="RabbitMQ.Client.dll" DiskId="1" Source="$(var.SourcePath)\RabbitMQ.Client.dll" KeyPath="no" Vital="yes"/>
-							<File Id="RestSharp" Name="RestSharp.dll" DiskId="1" Source="$(var.SourcePath)\RestSharp.dll" KeyPath="no" Vital="yes"/>
+              <File Id="Dapper" Name="Dapper.dll" DiskId="1" Source="$(var.SourcePath)\Dapper.dll" KeyPath="no" Vital="yes"/>
+              <File Id="RestSharp" Name="RestSharp.dll" DiskId="1" Source="$(var.SourcePath)\RestSharp.dll" KeyPath="no" Vital="yes"/>
 							<File Id="Service_EXE" Name="KeithLink.Svc.Windows.QueueService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe" KeyPath="yes" Vital="yes"/>
 							<File Id="Service_PDB" Name="KeithLink.Svc.Windows.QueueService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.pdb" KeyPath="no" Vital="yes"/>
 							<File Id="Config" Name="KeithLink.Svc.Windows.QueueService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe.config" KeyPath="no" Vital="yes"/>

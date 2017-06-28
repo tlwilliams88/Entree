@@ -1,6 +1,7 @@
 CREATE PROCEDURE [List].[SaveCustomListDetails] 
     @Id                         INT,
 	@HeaderId	                BIGINT,
+	@LineNumber					INT,
 	@ItemNumber		            CHAR(6)         = NULL,
 	@Each                       BIT             = NULL,
 	@Par                        DECIMAL(18, 2),
@@ -20,6 +21,7 @@ AS
                 [List].[CustomListDetails]
             SET
                 [HeaderId]                 = @HeaderId,
+        		[LineNumber]			   = @LineNumber,
                 [ItemNumber]               = @ItemNumber,
                 [Each]                     = @Each,
                 [Par]                      = @Par, 
@@ -40,6 +42,7 @@ AS
             [List].[CustomListDetails] (
                 [HeaderId], 
                 [ItemNumber],
+				[LineNumber],
 	            [Each],
                 [Par],
 	            [Label],
@@ -51,6 +54,7 @@ AS
         ) VALUES (
         	@HeaderId,
 	        @ItemNumber,
+			@LineNumber,
 	        @Each,
 	        @Par,
             @Label,

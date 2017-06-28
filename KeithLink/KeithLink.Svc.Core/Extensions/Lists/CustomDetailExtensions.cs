@@ -9,6 +9,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListItemId = value.Id,
                 Type = ListType.Custom,
                 ItemNumber = value.ItemNumber,
+                Position = value.LineNumber,
                 Label = value.Label,
                 ParLevel = value.Par,
                 ModifiedUtc = value.ModifiedUtc,
@@ -26,6 +27,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Each = value.Each,
                 Id = value.ListItemId,
                 ItemNumber = value.ItemNumber,
+                LineNumber = value.Position,
                 Label = value.Label,
                 Par = value.ParLevel,
                 HeaderId = headerId

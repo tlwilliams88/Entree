@@ -83,7 +83,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             HttpResponseMessage ret;
             try
             {
-                var list = _listLogic.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+                var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
 
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,
@@ -252,7 +252,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
             try
             {
-                var list = _listLogic.ReadReminders(this.AuthenticatedUser, this.SelectedUserContext);
+                var list = _listService.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, ListType.Reminder, false);
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
             }
@@ -327,11 +327,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/{type}/{listId}/items")]
-        public OperationReturnModel<ListModel> AddItems(ListType type, long listId, List<ListItemModel> newItems, bool allowDuplicates = false) {
+        public OperationReturnModel<ListModel> AddItems(ListType type, long listId, List<ListItemModel> newItems, bool allowDuplicates = false)
+        {
             OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
-                var list = _listLogic.AddItems(this.AuthenticatedUser, this.SelectedUserContext, listId, newItems);
+                _listService.SaveItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, newItems);
+                var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
+
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
             }
@@ -342,14 +345,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _elRepo.WriteErrorLog("AddItems", ex);
             }
             return ret;
-        }
-
-        /// <summary>
-        /// Add a custom inventory item to a list
-        /// </summary>
-        /// <param name="listId"></param>
-        /// <param name="customInventoryId"></param>
-        /// <returns></returns>
+        }        /// <summary>
+                 /// Add a custom inventory item to a list
+                 /// </summary>
+                 /// <param name="listId"></param>
+                 /// <param name="customInventoryId"></param>
+                 /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/{type}/{listId}/custominventoryitem/{customInventoryId}")]
         public OperationReturnModel<NewListItem> AddCustomInventoryItem(ListType type, long listId, long customInventoryId) {

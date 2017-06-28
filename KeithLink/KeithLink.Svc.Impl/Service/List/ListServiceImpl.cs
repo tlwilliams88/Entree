@@ -83,50 +83,50 @@ namespace KeithLink.Svc.Impl.Service.List
             switch (type)
             {
                 case ListType.Custom:
-                    returnList.AddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
+                    returnList.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.Favorite:
-                    returnList.Add(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
+                    returnList.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
                     break;
 
                 case ListType.Contract:
-                    returnList.Add(_contractListLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_contractListLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
                 case ListType.Notes: 
-                    returnList.Add(_notesLogic.GetList(catalogInfo));
+                    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
                     break;
 
                 case ListType.Worksheet:
-                    returnList.Add(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_historyListLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
                 // no contract items added lists
                 // no contract items deleted lists
 
                 case ListType.Reminder:
-                    returnList.Add(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
                     break;
 
                 case ListType.Mandatory:
-                    returnList.Add(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
+                    returnList.TryAdd(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
                     break;
 
                 case ListType.RecommendedItems:
-                    returnList.Add(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                    returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.InventoryValuation:
-                    returnList.AddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+                    returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.RecentlyOrdered:
-                    returnList.Add(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
+                    returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.RecentlyViewed:
-                    returnList.Add(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                    returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                     //case ListType.CustomInventory: //uses its own controller and works a little differently
@@ -134,14 +134,14 @@ namespace KeithLink.Svc.Impl.Service.List
                     //    break;
             }
 
-            if (returnList != null) {
+            if (returnList.Count > 0) {
                 FillOutProducts(user, catalogInfo, returnList, true);
             }
 
             return returnList;
         }
 
-        private ListModel ReadListByType(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
+        private ListModel ReadListById(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
         {
             ListModel tempList = null;
             switch (type)
@@ -224,7 +224,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly) {
             List<ListModel> tmpList = ReadListByType(user, catalogInfo, type, headerOnly);
-            if (tmpList != null && tmpList.Count > 0 && tmpList[0] != null) {
+            if (tmpList != null && tmpList.Count > 0) {
                 list.AddRange(tmpList);
             }
         }
@@ -252,7 +252,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id, bool includePrice = true)
         {
-            return ReadListByType(user, catalogInfo, Id, type);
+            return ReadListById(user, catalogInfo, Id, type);
         }
 
         public PagedListModel ReadPagedList(UserProfile user,
@@ -264,7 +264,7 @@ namespace KeithLink.Svc.Impl.Service.List
             System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
             ListModel returnList = null;
 
-            returnList = ReadListByType(user, catalogInfo, Id, type);
+            returnList = ReadListById(user, catalogInfo, Id, type);
             stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
             PagedListModel pagedList = null;
@@ -283,23 +283,23 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
         {
-            //var list = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
+            var list = ReadListByType(user, catalogInfo, ListType.RecentlyViewed, false);
 
-            //if (list != null)
-            //{
-            //    var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
-            //                          .ToList();
+            if (list != null)
+            {
+                var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
+                                      .ToList();
 
-            //    LookupProductDetails(user, catalogInfo, returnItems);
+                LookupProductDetails(user, catalogInfo, returnItems);
 
-            //    returnItems.ForEach(delegate (RecentItem item)
-            //    {
-            //        item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
-            //    });
+                returnItems.ForEach(delegate (RecentItem item)
+                {
+                    item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
+                });
 
-            //    return returnItems.OrderByDescending(l => l.ModifiedOn)
-            //                      .ToList();
-            //}
+                return returnItems.OrderByDescending(l => l.ModifiedOn)
+                                  .ToList();
+            }
             return null;
         }
 
@@ -349,9 +349,9 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Favorite:
                     _favoritesLogic.SaveList(user, catalogInfo, list);
                     break;
-                //case ListType.Reminder:
-                //    _reminderItemsLogic.Save(catalogInfo, item.ToReminderItemsListDetail(headerId));
-                //    break;
+                case ListType.Reminder:
+                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
+                    break;
                 //case ListType.RecommendedItems:
                 //    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                 //    break;
@@ -365,11 +365,11 @@ namespace KeithLink.Svc.Impl.Service.List
                 //    break;
                 //case ListType.Notes:
                 //    break;
-                //case ListType.InventoryValuation:
-                //    _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
-                //    break;
-                //case ListType.RecentlyOrdered:
-                //    break;
+                case ListType.InventoryValuation:
+                    _inventoryValuationLogic.SaveList(user, catalogInfo, list);
+                    break;
+                    //case ListType.RecentlyOrdered:
+                    //    break;
             }
         }
 
@@ -407,11 +407,22 @@ namespace KeithLink.Svc.Impl.Service.List
             }
         }
 
+        public void SaveItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                              long headerId, List<ListItemModel> items)
+        {
+            foreach (var item in items) {
+                SaveItem(user, catalogInfo, type, headerId, item);
+            }
+        }
+
         public long CreateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                                       ListModel list) {
             long id = 0;
             switch (type)
             {
+                case ListType.RecommendedItems:
+                    _recommendedItemsLogic.CreateList(catalogInfo);
+                    break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
                     break;
@@ -647,6 +658,10 @@ namespace KeithLink.Svc.Impl.Service.List
                 {
                     listItem.PackagePrice = price.PackagePrice.ToString();
                     listItem.CasePrice = price.CasePrice.ToString();
+                    if (listItem.CasePrice.Equals("0") & listItem.PackagePrice.Equals("0"))
+                    {
+                        listItem.IsValid = false;
+                    }
                     listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
                 }
             });

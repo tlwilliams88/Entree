@@ -45,6 +45,32 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
         }
 
+        public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
+
+            if (header == null)
+            {
+                foreach (var item in list.Items)
+                {
+                    ReminderItemsListDetail detail = item.ToReminderItemsListDetail(0);
+                    detail.Active = !item.IsDelete;
+                    Save(catalogInfo, detail);
+                }
+            }
+            else
+            {
+                foreach (var item in list.Items)
+                {
+                    ReminderItemsListDetail detail = item.ToReminderItemsListDetail(header.Id);
+                    detail.Active = !item.IsDelete;
+                    Save(catalogInfo, detail);
+                }
+            }
+
+            return GetListModel(user, catalogInfo, 0);
+        }
+
         public void Save(UserSelectedContext catalogInfo, ReminderItemsListDetail model) {
             // try to find the parent header id if it is not in the model
             if(model.HeaderId == 0) {

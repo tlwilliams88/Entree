@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService',
-    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService', '$rootScope',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService, $rootScope) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {

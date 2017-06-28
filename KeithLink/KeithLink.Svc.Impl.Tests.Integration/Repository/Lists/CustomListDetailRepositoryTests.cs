@@ -289,6 +289,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                     HeaderId = 1,
                     ItemNumber = "100123",
                     Label = "Fake Label",
+                    LineNumber = 300,
                     Par = 17
                 };
             }
@@ -420,6 +421,24 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
+            public void GoodDetail_SavesExpectedLineNumber() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 300;
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveCustomListDetail(detail);
+                var results = repo.GetCustomListDetails(detail.HeaderId);
+
+                // assert
+                results.First(d => d.Id == detailId)
+                       .LineNumber
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
             public void GoodDetail_SavesExpectedPar() {
                 // arrange
                 var detail = MakeDetail();
@@ -448,6 +467,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                     HeaderId = 1,
                     ItemNumber = "100123",
                     Label = "Fake Label",
+                    LineNumber = 300,
                     Par = 17
                 };
                 var repo = MakeRepo();
@@ -467,15 +487,16 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void NullCustomInventoryItemId_ReturnsNull() {
                 // arrange
                 var detail = new CustomListDetail() {
-                                                        Active = true,
-                                                        CatalogId = "FDF",
-                                                        CustomInventoryItemId = null,
-                                                        Each = true,
-                                                        HeaderId = 1,
-                                                        ItemNumber = "100123",
-                                                        Label = "Fake Label",
-                                                        Par = 17
-                                                    };
+                    Active = true,
+                    CatalogId = "FDF",
+                    CustomInventoryItemId = null,
+                    Each = true,
+                    HeaderId = 1,
+                    ItemNumber = "100123",
+                    Label = "Fake Label",
+                    LineNumber = 300,
+                    Par = 17
+                };
                 var repo = MakeRepo();
 
                 // act
@@ -493,15 +514,16 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void NullEach_ReturnsNull() {
                 // arrange
                 var detail = new CustomListDetail() {
-                                                        Active = true,
-                                                        CatalogId = "FDF",
-                                                        CustomInventoryItemId = 15,
-                                                        Each = null,
-                                                        HeaderId = 1,
-                                                        ItemNumber = "100123",
-                                                        Label = "Fake Label",
-                                                        Par = 17
-                                                    };
+                    Active = true,
+                    CatalogId = "FDF",
+                    CustomInventoryItemId = 15,
+                    Each = null,
+                    HeaderId = 1,
+                    ItemNumber = "100123",
+                    Label = "Fake Label",
+                    LineNumber = 300,
+                    Par = 17
+                };
                 var repo = MakeRepo();
 
                 // act
@@ -519,15 +541,16 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void NullItemNumber_ReturnsNull() {
                 // arrange
                 var detail = new CustomListDetail() {
-                                                        Active = true,
-                                                        CatalogId = "FDF",
-                                                        CustomInventoryItemId = 15,
-                                                        Each = true,
-                                                        HeaderId = 1,
-                                                        ItemNumber = null,
-                                                        Label = "Fake Label",
-                                                        Par = 17
-                                                    };
+                    Active = true,
+                    CatalogId = "FDF",
+                    CustomInventoryItemId = 15,
+                    Each = true,
+                    HeaderId = 1,
+                    ItemNumber = null,
+                    Label = "Fake Label",
+                    LineNumber = 300,
+                    Par = 17
+                };
                 var repo = MakeRepo();
 
                 // act
@@ -545,15 +568,16 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void NullLabel_ReturnsNull() {
                 // arrange
                 var detail = new CustomListDetail() {
-                                                        Active = true,
-                                                        CatalogId = "FDF",
-                                                        CustomInventoryItemId = 15,
-                                                        Each = true,
-                                                        HeaderId = 1,
-                                                        ItemNumber = "100123",
-                                                        Label = null,
-                                                        Par = 17
-                                                    };
+                    Active = true,
+                    CatalogId = "FDF",
+                    CustomInventoryItemId = 15,
+                    Each = true,
+                    HeaderId = 1,
+                    ItemNumber = "100123",
+                    Label = null,
+                    LineNumber = 300,
+                    Par = 17
+                };
                 var repo = MakeRepo();
 
                 // act

@@ -15,6 +15,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Lists {
                   .Row(new {
                       HeaderId = 1,
                       ItemNumber = "123456",
+                      LineNumber = 100,
                       Each = true,
                       Par = 1,
                       Label = "Fake Label",
@@ -28,6 +29,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Lists {
                   .InSchema("List")
                   .Row(new {
                         HeaderId = 1,
+                        LineNumber = 200,
                         Par = 0,
                         Active = true,
                         CreatedUtc = new DateTime(2017, 6, 26, 15, 37, 0, DateTimeKind.Utc),

@@ -9,6 +9,7 @@ AS
 	    [Id],
 	    [HeaderId],
 	    [ItemNumber],
+		[LineNumber],
 	    [Each],
         [Par],
 	    [Label],
