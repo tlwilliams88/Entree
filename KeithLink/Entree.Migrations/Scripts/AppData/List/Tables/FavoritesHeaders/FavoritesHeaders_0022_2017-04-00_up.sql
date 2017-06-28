@@ -3,7 +3,7 @@ CREATE TABLE [List].[FavoritesHeaders] (
 	[UserId]            UNIQUEIDENTIFIER    NULL,
     [BranchId]          CHAR(3)             NOT NULL,
     [CustomerNumber]    CHAR(6)             NOT NULL,
-    [CreatedUtc]        DATETIME            NOT NULL     DEFAULT (getutcdate()),
-    [ModifiedUtc]       DATETIME            NOT NULL     DEFAULT (getutcdate())
+    [CreatedUtc]        DATETIME            NOT NULL,
+    [ModifiedUtc]       DATETIME            NOT NULL     
 )
 GO

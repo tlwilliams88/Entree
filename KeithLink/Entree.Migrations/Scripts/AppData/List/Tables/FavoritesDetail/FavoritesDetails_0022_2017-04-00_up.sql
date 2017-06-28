@@ -6,8 +6,8 @@ CREATE TABLE [List].[FavoritesDetails] (
 	[Each]					  BIT	    		NULL,
 	[Label]                   NVARCHAR(150)     NULL,
 	[CatalogId]				  VARCHAR(10)	    NULL,
-	[Active]                  BIT               NOT NULL    DEFAULT 1,
-    [CreatedUtc]			  DATETIME			NOT NULL    DEFAULT (getutcdate()),
-    [ModifiedUtc]			  DATETIME          NOT NULL    DEFAULT (getutcdate())
+	[Active]                  BIT               NOT NULL    ,
+    [CreatedUtc]			  DATETIME			NOT NULL    ,
+    [ModifiedUtc]			  DATETIME          NOT NULL    
 )
 GO

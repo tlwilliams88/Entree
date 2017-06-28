@@ -6,9 +6,9 @@
 	[ItemNumber]                            CHAR(6)         NOT NULL,
 	[LineNumber]	  		    INT				NOT NULL,
 	[Each]                                  BIT             NULL,
-    [Quantity]                              DECIMAL (18, 2) NOT NULL    DEFAULT 0,
+    [Quantity]                              DECIMAL (18, 2) NOT NULL    ,
 	[CatalogId]                             VARCHAR(10)     NULL,
 	[Active]                                BIT DEFAULT (1) NOT NULL,
-	[CreatedUtc]                            DATETIME        NOT NULL    DEFAULT GETUTCDATE(),
-	[ModifiedUtc]                           DATETIME        NOT NULL    DEFAULT GETUTCDATE()
+	[CreatedUtc]                            DATETIME        NOT NULL    ,
+	[ModifiedUtc]                           DATETIME        NOT NULL    
 )

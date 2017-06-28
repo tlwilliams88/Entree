@@ -9,6 +9,6 @@
 	[Each]					 BIT		 NULL,
 	[Category]				 VARCHAR(40) NOT NULL,
 	[CatalogId]				 VARCHAR(10) NOT NULL,
-	[CreatedUtc]			 DATETIME	 NOT NULL	DEFAULT GETUTCDATE(),
-	[ModifiedUtc]			 DATETIME	 NOT NULL	DEFAULT GETUTCDATE()
+	[CreatedUtc]			 DATETIME	 NOT NULL,
+	[ModifiedUtc]			 DATETIME	 NOT NULL	
 )

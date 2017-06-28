@@ -4,7 +4,7 @@ CREATE TABLE [List].[RecentlyViewedDetails] (
     [ItemNumber]                    VARCHAR(6) NOT NULL,
     [Each]                          BIT NULL,
     [CatalogId]                     VARCHAR(10) NULL,
-    [CreatedUtc]                    DATETIME DEFAULT (getutcdate()) NOT NULL,
-    [ModifiedUtc]                   DATETIME DEFAULT (getutcdate()) NOT NULL
+    [CreatedUtc]                    DATETIME ,
+    [ModifiedUtc]                   DATETIME 
 );
 GO
