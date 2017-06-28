@@ -407,6 +407,14 @@ namespace KeithLink.Svc.Impl.Service.List
             }
         }
 
+        public void SaveItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                              long headerId, List<ListItemModel> items)
+        {
+            foreach (var item in items) {
+                SaveItem(user, catalogInfo, type, headerId, item);
+            }
+        }
+
         public long CreateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                                       ListModel list) {
             long id = 0;

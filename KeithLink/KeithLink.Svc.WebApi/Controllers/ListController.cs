@@ -319,11 +319,38 @@ namespace KeithLink.Svc.WebApi.Controllers {
         }
 
         /// <summary>
-        /// Add a custom inventory item to a list
+        /// Add multiple items to a specific list
         /// </summary>
-        /// <param name="listId"></param>
-        /// <param name="customInventoryId"></param>
+        /// <param name="listId">List Id</param>
+        /// <param name="newItems">Array of new items</param>
+        /// <param name="allowDuplicates">Allow duplicate item numbers?</param>
         /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("list/{type}/{listId}/items")]
+        public OperationReturnModel<ListModel> AddItems(ListType type, long listId, List<ListItemModel> newItems, bool allowDuplicates = false)
+        {
+            OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
+            try
+            {
+                _listService.SaveItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, newItems);
+                var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
+
+                ret.SuccessResponse = list;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("AddItems", ex);
+            }
+            return ret;
+        }        /// <summary>
+                 /// Add a custom inventory item to a list
+                 /// </summary>
+                 /// <param name="listId"></param>
+                 /// <param name="customInventoryId"></param>
+                 /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/{type}/{listId}/custominventoryitem/{customInventoryId}")]
         public OperationReturnModel<NewListItem> AddCustomInventoryItem(ListType type, long listId, long customInventoryId) {
