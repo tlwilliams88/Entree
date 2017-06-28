@@ -40,7 +40,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if(!headerOnly) {
                 items = _detailsRepo.GetCustomListDetails(header.Id);
-                shares = _sharesRepo.GetCustomListShares(header.Id);
+                //shares are a problem and causes the site to hang; this MUST be fixed, for now just kept commented out
+                //shares = _sharesRepo.GetCustomListShares(header.Id);
             }
 
             return header.ToListModel(catalogInfo, shares, items);
