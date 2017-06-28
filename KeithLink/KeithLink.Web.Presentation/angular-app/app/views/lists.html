@@ -260,7 +260,7 @@
               </button>
 
             <p style="margin-top: 10px; font-size: 14px;" ng-if="!isCustomInventoryList">
-              <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid})">Organize this list<span class="icon-arrow-right6"></span></a>
+              <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid, listType: selectedList.type})">Organize this list<span class="icon-arrow-right6"></span></a>
             </p>
           </div>
         </div>

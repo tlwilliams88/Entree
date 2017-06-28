@@ -333,6 +333,9 @@ angular.module('bekApp')
 
     .state('menu.organizelist', {
       url: '/lists/:listId/organize',
+      params: {
+        listType : null
+      },
       templateUrl: 'views/listsorganize.html',
       controller: 'ListOrganizeController',
       data: {
@@ -341,7 +344,11 @@ angular.module('bekApp')
       },
       resolve: {
         list: ['$stateParams', 'ListService', function ($stateParams, ListService) {
-          return ListService.getListWithItems($stateParams.listId, {includePrice: false});
+          var list = {
+            listId : $stateParams.listId,
+            listType : $stateParams.listType
+          }
+          return ListService.getListWithItems(list, {includePrice: false});
         }]
       }
     })
