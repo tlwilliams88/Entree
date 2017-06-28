@@ -1,8 +1,4 @@
-﻿USE BEK_Commerce_AppData
-GO
--- Stored Procedure for reading the next set of contract list changes
--- Stored Procedure for reading the next set of contract list changes
-CREATE PROCEDURE [List].[ReadNextContractListChange]
+﻿CREATE PROCEDURE [List].[ReadNextContractListChange]
 AS
 BEGIN
 	SELECT 

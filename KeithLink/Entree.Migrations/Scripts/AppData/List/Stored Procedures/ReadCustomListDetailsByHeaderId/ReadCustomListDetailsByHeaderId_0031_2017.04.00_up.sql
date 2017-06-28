@@ -1,5 +1,5 @@
 CREATE PROCEDURE [List].[ReadCustomListDetailsByParentId] 
-	@ParentCustomListHeaderId	BIGINT
+	@HeaderId	BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -7,7 +7,7 @@ AS
 
 	SELECT
 	    [Id],
-	    [ParentCustomListHeaderId],
+	    [HeaderId],
 	    [ItemNumber],
 		[LineNumber],
 	    [Each],
@@ -15,11 +15,12 @@ AS
 	    [Label],
 	    [CatalogId],
 	    [CustomInventoryItemId],
+        [Active],
 	    [CreatedUtc],
 	    [ModifiedUtc]
 	FROM 
         [List].[CustomListDetails] 
 	WHERE	
-        [ParentCustomListHeaderId] = @ParentCustomListHeaderId
+        [HeaderId] = @HeaderId
 	AND 
         [Active] = 1
