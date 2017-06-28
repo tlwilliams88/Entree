@@ -7,6 +7,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         List<CustomListDetail> GetCustomListDetails(long headerId);
 
-        void SaveCustomListDetail(CustomListDetail model);
+        long SaveCustomListDetail(CustomListDetail model);
     }
 }

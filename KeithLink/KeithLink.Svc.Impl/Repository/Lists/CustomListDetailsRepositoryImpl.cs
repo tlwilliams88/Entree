@@ -20,16 +20,16 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     public class CustomListDetailsRepositoryImpl : DapperDatabaseConnection, ICustomListDetailsRepository
     {
         #region attributes
-
         private const string PARMNAME_ACTIVE = "Active";
         private const string PARMNAME_CATALOG = "CatalogId";
         private const string PARMNAME_EACH = "Each";
-        private const string PARMNAME_HEADERID = "ParentCustomListHeaderId";
+        private const string PARMNAME_HEADERID = "HeaderId";
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_INVID = "CustomInventoryItemId";
         private const string PARMNAME_ITEMNUM = "ItemNumber";
         private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_PAR = "Par";
+        private const string PARMNAME_RETVAL = "ReturnValue";
 
         private const string SPNAME_GETBYHEADER = "[List].[ReadCustomListDetailsByParentId]";
         private const string SPNAME_SAVE= "[List].[SaveCustomListDetails]";
@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<CustomListDetail>(SPNAME_GETBYHEADER, PARMNAME_HEADERID, headerId);
         }
 
-        public void SaveCustomListDetail(CustomListDetail model) {
+        public long SaveCustomListDetail(CustomListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_ACTIVE, model.Active);
@@ -55,8 +55,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
             parms.Add(PARMNAME_LABEL, model.Label);
             parms.Add(PARMNAME_PAR, model.Par);
+            parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETVAL);
         }
         #endregion
     }

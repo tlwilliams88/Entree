@@ -28,7 +28,7 @@
 
     INSERT
 		INTO [List].[CustomListDetails]
-			([ParentCustomListHeaderId]
+			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]
