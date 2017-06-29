@@ -406,7 +406,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<List<ListCopyResultModel>> ret = new OperationReturnModel<List<ListCopyResultModel>>();
             try
             {
-                var list = _listLogic.CopyList(copyListModel);
+                var list = _listService.CopyList(this.AuthenticatedUser, this.SelectedUserContext, copyListModel);
 
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;

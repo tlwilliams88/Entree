@@ -15,6 +15,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type, ListModel list);
 
+        List<ListCopyResultModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel);
+
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
         RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog);

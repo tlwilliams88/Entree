@@ -437,17 +437,40 @@ namespace KeithLink.Svc.Impl.Service.List
             return id;
         }
 
-        public void CopyList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                                      ListModel list)
+        public List<ListCopyResultModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel)
         {
-            //switch (type)
-            //{
-            //    case ListType.Custom:
-            //        id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
-            //        break;
-            //}
+            ListModel list = _customListLogic.GetListModel(user, 
+                                                           catalogInfo, 
+                                                           copyListModel.ListId);
+            list.Name = list.Name + " copy";
 
-            //return id;
+            List<ListCopyResultModel> results = new List<ListCopyResultModel>();
+
+            foreach (var customer in copyListModel.Customers) {
+                results.Add(CopyList(user, new UserSelectedContext()
+                {
+                    BranchId = customer.CustomerBranch,
+                    CustomerId = customer.CustomerNumber
+                }, list));
+            }
+
+            return results;
+        }
+
+        private ListCopyResultModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+            long newListId = CreateList(user,
+                                        catalogInfo,
+                                        ListType.Custom,
+                                        list);
+
+            SaveItems(user, catalogInfo, ListType.Custom, newListId, list.Items.Select(i => new ListItemModel() { ItemNumber = i.ItemNumber, Each = i.Each }).ToList());
+
+            return new ListCopyResultModel()
+            {
+                BranchId = catalogInfo.BranchId,
+                CustomerId = catalogInfo.CustomerId,
+                NewListId = newListId
+            };
         }
 
         public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
