@@ -63,7 +63,7 @@ DECLARE contract_Cursor CURSOR FAST_FORWARD FOR
 		,[BidNumber]
 		,[DivisionNumber]
 	FROM 
-		[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid]
+		[ETL].[Staging_CustomerBid]
 	ORDER BY
 		BidNumber, DivisionNumber
 
@@ -87,7 +87,7 @@ BEGIN
 				BidLineNumber,
 				CategoryDescription
 			FROM
-				[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] d
+				[ETL].[Staging_BidContractDetail] d
 			WHERE
 				BidNumber = @contractNumber AND
 				DivisionNumber = @branchID
@@ -104,12 +104,12 @@ BEGIN
 	END
 
 	--Find existing contract list for the customer
-	SELECT @existingListId = Id from [BEK_Commerce_AppData].[List].Lists WHERE Type = 2 AND CustomerId = LTRIM(RTRIM(@customerId)) AND BranchId = LTRIM(RTRIM(@branchID))
+	SELECT @existingListId = Id from [List].Lists WHERE Type = 2 AND CustomerId = LTRIM(RTRIM(@customerId)) AND BranchId = LTRIM(RTRIM(@branchID))
 	Print @existingListId
 	IF @existingListId IS NULL
 		BEGIN
 			--List doesn't exist -- Create list
-			INSERT INTO [BEK_Commerce_AppData].[List].[Lists]
+			INSERT INTO [List].[Lists]
 				([DisplayName]
 				,[Type]
 				,[CustomerId]
@@ -129,7 +129,7 @@ BEGIN
 			SET @existingListId = SCOPE_IDENTITY();
 
 			--Insert items into the new list
-			INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
+			INSERT INTO [List].[ListItems]
 					   ([ItemNumber]
 					   ,[Par]
 					   ,[CreatedUtc]
@@ -187,7 +187,7 @@ BEGIN
 			FROM
 				@TempContractItems d
 			WHERE 
-				NOT EXISTS(SELECT 'x' FROM [BEK_Commerce_AppData].[List].ListItems li 
+				NOT EXISTS(SELECT 'x' FROM [List].ListItems li 
 							WHERE li.ItemNumber = LTRIM(RTRIM(d.ItemNumber)) AND li.Each = d.Each AND li.ParentList_Id = @existingListId)
 
 			--Find items being deleted
@@ -198,7 +198,7 @@ BEGIN
 				l.Category,
 				l.Position
 			FROM
-				[BEK_Commerce_AppData].[List].[ListItems] l
+				[List].[ListItems] l
 			WHERE
 				l.ParentList_Id = @existingListId AND
 				NOT EXISTS(SELECT 
@@ -214,7 +214,7 @@ BEGIN
 				BEGIN
 					--Add to a Contract Added List, create if one doesn't already exist
 					
-					SELECT @existingAddedListId = Id from [BEK_Commerce_AppData].[List].Lists WHERE Type = 6 AND CustomerId = @customerId AND BranchId = @branchID
+					SELECT @existingAddedListId = Id from [List].Lists WHERE Type = 6 AND CustomerId = @customerId AND BranchId = @branchID
 					
 					Print 'Existing added list' 
 					Print @existingAddedListId
@@ -222,7 +222,7 @@ BEGIN
 					IF @existingAddedListId IS NULL
 					BEGIN
 						Print 'Creating List'
-						INSERT INTO [BEK_Commerce_AppData].[List].[Lists]
+						INSERT INTO [List].[Lists]
 							([DisplayName]
 							,[Type]
 							,[CustomerId]
@@ -243,7 +243,7 @@ BEGIN
 					END
 					
 					--Insert Items into the Contracted Added list
-					INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
+					INSERT INTO [List].[ListItems]
 							   ([ItemNumber]
 							   ,[Par]
 							   ,[CreatedUtc]
@@ -267,7 +267,7 @@ BEGIN
 						@AddedItems
 
 					--Insert items into the list
-					INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
+					INSERT INTO [List].[ListItems]
 							   ([ItemNumber]
 							   ,[Par]
 							   ,[CreatedUtc]
@@ -297,11 +297,11 @@ BEGIN
 				BEGIN
 					--Add to a Contract Added List, create if one doesn't already exist
 					
-					SELECT @existingDeletedListId = Id from [BEK_Commerce_AppData].[List].Lists WHERE Type = 7 AND CustomerId = @customerId AND BranchId = @branchID
+					SELECT @existingDeletedListId = Id from [List].Lists WHERE Type = 7 AND CustomerId = @customerId AND BranchId = @branchID
 										
 					IF @existingDeletedListId IS NULL
 					BEGIN
-						INSERT INTO [BEK_Commerce_AppData].[List].[Lists]
+						INSERT INTO [List].[Lists]
 							([DisplayName]
 							,[Type]
 							,[CustomerId]
@@ -323,12 +323,12 @@ BEGIN
 
 
 					--DELETE Item
-					DELETE [BEK_Commerce_AppData].[List].[ListItems]
-					FROM [BEK_Commerce_AppData].[List].[ListItems] li inner join
+					DELETE [List].[ListItems]
+					FROM [List].[ListItems] li inner join
 						@DeletedItems d on li.ItemNumber = d.ItemNumber AND li.Each = d.Each and ParentList_Id = @existingListId
 					
 					--Insert Items into the Contracted Deleted list
-					INSERT INTO [BEK_Commerce_AppData].[List].[ListItems]
+					INSERT INTO [List].[ListItems]
 							   ([ItemNumber]
 							   ,[Par]
 							   ,[CreatedUtc]

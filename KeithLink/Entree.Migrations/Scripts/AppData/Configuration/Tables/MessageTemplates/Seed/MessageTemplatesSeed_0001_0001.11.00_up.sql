@@ -283,7 +283,7 @@ INSERT INTO @Templates
 VALUES ('ForwardUserMessage', '', 1, 
 '<p style="text-align:center;">Forwarded by {UserEmail}</p><hr/>{ForwardBody}', getdate(), getdate(), 0)
 
-MERGE INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates] A
+MERGE INTO [Configuration].[MessageTemplates] A
 USING @Templates B ON (A.[TemplateKey] = B.[TemplateKey])
 WHEN MATCHED THEN
     UPDATE SET A.[Subject] = B.[Subject], A.[IsBodyHtml] = B.[IsBodyHtml], A.[Body] = B.[Body], A.[ModifiedUtc] = B.[ModifiedUtc], A.[Type] = B.[Type]

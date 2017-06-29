@@ -9,7 +9,7 @@ namespace KeithLink.Svc.Impl.Migrations
 
         public override void Up()
         {
-            Sql(string.Format(@"CREATE INDEX [{0}] ON [BEK_Commerce_AppData].[Orders].[OrderHistoryHeader] ([OrderSystem])  
+            Sql(string.Format(@"CREATE INDEX [{0}] ON [Orders].[OrderHistoryHeader] ([OrderSystem])  
                                 INCLUDE ([Id], [BranchId], [CustomerNumber], 
                                          [InvoiceNumber], [PONumber], [ControlNumber], 
                                          [OrderStatus], [FutureItems], [ErrorStatus], 
