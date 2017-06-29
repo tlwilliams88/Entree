@@ -104,7 +104,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="listId">List Id</param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("list/export/{type}")]
+        [ApiKeyedRoute("list/export/{type}/{listId}")]
         public OperationReturnModel<ExportOptionsModel> ExportList(ListType type) {
             OperationReturnModel<ExportOptionsModel> ret = new OperationReturnModel<ExportOptionsModel>();
             try
