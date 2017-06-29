@@ -37,7 +37,7 @@ VALUES ('SpecialOrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNu
 	</tr>
 </table>', getdate(), getdate(), 0)
 
-MERGE INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates] A
+MERGE INTO [Configuration].[MessageTemplates] A
 USING @Templates B ON (A.[TemplateKey] = B.[TemplateKey])
 WHEN MATCHED THEN
     UPDATE SET A.[Subject] = B.[Subject], A.[IsBodyHtml] = B.[IsBodyHtml], A.[Body] = B.[Body], A.[ModifiedUtc] = B.[ModifiedUtc], A.[Type] = B.[Type]

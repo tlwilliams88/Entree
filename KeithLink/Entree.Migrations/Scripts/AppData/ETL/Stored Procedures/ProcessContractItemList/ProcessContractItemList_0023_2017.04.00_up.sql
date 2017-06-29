@@ -72,7 +72,7 @@ BEGIN
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
     INSERT -- insert shadow item into delta list
-		INTO [BEK_Commerce_AppData].[List].[ListItemsDelta]
+		INTO [List].[ListItemsDelta]
 			([ItemNumber]
             ,[Each]
             ,[ParentList_Id]
@@ -89,9 +89,9 @@ BEGIN
 			,LTRIM(RTRIM(cb.DivisionNumber))
 			,'Added'
 			FROM 
-				[BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				[ETL].[Staging_BidContractDetail] bcd
 			INNER JOIN 
-				[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+				[ETL].[Staging_CustomerBid] cb
 				ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
 			INNER JOIN 
 				[BEK_Commerce_AppData].List.Lists l
@@ -100,7 +100,7 @@ BEGIN
 				NOT EXISTS (
 					SELECT
 						'x'
-						FROM [BEK_Commerce_AppData].[List].[ListItems] li
+						FROM [List].[ListItems] li
 						WHERE li.ParentList_Id = l.Id 
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
@@ -147,7 +147,7 @@ BEGIN
 		WHERE bcd.ItemNumber is null and li.ToDate is null
 
     INSERT -- insert shadow item into delta list
-		INTO [BEK_Commerce_AppData].[List].[ListItemsDelta]
+		INTO [List].[ListItemsDelta]
 			([ItemNumber]
             ,[Each]
             ,[ParentList_Id]
@@ -163,20 +163,20 @@ BEGIN
 			,GETUTCDATE()
 			,l.BranchId
 			,'Deleted'
-		FROM [BEK_Commerce_AppData].[List].[ListItems] li
-			INNER JOIN [BEK_Commerce_AppData].[List].[Lists] l
+		FROM [List].[ListItems] li
+			INNER JOIN [List].[Lists] l
 			ON li.ParentList_Id = l.Id
 			AND l.[Type] = 2
 	WHERE 
 		NOT EXISTS (
 			SELECT
 				'x'
-				FROM [BEK_Commerce_AppData].[ETL].[Staging_BidContractDetail] bcd
+				FROM [ETL].[Staging_BidContractDetail] bcd
 				INNER JOIN 
-					[BEK_Commerce_AppData].[ETL].[Staging_CustomerBid] cb
+					[ETL].[Staging_CustomerBid] cb
 					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
 				INNER JOIN 
-					[BEK_Commerce_AppData].List.Lists l
+					List.Lists l
 					ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
 				WHERE
 					ltrim(rtrim(ItemNumber)) = li.ItemNumber
@@ -187,7 +187,7 @@ BEGIN
 		AND NOT EXISTS (
 			SELECT
 				'x'
-				FROM [BEK_Commerce_AppData].[List].[ListItemsDelta] lid
+				FROM [List].[ListItemsDelta] lid
 				WHERE
 					lid.ItemNumber = li.ItemNumber
 					AND lid.Each = li.Each

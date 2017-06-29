@@ -8,11 +8,17 @@
 		INTO [List].[CustomListShares]
             ([CustomerNumber]
             ,[BranchId]
-			,[HeaderId])
+			,[HeaderId]
+			,[Active]
+			,[ModifiedUtc]
+			,[CreatedUtc])
         SELECT 
             ls.[CustomerId]
             ,ls.[BranchId]
 			,clh.[Id]
+			,1
+			,GetUtcDate()
+			,GetUtcDate()
         FROM 
             [List].[ListShares] as ls
 			INNER JOIN [List].[Lists] l ON l.Id = ls.SharedList_Id

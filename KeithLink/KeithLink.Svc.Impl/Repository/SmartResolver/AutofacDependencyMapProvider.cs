@@ -178,7 +178,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
             builder.RegisterType<CustomInventoryItemsRepositoryImpl>().As<ICustomInventoryItemsRepository>();
             builder.RegisterType<CustomListSharesRepositoryImpl>().As<ICustomListSharesRepository>();
-            builder.RegisterType<ContractChangesRopositoryImpl>().As<IContractChangesRepository>();
+            builder.RegisterType<ContractChangesRepositoryImpl>().As<IContractChangesRepository>();
 
             // marketing
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();

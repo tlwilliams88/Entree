@@ -10,7 +10,7 @@
 angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorage', function (ListService, LocalStorage) {
 
   // Define the constructor function.
-  function ListPagingModel( listId, listType, setListItems, appendListItems, startLoading, stopLoading, sort ) {
+  function ListPagingModel( listId, listType, setListItems, appendListItems, startLoading, stopLoading, sort, pageSize ) {
 
     this.listId = listId;
     this.listType = listType;

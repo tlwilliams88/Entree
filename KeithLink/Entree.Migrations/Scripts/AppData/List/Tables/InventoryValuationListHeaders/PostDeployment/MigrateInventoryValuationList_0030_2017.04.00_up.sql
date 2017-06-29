@@ -8,11 +8,15 @@
 		INTO [List].[InventoryValuationListHeaders]
             ([CustomerNumber]
             ,[BranchId]
-            ,[Name])
+            ,[Name]
+			 ,[ModifiedUtc]
+			 ,[CreatedUtc])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
             ,l.[DisplayName]
+			,GetUtcDate()
+			,GetUtcDate()
         FROM 
             [List].[Lists] as l
 		WHERE 
@@ -33,7 +37,9 @@
 			 ,[LineNumber]
              ,[CatalogId]
              ,[Each]
-			 ,[Quantity])
+			 ,[Quantity]
+			 ,[ModifiedUtc]
+			 ,[CreatedUtc])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
@@ -41,6 +47,8 @@
 			,li.[CatalogId]
 			,li.Each
 			,li.Quantity
+			,GetUtcDate()
+			,GetUtcDate()
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 		INNER JOIN List.[InventoryValuationListHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId

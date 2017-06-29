@@ -7,10 +7,14 @@
 	INSERT -- create customer favorite lists
 		INTO [List].[MandatoryItemsHeaders]
             ([CustomerNumber]
-            ,[BranchId])
+            ,[BranchId]
+			 ,[ModifiedUtc]
+			 ,[CreatedUtc])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
+			,GetUtcDate()
+			,GetUtcDate()
         FROM 
             [List].[Lists] as l
 		WHERE 
@@ -29,12 +33,18 @@
 			([HeaderId]
 			 ,[ItemNumber]
              ,[CatalogId]
-             ,[Each])
+             ,[Each]
+			 ,[Active]
+			 ,[ModifiedUtc]
+			 ,[CreatedUtc])
 		SELECT
  			fh.[Id]
 			,li.[ItemNumber]
 			,li.[CatalogId]
 			,li.Each
+			,1
+			,GetUtcDate()
+			,GetUtcDate()
 		FROM List.[ListItems] li
 		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
 		INNER JOIN List.[MandatoryItemsHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
