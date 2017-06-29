@@ -109,6 +109,8 @@
     <Content Include="Scripts\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListShare\GetCustomListShare_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListShare\GetCustomListShare_0033_2017.04.00_up.sql" />
     <Content Include="SQL\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

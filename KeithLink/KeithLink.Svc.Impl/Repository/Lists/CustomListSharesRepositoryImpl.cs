@@ -21,12 +21,13 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_BRANCH = "BranchId";
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
         private const string PARMNAME_HEADERID = "HeaderId";
-        private const string PARMNAME_ID = "ListId";
+        private const string PARMNAME_ID = "Id";
         private const string PARMNAME_RETVAL = "ReturnValue";
 
         private const string SPNAME_DELETE = "[List].[DeleteCustomListShare]";
         private const string SPNAME_GETBYCUST = "[List].[GetCustomListSharesByCustomerNumberBranch]";
-        private const string SPNAME_GETONE = "[List].[GetCustomListSharesByListId]";
+        private const string SPNAME_GETBYHEADER = "[List].[GetCustomListSharesByListId]";
+        private const string SPNAME_GETONE = "[List].[GetCustomListShare]";
         private const string SPNAME_SAVE = "[List].[SaveCustomListShare]";
         #endregion
 
@@ -40,7 +41,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
-        public List<CustomListShare> GetCustomListShares(UserSelectedContext catalogInfo) {
+        public CustomListShare GetCustomListShare(long id) {
+            return ReadOne<CustomListShare>(SPNAME_GETONE, PARMNAME_ID, id);
+        }
+
+        public List<CustomListShare> GetCustomListSharesByCustomer(UserSelectedContext catalogInfo) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, catalogInfo.BranchId);
             parms.Add(PARMNAME_CUSTNUM, catalogInfo.CustomerId);
@@ -48,8 +53,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<CustomListShare>(SPNAME_GETBYCUST, parms);
         }
 
-        public List<CustomListShare> GetCustomListShares(long Id) {
-            return Read<CustomListShare>(SPNAME_GETONE, PARMNAME_ID, Id);
+        public List<CustomListShare> GetCustomListSharesByHeaderId(long parentId) {
+            return Read<CustomListShare>(SPNAME_GETBYHEADER, PARMNAME_HEADERID, parentId);
         }
 
         public long SaveCustomListShare(CustomListShare model) {
