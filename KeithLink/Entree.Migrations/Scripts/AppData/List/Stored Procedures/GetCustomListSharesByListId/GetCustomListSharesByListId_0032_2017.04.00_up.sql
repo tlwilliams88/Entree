@@ -9,13 +9,13 @@ AS
 	    [Id],
 	    [BranchId],
 	    [CustomerNumber],
-	    [ParentCustomListHeaderId] as HeaderId,
+	    [HeaderId] as HeaderId,
         [Active]
 	    [CreatedUtc],
 	    [ModifiedUtc]
 	FROM 
         [List].[CustomListShares] 
 	WHERE	
-        [ParentCustomListHeaderId] = @ListId
+        [HeaderId] = @ListId
 	AND 
         [Active] = 1

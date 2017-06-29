@@ -20,13 +20,14 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         private const string PARMNAME_BRANCH = "BranchId";
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
-        private const string PARMNAME_HEADERID = "ParentCustomListHeaderId";
+        private const string PARMNAME_HEADERID = "HeaderId";
         private const string PARMNAME_ID = "ListId";
+        private const string PARMNAME_RETVAL = "ReturnValue";
 
         private const string SPNAME_DELETE = "[List].[DeleteCustomListShare]";
         private const string SPNAME_GETBYCUST = "[List].[GetCustomListSharesByCustomerNumberBranch]";
         private const string SPNAME_GETONE = "[List].[GetCustomListSharesByListId]";
-        private const string SPNAME_SAVE = "[List].[SaveCustomListShareByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveCustomListShare]";
         #endregion
 
         #region constructor
@@ -51,13 +52,16 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<CustomListShare>(SPNAME_GETONE, PARMNAME_ID, Id);
         }
 
-        public void SaveCustomListShare(CustomListShare model) {
+        public long SaveCustomListShare(CustomListShare model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, model.BranchId);
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
             parms.Add(PARMNAME_HEADERID, model.HeaderId);
+            parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETVAL);
         }
 
         #endregion

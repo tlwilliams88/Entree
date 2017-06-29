@@ -10,6 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
         void DeleteCustomListShares(long id);
         List<CustomListShare> GetCustomListShares(UserSelectedContext catalogInfo);
         List<CustomListShare> GetCustomListShares(long parentId);
-        void SaveCustomListShare(CustomListShare model);
+        long SaveCustomListShare(CustomListShare model);
     }
 }

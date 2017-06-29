@@ -8,7 +8,7 @@
 		INTO [List].[CustomListShares]
             ([CustomerNumber]
             ,[BranchId]
-			,[ParentCustomListHeaderId])
+			,[HeaderId])
         SELECT 
             ls.[CustomerId]
             ,ls.[BranchId]
