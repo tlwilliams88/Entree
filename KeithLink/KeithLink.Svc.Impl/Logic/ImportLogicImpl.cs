@@ -28,6 +28,7 @@ namespace KeithLink.Svc.Impl.Logic
     {
         #region attributes
         private IListLogic listServiceRepository;
+        private readonly IListService _listService;
         private ICatalogLogic catalogLogic;
         private readonly ISiteCatalogService _catalogService;
         private ICustomInventoryItemsRepository _customInventoryRepo;
@@ -47,11 +48,12 @@ namespace KeithLink.Svc.Impl.Logic
         #endregion
 
         #region ctor
-        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, 
+        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, IListService listService,
             IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic,
             ICustomInventoryItemsRepository customInventoryRepo, ISiteCatalogService catalogService)
         {
             this.listServiceRepository = listServiceRepository;
+            _listService = listService;
             this.catalogLogic = catalogLogic;
             _catalogService = catalogService;
             this.eventLogRepository = eventLogRepository;
@@ -109,7 +111,10 @@ namespace KeithLink.Svc.Impl.Logic
                 }
 
                 importReturn.Success = true;
-                importReturn.ListId = listServiceRepository.CreateList(user.UserId, catalogInfo, newList, ListType.Custom);
+                importReturn.ListId = _listService.CreateList(user, catalogInfo, ListType.Custom, newList);
+
+                _listService.SaveItems(user, catalogInfo, ListType.Custom, importReturn.ListId.Value, mergedItems);
+
                 importReturn.WarningMessage = _warnings.ToString();
                 importReturn.ErrorMessage = _errors.ToString();
 
