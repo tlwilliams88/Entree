@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -17,6 +18,9 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class RecentItemController : BaseController {
         #region attributes
         private readonly IListLogic _repo;
+        private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
+        private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
+        private readonly IListService _listService;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -27,8 +31,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="listLogic"></param>
         /// <param name="profileLogic"></param>
         /// <param name="logRepo"></param>
-        public RecentItemController(IListLogic listLogic,  IUserProfileLogic profileLogic, IEventLogRepository logRepo)  : base(profileLogic) {
+        public RecentItemController(IListLogic listLogic,  IUserProfileLogic profileLogic, IRecentlyViewedListLogic recentlyViewedLogic,
+                                    IRecentlyOrderedListLogic recentlyOrderedLogic, IListService listService, IEventLogRepository logRepo)  : base(profileLogic) {
             _repo = listLogic;
+            _recentlyViewedLogic = recentlyViewedLogic;
+            _recentlyOrderedLogic = recentlyOrderedLogic;
+            _listService = listService;
             _log = logRepo;
         }
         #endregion
@@ -44,7 +52,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<List<RecentItem>> retVal = new Models.OperationReturnModel<List<RecentItem>>();
             try
             {
-                retVal.SuccessResponse = _repo.ReadRecent(this.AuthenticatedUser, this.SelectedUserContext);
+                retVal.SuccessResponse = _listService.ReadRecent(this.AuthenticatedUser, this.SelectedUserContext);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -68,10 +76,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<RecentNonBEKList> retVal = new Models.OperationReturnModel<RecentNonBEKList>();
             try
             {
-                retVal.SuccessResponse = _repo.ReadRecentOrder(this.AuthenticatedUser, 
-                    new Core.Models.SiteCatalog.UserSelectedContext() {
-                        CustomerId = SelectedUserContext.CustomerId,
-                        BranchId = catalog });
+                retVal.SuccessResponse = _listService.ReadRecentOrder(this.AuthenticatedUser, this.SelectedUserContext, catalog);
+                //retVal.SuccessResponse = _repo.ReadRecentOrder(this.AuthenticatedUser, 
+                //    new Core.Models.SiteCatalog.UserSelectedContext() {
+                //        CustomerId = SelectedUserContext.CustomerId,
+                //        BranchId = catalog });
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -95,7 +104,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _repo.DeleteRecent(this.AuthenticatedUser, this.SelectedUserContext);
+                //_recentlyViewedLogic.DeleteRecentlyViewed(this.AuthenticatedUser, this.SelectedUserContext);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = true;
             }
@@ -120,10 +129,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _repo.DeleteRecentlyOrdered(this.AuthenticatedUser, 
-                    new Core.Models.SiteCatalog.UserSelectedContext() {
+                _recentlyOrderedLogic.DeleteAll(this.AuthenticatedUser,
+                    new Core.Models.SiteCatalog.UserSelectedContext()
+                    {
                         CustomerId = SelectedUserContext.CustomerId,
-                        BranchId = catalog });
+                        BranchId = catalog
+                    });
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = true;
             }
@@ -147,7 +158,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _repo.AddRecentlyViewedItem(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
+                //_recentlyViewedLogic.AddOrUpdateRecentlyViewed(this.AuthenticatedUser, 
+                //                                               this.SelectedUserContext,
+                //                                               itemnumber,
+                //                                               false/*each*/,
+                //                                               this.SelectedUserContext.BranchId,
+                //                                               true/*active*/);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }
@@ -172,7 +188,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                _repo.AddRecentlyOrderedItems(this.AuthenticatedUser, this.SelectedUserContext, list);
+                _recentlyOrderedLogic.PostRecentOrder(this.AuthenticatedUser, 
+                    new UserSelectedContext() { CustomerId = SelectedUserContext.CustomerId, BranchId = list.Catalog }, list);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }

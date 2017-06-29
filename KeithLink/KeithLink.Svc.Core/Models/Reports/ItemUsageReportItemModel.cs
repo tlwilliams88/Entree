@@ -54,12 +54,12 @@ namespace KeithLink.Svc.Core.Models.Reports
 
 		[DataMember(Name = "averageprice")]
 		[Description("Average Price")]
-		public string AveragePrice { get; set; }
+		public decimal AveragePrice { get; set; }
 
 
 		[DataMember(Name = "totalcost")]
 		[Description("Total Cost")]
-		public string TotalCost { get; set; }
+		public decimal TotalCost { get; set; }
 
 		
 

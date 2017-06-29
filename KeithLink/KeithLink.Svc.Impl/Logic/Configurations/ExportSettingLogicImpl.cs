@@ -174,20 +174,11 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             return options;
         }
 
-        public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId) {
+        public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, ListType listType) {
             ExportSetting previousSettings = null;
-            ListType listType = ListType.Custom;
 
             if (type == ExportType.List) {
-                //Determine the list type
-                var list = _listRepository.ReadById(ListId.Value);
-
-                if (list == null)
-                    return null;
-
-                listType = list.Type;
-
-                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type && u.ListType == list.Type).FirstOrDefault();
+                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type && u.ListType == listType).FirstOrDefault();
             } else
                 previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type).FirstOrDefault();
 

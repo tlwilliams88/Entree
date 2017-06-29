@@ -77,7 +77,7 @@ angular.module('bekApp')
       }
     ];
 
-    $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
+    $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
@@ -337,15 +337,17 @@ angular.module('bekApp')
 
     var listPagingModel = new ListPagingModel(
       originalList.listid,
+      originalList.type,
       resetPage,
       appendListItems,
       startLoading,
       stopLoading,
-      $scope.sort
+      $scope.sort,
+      $scope.pagingPageSize
     );
 
     // LIST INTERACTIONS
-    $scope.goToList = function(listid) {
+    $scope.goToList = function(listid, listtype) {
       if($scope.selectedList.iscustominventory){
         $scope.isCustomInventoryList = false;
       }
@@ -354,6 +356,7 @@ angular.module('bekApp')
 
       var lastlist ={
           listId: listid,
+          listType: listtype,
           timeset: timeset
       };
 
@@ -363,7 +366,7 @@ angular.module('bekApp')
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listId: listid, renameList: false});
+          return $state.go('menu.lists.items', {listType: listtype, listId: listid, renameList: false});
         });
       }
     };
@@ -460,7 +463,7 @@ angular.module('bekApp')
         customerBranch: $scope.selectedUserContext.customer.customerBranch
       }];
       ListService.duplicateList(list, customers).then(function(newListId) {
-        $state.go('menu.lists.items', { listId: newListId});
+        $state.go('menu.lists.items', { listId: newListId });
       });
     };
 
@@ -676,9 +679,9 @@ angular.module('bekApp')
       }
 
       if($scope.isCustomInventoryList){
-        ListService.addNewItemsFromCustomInventoryList(list.listid, items);
+        ListService.addNewItemsFromCustomInventoryList(list, items);
       } else {
-        ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
+        ListService.addMultipleItems(list, items).then(function(updatedList) {
           if ($scope.selectedList.listid === updatedList.listid) {
             $scope.selectedList = list;
           }
@@ -926,7 +929,7 @@ angular.module('bekApp')
             return ListService.exportList;
           },
           exportConfig: function() {
-            return ListService.getExportConfig($scope.selectedList.listid);
+            return ListService.getExportConfig($scope.selectedList);
           },
           exportParams: function() {
             return $scope.selectedList.listid;
@@ -965,7 +968,7 @@ angular.module('bekApp')
           $scope.listSearchTerm = '';
         }
 
-        $scope.selectedFilterParameter = $scope.availableFilterParameters[0].name;
+        $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
         $scope.selectedFilter = '';
         $scope.filterItems( $scope.listSearchTerm );
       }

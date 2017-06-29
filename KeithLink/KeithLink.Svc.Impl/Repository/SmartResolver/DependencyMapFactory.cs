@@ -66,7 +66,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             return builder;
         }
 
-        public static ContainerBuilder GetTestsContainer(DependencyInstanceType type = DependencyInstanceType.InstancePerLifetimeScope)
+        public static ContainerBuilder GetTestsContainer(DependencyInstanceType type = DependencyInstanceType.SingleInstance)
         {
             ContainerBuilder builder = new ContainerBuilder();
 

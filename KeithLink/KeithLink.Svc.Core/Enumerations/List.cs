@@ -34,7 +34,8 @@ namespace KeithLink.Svc.Core.Enumerations.List
 		Mandatory,
 		RecommendedItems,
 		InventoryValuation,
-        RecentOrderedNonBEK,
+        RecentlyOrdered,
+        RecentlyViewed,
         CustomInventory
     }
 }

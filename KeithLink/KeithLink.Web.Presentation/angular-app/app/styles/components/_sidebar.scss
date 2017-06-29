@@ -80,7 +80,7 @@ $sidebar-nav__text--selected: $color-white;
         text-align: center;
         font-size: 16px;
       }
-
+    
       .sidebar-nav__collapse-arrow {
         width: 16px;
         top: 15px;
@@ -94,6 +94,7 @@ $sidebar-nav__text--selected: $color-white;
         float: right;
         background-color: $color-red;
         border-radius: 20px;
+        padding: 2px 7px;
         color: $color-white;
       }
       &.is-selected {
@@ -101,27 +102,27 @@ $sidebar-nav__text--selected: $color-white;
         background-color: $sidebar-nav__background--selected;
         border-left: $border__size solid $color-orange;
         padding-left: $padding__size - $border__size;
-      }
-
+      }     
+        
           ul {
               button {
                   li {
                       border-left: none;
                       background: none;
-                      border-bottom: none;
+                      border-bottom: none; 
                       padding-top: 5px;
                       padding-bottom: 2px;
                   }
-
+                  
                   &.is-sub-selected  {
                     li {
                         color: $sidebar-nav__text--selected;
-                    }
+                    }  
                   }
               }
 
           }
-
+        
         &.is-selected {
             ul {
               button {
@@ -134,10 +135,10 @@ $sidebar-nav__text--selected: $color-white;
                         padding-top: 5px;
                         padding-bottom: 2px;
 
-                    }
+                    }  
                   }
                   li {
-                      border-left: none;
+                      border-left: none; 
                       border-bottom: none;
                       color: $sidebar--text;
                       padding-top: 5px;
@@ -146,11 +147,11 @@ $sidebar-nav__text--selected: $color-white;
               }
           }
         }
-
+        
       .is-sub-selected li {
       color: $sidebar-nav__text--selected;
       }
-
+    
     }
 
     .is-selected li {
@@ -187,11 +188,11 @@ $sidebar-nav__text--selected: $color-white;
     }
   }
 
-  .sidebar-meta {
+  .sidebar-meta {    
     font-size: 11px;
     font-weight: 300;
     bottom: 10px;
-    left: 0;
+    left: 0;    
   }
 }
 
@@ -207,7 +208,7 @@ $sidebar-nav__text--selected: $color-white;
 
 .tooltip-inner {
     width: 500px;
-    white-space:pre-wrap;
+    white-space:pre-wrap;     
     top:-30px;
 }
 

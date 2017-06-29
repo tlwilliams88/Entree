@@ -282,8 +282,8 @@
     </div>
   </div> <!-- end Desktop Sidebar -->
 
-  <div class="main-content">
-    <div>
+  <div class="row main-content">
+    <div class="col-sm-12">
       <div class="row hidden-print user-bar-mobile main-user-bar visible-xs visible-sm">
         <ul class="left-mobile-menu" style="margin-left: -5px">
           <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li class="mobile-menu-item"><span class="icon-back"></span></li></a>
@@ -295,7 +295,7 @@
           <li class="mobile-menu-item" ng-if="canCreateOrders">
             <order-dropdown is-disabled="!canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
           </li>
-          <li class="mobile-menu-item" ng-if="canCreateOrders" style="padding-right: 23px;">
+          <li class="mobile-menu-item" ng-if="canCreateOrders">
 
             <div class="btn-group btn-small-mobile-truck" dropdown is-open="status.cartisopenmobile" style="margin-top: -2px; margin-bottom: -3px;">
               <button class="badge-parent btn-no-style dropdown-toggle" style="padding: 0;">

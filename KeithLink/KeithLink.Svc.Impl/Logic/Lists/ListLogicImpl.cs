@@ -33,8 +33,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Models.Configuration;
+using Microsoft.ReportingServices.ReportProcessing.ExprHostObjectModel;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
@@ -55,8 +60,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         private readonly IProductImageRepository    _productImageRepo;
         private readonly IGenericQueueRepository    _queueRepo;
         private readonly ISettingsRepository        _settingsRepo;
+        private readonly IMessageTemplateLogic _messageTemplateLogic;
+        private readonly IContractChangesRepository _contractChangesRepo;
         private readonly IUnitOfWork                _uow;
 
+        private const string MESSAGE_TEMPLATE_CONTRACTCHANGE = "ContractChangeNotice";
+        private const string MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS = "ContractChangeItem";
         private const string CACHE_GROUPNAME = "UserList";
         private const string CACHE_NAME = "UserList";
         private const string CACHE_PREFIX = "Default";
@@ -67,7 +76,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                             ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic,
                             IProductImageRepository productImageRepository, IListShareRepository listShareRepository, ICustomerRepository customerRepository, 
                             IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository, ISettingsRepository settingsRepo,
-                            IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository, ICustomInventoryItemsRepository customInventoryRepo) {
+                            IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository, 
+                            ICustomInventoryItemsRepository customInventoryRepo, IContractChangesRepository contractChangesRepo,
+                            IMessageTemplateLogic messageTemplateLogic) {
 
             _cache = listCacheRepository;
             _catalogLogic = catalogLogic;
@@ -83,6 +94,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _productImageRepo = productImageRepository;
             _queueRepo = queueRepository;
             _settingsRepo = settingsRepo;
+            _contractChangesRepo = contractChangesRepo;
+            _messageTemplateLogic = messageTemplateLogic;
             _uow = unitOfWork;
         }
         #endregion
@@ -328,7 +341,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist) {
             List list = _listRepo.Read(i => i.UserId == user.UserId && 
-                                           i.Type == ListType.RecentOrderedNonBEK &&
+                                           i.Type == ListType.RecentlyOrdered &&
                                            i.BranchId == newlist.Catalog &&
                                            i.CustomerId.Equals(catalogInfo.CustomerId), 
                                       l => l.Items)
@@ -341,10 +354,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     Name = "Recent Orders",
                     BranchId = newlist.Catalog,
                     Items = new List<ListItemModel>()
-                }, ListType.RecentOrderedNonBEK);
+                }, ListType.RecentlyOrdered);
                 // grab a pointer to the newly created list
                 list = _listRepo.Read(i => i.UserId == user.UserId &&
-                               i.Type == ListType.RecentOrderedNonBEK &&
+                               i.Type == ListType.RecentlyOrdered &&
                                i.BranchId == newlist.Catalog &&
                                i.CustomerId.Equals(catalogInfo.CustomerId),
                           l => l.Items)
@@ -608,14 +621,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                catalogInfo.CustomerId != null)
                 listcol =
                     _listRepo.Read(i => i.UserId == user.UserId &&
-                                        i.Type == ListType.RecentOrderedNonBEK &&
+                                        i.Type == ListType.RecentlyOrdered &&
                                         i.CustomerId.Equals(catalogInfo.CustomerId),
                                    l => l.Items)
                              .ToList();
             else
                 listcol =
                     _listRepo.Read(i => i.UserId == user.UserId &&
-                                        i.Type == ListType.RecentOrderedNonBEK,
+                                        i.Type == ListType.RecentlyOrdered,
                                    l => l.Items)
                              .ToList();
 
@@ -1320,7 +1333,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             try
             {
                 var list = _listRepo.Read(i => i.UserId == user.UserId &&
-                                          i.Type == ListType.RecentOrderedNonBEK &&
+                                          i.Type == ListType.RecentlyOrdered &&
                                           i.BranchId.Equals(catalogInfo.BranchId) &&
                                           i.CustomerId.Equals(catalogInfo.CustomerId),
                                           l => l.Items).ToList();
@@ -1703,6 +1716,139 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 GenerateNewRecommendItemNotification(currentList.CustomerId, currentList.BranchId); //Send a notification that new recommended items have been added
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
+        }
+
+        public void ProcessContractChanges()
+        {
+            try
+            {
+                //_log.WriteInformationLog("Begin to process contract changes");
+                List<ContractChange> changes = _contractChangesRepo.ReadNextSet();
+                //if (changes != null) _log.WriteInformationLog(string.Format("ReadNextSet, count={0}", changes.Count));
+                //else _log.WriteInformationLog("changes null");
+
+                while (changes != null && changes.Count > 0)
+                {
+                    BuildContractChangeNotifications(changes);
+
+                    changes = _contractChangesRepo.ReadNextSet();
+                }
+
+                //_log.WriteInformationLog("Processing complete");
+            }
+            catch (Exception outer)
+            {
+                _log.WriteErrorLog("Error processing contract change notifications", outer);
+            }
+        }
+
+        private void BuildContractChangeNotifications(List<ContractChange> changes)
+        {
+            try
+            {
+                //_log.WriteInformationLog(string.Format("Changes started, {0}",
+                //    JsonConvert.SerializeObject(changes)));
+
+                Customer customer = _customerRepo.GetCustomerByCustomerNumber(changes[0].CustomerId,
+                    changes[0].BranchId);
+
+                if (customer != null)
+                {
+                    var notifcation = BuildContractChangeNotification(changes, customer);
+                    _queueRepo.PublishToDirectedExchange(notifcation.ToJson(),
+                        Configuration.RabbitMQNotificationServer,
+                        Configuration.RabbitMQNotificationUserNamePublisher,
+                        Configuration.RabbitMQNotificationUserPasswordPublisher,
+                        Configuration.RabbitMQVHostNotification,
+                        Configuration.RabbitMQExchangeNotificationV2,
+                        Constants.RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY);
+                    _log.WriteInformationLog(string.Format("Published to notification exchange, {0}",
+                        notifcation.ToJson()));
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Error creating contract change notification", ex);
+            }
+
+            _contractChangesRepo.Update(changes[0].ParentList_Id, true);
+        }
+
+        private HasNewsNotification BuildContractChangeNotification(List<ContractChange> changes, Customer customer)
+        {
+            StringBuilder header =
+                _messageTemplateLogic.BuildHeader("Some items on your contract have changed", customer);
+
+            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_CONTRACTCHANGE);
+
+            StringBuilder itemsContent = new StringBuilder();
+            foreach (ContractChange change in changes)
+            {
+                AddContractChangeToNotification(change, itemsContent);
+            }
+
+            HasNewsNotification notifcation = new HasNewsNotification()
+            {
+                CustomerNumber = changes[0].CustomerId,
+                BranchId = changes[0].BranchId,
+                Subject = template.Subject.Inject(new
+                {
+                    CustomerNumber = customer.CustomerNumber,
+                    CustomerName = customer.CustomerName
+                }),
+                Notification = template.Body.Inject(new
+                {
+                    NotifHeader = header.ToString(),
+                    ContractChangeItems = itemsContent.ToString()
+                })
+            };
+            return notifcation;
+        }
+
+        private void AddContractChangeToNotification(ContractChange change, StringBuilder itemsContent)
+        {
+            itemsContent.Append(ToContractChangeString(change, TryToFindProductForContractChange(change)));
+        }
+
+        private string ToContractChangeString(ContractChange change, Product itemdetail)
+        {
+            MessageTemplateModel itemTemplate =
+                _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS);
+            return itemTemplate.Body.Inject(new
+            {
+                Status =
+                (change.Status.Equals("Added"))
+                    ? "<font color=green>" + change.Status + "</font>"
+                    : "<font color=red>" + change.Status + "</font>",
+                ProductNumber = change.ItemNumber,
+                ProductDescription = (itemdetail != null) ? itemdetail.Name : "",
+                Brand = (itemdetail != null) ? itemdetail.BrandExtendedDescription : "",
+                Pack = (itemdetail != null) ? itemdetail.Pack : "",
+                Size = (itemdetail != null) ? itemdetail.Size : ""
+            });
+        }
+
+        private Product TryToFindProductForContractChange(ContractChange change)
+        {
+            Product itemdetail = null;
+            try
+            {
+                ProductsReturn tempProducts = null;
+                List<string> tmp = new List<string>();
+                tmp.Add(change.ItemNumber);
+                tempProducts = _catalogLogic.GetProductsByIds(change.BranchId, tmp);
+                if (tempProducts != null)
+                {
+                    itemdetail =
+                        tempProducts.Products.Where(p => p.ItemNumber == change.ItemNumber).FirstOrDefault();
+                }
+            }
+            catch
+            {
+                _log.WriteWarningLog(string.Format("Failure to look up item {0}, branch {1}", change.ItemNumber,
+                    change.BranchId));
+            }
+            return itemdetail;
         }
 
         #endregion

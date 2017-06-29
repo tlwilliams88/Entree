@@ -574,7 +574,6 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
-      'updateVersion',
       'clean:server',
       'ngconstant:dev',
       'concurrent:server',
@@ -586,7 +585,6 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build-for-debug', [
-      'updateVersion',
       'clean:dev',
       'ngconstant:debug',
       'compass:server',
@@ -596,7 +594,6 @@ module.exports = function (grunt) {
     ]);
 
   grunt.registerTask('build-for-dev', [
-    'updateVersion',
     'clean:dev',
     'ngconstant:dev',
     'compass:server',

@@ -311,11 +311,21 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Lists\ContractListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\CustomListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\InventoryValuationListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\MandatoryItemsListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\RecentlyViewedListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\ReminderItemsListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\RecommendedItemsListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\RecentlyOrderedListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\HistoryListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\NotesListLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryWriterImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessageConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\PushMessagePublisherImpl.cs" />
     <Compile Include="Logic\SiteCatalog\Images\External\UnfiImageProcessing.cs" />
-    <Compile Include="Logic\Lists\FavoriteLogicImpl.cs" />
+    <Compile Include="Logic\Lists\FavoritesListLogicImpl.cs" />
     <Compile Include="Logic\Lists\HistoryLogic.cs" />
     <Compile Include="Logic\Lists\ListLogicImpl.cs" />
     <Compile Include="Logic\Lists\NoteLogicImpl.cs" />
@@ -409,7 +419,31 @@
     <Compile Include="Repository\EF\Migrations\201607252159028_user message index.Designer.cs">
       <DependentUpon>201607252159028_user message index.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Lists\ContractChangesRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\CustomInventoryItemsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ContractListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ContractListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\CustomListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\CustomListSharesRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\CustomListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\FavoriteListDetailRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\FavoriteListHeaderRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\HistoryListDetailRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\HistoryListHeaderRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\MandatoryItemsListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\InventoryValuationListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\InventoryValuationListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\NotesDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecentlyViewedListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecentlyViewedListHeaderRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ReminderItemsListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecommendedItemsListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\MandatoryItemsListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ReminderItemsListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecommendedItemsListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecentlyOrderedListHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\RecentlyOrderedListDetailsRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\NotesHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderedFromListRepositoryImpl.cs" />
@@ -888,6 +922,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\List\ListServiceImpl.cs" />
     <Compile Include="Service\SiteCatalog\SiteCatalogServiceImpl.cs" />
     <Compile Include="Service\Invoices\ExportInvoicesServiceImpl.cs" />
     <Compile Include="Service\ShoppingCart\ShoppingCartServiceImpl.cs" />
