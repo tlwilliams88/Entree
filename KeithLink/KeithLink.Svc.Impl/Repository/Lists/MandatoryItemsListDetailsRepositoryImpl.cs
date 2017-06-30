@@ -23,6 +23,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_CATALOG_ID = "CatalogId";
         private const string PARMNAME_ACTIVE = "Active";
+        private const string PARMNAME_LINENUMBER = "LineNumber";
+
+        private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
         private const string SPNAME_GET = "[List].[ReadMandatoryItemDetailsByParentId]";
         private const string SPNAME_SAVE = "[List].[SaveMandatoryItemByCustomerNumberBranch]";
@@ -41,7 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<MandatoryItemsListDetail>(SPNAME_GET, parms);
         }
 
-        public void Save(MandatoryItemsListDetail model) {
+        public long Save(MandatoryItemsListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_PARENT_MANDATORY_ITEMS_HEADER_ID, model.HeaderId);
@@ -49,8 +52,13 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_EACH, model.Each);
             parms.Add(PARMNAME_CATALOG_ID, model.CatalogId);
             parms.Add(PARMNAME_ACTIVE, model.Active);
+            parms.Add(PARMNAME_LINENUMBER, model.LineNumber);
+
+            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
             ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
 
         public void Delete(long id) {

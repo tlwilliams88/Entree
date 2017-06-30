@@ -3,7 +3,9 @@ CREATE PROCEDURE [List].[SaveRecommendedItemsDetail]
     @HeaderId BIGINT,
     @ItemNumber                     VARCHAR (6),
     @Each                           BIT,
-    @CatalogId                      VARCHAR (10)
+    @CatalogId                      VARCHAR (10),
+    @LineNumber                     INT,
+    @ReturnValue                    BIGINT OUTPUT
 AS
 
 IF @Id > 0
@@ -13,6 +15,7 @@ IF @Id > 0
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [CatalogId] = @CatalogId,
+        [LineNumber] = @LineNumber,
 		[ModifiedUtc] = GETUTCDATE()
     WHERE
         [Id] = @Id
@@ -23,6 +26,7 @@ ELSE
         [ItemNumber],
         [Each],
         [CatalogId],
+        [LineNumber],
 		[CreatedUtc],
 		[ModifiedUtc]
     ) VALUES (
@@ -30,6 +34,9 @@ ELSE
         @ItemNumber,
         @Each,
         @CatalogId,
+        @LineNumber,
 		GETUTCDATE(),
 		GETUTCDATE()
     )
+
+SET @ReturnValue = SCOPE_IDENTITY()

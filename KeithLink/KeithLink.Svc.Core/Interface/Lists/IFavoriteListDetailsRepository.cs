@@ -12,6 +12,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         List<FavoritesListDetail> GetFavoritesListDetails(long headerId);
 
-        void SaveFavoriteListDetail(FavoritesListDetail model);
+        long SaveFavoriteListDetail(FavoritesListDetail model);
     }
 }

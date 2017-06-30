@@ -4,5 +4,6 @@
         public bool? Each { get; set; }
         public long HeaderId { get; set; }
         public string ItemNumber { get; set; }
+        public int LineNumber { get; set; }
     }
 }

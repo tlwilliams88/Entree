@@ -1,26 +1,26 @@
 CREATE PROCEDURE [List].[ReadCustomListDetailsByParentId] 
-	@HeaderId	BIGINT
+    @HeaderId   BIGINT
 AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
 
-	SELECT
-	    [Id],
-	    [HeaderId],
-	    [ItemNumber],
-		[LineNumber],
-	    [Each],
+    SELECT
+        [Id],
+        [HeaderId],
+        [ItemNumber],
+        [LineNumber],
+        [Each],
         [Par],
-	    [Label],
-	    [CatalogId],
-	    [CustomInventoryItemId],
+        [Label],
+        [CatalogId],
+        [CustomInventoryItemId],
         [Active],
-	    [CreatedUtc],
-	    [ModifiedUtc]
-	FROM 
+        [CreatedUtc],
+        [ModifiedUtc]
+    FROM 
         [List].[CustomListDetails] 
-	WHERE	
+    WHERE   
         [HeaderId] = @HeaderId
-	AND 
+    AND 
         [Active] = 1

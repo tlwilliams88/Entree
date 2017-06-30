@@ -4,6 +4,7 @@ CREATE PROCEDURE [List].[SaveRecentlyViewedDetails]
     @ItemNumber                     VARCHAR (6),
     @Each                           BIT,
     @CatalogId                      VARCHAR (10),
+    @LineNumber                     INT,
     @ReturnValue                    BIGINT OUTPUT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
@@ -17,6 +18,7 @@ IF @Id > 0
         [ItemNumber] = @ItemNumber,
         [Each] = @Each,
         [CatalogId] = @CatalogId,
+        [LineNumber] = @LineNumber,
 		[ModifiedUtc] = GETUTCDATE()
     WHERE
         [Id] = @Id
@@ -27,13 +29,15 @@ ELSE
         [ItemNumber],
         [Each],
         [CatalogId],
+        [LineNumber],
 		[CreatedUtc],
 		[ModifiedUtc]
     ) VALUES (
         @HeaderId,
         @ItemNumber,
         @Each,
-        @CatalogId ,
+        @CatalogId,
+        @LineNumber,
 		GETUTCDATE(),
 		GETUTCDATE()
     )

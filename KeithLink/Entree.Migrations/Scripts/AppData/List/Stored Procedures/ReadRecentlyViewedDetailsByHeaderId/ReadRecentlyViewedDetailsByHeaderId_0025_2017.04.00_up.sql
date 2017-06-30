@@ -10,6 +10,7 @@ AS
         [ItemNumber],
         [Each],
         [CatalogId],
+        [LineNumber],
         [CreatedUtc],
         [ModifiedUtc]
     FROM

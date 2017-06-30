@@ -12,6 +12,7 @@ AS
         [Each],
         [Note],
         [CatalogId],
+        [LineNumber],
         [CreatedUtc],
         [ModifiedUtc]
     FROM [List].[NotesDetails] 

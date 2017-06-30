@@ -23,6 +23,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_CATALOGID = "CatalogId";
         private const string PARMNAME_NOTE = "Note";
+        private const string PARMNAME_LINENUMBER = "LineNumber";
+
+
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
             
 
@@ -55,6 +58,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_EACH, detail.Each);
             parms.Add(PARMNAME_CATALOGID, detail.CatalogId);
             parms.Add(PARMNAME_NOTE, detail.Note);
+            parms.Add(PARMNAME_LINENUMBER, detail.LineNumber);
+
             parms.Add(PARMNAME_RETURNVALUE, direction:ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);

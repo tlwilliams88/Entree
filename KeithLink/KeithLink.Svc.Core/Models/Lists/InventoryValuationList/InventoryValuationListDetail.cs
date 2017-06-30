@@ -3,6 +3,5 @@
         public bool Active { get; set; }
         public long? CustomInventoryItemId { get; set; }
         public decimal Quantity { get; set; }
-        public int LineNumber { get; set; }
     }
 }

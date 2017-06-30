@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 
 using Dapper;
 
@@ -17,6 +18,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_HEADERID = "HeaderId";
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_ITEMNUM = "ItemNumber";
+        private const string PARMNAME_LINENUMBER = "LineNumber";
+
+        private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
         private const string SPNAME_DELETE = "[List].[DeleteReminderItemDetails]";
         private const string SPNAME_GETALL = "[List].[ReadReminderDetailsByParentId]";
@@ -39,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<ReminderItemsListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, parentHeaderId);
         }
 
-        public void SaveReminderListDetail(ReminderItemsListDetail model) {
+        public long SaveReminderListDetail(ReminderItemsListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOG, model.CatalogId);
@@ -47,8 +51,13 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_HEADERID, model.HeaderId);
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
+            parms.Add(PARMNAME_LINENUMBER, model.LineNumber);
+
+            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
             ExecuteCommand(SPNAME_SAVE, parms);
+
+            return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
         #endregion
     }
