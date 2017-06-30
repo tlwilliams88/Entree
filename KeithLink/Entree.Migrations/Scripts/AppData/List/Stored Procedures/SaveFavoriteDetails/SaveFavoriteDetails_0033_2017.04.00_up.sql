@@ -1,30 +1,36 @@
 CREATE PROCEDURE [List].[SaveFavoriteDetails]
     @Id                         BIGINT,
-    @HeaderId    BIGINT,
+    @HeaderId                   BIGINT,
 	@ItemNumber		            CHAR(6),
 	@LineNumber					INT,
-	@Each                       BIT,
-    @Label                      NVARCHAR(150),
-	@CatalogId                  VARCHAR(10),
-	@Active                     BIT
+	@Each                       BIT             = NULL,
+    @Label                      NVARCHAR(150)   = NULL,
+	@CatalogId                  VARCHAR(10)     = NULL,
+	@Active                     BIT,
+    @ReturnValue                BIGINT          OUTPUT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
-    UPDATE			
-        [List].[FavoritesDetails]
-    SET
-        [HeaderId] = @HeaderId,
-        [ItemNumber] = @ItemNumber,
-		[LineNumber]			   = @LineNumber,
-        [Each] = @Each,
-        [Label] = @Label,
-        [CatalogId] = @CatalogId,
-        [Active] = @Active,
-        [ModifiedUtc] = GETUTCDATE()
-    WHERE
-        Id = @Id
+    IF @Id > 0 
+      BEGIN
+        UPDATE			
+            [List].[FavoritesDetails]
+        SET
+            [HeaderId] = @HeaderId,
+            [ItemNumber] = @ItemNumber,
+		    [LineNumber]			   = @LineNumber,
+            [Each] = @Each,
+            [Label] = @Label,
+            [CatalogId] = @CatalogId,
+            [Active] = @Active,
+            [ModifiedUtc] = GETUTCDATE()
+        WHERE
+            Id = @Id
+
+        SET @ReturnValue = @Id
+      END
 
     IF @@ROWCOUNT = 0
       BEGIN
@@ -50,4 +56,6 @@ AS
                 GETUTCDATE(),
                 GETUTCDATE()
             )
+
+        SET @ReturnValue = SCOPE_IDENTITY()
       END
