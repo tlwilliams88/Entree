@@ -72,7 +72,9 @@ angular.module('bekApp')
         saveCarts: true,
       },
       resolve: {
-        isHomePage: ['$stateParams', function($stateParams) {
+        isHomePage: ['$stateParams', '$rootScope', function($stateParams, $rootScope) {
+          $rootScope.returnToStateItemNumber = '';
+          $rootScope.returnToStateName = '';
           return $stateParams.isHomePage = true;
         }]
       }
