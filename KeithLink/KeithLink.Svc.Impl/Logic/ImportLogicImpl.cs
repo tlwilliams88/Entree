@@ -67,69 +67,6 @@ namespace KeithLink.Svc.Impl.Logic
         #endregion
 
         #region methods
-        public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file)
-        {
-            try
-            {
-                var importReturn = new ListImportModel();
-
-                var newList = new ListModel() { Name = string.Format("Imported List - {0}", DateTime.Now.ToShortDateString()), BranchId = catalogInfo.BranchId };
-
-                List<ListItemModel> items = new List<ListItemModel>();
-
-                switch (file.FileFormat)
-                {
-                    case FileFormat.CSV:
-                        items = parseListDelimited(file, CSV_DELIMITER, user, catalogInfo);
-                        break;
-                    case FileFormat.Tab:
-                        items = parseListDelimited(file, TAB_DELIMITER, user, catalogInfo);
-                        break;
-                    case FileFormat.Excel:
-                        items = parseListExcel(file, user, catalogInfo);
-                        break;
-                }
-
-                var validProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList());
-
-                List<ListItemModel> mergedItems = (from x in items
-                                                   join y in validProducts.Products on x.ItemNumber.Trim() equals y.ItemNumber.Trim()
-                                                   select x).ToList();
-
-                //if (items.Select( p => p.ItemNumber ).Distinct().Count() != validProducts.Products.Select( o => o.ItemNumber ).Distinct().Count()) {
-                if (items.Distinct().Count() != mergedItems.Distinct().Count())
-                {
-                    Warning("Some items were not imported because they were not found in the current catalog.");
-                    newList.Items = mergedItems;
-                    //foreach (var item in items)
-                    //    if (validProducts.Products.Where( p => p.ItemNumber.Equals( item.ItemNumber ) ).Any())
-                    //        newList.Items.Add( item );
-                }
-                else
-                {
-                    newList.Items = items;
-                }
-
-                importReturn.Success = true;
-                importReturn.ListId = _listService.CreateList(user, catalogInfo, ListType.Custom, newList);
-
-                _listService.SaveItems(user, catalogInfo, ListType.Custom, importReturn.ListId.Value, mergedItems);
-
-                importReturn.WarningMessage = _warnings.ToString();
-                importReturn.ErrorMessage = _errors.ToString();
-
-                return importReturn;
-            }
-            catch (Exception ex)
-            {
-                eventLogRepository.WriteErrorLog(string.Format("List Import Error for Customer {0}", catalogInfo.CustomerId), ex);
-                SendErrorEmail(file, ex);
-
-
-                return new ListImportModel() { Success = false, ErrorMessage = "An error has occurred while processing the import file" };
-            }
-        }
-
         private void SendErrorEmail(ListImportFileModel file, Exception ex)
         {
             try

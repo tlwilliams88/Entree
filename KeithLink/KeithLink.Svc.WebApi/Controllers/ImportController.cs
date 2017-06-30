@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+using KeithLink.Svc.Core.Interface.Import;
 using KeithLink.Svc.WebApi.Helpers;
 
 namespace KeithLink.Svc.WebApi.Controllers
@@ -24,6 +25,7 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ImportController : BaseController {
         #region attributes
         private readonly IImportLogic importLogic;
+        private readonly IImportService _importService;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -34,9 +36,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="profileLogic"></param>
         /// <param name="importLogic"></param>
         /// <param name="logRepo"></param>
-        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo)
-			: base(profileLogic)
-		{
+        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo, IImportService importService)
+			: base(profileLogic) {
+            _importService = importService;
 			this.importLogic = importLogic;
             _log = logRepo;
         }
@@ -57,10 +59,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 ListImportFileModel fileModel = await ImportHelper.GetFileFromContent(Request.Content);
 
-                //if (string.IsNullOrEmpty(fileModel.Contents))
-                //    return new ListImportModel() { Success = false, ErrorMessage = "Invalid request" };
-
-                ret.SuccessResponse = importLogic.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
+                ret.SuccessResponse = _importService.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
