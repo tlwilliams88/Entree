@@ -54,6 +54,7 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListShares.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\FavoriteListHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\FavoritesDetails.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryHeaders.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
