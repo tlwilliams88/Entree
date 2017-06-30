@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface
 {
-	public interface IImportLogic
-	{
-        OrderImportModel ImportOrder( UserProfile user, UserSelectedContext catalogInfo, OrderImportFileModel file );
+    public interface IImportLogic {
+        OrderImportModel ImportOrder(UserProfile user, UserSelectedContext catalogInfo, OrderImportFileModel file);
+
         CustomInventoryImportModel ImportCustomInventory
-            (UserProfile user, UserSelectedContext catalogInfo, CustomInventoryImportFileModel file);
+                (UserProfile user, UserSelectedContext catalogInfo, CustomInventoryImportFileModel file);
     }
 }

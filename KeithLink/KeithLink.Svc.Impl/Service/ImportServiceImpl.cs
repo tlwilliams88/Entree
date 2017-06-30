@@ -37,6 +37,14 @@ namespace KeithLink.Svc.Impl.Service
         private StringBuilder _errors;
         private StringBuilder _warnings;
 
+        public string Errors  {
+            get { return _errors.ToString(); }
+        }
+        public string Warnings
+        {
+            get { return _warnings.ToString(); }
+        }
+
         private const char CSV_DELIMITER = ',';
         private const char TAB_DELIMITER = '\t';
         private const string BINARY_EXCEL_EXTENSION = ".xls";
@@ -61,103 +69,45 @@ namespace KeithLink.Svc.Impl.Service
             _warnings = new StringBuilder();
         }
         #endregion
-        public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file)
-        {
-            try
-            {
-                var importReturn = new ListImportModel();
+        public ListModel BuildList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file) {
+            ListModel newList = new ListModel() {Name = string.Format("Imported List - {0}", DateTime.Now.ToShortDateString()), BranchId = catalogInfo.BranchId};
 
-                var newList = new ListModel() { Name = string.Format("Imported List - {0}", DateTime.Now.ToShortDateString()), BranchId = catalogInfo.BranchId };
+            List<ListItemModel> items = new List<ListItemModel>();
 
-                List<ListItemModel> items = new List<ListItemModel>();
-
-                switch (file.FileFormat)
-                {
-                    case FileFormat.CSV:
-                        items = parseListDelimited(file, CSV_DELIMITER, user, catalogInfo);
-                        break;
-                    case FileFormat.Tab:
-                        items = parseListDelimited(file, TAB_DELIMITER, user, catalogInfo);
-                        break;
-                    case FileFormat.Excel:
-                        items = parseListExcel(file, user, catalogInfo);
-                        break;
-                }
-
-                var validProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList());
-
-                List<ListItemModel> mergedItems = (from x in items
-                                                   join y in validProducts.Products on x.ItemNumber.Trim() equals y.ItemNumber.Trim()
-                                                   select x).ToList();
-
-                //if (items.Select( p => p.ItemNumber ).Distinct().Count() != validProducts.Products.Select( o => o.ItemNumber ).Distinct().Count()) {
-                if (items.Distinct().Count() != mergedItems.Distinct().Count())
-                {
-                    Warning("Some items were not imported because they were not found in the current catalog.");
-                    newList.Items = mergedItems;
-                    //foreach (var item in items)
-                    //    if (validProducts.Products.Where( p => p.ItemNumber.Equals( item.ItemNumber ) ).Any())
-                    //        newList.Items.Add( item );
-                }
-                else
-                {
-                    newList.Items = items;
-                }
-
-                importReturn.Success = true;
-                importReturn.ListId = _listService.CreateList(user, catalogInfo, ListType.Custom, newList);
-
-                _listService.SaveItems(user, catalogInfo, ListType.Custom, importReturn.ListId.Value, mergedItems);
-
-                importReturn.WarningMessage = _warnings.ToString();
-                importReturn.ErrorMessage = _errors.ToString();
-
-                return importReturn;
+            switch (file.FileFormat) {
+                case FileFormat.CSV:
+                    items = parseListDelimited(file, CSV_DELIMITER, user, catalogInfo);
+                    break;
+                case FileFormat.Tab:
+                    items = parseListDelimited(file, TAB_DELIMITER, user, catalogInfo);
+                    break;
+                case FileFormat.Excel:
+                    items = parseListExcel(file, user, catalogInfo);
+                    break;
             }
-            catch (Exception ex)
-            {
-                eventLogRepository.WriteErrorLog(string.Format("List Import Error for Customer {0}", catalogInfo.CustomerId), ex);
-                SendErrorEmail(file, ex);
 
+            var validProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, items.Select(i => i.ItemNumber)
+                                                                                         .Distinct()
+                                                                                         .ToList());
 
-                return new ListImportModel() { Success = false, ErrorMessage = "An error has occurred while processing the import file" };
+            List<ListItemModel> mergedItems = (from x in items
+                                               join y in validProducts.Products on x.ItemNumber.Trim() equals y.ItemNumber.Trim()
+                                               select x).ToList();
+
+            //if (items.Select( p => p.ItemNumber ).Distinct().Count() != validProducts.Products.Select( o => o.ItemNumber ).Distinct().Count()) {
+            if (items.Distinct()
+                     .Count() != mergedItems.Distinct()
+                                            .Count()) {
+                Warning("Some items were not imported because they were not found in the current catalog.");
+                newList.Items = mergedItems;
+                //foreach (var item in items)
+                //    if (validProducts.Products.Where( p => p.ItemNumber.Equals( item.ItemNumber ) ).Any())
+                //        newList.Items.Add( item );
+            } else {
+                newList.Items = items;
             }
-        }
 
-        private void SendErrorEmail(ListImportFileModel file, Exception ex)
-        {
-            try
-            {
-                var errorMessage = string.Format("File Import error.\n\nImport Options:\nSelected Format: {0}\nSkip First Line: {1}\nFile Name:{2}", file.FileFormat, file.IgnoreFirstLine, file.FileName);
-
-                System.Net.Mime.ContentType ct = null;
-                System.Net.Mail.Attachment attach = null;
-
-                switch (file.FileFormat)
-                {
-                    case FileFormat.Excel:
-                        file.Stream.Seek(0, System.IO.SeekOrigin.Begin);
-                        ct = new System.Net.Mime.ContentType("application/msexcel");
-                        attach = new System.Net.Mail.Attachment(file.Stream, ct);
-                        attach.ContentDisposition.FileName = file.FileName;
-                        break;
-                    default:
-                        ct = new System.Net.Mime.ContentType(System.Net.Mime.MediaTypeNames.Text.Plain);
-                        var stringBytes = System.Text.Encoding.UTF8.GetBytes(file.Contents);
-                        var memStream = new MemoryStream();
-                        memStream.Write(stringBytes, 0, stringBytes.Length);
-                        memStream.Seek(0, SeekOrigin.Begin);
-                        attach = new System.Net.Mail.Attachment(memStream, ct);
-                        attach.ContentDisposition.FileName = file.FileName;
-                        break;
-                }
-
-                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, errorMessage, "File Import Error", attach);
-            }
-            catch (Exception emailEx)
-            {
-                eventLogRepository.WriteErrorLog("Error sending Import failure email", emailEx);
-            }
+            return newList;
         }
 
         private List<ListItemModel> parseListDelimited(ListImportFileModel file, char delimiter, UserProfile user, UserSelectedContext catalogInfo)

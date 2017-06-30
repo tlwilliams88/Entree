@@ -13,7 +13,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Import;
+using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.WebApi.Helpers;
 
 namespace KeithLink.Svc.WebApi.Controllers
@@ -26,6 +28,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private readonly IImportLogic importLogic;
         private readonly IImportService _importService;
+        private readonly IListService _listService;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -36,8 +39,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="profileLogic"></param>
         /// <param name="importLogic"></param>
         /// <param name="logRepo"></param>
-        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo, IImportService importService)
+        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo, IImportService importService, IListService listService)
 			: base(profileLogic) {
+            _listService = listService;
             _importService = importService;
 			this.importLogic = importLogic;
             _log = logRepo;
@@ -57,10 +61,20 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<ListImportModel> ret = new OperationReturnModel<ListImportModel>();
             try
             {
+                var importReturn = new ListImportModel();
+
                 ListImportFileModel fileModel = await ImportHelper.GetFileFromContent(Request.Content);
 
-                ret.SuccessResponse = _importService.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
-                ret.IsSuccess = true;
+                ListModel newList = _importService.BuildList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
+
+                importReturn.Success = true;
+                importReturn.ListId = _listService.CreateList(AuthenticatedUser, SelectedUserContext, ListType.Custom, newList);
+
+                _listService.SaveItems(AuthenticatedUser, SelectedUserContext, ListType.Custom, importReturn.ListId.Value, newList.Items);
+
+                importReturn.WarningMessage = _importService.Warnings;
+                importReturn.ErrorMessage = _importService.Errors;
+                ret.SuccessResponse = importReturn;
             }
             catch (Exception ex)
             {

@@ -11,6 +11,11 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 namespace KeithLink.Svc.Core.Interface.Import
 {
     public interface IImportService {
-        ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file);
+        string Errors { get; }
+
+        string Warnings { get; }
+
+        ListModel BuildList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file);
+
     }
 }
