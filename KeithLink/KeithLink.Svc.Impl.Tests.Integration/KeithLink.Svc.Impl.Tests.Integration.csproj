@@ -86,6 +86,7 @@
     <Compile Include="Repository\Lists\FavoriteListHeadersRepositoryTests.cs" />
     <Compile Include="Repository\Lists\CustomListShareRepositoryTests.cs" />
     <Compile Include="Repository\Lists\FavoriteListDetailsRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\HistoryListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\HistoryListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
   </ItemGroup>
