@@ -84,6 +84,7 @@
     <Compile Include="Repository\Lists\CustomListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\CustomListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\CustomListShareRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\FavoriteListDetailsRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
   </ItemGroup>
   <ItemGroup>
