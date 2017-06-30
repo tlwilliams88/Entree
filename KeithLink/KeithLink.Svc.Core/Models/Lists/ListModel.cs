@@ -61,9 +61,13 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "iscustominventory")]
         public bool IsCustomInventory { get; set; }
 
+        [DataMember(Name = "branchid")]
         public string BranchId { get; set; }
 
-		[DataMember]
+        [DataMember(Name = "customernumber")]
+        public string CustomerNumber { get; set; }
+
+        [DataMember]
 		public ListType Type { get; set; }
 
 		object ICloneable.Clone()

@@ -437,14 +437,14 @@ namespace KeithLink.Svc.Impl.Service.List
             return id;
         }
 
-        public List<ListCopyResultModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel)
+        public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel)
         {
             ListModel list = _customListLogic.GetListModel(user, 
                                                            catalogInfo, 
                                                            copyListModel.ListId);
             list.Name = list.Name + " copy";
 
-            List<ListCopyResultModel> results = new List<ListCopyResultModel>();
+            List<ListModel> results = new List<ListModel>();
 
             foreach (var customer in copyListModel.Customers) {
                 results.Add(CopyList(user, new UserSelectedContext()
@@ -457,7 +457,7 @@ namespace KeithLink.Svc.Impl.Service.List
             return results;
         }
 
-        private ListCopyResultModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+        private ListModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
             long newListId = CreateList(user,
                                         catalogInfo,
                                         ListType.Custom,
@@ -465,11 +465,11 @@ namespace KeithLink.Svc.Impl.Service.List
 
             SaveItems(user, catalogInfo, ListType.Custom, newListId, list.Items.Select(i => new ListItemModel() { ItemNumber = i.ItemNumber, Each = i.Each }).ToList());
 
-            return new ListCopyResultModel()
+            return new ListModel()
             {
                 BranchId = catalogInfo.BranchId,
-                CustomerId = catalogInfo.CustomerId,
-                NewListId = newListId
+                CustomerNumber = catalogInfo.CustomerId,
+                ListId = newListId
             };
         }
 
