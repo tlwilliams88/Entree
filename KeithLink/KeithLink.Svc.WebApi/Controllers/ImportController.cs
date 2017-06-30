@@ -13,6 +13,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+using KeithLink.Svc.WebApi.Helpers;
+
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
@@ -53,38 +55,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<ListImportModel> ret = new OperationReturnModel<ListImportModel>();
             try
             {
-                if (!Request.Content.IsMimeMultipartContent())
-                    throw new InvalidOperationException();
-
-                var provider = new MultipartMemoryStreamProvider();
-                await Request.Content.ReadAsMultipartAsync(provider);
-
-                ListImportFileModel fileModel = new ListImportFileModel();
-
-                foreach (var content in provider.Contents)
-                {
-                    var file = content;
-                    var paramName = file.Headers.ContentDisposition.Name.Trim('\"');
-                    var buffer = await file.ReadAsByteArrayAsync();
-                    var stream = new MemoryStream(buffer);
-
-                    using (var s = new StreamReader(stream))
-                    {
-                        switch (paramName)
-                        {
-                            case "file":
-                                stream.CopyTo(fileModel.Stream);
-                                fileModel.FileName = file.Headers.ContentDisposition.FileName.Trim('\"');
-                                stream.Seek(0, SeekOrigin.Begin);
-                                fileModel.Contents = s.ReadToEnd();
-                                break;
-                            case "options":
-                                // Figure out what to do here
-                                fileModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ListImportFileModel>(s.ReadToEnd());
-                                break;
-                        }
-                    }
-                }
+                ListImportFileModel fileModel = await ImportHelper.GetFileFromContent(Request.Content);
 
                 //if (string.IsNullOrEmpty(fileModel.Contents))
                 //    return new ListImportModel() { Success = false, ErrorMessage = "Invalid request" };
@@ -100,6 +71,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             return ret;
 		}
+
         #endregion
 
 
