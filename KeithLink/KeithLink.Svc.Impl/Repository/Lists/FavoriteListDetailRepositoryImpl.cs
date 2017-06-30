@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +20,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_ITEMNUM = "ItemNumber";
         private const string PARMNAME_LINENUM = "LineNumber";
+        private const string PARMNAME_RETVAL = "ReturnValue";
 
         private const string SPNAME_DELETE = "[List].[DeleteFavoriteDetail]";
-        private const string SPNAME_GET = "[List].[ReadFavoritesDetailsByParentId]";
+        private const string SPNAME_GETALL = "[List].[ReadFavoritesDetailsByParentId]";
+        private const string SPNAME_GETONE = "[List].[GetFavoriteDetail]";
         private const string SPNAME_SAVE = "[List].[SaveFavoriteDetails]";
         #endregion
 
@@ -35,11 +38,15 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
-        public List<FavoritesListDetail> GetFavoritesListDetails(long headerId) {
-            return Read<FavoritesListDetail>(SPNAME_GET, PARMNAME_HEADERID, headerId);
+        public FavoritesListDetail GetFavoriteDetail(long id) {
+            return ReadOne<FavoritesListDetail>(SPNAME_GETONE, PARMNAME_ID, id);
         }
 
-        public void SaveFavoriteListDetail(FavoritesListDetail model) {
+        public List<FavoritesListDetail> GetFavoritesListDetails(long headerId) {
+            return Read<FavoritesListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, headerId);
+        }
+
+        public long SaveFavoriteListDetail(FavoritesListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOGID, model.CatalogId);
@@ -49,10 +56,12 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
             parms.Add(PARMNAME_LINENUM, model.LineNumber);
             parms.Add(PARMNAME_LABEL, model.Label);
+            parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);
-        }
 
+            return parms.Get<long>(PARMNAME_RETVAL);
+        }
         #endregion
     }
 }

@@ -8,8 +8,9 @@ namespace KeithLink.Svc.Core.Interface.Lists
     public interface ICustomListSharesRepository
     {
         void DeleteCustomListShares(long id);
-        List<CustomListShare> GetCustomListShares(UserSelectedContext catalogInfo);
-        List<CustomListShare> GetCustomListShares(long parentId);
+        CustomListShare GetCustomListShare(long id);
+        List<CustomListShare> GetCustomListSharesByCustomer(UserSelectedContext catalogInfo);
+        List<CustomListShare> GetCustomListSharesByHeaderId(long parentId);
         long SaveCustomListShare(CustomListShare model);
     }
 }
