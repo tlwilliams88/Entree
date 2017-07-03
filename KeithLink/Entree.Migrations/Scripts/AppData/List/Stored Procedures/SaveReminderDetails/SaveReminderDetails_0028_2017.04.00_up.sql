@@ -1,14 +1,16 @@
 CREATE PROCEDURE [List].[SaveRemindersDetails] 
     @Id             BIGINT,
     @HeaderId       BIGINT,
-	@ItemNumber		CHAR(6),
-	@Each           BIT,
-	@CatalogId      VARCHAR(10),
-	@Active			BIT
+    @ItemNumber     CHAR(6),
+    @Each           BIT,
+    @CatalogId      VARCHAR(10),
+    @Active         BIT,
+    @LineNumber     INT,
+    @ReturnValue    BIGINT OUTPUT
 AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
 
 IF @Id > 0
     UPDATE
@@ -19,6 +21,7 @@ IF @Id > 0
         Each = @Each,
         CatalogId = @CatalogId,
         Active = @Active,
+        LineNumber = @LineNumber,
         ModifiedUtc = GETUTCDATE()
     WHERE
         Id = @Id
@@ -32,6 +35,7 @@ ELSE
                 Each,
                 CatalogId,
                 Active,
+                LineNumber,
                 CreatedUtc,
                 ModifiedUtc
             ) VALUES (
@@ -40,7 +44,10 @@ ELSE
                 @Each,
                 @CatalogId,
                 @Active,
+                @LineNumber,
                 GETUTCDATE(),
                 GETUTCDATE()
             )
       END
+
+ SET @ReturnValue = SCOPE_IDENTITY()

@@ -5,6 +5,7 @@ CREATE PROCEDURE [List].[SaveMandatoryItemByCustomerNumberBranch]
     @Each                           BIT,
     @CatalogId                      VARCHAR (10),
     @Active                         BIT,
+    @LineNumber                     INT,
     @ReturnValue                    BIGINT OUTPUT
 AS
 
@@ -16,6 +17,7 @@ IF @Id > 0
         [Each] = @Each,
         [CatalogId] = @CatalogId,
         [Active] = @Active,
+        [LineNumber] = @LineNumber,
 		[ModifiedUtc] = GETUTCDATE()
     WHERE
         [Id] = @Id
@@ -27,6 +29,7 @@ ELSE
         [Each],
         [CatalogId],
         [Active],
+        [LineNumber],
 		[CreatedUtc],
 		[ModifiedUtc]
     )
@@ -37,6 +40,7 @@ ELSE
         @Each,
         @CatalogId,
         @Active,
+        @LineNumber,
 		GETUTCDATE(),
 		GETUTCDATE()
     )

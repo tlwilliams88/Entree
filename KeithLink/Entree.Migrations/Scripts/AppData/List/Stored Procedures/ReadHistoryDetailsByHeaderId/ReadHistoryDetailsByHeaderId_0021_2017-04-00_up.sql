@@ -1,20 +1,20 @@
 CREATE PROCEDURE [List].[ReadHistoryDetailsByParentId] 
-	@HeaderId	bigint
+    @HeaderId   bigint
 AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
 
-	SELECT
-		[Id],
+    SELECT
+        [Id],
         [HeaderId],
-		[LineNumber],
-		[ItemNumber],
-		[Each],
-		[CatalogId],
-		[CreatedUtc],
-		[ModifiedUtc]
-	FROM 
+        [LineNumber],
+        [ItemNumber],
+        [Each],
+        [CatalogId],
+        [CreatedUtc],
+        [ModifiedUtc]
+    FROM 
         [List].[HistoryDetails] 
-	WHERE	
+    WHERE   
         [HeaderId] = @HeaderId

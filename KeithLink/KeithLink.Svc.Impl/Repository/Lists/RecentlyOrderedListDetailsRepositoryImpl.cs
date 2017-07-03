@@ -20,6 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_ITEMNUMBER = "ItemNumber";
         private const string PARMNAME_EACH = "Each";
         private const string PARMNAME_CATALOGID = "CatalogId";
+        private const string PARMNAME_LINENUMBER = "LineNumber";
 
         private const string PARMNAME_NUMBERTOKEEP = "NumberToKeep";
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
@@ -45,10 +46,13 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_ITEMNUMBER, details.ItemNumber);
             parms.Add(PARMNAME_EACH, details.Each);
             parms.Add(PARMNAME_CATALOGID, details.CatalogId);
+            parms.Add(PARMNAME_LINENUMBER, details.LineNumber);
+
+            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
             ExecuteCommand(SPNAME_SAVE, parms);
 
-            return 0;
+            return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
 
         public void DeleteRecentlyOrdered(RecentlyOrderedListDetail details) {

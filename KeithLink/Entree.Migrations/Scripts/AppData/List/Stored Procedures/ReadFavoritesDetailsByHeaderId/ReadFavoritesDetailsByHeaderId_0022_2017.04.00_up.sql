@@ -1,9 +1,10 @@
 CREATE PROCEDURE [List].[ReadFavoritesDetailsByParentId] 
-	@HeaderId	BIGINT
+    @HeaderId   BIGINT
 AS
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+    -- SET NOCOUNT ON added to prevent extra result sets from
+    -- interfering with SELECT statements.
+    SET NOCOUNT ON;
+
 
 	SELECT
 		[Id],
@@ -12,13 +13,13 @@ AS
 		[Each],
 		[Label],
 		[CatalogId],
-        [HeaderId],
-        [Active],
+    [HeaderId],
+    [Active],
 		[CreatedUtc],
 		[ModifiedUtc]
 	FROM 
         [List].[FavoritesDetails] 
-	WHERE	
+    WHERE   
         [HeaderId] = @HeaderId
-	AND 
+    AND 
         [Active] = 1

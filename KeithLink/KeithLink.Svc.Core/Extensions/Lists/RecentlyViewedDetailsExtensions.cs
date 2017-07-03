@@ -12,7 +12,8 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                                          ModifiedUtc = value.ModifiedUtc,
                                          CreatedUtc = value.CreatedUtc,
                                          Each = value.Each ?? false,
-                                         CatalogId = value.CatalogId
+                                         CatalogId = value.CatalogId,
+                                         Position = value.LineNumber
                                      };
         }
 
@@ -22,7 +23,8 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                                                     Each = model.Each ?? false,
                                                     Id = model.ListItemId,
                                                     ItemNumber = model.ItemNumber,
-                                                    HeaderId = headerId
+                                                    HeaderId = headerId,
+                                                    LineNumber = model.Position
                                                 };
         }
     }

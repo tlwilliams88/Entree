@@ -3,7 +3,9 @@ CREATE PROCEDURE [List].[SaveRecentlyOrderedDetails]
     @HeaderId  BIGINT,
     @ItemNumber                     VARCHAR(6),
     @Each                           BIT,
-    @CatalogId                      VARCHAR(10)
+    @CatalogId                      VARCHAR(10),
+    @LineNumber                     INT,
+    @ReturnValue                    BIGINT OUTPUT
 AS
 
 IF @Id > 0
@@ -14,7 +16,8 @@ IF @Id > 0
             [ItemNumber] = @ItemNumber,
             [Each] = @Each,
             [CatalogId] = @CatalogId,
-			[ModifiedUtc] = GETUTCDATE()
+            [LineNumber] = @LineNumber,
+            [ModifiedUtc] = GETUTCDATE()
         WHERE
             [Id] = @Id
     END
@@ -26,8 +29,9 @@ ELSE
             [ItemNumber],
             [Each],
             [CatalogId],
-			[CreatedUtc],
-			[ModifiedUtc]
+            [LineNumber],
+            [CreatedUtc],
+            [ModifiedUtc]
         )
         VALUES
         (
@@ -35,7 +39,10 @@ ELSE
             @ItemNumber,
             @Each,
             @CatalogId,
-			GETUTCDATE(),
-			GETUTCDATE()
+            @LineNumber,
+            GETUTCDATE(),
+            GETUTCDATE()
         )
     END
+
+SET @ReturnValue = SCOPE_IDENTITY()

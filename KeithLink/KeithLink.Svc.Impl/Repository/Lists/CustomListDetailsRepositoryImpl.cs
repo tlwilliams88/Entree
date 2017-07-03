@@ -18,10 +18,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_HEADERID = "HeaderId";
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_INVID = "CustomInventoryItemId";
-        private const string PARMNAME_ITEMNUM = "ItemNumber";
-        private const string PARMNAME_LINENUM = "LineNumber";
+        private const string PARMNAME_ITEMNUMBER = "ItemNumber";
+        private const string PARMNAME_LINENUMBER = "LineNumber";
         private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_PAR = "Par";
+
         private const string PARMNAME_RETVAL = "ReturnValue";
 
         private const string SPNAME_GETBYHEADER = "[List].[ReadCustomListDetailsByParentId]";
@@ -45,8 +46,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_EACH, model.Each);
             parms.Add(PARMNAME_HEADERID, model.HeaderId);
             parms.Add(PARMNAME_INVID, model.CustomInventoryItemId);
-            parms.Add(PARMNAME_ITEMNUM, model.ItemNumber);
-            parms.Add(PARMNAME_LINENUM, model.LineNumber);
+            parms.Add(PARMNAME_ITEMNUMBER, model.ItemNumber);
+            parms.Add(PARMNAME_LINENUMBER, model.LineNumber);
             parms.Add(PARMNAME_LABEL, model.Label);
             parms.Add(PARMNAME_PAR, model.Par);
             parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);

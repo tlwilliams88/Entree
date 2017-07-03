@@ -7,7 +7,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         List<MandatoryItemsListDetail> GetAllByHeader(long parentHeaderId);
 
-        void Save(MandatoryItemsListDetail model);
+        long Save(MandatoryItemsListDetail model);
 
         void Delete(long id);
     }

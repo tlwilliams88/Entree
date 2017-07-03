@@ -7,7 +7,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         List<RecommendedItemsListDetail> GetAllByHeader(long parentHeaderId);
 
-        void Save(RecommendedItemsListDetail model);
+        long Save(RecommendedItemsListDetail model);
 
         void Delete(long id);
     }

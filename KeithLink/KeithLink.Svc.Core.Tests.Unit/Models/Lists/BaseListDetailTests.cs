@@ -18,7 +18,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
                 CatalogId = "Fake CatalogId",
                 Each = true,
                 HeaderId = 15,
-                ItemNumber = "Fake ItemNumber"
+                ItemNumber = "Fake ItemNumber",
+                LineNumber = 100
             };
         }
 
@@ -136,6 +137,35 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
                 test.ItemNumber
                     .Should()
                     .BeNull();
+            }
+        }
+
+        public class Get_LineNumber {
+            [Fact]
+            public void GoodDetail_ReturnsExpectedValue() {
+                // arrange
+                var fakeItem = MakeDetail();
+                var expected = 100;
+
+                // act
+
+                // assert
+                fakeItem.LineNumber
+                        .Should()
+                        .Be(expected);
+            }
+
+            [Fact]
+            public void InitializedDetail_HasDefaultValue() {
+                // arrange
+                var test = new StubDetail();
+
+                // act
+
+                // assert
+                test.LineNumber
+                    .Should()
+                    .Be(0);
             }
         }
     }
