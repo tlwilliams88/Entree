@@ -402,11 +402,11 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/copy")]
-        public OperationReturnModel<List<ListCopyResultModel>> CopyList(ListCopyShareModel copyListModel) {
-            OperationReturnModel<List<ListCopyResultModel>> ret = new OperationReturnModel<List<ListCopyResultModel>>();
+        public OperationReturnModel<List<ListModel>> CopyList(ListCopyShareModel copyListModel) {
+            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
             try
             {
-                var list = _listLogic.CopyList(copyListModel);
+                var list = _listService.CopyList(this.AuthenticatedUser, this.SelectedUserContext, copyListModel);
 
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
