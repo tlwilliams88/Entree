@@ -20,9 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_LABEL = "Label";
         private const string PARMNAME_ITEMNUMBER = "ItemNumber";
         private const string PARMNAME_LINENUMBER = "LineNumber";
-
-        private const string PARMNAME_RETURNVALUE = "ReturnValue";
-
+        private const string PARMNAME_RETVAL = "ReturnValue";
 
         private const string SPNAME_DELETE = "[List].[DeleteFavoriteDetail]";
         private const string SPNAME_GETALL = "[List].[ReadFavoritesDetailsByParentId]";
@@ -60,11 +58,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_LABEL, model.Label);
             parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
-            parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
-
             ExecuteCommand(SPNAME_SAVE, parms);
 
-            return parms.Get<long>(PARMNAME_RETURNVALUE);
+            return parms.Get<long>(PARMNAME_RETVAL);
         }
         #endregion
     }

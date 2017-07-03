@@ -56,6 +56,7 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\FavoritesDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListHeaders.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
@@ -135,8 +136,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /e $(ProjectDir)Scripts $(OutDir)
-xcopy /e $(ProjectDir)SQL $(OutDir)</PostBuildEvent>
+    <PostBuildEvent>xcopy /e $(ProjectDir)Scripts\$(OutDir)
+xcopy /e $(ProjectDir)SQL\$(OutDir)</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>rmdir /s /q $(OutDir)Scripts
