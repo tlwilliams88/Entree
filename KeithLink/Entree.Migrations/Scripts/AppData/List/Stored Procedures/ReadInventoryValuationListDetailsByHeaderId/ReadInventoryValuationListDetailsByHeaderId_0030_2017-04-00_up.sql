@@ -7,6 +7,8 @@ AS
 
     SELECT
         [Id],
+        [HeaderId],
+        [CustomInventoryItemId],
         [ItemNumber],
         [LineNumber],
         [Each],

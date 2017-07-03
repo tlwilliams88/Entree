@@ -7,25 +7,31 @@ CREATE PROCEDURE [List].[SaveInventoryValuationItem]
 	@Each                       BIT,
 	@Quantity                   DECIMAL(18, 2),
 	@CatalogId                  VARCHAR(10),
-	@Active			            BIT
+	@Active			            BIT,
+    @ReturnValue                BIGINT                  OUTPUT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
-			
-    UPDATE
-        [List].[InventoryValuationListDetails]
-    SET
-        [ItemNumber] = @ItemNumber,
-        [CustomInventoryItemId] = @CustomInventoryItemId,
-		[LineNumber]			   = @LineNumber,
-        [Each] = @Each,
-        [Quantity] = @Quantity, 
-        [CatalogId] = @CatalogId, 
-        [Active] = @Active, 
-        [ModifiedUtc] = GETUTCDATE()
-    WHERE 
-        [Id] = @Id
+	
+    IF @Id > 0 
+      BEGIN
+        UPDATE
+            [List].[InventoryValuationListDetails]
+        SET
+            [ItemNumber] = @ItemNumber,
+            [CustomInventoryItemId] = @CustomInventoryItemId,
+		    [LineNumber]            = @LineNumber,
+            [Each]                  = @Each,
+            [Quantity]              = @Quantity, 
+            [CatalogId]             = @CatalogId, 
+            [Active]                = @Active, 
+            [ModifiedUtc]           = GETUTCDATE()
+        WHERE 
+            [Id] = @Id
+
+        SET @ReturnValue = @Id
+      END
 
     IF @@ROWCOUNT = 0 
       BEGIN
@@ -45,7 +51,7 @@ AS
                 @HeaderId,
 	            @CustomInventoryItemId,
 	            @ItemNumber,
-			@LineNumber,
+			    @LineNumber,
 	            @Each,
                 @Quantity,
 	            @CatalogId,
@@ -53,5 +59,7 @@ AS
 	            GETUTCDATE(),
 	            GETUTCDATE()
             )
+
+        SET @ReturnValue = SCOPE_IDENTITY()
       END
 GO
