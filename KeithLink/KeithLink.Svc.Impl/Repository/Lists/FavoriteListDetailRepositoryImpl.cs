@@ -58,8 +58,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_ITEMNUMBER, model.ItemNumber);
             parms.Add(PARMNAME_LINENUMBER, model.LineNumber);
             parms.Add(PARMNAME_LABEL, model.Label);
-            parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
-
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
             ExecuteCommand(SPNAME_SAVE, parms);
