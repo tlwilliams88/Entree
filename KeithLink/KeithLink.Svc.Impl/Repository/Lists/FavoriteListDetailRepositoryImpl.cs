@@ -23,8 +23,10 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
+
         private const string SPNAME_DELETE = "[List].[DeleteFavoriteDetail]";
-        private const string SPNAME_GET = "[List].[ReadFavoritesDetailsByParentId]";
+        private const string SPNAME_GETALL = "[List].[ReadFavoritesDetailsByParentId]";
+        private const string SPNAME_GETONE = "[List].[GetFavoriteDetail]";
         private const string SPNAME_SAVE = "[List].[SaveFavoriteDetails]";
         #endregion
 
@@ -38,8 +40,12 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             ExecuteCommand(SPNAME_DELETE, PARMNAME_ID, id);
         }
 
+        public FavoritesListDetail GetFavoriteDetail(long id) {
+            return ReadOne<FavoritesListDetail>(SPNAME_GETONE, PARMNAME_ID, id);
+        }
+
         public List<FavoritesListDetail> GetFavoritesListDetails(long headerId) {
-            return Read<FavoritesListDetail>(SPNAME_GET, PARMNAME_HEADERID, headerId);
+            return Read<FavoritesListDetail>(SPNAME_GETALL, PARMNAME_HEADERID, headerId);
         }
 
         public long SaveFavoriteListDetail(FavoritesListDetail model) {
@@ -52,6 +58,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_ITEMNUMBER, model.ItemNumber);
             parms.Add(PARMNAME_LINENUMBER, model.LineNumber);
             parms.Add(PARMNAME_LABEL, model.Label);
+            parms.Add(PARMNAME_RETVAL, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 
@@ -59,7 +66,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
 
             return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
-
         #endregion
     }
 }

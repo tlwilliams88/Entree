@@ -412,7 +412,6 @@
     <Compile Include="Models\Lists\CustomList\CustomListHeader.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListDetail.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValuationListHeader.cs" />
-    <Compile Include="Models\Lists\ListCopyResultModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportModel.cs" />
     <Compile Include="Models\Lists\CustomInventoryImportFileModel.cs" />
     <Compile Include="Models\Lists\ListItemReportModel.cs" />

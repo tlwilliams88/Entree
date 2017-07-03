@@ -15,8 +15,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
     {
         void ProcessContractChanges();
 
-        long? AddItem(UserProfile user, UserSelectedContext catalogInfo, long listId, ListItemModel item);
-
         long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, long listId, long customInventoryItemId);
 
         List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<long> customInventoryItemIds);
@@ -28,8 +26,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
 
         void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist);
-
-        List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
 
         long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 

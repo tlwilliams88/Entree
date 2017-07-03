@@ -402,11 +402,11 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/copy")]
-        public OperationReturnModel<List<ListCopyResultModel>> CopyList(ListCopyShareModel copyListModel) {
-            OperationReturnModel<List<ListCopyResultModel>> ret = new OperationReturnModel<List<ListCopyResultModel>>();
+        public OperationReturnModel<List<ListModel>> CopyList(ListCopyShareModel copyListModel) {
+            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
             try
             {
-                var list = _listLogic.CopyList(copyListModel);
+                var list = _listService.CopyList(this.AuthenticatedUser, this.SelectedUserContext, copyListModel);
 
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
@@ -552,23 +552,29 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [ApiKeyedRoute("list/{type}/{listId}")]
         public OperationReturnModel<string> DeleteList(ListType type, long listId) {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
-            //try
-            //{
-            //    var list = _listRepo.ReadById(listId);
+            try
+            {
+                var list = _listService.ReadList(AuthenticatedUser, SelectedUserContext, type, listId);
 
-            //    _listLogic.DeleteList(listId);
+                _listService.DeleteList(AuthenticatedUser, SelectedUserContext, type, list);
 
-            //    _auditLogRepo.WriteToAuditLog(Common.Core.Enumerations.AuditType.ListDelete, AuthenticatedUser.Name, String.Format("List {0} ({1}) deleted for customer {2} - {3}", list.DisplayName, listId, this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
+                _auditLogRepo.WriteToAuditLog(Common.Core.Enumerations.AuditType.ListDelete, 
+                    AuthenticatedUser.Name, 
+                    String.Format("List {0} ({1}) deleted for customer {2} - {3}", 
+                                  list.Name, 
+                                  listId, 
+                                  this.SelectedUserContext.CustomerId, 
+                                  this.SelectedUserContext.BranchId));
 
-            //    ret.SuccessResponse = null;
-            //    ret.IsSuccess = true;
-            //}
-            //catch (Exception ex)
-            //{
-            //    ret.IsSuccess = false;
-            //    ret.ErrorMessage = ex.Message;
-            //    _elRepo.WriteErrorLog("DeleteList", ex);
-            //}
+                ret.SuccessResponse = null;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("DeleteList", ex);
+            }
             return ret;
         }
 

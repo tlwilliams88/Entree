@@ -437,17 +437,40 @@ namespace KeithLink.Svc.Impl.Service.List
             return id;
         }
 
-        public void CopyList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                                      ListModel list)
+        public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel)
         {
-            //switch (type)
-            //{
-            //    case ListType.Custom:
-            //        id = _customListLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
-            //        break;
-            //}
+            ListModel list = _customListLogic.GetListModel(user, 
+                                                           catalogInfo, 
+                                                           copyListModel.ListId);
+            list.Name = list.Name + " copy";
 
-            //return id;
+            List<ListModel> results = new List<ListModel>();
+
+            foreach (var customer in copyListModel.Customers) {
+                results.Add(CopyList(user, new UserSelectedContext()
+                {
+                    BranchId = customer.CustomerBranch,
+                    CustomerId = customer.CustomerNumber
+                }, list));
+            }
+
+            return results;
+        }
+
+        private ListModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+            long newListId = CreateList(user,
+                                        catalogInfo,
+                                        ListType.Custom,
+                                        list);
+
+            SaveItems(user, catalogInfo, ListType.Custom, newListId, list.Items.Select(i => new ListItemModel() { ItemNumber = i.ItemNumber, Each = i.Each }).ToList());
+
+            return new ListModel()
+            {
+                BranchId = catalogInfo.BranchId,
+                CustomerNumber = catalogInfo.CustomerId,
+                ListId = newListId
+            };
         }
 
         public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
@@ -459,7 +482,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _customListLogic.DeleteList(user, catalogInfo, list);
                     break;
                 case ListType.InventoryValuation:
-                    //id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    long x = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, false);
                     break;
             }
         }

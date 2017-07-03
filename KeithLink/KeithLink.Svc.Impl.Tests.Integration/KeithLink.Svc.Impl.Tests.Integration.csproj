@@ -83,7 +83,12 @@
     <Compile Include="Repository\Lists\ContractListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\CustomListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\CustomListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\FavoriteListHeadersRepositoryTests.cs" />
     <Compile Include="Repository\Lists\CustomListShareRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\FavoriteListDetailsRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\HistoryListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\HistoryListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\InventoryValuationListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
   </ItemGroup>
   <ItemGroup>

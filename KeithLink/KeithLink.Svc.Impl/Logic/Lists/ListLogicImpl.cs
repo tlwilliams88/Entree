@@ -433,56 +433,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _uow.SaveChanges();
         }
 
-        /// <summary>
-        /// copies the list for sharing with other users
-        /// </summary>
-        /// <param name="copyListModel">ListCopyShareModel</param>
-        /// <returns>the copied list</returns>
-        public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
-        {
-            var listToCopy = _listRepo.ReadById(copyListModel.ListId);
-
-            var listToCreate = new List<List>();
-            Dictionary<string, ExternalCatalog> externalCatalogDict = _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower());
-
-            foreach (var customer in copyListModel.Customers)
-            {
-                var newList = new List()
-                {
-                    DisplayName = string.Format("Copied - {0}", listToCopy.DisplayName),
-                    UserId = listToCopy.UserId,
-                    CustomerId = customer.CustomerNumber,
-                    BranchId = customer.CustomerBranch,
-                    Type = ListType.Custom,
-                    ReadOnly = false
-                };
-
-                ExternalCatalog currentExtCatalog = externalCatalogDict[customer.CustomerBranch.ToLower()];
-
-                newList.Items = new List<ListItem>();
-                foreach (var item in listToCopy.Items)
-                {
-                    newList.Items.Add(new ListItem()
-                    {
-                        Category = item.Category,
-                        ItemNumber = item.ItemNumber,
-                        Label = item.Label,
-                        Par = item.Par,
-                        Position = item.Position,
-                        Each = item.Each,
-                        CatalogId = IsBekBranch(item.CatalogId) ? customer.CustomerBranch : currentExtCatalog.ExternalBranchId
-                    });
-                }
-
-                _listRepo.Create(newList);
-                listToCreate.Add(newList);
-            }
-
-            _uow.SaveChanges();
-
-            return listToCreate.Select(l => new ListCopyResultModel() { CustomerId = l.CustomerId, BranchId = l.BranchId, NewListId = l.Id }).ToList();
-        }
-
         public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
         {
             var newList = list.ToEFList();
