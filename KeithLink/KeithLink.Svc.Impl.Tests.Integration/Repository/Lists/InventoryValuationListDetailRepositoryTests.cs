@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
 using FluentAssertions;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Impl.Repository.SmartResolver;
 using Xunit;
+
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
+using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
     public class InventoryValuationListDetailRepositoryTests {
@@ -180,7 +179,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
 
                 // assert
                 results[0]
-                    .HeaderId
+                    .Quantity
                     .Should()
                     .Be(expected);
             }
@@ -263,7 +262,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var results = repo.GetInventoryValuationDetails(headerId);
 
                 // assert
-                results[3]
+                results[2]
                     .Each
                     .Should()
                     .BeNull();
@@ -279,7 +278,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var results = repo.GetInventoryValuationDetails(headerId);
 
                 // assert
-                results[3]
+                results[2]
                     .CatalogId
                     .Should()
                     .BeNull();
@@ -295,13 +294,303 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var results = repo.GetInventoryValuationDetails(headerId);
 
                 // assert
-                results[3]
+                results[2]
                     .CustomInventoryItemId
                     .Should()
                     .BeNull();
             }
         }
 
-        public class SaveInventoryValudationDetail : MigratedDatabaseTest { }
+        public class SaveInventoryValudationDetail : MigratedDatabaseTest { 
+            private static InventoryValuationListDetail MakeDetail() {
+                return new InventoryValuationListDetail() {
+                    Active = true,
+                    CatalogId = "FRT",
+                    CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
+                    CustomInventoryItemId = 1000,
+                    Each = true,
+                    HeaderId = 1,
+                    ItemNumber = "123456",
+                    LineNumber = 2,
+                    ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
+                    Quantity = 15
+                };
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedActive() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = true;
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .Active
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedHeaderId() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 1;
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .HeaderId
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedCustomInventoryItemId() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 1000;
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .CustomInventoryItemId
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedCatalogId() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = "FRT";
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .CatalogId
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedEach() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = true;
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .Each
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedItemNumber() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = "123456";
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .ItemNumber
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedQuantity() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 15;
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .Quantity
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedLineNumber() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 2;
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .LineNumber
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_DoesNotSaveSetCreatedUtc() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc);
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .CreatedUtc
+                    .Should()
+                    .NotBe(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_DoesNotSaveSetModifiedUtc() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc);
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .ModifiedUtc
+                    .Should()
+                    .NotBe(expected);
+            }
+
+            [Fact]
+            public void NullCatalogId_SavesNull() {
+                // arrange
+                var detail = new InventoryValuationListDetail() {
+                    Active = true,
+                    CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
+                    CustomInventoryItemId = 1000,
+                    Each = true,
+                    HeaderId = 1,
+                    ItemNumber = "123456",
+                    LineNumber = 2,
+                    ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
+                    Quantity = 15
+                };
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .CatalogId
+                    .Should()
+                    .BeNull();
+            }
+
+            [Fact]
+            public void NullCustomInventoryItemId_SavesNull() {
+                // arrange
+                var detail = new InventoryValuationListDetail() {
+                    Active = true,
+                    CatalogId = "FRT",
+                    CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
+                    Each = true,
+                    HeaderId = 1,
+                    ItemNumber = "123456",
+                    LineNumber = 2,
+                    ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
+                    Quantity = 15
+                };
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .CustomInventoryItemId
+                    .Should()
+                    .BeNull();
+            }
+
+            [Fact]
+            public void NullEach_SavesNull() {
+                // arrange
+                var detail = new InventoryValuationListDetail() {
+                    Active = true,
+                    CatalogId = "FRT",
+                    CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
+                    CustomInventoryItemId = 1000,
+                    HeaderId = 1,
+                    ItemNumber = "123456",
+                    LineNumber = 2,
+                    ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
+                    Quantity = 15
+                };
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                var result = results.Where(r => r.Id == detailId).First();
+
+                // assert
+                result
+                    .Each
+                    .Should()
+                    .BeNull();
+            }
+
+        }
     }
 }

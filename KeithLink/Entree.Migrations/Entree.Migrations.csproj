@@ -138,10 +138,12 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /e $(ProjectDir)Scripts\$(OutDir)
 xcopy /e $(ProjectDir)SQL\$(OutDir)</PostBuildEvent>
+    <PostBuildEvent>xcopy /e /y $(ProjectDir)Scripts $(TargetDir)Scripts
+xcopy /e /y $(ProjectDir)SQL $(TargetDir)SQL</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>rmdir /s /q $(OutDir)Scripts
-rmdir /s /q $(OutDir)SQL</PreBuildEvent>
+    <PreBuildEvent>rmdir /s /q /y $(TargetDir)Scripts
+rmdir /s /q /y $(TargetDir)SQL</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
