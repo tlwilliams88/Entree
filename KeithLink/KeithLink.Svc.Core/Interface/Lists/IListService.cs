@@ -42,6 +42,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         List<string> ReadLabels(UserProfile user, UserSelectedContext catalogInfo);
 
+        Dictionary<string, string> GetContractInformation(UserSelectedContext catalogInfo);
+
         List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
     }
 }
