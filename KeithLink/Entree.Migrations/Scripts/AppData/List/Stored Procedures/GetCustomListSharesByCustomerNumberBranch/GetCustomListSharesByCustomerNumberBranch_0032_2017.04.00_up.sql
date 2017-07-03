@@ -11,7 +11,7 @@ AS
 	    [BranchId],
 	    [CustomerNumber],
 	    [HeaderId],
-        [Active]
+        [Active],
 	    [CreatedUtc],
 	    [ModifiedUtc]
 	FROM 

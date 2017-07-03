@@ -356,7 +356,6 @@ angular.module('bekApp')
 
       var lastlist ={
           listId: listid,
-          listType: listtype,
           timeset: timeset
       };
 

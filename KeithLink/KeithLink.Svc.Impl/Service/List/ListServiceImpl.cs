@@ -482,7 +482,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _customListLogic.DeleteList(user, catalogInfo, list);
                     break;
                 case ListType.InventoryValuation:
-                    //id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
+                    long x = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, false);
                     break;
             }
         }

@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
     public class FavoriteListHeaderRepositoryImpl : DapperDatabaseConnection, IFavoriteListHeadersRepository {
         #region attributes
         private const string SPNAME_GETHEADER = "[List].[GetFavoritesHeaderByUserIdCustomerNumberBranch]";
-        private const string SPNAME_SAVE = "[List].[AddFavoriteListHeader]";
+        private const string SPNAME_SAVE = "[List].[SaveFavoritesHeader]";
 
         private const string PARMNAME_BRANCH = "BranchId";
         private const string PARMNAME_CUSTID = "CustomerNumber";

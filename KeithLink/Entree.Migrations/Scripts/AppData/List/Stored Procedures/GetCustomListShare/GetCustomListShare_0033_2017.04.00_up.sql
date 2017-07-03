@@ -1,5 +1,5 @@
-CREATE PROCEDURE [List].[GetCustomListSharesByListId]
-	@HeaderId     BIGINT
+﻿CREATE PROCEDURE [List].[GetCustomListShare]
+	@Id     BIGINT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -16,6 +16,4 @@ AS
 	FROM 
         [List].[CustomListShares] 
 	WHERE	
-        [HeaderId] = @HeaderId
-	AND 
-        [Active] = 1
+        [Id] = @Id

@@ -40,8 +40,8 @@ td {
 
 @media (max-width: 50000px) and (min-width: $screen-sm-max){
   .main-content {
-    width: 100.8%;
-    padding-left: 12px;
+    // width: 100.8%;
+    padding-left: 14px;
   }
 }
 
@@ -53,6 +53,7 @@ td {
 // everything below page-header-bar, located in each menu child state
 .page-content {
   margin-top: 30px;
+  padding-right: 15px;
 }
 
 .background-white {
@@ -62,7 +63,7 @@ td {
 @media (max-width: $screen-sm-max) {
   .main-content {
     width: inherit;
-    margin-left: 0;
+    margin-left: 15px;
     margin-right: 0;
   }
   .page-content {
@@ -77,9 +78,9 @@ td {
 }
 
 .no-results {
-  font-size: 15px; 
-  font-weight: 400; 
-  line-height: 40px; 
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 40px;
   letter-spacing: 1px;
 }
 
@@ -126,4 +127,8 @@ td {
 
 .border-left-red {
   border-left: 3px solid $color-red;
+}
+
+.row {
+  margin-right: 0;
 }

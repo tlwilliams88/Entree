@@ -52,6 +52,9 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListShares.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\FavoriteListHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\FavoritesDetails.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryHeaders.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
@@ -109,6 +112,10 @@
     <Content Include="Scripts\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListShare\GetCustomListShare_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetCustomListShare\GetCustomListShare_0033_2017.04.00_up.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoriteDetail\GetFavoriteDetail_0033_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\List\Stored Procedures\GetFavoriteDetail\GetFavoriteDetail_0033_2017.04.00_up.sql" />
     <Content Include="SQL\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
