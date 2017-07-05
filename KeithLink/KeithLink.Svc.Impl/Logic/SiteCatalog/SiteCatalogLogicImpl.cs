@@ -395,7 +395,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             string catalogId = GetBranchId( catalogInfo.BranchId, catalogType );
             catalogInfo.BranchId = catalogId;  
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _catalogCacheRepository);
+            //Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _catalogCacheRepository);
 
             if (ret == null)
                 return null;
@@ -406,7 +406,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             //AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
-            ret.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, new ListItemModel() { ItemNumber = ret.ItemNumber });
+            //ret.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, new ListItemModel() { ItemNumber = ret.ItemNumber });
 
             PriceReturn pricingInfo = null;
 

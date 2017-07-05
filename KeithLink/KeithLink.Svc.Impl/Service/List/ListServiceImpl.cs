@@ -7,6 +7,7 @@ using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Lists;
+using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
@@ -24,7 +25,7 @@ namespace KeithLink.Svc.Impl.Service.List
     public class ListServiceImpl : IListService
     {
         #region attributes
-        private readonly IListLogic _genericListLogic;
+        private readonly ICacheRepository _cache;
         private readonly IContractListLogic _contractListLogic;
         private readonly IHistoryListLogic _historyListLogic;
         private readonly IFavoritesListLogic _favoritesLogic;
@@ -42,6 +43,12 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IPriceLogic _priceLogic;
         private readonly IProductImageRepository _productImageRepo;
         private readonly IEventLogRepository _log;
+
+        private Dictionary<string, string> _contractdictionary;
+
+        private const string CACHE_CONTRACT_GROUPNAME = "ContractInformation";
+        private const string CACHE_CONTRACT_NAME = "ContractInformation";
+        private const string CACHE_CONTRACT_PREFIX = "Default";
         #endregion
 
         #region ctor
@@ -51,10 +58,10 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, 
+                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
                                 IEventLogRepository log)
         {
-            _genericListLogic = genericListLogic;
+            _cache = cache;
             // specific lists -
             _contractListLogic = contractListLogic;
             _historyListLogic = historyListLogic;
@@ -75,6 +82,50 @@ namespace KeithLink.Svc.Impl.Service.List
             _log = log;
         }
         #endregion
+
+        public Dictionary<string, string> GetContractInformation(UserSelectedContext catalogInfo)
+        {
+            Dictionary<string, string> contractdictionary = new Dictionary<string, string>();
+
+            Dictionary<string, string> cachedContractdictionary = _cache.GetItem<Dictionary<string, string>>(CACHE_CONTRACT_GROUPNAME,
+                                                                                                             CACHE_CONTRACT_PREFIX,
+                                                                                                             CACHE_CONTRACT_NAME,
+                                                                                                             string.Format("ContractDictionary_{0}_{1}",
+                                                                                                                           catalogInfo.BranchId,
+                                                                                                                           catalogInfo.CustomerId));
+
+            if (cachedContractdictionary == null)
+            {
+                ListModel contract = _contractListLogic.GetListModel(null, catalogInfo, 0);
+                if (contract != null)
+                {
+                    // When we apply contract categories to other lists, on contracts that have the same itemnumber 
+                    // for case and package lines have the same itemnumber twice.So the dictionary blows up trying 
+                    // to put the two entries for the same itemnumber in...
+                    // The dictionary just applies the category to that same item used in other lists. So the only 
+                    // negative is if they specify the itemnumber/case as being in a different category than the 
+                    // item /package combination. Nothing changes in how it is used in an order or anything.
+                    contractdictionary = contract.Items
+                                                 .GroupBy(li => li.ItemNumber, StringComparer.CurrentCultureIgnoreCase)
+                                                 .ToDictionary(g => g.Key,
+                                                               g => g.First().Category.Trim());
+                }
+                _cache.AddItem<Dictionary<string, string>>(CACHE_CONTRACT_GROUPNAME,
+                                                           CACHE_CONTRACT_PREFIX,
+                                                           CACHE_CONTRACT_NAME,
+                                                           string.Format("ContractDictionary_{0}_{1}",
+                                                                         catalogInfo.BranchId,
+                                                                         catalogInfo.CustomerId), TimeSpan.FromHours(2), contractdictionary);
+
+            }
+            else
+            {
+                contractdictionary = cachedContractdictionary;
+            }
+
+            return contractdictionary;
+        }
+
 
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
@@ -210,6 +261,8 @@ namespace KeithLink.Svc.Impl.Service.List
         public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
         {
             List<ListModel> list = new List<ListModel>();
+            
+            if(_contractdictionary == null) { _contractdictionary = GetContractInformation(catalogInfo); }
 
             AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, headerOnly);
             AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
@@ -581,9 +634,13 @@ namespace KeithLink.Svc.Impl.Service.List
             List<ItemHistory> itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                           f.CustomerNumber.Equals(catalogInfo.CustomerId))
                                                                .ToList();
+
             Parallel.ForEach(list.Items, listItem =>
             {
-                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+
+                listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
+
+                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
                     if (prod != null)
                     {
@@ -723,6 +780,25 @@ namespace KeithLink.Svc.Impl.Service.List
                 listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
                 listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Notes : null;
             });
+        }
+        public string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
+        {
+            return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
+        }
+
+        public string AddContractInformationIfInContract
+            (Dictionary<string, string> contractdictionary, string itemNumber)
+        {
+            string itmcategory = null;
+            if (contractdictionary != null && contractdictionary.Count > 0)
+            {
+                if (contractdictionary.ContainsKey(itemNumber))
+                {
+                    itmcategory = contractdictionary[itemNumber];
+                }
+            }
+
+            return itmcategory;
         }
 
     }

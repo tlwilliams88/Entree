@@ -27,6 +27,8 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Web.Http;
 
+ using KeithLink.Svc.Core.Interface.Lists;
+
 namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
     /// end points for online bill payment
@@ -35,6 +37,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
     public class InvoiceController : BaseController {
         #region attributes
         private readonly IExportInvoicesService _invService;
+        private readonly IListService _listService;
         private readonly IOnlinePaymentsLogic _invLogic;
 		private readonly IExportSettingLogic _exportLogic;
         private readonly IOrderLogic _orderLogic;
@@ -312,9 +315,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 ret = ExportModel<InvoiceItemModel>(_invService.GetExportableInvoiceItems(AuthenticatedUser,
-                                                                                     SelectedUserContext,
-                                                                                     exportRequest,
-                                                                                     invoiceNumber), 
+                                                                                          SelectedUserContext,
+                                                                                          exportRequest,
+                                                                                          invoiceNumber,
+                                                                                          _listService.GetContractInformation(SelectedUserContext)), 
                                                     exportRequest, 
                                                     SelectedUserContext);
             }
