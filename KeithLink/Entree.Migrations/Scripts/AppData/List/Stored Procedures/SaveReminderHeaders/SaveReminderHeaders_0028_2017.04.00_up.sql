@@ -2,7 +2,7 @@ CREATE PROCEDURE [List].[SaveRemindersHeaders]
     @Id             BIGINT,
     @BranchId       CHAR(3),
     @CustomerNumber CHAR(6),
-    @ReturnValue    BIGINT
+    @ReturnValue    BIGINT      OUTPUT
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.

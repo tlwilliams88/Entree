@@ -109,7 +109,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// <returns>the list item's unique id</returns>
         public long? AddItem(UserProfile user, UserSelectedContext catalogInfo, long listId, ListItemModel newItem)
         {
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             var list = _listRepo.ReadById(listId);
 
@@ -129,14 +129,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     return dupItem.Id;
             }
 
-            string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, newItem);
+  //          string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, newItem);
 
             var item = new ListItem()
             {
                 ItemNumber = newItem.ItemNumber,
                 Label = newItem.Label,
                 Par = newItem.ParLevel,
-                Category = itmcategory,
+    //            Category = itmcategory,
                 Position = position,
                 Quantity = newItem.Quantity,
                 Each = newItem.Each ?? false,
@@ -243,7 +243,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
         {
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             var list = _listRepo.ReadById(listId);
             var nextPosition = 1;
@@ -258,14 +258,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 if ((list.Type == ListType.Favorite || list.Type == ListType.Reminder) && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
                     continue;
 
-                string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, item);
+//                string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, item);
 
                 ListItem itm = new ListItem()
                     {
                         ItemNumber = item.ItemNumber,
                         Label = item.Label,
                         Par = item.ParLevel,
-                        Category = itmcategory,
+//                        Category = itmcategory,
                         Each = !item.Each.Equals(null) ? item.Each : false,
                         Position = nextPosition,
                         Quantity = item.Quantity,
@@ -1011,11 +1011,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
                 MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
             }
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             foreach(var itm in listClone.Items)
             {
-                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+//                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
             }
 
             if (includePrice)
@@ -1236,16 +1236,16 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             LookupProductDetails(user, tempList, catalogInfo);
             stopWatch.Read(_log, "FillOutListModelItems - LookupProductDetails");
 
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
             stopWatch.Read(_log, "FillOutListModelItems - GetContractInformation");
 
-            if (contractdictionary.Count > 0)
-            {
-                tempList.Items.ForEach
-                    (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
-                                           (contractdictionary, itm));
-                stopWatch.Read(_log, "FillOutListModelItems - AddContractInformationIfInContract");
-            }
+            //if (contractdictionary.Count > 0)
+            //{
+            //    tempList.Items.ForEach
+            //        (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
+            //                               (contractdictionary, itm));
+            //    stopWatch.Read(_log, "FillOutListModelItems - AddContractInformationIfInContract");
+            //}
         }
 
         private void RefreshSharingProps(UserSelectedContext catalogInfo, long Id, ListModel list)
@@ -1421,12 +1421,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     LookupProductDetails(user, listItem, catalogInfo);
 
                     processedList.Add(listItem);
-                    Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//                    Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
-                    foreach (var itm in listItem.Items)
-                    {
-                        itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
-                    }
+                    //foreach (var itm in listItem.Items)
+                    //{
+                    //    itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+                    //}
                     _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId), TimeSpan.FromHours(2), listItem);
 
                 });
@@ -1575,7 +1575,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// <param name="userList"></param>
         public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel userList)
         {
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             bool itemsAdded = false;
             var currentList = _listRepo.Read(l => l.Id.Equals(userList.ListId), i => i.Items)
@@ -1621,7 +1621,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                         if (string.IsNullOrEmpty(updateItem.ItemNumber))
                             continue;
 
-                        string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, updateItem);
+//                        string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, updateItem);
 
                         if (updateItem.ListItemId != 0)
                         {
@@ -1633,7 +1633,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                             item.Position = updateItem.Position;
                             item.Each = updateItem.Each;
                             item.Quantity = updateItem.Quantity;
-                            item.Category = itmcategory;
+//                            item.Category = itmcategory;
                         }
                         else {
                             if ((currentList.Type == ListType.Favorite ||

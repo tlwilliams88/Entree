@@ -56,7 +56,9 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\FavoritesDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
@@ -139,8 +141,8 @@
 xcopy /e /y $(ProjectDir)SQL $(TargetDir)SQL</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>rmdir /s /q /y $(TargetDir)Scripts
-rmdir /s /q /y $(TargetDir)SQL</PreBuildEvent>
+    <PreBuildEvent>rmdir /s /q $(TargetDir)Scripts
+rmdir /s /q $(TargetDir)SQL</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
