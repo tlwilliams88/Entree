@@ -90,6 +90,7 @@
     <Compile Include="Repository\Lists\HistoryListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\ReminderListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
   </ItemGroup>
   <ItemGroup>
