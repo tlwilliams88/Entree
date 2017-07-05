@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList',
-   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService', '$rootScope',
+   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
-     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService, $rootScope) {
+     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService) {
 
     if(originalList.name == 'Non BEK Items'){
       originalList.listid = 'nonbeklist';
@@ -23,7 +23,7 @@ angular.module('bekApp')
 
     var orderBy = $filter('orderBy');
 
-    $scope.lists = ListService.getAllLists();
+    $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
     // used for the 'Show More' button
@@ -253,14 +253,18 @@ angular.module('bekApp')
     function resetPage(list, initialPageLoad) {
       $scope.initPagingValues();
       $scope.activeElement = true;
-      $scope.selectedList = angular.copy(list);
-      $scope.totalItems = $scope.selectedList.itemCount;
-      originalList = list;
-      $scope.selectedList.isRenaming = false;
-      $scope.selectedList.allSelected = false;
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
-      $scope.setStartAndEndPoints(list);
+
+      if(!$scope.selectedList) {
+          $scope.selectedList = angular.copy(list);
+          originalList = list;
+          $scope.setStartAndEndPoints(list);
+      }
+
+      $scope.totalItems = $scope.selectedList.itemCount;
+      $scope.selectedList.isRenaming = false;
+      $scope.selectedList.allSelected = false;
 
       if(initialPageLoad){
         $scope.currentPage = 1;
@@ -502,12 +506,12 @@ angular.module('bekApp')
     DELETE LIST
     **********/
 
-    $scope.deleteList = function(listId) {
-      ListService.deleteList(listId).then(function(list) {
+    $scope.deleteList = function(list) {
+      ListService.deleteList(list).then(function(list) {
         ListService.getListHeaders().then(function(lists){
           $scope.lists = lists;
         })
-        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === listId) {
+        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === list.listid) {
           $scope.hideMandatoryListCreateButton = false;
         }
         return list;
@@ -542,10 +546,12 @@ angular.module('bekApp')
 
        listPagingModel.resetPaging();
 
+       blockUI.start('Saving List...').then(function(){
         return ListService.updateList(updatedList, false, params, addingItem)
-          .then(resetPage).finally(function() {
+          .then(resetPage(updatedList)).finally(function() {
             processingSaveList = false;
           });
+        })
       }
     };
 
