@@ -215,7 +215,7 @@ angular.module('bekApp')
           .then($scope.addRow);
       };
 
-      $scope.addItemsFromList = function(listId) {
+      $scope.addItemsFromList = function(listId, listType) {
         $scope.successMessage = '';
 
         if(listId == 'Custom Inventory'){
@@ -230,7 +230,11 @@ angular.module('bekApp')
             $scope.saveReport();
           });
         } else {
-            ListService.getListWithItems(listId).then(function(listFound) {
+            var list = {
+                listId: listId,
+                listType: listType
+            }
+            ListService.getListWithItems(list).then(function(listFound) {
             $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
             $scope.inventoryForm.$setDirty();
             listFound.items.forEach(function(item) {
@@ -358,17 +362,18 @@ angular.module('bekApp')
         $scope.report.isRenaming = false;
       };
 
-      $scope.deleteReport = function(listId){
+      $scope.deleteReport = function(listId, listType){
           List.delete({
-            listId: listId
+            listId: listId,
+            listType: listType
           }).$promise.then(function() {
             $scope.reports.forEach(function(report, index){
               if(report.listid === listId){
                 $scope.reports.splice(index,1);
               }
             });
-            var rep = ($scope.reports.length > 0) ? $scope.reports[$scope.reports.length - 1].listid : 'newReport';
-            $state.go('menu.inventoryreport', {listid: rep});
+            var rep = ($scope.reports.length > 0) ? $scope.reports[$scope.reports.length - 1]: 'newReport';
+            $state.go('menu.inventoryreport', {listid: rep.listid, type: rep.type});
           });
       };
 

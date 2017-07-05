@@ -334,10 +334,7 @@ angular.module('bekApp')
     })
 
     .state('menu.organizelist', {
-      url: '/lists/:listId/organize',
-      params: {
-        listType : null
-      },
+      url: '/lists/:listType/:listId/organize',
       templateUrl: 'views/listsorganize.html',
       controller: 'ListOrganizeController',
       data: {
