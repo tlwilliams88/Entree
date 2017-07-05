@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService', '$rootScope',
-    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService, $rootScope) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService', '$rootScope', 'blockUI',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService, $rootScope, blockUI) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -262,7 +262,7 @@ angular.module('bekApp')
           var data = {
             params: params
           };
-          return $http.get('/list/' + list.listType, + '/' + list.listId, data).then(function(response) {
+          return $http.get('/list/' + list.listType + '/' + list.listId, data).then(function(response) {
             var list = response.data.successResponse;
             if (!list) {
               return $q.reject('No list found.');
@@ -329,9 +329,8 @@ angular.module('bekApp')
           if (!isNaN(parseInt(listId))) {
             listId = parseInt(listId);
           }
-          Service.getAllLists().then(function(){
-            return UtilityService.findObjectByField(Service.lists, 'listid', listId);
-          });
+
+          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
 
         },
 
@@ -618,24 +617,15 @@ angular.module('bekApp')
               }
             });
 
-            var promise;
-            if (getEntireList) {
-              promise = Service.getListWithItems(list, { includePrice: false }, 'Saving List...');
+            if(response.isSuccess == true) {
+                toaster.pop('success', null, 'Successfully updated list.');
             } else {
-              promise = Service.getList(list, params);
+                toaster.pop('error', null, 'Error updating list.' + response.errorMessage);
             }
-            return promise.then(function(list) {
-              if(!addingItem){
-                toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
-              }
-              return list;
-            });
-          }, function(error) {
-            if(!addingItem){
-              toaster.pop('error', null, 'Error saving list ' + list.name + '.');
-            }
-            return $q.reject(error);
-          });
+
+            blockUI.stop();
+            return;
+          })
         },
 
         // accepts listId (guid)
@@ -643,7 +633,7 @@ angular.module('bekApp')
           return List.delete({
             listId: list.listid,
             listType: list.type
-          }).$promise.then(function(response) {
+        }).$promise.then(function(response) {
             // TODO: can I clean this up?
             var deletedList = Service.findListById(list.listid);
             var idx = Service.lists.indexOf(deletedList);
@@ -651,12 +641,15 @@ angular.module('bekApp')
               Service.lists.splice(idx, 1);
             }
 
-            toaster.pop('success', null, 'Successfully deleted list.');
-            return Service.getFavoritesList();
-          }, function(error) {
-            toaster.pop('error', null, 'Error deleting list.');
-            return $q.reject(error);
-          });
+            if(response.isSuccess == true) {
+                toaster.pop('success', null, 'Successfully deleted list.');
+                return Service.getFavoritesList();
+            } else {
+                toaster.pop('error', null, 'Error deleting list.');
+                return $q.reject(error);
+            }
+
+          })
         },
 
         deleteMultipleLists: function(listGuidArray) {
