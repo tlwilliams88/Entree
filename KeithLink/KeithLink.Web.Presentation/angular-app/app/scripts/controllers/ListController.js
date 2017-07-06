@@ -16,9 +16,10 @@ angular.module('bekApp')
     if(originalList.name == 'Non BEK Items'){
       originalList.listid = 'nonbeklist';
       $scope.selectedList = originalList;
+      blockUI.stop();
     }
     if ($stateParams.listId !== originalList.listid.toString()) {
-      $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.lists.items', {listId: originalList.listid, listType: originalList.type, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
 
     var orderBy = $filter('orderBy');
@@ -358,11 +359,9 @@ angular.module('bekApp')
         $scope.isCustomInventoryList = false;
       }
 
-      var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-
-      var lastlist ={
+      var lastlist = {
           listId: listid,
-          timeset: timeset
+          listType: listtype
       };
 
       LocalStorage.setLastList(lastlist);
@@ -377,16 +376,15 @@ angular.module('bekApp')
     };
 
     function goToNewList(newList) {
-      // user loses changes if they go to a new list
-      $scope.forms.listForm.$setPristine();
-     var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-     var lastlist ={
-          listId: newList.listid,
-          timeset: timeset
-         };
+        // user loses changes if they go to a new list
+        $scope.forms.listForm.$setPristine();
+        var lastlist ={
+            listId: newList.listid,
+            listType: newList.type
+        };
 
-      LocalStorage.setLastList(lastlist);
-      $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
+        LocalStorage.setLastList(lastlist);
+        $state.go('menu.lists.items', {listId: newList.listid, listType: newList.type, renameList: true});
     }
 
     $scope.undoChanges = function() {
@@ -467,8 +465,16 @@ angular.module('bekApp')
         customerNumber: $scope.selectedUserContext.customer.customerNumber,
         customerBranch: $scope.selectedUserContext.customer.customerBranch
       }];
-      ListService.duplicateList(list, customers).then(function(newListId) {
-        $state.go('menu.lists.items', { listId: newListId });
+
+      ListService.duplicateList(list, customers).then(function(newList) {
+        $scope.forms.listForm.$setPristine();
+        var lastlist = {
+          listId: newList.listid,
+          listType: newList.type
+        };
+
+        LocalStorage.setLastList(lastlist);
+        $state.go('menu.lists.items', { listId: lastlist.listid, listType: lastlist.type });
       });
     };
 
