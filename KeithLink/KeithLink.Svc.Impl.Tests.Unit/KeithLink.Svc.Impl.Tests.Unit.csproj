@@ -77,10 +77,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\Lists\ContractListLogicTests.cs" />
+    <Compile Include="Helpers\ContractInformationHelperTests.cs" />
+    <Compile Include="Helpers\FavoritesAndNotesHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Logic\ApplicationHealth\" />
     <Folder Include="Logic\Configuration\" />
     <Folder Include="Logic\ContentManagement\" />

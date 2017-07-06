@@ -211,15 +211,15 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo) {
             if (profile != null) {
-                var favorites = _favoriteLogic.GetFavoritedItemNumbers(profile, catalogInfo);
-                var notes = _noteLogic.GetNotes(profile, catalogInfo);
+                //var favorites = _favoriteLogic.GetFavoritedItemNumbers(profile, catalogInfo);
+                //var notes = _noteLogic.GetNotes(profile, catalogInfo);
                 var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
 
                 ret.Products.ForEach(delegate(Product prod) {
-                    prod.Favorite = favorites.Contains(prod.ItemNumber);
-                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
-                                      .Select(i => i.Notes)
-                                      .FirstOrDefault();
+                    //prod.Favorite = favorites.Contains(prod.ItemNumber);
+                    //prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
+                    //                  .Select(i => i.Notes)
+                    //                  .FirstOrDefault();
                     prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                             .FirstOrDefault()
                                             .InHistory;

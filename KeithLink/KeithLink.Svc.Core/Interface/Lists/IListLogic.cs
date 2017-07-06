@@ -13,33 +13,35 @@ using System.Collections.Generic;
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IListLogic
     {
+        // Commenting any calls that lead to logic methods that are obsolete using the new lists to make sure they aren't still used somewhere
+
         void ProcessContractChanges();
 
         long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, long listId, long customInventoryItemId);
 
         List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<long> customInventoryItemIds);
 
-        ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
+        //ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
 
-        void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote);
+        //void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote);
 
-        void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
+        //void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
 
-        void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist);
+        //void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist);
 
         long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 
         void DeleteItem(long Id);
 
-        void DeleteItems(List<long> itemIds);
+        //void DeleteItems(List<long> itemIds);
 
         void DeleteList(long Id);
 
-        void DeleteLists(List<long> listIds);
+        //void DeleteLists(List<long> listIds);
 
-        void DeleteItemNumberFromList(long Id, string itemNumber);
+        //void DeleteItemNumberFromList(long Id, string itemNumber);
 
-        void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
+        //void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
 
         List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 
