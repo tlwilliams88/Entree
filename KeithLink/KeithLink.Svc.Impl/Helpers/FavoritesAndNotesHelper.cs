@@ -24,15 +24,20 @@ namespace KeithLink.Svc.Impl.Helpers
 
             listModel = listService.MarkFavoritesAndAddNotes(user, listModel, catalogInfo);
 
-            Parallel.ForEach(prods, prod =>
-            {
-                ListItemModel listItem = listModel.Items
-                                                  .Where(li => li.ItemNumber == prod.ItemNumber)
-                                                  .First();
+            if (prods.Count > 0) {
+                Parallel.ForEach(prods, prod =>
+                {
+                    try {
+                        ListItemModel listItem = listModel.Items
+                                                          .Where(li => li.ItemNumber == prod.ItemNumber)
+                                                          .First();
 
-                prod.Favorite = listItem.Favorite;
-                prod.Notes = listItem.Notes;
-            });
+                        prod.Favorite = listItem.Favorite;
+                        prod.Notes = listItem.Notes;
+                    }
+                    catch { }
+                });
+            }
 
             return prods;
         }
