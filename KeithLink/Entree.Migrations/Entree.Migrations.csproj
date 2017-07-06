@@ -58,6 +58,7 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\ReminderDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />

@@ -22,15 +22,16 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         #endregion
 
         #region methods
-        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long id) {
             ContractListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
-            List<ContractListDetail> items = null;
 
             if (header != null) {
-                items = _detailsRepo.GetContractListDetails(header.Id);
+                List<ContractListDetail> items = _detailsRepo.GetContractListDetails(header.Id);
+
                 return header.ToListModel(items);
+            } else {
+                return null;
             }
-            return null;
         }
         #endregion
     }

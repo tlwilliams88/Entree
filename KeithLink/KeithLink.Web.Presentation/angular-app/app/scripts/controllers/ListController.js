@@ -256,7 +256,9 @@ angular.module('bekApp')
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
 
-      if(!$scope.selectedList) {
+
+      if(!$scope.selectedList || $scope.sorted == true) {
+          $scope.sorted = false;
           $scope.selectedList = angular.copy(list);
           originalList = list;
           $scope.setStartAndEndPoints(list);
@@ -420,7 +422,6 @@ angular.module('bekApp')
 
     $scope.sortList = function(sortBy, sortOrder) {
       if($scope.unsavedChangesConfirmation()){
-        $scope.initPagingValues(true);
         if (sortBy === $scope.sort[0].field) {
          sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
         } else {
@@ -430,6 +431,7 @@ angular.module('bekApp')
           field: sortBy,
           order: sortOrder
         }];
+        $scope.sorted = true;
         listPagingModel.sortListItems($scope.sort);
       }
     };
