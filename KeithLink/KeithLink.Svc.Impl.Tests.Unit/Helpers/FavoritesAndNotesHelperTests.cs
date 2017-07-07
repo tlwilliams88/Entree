@@ -17,39 +17,23 @@ using Moq;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
     public class FavoritesAndNotesHelperTests {
-        [Fact]
-        public void Class_Exists_And_Is_Here()
-        {
-            // arrange
-            var IsObject = new FavoritesAndNotesHelper();
+        private static List<ListItemModel> items = new List<ListItemModel>() { new ListItemModel() { ItemNumber = "111111", Favorite = true, Notes = "test note" } };
 
-            // act
+        private static IListService TestListSvc = Mock.Of<IListService>
+                (s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<ListModel>(), It.IsAny<UserSelectedContext>()) ==
+                      new ListModel() { Items = items } );
 
-            // assert
-            IsObject.Should()
-                    .NotBeNull();
-        }
+        private static List<ListItemModel> noitems = new List<ListItemModel>() { new ListItemModel() };
+
+        private static IListService TestListSvcNoFavoritesOrNotes = Mock.Of<IListService>
+            (s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<ListModel>(), It.IsAny<UserSelectedContext>()) ==
+                      new ListModel() { Items = noitems });
+
+        private static Product TestProd = new Product() { ItemNumber = "111111" };
+
+        private static Product TestOtherProd = new Product() { ItemNumber = "999999" };
 
         public class GetFavoritesAndNotesFromLists_PassedInProduct {
-
-            public IListService TestListSvc
-            {
-                get
-                {
-                    ListModel returned = new ListModel();
-                    returned.Items = new List<ListItemModel>();
-                    returned.Items.Add(new ListItemModel() { ItemNumber = "111111", Favorite = true, Notes = "test note" });
-                    return Mock.Of<IListService>(s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<ListModel>(), It.IsAny<UserSelectedContext>()) == returned);
-                }
-            }
-
-            public Product TestProd {
-                get { return new Product() {ItemNumber = "111111"}; }
-            }
-
-            public Product TestOtherProd {
-                get { return new Product() {ItemNumber = "999999"}; }
-            }
 
             [Fact]
             public void Assigns_Favorite_When_Single_Prod_Is_Favorite() {
@@ -106,50 +90,27 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                     .Should()
                     .BeNullOrEmpty();
             }
+
+            [Fact]
+            public void No_Favorites_Or_Notes()
+            {
+                // arrange
+                Product prod = TestProd;
+
+                // act
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prod, TestListSvcNoFavoritesOrNotes);
+
+                // assert
+                prod.Notes
+                    .Should()
+                    .BeNullOrEmpty();
+            }
         }
 
         public class GetFavoritesAndNotesFromLists_PassedInListOfProduct
         {
 
-            public IListService TestListSvc
-            {
-                get
-                {
-                    ListModel returned = new ListModel();
-                    returned.Items = new List<ListItemModel>();
-                    returned.Items.Add(new ListItemModel() { ItemNumber = "111111", Favorite = true, Notes = "test note" });
-                    return Mock.Of<IListService>(s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<ListModel>(), It.IsAny<UserSelectedContext>()) == returned);
-                }
-            }
-
-            public IListService TestListSvcNoFavoritesOrNotes
-            {
-                get
-                {
-                    ListModel returned = new ListModel();
-                    returned.Items = new List<ListItemModel>();
-                    return Mock.Of<IListService>(s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<ListModel>(), It.IsAny<UserSelectedContext>()) == returned);
-                }
-            }
-
-            public Product TestProd
-            {
-                get { return new Product() { ItemNumber = "111111" }; }
-            }
-
-            public Product TestOtherProd
-            {
-                get { return new Product() { ItemNumber = "999999" }; }
-            }
-
-            public List<Product> TestProducts {
-                get {
-                    List<Product> list = new List<Product>();
-                    list.Add(TestProd);
-                    list.Add(TestOtherProd);
-                    return list;
-                }
-            }
+            private static List<Product> TestProducts = new List<Product> { TestProd, TestOtherProd };
 
             [Fact]
             public void Assigns_Favorite_When_ListOf_Prod_Contains_Favorite()
@@ -230,21 +191,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
 
                 // assert
                 prods.Any(p => p.Favorite)
-                     .Should()
-                     .BeFalse();
-            }
-
-            [Fact]
-            public void No_Notes()
-            {
-                // arrange
-                List<Product> prods = TestProducts;
-
-                // act
-                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prods, TestListSvcNoFavoritesOrNotes);
-
-                // assert
-                prods.Any(p => p.Notes != null)
                      .Should()
                      .BeFalse();
             }
