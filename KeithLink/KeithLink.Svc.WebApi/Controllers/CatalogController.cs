@@ -28,6 +28,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.IO;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
@@ -42,6 +43,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         private readonly ICatalogLogic _catalogLogic;
 		private readonly IExportSettingLogic _exportSettingRepository;
         private readonly IEventLogRepository _elRepo;
+        private readonly IListService _listService;
         #endregion
 
         #region ctor
@@ -54,7 +56,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="elRepo"></param>
         /// <param name="campaignService"></param>
         /// <param name="campaignLogic"></param>
-        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, 
+        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, IListService listService,
             IExportSettingLogic exportSettingsLogic, IEventLogRepository elRepo, ICatalogCampaignService campaignService,
             ICatalogCampaignLogic campaignLogic, ISiteCatalogService catalogService) : base(profileLogic) {
 
@@ -63,6 +65,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             _catalogLogic = catalogLogic;
             _exportSettingRepository = exportSettingsLogic;
             _catalogService = catalogService;
+            _listService = listService;
 
             this._elRepo = elRepo;
         }
@@ -136,6 +139,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 searchModel.CatalogType = catalogType;
 
                 ProductsReturn prods = _catalogService.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
             }
@@ -161,6 +167,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 ProductsReturn prods = _catalogService.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
             }
@@ -191,6 +200,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 searchModel.CatalogType = catalogType;
                 searchModel.Facets = string.Format("brands:{0}", brandName.ToUpper());
                 ProductsReturn prods = _catalogService.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
             }
@@ -245,6 +257,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
 
                 Product prod = _catalogLogic.GetProductById(this.SelectedUserContext, id, this.AuthenticatedUser, catalogType);
+
+                prod = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prod, _listService);
 
                 if (prod == null)
                     prod = new Product();
@@ -313,6 +327,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 Product prod = _catalogLogic.GetProductByIdOrUPC(this.SelectedUserContext, idorupc, this.AuthenticatedUser);
+
+                prod = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prod, _listService);
+
                 ret.SuccessResponse = prod;
                 ret.IsSuccess = true;
             }
@@ -341,6 +358,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             {
                 searchModel.CatalogType = catalogType;
                 ProductsReturn prods = _catalogService.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
             }
@@ -367,6 +387,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(campaignUri, this.SelectedUserContext, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
                 returnValue.SuccessResponse = prods;
                 returnValue.IsSuccess = true;
             } catch (Exception ex)
@@ -508,6 +531,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 searchModel.CatalogType = catalogType;
 
                 ProductsReturn prods = _catalogService.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
                 if (exportRequest.Fields != null)
                     _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
@@ -539,6 +565,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 searchModel.CatalogType = catalogType;
 
                 ProductsReturn prods = _catalogService.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
                 if (exportRequest.Fields != null)
                     _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
                 ret = ExportModel<Product>(prods.Products, exportRequest, SelectedUserContext);
@@ -567,6 +596,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 searchModel.Size = 500;
 
                 ProductsReturn prods = _catalogService.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
+
+                prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
 
                 if (exportRequest.Fields != null)
                 {

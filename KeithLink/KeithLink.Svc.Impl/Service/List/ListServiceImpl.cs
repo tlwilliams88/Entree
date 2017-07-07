@@ -451,6 +451,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Recent:
                     break;
                 case ListType.Notes:
+                    _notesLogic.SaveNote(catalogInfo, item);
                     break;
                 case ListType.InventoryValuation:
                     _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
@@ -701,6 +702,8 @@ namespace KeithLink.Svc.Impl.Service.List
                         };
                 }
             });
+
+            MarkFavoritesAndAddNotes(user, list, catalogInfo);
         }
 
         private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
@@ -753,10 +756,10 @@ namespace KeithLink.Svc.Impl.Service.List
             return new List<RecommendedItemModel>();
         }
 
-        private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+        public ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
         {
             if (list.Items == null || list.Items.Count == 0)
-                return;
+                return null;
 
             ListModel notes = _notesLogic.GetList(catalogInfo);
             ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
@@ -780,6 +783,8 @@ namespace KeithLink.Svc.Impl.Service.List
                 listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
                 listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Notes : null;
             });
+
+            return list;
         }
         public string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
         {
