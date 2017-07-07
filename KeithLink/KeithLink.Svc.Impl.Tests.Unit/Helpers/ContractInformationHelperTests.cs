@@ -11,78 +11,133 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Helpers;
 
 using Moq;
-
+using FluentAssertions;
 using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
 {
-    public class ContractInformationHelperTests
-    {
-        public IListService TestListSvc
+    public class ContractInformationHelperTests {
+
+        private static IListService TestListSvc() {
+            var dict = new Dictionary<string, string>();
+            dict.Add("111111", "Category 1");
+            var lsvc = Mock.Of<IListService>(s => s.GetContractInformation(It.IsAny<UserSelectedContext>() ) ==
+              dict );
+            return lsvc;
+        }
+
+        private static IListService TestListSvcNoContract()
         {
-            get
+            var nocontract = Mock.Of<IListService>(s => s.GetContractInformation(It.IsAny<UserSelectedContext>()) ==
+              new Dictionary<string, string>());
+            return nocontract;
+        }
+
+        private static Product TestProd = new Product() { ItemNumber = "111111" };
+
+        private static Product TestOtherProd = new Product() { ItemNumber = "999999" };
+
+        public class GetContractCategoriesFromLists_PassedInProduct
+        {
+
+            [Fact]
+            public void GoodProduct_ExpectCategory()
             {
-                Dictionary<string,string> contractDictionary = new Dictionary<string, string>();
-                contractDictionary.Add("111111", "1 Category");
-                contractDictionary.Add("222222", "2 Category");
-                return Mock.Of<IListService>(s => s.GetContractInformation(It.IsAny<UserSelectedContext>()) == contractDictionary);
+                // arrange
+                Product prod = TestProd;
+
+                // act
+                ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod, TestListSvc());
+
+                // assert
+                prod.Category
+                    .Should()
+                    .Be("Category 1");
+            }
+
+            [Fact]
+            public void BadProduct_ExpectNullCategory()
+            {
+                // arrange
+                Product prod = TestOtherProd;
+
+                // act
+                ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod, TestListSvc());
+
+                // assert
+                prod.Category
+                    .Should()
+                    .BeNullOrEmpty();
+            }
+
+            [Fact]
+            public void AnyProductCustomerHasNoContract_Completes()
+            {
+                // arrange
+                Product prod = TestOtherProd;
+
+                // act
+                ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod, TestListSvcNoContract());
+
+                // assert
+                prod.Category
+                    .Should()
+                    .BeNullOrEmpty();
             }
         }
 
-        public Product TestProd
+        public class GetContractCategoriesFromLists_PassedInListOfProduct
         {
-            get
+
+            private static List<Product> TestProducts = new List<Product> { TestProd, TestOtherProd };
+
+            [Fact]
+            public void GoodProductFromList_ExpectCategory()
             {
-                return new Product() { ItemNumber = "111111" };
+                // arrange
+                List<Product> prods = TestProducts;
 
+                // act
+                ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods, TestListSvc());
+
+                // assert
+                prods.Where(p => p.ItemNumber == "111111")
+                     .First()
+                     .Category
+                     .Should()
+                     .Be("Category 1");
             }
-        }
 
-        public Product TestOtherProd
-        {
-            get
+            [Fact]
+            public void BadProductFromList_ExpectNullCategory()
             {
-                return new Product() { ItemNumber = "999999" };
+                // arrange
+                List<Product> prods = TestProducts;
 
+                // act
+                ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods, TestListSvc());
+
+                // assert
+                prods.Where(p => p.ItemNumber == "999999")
+                     .First()
+                     .Category
+                     .Should()
+                     .BeNullOrEmpty();
             }
-        }
 
-        [Fact]
-        public void Class_Exists_And_Is_Here()
-        {
-            // arrange
-            var IsObject = new ContractInformationHelper();
+            [Fact]
+            public void AnyProductCustomerHasNoContract_Completes()
+            {
+                // arrange
+                List<Product> prods = TestProducts;
 
-            // act
+                // act
+                ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prods, TestListSvcNoContract());
 
-            // assert
-            Assert.NotNull(IsObject);
-        }
-
-        [Fact]
-        public void Assigns_Category_When_Single_Prod_Is_In_Contract()
-        {
-            // arrange
-            Product prod = TestProd;
-
-            // act
-            ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod, TestListSvc);
-
-            // assert
-            Assert.Same("1 Category", prod.Category);
-        }
-
-        [Fact]
-        public void Does_Not_Assign_Category_When_Single_Prod_Is_Not_In_Contract()
-        {
-            // arrange
-            Product prod = TestOtherProd;
-
-            // act
-            ContractInformationHelper.GetContractCategoriesFromLists(new UserSelectedContext(), prod, TestListSvc);
-
-            // assert
-            Assert.Null(prod.Category);
+                // assert
+                prods.Should()
+                     .NotBeNullOrEmpty();
+            }
         }
     }
 }

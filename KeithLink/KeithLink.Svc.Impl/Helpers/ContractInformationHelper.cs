@@ -14,21 +14,6 @@ namespace KeithLink.Svc.Impl.Helpers
 {
     public class ContractInformationHelper
     {
-        public static void GetContractCategoriesFromLists(UserSelectedContext catalogInfo, ListModel list, IListService listService)
-        {
-            Dictionary<string, string> contractdictionary = listService.GetContractInformation(catalogInfo);
-
-            if (contractdictionary != null &&
-                contractdictionary.Count > 0) {
-                Parallel.ForEach(list.Items, listItem =>
-                {
-                    if (contractdictionary.ContainsKey(listItem.ItemNumber))
-                    {
-                        listItem.Category = contractdictionary[listItem.ItemNumber];
-                    }
-                });
-            }
-        }
         public static void GetContractCategoriesFromLists(UserSelectedContext catalogInfo, Product prod, IListService listService)
         {
             Dictionary<string, string> contractdictionary = listService.GetContractInformation(catalogInfo);
