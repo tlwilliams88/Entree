@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
@@ -47,5 +48,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
         ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo);
+
+        ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
     }
 }

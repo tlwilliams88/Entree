@@ -1309,7 +1309,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
             }catch (Exception ex)
             {
-                DeleteRecentlyOrdered(user, catalogInfo);
+                //DeleteRecentlyOrdered(user, catalogInfo);
                 _log.WriteInformationLog(" Getting recently ordered items list failed, reset list", ex);
                 return null;
             }

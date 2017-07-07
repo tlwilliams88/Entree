@@ -126,6 +126,14 @@ namespace KeithLink.Svc.Impl.Service.List
             return contractdictionary;
         }
 
+        public ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers)
+        {
+            ItemHistory[] itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(userContext.BranchId) &&
+                                                                      f.CustomerNumber.Equals(userContext.CustomerId))
+                                                           .Where(f => itemNumbers.Contains(f.ItemNumber))
+                                                           .ToArray();
+            return itemStatistics;
+        }
 
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {

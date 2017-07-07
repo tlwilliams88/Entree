@@ -17,6 +17,8 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 
+using KeithLink.Svc.Core.Enumerations.List;
+
 namespace KeithLink.Svc.WebApi.Helpers
 {
     /// <summary>
@@ -35,8 +37,8 @@ namespace KeithLink.Svc.WebApi.Helpers
         /// <param name="_profileLogic"></param>
         /// <param name="_elRepo"></param>
         /// <returns></returns>
-        public static Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext,
-            UserProfile userProfile, IListLogic _listLogic, IUserProfileLogic _profileLogic, IEventLogRepository _elRepo)
+        public static Stream BuildReportFromList(PrintListModel options, ListType type, long listId, UserSelectedContext userContext,
+            UserProfile userProfile, IListService listService, IUserProfileLogic _profileLogic, IEventLogRepository _elRepo)
         {
             if (!string.IsNullOrEmpty(options.Paging.Terms))
             {
@@ -60,7 +62,7 @@ namespace KeithLink.Svc.WebApi.Helpers
                 options.Paging.Sort = new List<SortInfo>();
             }
 
-            ListModel list = _listLogic.ReadList(userProfile, userContext, listId, options.ShowPrices);
+            ListModel list = listService.ReadList(userProfile, userContext, type, listId, options.ShowPrices);
 
             if (list == null)
                 return null;
@@ -94,7 +96,7 @@ namespace KeithLink.Svc.WebApi.Helpers
             rv.LocalReport.LoadReportDefinition(rdlcStream);
             rv.LocalReport.SetParameters
                 (MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
-            GatherInfoAboutItems(listId, options, printModel, userContext, userProfile, customer, _listLogic);
+            GatherInfoAboutItems(type, listId, options, printModel, userContext, userProfile, customer, listService);
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
             Stream stream = new MemoryStream(bytes);
@@ -164,13 +166,13 @@ namespace KeithLink.Svc.WebApi.Helpers
             return parameters;
         }
 
-        private static void GatherInfoAboutItems(long listId, PrintListModel options, ListReportModel printModel, UserSelectedContext userContext,
-            UserProfile userProfile, Customer customer, IListLogic _listLogic)
+        private static void GatherInfoAboutItems(ListType type, long listId, PrintListModel options, ListReportModel printModel, UserSelectedContext userContext,
+            UserProfile userProfile, Customer customer, IListService listService)
         {
-            ListModel listModel = _listLogic.ReadList(userProfile, userContext, listId, true);
+            ListModel listModel = listService.ReadList(userProfile, userContext, type, listId, true);
             List<ListItemModel> itemHash = listModel.Items.ToList();
             string[] itemkeys = itemHash.Select(i => i.ItemNumber).ToArray();
-            ItemHistory[] itemHistories = _listLogic.GetItemsHistoryList(userContext, itemkeys);
+            ItemHistory[] itemHistories = listService.GetItemsHistoryList(userContext, itemkeys);
             foreach (ListItemReportModel item in printModel.Items)
             {
                 var itemInfo = itemHash.Where(i => i.ItemNumber == item.ItemNumber).FirstOrDefault();
