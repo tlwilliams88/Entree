@@ -297,7 +297,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
 
-            return ReadList(user, catalogInfo, listId);
+            return null;
+//            return ReadList(user, catalogInfo, listId);
         }
 
         public void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote)
@@ -349,12 +350,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if(list == null) {
                 //Create a new recently ordered list
-                this.CreateList(user.UserId, new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = newlist.Catalog }, 
-                    new ListModel() {
-                    Name = "Recent Orders",
-                    BranchId = newlist.Catalog,
-                    Items = new List<ListItemModel>()
-                }, ListType.RecentlyOrdered);
+                //this.CreateList(user.UserId, new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = newlist.Catalog }, 
+                //    new ListModel() {
+                //    Name = "Recent Orders",
+                //    BranchId = newlist.Catalog,
+                //    Items = new List<ListItemModel>()
+                //}, ListType.RecentlyOrdered);
                 // grab a pointer to the newly created list
                 list = _listRepo.Read(i => i.UserId == user.UserId &&
                                i.Type == ListType.RecentlyOrdered &&
@@ -403,17 +404,17 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             if (list == null)
             {
                 //Create a new recently viewed list
-                this.CreateList(user.UserId, catalogInfo, new ListModel()
-                {
-                    Name = "Recent",
-                    BranchId = catalogInfo.BranchId,
-                    Items = new List<ListItemModel>() {
-                        new ListItemModel()
-                        {
-                            ItemNumber = itemNumber
-                        }
-                    }
-                }, ListType.Recent);
+                //this.CreateList(user.UserId, catalogInfo, new ListModel()
+                //{
+                //    Name = "Recent",
+                //    BranchId = catalogInfo.BranchId,
+                //    Items = new List<ListItemModel>() {
+                //        new ListItemModel()
+                //        {
+                //            ItemNumber = itemNumber
+                //        }
+                //    }
+                //}, ListType.Recent);
 
             }
             else {
@@ -478,7 +479,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             foreach (long itemId in itemIds)
             {
-                DeleteItem(itemId);
+                //DeleteItem(itemId);
             }
         }
 
@@ -518,7 +519,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             foreach (long listId in listIds)
             {
-                DeleteList(listId);
+                //DeleteList(listId);
             }
         }
 
@@ -1374,13 +1375,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any())
             {
-                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
+                //this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
                 list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
 
             if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any())
             {
-                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
+                //this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
                 list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
 

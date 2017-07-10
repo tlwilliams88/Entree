@@ -55,7 +55,7 @@ angular.module('bekApp')
     }
     else{
       $analytics.eventTrack('Print Order', {  category: 'Add To Order'});
-      CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
+      CartService.printOrder(list, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
     }
   };
 

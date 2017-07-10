@@ -81,7 +81,7 @@ angular.module('bekApp')
       }
       cart.listId = $scope.selectedList.listid;
       cart.listType = $scope.selectedList.type;
-      ListService.setLastOrderList(cart.listId, cart.listType, cart.id);
+    //   ListService.setLastOrderList(cart.listId, cart.listType, cart.id);
       $modalInstance.close(cart);
       $scope.displayMessage('success', 'Successfully created new cart.');
     }, function(error) {

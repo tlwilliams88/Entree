@@ -589,7 +589,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             HttpResponseMessage ret;
             try
             {
-                var list = _listLogic.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+                var list = _listService.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, type, listId);
 
                 if (list == null)
                     return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };

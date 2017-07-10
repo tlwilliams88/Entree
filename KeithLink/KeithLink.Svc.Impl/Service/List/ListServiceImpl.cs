@@ -16,8 +16,10 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Configurations;
+using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
+using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Service.List
@@ -42,6 +44,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly IPriceLogic _priceLogic;
         private readonly IProductImageRepository _productImageRepo;
+        private readonly IItemBarcodeImageRepository _barcodeImageRepo;
         private readonly IEventLogRepository _log;
 
         private Dictionary<string, string> _contractdictionary;
@@ -56,7 +59,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
                                 IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
-                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
+                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
                                 IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
                                 IEventLogRepository log)
@@ -79,6 +82,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
             _productImageRepo = productImageRepo;
+            _barcodeImageRepo = barcodeImageRepo;
             _log = log;
         }
         #endregion
@@ -814,5 +818,11 @@ namespace KeithLink.Svc.Impl.Service.List
             return itmcategory;
         }
 
+        public List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId)
+        {
+            ListModel list = ReadList(user, catalogInfo, type, listId);
+
+            return _barcodeImageRepo.GetBarcodeForList(list);
+        }
     }
 }
