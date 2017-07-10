@@ -411,7 +411,11 @@ namespace KeithLink.Svc.Impl.Logic
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
 
-            try { cart.ListId = _orderedFromListRepository.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
+	        var o2l = _orderedFromListRepository.Read(cartId.ToString());
+		    if (o2l != null) {
+                cart.ListId = o2l.ListId;
+                cart.ListType = o2l.ListType;
+            }
 
             return cart;
 		}
@@ -550,7 +554,8 @@ namespace KeithLink.Svc.Impl.Logic
                         _orderedFromListRepository.Write(new OrderedFromList()
                         {
                             ControlNumber = orderNumber,
-                            ListId = o2l.ListId.Value
+                            ListId = o2l.ListId.Value,
+                            ListType = o2l.ListType
                         });
                     }
                 }
@@ -731,7 +736,8 @@ namespace KeithLink.Svc.Impl.Logic
                 _orderedFromListRepository.Write(new OrderedFromList()
                 {
                     ControlNumber = cart.CartId.ToString(),
-                    ListId = cart.ListId.Value
+                    ListId = cart.ListId.Value,
+                    ListType = cart.ListType
                 });
             }
             else if(o2l != null && o2l.ListId != cart.ListId)
@@ -742,7 +748,8 @@ namespace KeithLink.Svc.Impl.Logic
                     _orderedFromListRepository.Write(new OrderedFromList()
                     {
                         ControlNumber = cart.CartId.ToString(),
-                        ListId = cart.ListId.Value
+                        ListId = cart.ListId.Value,
+                        ListType = cart.ListType
                     });
                 }
             }

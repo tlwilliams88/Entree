@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using KeithLink.Svc.Core.Enumerations.List;
+
 namespace KeithLink.Svc.Core.Models.ShoppingCart
 {
 	[DataContract(Name="ShoppingCart")]
@@ -28,6 +30,8 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 
         [DataMember(Name = "listId")]
         public long? ListId { get; set; }
+        [DataMember(Name = "listType")]
+        public ListType ListType { get; set; }
 
         [DataMember(Name = "piececount")]
         public int PieceCount { get; set; }
