@@ -31,11 +31,11 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 
-        void DeleteItem(long Id);
+        //void DeleteItem(long Id);
 
         //void DeleteItems(List<long> itemIds);
 
-        void DeleteList(long Id);
+        //void DeleteList(long Id);
 
         //void DeleteLists(List<long> listIds);
 
@@ -53,32 +53,32 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 
-        List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
+        //List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
 
-        List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
+        //List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
 
         //List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
 
         PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, PagingModel paging);
 
-        List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
+        //List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
-        RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo);
+        //RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo);
 
-        void DeleteRecent(UserProfile user, UserSelectedContext catalogInfo);
+        //void DeleteRecent(UserProfile user, UserSelectedContext catalogInfo);
 
-        void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo);
+        //void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo);
 
-        List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
+        //List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
-        List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo);
+        //List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo);
 
-        List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
+        //List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
 
-        void ShareList(ListCopyShareModel shareListModel);
+        //void ShareList(ListCopyShareModel shareListModel);
 
-        void UpdateItem(UserProfile user, UserSelectedContext catalogInfo, ListItemModel item);
+        //void UpdateItem(UserProfile user, UserSelectedContext catalogInfo, ListItemModel item);
 
-        void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel userList);
+        //void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel userList);
     }
 }
