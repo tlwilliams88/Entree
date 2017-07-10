@@ -41,7 +41,6 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly IPriceLogic _priceLogic;
-        private readonly IHistoryLogic _historyLogic;
         private readonly IProductImageRepository _productImageRepo;
         private readonly IEventLogRepository _log;
 
@@ -53,14 +52,14 @@ namespace KeithLink.Svc.Impl.Service.List
         #endregion
 
         #region ctor
-        public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
+        public ListServiceImpl( IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
                                 IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
                                 IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
-                                IHistoryLogic historyLogic, IEventLogRepository log)
+                                IEventLogRepository log)
         {
             _cache = cache;
             // specific lists -
@@ -78,7 +77,6 @@ namespace KeithLink.Svc.Impl.Service.List
             _catalogLogic = catalogLogic;
             _externalCatalogRepo = externalCatalogRepo;
             _itemHistoryRepo = itemHistoryRepo;
-            _historyLogic = historyLogic;
             _priceLogic = priceLogic;
             _productImageRepo = productImageRepo;
             _log = log;
@@ -796,7 +794,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
             ListModel notes = _notesLogic.GetList(catalogInfo);
             ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
-            var history = _historyLogic.ItemsInHistoryList(catalogInfo, list.Select(p => p.ItemNumber).ToList());
+            var history = _historyListLogic.ItemsInHistoryList(catalogInfo, list.Select(p => p.ItemNumber).ToList());
 
             var notesHash = new Dictionary<string, ListItemModel>();
             var favHash = new Dictionary<string, ListItemModel>();
@@ -843,6 +841,5 @@ namespace KeithLink.Svc.Impl.Service.List
 
             return itmcategory;
         }
-
     }
 }
