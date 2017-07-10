@@ -44,6 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                 DynamicParameters parms = new DynamicParameters();
                 parms.Add("@ControlNumber", o2l.ControlNumber);
                 parms.Add("@ListId", o2l.ListId.Value);
+                parms.Add("@ListType", o2l.ListType);
 
                 ExecuteCommand(STOREDPROC_WRITE_ONE, parms);
             }
