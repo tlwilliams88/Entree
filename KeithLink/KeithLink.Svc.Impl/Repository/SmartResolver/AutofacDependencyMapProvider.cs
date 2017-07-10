@@ -217,6 +217,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<ApplicationHealthLogicImpl>().As<IApplicationHealthLogic>();
             builder.RegisterType<TemplatesRepositoryImpl>().As<ITemplatesRepository>();
+            builder.RegisterType<ItemBarcodeImageRepositoryImpl>().As<IItemBarcodeImageRepository>();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
