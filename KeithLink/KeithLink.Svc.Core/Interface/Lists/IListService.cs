@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
@@ -49,6 +50,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo);
 
+        ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
+      
         List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id);
     }
 }
