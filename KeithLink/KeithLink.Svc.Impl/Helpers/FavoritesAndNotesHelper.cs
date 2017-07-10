@@ -24,41 +24,32 @@ namespace KeithLink.Svc.Impl.Helpers
             products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
 
             if (prods.Count > 0) {
-                Parallel.ForEach(prods, prod =>
-                {
-                    try {
-                        Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
-                                                         .First();
+                foreach (Product prod in prods) {
+                    Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
+                                          .First();
 
-                        prod.Favorite = prd.Favorite;
-                        prod.Notes = prd.Notes;
-                        prod.InHistory = prd.InHistory;
-                    }
-                    catch { }
-                });
+                    prod.Favorite = prd.Favorite;
+                    prod.Notes = prd.Notes;
+                    prod.InHistory = prd.InHistory;
+                }
             }
 
             return prods;
         }
 
-        public static Product GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, Product prod, IListService listService)
-        {
+        public static Product GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, Product prod, IListService listService) {
 
             List<Product> products = new List<Product>();
-            products.Add(new Product() { ItemNumber = prod.ItemNumber });
+            products.Add(new Product() {ItemNumber = prod.ItemNumber});
 
             products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
 
-            try
-            {
-                Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
-                                                 .First();
+            Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
+                                  .First();
 
-                prod.Favorite = prd.Favorite;
-                prod.Notes = prd.Notes;
-                prod.InHistory = prd.InHistory;
-            }
-            catch { }
+            prod.Favorite = prd.Favorite;
+            prod.Notes = prd.Notes;
+            prod.InHistory = prd.InHistory;
 
             return prod;
         }
