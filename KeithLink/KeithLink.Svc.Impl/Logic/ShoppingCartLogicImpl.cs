@@ -411,8 +411,11 @@ namespace KeithLink.Svc.Impl.Logic
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
 
-            try { cart.ListId = _orderedFromListRepository.Read(cartId.ToString()).ListId; }catch { } // not always going to exist
-            try { cart.ListType = _orderedFromListRepository.Read(cartId.ToString()).ListType; } catch { } // not always going to exist
+	        var o2l = _orderedFromListRepository.Read(cartId.ToString());
+		    if (o2l != null) {
+                cart.ListId = o2l.ListId;
+                cart.ListType = o2l.ListType;
+            }
 
             return cart;
 		}
