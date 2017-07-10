@@ -12,6 +12,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Helpers
 {
+    /* For now this helper is in the Impl assembly (for testing), but should only be called from a controller in WebApi */
     public class ContractInformationHelper
     {
         public static void GetContractCategoriesFromLists(UserSelectedContext catalogInfo, Product prod, IListService listService)
