@@ -18,4 +18,4 @@ AS
 	WHERE	
 		[BranchId] = @BranchId
 	AND 
-		[CustomerNumber] = @CustomerNumber
+		[CustomerNumber] = @CustomerNumber and [Active] = 1
