@@ -50,6 +50,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo);
 
+        List<Product> MarkFavoritesAndAddNotes(UserProfile user, List<Product> list, UserSelectedContext catalogInfo);
+
         ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
       
         List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id);

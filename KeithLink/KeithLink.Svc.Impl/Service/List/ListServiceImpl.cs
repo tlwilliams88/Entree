@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Impl.Service.List
         #endregion
 
         #region ctor
-        public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
+        public ListServiceImpl( IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
                                 IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
@@ -798,6 +798,42 @@ namespace KeithLink.Svc.Impl.Service.List
 
             return list;
         }
+
+        public List<Product> MarkFavoritesAndAddNotes(UserProfile user, List<Product> list, UserSelectedContext catalogInfo)
+        {
+            if (list == null || list.Count == 0)
+                return null;
+
+            ListModel notes = _notesLogic.GetList(catalogInfo);
+            ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
+            var history = _historyListLogic.ItemsInHistoryList(catalogInfo, list.Select(p => p.ItemNumber).ToList());
+
+            var notesHash = new Dictionary<string, ListItemModel>();
+            var favHash = new Dictionary<string, ListItemModel>();
+
+            if (notes != null &&
+               notes.Items != null)
+                notesHash = notes.Items
+                                 .GroupBy(i => i.ItemNumber)
+                                 .ToDictionary(n => n.Key, n => n.First());
+            if (favorites != null &&
+               favorites.Items != null)
+                favHash = favorites.Items
+                                   .GroupBy(i => i.ItemNumber)
+                                   .ToDictionary(f => f.Key, f => f.First());
+
+            Parallel.ForEach(list, prod =>
+            {
+                prod.Favorite = favHash.ContainsKey(prod.ItemNumber);
+                prod.Notes = notesHash.ContainsKey(prod.ItemNumber) ? notesHash[prod.ItemNumber].Notes : null;
+                prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                        .FirstOrDefault()
+                                        .InHistory;
+            });
+
+            return list;
+        }
+
         public string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
         {
             return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
@@ -818,11 +854,14 @@ namespace KeithLink.Svc.Impl.Service.List
             return itmcategory;
         }
 
+
+
         public List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId)
         {
             ListModel list = ReadList(user, catalogInfo, type, listId);
 
             return _barcodeImageRepo.GetBarcodeForList(list);
         }
+
     }
 }

@@ -12,53 +12,45 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Helpers
 {
+    /* For now this helper is in the Impl assembly (for testing), but should only be called from a controller in WebApi */
     public class FavoritesAndNotesHelper
     {
         public static List<Product> GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<Product> prods, IListService listService)
         {
-            ListModel listModel = new ListModel();
-            listModel.Items = new List<ListItemModel>();
+            List<Product> products = new List<Product>();
             foreach (Product prod in prods) {
-                listModel.Items.Add(new ListItemModel() { ItemNumber = prod.ItemNumber });
+                products.Add(new Product() { ItemNumber = prod.ItemNumber });
             }
 
-            listModel = listService.MarkFavoritesAndAddNotes(user, listModel, catalogInfo);
+            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
 
             if (prods.Count > 0) {
-                Parallel.ForEach(prods, prod =>
-                {
-                    try {
-                        ListItemModel listItem = listModel.Items
-                                                          .Where(li => li.ItemNumber == prod.ItemNumber)
-                                                          .First();
+                foreach (Product prod in prods) {
+                    Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
+                                          .First();
 
-                        prod.Favorite = listItem.Favorite;
-                        prod.Notes = listItem.Notes;
-                    }
-                    catch { }
-                });
+                    prod.Favorite = prd.Favorite;
+                    prod.Notes = prd.Notes;
+                    prod.InHistory = prd.InHistory;
+                }
             }
 
             return prods;
         }
 
-        public static Product GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, Product prod, IListService listService)
-        {
-            ListModel listModel = new ListModel();
-            listModel.Items = new List<ListItemModel>();
-            listModel.Items.Add(new ListItemModel() { ItemNumber = prod.ItemNumber });
+        public static Product GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, Product prod, IListService listService) {
 
-            listModel = listService.MarkFavoritesAndAddNotes(user, listModel, catalogInfo);
+            List<Product> products = new List<Product>();
+            products.Add(new Product() {ItemNumber = prod.ItemNumber});
 
-            try {
-                ListItemModel listItem = listModel.Items
-                                                  .Where(li => li.ItemNumber == prod.ItemNumber)
-                                                  .First();
+            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
 
-                prod.Favorite = listItem.Favorite;
-                prod.Notes = listItem.Notes;
-            }
-            catch { }
+            Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
+                                  .First();
+
+            prod.Favorite = prd.Favorite;
+            prod.Notes = prd.Notes;
+            prod.InHistory = prd.InHistory;
 
             return prod;
         }

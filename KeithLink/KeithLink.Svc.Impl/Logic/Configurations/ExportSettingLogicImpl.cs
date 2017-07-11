@@ -19,17 +19,15 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
         #region attributes
         private readonly IExportSettingRepository _exportSettingRepository;
         private readonly IExternalCatalogRepository _externalCatalogRepository;
-        private readonly IListRepository _listRepository;
         private readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region ctor
-        public ExportSettingLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository,
+        public ExportSettingLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository,
                                                     IExternalCatalogRepository externalCatalogRepository) {
             _unitOfWork = unitOfWork;
             _exportSettingRepository = exportSettingRepository;
             _externalCatalogRepository = externalCatalogRepository;
-            _listRepository = listRepository;
         }
         #endregion
 
