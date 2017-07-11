@@ -1132,7 +1132,7 @@
     <Content Include="Scripts\AppData\List\Tables\ContractHeaders\Indexes\IX_ContractHeader_0023_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\PostDeployment\MigrateContractsList_0023_2017.04.00_p.sql">
+    <Content Include="Scripts\AppData\List\Tables\ContractHeaders\PostDeployment\MigrateContractsList_0023_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\CustomInventoryItems\CustomInventoryItems_0003_0001.12.00_down.sql">
