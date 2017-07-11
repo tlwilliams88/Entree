@@ -17,17 +17,17 @@ using Moq;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
     public class FavoritesAndNotesHelperTests {
-        private static List<ListItemModel> items = new List<ListItemModel>() { new ListItemModel() { ItemNumber = "111111", Favorite = true, Notes = "test note" } };
+        private static List<Product> items = new List<Product>() { new Product() { ItemNumber = "111111", Favorite = true, Notes = "test note", InHistory = true } };
 
         private static IListService TestListSvc = Mock.Of<IListService>
-                (s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<ListModel>(), It.IsAny<UserSelectedContext>()) ==
-                      new ListModel() { Items = items } );
+                (s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<List<Product>>(), It.IsAny<UserSelectedContext>()) ==
+                      items );
 
         private static List<ListItemModel> noitems = new List<ListItemModel>() { new ListItemModel() };
 
         private static IListService TestListSvcNoFavoritesOrNotes = Mock.Of<IListService>
-            (s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<ListModel>(), It.IsAny<UserSelectedContext>()) ==
-                      new ListModel() { Items = noitems });
+            (s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<List<Product>>(), It.IsAny<UserSelectedContext>()) ==
+                      new List<Product>());
 
         private static Product TestProd = new Product() { ItemNumber = "111111" };
 
@@ -91,6 +91,36 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                     .BeNullOrEmpty();
             }
 
+
+            [Fact]
+            public void Assigns_InHistory_When_Single_Prod_Is_InHistory()
+            {
+                // arrange
+                Product prod = TestProd;
+
+                // act
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prod, TestListSvc);
+
+                // assert
+                prod.InHistory
+                    .Should()
+                    .BeTrue();
+            }
+
+            [Fact]
+            public void Assigns_InHistory_As_False_When_Single_Prod_Is_Not_InHistory()
+            {
+                // arrange
+                Product prod = TestOtherProd;
+
+                // act
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prod, TestListSvc);
+
+                // assert
+                prod.InHistory
+                    .Should()
+                    .BeFalse();
+            }
             [Fact]
             public void No_Favorites_Or_Notes()
             {
@@ -178,6 +208,41 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                      .Notes
                      .Should()
                      .BeNullOrEmpty();
+            }
+
+
+            [Fact]
+            public void Assigns_InHistory_When_ListOf_Prod_Contains_InHistory()
+            {
+                // arrange
+                List<Product> prods = TestProducts;
+
+                // act
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prods, TestListSvc);
+
+                // assert
+                prods.Where(p => p.ItemNumber == "111111")
+                     .First()
+                     .InHistory
+                     .Should()
+                     .BeTrue();
+            }
+
+            [Fact]
+            public void Assigns_InHistory_As_False_When_ListOf_Prod_Contains_Prod_Is_Not_InHistory()
+            {
+                // arrange
+                List<Product> prods = TestProducts;
+
+                // act
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prods, TestListSvc);
+
+                // assert
+                prods.Where(p => p.ItemNumber == "999999")
+                     .First()
+                     .Favorite
+                     .Should()
+                     .BeFalse();
             }
 
             [Fact]
