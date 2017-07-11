@@ -98,6 +98,7 @@ using System;
 using KeithLink.Svc.Core.Enumerations.Dependencies;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
 using KeithLink.Svc.Core.Interface.ApplicationHealth;
+using KeithLink.Svc.Core.Interface.Import;
 using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 using KeithLink.Svc.Impl.Repository.Templates;
 using KeithLink.Svc.Core.Interface.Templates;
@@ -345,6 +346,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ExportInvoicesServiceImpl>().As<IExportInvoicesService>();
 
             builder.RegisterType<ListServiceImpl>().As<IListService>();
+
+            builder.RegisterType<ImportServiceImpl>().As<IImportService>();
 
             ///////////////////////////////////////////////////////////////////////////////
             // Environment Specific Classes

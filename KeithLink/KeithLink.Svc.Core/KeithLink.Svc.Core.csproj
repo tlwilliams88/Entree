@@ -260,6 +260,7 @@
     <Compile Include="Interface\ETL\ElasticSearch\IItemImport.cs" />
     <Compile Include="Interface\ETL\IListsImportLogic.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
+    <Compile Include="Interface\Import\IImportService.cs" />
     <Compile Include="Interface\Invoices\IExportInvoicesService.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
