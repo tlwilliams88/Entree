@@ -17,6 +17,7 @@ using Moq;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
     public class FavoritesAndNotesHelperTests {
+
         private static List<ListItemModel> items = new List<ListItemModel>() { new ListItemModel() { ItemNumber = "111111", Favorite = true, Notes = "test note" } };
 
         private static IListService TestListSvc = Mock.Of<IListService>
