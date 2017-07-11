@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
         public class GetFavoritesAndNotesFromLists_PassedInProduct {
 
             [Fact]
-            public void Assigns_Favorite_When_Single_Prod_Is_Favorite() {
+            public void GoodFavoriteProduct_ReturnsFavoriteAsTrue() {
                 // arrange
                 Product prod = TestProd;
 
@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Assigns_Favorite_As_False_When_Single_Prod_Is_Not_Favorite() {
+            public void BadFavoriteProduct_ReturnsFavoriteAsFalse() {
                 // arrange
                 Product prod = TestOtherProd;
 
@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Assigns_Notes_When_Single_Prod_Has_Notes() {
+            public void BadNotesProduct_ReturnsNullNotes() {
                 // arrange
                 Product prod = TestProd;
 
@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Assigns_Notes_As_Null_When_Single_Prod_Doesnt_Have_Notes() {
+            public void GoodNotesProduct_ReturnsExpectedNotes() {
                 // arrange
                 Product prod = TestOtherProd;
 
@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
 
 
             [Fact]
-            public void Assigns_InHistory_When_Single_Prod_Is_InHistory()
+            public void GoodInHistoryProduct_ReturnsInHistoryAsTrue()
             {
                 // arrange
                 Product prod = TestProd;
@@ -108,7 +108,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Assigns_InHistory_As_False_When_Single_Prod_Is_Not_InHistory()
+            public void BadInHistoryProduct_ReturnsInHistoryAsFalse()
             {
                 // arrange
                 Product prod = TestOtherProd;
@@ -122,7 +122,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                     .BeFalse();
             }
             [Fact]
-            public void No_Favorites_Or_Notes()
+            public void NoFavoritesOrNotes_ReturnsNullNotes()
             {
                 // arrange
                 Product prod = TestProd;
@@ -143,7 +143,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             private static List<Product> TestProducts = new List<Product> { TestProd, TestOtherProd };
 
             [Fact]
-            public void Assigns_Favorite_When_ListOf_Prod_Contains_Favorite()
+            public void GoodFavoriteProductInList_ReturnsProductInListWithFavoriteAsTrue()
             {
                 // arrange
                 List<Product> prods = TestProducts;
@@ -160,7 +160,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Assigns_Favorite_As_False_When_ListOf_Prod_Contains_Prod_Is_Not_Favorite()
+            public void BadFavoriteProductInList_ReturnsProductInListWithFavoriteAsFalse()
             {
                 // arrange
                 List<Product> prods = TestProducts;
@@ -177,7 +177,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Assigns_Notes_When_ListOf_Prod_Contains_Notes()
+            public void GoodNotesProductInList_ReturnsProductInListWithNotesAsExpected()
             {
                 // arrange
                 List<Product> prods = TestProducts;
@@ -194,7 +194,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Null_Notes_When_ListOf_Prod_Contains_Prod_Does_Not_Have_Notes()
+            public void BadNotesProductInList_ReturnsProductInListWithNotesAsNull()
             {
                 // arrange
                 List<Product> prods = TestProducts;
@@ -212,7 +212,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
 
 
             [Fact]
-            public void Assigns_InHistory_When_ListOf_Prod_Contains_InHistory()
+            public void GoodInHistoryProductInList_ReturnsProductInListWithInHistoryAsTrue()
             {
                 // arrange
                 List<Product> prods = TestProducts;
@@ -229,7 +229,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void Assigns_InHistory_As_False_When_ListOf_Prod_Contains_Prod_Is_Not_InHistory()
+            public void BadInHistoryProductInList_ReturnsProductInListWithInHistoryAsFalse()
             {
                 // arrange
                 List<Product> prods = TestProducts;
@@ -240,13 +240,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                 // assert
                 prods.Where(p => p.ItemNumber == "999999")
                      .First()
-                     .Favorite
+                     .InHistory
                      .Should()
                      .BeFalse();
             }
 
             [Fact]
-            public void No_Favorites()
+            public void NoFavoritesOrNotes_ReturnsFavoritesAsFalse()
             {
                 // arrange
                 List<Product> prods = TestProducts;
