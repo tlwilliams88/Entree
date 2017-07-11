@@ -26,12 +26,20 @@ namespace KeithLink.Svc.Impl.Helpers
 
             if (prods.Count > 0) {
                 foreach (Product prod in prods) {
-                    Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
-                                          .First();
+                    var prdList = products.Where(p => p.ItemNumber == prod.ItemNumber).ToList();
 
-                    prod.Favorite = prd.Favorite;
-                    prod.Notes = prd.Notes;
-                    prod.InHistory = prd.InHistory;
+                    if (prdList.Count > 0)
+                    {
+                        Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
+                                              .First();
+
+                        if (prd != null)
+                        {
+                            prod.Favorite = prd.Favorite;
+                            prod.Notes = prd.Notes;
+                            prod.InHistory = prd.InHistory;
+                        }
+                    }
                 }
             }
 
@@ -45,12 +53,19 @@ namespace KeithLink.Svc.Impl.Helpers
 
             products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
 
-            Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
-                                  .First();
+            var prdList = products.Where(p => p.ItemNumber == prod.ItemNumber).ToList();
 
-            prod.Favorite = prd.Favorite;
-            prod.Notes = prd.Notes;
-            prod.InHistory = prd.InHistory;
+            if (prdList.Count > 0) {
+                Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
+                                      .First();
+
+                if (prd != null)
+                {
+                    prod.Favorite = prd.Favorite;
+                    prod.Notes = prd.Notes;
+                    prod.InHistory = prd.InHistory;
+                }
+            }
 
             return prod;
         }
