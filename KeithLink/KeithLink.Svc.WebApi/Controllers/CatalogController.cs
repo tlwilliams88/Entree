@@ -142,6 +142,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
 
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
+
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
             }
@@ -169,6 +171,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 ProductsReturn prods = _catalogService.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
 
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
@@ -202,6 +206,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 ProductsReturn prods = _catalogService.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
 
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
@@ -259,6 +265,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 Product prod = _catalogLogic.GetProductById(this.SelectedUserContext, id, this.AuthenticatedUser, catalogType);
 
                 prod = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prod, _listService);
+
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prod, _listService);
 
                 if (prod == null)
                     prod = new Product();
@@ -330,6 +338,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 prod = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prod, _listService);
 
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prod, _listService);
+
                 ret.SuccessResponse = prod;
                 ret.IsSuccess = true;
             }
@@ -361,6 +371,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
 
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
+
                 ret.SuccessResponse = prods;
                 ret.IsSuccess = true;
             }
@@ -389,6 +401,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 ProductsReturn prods = _campaignService.GetCatalogCampaignProducts(campaignUri, this.SelectedUserContext, searchModel, this.AuthenticatedUser);
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
 
                 returnValue.SuccessResponse = prods;
                 returnValue.IsSuccess = true;
@@ -534,6 +548,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
 
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
+
                 if (exportRequest.Fields != null)
                     _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
@@ -568,6 +584,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
 
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
+
                 if (exportRequest.Fields != null)
                     _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
                 ret = ExportModel<Product>(prods.Products, exportRequest, SelectedUserContext);
@@ -598,6 +616,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 ProductsReturn prods = _catalogService.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
 
                 prods.Products = FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(this.AuthenticatedUser, this.SelectedUserContext, prods.Products, _listService);
+
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
 
                 if (exportRequest.Fields != null)
                 {

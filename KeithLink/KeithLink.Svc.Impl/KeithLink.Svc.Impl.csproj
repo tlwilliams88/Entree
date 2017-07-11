@@ -281,6 +281,7 @@
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="Helpers\ContractInformationHelper.cs" />
     <Compile Include="Helpers\CustomInventoryHelper.cs" />
     <Compile Include="Helpers\FavoritesAndNotesHelper.cs" />
     <Compile Include="Helpers\ListSortHelper.cs" />

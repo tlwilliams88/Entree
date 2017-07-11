@@ -365,15 +365,9 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         {
             if (profile != null)
             {
-                ListModel notes = _notesLogic.GetList(catalogInfo);
-                List<string> favorites = _favoritesLogic.GetFavoritedItemNumbers(profile, catalogInfo);
                 var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
 
                 ret.Products.ForEach(delegate (Product prod) {
-                    prod.Favorite = favorites.Contains(prod.ItemNumber);
-                    prod.Notes = notes.Items.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
-                                      .Select(i => i.Notes)
-                                      .FirstOrDefault();
                     prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                             .FirstOrDefault()
                                             .InHistory;
