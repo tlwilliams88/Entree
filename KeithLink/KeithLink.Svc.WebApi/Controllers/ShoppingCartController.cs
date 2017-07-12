@@ -21,6 +21,8 @@ using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Common.Impl.Email;
+using KeithLink.Svc.Core.Enumerations.List;
+
 using Newtonsoft.Json;
 
 namespace KeithLink.Svc.WebApi.Controllers
@@ -141,11 +143,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="options"></param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute( "cart/print/{cartId}/{listId}" )]
-        public HttpResponseMessage PrintCartWithList( Guid cartId, long listId, PrintListModel options ) {
+        [ApiKeyedRoute( "cart/print/{cartId}/{listtype}/{listId}" )]
+        public HttpResponseMessage PrintCartWithList( Guid cartId, ListType listType, long listId, PrintListModel options ) {
             HttpResponseMessage ret;
             try
-            {
+            { //TODO: Unravel this cartreport list...
                 Stream stream = _shoppingCartLogic.CartReport
                     (AuthenticatedUser, SelectedUserContext, cartId, listId, options);
 

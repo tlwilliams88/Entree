@@ -3,7 +3,8 @@
 	@BranchId          CHAR(3),
 	@CustomerNumber    CHAR(6),
 	@Name              NVARCHAR(150),
-    @ReturnValue    BIGINT              OUTPUT
+	@Active		  	   BIT,
+    @ReturnValue       BIGINT              OUTPUT
 AS
     -- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
@@ -16,7 +17,8 @@ AS
 		SET
 			[BranchId] = @BranchId,
 			[CustomerNumber] = @CustomerNumber,
-			[Name] = @Name
+			[Name] = @Name,
+			[Active] = @Active
 		WHERE
 			[Id] = @Id
 			
@@ -30,12 +32,14 @@ AS
                 [BranchId],
 	            [CustomerNumber],
 	            [Name],
+				[Active],
 	            [CreatedUtc],
 	            [ModifiedUtc]
             ) VALUES (
                 @BranchId,
                 @customerNumber,
                 @Name,
+				1,
                 GETUTCDATE(),
                 GETUTCDATE()
             )			

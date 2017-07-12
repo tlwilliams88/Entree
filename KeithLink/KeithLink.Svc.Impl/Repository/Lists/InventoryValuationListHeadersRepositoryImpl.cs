@@ -21,6 +21,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_CUSTNUM = "CustomerNumber";
         private const string PARMNAME_ID = "Id";
         private const string PARMNAME_NAME = "Name";
+        private const string PARMNAME_ACTIVE = "Active";
 
         private const string PARMNAME_RETVAL = "ReturnValue";
 
@@ -52,6 +53,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);
             parms.Add(PARMNAME_ID, model.Id);
             parms.Add(PARMNAME_NAME, model.Name);
+            parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_RETVAL, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 
             ExecuteCommand(SPNAME_SAVE, parms);

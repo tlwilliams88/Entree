@@ -15,6 +15,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         public static ListModel ToListModel(this ContractListHeader header) {
             return new ListModel() {
                 BranchId = header.BranchId,
+                CustomerNumber = header.CustomerNumber,
                 IsContractList = true,
                 IsFavorite = false,
                 IsWorksheet = false,
@@ -26,23 +27,34 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListId = header.Id,
                 Name = $"{LISTNAME_CONTRACT}{header.ContractId}",
                 ReadOnly = true,
-                Items = null
+                HasContractItems = false,
+                Items = new List<ListItemModel>()
             };
         }
 
         public static ListModel ToListModel(this ContractListHeader header, List<ContractListDetail> items) {
             ListModel retVal = ToListModel(header);
-            retVal.Items = items.Select(i => i.ToWebModel())
-                                .OrderBy(i => i.Position)
-                                .ToList();
+
+            if(items != null) {
+                retVal.Items = items.Select(i => i.ToWebModel())
+                                    .OrderBy(i => i.Position)
+                                    .ToList();
+
+                retVal.HasContractItems = (retVal.Items.Count > 0);
+            }
 
             return retVal;
         }
 
         public static ListModel ToListModel(this ContractListHeader header, List<ListItemModel> items) {
             ListModel retVal = ToListModel(header);
-            retVal.Items = items.OrderBy(i => i.Position)
-                                .ToList();
+
+            if(items != null) {
+                retVal.Items = items.OrderBy(i => i.Position)
+                                    .ToList();
+
+                retVal.HasContractItems = (retVal.Items.Count > 0);
+            }
 
             return retVal;
         }

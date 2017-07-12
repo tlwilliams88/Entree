@@ -8,7 +8,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using KeithLink.Svc.Impl.Service.List;
+
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -20,6 +22,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private readonly IListLogic listServiceRepository;
         private readonly INotesListLogic _notesLogic;
+        private readonly IListService _listService;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -31,9 +34,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="profileLogic"></param>
         /// <param name="logRepo"></param>
         public ItemNoteController(IListLogic listServiceRepository,  IUserProfileLogic profileLogic, INotesListLogic notesLogic,
-            IEventLogRepository logRepo) : base(profileLogic) {
+            IEventLogRepository logRepo, IListService listService) : base(profileLogic) {
 			this.listServiceRepository = listServiceRepository;
             _notesLogic = notesLogic;
+            _listService = listService;
             _log = logRepo;
         }
         #endregion
@@ -50,7 +54,9 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                //_notesLogic.SaveNote(this.SelectedUserContext, newNote.ItemNumber, false, newNote.CatalogId, newNote.Note, true);
+                _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, ListType.Notes, 0, new ListItemModel() {    ItemNumber=newNote.ItemNumber,
+                                                                                                                                    CatalogId = newNote.CatalogId,
+                                                                                                                                    Notes = newNote.Note });
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }
@@ -75,7 +81,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                listServiceRepository.DeleteNote(this.AuthenticatedUser, this.SelectedUserContext, itemNumber);
+                //listServiceRepository.DeleteNote(this.AuthenticatedUser, this.SelectedUserContext, itemNumber);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = retVal.SuccessResponse;
             }

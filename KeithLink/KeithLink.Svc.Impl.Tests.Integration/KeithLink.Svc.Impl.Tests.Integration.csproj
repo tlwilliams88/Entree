@@ -92,6 +92,7 @@
     <Compile Include="Repository\Lists\InventoryValuationListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\ReminderListDetailsRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
   </ItemGroup>

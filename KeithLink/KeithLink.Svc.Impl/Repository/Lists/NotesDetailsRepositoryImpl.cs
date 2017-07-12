@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             parms.Add(PARMNAME_NOTE, detail.Note);
             parms.Add(PARMNAME_LINENUMBER, detail.LineNumber);
 
-            parms.Add(PARMNAME_RETURNVALUE, direction:ParameterDirection.Output);
+            parms.Add(PARMNAME_RETURNVALUE, direction:ParameterDirection.Output, dbType: DbType.Int64);
 
             ExecuteCommand(SPNAME_SAVE, parms);
 
