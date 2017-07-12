@@ -64,6 +64,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\Lists\ContractHeaderExtensionTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
     <Compile Include="Models\EntityTests.cs" />
     <Compile Include="Models\Lists\BaseListDetailTests.cs" />
@@ -85,6 +86,16 @@
     <Folder Include="Enumerations\" />
     <Folder Include="Events\" />
     <Folder Include="Exceptions\" />
+    <Folder Include="Extensions\ContentManagement\" />
+    <Folder Include="Extensions\CustomInventoryItems\" />
+    <Folder Include="Extensions\Enumerations\" />
+    <Folder Include="Extensions\Marketing\" />
+    <Folder Include="Extensions\Messaging\" />
+    <Folder Include="Extensions\OnlinePayments\" />
+    <Folder Include="Extensions\Orders\" />
+    <Folder Include="Extensions\PowerMenu\" />
+    <Folder Include="Extensions\ShoppingCart\" />
+    <Folder Include="Extensions\SingleSignOn\" />
     <Folder Include="Helpers\" />
     <Folder Include="Models\ApplicationHealth\" />
     <Folder Include="Models\Authentication\" />
