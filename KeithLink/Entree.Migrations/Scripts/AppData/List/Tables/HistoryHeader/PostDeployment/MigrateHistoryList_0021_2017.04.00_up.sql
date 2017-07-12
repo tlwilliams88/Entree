@@ -1,12 +1,12 @@
-﻿	INSERT -- create customer contract lists from staging customerbids if they don't exist 
+﻿	INSERT -- create history lists from staging worksheets if they don't exist 
 		INTO [List].[HistoryHeaders]
             ([CustomerNumber]
             ,[BranchId]
             ,[CreatedUtc]
             ,[ModifiedUtc])
         SELECT DISTINCT
-            ws.[CustomerNumber],
-            ws.[DivisionNumber]
+            LTRIM(RTRIM(ws.[CustomerNumber])),
+            LTRIM(RTRIM(ws.[DivisionNumber]))
             ,GETUTCDATE()
             ,GETUTCDATE()
         FROM 
