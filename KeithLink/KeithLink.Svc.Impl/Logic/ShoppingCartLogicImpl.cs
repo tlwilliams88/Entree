@@ -380,6 +380,13 @@ namespace KeithLink.Svc.Impl.Logic
                     list.ItemCount = list.Items.Count;
                     list.PieceCount = (int)list.Items.Sum(i => i.Quantity);
 
+                    var o2l = _orderedFromListRepository.Read(list.CartId.ToString());
+                    if (o2l != null)
+                    {
+                        list.ListId = o2l.ListId;
+                        list.ListType = o2l.ListType;
+                    }
+
                     foreach (var item in list.Items) {
                         int qty = (int)item.Quantity;
                         list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
