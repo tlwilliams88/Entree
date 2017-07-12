@@ -23,7 +23,7 @@
               ,[ModifiedUtc])
         SELECT
 		     h.[Id]
-		     ,ROW_NUMBER() over (Order By ItemNumber)
+		     ,ROW_NUMBER() over (Partition by h.CustomerNumber Order By ItemNumber)
 			 ,LTRIM(RTRIM(ws.ItemNumber))
 			 ,CASE WHEN ws.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END
 			 ,LTRIM(RTRIM(ws.DivisionNumber))
