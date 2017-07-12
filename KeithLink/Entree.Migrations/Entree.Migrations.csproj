@@ -1264,6 +1264,9 @@
     <Content Include="Scripts\AppData\List\Tables\HistoryHeader\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\HistoryHeader\PostDeployment\MigrateHistoryList_0021_2017.04.00_p.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\Indexes\idx_ParentInventoryValudationHeaderId_Active_0033_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
