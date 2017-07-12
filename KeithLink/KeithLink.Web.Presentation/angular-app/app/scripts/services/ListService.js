@@ -915,34 +915,13 @@ angular.module('bekApp')
         /*******************
         SET LAST ORDER LIST
         *******************/
-        setLastOrderList: function(listId, listType, cart){
-          var cartId = cart,
-              orderList = {
+        setLastOrderList: function(listId, listType){
+          var orderList = {
                 listId: listId,
                 listType: listType,
-                cartId: cartId,
-              },
-              allSets = [],
-              allSets = LocalStorage.getLastOrderList();
-            if(!allSets || (allSets[0] && !allSets[0].timeset)){
-              allSets = [];
-            }
+            };
 
-            var matchFound = false;
-            if(orderList.cartId !== 'New'){
-              allSets.forEach(function(set){
-                if(set.cartId === orderList.cartId){
-                  set.listId = orderList.listId;
-                  set.listType = orderList.listType;
-                  matchFound = true;
-                }
-              });
-              if(!matchFound){
-                allSets.push(orderList);
-              }
-            }
-
-          LocalStorage.setLastOrderList(allSets);
+          LocalStorage.setLastOrderList(orderList);
           }
         };
 
