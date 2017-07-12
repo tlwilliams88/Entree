@@ -23,7 +23,7 @@
               ,[ModifiedUtc])
         SELECT
 		     h.[Id]
-		     ,0
+		     ,ROW_NUMBER() over (Order By ItemNumber)
 			 ,LTRIM(RTRIM(ws.ItemNumber))
 			 ,CASE WHEN ws.BrokenCaseCode = 'Y' THEN 1 ELSE 0 END
 			 ,LTRIM(RTRIM(ws.DivisionNumber))
