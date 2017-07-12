@@ -341,19 +341,32 @@ namespace KeithLink.Svc.Impl.Logic
 
             if (headerInfoOnly)
             {
+                var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
                 //EntreeStopWatchHelper.ReadStopwatch(stopWatch, _log, "ReadAllCarts - return");
-                return listForBranch.Select(l => new ShoppingCart()
+                //return listForBranch.Select(l => new ShoppingCart()
+                //{
+                //    CartId = l.Id.ToGuid(),
+                //    Name = l.DisplayName,
+                //    Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(),
+                //    PONumber = l.PONumber,
+                //    SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0,
+                //    ItemCount = l.LineItems != null ? l.LineItems.Count() : 0,
+                //    PieceCount = l.LineItems != null ? (int)l.LineItems.Sum(i => i.Quantity) : 0,
+                //    RequestedShipDate = l.RequestedShipDate,
+                //    CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
+                //}).ToList();
+
+                returnCart.ForEach(delegate (ShoppingCart list)
                 {
-                    CartId = l.Id.ToGuid(),
-                    Name = l.DisplayName,
-                    Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(),
-                    PONumber = l.PONumber,
-                    SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0,
-                    ItemCount = l.LineItems != null ? l.LineItems.Count() : 0,
-                    PieceCount = l.LineItems != null ? (int)l.LineItems.Sum(i => i.Quantity) : 0,
-                    RequestedShipDate = l.RequestedShipDate,
-                    CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
-                }).ToList();
+                    var o2l = _orderedFromListRepository.Read(list.CartId.ToString());
+                    if (o2l != null)
+                    {
+                        list.ListId = o2l.ListId;
+                        list.ListType = o2l.ListType;
+                    }
+                });
+
+                return returnCart;
             }
             else
 			{
