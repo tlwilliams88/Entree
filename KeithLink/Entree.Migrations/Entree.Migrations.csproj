@@ -1297,6 +1297,9 @@
     <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0019_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\PostDeployment\MigrateListItemsDelta_0034_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\ListItems\Constraints\FK_ListItems_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

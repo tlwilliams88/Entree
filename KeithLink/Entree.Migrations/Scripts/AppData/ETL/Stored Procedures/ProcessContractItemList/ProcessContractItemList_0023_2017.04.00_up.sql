@@ -80,7 +80,7 @@ BEGIN
             ,[ModifiedUtc]
             ,[CatalogId]
             ,[Status])
-        SELECT
+        SELECT 
 			LTRIM(RTRIM(bcd.ItemNumber))
 			,CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END
 			,l.Id
@@ -94,13 +94,13 @@ BEGIN
 				[ETL].[Staging_CustomerBid] cb
 				ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
 			INNER JOIN 
-				[BEK_Commerce_AppData].List.Lists l
-				ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
+				List.[ContractHeaders] l
+				ON l.CustomerNumber = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 			WHERE
 				NOT EXISTS (
 					SELECT
 						'x'
-						FROM [List].[ListItems] li
+						FROM [List].[ListItemsDelta] li
 						WHERE li.ParentList_Id = l.Id 
 							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
 							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
@@ -164,9 +164,8 @@ BEGIN
 			,l.BranchId
 			,'Deleted'
 		FROM [List].[ListItems] li
-			INNER JOIN [List].[Lists] l
+			INNER JOIN List.[ContractHeaders] l
 			ON li.ParentList_Id = l.Id
-			AND l.[Type] = 2
 	WHERE 
 		NOT EXISTS (
 			SELECT
@@ -176,12 +175,12 @@ BEGIN
 					[ETL].[Staging_CustomerBid] cb
 					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
 				INNER JOIN 
-					List.Lists l
-					ON l.CustomerId = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber)) and l.Type = 2
+					List.[ContractHeaders] l
+					ON l.CustomerNumber = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 				WHERE
 					ltrim(rtrim(ItemNumber)) = li.ItemNumber
 					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = li.Each
-					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerId 
+					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerNumber 
 					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
 			)
 		AND NOT EXISTS (
