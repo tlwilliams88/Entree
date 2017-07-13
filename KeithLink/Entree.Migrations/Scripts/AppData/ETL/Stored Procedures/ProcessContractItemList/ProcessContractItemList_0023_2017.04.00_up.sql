@@ -80,7 +80,7 @@ BEGIN
             ,[ModifiedUtc]
             ,[CatalogId]
             ,[Status])
-        SELECT 
+        SELECT DISTINCT 
 			LTRIM(RTRIM(bcd.ItemNumber))
 			,CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END
 			,l.Id
@@ -155,7 +155,7 @@ BEGIN
             ,[ModifiedUtc]
             ,[CatalogId]
             ,[Status])
-        SELECT
+        SELECT DISTINCT 
 			li.ItemNumber
 			,li.Each
 			,l.Id
