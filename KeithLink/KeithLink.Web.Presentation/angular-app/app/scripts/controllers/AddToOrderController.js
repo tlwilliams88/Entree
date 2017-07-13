@@ -9,7 +9,7 @@ angular.module('bekApp')
     $scope.$on('$stateChangeStart',
 
       function(event, toState, toParams, fromState, fromParams){
-      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !(toState.name == 'register') && !$scope.continueToCart && !$scope.orderCanceled){
+      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !(toState.name == 'register') && !$scope.continueToCart && !$scope.orderCanceled && (selectedCart != null && selectedCart.items.length > 0)){
 
         if(!$scope.tempCartName){
           $scope.saveAndRetainQuantity();
@@ -73,9 +73,9 @@ angular.module('bekApp')
     } else {
       basketId = 'New';
     }
-    if ($stateParams.cartId !== basketId.toString() || ($stateParams.cartId !== 'New' && $stateParams.listId !== selectedList.listid.toString())) {
-      $state.go('menu.addtoorder.items', {cartId: basketId, listType: selectedList.type, listId: selectedList.listid, pageLoaded: true}, {location:'replace', inherit:false, notify: false});
-    }
+    // if ($stateParams.cartId !== basketId.toString() || ($stateParams.cartId !== 'New' && $stateParams.listId !== selectedList.listid.toString())) {
+    //   $state.go('menu.addtoorder.items', {cartId: basketId, listType: selectedList.type, listId: selectedList.listid, pageLoaded: true}, {location:'replace', inherit:false, notify: false});
+    // }
 
     $scope.basketId = basketId;
     $scope.indexOfSDestroyedRow = '';
@@ -618,7 +618,7 @@ angular.module('bekApp')
         }
 
         LocalStorage.setLastOrderList(list.listid, list.type, cartId);
-        
+
         var searchTerm = '';
         if($scope.orderSearchTerm && $scope.creatingCart){
             searchTerm = $scope.orderSearchTerm;
