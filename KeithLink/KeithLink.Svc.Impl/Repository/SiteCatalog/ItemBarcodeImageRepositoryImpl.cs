@@ -25,17 +25,23 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         #region methods
         public List<ItemBarcodeModel> GetBarcodeForList(ListModel list)
         {
+            if (list == null) {
+                return null;
+            }
+
             List<ItemBarcodeModel> returnBarcodeModels = new List<ItemBarcodeModel>();
 
-            Parallel.ForEach(list.Items, listItem =>
-            {
-                returnBarcodeModels.Add(listItem.ToItemBarcodeModel(GetBarcode(string.Format(ITEMNUMBER_BARCODE_FORMAT, listItem.ItemNumber))));
-            });
+            if (list.Items != null) {
+                Parallel.ForEach(list.Items, listItem =>
+                {
+                    returnBarcodeModels.Add(listItem.ToItemBarcodeModel(GetBarcode(string.Format(ITEMNUMBER_BARCODE_FORMAT, listItem.ItemNumber))));
+                });
+            }
 
             return returnBarcodeModels;
         }
 
-        public byte[] GetBarcode(string text)
+        private byte[] GetBarcode(string text)
         {
             Bitmap b;
             Barcode bar = new Barcode(text);
