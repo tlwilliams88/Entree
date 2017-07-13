@@ -407,16 +407,16 @@ angular.module('bekApp')
     **********/
 
     $scope.filterItems = function(searchTerm) {
-      if($scope.unsavedChangesConfirmation() && searchTerm){
         $scope.filtered = true;
-        $scope.initPagingValues(true);
-        listPagingModel.filterListItems(searchTerm);
-      } else if($scope.unsavedChangesConfirmation() && $scope.selectedFilter) {
-        $scope.initPagingValues(true);
-        listPagingModel.filterListItemsByMultipleFields($scope.selectedFilter);
-      } else {
-        listPagingModel.filterListItems();
-      }
+        if($scope.unsavedChangesConfirmation() && searchTerm) {
+            $scope.initPagingValues(true);
+            listPagingModel.filterListItems(searchTerm);
+        } else if($scope.unsavedChangesConfirmation() && $scope.selectedFilter) {
+            $scope.initPagingValues(true);
+            listPagingModel.filterListItemsByMultipleFields($scope.selectedFilter);
+        } else {
+            listPagingModel.filterListItems();
+        }
     };
 
     $scope.sortList = function(sortBy, sortOrder) {
