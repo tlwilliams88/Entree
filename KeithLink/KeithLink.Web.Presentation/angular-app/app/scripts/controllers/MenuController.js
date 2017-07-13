@@ -281,6 +281,7 @@ angular.module('bekApp')
   };
 
   function refreshPage() {
+    location.replace('#/home/');
     location.reload();
   }
 
