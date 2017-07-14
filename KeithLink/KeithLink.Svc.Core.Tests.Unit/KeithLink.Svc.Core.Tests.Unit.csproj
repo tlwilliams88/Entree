@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Extensions\Lists\ContractHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\FavoritesDetailExtensionTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
     <Compile Include="Models\EntityTests.cs" />
     <Compile Include="Models\Lists\BaseListDetailTests.cs" />
