@@ -18,11 +18,11 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                                      };
         }
 
-        public static NotesListDetail ToListModel(this ListItemModel model, long headerId = 0) {
+        public static NotesListDetail ToListModel(this ListItemModel model, long headerId = 0, long detailId = 0) {
             NotesListDetail item = new NotesListDetail {
                                                            CatalogId = model.CatalogId,
                                                            Each = model.Each ?? false,
-                                                           Id = model.ListItemId,
+                                                           Id = (detailId != null)? detailId : model.ListItemId,
                                                            ItemNumber = model.ItemNumber,
                                                            Note = model.Notes,
                                                            HeaderId = headerId,

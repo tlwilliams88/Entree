@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * @ngdoc function
  * @name bekApp.service:CartService
@@ -10,24 +10,24 @@
 angular.module('bekApp')
   .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants', 'LocalStorage', '$rootScope',
     function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants, LocalStorage, $rootScope) {
- 
+
     var Service = {
-      
+
       renameCart: false,
       cartContainsSpecialItems: false,
       cartHeaders: [],
       shipDates: [],
- 
+
       // accepts "header: true" params to get only names
       // return array of cart objects
       getAllCarts: function(requestParams) {
         if (!requestParams) {
           requestParams = {};
         }
- 
+
         return Cart.query(requestParams).$promise;
       },
- 
+
       getCartHeaders: function() {
         return Cart.get({header: true}).$promise
           .then(function(resp) {
@@ -41,30 +41,30 @@ angular.module('bekApp')
       updateCartHeaders: function(headers) {
         $rootScope.cartsHeaders = headers;
       },
- 
+
       // accepts cartId (guid)
       // returns cart object
       getCart: function(cartId) {
-        return Cart.get({ 
+        return Cart.get({
           cartId: cartId,
         }).$promise.then(function(resp) {
           var cart = resp.successResponse;
             Service.cartContainsSpecialItems = false;
             var i;
-            if(cart.items && cart.items.length > 0){
-              for (i = 0; i < cart.items.length; i++) { 
+            if(cart != null && cart.items && cart.items.length > 0){
+              for (i = 0; i < cart.items.length; i++) {
                 if (cart.items[i].is_specialty_catalog) {
-                  Service.cartContainsSpecialItems = true; 
+                  Service.cartContainsSpecialItems = true;
                 }
               }
+              PricingService.updateCaculatedFields(cart.items);
             }
 
-          PricingService.updateCaculatedFields(cart.items);
           return cart;
         });
       },
 
-      printOrder: function(listId, cartId, landscape, showparvalues, options, shownotes) {
+      printOrder: function(list, cartId, landscape, showparvalues, options, shownotes) {
 
           var printparams = {
             landscape: landscape,
@@ -74,16 +74,16 @@ angular.module('bekApp')
           };
 
 
-        var promise = $http.post('/cart/print/' + cartId + '/' + listId, printparams, {
+        var promise = $http.post('/cart/print/' + cartId + '/' + list.type + '/' + list.listid, printparams, {
           responseType: 'arraybuffer'
         });
         return ExportService.print(promise);
       },
- 
+
       findCartById: function(cartId) {
         return UtilityService.findObjectByField(Service.cartHeaders, 'id', cartId);
       },
- 
+
       // gets the default selected cart
       getSelectedCart: function(cartId) {
         var selectedCart;
@@ -102,17 +102,17 @@ angular.module('bekApp')
         if (!selectedCart && Service.cartHeaders && Service.cartHeaders.length > 0) {
           selectedCart = Service.cartHeaders[0];
         }
- 
+
         return selectedCart;
       },
- 
+
       /********************
       CREATE CART
       ********************/
- 
+
       beforeCreateCart: function(items, shipDate, name, ponumber) {
         var newCart = {};
-    
+
         if (!items) { // if null
           newCart.items = [];
         } else if (Array.isArray(items))  { // if multiple items
@@ -128,13 +128,13 @@ angular.module('bekApp')
             item.quantity = 1;
           }
         });
- 
+
         if (name && name !== 'New') {
           newCart.name = name;
         } else {
           newCart.name = UtilityService.generateName(SessionService.userProfile.firstname, Service.cartHeaders);
         }
- 
+
         newCart.requestedshipdate = shipDate;
         // default to next ship date
         if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
@@ -150,15 +150,15 @@ angular.module('bekApp')
 
         return newCart;
       },
- 
+
       // accepts null, item object, or array of item objects and shipDate
       // returns promise and new cart object
       createCart: function(items, shipDate, name, ponumber) {
         var newCart = Service.beforeCreateCart(items, shipDate, name, ponumber);
- 
+
         newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
-          
+
           newCart.id = response.successResponse.listitemid;
           newCart.createddate = new Date();
           newCart.itemcount = newCart.items.length;
@@ -168,7 +168,7 @@ angular.module('bekApp')
           return newCart;
         });
       },
- 
+
       /********************
       IMPORT CART
       ********************/
@@ -176,7 +176,7 @@ angular.module('bekApp')
       importCart: function(file, options, selectedCart) {
         var deferred = $q.defer(),
             cart;
- 
+
         if(selectedCart){
           options.cartname = selectedCart.name;
           options.shipdate = selectedCart.requestedshipdate;
@@ -200,14 +200,14 @@ angular.module('bekApp')
             }
             cart.id = data.listid;
             Service.cartHeaders.push(cart);
- 
+
             // display messages
             if (data.warningmsg) {
               toaster.pop('success', null, data.warningmsg);
             } else {
               toaster.pop('success', null, 'Successfully imported a new cart.');
             }
- 
+
             deferred.resolve(data);
           } else {
             var errorMessage = response.data.errorMessage;
@@ -218,14 +218,14 @@ angular.module('bekApp')
             deferred.reject(errorMessage);
           }
         });
- 
+
         return deferred.promise;
       },
 
       /********************
       QUICK ADD
       ********************/
- 
+
       validateQuickAdd: function(items) {
         return $http.post('/cart/quickadd/validate', items).then(function(response) {
           return response.data.successResponse;
@@ -241,7 +241,7 @@ angular.module('bekApp')
             return $q.reject(response.errormessage);
           }
         }, function(error){
- 
+
          return $q.reject('An error has occurred with this Quick Add order.');
         });
       },
@@ -259,26 +259,27 @@ angular.module('bekApp')
       exportCart: function(config, cartid) {
         ExportService.export('/cart/export/' + cartid, config);
       },
- 
+
       /********************
       EDIT CART
       ********************/
- 
+
       // accepts cart object and params (deleteOmitted?)
       // returns promise and updated cart object
       updateCart: function(cart, params, list) {
 
         if(list){
-          cart.listId = list;
-          var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
-              lastlist ={
-                listId: cart.listId,          
-                timeset: timeset
-              };
-         
-          LocalStorage.setLastList(lastlist);
+          cart.listId = list.listid;
+          cart.listType = list.type;
+          var lastList ={
+            listId: cart.listId,
+            listType: cart.listType
+          };
+
+          LocalStorage.setLastList(lastList);
+          LocalStorage.setLastOrderList(lastList);
         }
-        
+
         return Cart.update(params, cart).$promise.then(function(response) {
           cart = response.successResponse;
 
@@ -305,35 +306,35 @@ angular.module('bekApp')
           return Service.getCart(response.id);
         });
       },
- 
+
       addItemsToCart: function(cart, items) {
            cart.items = items;
         return Service.updateCart(cart, {deleteomitted: false});
       },
- 
+
       // accepts cartId (guid)
       deleteCart: function(cartId) {
-        return Cart.delete({ 
-          cartId: cartId 
+        return Cart.delete({
+          cartId: cartId
         }).$promise.then(function(response) {
-          
+
           // updte cart headers cache
           var deletedCart = Service.findCartById(cartId);
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
 
           Service.updateCartHeaders(Service.cartHeaders);
-          
+
           return response.successResponse;
         });
       },
- 
+
       deleteMultipleCarts: function(cartGuidArray) {
         return $http.delete('/cart', {
           headers:{'Content-Type': 'application/json'},
           data: cartGuidArray
         }).then(function() {
- 
+
           // update cart headers cache
           var cartsKept = [];
           Service.cartHeaders.forEach(function(cart, index) {
@@ -342,56 +343,56 @@ angular.module('bekApp')
             }
           });
           angular.copy(cartsKept, Service.cartHeaders);
-          
+
           Service.updateCartHeaders(Service.cartHeaders);
- 
+
           return;
         });
       },
- 
+
       /********************
       EDIT SINGLE ITEM
       ********************/
- 
+
       addItemToCart: function(cartId, item) {
         if (!item.quantity || item.quantity === 0) {
           item.quantity = 1;
         }
-        
+
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
           Service.getCartHeaders();
           return response.successResponse;
         });
       },
- 
+
       updateItem: function(cartId, item) {
        return Cart.updateItem({ cartId: cartId }).$promise.then(function(response) {
           return response;
         });
       },
- 
+
       deleteItem: function(cartId, itemId) {
         return Cart.deleteItem({ cartId: cartId }).$promise.then(function(response) {
           return response;
         });
       },
- 
+
       /********************
       SUBMIT ORDERS
       ********************/
- 
+
       updateNetworkStatus: function() {
         if ( ENV.mobileApp === true && navigator.connection.type === 'none') {
           Service.isOffline = true;
         }
         else{
           Service.isOffline = false;
-        } 
+        }
       },
 
       getShipDates: function() {
         var deferred = $q.defer();
-        
+
         if (Service.shipDates.length > 0) {
           deferred.resolve(Service.shipDates);
         } else {
@@ -409,11 +410,11 @@ angular.module('bekApp')
             deferred.resolve(dates.shipdates);
             return dates.shipdates;
         }
-          }); 
+          });
         }
         return deferred.promise;
       },
- 
+
       findCutoffDate: function(cart) {
         var shipDateFound;
         if (cart && cart.requestedshipdate) {
@@ -426,7 +427,7 @@ angular.module('bekApp')
         }
         return shipDateFound;
       },
- 
+
       isSubmitted: function(cartId) {
         return $http.get('/cart/issubmitted/' + cartId).then(function(resp){
           return (resp && resp.data) ? resp.data.successResponse : true;
@@ -443,7 +444,7 @@ angular.module('bekApp')
           return data.successResponse;
         });
       },
- 
+
       setActiveCart: function(cartId) {
         return Cart.setActive({
           cartId: cartId
@@ -452,7 +453,7 @@ angular.module('bekApp')
         });
       }
     };
- 
+
     return Service;
- 
+
   }]);

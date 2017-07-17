@@ -16,8 +16,10 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Configurations;
+using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
+using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Service.List
@@ -42,6 +44,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IItemHistoryRepository _itemHistoryRepo;
         private readonly IPriceLogic _priceLogic;
         private readonly IProductImageRepository _productImageRepo;
+        private readonly IItemBarcodeImageRepository _barcodeImageRepo;
         private readonly IEventLogRepository _log;
 
         private Dictionary<string, string> _contractdictionary;
@@ -52,11 +55,11 @@ namespace KeithLink.Svc.Impl.Service.List
         #endregion
 
         #region ctor
-        public ListServiceImpl( IListLogic genericListLogic, IListRepository listRepo, IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
+        public ListServiceImpl( IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
                                 IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
                                 IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
-                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo,
+                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
                                 IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
                                 IEventLogRepository log)
@@ -79,6 +82,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
             _productImageRepo = productImageRepo;
+            _barcodeImageRepo = barcodeImageRepo;
             _log = log;
         }
         #endregion
@@ -126,6 +130,14 @@ namespace KeithLink.Svc.Impl.Service.List
             return contractdictionary;
         }
 
+        public ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers)
+        {
+            ItemHistory[] itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(userContext.BranchId) &&
+                                                                      f.CustomerNumber.Equals(userContext.CustomerId))
+                                                           .Where(f => itemNumbers.Contains(f.ItemNumber))
+                                                           .ToArray();
+            return itemStatistics;
+        }
 
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
@@ -451,6 +463,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Recent:
                     break;
                 case ListType.Notes:
+                    _notesLogic.SaveNote(catalogInfo, item);
                     break;
                 case ListType.InventoryValuation:
                     _inventoryValuationLogic.SaveItem(user, catalogInfo, headerId, item.ToInventoryValuationListDetail(headerId));
@@ -701,6 +714,8 @@ namespace KeithLink.Svc.Impl.Service.List
                         };
                 }
             });
+
+            MarkFavoritesAndAddNotes(user, list, catalogInfo);
         }
 
         private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
@@ -753,10 +768,10 @@ namespace KeithLink.Svc.Impl.Service.List
             return new List<RecommendedItemModel>();
         }
 
-        private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+        public ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
         {
             if (list.Items == null || list.Items.Count == 0)
-                return;
+                return null;
 
             ListModel notes = _notesLogic.GetList(catalogInfo);
             ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
@@ -780,7 +795,45 @@ namespace KeithLink.Svc.Impl.Service.List
                 listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
                 listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Notes : null;
             });
+
+            return list;
         }
+
+        public List<Product> MarkFavoritesAndAddNotes(UserProfile user, List<Product> list, UserSelectedContext catalogInfo)
+        {
+            if (list == null || list.Count == 0)
+                return null;
+
+            ListModel notes = _notesLogic.GetList(catalogInfo);
+            ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
+            var history = _historyListLogic.ItemsInHistoryList(catalogInfo, list.Select(p => p.ItemNumber).ToList());
+
+            var notesHash = new Dictionary<string, ListItemModel>();
+            var favHash = new Dictionary<string, ListItemModel>();
+
+            if (notes != null &&
+               notes.Items != null)
+                notesHash = notes.Items
+                                 .GroupBy(i => i.ItemNumber)
+                                 .ToDictionary(n => n.Key, n => n.First());
+            if (favorites != null &&
+               favorites.Items != null)
+                favHash = favorites.Items
+                                   .GroupBy(i => i.ItemNumber)
+                                   .ToDictionary(f => f.Key, f => f.First());
+
+            Parallel.ForEach(list, prod =>
+            {
+                prod.Favorite = favHash.ContainsKey(prod.ItemNumber);
+                prod.Notes = notesHash.ContainsKey(prod.ItemNumber) ? notesHash[prod.ItemNumber].Notes : null;
+                prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                        .FirstOrDefault()
+                                        .InHistory;
+            });
+
+            return list;
+        }
+
         public string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
         {
             return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
@@ -799,6 +852,15 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             return itmcategory;
+        }
+
+
+
+        public List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId)
+        {
+            ListModel list = ReadList(user, catalogInfo, type, listId);
+
+            return _barcodeImageRepo.GetBarcodeForList(list);
         }
 
     }

@@ -15,6 +15,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
     public class OrderedFromListRepositoryImpl : DapperDatabaseConnection, IOrderedFromListRepository
     {
         #region attributes
+        private const string PARMNAME_CONTROLNUM = "ControlNumber";
+        private const string PARMNAME_LISTID = "ListId";
+        private const string PARMNAME_LISTTYPE = "ListType";
+
         private const string STOREDPROC_GET_ONE = "[Orders].[ReadOrderListAssociation]";
         private const string STOREDPROC_WRITE_ONE = "[Orders].[WriteOrderListAssociation]";
         private const string STOREDPROC_DELETE_ONE = "[Orders].[DeleteOrderListAssociation]";
@@ -42,8 +46,9 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             if(o2l.ListId != null)
             {
                 DynamicParameters parms = new DynamicParameters();
-                parms.Add("@ControlNumber", o2l.ControlNumber);
-                parms.Add("@ListId", o2l.ListId.Value);
+                parms.Add(PARMNAME_CONTROLNUM, o2l.ControlNumber);
+                parms.Add(PARMNAME_LISTID, o2l.ListId.Value);
+                parms.Add(PARMNAME_LISTTYPE, o2l.ListType);
 
                 ExecuteCommand(STOREDPROC_WRITE_ONE, parms);
             }
@@ -52,7 +57,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
         public void Delete(string controlNumber)
         {
-            ExecuteCommand(STOREDPROC_DELETE_ONE, "@ControlNumber", controlNumber);
+            DynamicParameters parms = new DynamicParameters();
+            parms.Add(PARMNAME_CONTROLNUM, controlNumber);
+
+            ExecuteCommand(STOREDPROC_DELETE_ONE, parms);
         }
 
         public void Purge(int PurgeDays)

@@ -295,7 +295,7 @@ angular.module('bekApp')
           ListService.lists.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
-              listHeader = $filter('filter')(lists, {listid: last.listId, type: last.listType})[0];
+              listHeader = $filter('filter')(ListService.lists, {listid: last.listId, type: last.listType})[0];
             }
           });
 
@@ -424,10 +424,9 @@ angular.module('bekApp')
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage/?pageLoaded',
+      url: ':cartId/list/:listId/:listType/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage/?pageLoaded',
       params: {
-        listItems: null,
-        listType: null
+        listItems: null
       },
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
@@ -456,18 +455,21 @@ angular.module('bekApp')
               listToBeUsed = {},
               historyList = $filter('filter')(lists, {name: 'history'})[0],
               favoritesList = $filter('filter')(lists, {name: 'favorites'})[0],
+              lastOrderList = LocalStorage.getLastOrderList(),
               listHeader;
 
           listHeader = $filter('filter')(lists, {listid: $stateParams.listId, type: $stateParams.listType})[0];
 
-          if(!listHeader) {
-
-            if(historyList) {
-              listHeader = historyList;
-            } else {
-              listHeader = favoritesList;
-            }
-
+          if(listHeader == null || listHeader == undefined) {
+              if(lastOrderList != null || lastOrderList != undefined) {
+                 listHeader = $filter('filter')(lists, {listid: lastOrderList.listId, type: lastOrderList.listType})[0];
+             } else {
+                 if(historyList) {
+                   listHeader = historyList;
+                 } else {
+                   listHeader = favoritesList;
+                 }
+             }
           }
 
           listToBeUsed.listId = listHeader.listid;

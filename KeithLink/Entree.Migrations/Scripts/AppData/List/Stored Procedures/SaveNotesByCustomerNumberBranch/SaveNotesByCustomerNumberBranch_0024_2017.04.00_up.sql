@@ -2,6 +2,7 @@ CREATE PROCEDURE [List].[SaveNotesByCustomerNumberBranch]
     @Id                     BIGINT,
     @HeaderId               BIGINT,
     @ItemNumber             CHAR(6),
+	@LineNumber					        INT,
     @Each                   BIT,
     @CatalogId              VARCHAR(10),
     @Note                   NVARCHAR(500),

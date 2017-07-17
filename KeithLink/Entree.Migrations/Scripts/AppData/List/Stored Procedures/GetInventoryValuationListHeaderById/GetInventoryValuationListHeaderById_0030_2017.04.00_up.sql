@@ -15,4 +15,4 @@ AS
 	FROM 
         [List].[InventoryValuationListHeaders] 
 	WHERE	
-        [Id] = @Id
+        [Id] = @Id and [Active] = 1

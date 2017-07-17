@@ -70,7 +70,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 Id = id,
                 CustomerNumber = catalogInfo.CustomerId,
                 BranchId = catalogInfo.BranchId,
-                Name = name
+                Name = name,
+                Active = active
             });
         }
 
