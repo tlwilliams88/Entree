@@ -6,24 +6,25 @@ using System.Threading.Tasks;
 
 using Autofac;
 using FluentAssertions;
+using Moq;
+using Xunit;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 
-using Moq;
-using Xunit;
-
 namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
 {
-    public class ItemBarcodeImageRepositoryTests
+    public class ItemBarcodeImageRepositoryTests : BaseDITests
     {
-        private static IContainer GetTestsContainer()
+        private static IItemBarcodeImageRepository MakeTestUnit()
         {
-            ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
+            ContainerBuilder cb = GetTestsContainer();
 
-            return cb.Build();
+            var testcontainer = cb.Build();
+
+            return testcontainer.Resolve<IItemBarcodeImageRepository>();
         }
         public class GetBarcodeForList
         {
@@ -31,9 +32,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
             public void GoodListModel_ReturnsListOfBarcodes()
             {
                 // arrange
-                var container = GetTestsContainer();
-                var testunit = GetTestsContainer()
-                        .Resolve<IItemBarcodeImageRepository>();
+                var testunit = MakeTestUnit();
                 var test = new ListModel()
                 {
                     BranchId = "XXX",
@@ -56,9 +55,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
             public void GoodEmptyListModel_ReturnsEmptyListOfBarcodes()
             {
                 // arrange
-                var container = GetTestsContainer();
-                var testunit = GetTestsContainer()
-                        .Resolve<IItemBarcodeImageRepository>();
+                var testunit = MakeTestUnit();
                 var test = new ListModel()
                 {
                     BranchId = "XXX",
@@ -77,9 +74,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
             public void BadListModel_ReturnsNull()
             {
                 // arrange
-                var container = GetTestsContainer();
-                var testunit = GetTestsContainer()
-                        .Resolve<IItemBarcodeImageRepository>();
+                var testunit = MakeTestUnit();
 
                 // act
                 var results = testunit.GetBarcodeForList(null);
