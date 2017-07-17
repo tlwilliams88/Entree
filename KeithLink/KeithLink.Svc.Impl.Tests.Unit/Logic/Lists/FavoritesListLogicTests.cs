@@ -1,38 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
 using FluentAssertions;
+using Moq;
+using Xunit;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.Contract;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 
-using Moq;
-using Xunit;
-
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
-    public class FavoritesListLogicTests
+    public class FavoritesListLogicTests : BaseDITests
     {
-        private static IContainer MakeTestsContainer()
+        private static IFavoritesListLogic MakeTestsUnit()
         {
-            ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
+            ContainerBuilder cb = GetTestsContainer();
 
+            // Register mocks
             cb.RegisterInstance(MakeMockHeaderRepo())
               .As<IFavoriteListHeadersRepository>();
             cb.RegisterInstance(MakeMockDetailsRepo())
               .As<IFavoriteListDetailsRepository>();
 
-            return cb.Build();
+            var testcontainer = cb.Build();
+
+            return testcontainer.Resolve<IFavoritesListLogic>();
         }
 
         private static IFavoriteListHeadersRepository MakeMockHeaderRepo()
@@ -99,8 +98,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void BadBranchId_ReturnsEmptyList()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "XXX",
@@ -112,8 +110,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 var results = testunit.GetFavoritedItemNumbers(fakeUser, testcontext);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
                 results.Count()
                        .Should()
                        .Be(0);
@@ -123,8 +119,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void BadCustomerId_ReturnsEmptyList()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -136,8 +131,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 var results = testunit.GetFavoritedItemNumbers(fakeUser, testcontext);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
                 results.Count()
                        .Should()
                        .Be(0);
@@ -147,8 +140,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void GoodCustomerIdAndBranch_ReturnsExpectedList()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -161,8 +153,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 var results = testunit.GetFavoritedItemNumbers(fakeUser, testcontext);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
                 results.First()
                        .Should()
                        .Be(expected);
@@ -175,8 +165,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void BadBranchId_ReturnsNull()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "XXX",
@@ -196,8 +185,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void BadCustomerId_ReturnsNull()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -214,11 +202,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranchHeaderOnly_ReturnsExpectedList()
+            public void GoodCustomerIdAndBranchHeaderOnly_ReturnsList()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -239,17 +226,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 // assert
                 results.Should()
                        .NotBeNull();
-                //results.First()
-                //       .Should()
-                //       .Be(expected);
             }
 
             [Fact]
             public void GoodCustomerIdAndBranch_ReturnsListWithAnItem()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -272,8 +255,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void GoodCustomerIdAndBranch_ReturnsListExpectedItemNumber()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IFavoritesListLogic>();
+                var testunit = MakeTestsUnit();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
