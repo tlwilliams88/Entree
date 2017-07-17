@@ -6,31 +6,32 @@ using System.Threading.Tasks;
 
 using Autofac;
 using FluentAssertions;
-
-using KeithLink.Svc.Core.Models.Lists.History;
-
 using Moq;
 using Xunit;
 
-using KeithLink.Svc.Impl.Repository.SmartResolver;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Lists.History;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
-    public class HistoryListLogicTests
+    public class HistoryListLogicTests : BaseDITests
     {
-        private static IContainer MakeTestsContainer()
+        private static IHistoryListLogic MakeTestsObject()
         {
-            ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
+            ContainerBuilder cb = GetTestsContainer();
 
+            // Register mocks
             cb.RegisterInstance(MakeMockHeaderRepo())
               .As<IHistoryListHeaderRepository>();
             cb.RegisterInstance(MakeMockDetailsRepo())
               .As<IHistoryListDetailRepository>();
 
-            return cb.Build();
+            var testcontainer = cb.Build();
+
+            return testcontainer.Resolve<IHistoryListLogic>();
         }
 
         private static IHistoryListHeaderRepository MakeMockHeaderRepo()
@@ -79,8 +80,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void BadBranchId_ReturnsNull()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IHistoryListLogic>();
+                var testunit = MakeTestsObject();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "XXX",
@@ -100,8 +100,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void BadCustomerId_ReturnsNull()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IHistoryListLogic>();
+                var testunit = MakeTestsObject();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -121,8 +120,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void GoodCustomerIdAndBranch_ReturnsExpectedList()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IHistoryListLogic>();
+                var testunit = MakeTestsObject();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -135,8 +133,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 var results = testunit.GetListModel(fakeUser, testcontext, 0);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
                 results.CustomerNumber
                        .Should()
                        .Be(expected);
@@ -149,96 +145,77 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public void BadBranchId_ReturnsListWithInListItemsAndInHistoryFalse()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IHistoryListLogic>();
+                var testunit = MakeTestsObject();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
                 var InList = new List<string>() { "123456" };
+                var expected = new InHistoryReturnModel() {
+                                                              ItemNumber = "123456",
+                                                              InHistory = false
+                                                          };
 
                 // act
                 var results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
-                results.Count()
-                       .Should()
-                       .Be(1);
                 results.First()
-                       .ItemNumber
                        .Should()
-                       .Be("123456");
-                results.First()
-                       .InHistory
-                       .Should()
-                       .Be(false);
+                       .Be(expected);
             }
 
             [Fact]
             public void BadCustomerId_ReturnsListWithInListItemsAndInHistoryFalse()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IHistoryListLogic>();
+                var testunit = MakeTestsObject();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
                 var InList = new List<string>() { "123456" };
+                var expected = new InHistoryReturnModel()
+                {
+                    ItemNumber = "123456",
+                    InHistory = false
+                };
 
                 // act
                 var results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
-                results.Count()
-                       .Should()
-                       .Be(1);
                 results.First()
-                       .ItemNumber
                        .Should()
-                       .Be("123456");
-                results.First()
-                       .InHistory
-                       .Should()
-                       .Be(false);
+                       .Be(expected);
             }
 
             [Fact]
             public void GoodCustomerIdAndBranch_ReturnsListWithInListItemsAndInHistoryTrue()
             {
                 // arrange
-                var testcontainer = MakeTestsContainer();
-                var testunit = testcontainer.Resolve<IHistoryListLogic>();
+                var testunit = MakeTestsObject();
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 var InList = new List<string>() { "123456" };
+                var expected = new InHistoryReturnModel()
+                {
+                    ItemNumber = "123456",
+                    InHistory = true
+                };
 
                 // act
                 var results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
-                results.Count()
-                       .Should()
-                       .Be(1);
                 results.First()
-                       .ItemNumber
                        .Should()
-                       .Be("123456");
-                results.First()
-                       .InHistory
-                       .Should()
-                       .Be(true);
+                       .Be(expected);
             }
         }
     }
