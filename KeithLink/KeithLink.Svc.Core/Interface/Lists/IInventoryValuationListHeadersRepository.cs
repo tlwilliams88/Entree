@@ -8,6 +8,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         InventoryValuationListHeader GetInventoryValuationListHeader(long listId);
         List<InventoryValuationListHeader> GetInventoryValuationListHeaders(UserSelectedContext catalogInfo);
-        long SaveInventoryValudationListHeader(InventoryValuationListHeader model);
+        long SaveInventoryValuationListHeader(InventoryValuationListHeader model);
     }
 }

@@ -181,7 +181,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
         }
 
-        public class SaveInventoryValudationListHeader : MigratedDatabaseTest { 
+        public class SaveInventoryValuationListHeader : MigratedDatabaseTest { 
             private InventoryValuationListHeader MakeHeader() {
                 return new InventoryValuationListHeader() { 
                     BranchId = "FRT",
@@ -200,7 +200,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
+                var headerId = repo.SaveInventoryValuationListHeader(header);
                 var results = repo.GetInventoryValuationListHeader(headerId);
 
                 // assert
@@ -217,7 +217,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
+                var headerId = repo.SaveInventoryValuationListHeader(header);
                 var results = repo.GetInventoryValuationListHeader(headerId);
 
                 // assert
@@ -234,7 +234,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
+                var headerId = repo.SaveInventoryValuationListHeader(header);
                 var results = repo.GetInventoryValuationListHeader(headerId);
 
                 // assert
@@ -251,7 +251,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
+                var headerId = repo.SaveInventoryValuationListHeader(header);
                 var results = repo.GetInventoryValuationListHeader(headerId);
 
                 // assert
@@ -268,7 +268,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
+                var headerId = repo.SaveInventoryValuationListHeader(header);
                 var results = repo.GetInventoryValuationListHeader(headerId);
 
                 // assert
@@ -289,7 +289,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                Action act = () => { repo.SaveInventoryValudationListHeader(header); };
+                Action act = () => { repo.SaveInventoryValuationListHeader(header); };
 
                 // assert
                 act.ShouldThrow<SqlException>();
@@ -307,7 +307,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                Action act = () => { repo.SaveInventoryValudationListHeader(header); };
+                Action act = () => { repo.SaveInventoryValuationListHeader(header); };
 
                 // assert
                 act.ShouldThrow<SqlException>();
@@ -325,7 +325,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                Action act = () => { repo.SaveInventoryValudationListHeader(header); };
+                Action act = () => { repo.SaveInventoryValuationListHeader(header); };
 
                 // assert
                 act.ShouldThrow<SqlException>();

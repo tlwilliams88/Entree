@@ -7,6 +7,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         List<InventoryValuationListDetail> GetInventoryValuationDetails(long headerId);
 
-        long SaveInventoryValudationDetail(InventoryValuationListDetail model);
+        long SaveInventoryValuationDetail(InventoryValuationListDetail model);
     }
 }

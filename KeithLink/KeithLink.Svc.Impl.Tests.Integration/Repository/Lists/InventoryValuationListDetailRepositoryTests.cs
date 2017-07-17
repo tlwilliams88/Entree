@@ -301,7 +301,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
         }
 
-        public class SaveInventoryValudationDetail : MigratedDatabaseTest { 
+        public class SaveInventoryValuationDetail : MigratedDatabaseTest { 
             private static InventoryValuationListDetail MakeDetail() {
                 return new InventoryValuationListDetail() {
                     Active = true,
@@ -325,7 +325,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -344,7 +344,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -363,7 +363,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -382,7 +382,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -401,7 +401,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -420,7 +420,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -439,7 +439,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -458,7 +458,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -477,7 +477,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -496,7 +496,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -524,7 +524,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -552,7 +552,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
@@ -580,7 +580,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var repo = MakeRepo();
 
                 // act
-                var detailId = repo.SaveInventoryValudationDetail(detail);
+                var detailId = repo.SaveInventoryValuationDetail(detail);
                 var results = repo.GetInventoryValuationDetails(detail.HeaderId);
                 var result = results.Where(r => r.Id == detailId).First();
 
