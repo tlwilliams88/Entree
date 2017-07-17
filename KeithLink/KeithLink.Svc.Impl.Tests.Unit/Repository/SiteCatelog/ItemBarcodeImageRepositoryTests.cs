@@ -69,8 +69,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
                 var results = testunit.GetBarcodeForList(test);
 
                 // assert
-                results.Should()
-                       .NotBeNull();
                 results.Count().Should()
                        .Be(0);
             }

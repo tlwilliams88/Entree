@@ -32,10 +32,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             List<ItemBarcodeModel> returnBarcodeModels = new List<ItemBarcodeModel>();
 
             if (list.Items != null) {
-                Parallel.ForEach(list.Items, listItem =>
+                foreach (var listItem in list.Items)
                 {
                     returnBarcodeModels.Add(listItem.ToItemBarcodeModel(GetBarcode(string.Format(ITEMNUMBER_BARCODE_FORMAT, listItem.ItemNumber))));
-                });
+                }
             }
 
             return returnBarcodeModels;
