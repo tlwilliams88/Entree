@@ -22,14 +22,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #region attributes
         private readonly IHistoryListDetailRepository _detailRepo;
         private readonly IHistoryListHeaderRepository _headerRepo;
-        private readonly IEventLogRepository          _log;
         #endregion
 
         #region ctor
-        public HistoryListLogicImpl(IHistoryListDetailRepository detailRepository, IHistoryListHeaderRepository headerRepository, IEventLogRepository log) {
+        public HistoryListLogicImpl(IHistoryListDetailRepository detailRepository, IHistoryListHeaderRepository headerRepository) {
             _detailRepo = detailRepository;
             _headerRepo = headerRepository;
-            _log        = log;
         }
         #endregion
 
