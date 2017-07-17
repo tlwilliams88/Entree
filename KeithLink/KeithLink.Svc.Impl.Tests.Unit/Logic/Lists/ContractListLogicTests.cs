@@ -14,26 +14,25 @@ using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
     public class ContractListLogicTests {
-        public class GetListModel {
-            private static IContractListLogic MakeMockLogic() {
-                ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
+        private static IContractListLogic MakeMockLogic() {
+            ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
 
-                cb.RegisterInstance(MakeMockHeaderRepo())
-                  .As<IContractListHeadersRepository>();
-                cb.RegisterInstance(MakeMockDetailRepo())
-                  .As<IContractListDetailsRepository>();
+            cb.RegisterInstance(MakeMockHeaderRepo())
+              .As<IContractListHeadersRepository>();
+            cb.RegisterInstance(MakeMockDetailRepo())
+              .As<IContractListDetailsRepository>();
 
-                IContainer diMap = cb.Build();
+            IContainer diMap = cb.Build();
 
-                return diMap.Resolve<IContractListLogic>();
-            }
+            return diMap.Resolve<IContractListLogic>();
+        }
 
-            private static IContractListDetailsRepository MakeMockDetailRepo() {
-                var mockRepo = new Mock<IContractListDetailsRepository>();
+        private static IContractListDetailsRepository MakeMockDetailRepo() {
+            var mockRepo = new Mock<IContractListDetailsRepository>();
 
-                mockRepo.Setup(d => d.GetContractListDetails(It.Is<long>(i => i == 1)))
-                        .Returns(
-                            new List<ContractListDetail>() {
+            mockRepo.Setup(d => d.GetContractListDetails(It.Is<long>(i => i == 1)))
+                    .Returns(
+                             new List<ContractListDetail>() {
                                 new ContractListDetail() {
                                     CatalogId = "FUT",
                                     Category = "Fake Category",
@@ -60,40 +59,40 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                                     ModifiedUtc = new DateTime(2017, 7, 5, 15, 20, 0, DateTimeKind.Utc),
                                     ToDate = new DateTime(2017, 7, 30)
                                 }
-                            }
-                        );
+                            });
 
-                return mockRepo.Object;
-            }
+            return mockRepo.Object;
+        }
 
-            private static IContractListHeadersRepository MakeMockHeaderRepo() {
-                var mockHeaderRepo = new Mock<IContractListHeadersRepository>();
+        private static IContractListHeadersRepository MakeMockHeaderRepo() {
+            var mockHeaderRepo = new Mock<IContractListHeadersRepository>();
 
-                mockHeaderRepo.Setup(h => h.GetListHeaderForCustomer(It.Is<UserSelectedContext>(c => c.BranchId == "FUT" && 
-                                                                                                     c.CustomerId == "123456")))
-                              .Returns(new ContractListHeader() {
-                                BranchId = "FIT",
-                                CustomerNumber = "123456",
-                                ContractId = "ABC12345",
-                                CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
-                                Id = 1,
-                                ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
-                              });
+            mockHeaderRepo.Setup(h => h.GetListHeaderForCustomer(It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
+                                                                                                 c.CustomerId == "123456")))
+                          .Returns(new ContractListHeader() {
+                                                                BranchId = "FIT",
+                                                                CustomerNumber = "123456",
+                                                                ContractId = "ABC12345",
+                                                                CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
+                                                                Id = 1,
+                                                                ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
+                                                            });
 
-                mockHeaderRepo.Setup(h => h.GetListHeaderForCustomer(It.Is<UserSelectedContext>(c => c.BranchId == "FUT" && 
-                                                                                                     c.CustomerId == "234567")))
-                              .Returns(new ContractListHeader() {
-                                    BranchId = "FIT",
-                                    CustomerNumber = "123456",
-                                    ContractId = "ABC12345",
-                                    CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
-                                    Id = 2,
-                                    ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
-                                });
+            mockHeaderRepo.Setup(h => h.GetListHeaderForCustomer(It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
+                                                                                                 c.CustomerId == "234567")))
+                          .Returns(new ContractListHeader() {
+                                                                BranchId = "FIT",
+                                                                CustomerNumber = "123456",
+                                                                ContractId = "ABC12345",
+                                                                CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
+                                                                Id = 2,
+                                                                ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
+                                                            });
 
-                return mockHeaderRepo.Object;
-            }
+            return mockHeaderRepo.Object;
+        }
 
+        public class GetListModel {
             [Fact]
             public void BadBranchId_ReturnsNull() {
                 // arrange
@@ -111,7 +110,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // assert
                 results.Should()
                        .BeNull();
-
             }
 
             [Fact]
@@ -131,7 +129,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // assert
                 results.Should()
                        .BeNull();
-
             }
 
             [Fact]
@@ -154,7 +151,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     .ListId
                     .Should()
                     .Be(expected);
-
             }
 
             [Fact]
@@ -178,7 +174,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     .Count
                     .Should()
                     .Be(expected);
-
             }
 
             [Fact]
@@ -202,9 +197,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     .Count
                     .Should()
                     .Be(expected);
-
             }
-
         }
     }
 }

@@ -34,13 +34,20 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         #region methods
 
-        private ListModel GetCompletedModel(CustomListHeader header, UserSelectedContext catalogInfo, bool headerOnly) {
+        private ListModel GetCompletedModel(CustomListHeader header, bool headerOnly) {
             List<CustomListDetail> items = null;
             List<CustomListShare> shares = null;
 
             if(!headerOnly) {
                 items = _detailsRepo.GetCustomListDetails(header.Id);
                 shares = _sharesRepo.GetCustomListSharesByHeaderId(header.Id);
+            }
+
+            UserSelectedContext catalogInfo = new UserSelectedContext();
+
+            if(header != null) {
+                catalogInfo.BranchId = header.BranchId;
+                catalogInfo.CustomerId = header.CustomerNumber;
             }
 
             return header.ToListModel(catalogInfo, shares, items);
@@ -51,16 +58,16 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             List<ListModel> list = new List<ListModel>();
             
             headers.ForEach(h => {
-                list.Add(GetCompletedModel(h, catalogInfo, headerOnly));
+                list.Add(GetCompletedModel(h, headerOnly));
             });
 
             return list;
         }
 
-        public ListModel ReadList(long listId, UserSelectedContext catalogInfo, bool headerOnly) {
+        public ListModel ReadList(long listId, bool headerOnly) {
             CustomListHeader header = _headersRepo.GetCustomListHeader(listId);
 
-            return header == null ? null : GetCompletedModel(header, catalogInfo, headerOnly);
+            return header == null ? null : GetCompletedModel(header, headerOnly);
         }
 
         public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
@@ -73,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 SaveItem(user, catalogInfo, list.ListId, detail);
             }
 
-            return ReadList(list.ListId, catalogInfo, false);
+            return ReadList(list.ListId, false);
         }
 
         public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
@@ -82,12 +89,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         }
 
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
-            return ReadList(Id, catalogInfo, false);
+            return ReadList(Id, false);
         }
 
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
-            return ReadLists(user, catalogInfo, headerOnly);
-        }
+        //public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
+        //    return ReadLists(user, catalogInfo, headerOnly);
+        //}
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
                              CustomListDetail item) {

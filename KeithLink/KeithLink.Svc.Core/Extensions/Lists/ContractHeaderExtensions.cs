@@ -25,8 +25,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.Contract,
                 ListId = header.Id,
                 Name = $"{LISTNAME_CONTRACT}{header.ContractId}",
-                ReadOnly = true,
-                Items = new List<ListItemModel>()
+                ReadOnly = true
             };
         }
 

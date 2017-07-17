@@ -55,9 +55,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return ReadList(id, catalogInfo, false);
         }
 
-        public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
-            return ReadLists(user, catalogInfo, headerOnly);
-        }
+        //public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
+        //    return ReadLists(user, catalogInfo, headerOnly);
+        //}
+
         public long CreateOrUpdateList(UserProfile user,
                                        UserSelectedContext catalogInfo,
                                        long id,
