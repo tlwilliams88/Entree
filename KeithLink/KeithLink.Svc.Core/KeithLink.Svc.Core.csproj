@@ -189,7 +189,7 @@
     <Compile Include="Extensions\Lists\ContractHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\CustomDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\CustomHeaderExtensions.cs" />
-    <Compile Include="Extensions\Lists\FavoriteDetailExtension.cs" />
+    <Compile Include="Extensions\Lists\FavoritesDetailExtension.cs" />
     <Compile Include="Extensions\Lists\FavoritesHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\HistoryDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\HistoryHeaderExtensions.cs" />
