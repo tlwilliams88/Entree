@@ -35,8 +35,8 @@ angular.module('bekApp')
     }
     function addItemWatches(startingIndex) {
       for (var i = startingIndex; i < $scope.currentCart.items.length; i++) {
-        watches.push($scope.$watchCollection('currentCart.items[' + i + '].quantity', onQuantityChange));
-        watches.push($scope.$watchCollection('currentCart.items[' + i + '].each', onQuantityChange));
+        watches.push($scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange));
+        watches.push($scope.$watch('currentCart.items[' + i + '].each', onQuantityChange));
       }
     }
     function clearItemWatches() {

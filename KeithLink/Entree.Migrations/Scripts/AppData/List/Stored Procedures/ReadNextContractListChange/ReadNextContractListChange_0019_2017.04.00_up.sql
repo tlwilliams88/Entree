@@ -17,6 +17,7 @@ BEGIN
 									[ParentList_Id]
 									FROM [List].[ListItemsDelta]
 									WHERE [Sent] = 0)
+			AND lid.[Sent] = 0
 		ORDER BY lid.[Status]
 END
 GO

@@ -672,19 +672,22 @@ angular.module('bekApp')
           item.label = null;
           item.parlevel = null;
 
-          return List.addItem({
-            listId: list.listid,
-            listType: list.type
-          }, item).$promise.then(function(response) {
-            Service.getListHeaders().then(function(listheaders){
-              $rootScope.listHeaders = listheaders;
-            })
-            item.listitemid = response.successResponse.listitemid;
-            item.editPosition = 0;
-            return item;
-          }, function(error) {
-            return $q.reject(error);
-          });
+          if(list) {
+              return List.addItem({
+                listId: list.listid,
+                listType: list.type
+              }, item).$promise.then(function(response) {
+                Service.getListHeaders().then(function(listheaders){
+                  $rootScope.listHeaders = listheaders;
+                })
+                item.listitemid = response.successResponse.listitemid;
+                item.editPosition = 0;
+                return item;
+              }, function(error) {
+                return $q.reject(error);
+              });
+            }
+
         },
 
         // accepts listId (guid) and item object
@@ -890,58 +893,35 @@ angular.module('bekApp')
           };
 
           return List.copyList(copyListData).$promise.then(function(newLists) {
-            toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
-            return newLists.successResponse;
-          }, function(error) {
-            toaster.pop('error', null, 'Error copying list.');
-            return $q.reject(error);
-          });
+            if(newLists.isSuccess == true) {
+                toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
+                return newLists.successResponse;
+            } else {
+                toaster.pop('error', null, 'Error copying list.');
+                return $q.reject(newLists.errorMessage);
+            }
+          })
         },
 
         // copy list to current customer and redirect to that list
         duplicateList: function(list, customers) {
           return Service.copyList(list, customers).then(function(lists) {
             var newList = lists[0];
-            Service.lists.push({
-              listid: newList.newlistid,
-              listtype: newList.newtype,
-              name: 'Copied - ' + list.name
-            });
-            return newList.newlistid;
+            Service.lists.push(newList);
+            return newList;
           });
         },
 
         /*******************
         SET LAST ORDER LIST
         *******************/
-        setLastOrderList: function(listId, listType, cart){
-          var cartId = cart,
-              orderList = {
+        setLastOrderList: function(listId, listType){
+          var orderList = {
                 listId: listId,
                 listType: listType,
-                cartId: cartId,
-              },
-              allSets = [],
-              allSets = LocalStorage.getLastOrderList();
-            if(!allSets || (allSets[0] && !allSets[0].timeset)){
-              allSets = [];
-            }
+            };
 
-            var matchFound = false;
-            if(orderList.cartId !== 'New'){
-              allSets.forEach(function(set){
-                if(set.cartId === orderList.cartId){
-                  set.listId = orderList.listId;
-                  set.listType = orderList.listType;
-                  matchFound = true;
-                }
-              });
-              if(!matchFound){
-                allSets.push(orderList);
-              }
-            }
-
-          LocalStorage.setLastOrderList(allSets);
+          LocalStorage.setLastOrderList(orderList);
           }
         };
 

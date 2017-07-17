@@ -25,7 +25,7 @@
             Cart Total: {{cart.subtotal | currency}}
             <br>
             <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="display: table;">View Cart</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id, listId: cart.listid })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id, listId: cart.listid, listType: cart.listtype })">Continue Shopping</a>
           </div>
         </li>
         <li class="cart-dropdown__view-all" ng-if="cartsHeaders.length > 2">
@@ -46,7 +46,7 @@
             Change Order Total: {{changeOrder.ordertotal | currency}}
             <br>
             <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;">View Change Order</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber, listId: changeOrder.listid })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber, listId: changeOrder.listid, listType: changeOrder.listtype })">Continue Shopping</a>
           </div>
         </li>
         <li class="cart-dropdown__view-all" ng-if="changeOrders.length > 2">

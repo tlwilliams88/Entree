@@ -209,25 +209,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo) {
-            if (profile != null) {
-                var favorites = _favoriteLogic.GetFavoritedItemNumbers(profile, catalogInfo);
-                var notes = _noteLogic.GetNotes(profile, catalogInfo);
-                var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
-
-                ret.Products.ForEach(delegate(Product prod) {
-                    prod.Favorite = favorites.Contains(prod.ItemNumber);
-                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
-                                      .Select(i => i.Notes)
-                                      .FirstOrDefault();
-                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
-                                            .FirstOrDefault()
-                                            .InHistory;
-                    AddProductImageInfo(prod);
-                });
-            }
-        }
-
         public string GetBranchId(string bekBranchId, string catalogType) {
             if (catalogType.ToLower() != "bek") {
                 //Go get the code for this branch, hard code for now
@@ -400,10 +381,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (ret == null)
                 return null;
 
-            catalogInfo.BranchId = bekBranchId;
-            GetAdditionalProductInfo(profile, new ProductsReturn() { Count = 1, Products = new List<Product>() { ret } }, catalogInfo);
-            catalogInfo.BranchId = catalogId;
-            //AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
             //ret.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, new ListItemModel() { ItemNumber = ret.ItemNumber });
@@ -475,9 +452,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (ret == null)
                 return null;
 
-            GetAdditionalProductInfo(profile, new ProductsReturn() { Count = 1, Products = new List<Product>() { ret } }, catalogInfo);
-
-            //AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
 
@@ -554,7 +528,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             returnValue = _catalogRepository.GetProductsByItemNumbers(context.BranchId, itemNumbers, searchModel);
 
             AddPricingInfo(returnValue, context, searchModel);
-            GetAdditionalProductInfo(profile, returnValue, context);
 
             return returnValue;
         }
@@ -617,7 +590,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
 
             AddPricingInfo(ret, catalogInfo, searchModel);
-            GetAdditionalProductInfo(profile, ret, catalogInfo);
             ret.CatalogCounts = catalogCounts;
 
             foreach (var product in ret.Products)

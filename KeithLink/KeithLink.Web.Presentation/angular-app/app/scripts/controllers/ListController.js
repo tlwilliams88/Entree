@@ -16,9 +16,10 @@ angular.module('bekApp')
     if(originalList.name == 'Non BEK Items'){
       originalList.listid = 'nonbeklist';
       $scope.selectedList = originalList;
+      blockUI.stop();
     }
     if ($stateParams.listId !== originalList.listid.toString()) {
-      $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.lists.items', {listId: originalList.listid, listType: originalList.type, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
 
     var orderBy = $filter('orderBy');
@@ -256,7 +257,9 @@ angular.module('bekApp')
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
 
-      if(!$scope.selectedList) {
+
+      if(!$scope.selectedList || $scope.sorted == true || $scope.filtered == true) {
+          $scope.sorted = false;
           $scope.selectedList = angular.copy(list);
           originalList = list;
           $scope.setStartAndEndPoints(list);
@@ -356,11 +359,9 @@ angular.module('bekApp')
         $scope.isCustomInventoryList = false;
       }
 
-      var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-
-      var lastlist ={
+      var lastlist = {
           listId: listid,
-          timeset: timeset
+          listType: listtype
       };
 
       LocalStorage.setLastList(lastlist);
@@ -375,16 +376,15 @@ angular.module('bekApp')
     };
 
     function goToNewList(newList) {
-      // user loses changes if they go to a new list
-      $scope.forms.listForm.$setPristine();
-     var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-     var lastlist ={
-          listId: newList.listid,
-          timeset: timeset
-         };
+        // user loses changes if they go to a new list
+        $scope.forms.listForm.$setPristine();
+        var lastlist ={
+            listId: newList.listid,
+            listType: newList.type
+        };
 
-      LocalStorage.setLastList(lastlist);
-      $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
+        LocalStorage.setLastList(lastlist);
+        $state.go('menu.lists.items', {listId: newList.listid, listType: newList.type, renameList: true});
     }
 
     $scope.undoChanges = function() {
@@ -407,20 +407,20 @@ angular.module('bekApp')
     **********/
 
     $scope.filterItems = function(searchTerm) {
-      if($scope.unsavedChangesConfirmation() && searchTerm){
-        $scope.initPagingValues(true);
-        listPagingModel.filterListItems(searchTerm);
-      } else if($scope.unsavedChangesConfirmation() && $scope.selectedFilter) {
-        $scope.initPagingValues(true);
-        listPagingModel.filterListItemsByMultipleFields($scope.selectedFilter);
-      } else {
-        listPagingModel.filterListItems();
-      }
+        $scope.filtered = true;
+        if($scope.unsavedChangesConfirmation() && searchTerm) {
+            $scope.initPagingValues(true);
+            listPagingModel.filterListItems(searchTerm);
+        } else if($scope.unsavedChangesConfirmation() && $scope.selectedFilter) {
+            $scope.initPagingValues(true);
+            listPagingModel.filterListItemsByMultipleFields($scope.selectedFilter);
+        } else {
+            listPagingModel.filterListItems();
+        }
     };
 
     $scope.sortList = function(sortBy, sortOrder) {
       if($scope.unsavedChangesConfirmation()){
-        $scope.initPagingValues(true);
         if (sortBy === $scope.sort[0].field) {
          sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
         } else {
@@ -430,6 +430,7 @@ angular.module('bekApp')
           field: sortBy,
           order: sortOrder
         }];
+        $scope.sorted = true;
         listPagingModel.sortListItems($scope.sort);
       }
     };
@@ -465,8 +466,16 @@ angular.module('bekApp')
         customerNumber: $scope.selectedUserContext.customer.customerNumber,
         customerBranch: $scope.selectedUserContext.customer.customerBranch
       }];
-      ListService.duplicateList(list, customers).then(function(newListId) {
-        $state.go('menu.lists.items', { listId: newListId });
+
+      ListService.duplicateList(list, customers).then(function(newList) {
+        $scope.forms.listForm.$setPristine();
+        var lastlist = {
+          listId: newList.listid,
+          listType: newList.type
+        };
+
+        LocalStorage.setLastList(lastlist);
+        $state.go('menu.lists.items', { listId: lastlist.listid, listType: lastlist.type });
       });
     };
 
@@ -544,8 +553,6 @@ angular.module('bekApp')
           }
         });
 
-       listPagingModel.resetPaging();
-
        blockUI.start('Saving List...').then(function(){
         return ListService.updateList(updatedList, false, params, addingItem)
           .then(resetPage(updatedList)).finally(function() {
@@ -556,18 +563,14 @@ angular.module('bekApp')
     };
 
     $scope.renameList = function (listId, listName) {
-      var list = angular.copy($scope.selectedList);
-      list.name = listName;
-
-
-      $scope.saveList(list).then(function() {
+        $scope.selectedList.name = listName;
+        $scope.saveList($scope.selectedList);
         // update cached list name
         $scope.lists.forEach(function(list) {
-          if (list.listid === listId) {
+            if (list.listid === listId) {
             list.name = listName;
-          }
+            }
         });
-      });
     };
 
     $scope.cancelRenameList = function() {
@@ -717,20 +720,26 @@ angular.module('bekApp')
     };
 
     $scope.addItemByItemNumber = function(itemNumber) {
-      $scope.successMessage = '';
-      $scope.errorMessage = '';
+        $scope.successMessage = '';
+        $scope.errorMessage = '';
 
-      blockUI.start().then(function(){
-        ProductService.getProductDetails(itemNumber).then(function(item) {
-          ListService.addItem($scope.selectedList.listid, item).then(function(data){
-            $scope.saveList($scope.selectedList, true);
-            $scope.listItemNumber = '';
-            $scope.displayMessage('success', 'Successfully added item to list.');
-          }, function() {
-            $scope.displayMessage('error', 'Error adding item to list.');
-          });
+        blockUI.start().then(function(){
+            ProductService.getProductDetails(itemNumber, 'BEK').then(function(item) {
+                var list = {
+                    listid: $scope.selectedList.listid,
+                    type: $scope.selectedList.type
+                }
+                ListService.addItem(list, item).then(function(data){
+                    $scope.saveList($scope.selectedList, true);
+                    $scope.listItemNumber = '';
+                    blockUI.stop();
+                    $scope.displayMessage('success', 'Successfully added item to list.');
+                }, function() {
+                    blockUI.stop();
+                    $scope.displayMessage('error', 'Error adding item to list.');
+                });
+            });
         });
-      });
     };
 
 

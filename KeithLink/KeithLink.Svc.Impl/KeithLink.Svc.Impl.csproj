@@ -281,7 +281,9 @@
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="Helpers\ContractInformationHelper.cs" />
     <Compile Include="Helpers\CustomInventoryHelper.cs" />
+    <Compile Include="Helpers\FavoritesAndNotesHelper.cs" />
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\OrderSubmissionHelper.cs" />
@@ -447,6 +449,7 @@
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderedFromListRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericSubscriptionQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\ItemBarcodeImageRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -921,6 +924,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service\ImportServiceImpl.cs" />
     <Compile Include="Service\List\ListServiceImpl.cs" />
     <Compile Include="Service\SiteCatalog\SiteCatalogServiceImpl.cs" />
     <Compile Include="Service\Invoices\ExportInvoicesServiceImpl.cs" />

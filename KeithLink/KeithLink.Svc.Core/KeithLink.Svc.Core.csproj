@@ -189,7 +189,7 @@
     <Compile Include="Extensions\Lists\ContractHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\CustomDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\CustomHeaderExtensions.cs" />
-    <Compile Include="Extensions\Lists\FavoriteDetailExtension.cs" />
+    <Compile Include="Extensions\Lists\FavoritesDetailExtension.cs" />
     <Compile Include="Extensions\Lists\FavoritesHeaderExtensions.cs" />
     <Compile Include="Extensions\Lists\HistoryDetailExtensions.cs" />
     <Compile Include="Extensions\Lists\HistoryHeaderExtensions.cs" />
@@ -206,6 +206,7 @@
     <Compile Include="Extensions\Marketing\CatalogCampaignHeaderExtensions.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
     <Compile Include="Extensions\PowerMenu\PowerMenuExtensions.cs" />
+    <Compile Include="Extensions\Reports\ItemBarcodeExtensions.cs" />
     <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
     <Compile Include="Interface\Cart\IShoppingCartService.cs" />
     <Compile Include="Interface\Common\IGenericSubscriptionQueueRepository.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Interface\ETL\ElasticSearch\IItemImport.cs" />
     <Compile Include="Interface\ETL\IListsImportLogic.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
+    <Compile Include="Interface\Import\IImportService.cs" />
     <Compile Include="Interface\Invoices\IExportInvoicesService.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
@@ -354,6 +356,7 @@
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Reports\IInventoryValuationReportLogic.cs" />
+    <Compile Include="Interface\Reports\IItemBarcodeImageRepository.cs" />
     <Compile Include="Interface\Reports\IReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IAccessRequestLogic.cs" />

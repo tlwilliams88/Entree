@@ -59,8 +59,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 header.Id = _headerRepo.Save(header);
             }
 
+            long detailId = 0;
+            try { detailId = _detailRepo.Get(header.Id, detail.ItemNumber).Id; } catch { } 
 
-            return _detailRepo.Save(detail.ToListModel(header.Id));
+            return _detailRepo.Save(detail.ToListModel(header.Id, detailId));
         }
 
         #endregion

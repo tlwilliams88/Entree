@@ -77,10 +77,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
                 retVal.SuccessResponse = _listService.ReadRecentOrder(this.AuthenticatedUser, this.SelectedUserContext, catalog);
-                //retVal.SuccessResponse = _repo.ReadRecentOrder(this.AuthenticatedUser, 
-                //    new Core.Models.SiteCatalog.UserSelectedContext() {
-                //        CustomerId = SelectedUserContext.CustomerId,
-                //        BranchId = catalog });
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)

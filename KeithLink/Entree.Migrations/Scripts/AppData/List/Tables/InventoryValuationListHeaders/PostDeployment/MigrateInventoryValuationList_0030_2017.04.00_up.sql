@@ -9,12 +9,14 @@
             ([CustomerNumber]
             ,[BranchId]
             ,[Name]
+			,[Active]
 			 ,[ModifiedUtc]
 			 ,[CreatedUtc])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
             ,l.[DisplayName]
+			,1
 			,GetUtcDate()
 			,GetUtcDate()
         FROM 
