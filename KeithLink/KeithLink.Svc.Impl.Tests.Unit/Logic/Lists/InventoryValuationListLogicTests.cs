@@ -61,6 +61,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                           ModifiedUtc = It.IsAny<DateTime>()
                                                                       });
 
+            mockHeaderRepo.Setup(h => h.SaveInventoryValuationListHeader(new InventoryValuationListHeader()
+                                                                                                            {
+                                                                                                                BranchId = "FUT",
+                                                                                                                CustomerNumber = "123456",
+                                                                                                                CreatedUtc = It.IsAny<DateTime>(),
+                                                                                                                Id = 1,
+                                                                                                                ModifiedUtc = It.IsAny<DateTime>()
+                                                                                                            }))
+                          .Returns(It.Is<long>(l => l == 1));
+
             return mockHeaderRepo.Object;
         }
 
@@ -215,5 +225,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
+        public class CreateOrUpdateList
+        { //tests on this method wouldn't be conclusive of much
+        }
     }
 }
