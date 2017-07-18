@@ -6,23 +6,34 @@ angular.module('bekApp')
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
      CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV) {
 
-    $scope.$on('$stateChangeStart',
+         $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+             var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
+                 toATOOrFromATO = (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items'),
+                 toATOAndFromATO = (toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items'),
+                 toRegister = (toState.name == 'register'),
+                 selectedCart = (selectedCart != null && selectedCart.items.length > 0);
 
-      function(event, toState, toParams, fromState, fromParams){
-      if(!(toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items') && (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items') && !(toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items') && !(toState.name == 'register') && !$scope.continueToCart && !$scope.orderCanceled && (selectedCart != null && selectedCart.items.length > 0)){
+             if(!toCart &&
+                 !toATOAndFromATO &&
+                 !toRegister &&
+                 !$scope.continueToCart &&
+                 !$scope.orderCanceled &&
+                 toATOOrFromATO &&
+                 selectedCart
+             ){
 
-        if(!$scope.tempCartName){
-          $scope.saveAndRetainQuantity();
-        } else {
-          if($scope.combinedItems){
-            $scope.selectedCart.items = $scope.combinedItems;
-          }
-          $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
-        }
+                 if(!$scope.tempCartName){
+                   $scope.saveAndRetainQuantity();
+                 } else {
+                   if($scope.combinedItems){
+                     $scope.selectedCart.items = $scope.combinedItems;
+                   }
+                   $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
+                 }
 
-      }
-      guiders.hideAll();
-    });
+             }
+             guiders.hideAll();
+         });
 
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
