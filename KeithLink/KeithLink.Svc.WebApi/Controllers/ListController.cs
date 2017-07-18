@@ -253,6 +253,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 var list = _listService.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, ListType.Reminder, false);
+                list.AddRange(_listService.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, ListType.Mandatory, false));
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
             }
