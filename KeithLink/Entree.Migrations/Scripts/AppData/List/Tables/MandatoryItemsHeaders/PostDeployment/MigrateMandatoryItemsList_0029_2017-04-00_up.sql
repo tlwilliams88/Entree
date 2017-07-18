@@ -34,6 +34,7 @@
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]
+			 ,[LineNumber]
 			 ,[Active]
 			 ,[ModifiedUtc]
 			 ,[CreatedUtc])
@@ -42,6 +43,7 @@
 			,li.[ItemNumber]
 			,li.[CatalogId]
 			,li.Each
+			,li.[Position]
 			,1
 			,GetUtcDate()
 			,GetUtcDate()

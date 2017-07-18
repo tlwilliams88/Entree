@@ -129,6 +129,7 @@
     <Compile Include="Parsing\StringHelpers.cs" />
     <Compile Include="Performance\PerformanceLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seams\SystemTime.cs" />
     <Compile Include="ValueParsingUtil.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -28,9 +28,9 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name = "itemcount")]
 		public int ItemCount { get; set; }
 
-        [DataMember(Name = "listId")]
+        [DataMember(Name = "listid")]
         public long? ListId { get; set; }
-        [DataMember(Name = "listType")]
+        [DataMember(Name = "listtype")]
         public ListType ListType { get; set; }
 
         [DataMember(Name = "piececount")]

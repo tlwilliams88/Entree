@@ -475,9 +475,11 @@
                     <h5>
                       {{item.packsize}}
                     </h5>
-                    <h6>
-                      <span ng-if="item.description && !item.marketing_description">{{item.description}}</span>
-                      <span ng-if="item.marketing_description">{{item.marketing_description}}</span>
+                    <h6 class="text show-more-height">
+                      <span ng-if="item.description && !item.marketing_description" ng-text-truncate="item.description"
+                      ng-tt-words-threshold="2" style="text-overflow: ellipsis; white-space: pre-line;">{{item.description}}</span>
+                      <span ng-if="item.marketing_description" ng-text-truncate="item.marketing_description"
+                      ng-tt-words-threshold="2" style="text-overflow: ellipsis; white-space: pre-line;">{{item.marketing_description}}</span>
                     </h6>
                     <h6 class="input-col" ng-if="canSeePrices">
                       <ng-form name="eachForm" ng-if="hasPackagePrice(item)">

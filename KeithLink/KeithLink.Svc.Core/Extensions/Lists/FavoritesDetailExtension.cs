@@ -3,7 +3,7 @@ using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 
 namespace KeithLink.Svc.Core.Extensions.Lists {
-    public static class FavoriteDetailExtension {
+    public static class FavoritesDetailExtension {
         public static ListItemModel ToWebModel(this FavoritesListDetail value) {
             return new ListItemModel() {
                 ListItemId = value.Id,
