@@ -8,6 +8,9 @@ CREATE PROCEDURE [List].[SaveRecentlyOrderedDetails]
     @ReturnValue                    BIGINT OUTPUT
 AS
 
+	IF @LineNumber = 0
+		SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
+    
 IF @Id > 0
     BEGIN
         UPDATE [List].[RecentlyOrderedDetails]
