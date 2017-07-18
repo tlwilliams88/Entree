@@ -8,12 +8,14 @@ using Autofac;
 using FluentAssertions;
 
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
 using KeithLink.Svc.Core.Models.Profile;
 
 using Moq;
 using Xunit;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Logic.Lists;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
@@ -60,16 +62,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                           Id = 1,
                                                                           ModifiedUtc = It.IsAny<DateTime>()
                                                                       });
-
-            mockHeaderRepo.Setup(h => h.SaveInventoryValuationListHeader(new InventoryValuationListHeader()
-                                                                                                            {
-                                                                                                                BranchId = "FUT",
-                                                                                                                CustomerNumber = "123456",
-                                                                                                                CreatedUtc = It.IsAny<DateTime>(),
-                                                                                                                Id = 1,
-                                                                                                                ModifiedUtc = It.IsAny<DateTime>()
-                                                                                                            }))
-                          .Returns(It.Is<long>(l => l == 1));
 
             return mockHeaderRepo.Object;
         }
@@ -178,8 +170,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 var results = testunit.ReadList(1, testcontext, false);
 
                 // assert
-                results.Should()
-                       .BeNull();
+                results.Should() // If we pass an id the list matching that id is returned, regardlass of the context
+                       .NotBeNull();
             }
 
             [Fact]
@@ -192,15 +184,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadLists(fakeUser, testcontext, false);
+                var results = testunit.ReadList(1, testcontext, false);
 
                 // assert
-                results.Count()
-                       .Should()
-                       .Be(0);
+                results.Should() // If we pass an id the list matching that id is returned, regardlass of the context
+                       .NotBeNull();
             }
 
             [Fact]
@@ -213,20 +203,145 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
+                var expected = "123456";
 
                 // act
-                var results = testunit.ReadLists(fakeUser, testcontext, false);
+                var results = testunit.ReadList(1, testcontext, false);
 
                 // assert
-                results.Count()
+                results.CustomerNumber
                        .Should()
-                       .Be(1);
+                       .Be(expected);
             }
         }
 
         public class CreateOrUpdateList
-        { //tests on this method wouldn't be conclusive of much
+        { // works differently if you want to verify a mock is called; we can't go through autofac
+            [Fact]
+            public void AnyCustomerIdAndBranch_ReturnsLong()
+            {
+                // arrange
+                var mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
+                var mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
+                var testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var fakeId = (long)1;
+                var fakeName = "Fake Name";
+                var testActive = true;
+                var expected = true;
+
+                // act
+                var results = testunit.CreateOrUpdateList(fakeUser, testcontext, fakeId, fakeName, testActive);
+
+                // assert - Always returns what is setup provided the mock is called
+                mockHeaderRepo.Verify(h => h.SaveInventoryValuationListHeader(It.IsAny<InventoryValuationListHeader>()), Times.Once(), "Error updating");
+            }
+        }
+
+        public class SaveItem
+        { // works differently if you want to verify a mock is called; we can't go through autofac
+            [Fact]
+            public void AnyCustomerIdAndBranch_Finishes()
+            {
+                // arrange
+                var mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
+                var mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
+                var testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var fakeId = (long)1;
+                var testItem =
+                    new InventoryValuationListDetail()
+                    {
+                        CatalogId = "FUT",
+                        ItemNumber = "123456",
+                        Each = false,
+                        LineNumber = 1,
+                        HeaderId = 1L
+                    };
+                var expected = true;
+
+                // act
+                testunit.SaveItem(fakeUser, testcontext, fakeId, testItem);
+
+                // assert - Always returns what is setup provided the mock is called
+                mockDetailsRepo.Verify(h => h.SaveInventoryValuationDetail(testItem), Times.Once(), "Error updating");
+            }
+        }
+
+        public class SaveList
+        {
+            [Fact]
+            public void CallToSaveList_DoesCallHeaderRepo()
+            {
+                // arrange
+                var mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
+                var mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
+                var testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var testList = new ListModel() {
+                                                   ListId = 1,
+                                                   CustomerNumber = "123456",
+                                                   BranchId = "FUT",
+                                                   Items = new List<ListItemModel>() {
+                                                                                         new ListItemModel() {
+                                                                                                                 ItemNumber = "123456"
+                                                                                                             }
+                                                                                     }
+                                               };
+
+                // act
+                var results = testunit.SaveList(fakeUser, testcontext, testList);
+
+                // assert
+                mockHeaderRepo.Verify(h => h.SaveInventoryValuationListHeader(It.IsAny<InventoryValuationListHeader>()), Times.Once(), "Error updating");
+            }
+
+            [Fact]
+            public void CallToSaveList_DoesCallDetailRepo()
+            {
+                // arrange
+                var mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
+                var mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
+                var testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var testList = new ListModel()
+                {
+                    ListId = 1,
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    Items = new List<ListItemModel>() {
+                                                                                         new ListItemModel() {
+                                                                                                                 ItemNumber = "123456"
+                                                                                                             }
+                                                                                     }
+                };
+
+                // act
+                var results = testunit.SaveList(fakeUser, testcontext, testList);
+
+                // assert
+                mockDetailsRepo.Verify(h => h.SaveInventoryValuationDetail(It.IsAny<InventoryValuationListDetail>()), Times.AtLeastOnce, "Error updating");
+            }
         }
     }
 }
