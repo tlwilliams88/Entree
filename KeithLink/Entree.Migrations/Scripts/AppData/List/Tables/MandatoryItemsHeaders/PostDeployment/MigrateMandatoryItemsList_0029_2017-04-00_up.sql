@@ -45,7 +45,7 @@
             ,li.[CatalogId]
             ,li.Each
             ,li.[Position]
-            ,li.[Quantity]
+            ,li.[Par] -- correction to the field that is used in the generic lists
             ,1
             ,GetUtcDate()
             ,GetUtcDate()
