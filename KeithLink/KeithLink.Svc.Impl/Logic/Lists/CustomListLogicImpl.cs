@@ -56,10 +56,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         public List<ListModel> ReadLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly) {
             List<CustomListHeader> headers = _headersRepo.GetCustomListHeadersByCustomer(catalogInfo);
             List<ListModel> list = new List<ListModel>();
-            
-            headers.ForEach(h => {
-                list.Add(GetCompletedModel(h, headerOnly));
-            });
+
+            if(headers != null) {
+                headers.ForEach(h => {
+                    list.Add(GetCompletedModel(h, headerOnly));
+                });
+            }
 
             return list;
         }
@@ -77,7 +79,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             {
                 CustomListDetail detail = item.ToCustomListDetail(list.ListId);
                 detail.Active = !item.IsDelete;
-                SaveItem(user, catalogInfo, list.ListId, detail);
+                SaveItem(detail);
             }
 
             return ReadList(list.ListId, false);
@@ -92,12 +94,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             return ReadList(Id, false);
         }
 
-        //public List<ListModel> ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
-        //    return ReadLists(user, catalogInfo, headerOnly);
-        //}
-
-        public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId,
-                             CustomListDetail item) {
+        public void SaveItem(CustomListDetail item) {
             // try to find the parent header id if it is not in the model
             if(item.HeaderId == 0) {
                 const string HEADER_MISSING_TEXT = "No header id was set";
@@ -107,19 +104,16 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _detailsRepo.SaveCustomListDetail(item);
         }
 
-        public long CreateOrUpdateList(UserProfile user, 
-                                       UserSelectedContext catalogInfo, 
-                                       long id,
-                                       string name,
-                                       bool active) {
+        public long CreateOrUpdateList(UserProfile user, UserSelectedContext catalogInfo, long id,
+                                       string name, bool active) {
             return _headersRepo.SaveCustomListHeader(new CustomListHeader() {
-                                                                         Id = id,
-                                                                         UserId = user.UserId,
-                                                                         CustomerNumber = catalogInfo.CustomerId,
-                                                                         BranchId = catalogInfo.BranchId,
-                                                                         Name = name,
-                                                                         Active = active
-                                                                     });
+                                                                                Id = id,
+                                                                                UserId = user.UserId,
+                                                                                CustomerNumber = catalogInfo.CustomerId,
+                                                                                BranchId = catalogInfo.BranchId,
+                                                                                Name = name,
+                                                                                Active = active
+                                                                            });
         }
         #endregion
     }

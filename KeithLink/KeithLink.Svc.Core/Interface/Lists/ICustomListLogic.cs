@@ -18,8 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         ListModel ReadList(long reportId, bool headerOnly);
 
-        void SaveItem(UserProfile user, UserSelectedContext catalogInfo, long headerId, 
-                      CustomListDetail item);
+        void SaveItem(CustomListDetail item);
 
         ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list);
     }
