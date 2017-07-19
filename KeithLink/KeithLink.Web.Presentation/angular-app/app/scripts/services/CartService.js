@@ -51,15 +51,15 @@ angular.module('bekApp')
           var cart = resp.successResponse;
             Service.cartContainsSpecialItems = false;
             var i;
-            if(cart.items && cart.items.length > 0){
+            if(cart != null && cart.items && cart.items.length > 0){
               for (i = 0; i < cart.items.length; i++) {
                 if (cart.items[i].is_specialty_catalog) {
                   Service.cartContainsSpecialItems = true;
                 }
               }
+              PricingService.updateCaculatedFields(cart.items);
             }
 
-          PricingService.updateCaculatedFields(cart.items);
           return cart;
         });
       },

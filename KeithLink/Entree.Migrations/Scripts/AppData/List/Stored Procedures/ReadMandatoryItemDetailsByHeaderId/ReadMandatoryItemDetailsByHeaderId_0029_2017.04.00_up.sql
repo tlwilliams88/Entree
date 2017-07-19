@@ -13,6 +13,7 @@ AS
         [CatalogId],
         [LineNumber],
         [Active],
+        [Quantity],
         [CreatedUtc],
         [ModifiedUtc]
     FROM [List].[MandatoryItemsDetails] 
