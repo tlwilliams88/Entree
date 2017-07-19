@@ -284,13 +284,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void NullCustomInventoryItemId_ReturnsZero() {
                 // arrange
-                var detail = new ContractListDetail() {
+                var detail = new CustomListDetail() {
                     Id = 21,
                     CatalogId = "FUT",
-                    Category = "Fake Category",
                     Each = true,
-                    FromDate = new DateTime(2017, 7, 1),
-                    ToDate = new DateTime(2017, 7, 30),
                     HeaderId = 10,
                     ItemNumber = "123456",
                     LineNumber = 17,
