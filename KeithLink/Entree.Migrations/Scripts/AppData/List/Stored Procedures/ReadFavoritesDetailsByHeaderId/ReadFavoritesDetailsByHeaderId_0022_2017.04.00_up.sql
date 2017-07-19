@@ -6,18 +6,18 @@ AS
     SET NOCOUNT ON;
 
 
-	SELECT
-		[Id],
-		[ItemNumber],
-		[LineNumber],
-		[Each],
-		[Label],
-		[CatalogId],
-    [HeaderId],
-    [Active],
-		[CreatedUtc],
-		[ModifiedUtc]
-	FROM 
+    SELECT
+        [Id],
+        [ItemNumber],
+        [LineNumber],
+        [Each],
+        [Label],
+        [CatalogId],
+        [HeaderId],
+        [Active],
+        [CreatedUtc],
+        [ModifiedUtc]
+    FROM 
         [List].[FavoritesDetails] 
     WHERE   
         [HeaderId] = @HeaderId
