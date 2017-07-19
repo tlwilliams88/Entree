@@ -11,6 +11,7 @@ AS
         [Each],
         [CatalogId],
         [LineNumber],
+        [Quantity],
         [CreatedUtc],
         [ModifiedUtc]
     FROM [List].[MandatoryItemsDetails] 

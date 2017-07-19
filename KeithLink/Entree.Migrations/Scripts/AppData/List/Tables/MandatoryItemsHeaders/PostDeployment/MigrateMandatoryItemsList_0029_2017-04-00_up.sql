@@ -1,15 +1,15 @@
 	   -- =============================================
        -- Author:			Brett Killins
        -- Create date:		5/18/2017
-       -- Description:		Copies relevant contents from reminder List Type in Generic List tables to their own tables
+       -- Description:		Copies relevant contents from mandatory List Type in Generic List tables to their own tables
        -- =============================================
 
-	INSERT -- create customer favorite lists
+	INSERT -- create customer mandatory lists
 		INTO [List].[MandatoryItemsHeaders]
             ([CustomerNumber]
             ,[BranchId]
-			 ,[ModifiedUtc]
-			 ,[CreatedUtc])
+ 		    ,[ModifiedUtc]
+			,[CreatedUtc])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
@@ -35,7 +35,8 @@
              ,[CatalogId]
              ,[Each]
 			 ,[LineNumber]
-			 ,[Active]
+			 ,[Quantity]
+             ,[Active]
 			 ,[ModifiedUtc]
 			 ,[CreatedUtc])
 		SELECT
@@ -44,6 +45,7 @@
 			,li.[CatalogId]
 			,li.Each
 			,li.[Position]
+            ,li.[Quantity]
 			,1
 			,GetUtcDate()
 			,GetUtcDate()
