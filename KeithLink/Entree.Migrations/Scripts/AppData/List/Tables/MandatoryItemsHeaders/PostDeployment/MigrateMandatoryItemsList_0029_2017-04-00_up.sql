@@ -8,8 +8,8 @@
 		INTO [List].[MandatoryItemsHeaders]
             ([CustomerNumber]
             ,[BranchId]
- 		    ,[ModifiedUtc]
-			,[CreatedUtc])
+            ,[ModifiedUtc]
+            ,[CreatedUtc])
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
@@ -29,37 +29,37 @@
 		
 
     INSERT
-		INTO [List].[MandatoryItemsDetails]
-			([HeaderId]
-			 ,[ItemNumber]
-             ,[CatalogId]
-             ,[Each]
-			 ,[LineNumber]
-			 ,[Quantity]
-             ,[Active]
-			 ,[ModifiedUtc]
-			 ,[CreatedUtc])
-		SELECT
- 			fh.[Id]
-			,li.[ItemNumber]
-			,li.[CatalogId]
-			,li.Each
-			,li.[Position]
+        INTO [List].[MandatoryItemsDetails]
+            ([HeaderId]
+            ,[ItemNumber]
+            ,[CatalogId]
+            ,[Each]
+            ,[LineNumber]
+            ,[Quantity]
+            ,[Active]
+            ,[ModifiedUtc]
+            ,[CreatedUtc])
+        SELECT
+            fh.[Id]
+            ,li.[ItemNumber]
+            ,li.[CatalogId]
+            ,li.Each
+            ,li.[Position]
             ,li.[Quantity]
-			,1
-			,GetUtcDate()
-			,GetUtcDate()
-		FROM List.[ListItems] li
-		INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-		INNER JOIN List.[MandatoryItemsHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
-		WHERE
-			l.Type = 9 and
-			NOT EXISTS (
-				SELECT
-					'x'
-					FROM [List].[MandatoryItemsDetails]
-					INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-					INNER JOIN List.[MandatoryItemsHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
-					WHERE [ItemNumber] = li.[ItemNumber]
-						AND [Each] = li.[Each]
-						AND [CatalogId] = li.[CatalogId])
+            ,1
+            ,GetUtcDate()
+            ,GetUtcDate()
+        FROM List.[ListItems] li
+        INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
+        INNER JOIN List.[MandatoryItemsHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
+        WHERE
+            l.Type = 9 and
+            NOT EXISTS (
+                SELECT
+                    'x'
+                    FROM [List].[MandatoryItemsDetails]
+                    INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
+                    INNER JOIN List.[MandatoryItemsHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
+                    WHERE [ItemNumber] = li.[ItemNumber]
+                        AND [Each] = li.[Each]
+                        AND [CatalogId] = li.[CatalogId])

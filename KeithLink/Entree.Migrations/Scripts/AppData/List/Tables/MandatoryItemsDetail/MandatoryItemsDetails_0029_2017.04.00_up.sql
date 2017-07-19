@@ -5,7 +5,7 @@ CREATE TABLE [List].[MandatoryItemsDetails] (
     [Each]                          BIT NULL,
     [CatalogId]                     VARCHAR(10) NULL,
     [LineNumber]                    INT,
-	[Quantity]                      decimal(18, 2) NOT NULL,
+    [Quantity]                      decimal(18, 2) NOT NULL,
     [Active]                        BIT NOT NULL,
     [CreatedUtc]                    DATETIME,
     [ModifiedUtc]                   DATETIME 
