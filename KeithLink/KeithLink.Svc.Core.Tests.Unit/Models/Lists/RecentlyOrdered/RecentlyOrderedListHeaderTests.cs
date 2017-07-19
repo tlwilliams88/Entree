@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.RecentlyOrdered
             } 
 
             [Fact]
-            public void NullItem_UserIdHasDefaultValue() {
+            public void NewItem_UserIdHasDefaultValue() {
                 // arrange
                 RecentlyOrderedListHeader test = new RecentlyOrderedListHeader();
                 Guid expected = Guid.Parse("00000000-0000-0000-0000-000000000000");

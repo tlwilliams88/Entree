@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.RecentlyViewed
             } 
 
             [Fact]
-            public void NullItem_UserIdHasDefaultValue() {
+            public void NewItem_UserIdHasDefaultValue() {
                 // arrange
                 RecentlyViewedListHeader test = new RecentlyViewedListHeader();
                 Guid expected = Guid.Parse("00000000-0000-0000-0000-000000000000");
