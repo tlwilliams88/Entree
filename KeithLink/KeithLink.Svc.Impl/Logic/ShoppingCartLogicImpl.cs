@@ -712,6 +712,9 @@ namespace KeithLink.Svc.Impl.Logic
                 RequestedShipDate = basket.RequestedShipDate,
                 Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
                 PONumber = basket.PONumber,
+                SubTotal = basket.TempSubTotal.HasValue ? basket.TempSubTotal.Value : 0,
+                ItemCount = basket.LineItems != null ? basket.LineItems.Count() : 0,
+                PieceCount = basket.LineItems != null ? (int)basket.LineItems.Sum(i => i.Quantity) : 0,
                 CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
                 Items = basket.LineItems
                     .Select(l => new ShoppingCartItem()
