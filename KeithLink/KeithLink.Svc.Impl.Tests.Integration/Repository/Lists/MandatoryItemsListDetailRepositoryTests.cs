@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Autofac;
@@ -17,240 +18,176 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             return diMap.Resolve<IMandatoryItemsListDetailsRepository>();
         }
 
-        public class GetMandatoryItemsDetails : MigratedDatabaseTest {
+        private const string GOOD_ITEM_NUMBER = "123456";
+        private const int GOOD_HEADER_ID = 1;
+
+        private const string BAD_ITEM_NUMBER = "999999";
+        private const int BAD_HEADER_ID = 3;
+        
+        private const string NEW_ITEM_NUMBER = "777777";
+
+        public class GetAllByHeader : MigratedDatabaseTest {
             [Fact]
-            public void BadHeaderId_ReturnsNoResults() {
+            public void GoodDetail_ReturnsProperCount() {
                 // arrange
-                var expected = 0;
-                var headerId = 0;
-                var repo = MakeRepo();
+                int expected = 3;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
-                
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+
                 // assert
-                results.Count
+                details.Count()
                        .Should()
                        .Be(expected);
             }
 
             [Fact]
-            public void GoodeaderId_ReturnsExpectedCount() {
+            public void GoodDetail_ReturnsCorrectInactiveCount() {
                 // arrange
-                var expected = 3;
-                var headerId = 1;
-                var repo = MakeRepo();
+                int expected = 0;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results.Count
+                details.Count(x => x.Active = false)
                        .Should()
                        .Be(expected);
             }
 
             [Fact]
-            public void GoodeaderId_ReturnsExpectedCountOfActive() {
+            public void GoodDetail_HeaderIdMatchesExpected() {
                 // arrange
-                var expected = 3;
-                var headerId = 1;
-                var repo = MakeRepo();
+                int expected = 1;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results.Count(r => r.Active)
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodeaderId_ReturnsExpectedCountOfInactive() {
-                // arrange
-                var expected = 0;
-                var headerId = 1;
-                var repo = MakeRepo();
-
-                // act
-                var results = repo.GetAllByHeader(headerId);
-
-                // assert
-                results.Count(r => r.Active == false)
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedHeaderId() {
-                // arrange
-                var expected = 1;
-                var headerId = 1;
-                var repo = MakeRepo();
-
-                // act
-                var results = repo.GetAllByHeader(headerId);
-
-                // assert
-                results[0]
-                    .HeaderId
-                    .Should()
-                    .Be(expected);
+                details[0]
+                        .HeaderId
+                        .Should()
+                        .Be(expected);
             }
 
             [Fact]
             public void GoodDetail_ReturnsExpectedItemNumber() {
                 // arrange
                 var expected = "123456";
-                var headerId = 1;
-                var repo = MakeRepo();
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results[0]
-                    .ItemNumber
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
+                        .ItemNumber
+                        .Should()
+                        .Be(expected);
             }
 
             [Fact]
             public void GoodDetail_ReturnsExpectedLineNumber() {
                 // arrange
                 var expected = 1;
-                var headerId = 1;
-                var repo = MakeRepo();
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results[0]
-                    .LineNumber
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
+                        .LineNumber
+                        .Should()
+                        .Be(expected);
             }
 
             [Fact]
             public void GoodDetail_ReturnsExpectedEach() {
                 // arrange
-                var expected = true;
-                var headerId = 1;
-                var repo = MakeRepo();
+                bool expected = true;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results[0]
-                    .Each
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
+                       .Each
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
             public void GoodDetail_ReturnsExpectedCatalogId() {
                 // arrange
-                var expected = "FDF";
-                var headerId = 1;
-                var repo = MakeRepo();
+                string expected = "FDF";
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results[0]
-                    .CatalogId
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
+                       .CatalogId
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
             public void GoodDetail_ReturnsExpectedActive() {
                 // arrange
-                var expected = true;
-                var headerId = 1;
-                var repo = MakeRepo();
+                bool expected = true;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results[0]
-                    .Active
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
+                       .Active
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedCreatedUtc() {
+            public void GoodDetail_ReturnsExpectedCreatedDate() {
                 // arrange
-                var expected = new DateTime(2017, 7, 3, 11, 33, 0, DateTimeKind.Utc);
-                var headerId = 1;
-                var repo = MakeRepo();
+                DateTime expected = new DateTime(2017, 7, 3, 11, 33, 0, DateTimeKind.Utc);
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results[0]
-                    .CreatedUtc
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
+                       .CreatedUtc
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedModifiedUtc() {
+            public void GoodDetail_ReturnsExpectedModifiedDate() {
                 // arrange
-                var expected = new DateTime(2017, 7, 3, 11, 34, 0, DateTimeKind.Utc);
-                var headerId = 1;
-                var repo = MakeRepo();
+                DateTime expected = new DateTime(2017, 7, 3, 11, 34, 0, DateTimeKind.Utc);
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var results = repo.GetAllByHeader(headerId);
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                results[0]
-                    .ModifiedUtc
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
+                       .ModifiedUtc
+                       .Should()
+                       .Be(expected);
             }
 
-            [Fact]
-            public void DetailWithNullEach_ReturnsNull() {
-                // arrange
-                var headerId = 1;
-                var repo = MakeRepo();
+        }
 
-                // act
-                var results = repo.GetAllByHeader(headerId);
-
-                // assert
-                results[2]
-                    .Each
-                    .Should()
-                    .BeNull();
-            }
-
-            [Fact]
-            public void DetailWithNullCatalogId_ReturnsNull() {
-                // arrange
-                var headerId = 1;
-                var repo = MakeRepo();
-
-                // act
-                var results = repo.GetAllByHeader(headerId);
-
-                // assert
-                results[2]
-                    .CatalogId
-                    .Should()
-                    .BeNull();
-            }
-
-        public class SaveInventoryValudationDetail : MigratedDatabaseTest { 
+        public class Save : MigratedDatabaseTest { 
             private static MandatoryItemsListDetail MakeDetail() {
                 return new MandatoryItemsListDetail() {
                     Active = true,
@@ -258,216 +195,145 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                     CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
                     Each = true,
                     HeaderId = 1,
-                    ItemNumber = "123456",
+                    ItemNumber = NEW_ITEM_NUMBER,
                     LineNumber = 2,
                     ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
                 };
             }
 
             [Fact]
-            public void GoodDetail_SavesExpectedActive() {
+            public void GoodDetail_NewItemNumberSavesCorrectly() {
                 // arrange
-                var detail = MakeDetail();
-                var expected = true;
-                var repo = MakeRepo();
+                string expected = NEW_ITEM_NUMBER;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
+                repo.Save(MakeDetail());
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                result
-                    .Active
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
+                       .ItemNumber
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_SavesExpectedHeaderId() {
+            public void GoodDetail_NewLineNumberSavesCorrectly()
+            {
                 // arrange
-                var detail = MakeDetail();
-                var expected = 1;
-                var repo = MakeRepo();
+                int expected = 2;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
+                repo.Save(MakeDetail());
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                result
-                    .HeaderId
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
+                       .LineNumber
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_SavesExpectedCatalogId() {
+            public void GoodDetail_NewEachSavesCorrectly()
+            {
                 // arrange
-                var detail = MakeDetail();
-                var expected = "FRT";
-                var repo = MakeRepo();
+                bool expected = true;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
+                repo.Save(MakeDetail());
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                result
-                    .CatalogId
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
+                       .Each
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_SavesExpectedEach() {
+            public void GoodDetail_NewCatalogIdSavesCorrectly()
+            {
                 // arrange
-                var detail = MakeDetail();
-                var expected = true;
-                var repo = MakeRepo();
+                string expected = "FRT";
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
+                repo.Save(MakeDetail());
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                result
-                    .Each
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
+                       .CatalogId
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_SavesExpectedItemNumber() {
+            public void GoodDetail_NewActiveSavesCorrectly()
+            {
                 // arrange
-                var detail = MakeDetail();
-                var expected = "123456";
-                var repo = MakeRepo();
+                bool expected = true;
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
+                repo.Save(MakeDetail());
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                result
-                    .ItemNumber
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
+                       .Active
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_SavesExpectedLineNumber() {
+            public void GoodDetail_DoesNotSaveSetCreatedDate()
+            {
                 // arrange
-                var detail = MakeDetail();
-                var expected = 2;
-                var repo = MakeRepo();
+                DateTime expected = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc);
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
+                repo.Save(MakeDetail());
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                result
-                    .LineNumber
-                    .Should()
-                    .Be(expected);
+                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
+                       .CreatedUtc
+                       .Should()
+                       .NotBe(expected);
             }
 
             [Fact]
-            public void GoodDetail_DoesNotSaveSetCreatedUtc() {
+            public void GoodDetail_DoesNotSaveSetModifiedDate()
+            {
                 // arrange
-                var detail = MakeDetail();
-                var expected = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc);
-                var repo = MakeRepo();
+                DateTime expected = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc);
+                IMandatoryItemsListDetailsRepository repo = MakeRepo();
 
                 // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
+                repo.Save(MakeDetail());
+                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
 
                 // assert
-                result
-                    .CreatedUtc
-                    .Should()
-                    .NotBe(expected);
+                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
+                       .ModifiedUtc
+                       .Should()
+                       .NotBe(expected);
             }
 
-            [Fact]
-            public void GoodDetail_DoesNotSaveSetModifiedUtc() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc);
-                var repo = MakeRepo();
 
-                // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
 
-                // assert
-                result
-                    .ModifiedUtc
-                    .Should()
-                    .NotBe(expected);
-            }
 
-            [Fact]
-            public void NullCatalogId_SavesNull() {
-                // arrange
-                var detail = new MandatoryItemsListDetail() {
-                    Active = true,
-                    CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
-                    Each = true,
-                    HeaderId = 1,
-                    ItemNumber = "123456",
-                    LineNumber = 2,
-                    ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
-                };
-                var repo = MakeRepo();
 
-                // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
 
-                // assert
-                result
-                    .CatalogId
-                    .Should()
-                    .BeNull();
-            }
 
-            [Fact]
-            public void NullEach_SavesNull() {
-                // arrange
-                var detail = new MandatoryItemsListDetail() {
-                    Active = true,
-                    CatalogId = "FRT",
-                    CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
-                    HeaderId = 1,
-                    ItemNumber = "123456",
-                    LineNumber = 2,
-                    ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
-                };
-                var repo = MakeRepo();
 
-                // act
-                var detailId = repo.Save(detail);
-                var results = repo.GetAllByHeader(detail.HeaderId);
-                var result = results.Where(r => r.Id == detailId).First();
-
-                // assert
-                result
-                    .Each
-                    .Should()
-                    .BeNull();
-            }
 
         }
-    }
-}
+    } // Class
+} // Namespace

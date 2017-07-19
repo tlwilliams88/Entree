@@ -7,10 +7,12 @@ AS
 
     SELECT
         [Id],
+        [HeaderId],
         [ItemNumber],
         [Each],
         [CatalogId],
         [LineNumber],
+        [Active],
         [CreatedUtc],
         [ModifiedUtc]
     FROM [List].[MandatoryItemsDetails] 

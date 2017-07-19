@@ -195,8 +195,8 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 IMandatoryItemsListHeadersRepository repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
-                var results = repo.GetMandatoryItemsListHeader(headerId);
+                var headerId = repo.SaveMandatoryItemsHeader(header);
+                var results = repo.GetListHeaderForCustomer(context);
 
                 // assert
                 results.ModifiedUtc
@@ -208,12 +208,18 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodHeader_SavesCorrectBranchId() {
                 // arrange
                 string expected = "FRT";
+
+                UserSelectedContext context = new UserSelectedContext() {
+                    CustomerId = "200321",
+                    BranchId = "FRT"
+                };
+
                 MandatoryItemsListHeader header = MakeHeader();
                 IMandatoryItemsListHeadersRepository repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
-                var results = repo.GetMandatoryItemsListHeader(headerId);
+                var headerId = repo.SaveMandatoryItemsHeader(header);
+                var results = repo.GetListHeaderForCustomer(context);
 
                 // assert
                 results.BranchId
@@ -225,32 +231,22 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodHeader_SavesCorrectCustomerNumber() {
                 // arrange
                 string expected = "200321";
+
+                UserSelectedContext context = new UserSelectedContext()
+                {
+                    CustomerId = "200321",
+                    BranchId = "FRT"
+                };
+
                 MandatoryItemsListHeader header = MakeHeader();
                 IMandatoryItemsListHeadersRepository repo = MakeRepo();
 
                 // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
-                var results = repo.GetMandatoryItemsListHeader(headerId);
+                var headerId = repo.SaveMandatoryItemsHeader(header);
+                var results = repo.GetListHeaderForCustomer(context);
 
                 // assert
                 results.CustomerNumber
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_SavesCorrectName() {
-                // arrange
-                string expected = "Fake Name";
-                MandatoryItemsListHeader header = MakeHeader();
-                IMandatoryItemsListHeadersRepository repo = MakeRepo();
-
-                // act
-                var headerId = repo.SaveInventoryValudationListHeader(header);
-                var results = repo.GetMandatoryItemsListHeader(headerId);
-
-                // assert
-                results.Name
                        .Should()
                        .Be(expected);
             }
@@ -260,14 +256,13 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 // arrange
                 MandatoryItemsListHeader header = new MandatoryItemsListHeader {
                     CustomerNumber = "200321",
-                    Name = "Fake Name",
                     CreatedUtc = new DateTime(2017, 6, 30, 16, 32, 0, DateTimeKind.Utc),
                     ModifiedUtc = new DateTime(2017, 6, 30, 16, 33, 0, DateTimeKind.Utc)
                 };
                 IMandatoryItemsListHeadersRepository repo = MakeRepo();
 
                 // act
-                Action act = () => { repo.SaveInventoryValudationListHeader(header); };
+                Action act = () => { repo.SaveMandatoryItemsHeader(header); };
 
                 // assert
                 act.ShouldThrow<SqlException>();
@@ -278,32 +273,13 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 // arrange
                 MandatoryItemsListHeader header = new MandatoryItemsListHeader {
                     BranchId = "FRT",
-                    Name = "Fake Name",
                     CreatedUtc = new DateTime(2017, 6, 30, 16, 32, 0, DateTimeKind.Utc),
                     ModifiedUtc = new DateTime(2017, 6, 30, 16, 33, 0, DateTimeKind.Utc)
                 };
                 IMandatoryItemsListHeadersRepository repo = MakeRepo();
 
                 // act
-                Action act = () => { repo.SaveInventoryValudationListHeader(header); };
-
-                // assert
-                act.ShouldThrow<SqlException>();
-            }
-
-            [Fact]
-            public void NullName_ThrowsSqlException() {
-                // arrange
-                MandatoryItemsListHeader header = new MandatoryItemsListHeader {
-                    BranchId = "FRT",
-                    CustomerNumber = "200321",
-                    CreatedUtc = new DateTime(2017, 6, 30, 16, 32, 0, DateTimeKind.Utc),
-                    ModifiedUtc = new DateTime(2017, 6, 30, 16, 33, 0, DateTimeKind.Utc)
-                };
-                IMandatoryItemsListHeadersRepository repo = MakeRepo();
-
-                // act
-                Action act = () => { repo.SaveInventoryValudationListHeader(header); };
+                Action act = () => { repo.SaveMandatoryItemsHeader(header); };
 
                 // assert
                 act.ShouldThrow<SqlException>();
