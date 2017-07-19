@@ -165,13 +165,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
+                var testid = 1;
 
                 // act
-                var results = testunit.ReadList(1, testcontext, false);
+                var results = testunit.ReadList(testid, testcontext, false);
 
                 // assert
-                results.Should() // If we pass an id the list matching that id is returned, regardlass of the context
-                       .NotBeNull();
+                results.ListId
+                       .Should()
+                       .Be(testid);
             }
 
             [Fact]
@@ -184,13 +186,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
+                var testid = 1;
 
                 // act
-                var results = testunit.ReadList(1, testcontext, false);
+                var results = testunit.ReadList(testid, testcontext, false);
 
                 // assert
-                results.Should() // If we pass an id the list matching that id is returned, regardlass of the context
-                       .NotBeNull();
+                results.ListId
+                       .Should()
+                       .Be(testid);
             }
 
             [Fact]
