@@ -15,6 +15,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
             ListModel retVal = new ListModel();
 
             retVal.BranchId = header.BranchId;
+            retVal.CustomerNumber = header.CustomerNumber;
             retVal.IsContractList = false;
             retVal.IsFavorite = false;
             retVal.IsWorksheet = false;
