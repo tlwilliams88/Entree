@@ -156,6 +156,22 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
+            public void GoodHeader_ReturnsGoodHeaderId() {
+                // arrange
+                int expected = 4;
+
+                MandatoryItemsListHeader header = MakeHeader();
+                IMandatoryItemsListHeadersRepository repo = MakeRepo();
+
+                // act
+                long headerId = repo.SaveMandatoryItemsHeader(header);
+
+                // assert
+                headerId.Should()
+                        .Be(expected);
+            }
+
+            [Fact]
             public void GoodHeader_DoesNotUseSetCreatedUtc() {
                 // arrange
                 UserSelectedContext context = new UserSelectedContext() {
@@ -173,9 +189,6 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var results = repo.GetListHeaderForCustomer(context);
 
                 // assert
-                headerId.Should()
-                        .NotBe(0);
-
                 results.CreatedUtc
                        .Should()
                        .NotBe(expected);
