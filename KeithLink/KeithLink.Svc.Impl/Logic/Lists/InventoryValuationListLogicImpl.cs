@@ -38,9 +38,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             List<InventoryValuationListHeader> headers = _headersRepo.GetInventoryValuationListHeaders(catalogInfo);
             List<ListModel> list = new List<ListModel>();
 
-            headers.ForEach(h => {
-                list.Add(GetCompletedLists(h, headerOnly));
-            });
+            if (headers != null) {
+                headers.ForEach(h => {
+                    list.Add(GetCompletedLists(h, headerOnly));
+                });
+            }
 
             return list;
         }
@@ -65,7 +67,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                                        string name,
                                        bool active)
         {
-            return _headersRepo.SaveInventoryValudationListHeader(new InventoryValuationListHeader()
+            return _headersRepo.SaveInventoryValuationListHeader(new InventoryValuationListHeader()
             {
                 Id = id,
                 CustomerNumber = catalogInfo.CustomerId,
@@ -84,17 +86,19 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 throw new ArgumentException(HEADER_MISSING_TEXT, nameof(item.HeaderId));
             }
 
-            _detailsRepo.SaveInventoryValudationDetail(item);
+            _detailsRepo.SaveInventoryValuationDetail(item);
         }
 
         public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
         {
             CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, true);
-            foreach (var item in list.Items)
-            {
-                InventoryValuationListDetail detail = item.ToInventoryValuationListDetail(list.ListId);
-                detail.Active = !item.IsDelete;
-                SaveItem(user, catalogInfo, list.ListId, detail);
+            if (list.Items != null) {
+                foreach (var item in list.Items)
+                {
+                    InventoryValuationListDetail detail = item.ToInventoryValuationListDetail(list.ListId);
+                    detail.Active = !item.IsDelete;
+                    SaveItem(user, catalogInfo, list.ListId, detail);
+                }
             }
 
             return ReadList(list.ListId, catalogInfo, false);
