@@ -458,7 +458,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
                     break;
                 case ListType.Custom:
-                    _customListLogic.SaveItem(user, catalogInfo, headerId, item.ToCustomListDetail(headerId));
+                    _customListLogic.SaveItem(item.ToCustomListDetail(headerId));
                     break;
                 case ListType.Recent:
                     break;

@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
             NotesListDetail item = new NotesListDetail {
                                                            CatalogId = model.CatalogId,
                                                            Each = model.Each ?? false,
-                                                           Id = (detailId != null)? detailId : model.ListItemId,
+                                                           Id = (detailId != 0)? detailId : model.ListItemId,
                                                            ItemNumber = model.ItemNumber,
                                                            Note = model.Notes,
                                                            HeaderId = headerId,

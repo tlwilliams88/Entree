@@ -78,6 +78,7 @@
   <ItemGroup>
     <Compile Include="BaseDITests.cs" />
     <Compile Include="Logic\Lists\ContractListLogicTests.cs" />
+    <Compile Include="Logic\Lists\CustomListLogicTests.cs" />
     <Compile Include="Helpers\ContractInformationHelperTests.cs" />
     <Compile Include="Helpers\FavoritesAndNotesHelperTests.cs" />
     <Compile Include="Logic\Lists\HistoryListLogicTests.cs" />
