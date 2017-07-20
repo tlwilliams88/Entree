@@ -63,8 +63,8 @@ angular.module('bekApp')
           } else if(list.isfavorite) {
             permissions.specialDisplay = true;
           } else if(list.ismandatory) {
-            permissions.canEditParlevel = true;
-            permissions.canSeeParlevel = true;
+            permissions.canEditQtylevel = true;
+            permissions.canSeeQtylevel = true;
             permissions.alternativeParHeader = 'Required Qty';
           }
         // CONTRACT, WORKSHEET / HISTORY
@@ -89,8 +89,8 @@ angular.module('bekApp')
             permissions.canAddItems = false;
             permissions.canEditList = false;
             permissions.canDeleteItems = false;
-            permissions.canEditParlevel = false;
-            permissions.canSeeParlevel = true;
+            permissions.canEditQtylevel = false;
+            permissions.canSeeQtylevel = true;
             permissions.alternativeParHeader = 'Required Qty';
 
         // REMINDER
@@ -293,8 +293,8 @@ angular.module('bekApp')
               };
             }
 
-            var listType = list.type != null ? list.type : list.listType,
-                listId = list.listid != null ? list.listid : list.listId;
+            var listType = list && list.type != null ? list.type : list.listType,
+                listId = list && list.listid != null ? list.listid : list.listId;
 
             Service.sortObject = params.sort;
             return $http.post('/list/' + listType + '/' + listId, params).then(function(response) {
@@ -556,7 +556,7 @@ angular.module('bekApp')
             Service.renameList = true;
             Service.getListHeaders();
             toaster.pop('success', null, 'Successfully created list.');
-            return Service.getList(response.successResponse.listitemid);
+            return Service.getList(response.successResponse);
           }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
             return $q.reject(error);
