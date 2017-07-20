@@ -1,4 +1,4 @@
-<div class="hidden-lg">
+<div class="hidden-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)">
   <div class="no-padding text-left">
     <img class="featured-item-height" ng-if="item.imageurl" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image">
     <img class="featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">

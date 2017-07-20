@@ -330,6 +330,133 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                        .Be(expected);
             }
 
+            [Fact]
+            public void NullCustomInventoryItemId_ReturnsZero() {
+                // arrange
+                var detail = new ContractListDetail() {
+                                                          Id = 21,
+                                                          CatalogId = "FUT",
+                                                          Category = "Fake Category",
+                                                          Each = true,
+                                                          FromDate = new DateTime(2017, 7, 1),
+                                                          ToDate = new DateTime(2017, 7, 30),
+                                                          HeaderId = 10,
+                                                          ItemNumber = "123456",
+                                                          LineNumber = 17,
+                                                          CreatedUtc = new DateTime(2017, 7, 5, 16, 41, 0, DateTimeKind.Utc),
+                                                          ModifiedUtc = new DateTime(2017, 7, 5, 16, 42, 0, DateTimeKind.Utc)
+                                                      };
+                var expected = 0;
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.CustomInventoryItemId
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullPackSize() {
+                // arrange
+                var detail = MakeDetail();
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.PackSize
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullStorageTemp() {
+                // arrange
+                var detail = MakeDetail();
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.StorageTemp
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsQuantityOfZero() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 0;
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.Quantity
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsIsDeleteAsFalse() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = false;
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.IsDelete
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullItemStatistics() {
+                // arrange
+                var detail = MakeDetail();
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.ItemStatistics
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullProprietaryCustomers() {
+                // arrange
+                var detail = MakeDetail();
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.ProprietaryCustomers
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullSupplier() {
+                // arrange
+                var detail = MakeDetail();
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.Supplier
+                       .Should()
+                       .BeNull();
+            }
+
         }
     }
 }

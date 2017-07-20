@@ -24,6 +24,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_CATALOG_ID = "CatalogId";
         private const string PARMNAME_ACTIVE = "Active";
         private const string PARMNAME_LINENUMBER = "LineNumber";
+        private const string PARMNAME_QUANTITY = "Quantity";
 
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
@@ -53,6 +54,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             parms.Add(PARMNAME_CATALOG_ID, model.CatalogId);
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_LINENUMBER, model.LineNumber);
+            parms.Add(PARMNAME_QUANTITY, model.Quantity);
 
             parms.Add(PARMNAME_RETURNVALUE, direction: ParameterDirection.Output, dbType: DbType.Int64);
 

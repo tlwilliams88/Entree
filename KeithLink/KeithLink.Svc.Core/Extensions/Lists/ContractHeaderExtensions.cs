@@ -28,7 +28,10 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Name = $"{LISTNAME_CONTRACT}{header.ContractId}",
                 ReadOnly = true,
                 HasContractItems = false,
-                Items = new List<ListItemModel>()
+                Items = new List<ListItemModel>(),
+                SharedWith = new List<string>(),
+                IsShared = false,
+                IsSharing = false
             };
         }
 

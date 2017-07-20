@@ -11,11 +11,100 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-namespace KeithLink.Svc.Core.Models.Lists
-{
+namespace KeithLink.Svc.Core.Models.Lists {
     [DataContract(Name = "UserList")]
-    public class ListModel: ICloneable
-    {
+    public class ListModel: ICloneable {
+        #region ctor
+        public ListModel() {
+            Items = new List<ListItemModel>();
+            SharedWith = new List<string>();
+        }
+        #endregion
+
+        #region methods
+        object ICloneable.Clone() {
+            return this.Clone();
+        }
+
+        public ListModel Clone() {
+            using(var ms = new MemoryStream()) {
+                XmlSerializer xs = new XmlSerializer(typeof(ListModel));
+                xs.Serialize(ms, this);
+                ms.Position = 0;
+
+                return (ListModel)xs.Deserialize(ms);
+            }
+        }
+
+        public ListModel ShallowCopy() {
+            var clonedList = new ListModel() {
+                BranchId = this.BranchId,
+                IsContractList = this.IsContractList,
+                IsFavorite = this.IsFavorite,
+                IsMandatory = this.IsMandatory,
+                IsRecommended = this.IsRecommended,
+                IsReminder = this.IsReminder,
+                IsShared = this.IsShared,
+                IsSharing = this.IsSharing,
+                IsWorksheet = this.IsWorksheet,
+                ListId = this.ListId,
+                Name = this.Name,
+                ReadOnly = this.ReadOnly,
+                SharedWith = this.SharedWith,
+                Type = this.Type,
+                Items = new List<ListItemModel>()
+            };
+
+            if(this.Items != null)
+                foreach(var item in this.Items) {
+                    clonedList.Items.Add(new ListItemModel() {
+                        ListItemId = item.ListItemId,
+                        IsValid = item.IsValid,
+                        Name = item.Name,
+                        ItemNumber = item.ItemNumber,
+                        Pack = item.Pack,
+                        PackSize = item.PackSize,
+                        Label = item.Label,
+                        Quantity = item.Quantity,
+                        ParLevel = item.ParLevel,
+                        Position = item.Position,
+                        TempZone = item.TempZone,
+                        Category = item.Category,
+                        FromDate = item.FromDate,
+                        BrandExtendedDescription = item.BrandExtendedDescription,
+                        ToDate = item.ToDate,
+                        Delta = item.Delta,
+                        CreatedUtc = item.CreatedUtc,
+                        ModifiedUtc = item.ModifiedUtc,
+                        CasePrice = item.CasePrice,
+                        PackagePrice = item.PackagePrice,
+                        Each = item.Each,
+                        CategoryName = item.CategoryName,
+                        ItemClass = item.ItemClass,
+                        ItemStatistics = item.ItemStatistics,
+                        ProprietaryCustomers = item.ProprietaryCustomers,
+                        CatalogId = item.CatalogId,
+                        CatchWeight = item.CatchWeight,
+                        AverageWeight = item.AverageWeight,
+                        ChildNutrition = item.ChildNutrition,
+                        ReplacedItem = item.ReplacedItem,
+                        ReplacementItem = item.ReplacementItem,
+                        DeviatedCost = item.DeviatedCost,
+                        SellSheet = item.SellSheet,
+                        NonStock = item.NonStock,
+                        StorageTemp = item.StorageTemp,
+                        IsSpecialtyCatalog = item.IsSpecialtyCatalog,
+                        Unfi = item.Unfi,
+                        Supplier = item.Supplier,
+                        CustomInventoryItemId = item.CustomInventoryItemId,
+                    });
+                }
+
+            return clonedList;
+        }
+        #endregion
+
+        #region properties
         [DataMember(Name = "listid")]
         public long ListId { get; set; }
 
@@ -69,95 +158,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 
         [DataMember]
 		public ListType Type { get; set; }
-
-		object ICloneable.Clone()
-		{
-			return this.Clone();
-		}
-
-		public ListModel Clone()
-		{
-			using (var ms = new MemoryStream())
-			{
-				XmlSerializer xs = new XmlSerializer(typeof(ListModel));
-				xs.Serialize(ms, this);
-				ms.Position = 0;
-
-				return (ListModel)xs.Deserialize(ms);
-			}
-		}
-
-
-		public ListModel ShallowCopy()
-		{
-			var clonedList = new ListModel()
-			{
-				BranchId = this.BranchId,
-				IsContractList = this.IsContractList,
-				IsFavorite = this.IsFavorite,
-				IsMandatory = this.IsMandatory,
-				IsRecommended = this.IsRecommended,
-				IsReminder = this.IsReminder,
-				IsShared = this.IsShared,
-				IsSharing = this.IsSharing,
-				IsWorksheet = this.IsWorksheet,
-				ListId = this.ListId,
-				Name = this.Name,
-				ReadOnly = this.ReadOnly,
-				SharedWith = this.SharedWith,
-				Type = this.Type,
-				Items = new List<ListItemModel>()
-			};
-
-			if (this.Items != null)
-				foreach (var item in this.Items)
-				{
-                    clonedList.Items.Add(new ListItemModel()
-                    {
-                        ListItemId = item.ListItemId,
-                        IsValid = item.IsValid,
-                        Name = item.Name,
-                        ItemNumber = item.ItemNumber,
-                        Pack = item.Pack,
-                        PackSize = item.PackSize,
-                        Label = item.Label,
-                        Quantity = item.Quantity,
-                        ParLevel = item.ParLevel,
-                        Position = item.Position,
-                        TempZone = item.TempZone,
-                        Category = item.Category,
-                        FromDate = item.FromDate,
-                        BrandExtendedDescription = item.BrandExtendedDescription,
-                        ToDate = item.ToDate,
-                        Delta = item.Delta,
-						CreatedUtc = item.CreatedUtc,
-						ModifiedUtc = item.ModifiedUtc,
-						CasePrice = item.CasePrice,
-						PackagePrice = item.PackagePrice,
-                        Each = item.Each,
-						CategoryName = item.CategoryName,
-						ItemClass = item.ItemClass,
-                        ItemStatistics = item.ItemStatistics,
-                        ProprietaryCustomers = item.ProprietaryCustomers,
-                        CatalogId = item.CatalogId,
-                        CatchWeight = item.CatchWeight,
-                        AverageWeight = item.AverageWeight,
-                        ChildNutrition = item.ChildNutrition,
-                        ReplacedItem = item.ReplacedItem,
-                        ReplacementItem = item.ReplacementItem,
-                        DeviatedCost = item.DeviatedCost,
-                        SellSheet = item.SellSheet,
-                        NonStock = item.NonStock,
-                        StorageTemp = item.StorageTemp,
-                        IsSpecialtyCatalog = item.IsSpecialtyCatalog,
-                        Unfi = item.Unfi,
-                        Supplier = item.Supplier,
-                        CustomInventoryItemId = item.CustomInventoryItemId,
-					});
-				}
-
-			return clonedList;
-		}
+        #endregion
 	}
 }
 

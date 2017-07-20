@@ -15,6 +15,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.Mandatory,
                 ItemNumber = value.ItemNumber,
                 Each = value.Each ?? false,
+                Quantity = value.Quantity,
                 CatalogId = value.CatalogId,
                 Position = value.LineNumber,
                 ModifiedUtc = value.ModifiedUtc,
@@ -28,6 +29,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 CatalogId = model.CatalogId,
                 Each = model.Each ?? false,
                 Id = model.ListItemId,
+                Quantity = model.Quantity,
                 ItemNumber = model.ItemNumber,
                 HeaderId = headerId,
                 LineNumber = model.Position

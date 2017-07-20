@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<InventoryValuationListDetail>(SPNAME_GETDETAILS, PARMNAME_HEADERID, headerId);
         }
 
-        public long SaveInventoryValudationDetail(InventoryValuationListDetail model) {
+        public long SaveInventoryValuationDetail(InventoryValuationListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOG, model.CatalogId);
