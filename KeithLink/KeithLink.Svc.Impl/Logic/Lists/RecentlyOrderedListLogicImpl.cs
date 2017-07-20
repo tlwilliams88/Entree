@@ -25,10 +25,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
         #region methods
 
-        public void Save(UserProfile user, UserSelectedContext catalogInfo, string itemNumber, bool each, string catalogId, bool active) {
-            throw new NotImplementedException();
-        }
-
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly) {
             RecentlyOrderedListHeader returnValue = _headersRepo.GetRecentlyOrderedHeader(user.UserId, catalogInfo);
             List<RecentlyOrderedListDetail> details = null;
@@ -37,7 +33,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 headerOnly == false)
                 details = _detailsRepo.GetRecentlyOrderedDetails(returnValue.Id);
 
-            return returnValue.ToListModel(details);
+            if (returnValue != null) {
+                return returnValue.ToListModel(details);
+            }
+            return null;
         }
 
         public void PostRecentOrder(UserProfile user,
@@ -52,7 +51,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             DeleteOldRecentlyOrdered(user, catalogInfo, headerid);
         }
 
-        public long Save(UserProfile user,
+        private long Save(UserProfile user,
                          UserSelectedContext catalogInfo,
                          string itemNumber,
                          bool each,
@@ -88,14 +87,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         {
             RecentlyOrderedListHeader header = _headersRepo.GetRecentlyOrderedHeader(user.UserId, catalogInfo);
 
-            _detailsRepo.DeleteOldRecentlyOrdered(header.Id, 0);
+            if (header != null) {
+                _detailsRepo.DeleteOldRecentlyOrdered(header.Id, 0);
+            }
         }
 
-        public void DeleteRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo, RecentlyOrderedListDetail details) {
-            _detailsRepo.DeleteRecentlyOrdered(details);
-        }
-
-        public void DeleteOldRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo, long headerId) {
+        private void DeleteOldRecentlyOrdered(UserProfile user, UserSelectedContext catalogInfo, long headerId) {
             _detailsRepo.DeleteOldRecentlyOrdered(headerId);
         }
         #endregion
