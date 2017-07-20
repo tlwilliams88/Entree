@@ -21,8 +21,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.InventoryValuation,
                 ListId = header.Id,
                 Name = header.Name,
-                ReadOnly = false,
-                Items = null
+                ReadOnly = false
             };
         }
 
