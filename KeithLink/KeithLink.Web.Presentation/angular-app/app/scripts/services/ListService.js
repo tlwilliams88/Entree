@@ -293,8 +293,8 @@ angular.module('bekApp')
               };
             }
 
-            var listType = list && list.type != null ? list.type : list.listType,
-                listId = list && list.listid != null ? list.listid : list.listId;
+            var listType = (list != undefined && list != null) && list.type != null ? list.type : list.listType,
+                listId = (list != undefined && list != null) && list.listid != null ? list.listid : list.listId;
 
             Service.sortObject = params.sort;
             return $http.post('/list/' + listType + '/' + listId, params).then(function(response) {
