@@ -14,7 +14,8 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,
                 Each = value.Each ?? false,
-                CatalogId = value.CatalogId
+                CatalogId = value.CatalogId,
+                Active = true
             };
         }
     }
