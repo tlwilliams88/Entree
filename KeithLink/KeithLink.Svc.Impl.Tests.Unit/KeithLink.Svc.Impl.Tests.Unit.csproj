@@ -81,6 +81,7 @@
     <Compile Include="Logic\Lists\CustomListLogicTests.cs" />
     <Compile Include="Helpers\ContractInformationHelperTests.cs" />
     <Compile Include="Helpers\FavoritesAndNotesHelperTests.cs" />
+    <Compile Include="Logic\Lists\FavoritesListLogicTests.cs" />
     <Compile Include="Logic\Lists\HistoryListLogicTests.cs" />
     <Compile Include="Logic\Lists\MandatoryItemsListLogicTests.cs" />
     <Compile Include="Logic\Lists\NotesListLogicTests.cs" />
