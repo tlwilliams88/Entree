@@ -56,7 +56,11 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\FavoritesDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\HistoryHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\NotesListDetails.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\MandatoryItemsListDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListDetails.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\NotesListHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\MandatoryItemsListHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ReminderDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />

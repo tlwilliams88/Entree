@@ -12,27 +12,34 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 namespace KeithLink.Svc.Core.Extensions.Lists {
     public static class CustomHeaderExtensions {
         public static ListModel ToListModel(this CustomListHeader header, UserSelectedContext catalogInfo, List<CustomListShare> shares) {
-            return new ListModel() {
-                BranchId = header.BranchId,
-                IsContractList = false,
-                IsFavorite = false,
-                IsWorksheet = false,
-                IsReminder = false,
-                IsMandatory = false,
-                IsRecommended = false,
-                IsCustomInventory = false,
-                Type = ListType.Custom,
-                SharedWith = shares?.Select(s => s.CustomerNumber).ToList(),
-                ListId = header.Id,
-                Name = (header!=null && header.Name!=null)?header.Name:"(No set name)",
-                ReadOnly = !header.CustomerNumber.Equals(catalogInfo.CustomerId),
-                IsSharing = shares != null && 
-                                     (shares.Any() && 
-                                      header.CustomerNumber.Equals(catalogInfo.CustomerId) &&
-                                      header.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase)),
-                IsShared = !header.CustomerNumber.Equals(catalogInfo.CustomerId),
-                Items = null
-            };
+            ListModel retVal = new ListModel();
+
+            retVal.BranchId = header.BranchId;
+            retVal.CustomerNumber = header.CustomerNumber;
+            retVal.IsContractList = false;
+            retVal.IsFavorite = false;
+            retVal.IsWorksheet = false;
+            retVal.IsReminder = false;
+            retVal.IsMandatory = false;
+            retVal.IsRecommended = false;
+            retVal.IsCustomInventory = false;
+            retVal.Type = ListType.Custom;
+            
+            if(shares != null) {
+                retVal.SharedWith = shares.Select(s => s.CustomerNumber)
+                                          .ToList();
+            }
+            
+            retVal.ListId = header.Id;
+            retVal.Name = (header != null && header.Name != null) ? header.Name : "(No set name)";
+            retVal.ReadOnly = !header.CustomerNumber.Equals(catalogInfo.CustomerId);
+            retVal.IsSharing = shares != null &&
+                               (shares.Any() &&
+                                header.CustomerNumber.Equals(catalogInfo.CustomerId) &&
+                                header.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase));
+            retVal.IsShared = !header.CustomerNumber.Equals(catalogInfo.CustomerId);
+
+            return retVal;
         }
 
         public static ListModel ToListModel(this CustomListHeader header, UserSelectedContext catalogInfo, List<CustomListShare> shares, 

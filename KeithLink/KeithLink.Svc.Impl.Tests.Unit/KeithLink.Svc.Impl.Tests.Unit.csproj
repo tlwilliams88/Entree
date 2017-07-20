@@ -78,10 +78,13 @@
   <ItemGroup>
     <Compile Include="BaseDITests.cs" />
     <Compile Include="Logic\Lists\ContractListLogicTests.cs" />
+    <Compile Include="Logic\Lists\CustomListLogicTests.cs" />
     <Compile Include="Helpers\ContractInformationHelperTests.cs" />
     <Compile Include="Helpers\FavoritesAndNotesHelperTests.cs" />
     <Compile Include="Logic\Lists\HistoryListLogicTests.cs" />
     <Compile Include="Logic\Lists\InventoryValuationListLogicTests.cs" />
+    <Compile Include="Logic\Lists\MandatoryItemsListLogicTests.cs" />
+    <Compile Include="Logic\Lists\NotesListLogicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
   </ItemGroup>

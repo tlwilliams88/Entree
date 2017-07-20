@@ -74,6 +74,8 @@
   <ItemGroup>
     <Compile Include="Extensions\Lists\ContractDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\ContractHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\CustomDetailExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\CustomHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Lists\FavoritesDetailExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
@@ -90,6 +92,16 @@
     <Compile Include="Models\Lists\History\HistoryListDetailTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValidationListHeaderTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValudationDetailTests.cs" />
+    <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListDetailTests.cs" />
+    <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListHeaderTests.cs" />
+    <Compile Include="Models\Lists\Notes\NotesDetailListTests.cs" />
+    <Compile Include="Models\Lists\Notes\NotesHeaderListTests.cs" />
+    <Compile Include="Models\Lists\RecentlyOrdered\RecentlyOrderedListDetailTests.cs" />
+    <Compile Include="Models\Lists\RecentlyOrdered\RecentlyOrderedListHeaderTests.cs" />
+    <Compile Include="Models\Lists\RecentlyViewed\RecentlyViewedListDetailTests.cs" />
+    <Compile Include="Models\Lists\RecentlyViewed\RecentlyViewedListHeaderTests.cs" />
+    <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetailTests.cs" />
+    <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListHeaderTests.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetailTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -119,11 +131,6 @@
     <Folder Include="Models\ElasticSearch\" />
     <Folder Include="Models\ImportFiles\" />
     <Folder Include="Models\Invoices\" />
-    <Folder Include="Models\Lists\MandatoryItems\" />
-    <Folder Include="Models\Lists\Notes\" />
-    <Folder Include="Models\Lists\RecentlyOrdered\" />
-    <Folder Include="Models\Lists\RecentlyViewed\" />
-    <Folder Include="Models\Lists\RecommendedItems\" />
     <Folder Include="Models\Marketing\" />
     <Folder Include="Models\Messaging\" />
     <Folder Include="Models\ModelExport\" />

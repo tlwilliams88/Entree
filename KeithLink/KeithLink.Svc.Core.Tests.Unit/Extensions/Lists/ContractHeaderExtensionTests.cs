@@ -319,6 +319,52 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                        .Be(expected);
 
             }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+                // arrange
+                var expected = 0;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel();
+
+                // assert
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsShared() {
+                // arrange
+                var expected = false;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel();
+
+                // assert
+                results.IsShared
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsSharing() {
+                // arrange
+                var expected = false;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel();
+
+                // assert
+                results.IsSharing
+                       .Should()
+                       .Be(expected);
+            }
         }
 
         public class ToListModel_WithListOfDetails {
@@ -577,6 +623,55 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                        .Should()
                        .Be(expected);
             }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+                // arrange
+                var details = MakeListOfDetails();
+                var expected = 0;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel(details);
+
+                // assert
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsShared() {
+                // arrange
+                var details = MakeListOfDetails();
+                var expected = false;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel(details);
+
+                // assert
+                results.IsShared
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsSharing() {
+                // arrange
+                var details = MakeListOfDetails();
+                var expected = false;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel(details);
+
+                // assert
+                results.IsSharing
+                       .Should()
+                       .Be(expected);
+            }
         }
 
         public class ToListModel_WithListOfModels {
@@ -832,6 +927,55 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
 
                 // assert
                 results.CustomerNumber
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+                // arrange
+                var details = MakeListOfModels();
+                var expected = 0;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel(details);
+
+                // assert
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsShared() {
+                // arrange
+                var details = MakeListOfModels();
+                var expected = false;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel(details);
+
+                // assert
+                results.IsShared
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsSharing() {
+                // arrange
+                var details = MakeListOfModels();
+                var expected = false;
+                var header = MakeHeader();
+
+                // act
+                var results = header.ToListModel(details);
+
+                // assert
+                results.IsSharing
                        .Should()
                        .Be(expected);
             }
