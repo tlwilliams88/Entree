@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Extensions\Lists\ContractDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\ContractHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\FavoritesHeaderExtensionsTests.cs" />
     <Compile Include="Extensions\Lists\CustomDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\CustomHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Lists\FavoritesDetailExtensionTests.cs" />
