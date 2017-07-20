@@ -538,7 +538,8 @@ namespace KeithLink.Svc.Impl.Service.List
             {
                 BranchId = catalogInfo.BranchId,
                 CustomerNumber = catalogInfo.CustomerId,
-                ListId = newList.ListId
+                ListId = newList.ListId,
+                Type = newList.Type
             };
         }
 
