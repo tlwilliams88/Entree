@@ -88,8 +88,10 @@
     <Compile Include="Repository\Lists\FavoriteListDetailsRepositoryTests.cs" />
     <Compile Include="Repository\Lists\HistoryListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\HistoryListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\NotesListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\NotesListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\MandatoryItemsListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\InventoryValuationListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListDetailsRepositoryTests.cs" />
@@ -145,6 +147,10 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
