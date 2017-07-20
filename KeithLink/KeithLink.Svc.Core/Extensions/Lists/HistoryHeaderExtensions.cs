@@ -32,8 +32,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.Worksheet,
                 ListId = header.Id,
                 Name = LISTNAME_HISTORY,
-                ReadOnly = true,
-                Items = null 
+                ReadOnly = true
             };
         }
 
