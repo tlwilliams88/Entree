@@ -81,6 +81,9 @@
     <Compile Include="Helpers\ContractInformationHelperTests.cs" />
     <Compile Include="Helpers\FavoritesAndNotesHelperTests.cs" />
     <Compile Include="Logic\Lists\FavoritesListLogicTests.cs" />
+    <Compile Include="Logic\Lists\HistoryListLogicTests.cs" />
+    <Compile Include="Logic\Lists\MandatoryItemsListLogicTests.cs" />
+    <Compile Include="Logic\Lists\NotesListLogicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
   </ItemGroup>

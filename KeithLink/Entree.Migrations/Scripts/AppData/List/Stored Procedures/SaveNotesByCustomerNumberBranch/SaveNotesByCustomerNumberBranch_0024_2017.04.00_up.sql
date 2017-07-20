@@ -2,13 +2,16 @@ CREATE PROCEDURE [List].[SaveNotesByCustomerNumberBranch]
     @Id                     BIGINT,
     @HeaderId               BIGINT,
     @ItemNumber             CHAR(6),
-	@LineNumber					        INT,
+    @LineNumber             INT,
     @Each                   BIT,
     @CatalogId              VARCHAR(10),
     @Note                   NVARCHAR(500),
     @ReturnValue            BIGINT OUTPUT
 AS
 
+    IF @LineNumber = 0
+        SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
+    
 IF @Id > 0
     BEGIN
         UPDATE [List].[NotesDetails] SET
@@ -17,7 +20,8 @@ IF @Id > 0
             [Each] = @Each,
             [CatalogId] = @CatalogId,
             [Note] = @Note,
-			[ModifiedUtc] = GETUTCDATE()
+            [LineNumber] = @LineNumber,
+            [ModifiedUtc] = GETUTCDATE()
         WHERE
             [Id] = @Id
     END
@@ -30,16 +34,18 @@ ELSE
             [Each],
             [CatalogId],
             [Note],
-			[CreatedUtc],
-			[ModifiedUtc]
+            [LineNumber],
+            [CreatedUtc],
+            [ModifiedUtc]
         ) VALUES (
             @HeaderId,
             @ItemNumber,
             @Each,
             @CatalogId,
             @Note,
-			GETUTCDATE(),
-			GETUTCDATE()
+            @LineNumber,
+            GETUTCDATE(),
+            GETUTCDATE()
         )
     END
 

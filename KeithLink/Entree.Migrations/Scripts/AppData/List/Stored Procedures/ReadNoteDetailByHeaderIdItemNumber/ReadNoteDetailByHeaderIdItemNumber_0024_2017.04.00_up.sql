@@ -8,6 +8,7 @@ AS
 
     SELECT
         [Id],
+        [HeaderId],
         [ItemNumber],
         [Each],
         [Note],

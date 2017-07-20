@@ -12,6 +12,9 @@ AS
     -- interfering with SELECT statements.
     SET NOCOUNT ON;
 
+	IF @LineNumber = 0
+		SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
+    
 IF @Id > 0
     UPDATE
         [List].[ReminderDetails]
