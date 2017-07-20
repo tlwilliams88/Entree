@@ -11,7 +11,7 @@ CREATE PROCEDURE [List].[SaveMandatoryItemByCustomerNumberBranch]
 AS
 
 IF @LineNumber = 0
-	SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
+    SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
 
 IF @Id > 0
     UPDATE [List].[MandatoryItemsDetails]
@@ -22,7 +22,8 @@ IF @Id > 0
         [CatalogId] = @CatalogId,
         [Active] = @Active,
         [LineNumber] = @LineNumber,
-		[ModifiedUtc] = GETUTCDATE()
+        [Quantity] = @Quantity,
+        [ModifiedUtc] = GETUTCDATE()
     WHERE
         [Id] = @Id
 ELSE
@@ -34,8 +35,9 @@ ELSE
         [CatalogId],
         [Active],
         [LineNumber],
-		[CreatedUtc],
-		[ModifiedUtc]
+        [Quantity],
+        [CreatedUtc],
+        [ModifiedUtc]
     )
     VALUES
     (
@@ -45,8 +47,9 @@ ELSE
         @CatalogId,
         @Active,
         @LineNumber,
-		GETUTCDATE(),
-		GETUTCDATE()
+        @Quantity,
+        GETUTCDATE(),
+        GETUTCDATE()
     )
 
 SET @ReturnValue = SCOPE_IDENTITY()

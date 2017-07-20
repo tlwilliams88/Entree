@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 
 using Autofac;
@@ -7,25 +8,25 @@ using Autofac;
 using FluentAssertions;
 
 using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
+using KeithLink.Svc.Core.Models.Lists.Notes;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
-    public class MandatoryItemsListDetailRepositoryTests {
+    public class NotesListDetailRepositoryTests {
         private const string GOOD_ITEM_NUMBER = "123456";
         private const int GOOD_HEADER_ID = 1;
 
         private const string BAD_ITEM_NUMBER = "999999";
-        private const int BAD_HEADER_ID = 3;
+        private const int BAD_HEADER_ID = 4;
 
         private const string NEW_ITEM_NUMBER = "777777";
 
-        public static IMandatoryItemsListDetailsRepository MakeRepo() {
+        public static INotesDetailsListRepository MakeRepo() {
             IContainer diMap = DependencyMapFactory.GetTestsContainer()
                                                    .Build();
-            return diMap.Resolve<IMandatoryItemsListDetailsRepository>();
+            return diMap.Resolve<INotesDetailsListRepository>();
         }
 
         public class GetAllByHeader : MigratedDatabaseTest {
@@ -33,10 +34,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_HeaderIdMatchesExpected() {
                 // arrange
                 int expected = 1;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details[0]
@@ -46,32 +47,17 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsCorrectInactiveCount() {
+            public void GoodDetail_ReturnsExpectedNotes() {
                 // arrange
-                int expected = 0;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                string expected = "Walla walla bing bang";
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
-
-                // assert
-                details.Count(x => x.Active = false)
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedActive() {
-                // arrange
-                bool expected = true;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
-
-                // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
-                       .Active
+                       .Note
                        .Should()
                        .Be(expected);
             }
@@ -80,10 +66,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_ReturnsExpectedCatalogId() {
                 // arrange
                 string expected = "FDF";
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
@@ -96,10 +82,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_ReturnsExpectedCreatedDate() {
                 // arrange
                 DateTime expected = new DateTime(2017, 7, 3, 11, 33, 0, DateTimeKind.Utc);
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
@@ -112,10 +98,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_ReturnsExpectedEach() {
                 // arrange
                 bool expected = true;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
@@ -128,10 +114,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_ReturnsExpectedItemNumber() {
                 // arrange
                 string expected = "123456";
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
@@ -144,10 +130,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_ReturnsExpectedLineNumber() {
                 // arrange
                 int expected = 1;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
@@ -160,10 +146,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_ReturnsExpectedModifiedDate() {
                 // arrange
                 DateTime expected = new DateTime(2017, 7, 3, 11, 34, 0, DateTimeKind.Utc);
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
@@ -173,29 +159,13 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedQuantity() {
-                // arrange
-                int expected = 5;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
-
-                // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
-
-                // arrange
-                details.First(x => x.ItemNumber.Equals(GOOD_ITEM_NUMBER))
-                       .Quantity
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
             public void GoodDetail_ReturnsProperCount() {
                 // arrange
-                int expected = 3;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                int expected = 4;
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.Count()
@@ -205,16 +175,15 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
         }
 
         public class Save : MigratedDatabaseTest {
-            private static MandatoryItemsListDetail MakeDetail() {
-                return new MandatoryItemsListDetail {
-                    Active = true,
+            private static NotesListDetail MakeDetail() {
+                return new NotesListDetail {
+                    Note = "Testing ding dong doot",
                     CatalogId = "FRT",
                     CreatedUtc = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc),
                     Each = true,
                     HeaderId = 1,
                     ItemNumber = NEW_ITEM_NUMBER,
                     LineNumber = 2,
-                    Quantity = 10,
                     ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc)
                 };
             }
@@ -223,11 +192,11 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_DoesNotSaveSetCreatedDate() {
                 // arrange
                 DateTime expected = new DateTime(2017, 7, 3, 14, 46, 0, DateTimeKind.Utc);
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
                 repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
@@ -240,11 +209,11 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_DoesNotSaveSetModifiedDate() {
                 // arrange
                 DateTime expected = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc);
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
                 repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
@@ -254,18 +223,18 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
-            public void GoodDetail_NewActiveSavesCorrectly() {
+            public void GoodDetail_NewNoteSavesCorrectly() {
                 // arrange
-                bool expected = true;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                string expected = "Testing ding dong doot";
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
                 repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
-                       .Active
+                       .Note
                        .Should()
                        .Be(expected);
             }
@@ -274,11 +243,11 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_NewCatalogIdSavesCorrectly() {
                 // arrange
                 string expected = "FRT";
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
                 repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
@@ -291,11 +260,11 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_NewEachSavesCorrectly() {
                 // arrange
                 bool expected = true;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
                 repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
@@ -308,11 +277,11 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_NewItemNumberSavesCorrectly() {
                 // arrange
                 string expected = NEW_ITEM_NUMBER;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
                 repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
@@ -325,11 +294,11 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             public void GoodDetail_NewLineNumberSavesCorrectly() {
                 // arrange
                 int expected = 2;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
                 repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
@@ -339,59 +308,38 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
-            public void GoodDetail_NewQuantitySavesCorrectly()
-            {
-                // arrange
-                int expected = 10;
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
-
-                // act
-                repo.Save(MakeDetail());
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
-
-                // assert
-                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
-                       .Quantity
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void PartialDetail_ReturnsNullCatalogId() {
-                // arrange
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
-
-                // act
-                MandatoryItemsListDetail detail = MakeDetail();
-                detail.CatalogId = null;
-                repo.Save(detail);
-
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
-
-                // assert
-                details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
-                       .CatalogId
-                       .Should()
-                       .BeNull();
-            }
-
-            [Fact]
             public void PartialDetail_ReturnsNullEach() {
                 // arrange
-                IMandatoryItemsListDetailsRepository repo = MakeRepo();
+                INotesDetailsListRepository repo = MakeRepo();
 
                 // act
-                MandatoryItemsListDetail detail = MakeDetail();
+                NotesListDetail detail = MakeDetail();
                 detail.Each = null;
                 repo.Save(detail);
 
-                List<MandatoryItemsListDetail> details = repo.GetAllByHeader(GOOD_HEADER_ID);
+                List<NotesListDetail> details = repo.GetAll(GOOD_HEADER_ID);
 
                 // assert
                 details.First(x => x.ItemNumber.Equals(NEW_ITEM_NUMBER))
                        .Each
                        .Should()
                        .BeNull();
+            }
+
+            [Fact]
+            public void NullCatalogId_ThrowsSqlException()
+            {
+                // arrange
+                INotesDetailsListRepository repo = MakeRepo();
+
+                // act
+                NotesListDetail detail = MakeDetail();
+                detail.CatalogId = null;
+
+                Action act = () => { repo.Save(detail); };
+
+                // assert
+                act.ShouldThrow<SqlException>();
             }
         }
     } // Class
