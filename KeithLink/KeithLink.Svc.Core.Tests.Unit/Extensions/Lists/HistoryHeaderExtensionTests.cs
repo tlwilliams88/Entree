@@ -12,13 +12,6 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
     public class HistoryHeaderExtensionTests {
-        private static UserSelectedContext MakeCustomer() {
-            return new UserSelectedContext() {
-                BranchId = "FUT",
-                CustomerId = "123456"
-            };
-        }
-
         private static HistoryListHeader MakeHeader() {
             return new HistoryListHeader() {
                 BranchId = "FUT",
