@@ -35,6 +35,7 @@
 			 ,[ItemNumber]
              ,[CatalogId]
              ,[Each]
+             ,[Active]
 			 ,[ModifiedUtc]
 			 ,[CreatedUtc])
 		SELECT
@@ -42,6 +43,7 @@
 			,li.[ItemNumber]
 			,li.[CatalogId]
 			,li.Each
+            ,1
 			,GetUtcDate()
 			,GetUtcDate()
 		FROM List.[ListItems] li
