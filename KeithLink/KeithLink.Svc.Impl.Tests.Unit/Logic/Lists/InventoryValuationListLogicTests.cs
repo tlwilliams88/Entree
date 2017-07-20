@@ -97,6 +97,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "123456"
                 };
                 var fakeUser = new UserProfile();
+                var expectedEmptyListCount = 0;
 
                 // act
                 var results = testunit.ReadLists(fakeUser, testcontext, false);
@@ -104,7 +105,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 // assert
                 results.Count()
                        .Should()
-                       .Be(0);
+                       .Be(expectedEmptyListCount);
             }
 
             [Fact]
@@ -118,6 +119,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "223456"
                 };
                 var fakeUser = new UserProfile();
+                var expectedEmptyListCount = 0;
 
                 // act
                 var results = testunit.ReadLists(fakeUser, testcontext, false);
@@ -125,7 +127,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 // assert
                 results.Count()
                        .Should()
-                       .Be(0);
+                       .Be(expectedEmptyListCount);
             }
 
             [Fact]
@@ -139,21 +141,23 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "123456"
                 };
                 var fakeUser = new UserProfile();
+                var expectedListId = 1;
 
                 // act
                 var results = testunit.ReadLists(fakeUser, testcontext, false);
 
                 // assert
-                results.Count()
+                results.First()
+                       .ListId
                        .Should()
-                       .Be(1);
+                       .Be(expectedListId);
             }
         }
 
         public class ReadList
         {
             [Fact]
-            public void BadBranchId_ReturnsEmptyList()
+            public void BadBranchId_ReturnsExpectedListId()
             {
                 // arrange
                 var testunit = MakeTestsObject();
@@ -162,19 +166,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var testid = 1;
+                var expectedListId = 1;
 
                 // act
-                var results = testunit.ReadList(testid, testcontext, false);
+                var results = testunit.ReadList(expectedListId, testcontext, false);
 
                 // assert
                 results.ListId
                        .Should()
-                       .Be(testid);
+                       .Be(expectedListId);
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsEmptyList()
+            public void BadCustomerId_ReturnsExpectedList()
             {
                 // arrange
                 var testunit = MakeTestsObject();
@@ -183,15 +187,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var testid = 1;
+                var expectedListId = 1;
 
                 // act
-                var results = testunit.ReadList(testid, testcontext, false);
+                var results = testunit.ReadList(expectedListId, testcontext, false);
 
                 // assert
                 results.ListId
                        .Should()
-                       .Be(testid);
+                       .Be(expectedListId);
             }
 
             [Fact]
@@ -204,22 +208,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var expected = "123456";
+                var expectedListId = 1;
 
                 // act
-                var results = testunit.ReadList(1, testcontext, false);
+                var results = testunit.ReadList(expectedListId, testcontext, false);
 
                 // assert
-                results.CustomerNumber
+                results.ListId
                        .Should()
-                       .Be(expected);
+                       .Be(expectedListId);
             }
         }
 
         public class CreateOrUpdateList
         { // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_ReturnsLong()
+            public void AnyCustomerIdAndBranch_CallsHeaderRepoSave()
             {
                 // arrange
                 var mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
@@ -247,7 +251,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
         public class SaveItem
         { // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_Finishes()
+            public void AnyCustomerIdAndBranch_CallsDetailsRepoSaveInventoryValuationDetail()
             {
                 // arrange
                 var mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
@@ -269,7 +273,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                         LineNumber = 1,
                         HeaderId = 1L
                     };
-                var expected = true;
 
                 // act
                 testunit.SaveItem(fakeUser, testcontext, fakeId, testItem);
