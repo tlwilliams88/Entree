@@ -553,10 +553,12 @@ angular.module('bekApp')
           $analytics.eventTrack('Create List', {  category: 'Lists'});
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
+            var newList = response.successResponse;
             Service.renameList = true;
             Service.getListHeaders();
             toaster.pop('success', null, 'Successfully created list.');
-            return Service.getList(response.successResponse);
+            newList.permissions = updateListPermissions(newList);
+            return newList;
           }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
             return $q.reject(error);
