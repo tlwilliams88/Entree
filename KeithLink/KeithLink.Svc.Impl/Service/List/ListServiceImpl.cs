@@ -505,14 +505,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 SaveItems(user,catalogInfo, type, id, list.Items);
             }
 
-            return new ListModel() {
-                                       Name = list.Name,
-                                       ListId = id,
-                                       Type = type,
-                                       Items = list.Items,
-                                       CustomerNumber = catalogInfo.CustomerId,
-                                       BranchId = catalogInfo.BranchId
-                                   };
+            return ReadList(user, catalogInfo, type, id, true);
         }
 
         public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel)
