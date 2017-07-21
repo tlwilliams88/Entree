@@ -25,10 +25,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
         #region methods
 
-        public void Save(UserProfile user, UserSelectedContext catalogInfo, string itemNumber, bool each, string catalogId, bool active) {
-            throw new NotImplementedException();
-        }
-
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly) {
             RecentlyViewedListHeader returnValue = _headersRepo.GetRecentlyViewedHeader(user.UserId, catalogInfo);
             List<RecentlyViewedListDetail> details = null;
@@ -43,19 +39,17 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return null;
         }
 
-        public void PostRecentOrder(UserProfile user,
-                                    UserSelectedContext catalogInfo,
-                                    RecentNonBEKList list) {
+        public void PostRecentView(UserProfile user,
+                                   UserSelectedContext catalogInfo,
+                                   string itemNumber) {
             long headerid = 0;
 
-            foreach (RecentNonBEKItem order in list.Items) {
-                headerid = Save(user, catalogInfo, order.ItemNumber, false, order.CatalogId);
-            }
+            headerid = Save(user, catalogInfo, itemNumber, false, catalogInfo.BranchId);
 
             DeleteOldRecentlyViewed(user, catalogInfo, headerid);
         }
 
-        public long Save(UserProfile user,
+        private long Save(UserProfile user,
                          UserSelectedContext catalogInfo,
                          string itemNumber,
                          bool each,
@@ -90,15 +84,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                               UserSelectedContext catalogInfo) {
             RecentlyViewedListHeader header = _headersRepo.GetRecentlyViewedHeader(user.UserId, catalogInfo);
 
-            int daysToKeep = 0;
-            _detailsRepo.DeleteOldRecentlyViewed(header.Id, daysToKeep);
+            if (header != null) {
+                int daysToKeep = 0;
+                _detailsRepo.DeleteOldRecentlyViewed(header.Id, daysToKeep);
+            }
         }
 
-        public void DeleteRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo, RecentlyViewedListDetail details) {
-            _detailsRepo.DeleteRecentlyViewed(details);
-        }
-
-        public void DeleteOldRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo, long headerId) {
+        private void DeleteOldRecentlyViewed(UserProfile user, UserSelectedContext catalogInfo, long headerId) {
             _detailsRepo.DeleteOldRecentlyViewed(headerId);
         }
         #endregion
