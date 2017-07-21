@@ -80,6 +80,8 @@
     <Compile Include="Extensions\Lists\FavoritesDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\HistoryDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\HistoryHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\InventoryValuationDetailExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\InventoryValuationHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Lists\MandatoryItemDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\MandatoryItemHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />

@@ -9,11 +9,13 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListItemId = value.Id,
                 Type = ListType.InventoryValuation,
                 ItemNumber = value.ItemNumber,
+                CustomInventoryItemId = value.CustomInventoryItemId ?? 0,
                 Position = value.LineNumber,
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,
                 Each = value.Each ?? false,
-                CatalogId = value.CatalogId
+                CatalogId = value.CatalogId,
+                Active = true
             };
         }
 

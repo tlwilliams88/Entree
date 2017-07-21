@@ -501,8 +501,10 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             return new ListModel() {
+                                       Name = list.Name,
                                        ListId = id,
-                                       Type = type
+                                       Type = type,
+                                       Items = list.Items
                                    };
         }
 
