@@ -152,16 +152,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "123456"
                 };
                 var InList = new List<string>() { "123456" };
-                var expected = new InHistoryReturnModel() {
-                                                              ItemNumber = "123456",
-                                                              InHistory = false
-                                                          };
+                var expected = false;
 
                 // act
                 var results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
                 results.First()
+                       .InHistory
                        .Should()
                        .Be(expected);
             }
@@ -177,17 +175,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "223456"
                 };
                 var InList = new List<string>() { "123456" };
-                var expected = new InHistoryReturnModel()
-                {
-                    ItemNumber = "123456",
-                    InHistory = false
-                };
+                var expected = false;
 
                 // act
                 var results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
                 results.First()
+                       .InHistory
                        .Should()
                        .Be(expected);
             }
@@ -203,17 +198,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "123456"
                 };
                 var InList = new List<string>() { "123456" };
-                var expected = new InHistoryReturnModel()
-                {
-                    ItemNumber = "123456",
-                    InHistory = true
-                };
+                var expected = true;
 
                 // act
                 var results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
                 results.First()
+                       .InHistory
                        .Should()
                        .Be(expected);
             }
