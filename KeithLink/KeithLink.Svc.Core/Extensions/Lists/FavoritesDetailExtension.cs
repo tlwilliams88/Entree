@@ -6,6 +6,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
     public static class FavoritesDetailExtension {
         public static ListItemModel ToWebModel(this FavoritesListDetail value) {
             return new ListItemModel() {
+                Active = value.Active,
                 ListItemId = value.Id,
                 Type = ListType.Favorite,
                 ItemNumber = value.ItemNumber,
@@ -20,7 +21,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
 
         public static FavoritesListDetail ToFavoritesListDetail(this ListItemModel model, long headerId = 0) {
             FavoritesListDetail item = new FavoritesListDetail() {
-                Active = true,
+                Active = model.Active,
                 CatalogId = model.CatalogId,
                 Each = model.Each ?? false,
                 Id = model.ListItemId,

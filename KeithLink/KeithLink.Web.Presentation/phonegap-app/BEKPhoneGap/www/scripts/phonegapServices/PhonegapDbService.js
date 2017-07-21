@@ -13,7 +13,7 @@ angular.module('bekApp')
     if (!db) {
       db = window.openDatabase(dbName, '1.0', 'Ben E Keith Entree', 1000000, function() {
         $log.debug('opened database');
-      }); 
+      });
     }
     return db;
   };
@@ -69,11 +69,11 @@ angular.module('bekApp')
       });
       return deferred.promise;
     },
-    getItem: function(table, key) {
+    getItem: function(table, keyList) {
       $log.debug('PhonegapDbService: get item');
       var deferred = $q.defer();
       var db = openDB();
-      key = convertKeyToString(key);
+      var key = keyList.listId ? convertKeyToString(keyList.listId) : convertKeyToString(keyList);
       db.transaction(function(tx) {
         // tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
         return tx.executeSql("select data from " + table + " WHERE key = ?;", [key], function(tx, res) {

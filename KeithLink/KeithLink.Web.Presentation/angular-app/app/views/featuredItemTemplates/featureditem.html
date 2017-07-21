@@ -1,13 +1,46 @@
-<div class="hidden-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)">
+<div class="hidden-lg">
   <div class="no-padding text-left">
-    <img class="featured-item-height" ng-if="item.imageurl" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image">
-    <img class="featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+    <img class="featured-item-height" ng-if="item.imageurl && item.targetType != 'external'" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image" />
+    <a
+        ng-if="item.imageurl && item.targetType == 'external'"
+        ng-href="{{item.targeturl}}"
+        target="_blank">
+        <img
+            class="featured-item-height"
+            ng-src="{{item.imageurl.mobile}}"
+            alt="image" />
+    </a>
+    <img
+    class="featured-item-height"
+    ng-if="item.imageurl && item.targetType == 'external'"
+    ng-src="{{item.imageurl.mobile}}"
+    ng-href="{{item.targeturl}}"
+    target="_blank" alt="image" />
+    <img
+        class="featured-item-height product-placeholder-image"
+        ng-if="!item.imageurl"
+        src="images/bek-logo.png"
+        alt="default product image" />
   </div>
 </div>
 
 <div class="text-center box visible-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)" style="background:transparent;">
   <div style="display:inline-block">
-    <img class="item-image featured-item-height" ng-if="item.imageurl" ng-src="{{item.imageurl.desktop}}" ui-sref="{{item.targeturl}}" alt="image">
-    <img class="item-image featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+    <img
+    class="item-image featured-item-height"
+    ng-if="item.imageurl && item.targetType != 'external'"
+    ng-src="{{item.imageurl.desktop}}"
+    ui-sref="{{item.targeturl}}"
+    alt="image" />
+    <a
+        ng-if="item.imageurl && item.targetType == 'external'"
+        ng-href="{{item.targeturl}}"
+        target="_blank">
+        <img
+            class="item-image featured-item-height"
+            ng-src="{{item.imageurl.desktop}}"
+            alt="image" />
+    </a>
+    <img class="item-image featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image" />
   </div>
 </div>

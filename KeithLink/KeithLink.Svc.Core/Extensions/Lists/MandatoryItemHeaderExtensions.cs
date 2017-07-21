@@ -15,6 +15,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         public static ListModel ToListModel(this MandatoryItemsListHeader header) {
             return new ListModel() {
                 BranchId = header.BranchId,
+                CustomerNumber = header.CustomerNumber,
                 IsContractList = false,
                 IsFavorite = false,
                 IsWorksheet = false,
@@ -26,7 +27,6 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 ListId = header.Id,
                 Name = LISTNAME_MANDATORY,
                 ReadOnly = true,
-                Items = null
             };
         }
 

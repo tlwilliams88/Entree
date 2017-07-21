@@ -81,15 +81,25 @@ angular.module('bekApp')
           desktop: 'images/Oreo-July-2017-Banner.jpg',
           mobile: 'images/Oreo-July-2017-Banner_2.jpg',
         },
-        targeturl: "menu.catalog.products.list({ type: 'search', id: 'Oreo', dept: '4', deptName: 'Grocery', category: null, brand: null })"
+        targeturl: "menu.catalog.products.list({ type: 'search', id: 'Oreo', dept: '4', deptName: 'Grocery', category: null, brand: null })",
+        targetType: "products"
       },
       {
         imageurl: {
           desktop: 'images/KeithKitchenEssentials.png',
           mobile: 'images/KeithKitchenEssentials.png'
         },
-        targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })"
-      }
+        targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })",
+        targetType: "campaign"
+    },
+    {
+      imageurl: {
+        desktop: 'images/MenuMaxBanner_Desktop.png',
+        mobile: 'images/MenuMaxBanner_Mobile.png'
+      },
+      targeturl: "https://www.menumax.com/products/",
+      targetType: "external"
+    }
     ];
 
     // // get promo/marketing items

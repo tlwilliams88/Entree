@@ -443,11 +443,19 @@ angular.module('bekApp')
     $scope.createList = function(items) {
       if (!processingCreateList) {
         processingCreateList = true;
-        ListService.createList(items)
-          .then(goToNewList)
-          .finally(function() {
+        ListService.createList(items).then(function(newList) {
+            $scope.selectedList = newList;
+            originalList = $scope.selectedList;
+            resetPage($scope.selectedList);
+            $scope.selectedList.isRenaming = true;
+            $scope.lists = ListService.lists;
+            $state.transitionTo('menu.lists.items',
+                {listId: $scope.selectedList.listid, listType: $scope.selectedList.type},
+                {location: true, reload: false, notify: false}
+            );
+        }).finally(function() {
             processingCreateList = false;
-          });
+        });
       }
     };
 
@@ -564,11 +572,12 @@ angular.module('bekApp')
 
     $scope.renameList = function (listId, listName) {
         $scope.selectedList.name = listName;
+        originalList.name = $scope.selectedList.name;
         $scope.saveList($scope.selectedList);
         // update cached list name
         $scope.lists.forEach(function(list) {
             if (list.listid === listId) {
-            list.name = listName;
+                list.name = listName;
             }
         });
     };

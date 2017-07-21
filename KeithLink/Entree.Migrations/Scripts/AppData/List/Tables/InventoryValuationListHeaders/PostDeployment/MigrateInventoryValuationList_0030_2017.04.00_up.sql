@@ -15,7 +15,7 @@
         SELECT 
             l.[CustomerId]
             ,l.[BranchId]
-            ,l.[DisplayName]
+            ,left(l.[DisplayName],150)
 			,1
 			,GetUtcDate()
 			,GetUtcDate()
@@ -44,7 +44,7 @@
 			 ,[CreatedUtc])
 		SELECT
  			fh.[Id]
-			,li.[ItemNumber]
+			,left(li.[ItemNumber],6)
 			,li.[Position]
 			,li.[CatalogId]
 			,li.Each

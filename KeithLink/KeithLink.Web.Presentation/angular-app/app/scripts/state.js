@@ -271,10 +271,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.lists.items', {
-      url: ':listId/?renameList',
-      params: {
-        listType : null
-      },
+      url: ':listId/:listType/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {

@@ -667,7 +667,6 @@
     <Compile Include="Models\SiteCatalog\BranchSupportModel.cs" />
     <Compile Include="Models\SiteCatalog\Division.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
-    <Compile Include="Models\Lists\NewList.cs" />
     <Compile Include="Models\SiteCatalog\Gs1.cs" />
     <Compile Include="Models\Lists\ListItemModel.cs" />
     <Compile Include="Models\SiteCatalog\ItemNote.cs" />

@@ -481,7 +481,7 @@ namespace KeithLink.Svc.Impl.Service.List
             }
         }
 
-        public long CreateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+        public ListModel CreateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                                       ListModel list) {
             long id = 0;
             switch (type)
@@ -500,7 +500,12 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
             }
 
-            return id;
+            if (list.Items != null &&
+                list.Items.Count > 0) {
+                SaveItems(user,catalogInfo, type, id, list.Items);
+            }
+
+            return ReadList(user, catalogInfo, type, id, true);
         }
 
         public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel)
@@ -524,18 +529,19 @@ namespace KeithLink.Svc.Impl.Service.List
         }
 
         private ListModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
-            long newListId = CreateList(user,
-                                        catalogInfo,
-                                        ListType.Custom,
-                                        list);
+            var newList = CreateList(user,
+                                     catalogInfo,
+                                     ListType.Custom,
+                                     list);
 
-            SaveItems(user, catalogInfo, ListType.Custom, newListId, list.Items.Select(i => new ListItemModel() { ItemNumber = i.ItemNumber, Each = i.Each }).ToList());
+            SaveItems(user, catalogInfo, ListType.Custom, newList.ListId, list.Items.Select(i => new ListItemModel() { ItemNumber = i.ItemNumber, Each = i.Each }).ToList());
 
             return new ListModel()
             {
                 BranchId = catalogInfo.BranchId,
                 CustomerNumber = catalogInfo.CustomerId,
-                ListId = newListId
+                ListId = newList.ListId,
+                Type = newList.Type
             };
         }
 

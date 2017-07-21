@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return Read<InventoryValuationListHeader>(SPNAME_GETALL, parms);
         }
 
-        public long SaveInventoryValudationListHeader(InventoryValuationListHeader model) {
+        public long SaveInventoryValuationListHeader(InventoryValuationListHeader model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_BRANCH, model.BranchId);
             parms.Add(PARMNAME_CUSTNUM, model.CustomerNumber);

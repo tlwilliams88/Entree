@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         public static ListModel ToListModel(this InventoryValuationListHeader header) {
             return new ListModel() {
                 BranchId = header.BranchId,
+                CustomerNumber = header.CustomerNumber,
                 IsContractList = false,
                 IsFavorite = false,
                 IsWorksheet = false,
@@ -20,8 +21,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.InventoryValuation,
                 ListId = header.Id,
                 Name = header.Name,
-                ReadOnly = false,
-                Items = null
+                ReadOnly = false
             };
         }
 

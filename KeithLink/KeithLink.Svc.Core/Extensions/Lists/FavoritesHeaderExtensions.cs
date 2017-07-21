@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
 
         public static ListModel ToListModel(this FavoritesListHeader header) {
             return new ListModel() {
+                CustomerNumber = header.CustomerNumber,
                 BranchId = header.BranchId,
                 IsContractList = false,
                 IsFavorite = true,

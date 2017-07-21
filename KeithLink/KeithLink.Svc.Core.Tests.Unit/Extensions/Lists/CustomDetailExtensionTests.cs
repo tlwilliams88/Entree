@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FluentAssertions;
-using Moq;
 using Xunit;
 
 using KeithLink.Common.Core.Seams;

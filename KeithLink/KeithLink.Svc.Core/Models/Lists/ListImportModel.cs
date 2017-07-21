@@ -5,18 +5,22 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
+using KeithLink.Svc.Core.Enumerations.List;
+
 namespace KeithLink.Svc.Core.Models.Lists
 {
 	[DataContract]
 	public class ListImportModel
 	{
-		[DataMember(Name="listid")]
-		public long? ListId { get; set; }
-		[DataMember(Name="success")]
-		public bool Success { get; set; }
+        [DataMember(Name="listid")]
+        public long? ListId { get; set; }
+        [DataMember(Name = "listtype")]
+        public ListType ListType { get; set; }
+        [DataMember(Name="success")]
+        public bool Success { get; set; }
 		[DataMember(Name="errormsg")]
-		public string ErrorMessage { get; set; }
-		[DataMember(Name="warningmsg")]
-		public string WarningMessage { get; set; }
+        public string ErrorMessage { get; set; }
+        [DataMember(Name="warningmsg")]
+        public string WarningMessage { get; set; }
 	}
 }

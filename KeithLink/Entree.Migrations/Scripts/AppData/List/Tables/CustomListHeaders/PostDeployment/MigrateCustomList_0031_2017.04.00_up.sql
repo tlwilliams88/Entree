@@ -47,12 +47,12 @@
 			,[CreatedUtc])
 		SELECT
  			fh.[Id]
-			,li.[ItemNumber]
+			,left(li.[ItemNumber],6)
 			,li.[Position]
-			,li.[CatalogId]
+			,left(li.[CatalogId],10)
 			,li.Each
 			,li.Par
-			,li.Label
+			,left(li.Label,150)
 			,li.CustomInventoryItemId
 			,1
 			,GetUtcDate()

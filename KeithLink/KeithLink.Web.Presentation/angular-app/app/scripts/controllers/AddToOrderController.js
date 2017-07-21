@@ -708,7 +708,7 @@ angular.module('bekApp')
         // call backend to update cart
         var cart = angular.copy($scope.selectedCart);
         cart.name = name;
-        CartService.updateCart(cart, $scope.selectedList).then(function(updatedCart) {
+        CartService.updateCart(cart, null, $scope.selectedList).then(function(updatedCart) {
           $scope.selectedCart.name = updatedCart.name;
           $scope.isRenaming = false;
           CartService.renameCart = false;

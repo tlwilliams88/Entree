@@ -9,8 +9,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IRecommendedItemsListLogic : IBaseListLogic {
         long CreateList(UserSelectedContext catalogInfo);
 
-        List<string> GetRecommendedItemNumbers(UserProfile user, UserSelectedContext catalogInfo);
-
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
 
         void SaveDetail(UserSelectedContext catalogInfo, RecommendedItemsListDetail detail);

@@ -25,13 +25,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #endregion
 
         #region methods
-        public List<string> GetRecommendedItemNumbers(UserProfile user, UserSelectedContext catalogInfo)
-        {
-            ListModel list = ReadList(user, catalogInfo, false);
-
-            return list.Items.Select(i => i.ItemNumber).ToList();
-        }
-
         public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
         {
             RecommendedItemsListHeader header = _headersRepo.GetRecommendedItemsHeaderByCustomerNumberBranch(catalogInfo);
@@ -67,6 +60,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _detailsRepo.Save(detail);
         }
 
+        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id)
+        {
+            return ReadList(user, catalogInfo, false);
+        }
+
         public long CreateList(UserSelectedContext catalogInfo)
         {
             return _headersRepo.SaveRecommendedItemsHeader(new RecommendedItemsListHeader() {
@@ -75,15 +73,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                                                                             });
         }
 
-        public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
-            return ReadList(user, catalogInfo, false);
-        }
-
         public void DeleteRecommendedItems(UserProfile user, UserSelectedContext catalogInfo)
         {
             RecommendedItemsListHeader header = _headersRepo.GetRecommendedItemsHeaderByCustomerNumberBranch(catalogInfo);
 
-            _detailsRepo.Delete(header.Id);
+            if (header != null) {
+                _detailsRepo.Delete(header.Id);
+            }
         }
 
         #endregion

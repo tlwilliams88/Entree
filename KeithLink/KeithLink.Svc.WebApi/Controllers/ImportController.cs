@@ -66,9 +66,11 @@ namespace KeithLink.Svc.WebApi.Controllers
                 ListImportFileModel fileModel = await ImportHelper.GetFileFromContent(Request.Content);
 
                 ListModel newList = _importService.BuildList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
+                ListModel createdList = _listService.CreateList(AuthenticatedUser, SelectedUserContext, ListType.Custom, newList);
 
                 importReturn.Success = true;
-                importReturn.ListId = _listService.CreateList(AuthenticatedUser, SelectedUserContext, ListType.Custom, newList);
+                importReturn.ListId = createdList.ListId;
+                importReturn.ListType = createdList.Type;
 
                 _listService.SaveItems(AuthenticatedUser, SelectedUserContext, ListType.Custom, importReturn.ListId.Value, newList.Items);
 
