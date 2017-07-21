@@ -43,7 +43,7 @@
       </button>
       <ul class="dropdown-menu context-menu-dropdown reposition-dropdown" role="menu">
         <div class="btn-group-vertical context-menu-margin-top" style="margin-top: 150px;">
-          <button ng-repeat="order in changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{order.invoicenumber}}</button>
+          <button ng-repeat="order in changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"><span ng-if="!order.ponumber"># {{order.invoicenumber}}</span><span ng-if="order.ponumber">{{order.ponumber}}</span></button>
         </div>
       </ul>
     </div>
