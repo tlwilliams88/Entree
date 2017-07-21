@@ -500,11 +500,18 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
             }
 
+            if (list.Items != null &&
+                list.Items.Count > 0) {
+                SaveItems(user,catalogInfo, type, id, list.Items);
+            }
+
             return new ListModel() {
                                        Name = list.Name,
                                        ListId = id,
                                        Type = type,
-                                       Items = list.Items
+                                       Items = list.Items,
+                                       CustomerNumber = catalogInfo.CustomerId,
+                                       BranchId = catalogInfo.BranchId
                                    };
         }
 
