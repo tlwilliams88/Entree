@@ -324,7 +324,7 @@ angular.module('bekApp')
       }
     };
 
-    Service.addMultipleItems = function(listId, items) {
+    Service.addMultipleItems = function(list, items) {
       if (navigator.connection.type === 'none') {
         var deferred = $q.defer();
 
@@ -334,19 +334,19 @@ angular.module('bekApp')
           newItems.push(item);
         });
 
-        var updatedList = Service.findListById(listId);
+        var updatedList = Service.findListById(list.listid);
         if (updatedList) {
           updatedList.items = updatedList.items.concat(newItems);
           updatedList.isChanged = true;
         }
         // TEST: does this update Service.lists?
 
-        PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
+        PhonegapDbService.setItem(db_table_name_lists, list.listid, updatedList);
         deferred.resolve(updatedList);
         return deferred.promise;
       } else {
-       return originalListService.addMultipleItems(listId, items).then(function(updatedList){
-          PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
+       return originalListService.addMultipleItems(list, items).then(function(updatedList){
+          PhonegapDbService.setItem(db_table_name_lists, list.listid, updatedList);
           return updatedList;
         });
 
