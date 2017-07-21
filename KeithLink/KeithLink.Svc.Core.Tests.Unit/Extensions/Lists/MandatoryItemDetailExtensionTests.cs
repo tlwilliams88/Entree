@@ -7,29 +7,24 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Xunit;
 
-using KeithLink.Common.Core.Seams;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.Contract;
-using KeithLink.Svc.Core.Models.Lists.CustomList;
+using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
-    public class CustomDetailExtensionTests {
-        private static CustomListDetail MakeDetail() {
-            return new CustomListDetail() {
-                Id = 21,
-                CatalogId = "FUT",
-                Each = true,
-                HeaderId = 10,
+    public class MandatoryItemDetailExtensionTests {
+        private static MandatoryItemsListDetail MakeDetail() {
+            return new MandatoryItemsListDetail() {
+                Id = 15,
                 ItemNumber = "123456",
-                LineNumber = 17,
-                CreatedUtc = new DateTime(2017, 7, 5, 16, 41, 0, DateTimeKind.Utc),
-                ModifiedUtc = new DateTime(2017, 7, 5, 16, 42, 0, DateTimeKind.Utc),
-                Active = true,
-                CustomInventoryItemId = 101,
-                Par = 2.3M,
-                Label = "Fake Label"
+                HeaderId = 23,
+                LineNumber = 7,
+                ModifiedUtc = new DateTime(2017, 7, 20, 10, 45, 0, DateTimeKind.Utc),
+                CreatedUtc = new DateTime(2017, 7, 20, 10, 44, 0, DateTimeKind.Utc),
+                Each = true,
+                CatalogId = "FUT",
+                Active = true
             };
         }
 
@@ -37,13 +32,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             return new ListItemModel() {
                 Active = true,
                 CatalogId = "FUT",
-                CustomInventoryItemId = 1900,
                 Each = true,
                 ListItemId = 19,
                 ItemNumber = "123456",
                 Position = 23,
                 Label = "Fake Label",
-                ParLevel = 9.76m
+                Quantity = 17
             };
         }
 
@@ -52,7 +46,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodDetail_ReturnsExpectedListItemId() {
                 // arrange
                 var detail = MakeDetail();
-                var expected = 21;
+                var expected = 15;
 
                 // act
                 var results = detail.ToWebModel();
@@ -67,7 +61,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodDetail_ReturnsExpectedType() {
                 // arrange
                 var detail = MakeDetail();
-                var expected = ListType.Custom;
+                var expected = ListType.Mandatory;
 
                 // act
                 var results = detail.ToWebModel();
@@ -97,7 +91,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodDetail_ReturnsExpectedPosition() {
                 // arrange
                 var detail = MakeDetail();
-                var expected = 17;
+                var expected = 7;
 
                 // act
                 var results = detail.ToWebModel();
@@ -112,7 +106,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodDetail_ReturnsExpectedCreatedUtc() {
                 // arrange
                 var detail = MakeDetail();
-                var expected = new DateTime(2017, 7, 5, 16, 41, 0, DateTimeKind.Utc);
+                var expected = new DateTime(2017, 7, 20, 10, 44, 0, DateTimeKind.Utc);
 
                 // act
                 var results = detail.ToWebModel();
@@ -127,7 +121,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodDetail_ReturnsExpectedModifiedUtc() {
                 // arrange
                 var detail = MakeDetail();
-                var expected = new DateTime(2017, 7, 5, 16, 42, 0, DateTimeKind.Utc);
+                var expected = new DateTime(2017, 7, 20, 10, 45, 0, DateTimeKind.Utc);
 
                 // act
                 var results = detail.ToWebModel();
@@ -187,112 +181,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodDetail_ReturnsExpectedCustomInveotryItemId() {
                 // arrange
                 var detail = MakeDetail();
-                var expected =  101;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.CustomInventoryItemId
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void NullToDateWithNowAfterTwoWeeks_ReturnsDeltaOfActive() {
-                // arrange
-                var detail = new ContractListDetail() {
-                                                          Id = 21,
-                                                          CatalogId = "FUT",
-                                                          Category = "Fake Category",
-                                                          Each = true,
-                                                          FromDate = new DateTime(2017, 7, 1),
-                                                          HeaderId = 10,
-                                                          ItemNumber = "123456",
-                                                          LineNumber = 17,
-                                                          CreatedUtc = new DateTime(2017, 7, 5, 16, 41, 0, DateTimeKind.Utc),
-                                                          ModifiedUtc = new DateTime(2017, 7, 5, 16, 42, 0, DateTimeKind.Utc)
-                                                      };
-                var expected = "active";
-
-                // act
-                SystemTime.Set(new DateTime(2017, 7, 20));
-                var results = detail.ToWebModel();
-                SystemTime.Reset();
-
-                // assert
-                results.Delta
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void NullToDateWithNowAfterTwoMonths_ReturnsDeltaOfActive() {
-                // arrange
-                var detail = new ContractListDetail() {
-                                                          Id = 21,
-                                                          CatalogId = "FUT",
-                                                          Category = "Fake Category",
-                                                          Each = true,
-                                                          FromDate = new DateTime(2017, 7, 1),
-                                                          HeaderId = 10,
-                                                          ItemNumber = "123456",
-                                                          LineNumber = 17,
-                                                          CreatedUtc = new DateTime(2017, 7, 5, 16, 41, 0, DateTimeKind.Utc),
-                                                          ModifiedUtc = new DateTime(2017, 7, 5, 16, 42, 0, DateTimeKind.Utc)
-                                                      };
-                var expected = "active";
-
-                // act
-                SystemTime.Set(new DateTime(2017, 9, 5));
-                var results = detail.ToWebModel();
-                SystemTime.Reset();
-
-                // assert
-                results.Delta
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void NullEach_ReturnsFalse() {
-                // arrange
-                var detail = new ContractListDetail() {
-                                                          Id = 21,
-                                                          CatalogId = "FUT",
-                                                          Category = "Fake Category",
-                                                          FromDate = new DateTime(2017, 7, 1),
-                                                          ToDate = new DateTime(2017, 7, 30),
-                                                          HeaderId = 10,
-                                                          ItemNumber = "123456",
-                                                          LineNumber = 17,
-                                                          CreatedUtc = new DateTime(2017, 7, 5, 16, 41, 0, DateTimeKind.Utc),
-                                                          ModifiedUtc = new DateTime(2017, 7, 5, 16, 42, 0, DateTimeKind.Utc)
-                                                      };
-                var expected = false;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Each
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void NullCustomInventoryItemId_ReturnsZero() {
-                // arrange
-                var detail = new CustomListDetail() {
-                    Id = 21,
-                    CatalogId = "FUT",
-                    Each = true,
-                    HeaderId = 10,
-                    ItemNumber = "123456",
-                    LineNumber = 17,
-                    CreatedUtc = new DateTime(2017, 7, 5, 16, 41, 0, DateTimeKind.Utc),
-                    ModifiedUtc = new DateTime(2017, 7, 5, 16, 42, 0, DateTimeKind.Utc)
-                };
                 var expected = 0;
 
                 // act
@@ -460,9 +348,37 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                        .BeNull();
             }
 
+            [Fact]
+            public void GoodDetail_ReturnsNullLabel() {
+                // arrange
+                var detail = MakeDetail();
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.Label
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsParLevelOfZero() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 0;
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.ParLevel
+                       .Should()
+                       .Be(expected);
+            }
         }
 
-        public class ToCustomListDetail {
+        public class ToMandatoryItemsListDetail {
             [Fact]
             public void GoodModel_ReturnsExpectedActive() {
                 // arrange
@@ -471,7 +387,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
                 results.Active
@@ -487,26 +403,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
                 results.CatalogId
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodModel_ReturnsExpectedCustomInventoryItemId() {
-                // arrange
-                var expected = 1900;
-                var headerId = 1;
-                var model = MakeModel();
-
-                // act
-                var results = model.ToCustomListDetail(headerId);
-
-                // assert
-                results.CustomInventoryItemId
                        .Should()
                        .Be(expected);
             }
@@ -519,7 +419,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
                 results.Each
@@ -535,7 +435,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
                 results.Id
@@ -551,7 +451,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
                 results.ItemNumber
@@ -567,7 +467,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
                 results.LineNumber
@@ -576,33 +476,17 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpectedLabel() {
+            public void GoodModel_ReturnsExpecteQuantity() {
                 // arrange
-                var expected = "Fake Label";
+                var expected = 17;
                 var headerId = 1;
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
-                results.Label
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodModel_ReturnsExpectedPar() {
-                // arrange
-                var expected = 9.76m;
-                var headerId = 1;
-                var model = MakeModel();
-
-                // act
-                var results = model.ToCustomListDetail(headerId);
-
-                // assert
-                results.Par
+                results.Quantity
                        .Should()
                        .Be(expected);
             }
@@ -615,7 +499,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToCustomListDetail(headerId);
+                var results = model.ToMandatoryItemsListDetail(headerId);
 
                 // assert
                 results.HeaderId

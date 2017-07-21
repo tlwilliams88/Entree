@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
     public static class MandatoryItemDetailExtensions {
         public static ListItemModel ToWebModel(this MandatoryItemsListDetail value) {
             return new ListItemModel() {
+                Active = value.Active,
                 ListItemId = value.Id,
                 Type = ListType.Mandatory,
                 ItemNumber = value.ItemNumber,
