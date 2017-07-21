@@ -84,6 +84,8 @@
     <Compile Include="Extensions\Lists\InventoryValuationHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Lists\MandatoryItemDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\MandatoryItemHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\RecentlyOrderedDetailsExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\RecentlyOrderedHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
     <Compile Include="Models\EntityTests.cs" />
