@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                 // assert
                 prod.Notes
                     .Should()
-                    .BeNullOrEmpty();
+                    .BeNull();
             }
         }
 
@@ -250,14 +250,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             {
                 // arrange
                 List<Product> prods = TestProducts;
-
+                var expected = 0;
                 // act
                 FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prods, TestListSvcNoFavoritesOrNotes);
 
                 // assert
-                prods.Any(p => p.Favorite)
+                prods.Where(p => p.Favorite == true)
+                     .Count()
                      .Should()
-                     .BeFalse();
+                     .Be(expected);
             }
         }
     }
