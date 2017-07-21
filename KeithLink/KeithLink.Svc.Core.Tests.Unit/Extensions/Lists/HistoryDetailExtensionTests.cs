@@ -5,13 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 using FluentAssertions;
-using KeithLink.Common.Core.Seams;
+using Xunit;
+
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
-//using KeithLink.Svc.Core.Models.Lists.Contract;
-//using KeithLink.Svc.Core.Models.Lists.CustomList;
 using KeithLink.Svc.Core.Models.Lists.History;
-using Xunit;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
     public class HistoryDetailExtensionTests {

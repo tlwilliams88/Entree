@@ -80,6 +80,7 @@
     <Compile Include="Extensions\Lists\FavoritesDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\HistoryDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\HistoryHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\MandatoryItemDetailExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
     <Compile Include="Models\EntityTests.cs" />
