@@ -78,8 +78,8 @@ angular.module('bekApp')
     $scope.promoItems = [
       {
         imageurl: {
-          desktop: 'images/Oreo-July-2017-Banner.jpg',
-          mobile: 'images/Oreo-July-2017-Banner_2.jpg',
+          desktop: 'images/OREO_Banner.png',
+          mobile: 'images/Oreo_Mobile.png',
         },
         targeturl: "menu.catalog.products.list({ type: 'search', id: 'Oreo', dept: '4', deptName: 'Grocery', category: null, brand: null })",
         targetType: "products"
@@ -87,7 +87,7 @@ angular.module('bekApp')
       {
         imageurl: {
           desktop: 'images/KeithKitchenEssentials.png',
-          mobile: 'images/KeithKitchenEssentials.png'
+          mobile: 'images/KKE_Mobile.png'
         },
         targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })",
         targetType: "campaign"
