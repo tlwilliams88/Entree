@@ -89,6 +89,7 @@
     <Compile Include="Extensions\Lists\RecentlyOrderedDetailsExtensionTests.cs" />
     <Compile Include="Extensions\Lists\RecentlyOrderedHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Lists\RecommendedDetailExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\RecommendedHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
     <Compile Include="Models\EntityTests.cs" />

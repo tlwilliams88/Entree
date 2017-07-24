@@ -23,6 +23,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists
             return new ListModel
             {
                 BranchId = header.BranchId,
+                CustomerNumber = header.CustomerNumber,
                 IsContractList = false,
                 IsFavorite = false,
                 IsWorksheet = false,
@@ -33,8 +34,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists
                 Type = ListType.RecommendedItems,
                 ListId = header.Id,
                 Name = LISTNAME_RECOMMENDED,
-                ReadOnly = true,
-                Items = null
+                ReadOnly = true
             };
         }
 

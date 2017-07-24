@@ -373,7 +373,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
         }
 
-        public class ToRecentlyOrderedDetailList {
+        public class ToReminderItemsListDetail {
             [Fact]
             public void GoodModel_ReturnsExpectedCatalogId() {
                 // arrange
@@ -382,7 +382,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                var results = model.ToReminderItemsListDetail();
 
                 // assert
                 results.CatalogId
@@ -398,7 +398,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                var results = model.ToReminderItemsListDetail();
 
                 // assert
                 results.Each
@@ -414,7 +414,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                var results = model.ToReminderItemsListDetail();
 
                 // assert
                 results.Id
@@ -430,7 +430,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                var results = model.ToReminderItemsListDetail();
 
                 // assert
                 results.ItemNumber
@@ -446,7 +446,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                var results = model.ToReminderItemsListDetail();
 
                 // assert
                 results.LineNumber
@@ -462,7 +462,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList(headerId);
+                var results = model.ToReminderItemsListDetail(headerId);
 
                 // assert
                 results.HeaderId
@@ -478,7 +478,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 var model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                var results = model.ToReminderItemsListDetail();
 
                 // assert
                 results.HeaderId
