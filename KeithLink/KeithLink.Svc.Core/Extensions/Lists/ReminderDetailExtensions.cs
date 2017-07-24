@@ -6,6 +6,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
     public static class ReminderDetailExtensions {
         public static ListItemModel ToWebModel(this ReminderItemsListDetail value) {
             return new ListItemModel() {
+                Active = value.Active,
                 ListItemId = value.Id,
                 Type = ListType.Reminder,
                 ItemNumber = value.ItemNumber,

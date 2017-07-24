@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         public static ListModel ToListModel(this ReminderItemsListHeader header) {
             return new ListModel() {
                 BranchId = header.BranchId,
+                CustomerNumber = header.CustomerNumber,
                 IsContractList = false,
                 IsFavorite = false,
                 IsWorksheet = false,
@@ -28,8 +29,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.Reminder,
                 ListId = header.Id,
                 Name = LISTNAME_REMINDER,
-                ReadOnly = false,
-                Items = null
+                ReadOnly = false
             };
         }
 
