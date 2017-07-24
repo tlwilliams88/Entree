@@ -126,7 +126,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             {
                 // arrange
                 Product prod = TestProd;
-                var expectedItemNumber = "111111";
 
                 // act
                 FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prod, TestListSvcNoFavoritesOrNotes);
