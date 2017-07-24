@@ -62,7 +62,9 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\NotesListHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\MandatoryItemsListHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\InventoryValuationListHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\RecentlyOrderedDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ReminderDetails.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\RecentlyOrderedHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
