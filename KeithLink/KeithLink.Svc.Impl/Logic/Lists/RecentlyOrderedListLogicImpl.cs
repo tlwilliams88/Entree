@@ -71,7 +71,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                                                            CustomerNumber = catalogInfo.CustomerId
                                                        };
 
-                header.Id = _headersRepo.Save(header, user.UserId);
+                header.Id = _headersRepo.Save(header);
             }
 
             detail.HeaderId = header.Id;
