@@ -55,9 +55,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             return parms.Get<long>(PARMNAME_RETURNVALUE);
         }
 
-        public void DeleteRecentlyOrdered(RecentlyOrderedListDetail details) {
+        public void DeleteRecentlyOrdered(long detailId) {
             DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_ID, details.Id);
+            parms.Add(PARMNAME_ID, detailId);
 
             ExecuteCommand(SPNAME_DELETE, parms);
         }

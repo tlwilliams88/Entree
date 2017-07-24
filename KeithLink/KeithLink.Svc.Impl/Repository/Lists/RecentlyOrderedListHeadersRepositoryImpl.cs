@@ -37,10 +37,10 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
             return ReadOne<RecentlyOrderedListHeader>(SPNAME_GET, parms);
         }
 
-        public long Save(RecentlyOrderedListHeader header, Guid userId) {
+        public long Save(RecentlyOrderedListHeader header) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, header.Id);
-            parms.Add(PARMNAME_USERID, userId);
+            parms.Add(PARMNAME_USERID, header.UserId);
             parms.Add(PARMNAME_BRANCHID, header.BranchId);
             parms.Add(PARMNAME_CUSTOMERNUMBER, header.CustomerNumber);
             parms.Add(PARMNAME_RETURNVALUE, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
