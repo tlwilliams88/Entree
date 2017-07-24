@@ -27,12 +27,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         #endregion
 
         #region methods
-        public List<string> GetRemindersNumbers(UserProfile user, UserSelectedContext catalogInfo) {
-            ListModel list = GetListModel(user, catalogInfo, 0);
-
-            return list?.Items.Select(i => i.ItemNumber).ToList();
-        }
-
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
             ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
 

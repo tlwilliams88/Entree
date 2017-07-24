@@ -7,8 +7,6 @@ using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IRemindersListLogic : IBaseListLogic {
-        List<string> GetRemindersNumbers(UserProfile user, UserSelectedContext catalogInfo);
-
         void Save(UserSelectedContext catalogInfo, ReminderItemsListDetail model);
 
         ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list);
