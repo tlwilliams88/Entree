@@ -126,6 +126,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             {
                 // arrange
                 Product prod = TestProd;
+                var expectedItemNumber = "111111";
 
                 // act
                 FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prod, TestListSvcNoFavoritesOrNotes);
@@ -246,19 +247,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void NoFavoritesOrNotes_ReturnsFavoritesAsFalse()
+            public void NoFavoritesOrNotes_ReturnsExpectedItemFavoriteAsFalse()
             {
                 // arrange
                 List<Product> prods = TestProducts;
-                var expected = 0;
+                var expectedItemNumber = "111111";
+
                 // act
                 FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(new UserProfile(), new UserSelectedContext(), prods, TestListSvcNoFavoritesOrNotes);
 
                 // assert
-                prods.Where(p => p.Favorite == true)
-                     .Count()
+                prods.Where(p => p.ItemNumber == expectedItemNumber)
+                     .First()
+                     .Favorite
                      .Should()
-                     .Be(expected);
+                     .BeFalse();
             }
         }
     }
