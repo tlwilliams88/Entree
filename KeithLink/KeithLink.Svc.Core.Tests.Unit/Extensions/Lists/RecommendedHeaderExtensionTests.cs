@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using FluentAssertions;
+using Xunit;
+
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
-using KeithLink.Svc.Core.Models.Lists.ReminderItems;
-using Xunit;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
     public class RecommendedHeaderExtensionTests {
