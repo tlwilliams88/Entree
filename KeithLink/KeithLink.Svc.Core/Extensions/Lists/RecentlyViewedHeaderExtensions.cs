@@ -14,20 +14,20 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
         #region methods
         public static ListModel ToListModel(this RecentlyViewedListHeader header) {
             return new ListModel {
-                                     BranchId = header.BranchId,
-                                     IsContractList = false,
-                                     IsFavorite = false,
-                                     IsWorksheet = false,
-                                     IsReminder = false,
-                                     IsMandatory = false,
-                                     IsRecommended = false,
-                                     IsCustomInventory = false,
-                                     Type = ListType.RecentlyViewed,
-                                     ListId = header.Id,
-                                     Name = LISTNAME_RECENTLY_ORDERED,
-                                     ReadOnly = true,
-                                     Items = null
-                                 };
+                BranchId = header.BranchId,
+                CustomerNumber = header.CustomerNumber,
+                IsContractList = false,
+                IsFavorite = false,
+                IsWorksheet = false,
+                IsReminder = false,
+                IsMandatory = false,
+                IsRecommended = false,
+                IsCustomInventory = false,
+                Type = ListType.RecentlyViewed,
+                ListId = header.Id,
+                Name = LISTNAME_RECENTLY_ORDERED,
+                ReadOnly = true
+            };
         }
 
         public static ListModel ToListModel(this RecentlyViewedListHeader header, List<RecentlyViewedListDetail> items) {
