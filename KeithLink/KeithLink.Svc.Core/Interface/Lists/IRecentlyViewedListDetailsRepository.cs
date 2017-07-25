@@ -8,7 +8,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         long Save(RecentlyViewedListDetail details);
 
-        void DeleteRecentlyViewed(RecentlyViewedListDetail details);
+        void DeleteRecentlyViewed(long detailId);
         void DeleteOldRecentlyViewed(long headerId, int numberToKeep = 7);
     }
 }
