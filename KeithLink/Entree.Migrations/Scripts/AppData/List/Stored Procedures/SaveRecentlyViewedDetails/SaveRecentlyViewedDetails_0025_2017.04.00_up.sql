@@ -11,8 +11,8 @@ AS
     -- interfering with SELECT statements.
     SET NOCOUNT ON;
 
-	IF @LineNumber = 0
-		SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
+    IF @LineNumber = 0
+        SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
     
 IF @Id > 0
     UPDATE [List].[RecentlyViewedDetails]
@@ -22,7 +22,7 @@ IF @Id > 0
         [Each] = @Each,
         [CatalogId] = @CatalogId,
         [LineNumber] = @LineNumber,
-		[ModifiedUtc] = GETUTCDATE()
+        [ModifiedUtc] = GETUTCDATE()
     WHERE
         [Id] = @Id
 ELSE
@@ -33,16 +33,16 @@ ELSE
         [Each],
         [CatalogId],
         [LineNumber],
-		[CreatedUtc],
-		[ModifiedUtc]
+        [CreatedUtc],
+        [ModifiedUtc]
     ) VALUES (
         @HeaderId,
         @ItemNumber,
         @Each,
         @CatalogId,
         @LineNumber,
-		GETUTCDATE(),
-		GETUTCDATE()
+        GETUTCDATE(),
+        GETUTCDATE()
     )
 
 SET @ReturnValue = SCOPE_IDENTITY();
