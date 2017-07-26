@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
         private const string SPNAME_GET = "[List].[ReadRecommendedItemDetailsByHeaderId]";
-        private const string SPNAME_SAVE = "[List].[SaveRecommendedItemByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveRecommendedItemsDetail]";
         private const string SPNAME_DELETE = "[List].[DeleteRecommendedItemDetails]";
         #endregion
         #region constructor
