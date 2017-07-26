@@ -65,8 +65,10 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RecentlyViewedDetail.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RecentlyOrderedDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RecentlyViewedHeader.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\RecommendedDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ReminderDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RecentlyOrderedHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\RecommendedHeader.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
@@ -99,6 +101,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0025.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0024.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0023.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0037.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0036.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0034.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
@@ -821,6 +824,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecentlyViewedDetails\DeleteRecentlyViewedDetails_0025_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecommendedItemDetails\DeleteRecommendedItemDetails_0037_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteRecommendedItemDetails\DeleteRecommendedItemDetails_0037_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteReminderItemDetails\DeleteReminderItemDetails_0028_2017.04.00_down.sql">
