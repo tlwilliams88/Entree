@@ -9,10 +9,10 @@ CREATE PROCEDURE [List].[SaveRecommendedItemsDetail]
 AS
 
 	IF @LineNumber = 0
-		SET @LineNumber = (SELECT Count(1) FROM [List].[MandatoryItemsDetails] WHERE [HeaderId] = @HeaderId)
+		SET @LineNumber = (SELECT Count(1) FROM [List].[RecommendedItemsDetails] WHERE [HeaderId] = @HeaderId)
     
 IF @Id > 0
-    UPDATE [List].[RecommendedItemsDetail]
+    UPDATE [List].[RecommendedItemsDetails]
     SET
         [HeaderId] = @HeaderId,
         [ItemNumber] = @ItemNumber,
@@ -23,7 +23,7 @@ IF @Id > 0
     WHERE
         [Id] = @Id
 ELSE
-    INSERT INTO [List].[SaveRecommendedItemsDetail]
+    INSERT INTO [List].[RecommendedItemsDetails]
     (
         [HeaderId],
         [ItemNumber],
