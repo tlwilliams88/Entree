@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
         private const string SPNAME_GET = "[List].[GetNotesHeaderByCustomerNumberBranch]";
-        private const string SPNAME_SAVE = "[List].[SaveNotesByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveNotesHeader]";
         #endregion
 
         #region constructor

@@ -99,6 +99,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0025.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0024.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0023.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0038.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0036.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0034.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
@@ -1037,6 +1038,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteDetails\SaveFavoriteDetails_0033_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveFavoriteHeaders_0038_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveFavoriteHeaders_0038_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteHeaders\SaveFavoriteHeaders_0033_2017.04.00_down.sql">
