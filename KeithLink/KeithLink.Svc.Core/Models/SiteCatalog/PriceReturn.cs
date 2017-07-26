@@ -22,7 +22,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         public PriceReturn AddRange(PriceReturn price)
         {
-            this.Prices.AddRange(price.Prices);
+            if (price != null) {
+                this.Prices.AddRange(price.Prices);
+            }
             return this;
         }
     }

@@ -13,6 +13,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
             retVal.ListItemId = value.Id;
             retVal.Type = ListType.Contract;
             retVal.Category = value.Category;
+            retVal.ItemClass = value.Category;
             retVal.ItemNumber = value.ItemNumber;
             retVal.FromDate = value.FromDate;
             retVal.ToDate = value.ToDate;
