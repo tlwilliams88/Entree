@@ -26,20 +26,7 @@ namespace KeithLink.Svc.Impl.Helpers
 
             if (products != null && products.Count > 0) {
                 foreach (Product prod in prods) {
-                    var prdList = products.Where(p => p.ItemNumber == prod.ItemNumber).ToList();
-
-                    if (prdList.Count > 0)
-                    {
-                        Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
-                                              .First();
-
-                        if (prd != null)
-                        {
-                            prod.Favorite = prd.Favorite;
-                            prod.Notes = prd.Notes;
-                            prod.InHistory = prd.InHistory;
-                        }
-                    }
+                    SetFavoriteNotesAndInHistory(prod, products);
                 }
             }
 
@@ -53,25 +40,28 @@ namespace KeithLink.Svc.Impl.Helpers
 
             products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
 
-            if (products != null) {
-                var prdList = products.Where(p => p.ItemNumber == prod.ItemNumber).ToList();
+            SetFavoriteNotesAndInHistory(prod, products);
 
-                if (prdList != null && prdList.Count > 0)
-                {
+            return prod;
+        }
+
+        private static void SetFavoriteNotesAndInHistory(Product prod, List<Product> products) {
+            if (products != null) {
+                var prdList = products.Where(p => p.ItemNumber == prod.ItemNumber)
+                                      .ToList();
+
+                if (prdList != null &&
+                    prdList.Count > 0) {
                     Product prd = products.Where(p => p.ItemNumber == prod.ItemNumber)
                                           .First();
 
-                    if (prd != null)
-                    {
+                    if (prd != null) {
                         prod.Favorite = prd.Favorite;
                         prod.Notes = prd.Notes;
                         prod.InHistory = prd.InHistory;
                     }
                 }
             }
-
-            return prod;
         }
-
     }
 }
