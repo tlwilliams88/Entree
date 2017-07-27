@@ -139,7 +139,7 @@
   <div class="btn-group pull-right" dropdown is-open="status.listsisopen">
     <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-right text-regular">Lists <span class="icon-arrow-down5"></span></a>
     <ul class="dropdown-menu dropdown-menu-scroll" role="menu">
-      <li ng-repeat="list in lists | sortLists track by list.listid + '.' + list.type" ng-if="(list.listid !== selectedList.listid)">
+      <li ng-repeat="list in lists | sortLists track by list.listid + '.' + list.name + '.' + list.type" ng-if="(list.listid !== selectedList.listid)">
         <a ng-click="goToList(list.listid, list.type)">
           {{list.name}}
         </a>
@@ -184,7 +184,7 @@
             <div class="btn-group-vertical list-names text-blue">
               <button
                 type="button"
-                ng-repeat="list in lists | sortLists | limitTo: showMoreListNames ? numberListNamesToShow : lists.length track by list.listid + '.' + list.type"
+                ng-repeat="list in lists | sortLists | limitTo: showMoreListNames ? numberListNamesToShow : lists.length track by list.listid + '.' + list.name + '.' + list.type"
                 ng-click="goToList(list.listid, list.type)"
                 ng-class="{'current-list' : list.listid == selectedList.listid && list.type == selectedList.type}"
                 class="btn-lg custom-lists__name btn btn-default btn-list"
@@ -321,7 +321,7 @@
               <ul class="dropdown-menu" role="menu">
                 <li
                   ng-click="addItemsToList(list)"
-                  ng-repeat="list in lists | sortLists track by list.listid + '.' + list.type"
+                  ng-repeat="list in lists | sortLists track by list.listid + '.' + list.name + '.' + list.type"
                   ng-if="(list.permissions.canAddItems && selectedList.listid !== list.listid && !list.permissions.specialDisplay)"
                   ng-hide="!list.permissions.canAddNonBEKItems && isCustomInventoryList">
                   <a href="">{{list.name}}</a>
