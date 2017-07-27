@@ -7,7 +7,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
     public class InventoryValidationListHeaderTests {
         private static InventoryValuationListHeader MakeHeader() {
             return new InventoryValuationListHeader() {
-                Name = "Fake Name"
+                Name = "Fake Name",
+                Active = true
             };
         }
 
@@ -37,6 +38,36 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
                 test.Name
                     .Should()
                     .BeNull();
+            }
+        }
+
+        public class Get_Active {
+            [Fact]
+            public void GoodHeader_returnsExpectedValue() {
+                // arrange
+                var fakeHeader = MakeHeader();
+                var expected = true;
+
+                // act
+
+                // assert
+                fakeHeader.Active
+                          .Should()
+                          .Be(expected);
+            }
+
+            [Fact]
+            public void InitalizedHeader_HasDefaultValue() {
+                // arrange
+                var test = new InventoryValuationListHeader();
+                var expected = false;
+
+                // act
+
+                // assert
+                test.Active
+                    .Should()
+                    .Be(expected);
             }
         }
     }

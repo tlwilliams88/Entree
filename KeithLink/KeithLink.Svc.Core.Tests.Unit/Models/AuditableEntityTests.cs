@@ -78,6 +78,36 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models {
                     .Should()
                     .Be(expected);
             }
+
+            [Fact]
+            public void LocalTime_ReturnsExpectedValue() {
+                // arrange
+                var test = new StubAuditableEntity();
+                test.CreatedUtc = new DateTime(2017, 7, 26, 10, 17, 0, DateTimeKind.Local);
+                var expected = new DateTime(2017, 7, 26, 15, 17, 0, DateTimeKind.Utc);
+
+                // act
+                var results = test.CreatedUtc;
+
+                // assert
+                results.Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void LocalTime_ReturnsExpectedDateTimeKind() {
+                // arrange
+                var test = new StubAuditableEntity();
+                test.CreatedUtc = new DateTime(2017, 7, 26, 10, 17, 0, DateTimeKind.Local);
+                var expected = DateTimeKind.Utc;
+
+                // act
+                var results = test.CreatedUtc.Kind;
+
+                // assert
+                results.Should()
+                       .Be(expected);
+            }
         }
 
         public class Get_ModifiedUtc {
