@@ -291,10 +291,10 @@ angular.module('bekApp')
               listToBeUsed = {},
               listHeader = {};
 
-          ListService.lists.forEach(function(list){
+          ListService.listHeaders.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
-              listHeader = $filter('filter')(ListService.lists, {listid: last.listId, type: last.listType})[0];
+              listHeader = $filter('filter')(ListService.listHeaders, {listid: last.listId, type: last.listType})[0];
             }
           });
 

@@ -553,9 +553,9 @@ angular.module('bekApp')
           $analytics.eventTrack('Create List', {  category: 'Lists'});
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
+            Service.getListHeaders();
             var newList = response.successResponse;
             Service.renameList = true;
-            Service.getListHeaders();
             toaster.pop('success', null, 'Successfully created list.');
             newList.permissions = updateListPermissions(newList);
             return newList;

@@ -441,20 +441,24 @@ angular.module('bekApp')
     CREATE LIST
     **********/
 
+    function applyNewList(){
+        originalList = $scope.selectedList;
+        resetPage($scope.selectedList);
+        $scope.selectedList.isRenaming = true;
+        $scope.lists = ListService.lists;
+        $state.transitionTo('menu.lists.items',
+            {listId: $scope.selectedList.listid, listType: $scope.selectedList.type},
+            {location: true, reload: false, notify: false}
+        );
+    }
+
     var processingCreateList = false;
     $scope.createList = function(items) {
       if (!processingCreateList) {
         processingCreateList = true;
         ListService.createList(items).then(function(newList) {
             $scope.selectedList = newList;
-            originalList = $scope.selectedList;
-            resetPage($scope.selectedList);
-            $scope.selectedList.isRenaming = true;
-            $scope.lists = ListService.lists;
-            $state.transitionTo('menu.lists.items',
-                {listId: $scope.selectedList.listid, listType: $scope.selectedList.type},
-                {location: true, reload: false, notify: false}
-            );
+            applyNewList();
         }).finally(function() {
             processingCreateList = false;
         });
@@ -494,10 +498,17 @@ angular.module('bekApp')
     **********/
 
     $scope.createMandatoryList = function(items) {
-      ListService.createMandatoryList(items).then(function(list) {
-        $scope.hideMandatoryListCreateButton = true;
-        return list;
-      }).then(goToNewList);
+        ListService.createMandatoryList(items).then(function(list) {
+            var lastlist = {
+                listId: list.listid,
+                listType: list.listtype
+            };
+
+            LocalStorage.setLastList(lastlist);
+            $scope.hideMandatoryListCreateButton = true;
+            $scope.selectedList = list;
+            applyNewList();
+        });
     };
 
     $scope.createMandatoryListFromDrag = function(event, helper) {
@@ -510,10 +521,17 @@ angular.module('bekApp')
     **********/
 
     $scope.createRecommendedList = function(items) {
-      ListService.createRecommendedList(items).then(function(list) {
-        $scope.hideRecommendedListCreateButton = true;
-        return list;
-      }).then(goToNewList);
+        ListService.createRecommendedList(items).then(function(list) {
+            var lastlist = {
+                listId: list.listid,
+                listType: list.listtype
+            };
+
+            LocalStorage.setLastList(lastlist);
+            $scope.hideRecommendedListCreateButton = true;
+            $scope.selectedList = list;
+            applyNewList();
+        });
     };
 
     $scope.createRecommendedListFromDrag = function(event, helper) {
