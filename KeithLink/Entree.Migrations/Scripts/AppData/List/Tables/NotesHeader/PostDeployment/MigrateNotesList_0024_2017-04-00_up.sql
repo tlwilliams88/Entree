@@ -19,6 +19,8 @@
             [List].[Lists] as l
 		WHERE 
 			l.[Type] = 4 AND
+            l.[CustomerId] IS NOT NULL AND
+            l.[BranchId] IS NOT NULL AND
 			NOT EXISTS (
 				SELECT 
 					'x'
