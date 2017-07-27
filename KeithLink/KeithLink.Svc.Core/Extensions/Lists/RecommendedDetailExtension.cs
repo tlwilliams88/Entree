@@ -17,8 +17,9 @@ namespace KeithLink.Svc.Core.Extensions.Lists
         {
             return new ListItemModel()
             {
+                Active = true,
                 ListItemId = value.Id,
-                Type = ListType.Mandatory,
+                Type = ListType.RecommendedItems,
                 ItemNumber = value.ItemNumber,
                 Each = value.Each ?? false,
                 CatalogId = value.CatalogId,

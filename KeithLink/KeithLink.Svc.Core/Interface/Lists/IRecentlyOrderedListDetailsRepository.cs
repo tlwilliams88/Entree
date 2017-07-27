@@ -8,7 +8,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         long Save(RecentlyOrderedListDetail details);
 
-        void DeleteRecentlyOrdered(RecentlyOrderedListDetail details);
+        void DeleteRecentlyOrdered(long detailId);
         void DeleteOldRecentlyOrdered(long headerId, int numberToKeep = 7);
     }
 }

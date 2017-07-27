@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         private const string PARMNAME_RETURNVALUE = "ReturnValue";
 
         private const string SPNAME_GET = "[List].[GetNotesHeaderByCustomerNumberBranch]";
-        private const string SPNAME_SAVE = "[List].[SaveNotesByCustomerNumberBranch]";
+        private const string SPNAME_SAVE = "[List].[SaveNotesHeader]";
         #endregion
 
         #region constructor
@@ -39,6 +39,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists {
         public long Save(NotesListHeader header) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, header.Id);
+            parms.Add(PARMNAME_BRANCHID, header.BranchId);
             parms.Add(PARMNAME_CUSTOMERNUMBER, header.CustomerNumber);
             parms.Add(PARMNAME_RETURNVALUE, 0, dbType: DbType.Int64, direction: ParameterDirection.Output);
 

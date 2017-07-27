@@ -193,8 +193,10 @@ angular.module('bekApp')
         authorize: 'canBrowseCatalog'
       },
       resolve: {
-        security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
+        security: ['LocalStorage', '$q', '$stateParams', 'ListService', function(LocalStorage, $q, $stateParams, ListService) {
           var customerRecord = LocalStorage.getCurrentCustomer();
+
+          ListService.getListHeaders();
 
           if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
             return $q.reject('Customer Cannot View UNFI Items.');
@@ -289,10 +291,10 @@ angular.module('bekApp')
               listToBeUsed = {},
               listHeader = {};
 
-          ListService.lists.forEach(function(list){
+          ListService.listHeaders.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
-              listHeader = $filter('filter')(ListService.lists, {listid: last.listId, type: last.listType})[0];
+              listHeader = $filter('filter')(ListService.listHeaders, {listid: last.listId, type: last.listType})[0];
             }
           });
 

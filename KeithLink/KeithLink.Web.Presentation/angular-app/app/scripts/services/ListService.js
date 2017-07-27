@@ -455,7 +455,7 @@ angular.module('bekApp')
         },
 
         exportList: function(config, list) {
-          ExportService.export('/list/export/' + list.type + '/' + list.listid, config);
+          ExportService.export('/list/export/' + list.listType + '/' + list.listId, config);
         },
 
         printBarcodes: function(list) {
@@ -553,9 +553,9 @@ angular.module('bekApp')
           $analytics.eventTrack('Create List', {  category: 'Lists'});
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
+            Service.getListHeaders();
             var newList = response.successResponse;
             Service.renameList = true;
-            Service.getListHeaders();
             toaster.pop('success', null, 'Successfully created list.');
             newList.permissions = updateListPermissions(newList);
             return newList;

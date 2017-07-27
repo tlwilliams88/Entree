@@ -88,6 +88,12 @@
     <Compile Include="Extensions\Lists\NotesHeadersListExtensionTests.cs" />
     <Compile Include="Extensions\Lists\RecentlyOrderedDetailsExtensionTests.cs" />
     <Compile Include="Extensions\Lists\RecentlyOrderedHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\RecentlyViewedDetailsExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\RecentlyViewedHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\RecommendedDetailExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\RecommendedHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\ReminderDetailExtensionTests.cs" />
+    <Compile Include="Extensions\Lists\ReminderHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
     <Compile Include="Models\EntityTests.cs" />
