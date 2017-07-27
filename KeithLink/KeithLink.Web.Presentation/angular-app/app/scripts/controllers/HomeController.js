@@ -97,7 +97,7 @@ angular.module('bekApp')
         desktop: 'images/MenuMaxBanner_Desktop.png',
         mobile: 'images/MenuMaxBanner_Mobile.png'
       },
-      targeturl: "https://www.menumax.com/products/",
+      targeturl: "https://www.menumax.com/",
       targetType: "external"
     }
     ];

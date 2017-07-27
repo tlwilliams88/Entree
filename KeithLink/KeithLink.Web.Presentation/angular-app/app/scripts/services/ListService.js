@@ -455,7 +455,7 @@ angular.module('bekApp')
         },
 
         exportList: function(config, list) {
-          ExportService.export('/list/export/' + list.type + '/' + list.listid, config);
+          ExportService.export('/list/export/' + list.listType + '/' + list.listId, config);
         },
 
         printBarcodes: function(list) {
