@@ -26,6 +26,7 @@ using System.Linq.Expressions;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Customers.EF;
+using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists.CustomList;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
@@ -78,6 +79,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
             public Mock<IEventLogRepository> EventLogRepository { get; set; }
 
+            public Mock<ICustomInventoryItemsRepository> CustomInventoryItemsRepository { get; set; }
+
             public static void RegisterInContainer(ref ContainerBuilder cb) {
                 cb.RegisterInstance(MakeMockRecentlyViewedListLogic().Object)
                   .As<IRecentlyViewedListLogic>();
@@ -117,7 +120,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                   .As<IHistoryListLogic>();
                 cb.RegisterInstance(MakeMockFavoritesListLogic().Object)
                   .As<IFavoritesListLogic>();
-
+                cb.RegisterInstance(MakeMockCustomInventoryItemRepository().Object)
+                   .As<ICustomInventoryItemsRepository>();
             }
 
             public static Mock<IRecentlyViewedListLogic> MakeMockRecentlyViewedListLogic()
@@ -182,6 +186,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             public static Mock<IMandatoryItemsListLogic> MakeMockMandatoryItemsListLogic()
             {
                 var mock = new Mock<IMandatoryItemsListLogic>();
+
+                return mock;
+            }
+
+            public static Mock<ICustomInventoryItemsRepository> MakeMockCustomInventoryItemRepository()
+            {
+                var mock = new Mock<ICustomInventoryItemsRepository>();
+
+                mock.Setup(h => h.Get(1))
+                    .Returns(new CustomInventoryItem() {
+                                                           ItemNumber = "666666",
+                                                           Name = "double bad",
+                                                           CasePrice = 0,
+                                                           PackagePrice = 0
+                                                       });
 
                 return mock;
             }
@@ -302,7 +321,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                     .Returns(new List<ExternalCatalog>() {
                                                              new ExternalCatalog() {
                                                                                        BekBranchId = "XXX",
-                                                                                       ExternalBranchId = "XXX"
+                                                                                       ExternalBranchId = "multi-X"
                                                                                    }
                                                          });
 
@@ -357,6 +376,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.RecentlyViewedListLogic = MockDependents.MakeMockRecentlyViewedListLogic();
                 mockDependents.RecommendedItemsListLogic = MockDependents.MakeMockRecommendedItemsListLogic();
                 mockDependents.RemindersListLogic = MockDependents.MakeMockRemindersListLogic();
+                mockDependents.CustomInventoryItemsRepository = MockDependents.MakeMockCustomInventoryItemRepository();
                 
                 var testunit = new ListServiceImpl(mockDependents.HistoryListLogic.Object, mockDependents.CatalogLogic.Object, mockDependents.NotesListLogic.Object, 
                                                    mockDependents.ItemHistoryRepository.Object, mockDependents.FavoritesListLogic.Object, mockDependents.PriceLogic.Object,
@@ -365,7 +385,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                    mockDependents.ProductImageRepository.Object, mockDependents.ExternalCatalogRepository.Object,
                                                    mockDependents.ItemBarcodeRepository.Object, mockDependents.MandatoryItemsListLogic.Object,
                                                    mockDependents.InventoryValuationListLogic.Object, mockDependents.ContractListLogic.Object,
-                                                   mockDependents.CustomListLogic.Object, mockDependents.CacheRepository.Object, mockDependents.EventLogRepository.Object);
+                                                   mockDependents.CustomListLogic.Object, mockDependents.CacheRepository.Object, 
+                                                   mockDependents.EventLogRepository.Object, mockDependents.CustomInventoryItemsRepository.Object);
                 return testunit;
             }
         }
@@ -482,7 +503,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 // assert
                 mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(),
                                                                             It.IsAny<UserSelectedContext>(),
-                                                                            It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                                                                            It.IsAny<long>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -507,7 +528,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.GetItemsHistoryList(testcontext, testitems.ToArray());
 
                 // assert
-                mockDependents.ItemHistoryRepository.Verify(m => m.Read(It.IsAny<Expression<Func<ItemHistory, bool>>>()), Times.AtLeastOnce, "not called");
+                mockDependents.ItemHistoryRepository.Verify(m => m.Read(It.IsAny<Expression<Func<ItemHistory, bool>>>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -533,7 +554,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -554,7 +575,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -575,7 +596,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -596,7 +617,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.AtLeastOnce, "not called");
+                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -617,7 +638,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -638,7 +659,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -659,7 +680,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -680,7 +701,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -701,7 +722,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.InventoryValuationListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.InventoryValuationListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -722,7 +743,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.RecentlyOrderedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecentlyOrderedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -743,7 +764,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -769,7 +790,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -811,7 +832,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), 
+                    Times.AtLeastOnce, "not called");
             }
 
             [Fact]
@@ -832,7 +854,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -853,7 +875,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -874,7 +896,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -895,7 +917,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -920,7 +942,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadLabels(fakeUser, testcontext);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.ReadLists(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -940,7 +962,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadLabels(fakeUser, testcontext);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
         }
@@ -968,7 +990,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -990,7 +1012,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1012,7 +1034,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1034,7 +1056,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.AtLeastOnce, "not called");
+                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1056,7 +1078,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1078,7 +1100,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1100,7 +1122,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1122,7 +1144,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecommendedItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1144,7 +1166,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.InventoryValuationListLogic.Verify(m => m.ReadList(It.IsAny<long>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.InventoryValuationListLogic.Verify(m => m.ReadList(It.IsAny<long>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1166,7 +1188,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -1194,7 +1216,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1217,7 +1239,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1240,7 +1262,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), 
+                    It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
             }
 
             [Fact]
@@ -1263,7 +1286,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.AtLeastOnce, "not called");
+                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1286,7 +1309,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1309,7 +1332,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.RemindersListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1332,7 +1355,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1355,7 +1378,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecommendedItemsListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1378,7 +1401,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.InventoryValuationListLogic.Verify(m => m.ReadList(It.IsAny<long>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.InventoryValuationListLogic.Verify(m => m.ReadList(It.IsAny<long>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1401,7 +1424,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadPagedList(fakeUser, testcontext, testListType, testId, testPaging);
 
                 // assert
-                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -1426,7 +1449,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadRecent(fakeUser, testcontext);
 
                 // assert
-                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -1452,7 +1475,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadRecentOrder(fakeUser, testcontext, testCatalog);
 
                 // assert
-                mockDependents.RecentlyOrderedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecentlyOrderedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -1490,7 +1513,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.UpdateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.Once, "not called");
             }
 
             [Fact]
@@ -1523,7 +1546,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.UpdateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.Once, "not called");
             }
 
             [Fact]
@@ -1556,7 +1579,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.UpdateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.RemindersListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.AtLeastOnce, "not called");
+                mockDependents.RemindersListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.Once, "not called");
             }
 
             [Fact]
@@ -1589,7 +1612,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.UpdateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.AtLeastOnce, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.Once, "not called");
             }
 
             [Fact]
@@ -1622,7 +1645,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.UpdateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.InventoryValuationListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.AtLeastOnce, "not called");
+                mockDependents.InventoryValuationListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.Once, "not called");
             }
         }
         #endregion
@@ -1654,7 +1677,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.Save(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<FavoritesListDetail>()), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.Save(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<FavoritesListDetail>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1681,7 +1704,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
 
                 // assert
-                mockDependents.NotesListLogic.Verify(m => m.SaveNote(It.IsAny<UserSelectedContext>(), It.IsAny<ListItemModel>()), Times.AtLeastOnce, "not called");
+                mockDependents.NotesListLogic.Verify(m => m.SaveNote(It.IsAny<UserSelectedContext>(), It.IsAny<ListItemModel>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1708,7 +1731,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
 
                 // assert
-                mockDependents.RemindersListLogic.Verify(m => m.Save(It.IsAny<UserSelectedContext>(), It.IsAny<ReminderItemsListDetail>()), Times.AtLeastOnce, "not called");
+                mockDependents.RemindersListLogic.Verify(m => m.Save(It.IsAny<UserSelectedContext>(), It.IsAny<ReminderItemsListDetail>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1735,7 +1758,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.SaveDetail(It.IsAny<UserSelectedContext>(), It.IsAny<MandatoryItemsListDetail>()), Times.AtLeastOnce, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.SaveDetail(It.IsAny<UserSelectedContext>(), It.IsAny<MandatoryItemsListDetail>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1762,7 +1785,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
 
                 // assert
-                mockDependents.RecommendedItemsListLogic.Verify(m => m.SaveDetail(It.IsAny<UserSelectedContext>(), It.IsAny<RecommendedItemsListDetail>()), Times.AtLeastOnce, "not called");
+                mockDependents.RecommendedItemsListLogic.Verify(m => m.SaveDetail(It.IsAny<UserSelectedContext>(), It.IsAny<RecommendedItemsListDetail>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1789,7 +1812,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
 
                 // assert
-                mockDependents.InventoryValuationListLogic.Verify(m => m.SaveItem(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>(), It.IsAny<InventoryValuationListDetail>()), Times.AtLeastOnce, "not called");
+                mockDependents.InventoryValuationListLogic.Verify(m => m.SaveItem(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>(), It.IsAny<InventoryValuationListDetail>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -1816,7 +1839,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.SaveItem(It.IsAny<CustomListDetail>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.SaveItem(It.IsAny<CustomListDetail>()), Times.Once, "not called");
             }
 
         }
@@ -1854,7 +1877,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.SaveItems(fakeUser, testcontext, testListType, testHeaderId, testListItems);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.Save(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<FavoritesListDetail>()), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.Save(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<FavoritesListDetail>()), 
+                    Times.AtLeastOnce, "not called");
             }
 
             [Fact]
@@ -2086,7 +2110,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.CreateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.CreateOrUpdateList(fakeUser, testcontext, 0, testModel.Name, It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.CreateOrUpdateList(fakeUser, testcontext, 0, testModel.Name, It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -2119,7 +2143,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.CreateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.RemindersListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.AtLeastOnce, "not called");
+                mockDependents.RemindersListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.Once, "not called");
             }
 
             [Fact]
@@ -2152,7 +2176,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.CreateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.CreateList(fakeUser, testcontext), Times.AtLeastOnce, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.CreateList(fakeUser, testcontext), Times.Once, "not called");
             }
 
             [Fact]
@@ -2185,7 +2209,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.CreateList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.InventoryValuationListLogic.Verify(m => m.CreateOrUpdateList(fakeUser, testcontext, 0, testModel.Name, It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.InventoryValuationListLogic.Verify(m => m.CreateOrUpdateList(fakeUser, testcontext, 0, testModel.Name, It.IsAny<bool>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -2220,7 +2244,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.CopyList(fakeUser, testcontext, copyListModel);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
         }
         #endregion
@@ -2258,7 +2282,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.DeleteList(fakeUser, testcontext, testListType, testModel);
 
                 // assert
-                mockDependents.CustomListLogic.Verify(m => m.DeleteList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<ListModel>()), Times.AtLeastOnce, "not called");
+                mockDependents.CustomListLogic.Verify(m => m.DeleteList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<ListModel>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -2295,7 +2319,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                                             It.IsAny<UserSelectedContext>(), 
                                                                                             It.IsAny<long>(), 
                                                                                             It.IsAny<string>(), 
-                                                                                            false), Times.AtLeastOnce, "not called");
+                                                                                            false), Times.Once, "not called");
             }
 
         }
@@ -2321,7 +2345,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
                 // assert
                 mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), 
-                                                                                Times.AtLeastOnce, "not called");
+                                                                                Times.Once, "not called");
             }
         }
         #endregion
@@ -2358,7 +2382,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var list = testunit.MarkFavoritesAndAddNotes(fakeUser, testModel, testcontext);
 
                 // assert
-                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.AtLeastOnce, "not called");
+                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -2392,7 +2416,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 // assert
                 mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(),
                                                                                  It.IsAny<UserSelectedContext>(),
-                                                                                 false), Times.AtLeastOnce, "not called");
+                                                                                 false), Times.Once, "not called");
             }
 
         }
@@ -2426,7 +2450,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var list = testunit.MarkFavoritesAndAddNotes(fakeUser, testModel, testcontext);
 
                 // assert
-                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.AtLeastOnce, "not called");
+                mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -2456,7 +2480,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 // assert
                 mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(),
                                                                                  It.IsAny<UserSelectedContext>(),
-                                                                                 false), Times.AtLeastOnce, "not called");
+                                                                                 false), Times.Once, "not called");
             }
 
         }
@@ -2484,7 +2508,86 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 testunit.GetBarcodeForList(testuser, testcontext, testListType, testId);
 
                 // assert
-                mockDependents.ItemBarcodeRepository.Verify(m => m.GetBarcodeForList(It.IsAny<ListModel>()), Times.AtLeastOnce, "not called");
+                mockDependents.ItemBarcodeRepository.Verify(m => m.GetBarcodeForList(It.IsAny<ListModel>()), Times.Once, "not called");
+            }
+        }
+        #endregion
+
+        #region AddCustomInventory
+        public class AddCustomInventory
+        {
+            [Fact]
+            public void AnyUserAnyContext_CallsCustomInventoryItemsRepositoryGet()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: false, mockDependents: ref mockDependents);
+                var testuser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Custom;
+                var testId = (long)1;
+                var testCustomInventoryId = (long)1;
+
+                // act
+                testunit.AddCustomInventory(testuser, testcontext, testListType, testId, testCustomInventoryId);
+
+                // assert
+                mockDependents.CustomInventoryItemsRepository.Verify(m => m.Get(It.IsAny<long>()), Times.Once, "not called");
+            }
+
+            [Fact]
+            public void AnyUserAnyContext_CallsCustomListLogicSaveList()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: false, mockDependents: ref mockDependents);
+                var testuser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Custom;
+                var testId = (long)1;
+                var testCustomInventoryId = (long)1;
+
+                // act
+                testunit.AddCustomInventory(testuser, testcontext, testListType, testId, testCustomInventoryId);
+
+                // assert
+                mockDependents.CustomListLogic.Verify(m => m.SaveList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<ListModel>()), Times.Once, "not called");
+            }
+        }
+        #endregion
+
+        #region AddCustomInventoryItems
+        public class AddCustomInventoryItems
+        {
+            [Fact]
+            public void AnyUserAnyContext_CallsCustomInventoryItemsRepositoryGetItemsByItemIds()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: false, mockDependents: ref mockDependents);
+                var testuser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Custom;
+                var testId = (long)1;
+                var testCustomInventoryId = new List<long>() { (long)1 };
+
+                // act
+                testunit.AddCustomInventoryItems(testuser, testcontext, testListType, testId, testCustomInventoryId);
+
+                // assert
+                mockDependents.CustomInventoryItemsRepository.Verify(m => m.GetItemsByItemIds(It.IsAny<List<long>>()), Times.Once, "not called");
             }
         }
         #endregion

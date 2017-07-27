@@ -20,6 +20,7 @@ using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Models.EF;
 
 namespace KeithLink.Svc.Impl.Service.List
 {
@@ -935,18 +936,21 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
             }
 
-            ListItemModel item = new ListItemModel()
-            {
-                ItemNumber = customInventoryItem.ItemNumber.Trim(),
-                CatalogId = Constants.CATALOG_CUSTOMINVENTORY,
-                CustomInventoryItemId = customInventoryItemId
+            if (customInventoryItem != null) {
+                ListItemModel item = new ListItemModel()
+                {
+                    ItemNumber = customInventoryItem.ItemNumber.Trim(),
+                    CatalogId = Constants.CATALOG_CUSTOMINVENTORY,
+                    CustomInventoryItemId = customInventoryItemId
 
-            };
+                };
 
-            list.Items.Add(item);
-            UpdateList(user, catalogInfo, list.Type, list);
+                list.Items.Add(item);
+                UpdateList(user, catalogInfo, list.Type, list);
 
-            return item.ListItemId;
+                return item.ListItemId;
+            }
+            return null;
         }
 
         public List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, List<long> customInventoryItemIds)
@@ -954,6 +958,10 @@ namespace KeithLink.Svc.Impl.Service.List
             List<long?> returnValue = new List<long?>();
             var list = ReadListById(user, catalogInfo, listId, type);
             List<CustomInventoryItem> customInventoryItems = _customInventoryRepo.GetItemsByItemIds(customInventoryItemIds);
+
+            if (customInventoryItems == null) {
+                customInventoryItems = new List<CustomInventoryItem>();
+            }
 
             int position = SetPosition(ref list);
 
