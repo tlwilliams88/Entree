@@ -9,9 +9,9 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         long CreateList(UserProfile user,
                         UserSelectedContext catalogInfo);
 
-        List<string> GetMandatoryItemNumbers(UserSelectedContext catalogInfo);
+        List<string> GetMandatoryItemNumbers(UserProfile profile, UserSelectedContext catalogInfo);
 
-        ListModel ReadList(UserSelectedContext catalogInfo, bool headerOnly);
+        ListModel ReadList(UserProfile profile, UserSelectedContext catalogInfo, bool headerOnly);
 
         void SaveDetail(UserSelectedContext catalogInfo, MandatoryItemsListDetail detail);
 

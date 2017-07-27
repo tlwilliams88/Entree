@@ -173,7 +173,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
 
                 case ListType.Mandatory:
-                    returnList.TryAdd(_mandatoryItemsLogic.ReadList(catalogInfo, headerOnly));
+                    returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.RecommendedItems:

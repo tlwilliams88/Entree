@@ -81,9 +81,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "123456"
                 };
                 var emptylist = 0;
+                var fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(testcontext);
+                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.Count()
@@ -102,9 +103,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "223456"
                 };
                 var emptylist = 0;
+                var fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(testcontext);
+                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.Count()
@@ -123,9 +125,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "123456"
                 };
                 var expectedItem = "123456";
+                var fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(testcontext);
+                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.First()
@@ -214,9 +217,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
+                var fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(testcontext, false);
+                var results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -233,9 +237,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
+                var fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(testcontext, false);
+                var results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -253,9 +258,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     CustomerId = "123456"
                 };
                 var expected = 1;
+                var fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(testcontext, false);
+                var results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.ListId
