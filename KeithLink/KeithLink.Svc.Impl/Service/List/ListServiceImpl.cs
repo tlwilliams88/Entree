@@ -17,10 +17,10 @@ using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Reports;
-using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Models.EF;
 
 namespace KeithLink.Svc.Impl.Service.List
 {
@@ -45,6 +45,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IPriceLogic _priceLogic;
         private readonly IProductImageRepository _productImageRepo;
         private readonly IItemBarcodeImageRepository _barcodeImageRepo;
+        private readonly ICustomInventoryItemsRepository _customInventoryRepo;
         private readonly IEventLogRepository _log;
 
         private Dictionary<string, string> _contractdictionary;
@@ -62,7 +63,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
                                 IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
-                                IEventLogRepository log)
+                                IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo)
         {
             _cache = cache;
             // specific lists -
@@ -82,6 +83,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
             _productImageRepo = productImageRepo;
+            _customInventoryRepo = customInventoryRepo;
             _barcodeImageRepo = barcodeImageRepo;
             _log = log;
         }
@@ -377,14 +379,18 @@ namespace KeithLink.Svc.Impl.Service.List
             Dictionary<string, string> externalCatalogDict =
                 _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
 
-            List<RecentNonBEKItem> returnItems = recentOrders.Items
-                .Select(l => new RecentNonBEKItem()
-                {
-                    ItemNumber = l.ItemNumber,
-                    CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
-                    ModifiedOn = l.ModifiedUtc
-                })
-                .ToList();
+            List<RecentNonBEKItem> returnItems = new List<RecentNonBEKItem>();
+            if (recentOrders != null &&
+                externalCatalogDict != null) {
+                returnItems = recentOrders.Items
+                    .Select(l => new RecentNonBEKItem()
+                    {
+                        ItemNumber = l.ItemNumber,
+                        CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
+                        ModifiedOn = l.ModifiedUtc
+                    })
+                    .ToList();
+            }
 
             if (returnItems.Count > 0)
             {
@@ -420,9 +426,9 @@ namespace KeithLink.Svc.Impl.Service.List
                 //case ListType.RecommendedItems:
                 //    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                 //    break;
-                //case ListType.Mandatory:
-                //    _mandatoryItemsLogic.SaveDetail(catalogInfo, item.ToMandatoryItemsListDetail(headerId));
-                //    break;
+                case ListType.Mandatory:
+                    _mandatoryItemsLogic.SaveList(user, catalogInfo, list);
+                    break;
                 case ListType.Custom:
                     _customListLogic.SaveList(user, catalogInfo, list);
                     break;
@@ -488,6 +494,9 @@ namespace KeithLink.Svc.Impl.Service.List
             {
                 case ListType.RecommendedItems:
                     _recommendedItemsLogic.CreateList(catalogInfo);
+                    break;
+                case ListType.Reminder:
+                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
                     break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
@@ -636,6 +645,8 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             if (list.Items == null || list.Items.Count == 0)
                 return;
+
+
             ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
             {
@@ -644,12 +655,15 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 var tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
-                products.Products.AddRange(tempProducts.Products);
+                if (tempProducts != null) {
+                    products.Products.AddRange(tempProducts.Products);
+                }
             }
 
             var productHash = products.Products.GroupBy(p => p.ItemNumber)
                                                .Select(i => i.First())
                                                .ToDictionary(p => p.ItemNumber);
+
             List<ItemHistory> itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                           f.CustomerNumber.Equals(catalogInfo.CustomerId))
                                                                .ToList();
@@ -659,7 +673,24 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
 
-                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+                if (listItem.CustomInventoryItemId > 0) {
+                    CustomInventoryItem Item = _customInventoryRepo.Get(listItem.CustomInventoryItemId);
+                    listItem.IsValid = true;
+                    listItem.Name = Item.Name;
+                    listItem.BrandExtendedDescription = Item.Brand;
+                    listItem.Label = Item.Label;
+                    listItem.Pack = Item.Pack;
+                    listItem.Size = Item.Size;
+                    listItem.PackSize = string.Format("{0} / {1}", Item.Pack, Item.Size);
+                    listItem.VendorItemNumber = Item.Vendor;
+                    listItem.Supplier = Item.Supplier;
+                    listItem.CasePriceNumeric = (double)Item.CasePrice;
+                    listItem.PackagePriceNumeric = (double)Item.PackagePrice;
+                    listItem.Each = Item.Each;
+
+                }
+                else {
+                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
                     if (prod != null)
                     {
@@ -718,6 +749,8 @@ namespace KeithLink.Svc.Impl.Service.List
                                                            .Select(p => p.AverageUse)
                                                            .FirstOrDefault()
                         };
+                    }
+
                 }
             });
 
@@ -731,22 +764,24 @@ namespace KeithLink.Svc.Impl.Service.List
 
             var prices = new PriceReturn() { Prices = new List<Price>() };
 
-            prices.AddRange(_priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
-                                                  listItems.Where(x => x.CustomInventoryItemId < 1).GroupBy(g => g.ItemNumber)
-                                                           .Select(i => new Product()
-                                                           {
-                                                               ItemNumber = i.First().ItemNumber,
-                                                               CatchWeight = i.First().CatchWeight,
-                                                               PackagePriceNumeric = i.First().PackagePriceNumeric,
-                                                               CasePriceNumeric = i.First().CasePriceNumeric,
-                                                               CategoryName = i.First().CategoryName,
-                                                               CatalogId = i.First().CatalogId,
-                                                               Unfi = i.First().Unfi
-                                                           })
-                                                           .Distinct()
-                                                           .ToList()
-                                                  )
-                           );
+            if (_priceLogic != null) {
+                prices.AddRange(_priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
+                                                      listItems.Where(x => x.CustomInventoryItemId < 1).GroupBy(g => g.ItemNumber)
+                                                               .Select(i => new Product()
+                                                               {
+                                                                   ItemNumber = i.First().ItemNumber,
+                                                                   CatchWeight = i.First().CatchWeight,
+                                                                   PackagePriceNumeric = i.First().PackagePriceNumeric,
+                                                                   CasePriceNumeric = i.First().CasePriceNumeric,
+                                                                   CategoryName = i.First().CategoryName,
+                                                                   CatalogId = i.First().CatalogId,
+                                                                   Unfi = i.First().Unfi
+                                                               })
+                                                               .Distinct()
+                                                               .ToList()
+                                                      )
+                               );
+            }
 
             Dictionary<string, Price> priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
 
@@ -771,6 +806,18 @@ namespace KeithLink.Svc.Impl.Service.List
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
             ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
 
+            if (list != null &&
+                list.Items != null &&
+                list.Items.Count > 0) {
+                var recommended = list.Items.Select(i => new RecommendedItemModel()
+                {
+                    ItemNumber = i.ItemNumber,
+                    Name = i.Name,
+                    Images = (_productImageRepo.GetImageList(i.ItemNumber, true) != null)?
+                        _productImageRepo.GetImageList(i.ItemNumber, true).ProductImages:null
+                }).ToList();
+                
+            }
             return new List<RecommendedItemModel>();
         }
 
@@ -779,22 +826,9 @@ namespace KeithLink.Svc.Impl.Service.List
             if (list.Items == null || list.Items.Count == 0)
                 return null;
 
-            ListModel notes = _notesLogic.GetList(catalogInfo);
-            ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
+            Dictionary<string, ListItemModel> notesHash = GetNotesHash(catalogInfo);
 
-            var notesHash = new Dictionary<string, ListItemModel>();
-            var favHash = new Dictionary<string, ListItemModel>();
-
-            if (notes != null &&
-               notes.Items != null)
-                notesHash = notes.Items
-                                 .GroupBy(i => i.ItemNumber)
-                                 .ToDictionary(n => n.Key, n => n.First());
-            if (favorites != null &&
-               favorites.Items != null)
-                favHash = favorites.Items
-                                   .GroupBy(i => i.ItemNumber)
-                                   .ToDictionary(f => f.Key, f => f.First());
+            Dictionary<string, ListItemModel> favHash = GetFavoritesHash(user, catalogInfo);
 
             Parallel.ForEach(list.Items, listItem =>
             {
@@ -810,42 +844,54 @@ namespace KeithLink.Svc.Impl.Service.List
             if (list == null || list.Count == 0)
                 return null;
 
-            ListModel notes = _notesLogic.GetList(catalogInfo);
-            ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
+            Dictionary<string, ListItemModel> notesHash = GetNotesHash(catalogInfo);
+
+            Dictionary<string, ListItemModel> favHash = GetFavoritesHash(user, catalogInfo);
+
             var history = _historyListLogic.ItemsInHistoryList(catalogInfo, list.Select(p => p.ItemNumber).ToList());
-
-            var notesHash = new Dictionary<string, ListItemModel>();
-            var favHash = new Dictionary<string, ListItemModel>();
-
-            if (notes != null &&
-               notes.Items != null)
-                notesHash = notes.Items
-                                 .GroupBy(i => i.ItemNumber)
-                                 .ToDictionary(n => n.Key, n => n.First());
-            if (favorites != null &&
-               favorites.Items != null)
-                favHash = favorites.Items
-                                   .GroupBy(i => i.ItemNumber)
-                                   .ToDictionary(f => f.Key, f => f.First());
 
             Parallel.ForEach(list, prod =>
             {
                 prod.Favorite = favHash.ContainsKey(prod.ItemNumber);
                 prod.Notes = notesHash.ContainsKey(prod.ItemNumber) ? notesHash[prod.ItemNumber].Notes : null;
-                prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
-                                        .FirstOrDefault()
-                                        .InHistory;
+                if (history != null) {
+                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                            .FirstOrDefault()
+                                            .InHistory;
+                }
             });
 
             return list;
         }
 
-        public string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
+        private Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo) {
+            ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
+            var favHash = new Dictionary<string, ListItemModel>();
+            if (favorites != null &&
+                favorites.Items != null)
+                favHash = favorites.Items
+                                   .GroupBy(i => i.ItemNumber)
+                                   .ToDictionary(f => f.Key, f => f.First());
+            return favHash;
+        }
+
+        private Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo) {
+            ListModel notes = _notesLogic.GetList(catalogInfo);
+            var notesHash = new Dictionary<string, ListItemModel>();
+            if (notes != null &&
+                notes.Items != null)
+                notesHash = notes.Items
+                                 .GroupBy(i => i.ItemNumber)
+                                 .ToDictionary(n => n.Key, n => n.First());
+            return notesHash;
+        }
+
+        private string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
         {
             return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
         }
 
-        public string AddContractInformationIfInContract
+        private string AddContractInformationIfInContract
             (Dictionary<string, string> contractdictionary, string itemNumber)
         {
             string itmcategory = null;
@@ -867,6 +913,103 @@ namespace KeithLink.Svc.Impl.Service.List
             ListModel list = ReadList(user, catalogInfo, type, listId);
 
             return _barcodeImageRepo.GetBarcodeForList(list);
+        }
+
+        public long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, long customInventoryItemId)
+        {
+            var list = ReadListById(user, catalogInfo, listId, type);
+            CustomInventoryItem customInventoryItem = _customInventoryRepo.Get(customInventoryItemId);
+
+            int position = SetPosition(ref list);
+
+            // If the list type is favorite or reminder, don't allow duplicates
+            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder)
+            {
+                ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(customInventoryItem.Id)).FirstOrDefault();
+                if (duplicateItem != null)
+                {
+                    return duplicateItem.ListItemId;
+                }
+            }
+
+            if (customInventoryItem != null) {
+                ListItemModel item = new ListItemModel()
+                {
+                    ItemNumber = customInventoryItem.ItemNumber.Trim(),
+                    CatalogId = Constants.CATALOG_CUSTOMINVENTORY,
+                    CustomInventoryItemId = customInventoryItemId
+
+                };
+
+                list.Items.Add(item);
+                UpdateList(user, catalogInfo, list.Type, list);
+
+                return item.ListItemId;
+            }
+            return null;
+        }
+
+        public List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, List<long> customInventoryItemIds)
+        {
+            List<long?> returnValue = new List<long?>();
+            var list = ReadListById(user, catalogInfo, listId, type);
+            List<CustomInventoryItem> customInventoryItems = _customInventoryRepo.GetItemsByItemIds(customInventoryItemIds);
+
+            if (customInventoryItems == null) {
+                customInventoryItems = new List<CustomInventoryItem>();
+            }
+
+            int position = SetPosition(ref list);
+
+            // If the list type is favorite or reminder, don't allow duplicates
+            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder)
+            {
+                foreach (CustomInventoryItem item in customInventoryItems) {
+                    ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(item.Id)).FirstOrDefault();
+                    if (duplicateItem != null)
+                    {
+                        returnValue.Add(duplicateItem.CustomInventoryItemId);
+                    }
+                }
+
+                return returnValue;
+            }
+
+            foreach (CustomInventoryItem item in customInventoryItems)
+            {
+                ListItemModel listItem = new ListItemModel();
+                listItem.ItemNumber = item.ItemNumber;
+                listItem.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
+                listItem.CustomInventoryItemId = item.Id;
+                listItem.Position = position++;
+
+                list.Items.Add(listItem);
+            }
+
+            UpdateList(user, catalogInfo, type, list);
+
+            foreach (ListItemModel item in list.Items)
+            {
+                returnValue.Add(item.ListItemId);
+            }
+
+            return returnValue;
+        }
+
+        private int SetPosition(ref ListModel list)
+        {
+            int position = 1;
+
+            if (list.Items == null)
+            {
+                list.Items = new List<ListItemModel>();
+            }
+            else if (list.Items.Any())
+            {
+                position = list.Items.Max(i => i.Position) + 1;
+            }
+
+            return position;
         }
 
     }

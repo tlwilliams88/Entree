@@ -13,6 +13,8 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         ListModel ReadList(UserSelectedContext catalogInfo, bool headerOnly);
 
+        ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list);
+
         void SaveDetail(UserSelectedContext catalogInfo, MandatoryItemsListDetail detail);
 
         void DeleteMandatoryItems(MandatoryItemsListDetail detail);

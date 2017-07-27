@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 using Autofac;
-
-using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
-
 using FluentAssertions;
 using Moq;
 using Xunit;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;

@@ -92,6 +92,7 @@
     <Compile Include="Logic\Lists\ReminderItemsListLogicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
+    <Compile Include="Service\List\ListServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic\ApplicationHealth\" />
@@ -114,6 +115,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
+      <Project>{A5061D47-AD81-4C9D-B171-8D92F38DB60D}</Project>
+      <Name>KeithLink.Common.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
       <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
       <Name>KeithLink.Svc.Core</Name>

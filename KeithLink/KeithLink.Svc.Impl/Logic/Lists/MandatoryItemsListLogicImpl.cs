@@ -49,6 +49,25 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             return header.ToListModel(items);
         }
 
+        public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+            MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
+
+            if (header == null) {
+                foreach (var item in list.Items) {
+                    MandatoryItemsListDetail detail = item.ToMandatoryItemsListDetail(0);
+                    detail.Active = !item.IsDelete;
+                    SaveDetail(catalogInfo, detail);
+                }
+            } else {
+                foreach (var item in list.Items) {
+                    MandatoryItemsListDetail detail = item.ToMandatoryItemsListDetail(header.Id);
+                    detail.Active = !item.IsDelete;
+                    SaveDetail(catalogInfo, detail);
+                }
+            }
+            return ReadList(catalogInfo, false);
+        }
+
         public void SaveDetail(UserSelectedContext catalogInfo, MandatoryItemsListDetail detail) {
             if (detail.HeaderId == 0) {
                 MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
