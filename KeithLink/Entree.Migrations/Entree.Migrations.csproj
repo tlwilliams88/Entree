@@ -1049,10 +1049,10 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteDetails\SaveFavoriteDetails_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveFavoriteHeaders_0038_2017.04.00_down.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveNotesHeaders_0038_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveFavoriteHeaders_0038_2017.04.00_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveNotesHeaders_0038_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteHeaders\SaveFavoriteHeaders_0033_2017.04.00_down.sql">
@@ -1424,7 +1424,13 @@
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\Indexes\idx_BranchId_CustomerNumber_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeaders_0038_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeaders_0024_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeaders_0038_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeaders_0024_2017.04.00_up.sql">
