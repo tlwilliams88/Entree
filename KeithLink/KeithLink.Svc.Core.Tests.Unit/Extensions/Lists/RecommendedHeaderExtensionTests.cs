@@ -165,7 +165,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedIsRecommended() {
                 // arrange
-                var expected = false;
+                var expected = true;
                 var header = MakeHeader();
 
                 // act
