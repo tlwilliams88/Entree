@@ -21,6 +21,7 @@ using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Service.List
 {
@@ -45,6 +46,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IPriceLogic _priceLogic;
         private readonly IProductImageRepository _productImageRepo;
         private readonly IItemBarcodeImageRepository _barcodeImageRepo;
+        private readonly ICustomInventoryItemsRepository _customInventoryRepo;
         private readonly IEventLogRepository _log;
 
         private Dictionary<string, string> _contractdictionary;
@@ -62,7 +64,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
                                 IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
-                                IEventLogRepository log)
+                                IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo)
         {
             _cache = cache;
             // specific lists -
@@ -82,6 +84,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _itemHistoryRepo = itemHistoryRepo;
             _priceLogic = priceLogic;
             _productImageRepo = productImageRepo;
+            _customInventoryRepo = customInventoryRepo;
             _barcodeImageRepo = barcodeImageRepo;
             _log = log;
         }
@@ -636,6 +639,8 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             if (list.Items == null || list.Items.Count == 0)
                 return;
+
+
             ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
             {
@@ -650,6 +655,7 @@ namespace KeithLink.Svc.Impl.Service.List
             var productHash = products.Products.GroupBy(p => p.ItemNumber)
                                                .Select(i => i.First())
                                                .ToDictionary(p => p.ItemNumber);
+
             List<ItemHistory> itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                           f.CustomerNumber.Equals(catalogInfo.CustomerId))
                                                                .ToList();
@@ -659,7 +665,24 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
 
-                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+                if (listItem.CustomInventoryItemId > 0) {
+                    CustomInventoryItem Item = _customInventoryRepo.Get(listItem.CustomInventoryItemId);
+                    listItem.IsValid = true;
+                    listItem.Name = Item.Name;
+                    listItem.BrandExtendedDescription = Item.Brand;
+                    listItem.Label = Item.Label;
+                    listItem.Pack = Item.Pack;
+                    listItem.Size = Item.Size;
+                    listItem.PackSize = string.Format("{0} / {1}", Item.Pack, Item.Size);
+                    listItem.VendorItemNumber = Item.Vendor;
+                    listItem.Supplier = Item.Supplier;
+                    listItem.CasePriceNumeric = (double)Item.CasePrice;
+                    listItem.PackagePriceNumeric = (double)Item.PackagePrice;
+                    listItem.Each = Item.Each;
+
+                }
+                else {
+                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
                     if (prod != null)
                     {
@@ -718,6 +741,8 @@ namespace KeithLink.Svc.Impl.Service.List
                                                            .Select(p => p.AverageUse)
                                                            .FirstOrDefault()
                         };
+                    }
+
                 }
             });
 
@@ -867,6 +892,96 @@ namespace KeithLink.Svc.Impl.Service.List
             ListModel list = ReadList(user, catalogInfo, type, listId);
 
             return _barcodeImageRepo.GetBarcodeForList(list);
+        }
+
+        public long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, long customInventoryItemId)
+        {
+            var list = ReadListById(user, catalogInfo, listId, type);
+            CustomInventoryItem customInventoryItem = _customInventoryRepo.Get(customInventoryItemId);
+
+            int position = SetPosition(ref list);
+
+            // If the list type is favorite or reminder, don't allow duplicates
+            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder)
+            {
+                ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(customInventoryItem.Id)).FirstOrDefault();
+                if (duplicateItem != null)
+                {
+                    return duplicateItem.ListItemId;
+                }
+            }
+
+            ListItemModel item = new ListItemModel()
+            {
+                ItemNumber = customInventoryItem.ItemNumber.Trim(),
+                CatalogId = Constants.CATALOG_CUSTOMINVENTORY,
+                CustomInventoryItemId = customInventoryItemId
+
+            };
+
+            list.Items.Add(item);
+            UpdateList(user, catalogInfo, list.Type, list);
+
+            return item.ListItemId;
+        }
+
+        public List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, List<long> customInventoryItemIds)
+        {
+            List<long?> returnValue = new List<long?>();
+            var list = ReadListById(user, catalogInfo, listId, type);
+            List<CustomInventoryItem> customInventoryItems = _customInventoryRepo.GetItemsByItemIds(customInventoryItemIds);
+
+            int position = SetPosition(ref list);
+
+            // If the list type is favorite or reminder, don't allow duplicates
+            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder)
+            {
+                foreach (CustomInventoryItem item in customInventoryItems) {
+                    ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(item.Id)).FirstOrDefault();
+                    if (duplicateItem != null)
+                    {
+                        returnValue.Add(duplicateItem.CustomInventoryItemId);
+                    }
+                }
+
+                return returnValue;
+            }
+
+            foreach (CustomInventoryItem item in customInventoryItems)
+            {
+                ListItemModel listItem = new ListItemModel();
+                listItem.ItemNumber = item.ItemNumber;
+                listItem.CatalogId = Constants.CATALOG_CUSTOMINVENTORY;
+                listItem.CustomInventoryItemId = item.Id;
+                listItem.Position = position++;
+
+                list.Items.Add(listItem);
+            }
+
+            UpdateList(user, catalogInfo, type, list);
+
+            foreach (ListItemModel item in list.Items)
+            {
+                returnValue.Add(item.ListItemId);
+            }
+
+            return returnValue;
+        }
+
+        private int SetPosition(ref ListModel list)
+        {
+            int position = 1;
+
+            if (list.Items == null)
+            {
+                list.Items = new List<ListItemModel>();
+            }
+            else if (list.Items.Any())
+            {
+                position = list.Items.Max(i => i.Position) + 1;
+            }
+
+            return position;
         }
 
     }
