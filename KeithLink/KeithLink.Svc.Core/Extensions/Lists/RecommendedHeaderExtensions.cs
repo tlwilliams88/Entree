@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists
                 IsWorksheet = false,
                 IsReminder = false,
                 IsMandatory = false,
-                IsRecommended = false,
+                IsRecommended = true,
                 IsCustomInventory = false,
                 Type = ListType.RecommendedItems,
                 ListId = header.Id,
