@@ -258,8 +258,10 @@ angular.module('bekApp')
       $scope.rangeEndOffset = 0;
 
 
-      if(!$scope.selectedList || $scope.sorted == true || $scope.filtered == true) {
+      if(!$scope.selectedList || $scope.sorted == true || $scope.filtered == true || $scope.addedItem == true) {
           $scope.sorted = false;
+          $scope.filtered = false;
+          $scope.addedItem = false;
           $scope.selectedList = angular.copy(list);
           originalList = list;
           $scope.setStartAndEndPoints(list);
@@ -738,8 +740,10 @@ angular.module('bekApp')
                     listid: $scope.selectedList.listid,
                     type: $scope.selectedList.type
                 }
+                $scope.selectedList.items.push(item);
                 ListService.addItem(list, item).then(function(data){
-                    $scope.saveList($scope.selectedList, true);
+                    $scope.addedItem = true;
+                    listPagingModel.loadList();
                     $scope.listItemNumber = '';
                     blockUI.stop();
                     $scope.displayMessage('success', 'Successfully added item to list.');
@@ -955,7 +959,11 @@ angular.module('bekApp')
             return ListService.getExportConfig($scope.selectedList);
           },
           exportParams: function() {
-            return $scope.selectedList.listid;
+            var list = {
+                listType: $scope.selectedList.type,
+                listId: $scope.selectedList.listid
+            }
+            return list;
           }
         }
       });
