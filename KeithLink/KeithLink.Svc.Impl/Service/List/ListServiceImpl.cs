@@ -812,14 +812,10 @@ namespace KeithLink.Svc.Impl.Service.List
                 var recommended = list.Items.Select(i => new RecommendedItemModel()
                 {
                     ItemNumber = i.ItemNumber,
-                    Name = i.Name
+                    Name = i.Name,
+                    Images = (_productImageRepo.GetImageList(i.ItemNumber, true) != null)?
+                        _productImageRepo.GetImageList(i.ItemNumber, true).ProductImages:null
                 }).ToList();
-                foreach (var item in recommended) {
-                    var images = _productImageRepo.GetImageList(item.ItemNumber, true);
-                    if (images != null) {
-                        item.Images = images.ProductImages;
-                    }
-                }    
                 
             }
             return new List<RecommendedItemModel>();

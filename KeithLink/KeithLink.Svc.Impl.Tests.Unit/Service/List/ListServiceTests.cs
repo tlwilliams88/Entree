@@ -811,7 +811,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.AtLeastOnce, "not called");
+                mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Exactly(2), "not called");
             }
 
             [Fact]
