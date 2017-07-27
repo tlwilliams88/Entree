@@ -55,5 +55,9 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
       
         List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id);
+
+        long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, long customInventoryItemId);
+
+        List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, List<long> customInventoryItemIds);
     }
 }

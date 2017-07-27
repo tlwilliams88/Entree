@@ -357,7 +357,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<NewListItem> returnValue = new OperationReturnModel<NewListItem>();
 
             try {
-                NewListItem listItem = new NewListItem() { Id = _listLogic.AddCustomInventory(this.AuthenticatedUser, this.SelectedUserContext, listId, customInventoryId) };
+                NewListItem listItem = new NewListItem() { Id = _listService.AddCustomInventory(this.AuthenticatedUser, this.SelectedUserContext, type, listId, customInventoryId) };
                 returnValue.SuccessResponse = listItem;
                 returnValue.IsSuccess = true;
             } catch (Exception ex) {
@@ -377,14 +377,18 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/{type}/{listId}/custominventoryitem")]
-        public OperationReturnModel<bool> AddCustomInventoryItems(ListType type, long listId, List<long> customInventoryIds) {
+        public OperationReturnModel<bool> AddCustomInventoryItems(ListType type, long listId, List<long> customInventoryIds)
+        {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
 
-            try {
-                List<long?> newListItems = _listLogic.AddCustomInventoryItems(this.AuthenticatedUser, this.SelectedUserContext, listId, customInventoryIds);
+            try
+            {
+                List<long?> newListItems = _listService.AddCustomInventoryItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, customInventoryIds);
                 returnValue.SuccessResponse = true;
                 returnValue.IsSuccess = true;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 returnValue.IsSuccess = false;
                 returnValue.ErrorMessage = ex.Message;
                 _elRepo.WriteErrorLog("Error adding custom inventory to list", ex);
