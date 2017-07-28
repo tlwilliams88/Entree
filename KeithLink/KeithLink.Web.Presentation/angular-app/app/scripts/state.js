@@ -314,11 +314,26 @@ angular.module('bekApp')
           listToBeUsed.listType = listHeader ? listHeader.type : listToBeUsed.listType;
 
           if((isNaN(listToBeUsed.listId) || !listHeader) && listToBeUsed.listId != 'nonbeklist'){
-            var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
-                favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
+            var contractList = $filter('filter')(ListService.listHeaders, { type: 2 }),
+                historyList = $filter('filter')(ListService.listHeaders, { type: 5 }),
+                favoritesList = $filter('filter')(ListService.listHeaders, { type: 1 }),
+                customList = $filter('filter')(ListService.listHeaders, { type: 0 });
 
-            listToBeUsed.listId =  historyList.length ? historyList[0].listid : favoritesList[0].listid;
-            listToBeUsed.listType = historyList.length ? historyList[0].type : favoritesList[0].type;
+            // Uses Contract List if available
+            listToBeUsed.listId = contractList.length > 0 ? contractList[0].listid : historyList[0].listid;
+            listToBeUsed.listType = contractList.length > 0 ? contractList[0].type : historyList[0].type;
+
+            // Uses History List if available
+            listToBeUsed.listId = contractList.length < 0 && historyList.length > 0 ? historyList[0].listid : contractList[0].listid;
+            listToBeUsed.listType = contractList.length < 0 && historyList.length > 0 ? historyList[0].type : contractList[0].type;
+
+            // Uses Favorites List if available
+            listToBeUsed.listId = historyList.length < 0 && favoritesList.length > 0 ? favoritesList[0].listid : historyList[0].listid;
+            listToBeUsed.listType = historyList.length < 0 && favoritesList.length > 0 ? favoritesList[0].type : historyList[0].type;
+
+            // Uses Custom List if available
+            listToBeUsed.listId = favoritesList.length < 0 && customList.length > 0 ? customList[0].listid : favoritesList[0].listid;
+            listToBeUsed.listType = favoritesList.length < 0 && customList.length > 0 ? customList[0].type : favoritesList[0].type;
           }
 
           if(listToBeUsed.listId == 'nonbeklist'){
