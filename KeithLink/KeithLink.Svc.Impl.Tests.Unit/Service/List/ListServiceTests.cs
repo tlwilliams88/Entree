@@ -264,6 +264,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                                      }
                     });
 
+                mock.Setup(h => h.ReadList(It.Is<long>(i => i == 1), It.IsAny<bool>()))
+                    .Returns(new ListModel()
+                    {
+                        ListId = 1,
+                        CustomerNumber = "123456",
+                        BranchId = "FUT",
+                        Items = new List<ListItemModel>() {
+                                                                                         new ListItemModel() {
+                                                                                                                 ItemNumber = "123456",
+                                                                                                                 Category = "Fake Category",
+                                                                                                                 Each = false
+                                                                                                             }
+                                                                                     }
+                    });
+
                 mock.Setup(h => h.GetListModel(It.IsAny<UserProfile>(),
                                                It.IsAny<UserSelectedContext>(),
                                                It.Is<long>(i => i == 2)))
@@ -1842,6 +1857,62 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.CustomListLogic.Verify(m => m.SaveItem(It.IsAny<CustomListDetail>()), Times.Once, "not called");
             }
 
+            [Fact]
+            public void TryToAddItemWithPosition0_ExpectedToChangePosition()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: true, mockDependents: ref mockDependents);
+                var fakeUser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Custom;
+                var testHeaderId = (long)1;
+                var testListItem = new ListItemModel()
+                {
+                    ItemNumber = "123456",
+                    CatalogId = "BEK"
+                };
+                var expected = 1;
+
+                // act
+                testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
+
+                // assert
+                testListItem.Position.Should().Be(expected);
+            }
+
+            [Fact]
+            public void TryToAddItemWithPosition1_ExpectedSamePosition()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: true, mockDependents: ref mockDependents);
+                var fakeUser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Custom;
+                var testHeaderId = (long)1;
+                var testListItem = new ListItemModel()
+                {
+                    ItemNumber = "123456",
+                    CatalogId = "BEK",
+                    Position = 1
+                };
+                var expected = 1;
+
+                // act
+                testunit.SaveItem(fakeUser, testcontext, testListType, testHeaderId, testListItem);
+
+                // assert
+                testListItem.Position.Should().Be(expected);
+            }
         }
         #endregion
 
@@ -2073,6 +2144,64 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.CustomListLogic.Verify(m => m.SaveItem(It.IsAny<CustomListDetail>()), Times.AtLeastOnce, "not called");
             }
 
+            [Fact]
+            public void TryToAddItemWithPosition0_ExpectedToChangePosition()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: true, mockDependents: ref mockDependents);
+                var fakeUser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Custom;
+                var testHeaderId = (long)1;
+                var testListItems = new List<ListItemModel>() {
+                                                                  new ListItemModel() {
+                                                                                          ItemNumber = "123456",
+                                                                                          CatalogId = "BEK"
+                                                                                      }
+                                                              };
+                var expected = 1;
+
+                // act
+                testunit.SaveItems(fakeUser, testcontext, testListType, testHeaderId, testListItems);
+
+                // assert
+                testListItems.First().Position.Should().Be(expected);
+            }
+
+            [Fact]
+            public void TryToAddItemWithPosition1_ExpectedSamePosition()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: true, mockDependents: ref mockDependents);
+                var fakeUser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Custom;
+                var testHeaderId = (long)1;
+                var testListItems = new List<ListItemModel>() {
+                                                                  new ListItemModel() {
+                                                                                          ItemNumber = "123456",
+                                                                                          CatalogId = "BEK",
+                                                                                          Position = 1
+                                                                                      }
+                                                              };
+                var expected = 1;
+
+                // act
+                testunit.SaveItems(fakeUser, testcontext, testListType, testHeaderId, testListItems);
+
+                // assert
+                testListItems.First().Position.Should().Be(expected);
+            }
         }
         #endregion
 

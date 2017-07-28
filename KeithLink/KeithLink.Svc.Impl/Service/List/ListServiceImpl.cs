@@ -446,6 +446,19 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                              long headerId, ListItemModel item) {
+            if (item.Position == 0)
+            {
+                ListModel list = ReadListById(user, catalogInfo, headerId, type);
+                if (list != null) {
+                    if (list.Items != null &&
+                        list.Items.Count > 0) {
+                        item.Position = list.Items.Max(i => i.Position) + 1;
+                    } else {
+                        item.Position = 1;
+                    }
+                }
+            }
+
             switch (type) {
                 case ListType.Worksheet:
                 case ListType.Contract:
