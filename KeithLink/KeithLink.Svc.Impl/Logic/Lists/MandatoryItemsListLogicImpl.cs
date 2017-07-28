@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                     SaveDetail(catalogInfo, detail);
                 }
             }
-            return ReadList(catalogInfo, false);
+            return ReadList(user, catalogInfo, false);
         }
 
         public void SaveDetail(UserSelectedContext catalogInfo, MandatoryItemsListDetail detail) {
