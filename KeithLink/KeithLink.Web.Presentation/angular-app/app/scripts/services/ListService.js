@@ -810,7 +810,8 @@ angular.module('bekApp')
 
         addItemToFavorites: function(item) {
           $analytics.eventTrack('Add Favorite', {  category: 'Lists'});
-          return Service.addItem(Service.getFavoritesList(), item, true);
+          var favoritesList = Service.getFavoritesList() || {listid: 0, type: 1};
+          return Service.addItem(favoritesList, item, true);
         },
 
         /*****************************
