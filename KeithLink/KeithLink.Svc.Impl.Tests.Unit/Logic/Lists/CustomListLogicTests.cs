@@ -153,6 +153,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     }
                 );
 
+            repo.Setup(s => s.GetCustomListSharesByCustomer(It.Is<UserSelectedContext>(u => u.CustomerId == "111111")))
+                .Returns(
+                    new List<CustomListShare>(){
+                        new CustomListShare() {
+                            Active = true,
+                            BranchId = "FUT",
+                            CreatedUtc = new DateTime(2017, 7, 7, 16, 25, 0, DateTimeKind.Utc),
+                            CustomerNumber = "234567",
+                            HeaderId = 1,
+                            Id = 1,
+                            ModifiedUtc = new DateTime(2017, 7, 7, 16, 26, 0, DateTimeKind.Utc)
+                        }
+                    }
+                );
+
             return repo.Object;
         }
 
@@ -764,6 +779,51 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
 
                 // act
                 var results = logic.ReadLists(user, customer, true);
+
+                // assert
+                results.Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomerWithSharedList_ReturnsExpectedListId()
+            {
+                // arrange
+                var logic = MakeMockLogic();
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "111111"
+                };
+                var user = new UserProfile();
+                var expected = 1;
+
+                // act
+                var results = logic.ReadLists(user, customer, false);
+
+                // assert
+                results.First()
+                       .ListId
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void CustomerWithNoSharedList_DoesNotSeeList()
+            {
+                // arrange
+                var logic = MakeMockLogic();
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "222222"
+                };
+                var user = new UserProfile();
+                var expected = 0;
+
+                // act
+                var results = logic.ReadLists(user, customer, false);
 
                 // assert
                 results.Count
