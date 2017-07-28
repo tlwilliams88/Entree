@@ -65,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 // Create the header
                 header = new RecentlyViewedListHeader {
                                                            Id = 0,
+                                                           UserId = user.UserId,
                                                            BranchId = catalogInfo.BranchId,
                                                            CustomerNumber = catalogInfo.CustomerId
                                                        };
