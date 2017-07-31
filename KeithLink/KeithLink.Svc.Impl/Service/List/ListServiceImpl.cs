@@ -21,6 +21,7 @@ using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Models.EF;
+using Microsoft.Practices.ObjectBuilder2;
 
 namespace KeithLink.Svc.Impl.Service.List
 {
@@ -89,6 +90,7 @@ namespace KeithLink.Svc.Impl.Service.List
         }
         #endregion
 
+        #region methods
         public Dictionary<string, string> GetContractInformation(UserSelectedContext catalogInfo)
         {
             Dictionary<string, string> contractdictionary = new Dictionary<string, string>();
@@ -1028,5 +1030,34 @@ namespace KeithLink.Svc.Impl.Service.List
             return position;
         }
 
+        public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+                               long headerId, string itemNumber) {
+            ListModel list      = ReadListById(user, catalogInfo, headerId, type);
+            ListItemModel item  = list?.Items
+                                      .FirstOrDefault(i => i.ItemNumber == itemNumber);
+
+            if(item != null) {
+                item.Active = false;
+
+                SaveItem(user, catalogInfo, type, headerId, item);
+            }
+        }
+
+        public void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+                                long headerId, List<string> itemNumbers) {
+            ListModel list                      = ReadListById(user, catalogInfo, headerId, type);
+            IEnumerable<ListItemModel> items    = list.Items
+                                                      .Where(i => itemNumbers.Contains(i.ItemNumber));
+
+            if(items != null) {
+                Parallel.ForEach(items, i => {
+                                            i.Active = false;
+                                        });
+                
+                SaveItems(user, catalogInfo, type, headerId, 
+                          items.ToList());
+            }
+        }
+        #endregion
     }
 }
