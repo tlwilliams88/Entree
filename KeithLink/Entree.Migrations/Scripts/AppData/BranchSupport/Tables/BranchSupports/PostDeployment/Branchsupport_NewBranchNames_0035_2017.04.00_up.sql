@@ -1,6 +1,3 @@
-USE [BEK_Commerce_AppData]
-GO
-
 UPDATE [BranchSupport].[BranchSupports]
    SET [BranchName] = (
         case when Id = '2' then 'West Texas'
