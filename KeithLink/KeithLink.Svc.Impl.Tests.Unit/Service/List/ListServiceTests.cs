@@ -2799,7 +2799,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
         #region DeleteItems
         public class DeleteItems {
             [Fact]
-            public void GoodItemNumbers_DeletesTheSpecifiedFavoriteItem() {
+            public void GoodItemNumbers_DeletesTheSpecifiedFavoriteItems() {
                 // arrange
                 var mockDependents = new MockDependents();
                 var testUnit = MakeTestsService(false, ref mockDependents);
@@ -2820,7 +2820,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 // assert
                 mockDependents.FavoritesListLogic.Verify(f => f.Save(It.IsAny<UserProfile>(),
                                                                      It.IsAny<UserSelectedContext>(),
-                                                                     It.IsAny<FavoritesListDetail>()),
+                                                                     It.Is<FavoritesListDetail>(d => fakeItemNumbers.Contains(d.ItemNumber) )),
                                                          Times.Exactly(2));
             }
 

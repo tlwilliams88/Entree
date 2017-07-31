@@ -1030,7 +1030,7 @@ namespace KeithLink.Svc.Impl.Service.List
         public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
                                long headerId, string itemNumber) {
             ListModel list      = ReadListById(user, catalogInfo, headerId, type);
-            ListItemModel item  = list.Items
+            ListItemModel item  = list?.Items
                                       .FirstOrDefault(i => i.ItemNumber == itemNumber);
 
             if(item != null) {
@@ -1048,7 +1048,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
             if(items != null) {
                 Parallel.ForEach(items, i => {
-                                            i.Active = true;
+                                            i.Active = false;
                                         });
                 
                 SaveItems(user, catalogInfo, type, headerId, 
