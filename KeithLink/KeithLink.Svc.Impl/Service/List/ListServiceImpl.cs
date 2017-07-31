@@ -520,6 +520,9 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.InventoryValuation:
                     id = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, 0, list.Name, true);
                     break;
+                case ListType.Favorite:
+                    id = _favoritesLogic.CreateList(user, catalogInfo);
+                    break;
             }
 
             if (list.Items != null &&

@@ -2276,6 +2276,32 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             }
 
             [Fact]
+            public void AnyUserAnyContextWithTypeFavorite_CallsFavoritesListLogicCreateList()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: false, mockDependents: ref mockDependents);
+                var fakeUser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var testListType = ListType.Favorite;
+                var testModel = new ListModel()
+                {
+                    Items = new List<ListItemModel>() {
+                    }
+                };
+
+                // act
+                testunit.CreateList(fakeUser, testcontext, testListType, testModel);
+
+                // assert
+                mockDependents.FavoritesListLogic.Verify(m => m.CreateList(fakeUser, testcontext), Times.Once, "not called");
+            }
+
+            [Fact]
             public void AnyUserAnyContextWithTypeMandatory_CallsMandatoryItemsListLogicSaveList()
             {
                 // arrange
