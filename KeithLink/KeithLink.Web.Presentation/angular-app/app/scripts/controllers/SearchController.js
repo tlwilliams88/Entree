@@ -602,7 +602,15 @@ angular.module('bekApp')
       var selectedCategory;
       // set the $scope.aggregates object using the response data
       if(facets){
-
+        var removeSpecialFilters = true;
+        if(facets.specialfilters != null ){
+          facets.specialfilters.forEach(function(filter){
+            if(filter.count !== '?'){
+              removeSpecialFilters = false;
+            }
+          });
+          facets.specialfilters = (removeSpecialFilters) ? [] : removeSpecialFilters;
+        }
         $scope.brands.available = facets.brands;
         $scope.manufacturers.available = facets.mfrname;
         $scope.dietary.available = facets.dietary;
