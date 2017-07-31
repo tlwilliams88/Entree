@@ -100,7 +100,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 }
             }
 
-            _detailRepo.SaveFavoriteListDetail(model);
+            if (model.Active == false) {
+                _detailRepo.DeleteFavoriteListDetail(model.Id);
+            } else {
+                _detailRepo.SaveFavoriteListDetail(model);
+            }
         }
 
         #endregion

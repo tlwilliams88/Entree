@@ -905,6 +905,39 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
+            public void GoodHeaderNoDetail_IfIsDeleteIsTrueCallsDeleteMethodWithListItemId() {
+                // arrange
+                var fakeCustomer = new UserSelectedContext();
+                var fakeUser = new UserProfile();
+                var farkModel = new ListModel() {
+                    ListId = 1,
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    Name = "Custom",
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {
+                            Active = true,
+                            ListItemId = 2,
+                            IsDelete = true,
+                            CatalogId = "FDF",
+                            ItemNumber = "123456"
+                        }
+                    }
+                };
+
+                var detail = new Mock<ICustomListDetailsRepository>();
+                var header = new Mock<ICustomListHeadersRepository>();
+                var shares = new Mock<ICustomListSharesRepository>();
+                var logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                // act
+                var results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
+
+                // assert
+                detail.Verify(x => x.DeleteCustomListDetails(It.Is<long>(d => d.Equals(2))), Times.Never);
+            }
+
+            [Fact]
             public void GoodHeaderGoodDetail_CallsSaveDetailsTwice() {
                 // arrange
                 var fakeCustomer = new UserSelectedContext();

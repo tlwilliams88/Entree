@@ -695,7 +695,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
@@ -911,7 +911,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 var results = testunit.ReadUserList(fakeUser, testcontext, testHeadersOnly);
 
                 // assert
-                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
+                mockDependents.MandatoryItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
 
             [Fact]
