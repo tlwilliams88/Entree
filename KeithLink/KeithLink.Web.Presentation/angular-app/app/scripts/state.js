@@ -319,21 +319,24 @@ angular.module('bekApp')
                 favoritesList = $filter('filter')(ListService.listHeaders, { type: 1 }),
                 customList = $filter('filter')(ListService.listHeaders, { type: 0 });
 
-            // Uses Contract List if available
-            listToBeUsed.listId = contractList.length > 0 ? contractList[0].listid : historyList[0].listid;
-            listToBeUsed.listType = contractList.length > 0 ? contractList[0].type : historyList[0].type;
-
-            // Uses History List if available
-            listToBeUsed.listId = contractList.length < 0 && historyList.length > 0 ? historyList[0].listid : contractList[0].listid;
-            listToBeUsed.listType = contractList.length < 0 && historyList.length > 0 ? historyList[0].type : contractList[0].type;
-
-            // Uses Favorites List if available
-            listToBeUsed.listId = historyList.length < 0 && favoritesList.length > 0 ? favoritesList[0].listid : historyList[0].listid;
-            listToBeUsed.listType = historyList.length < 0 && favoritesList.length > 0 ? favoritesList[0].type : historyList[0].type;
-
-            // Uses Custom List if available
-            listToBeUsed.listId = favoritesList.length < 0 && customList.length > 0 ? customList[0].listid : favoritesList[0].listid;
-            listToBeUsed.listType = favoritesList.length < 0 && customList.length > 0 ? customList[0].type : favoritesList[0].type;
+            if(contractList.length > 0){
+              listToBeUsed = contractList[0];
+            }
+            else if(historyList.length > 0){
+              listToBeUsed = historyList[0];
+            }
+            else if(favoritesList.length > 0){
+              listToBeUsed = favoritesList[0];
+            }
+            else if(customList.length > 0){
+              listToBeUsed = customList[0];
+            }
+             else{
+              var defaultList = {type:1};
+              return ListService.createList([], defaultList).then(function(resp){
+                return ListService.updateListPermissions(resp);
+              });
+            }
           }
 
           if(listToBeUsed.listId == 'nonbeklist'){

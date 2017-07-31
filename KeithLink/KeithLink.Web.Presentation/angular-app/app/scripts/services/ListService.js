@@ -145,6 +145,7 @@ angular.module('bekApp')
         }
 
         list.permissions = permissions;
+        return list;
       }
 
       var Service = {
@@ -185,9 +186,11 @@ angular.module('bekApp')
           }
           return List.get(params).$promise.then(function(lists) {
             var listHeaders = lists.successResponse;
-            listHeaders.forEach(function(list) {
-              updateListPermissions(list);
-            });
+            if(listHeaders != null){
+              listHeaders.forEach(function(list) {
+                updateListPermissions(list);
+              });
+            }
             angular.copy(listHeaders, Service.lists);
             Service.listHeaders = listHeaders;
             return listHeaders;
