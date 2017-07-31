@@ -733,6 +733,7 @@ angular.module('bekApp')
     $scope.addNewItemToList = function(){
       var newItem = [],
           item = {
+            active: true,
             brand:null,
             caseprice:0,
             each:false,
