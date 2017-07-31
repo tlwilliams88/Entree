@@ -613,7 +613,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.inventoryreport', {
-      url: '/reports/inventory/?listid/',
+      url: '/reports/inventory/:listid/',
       templateUrl: 'views/inventoryreport.html',
       controller: 'InventoryReportController',
       resolve: {

@@ -528,6 +528,10 @@ angular.module('bekApp')
 
           newList.items = newItems.map(Service.remapItems);
 
+          newList.items.forEach(function(item){
+              item.active = true;
+          })
+
           if (params.type === 9) {
             newList.name = 'Mandatory';
           } else if (params.type === 10) {
@@ -673,6 +677,7 @@ angular.module('bekApp')
           item.position = 0;
           item.label = null;
           item.parlevel = null;
+          item.active = true;
 
           if(list) {
               return List.addItem({
@@ -739,11 +744,12 @@ angular.module('bekApp')
           var newItems = [];
           items.forEach(function(item) {
             newItems.push({
-              itemnumber: item.itemnumber,
-              each: item.each,
-              catalog_id: item.catalog_id,
-              category: item.category,
-              label: item.label
+                active: true,
+                itemnumber: item.itemnumber,
+                each: item.each,
+                catalog_id: item.catalog_id,
+                category: item.category,
+                label: item.label
             });
           });
 
@@ -809,8 +815,8 @@ angular.module('bekApp')
         },
 
         addItemToFavorites: function(item) {
-          $analytics.eventTrack('Add Favorite', {  category: 'Lists'});
-          return Service.addItem(Service.getFavoritesList(), item, true);
+            $analytics.eventTrack('Add Favorite', {  category: 'Lists'});
+            return Service.addItem(Service.getFavoritesList(), item, true);
         },
 
         /*****************************
@@ -820,6 +826,9 @@ angular.module('bekApp')
         createMandatoryList: function(items) {
           // Type 9 == Mandatory
           var params = { type: 9 };
+          items.forEach(function(item){
+              item.active = true;
+          })
           return Service.createList(items, params);
         },
 
@@ -846,6 +855,9 @@ angular.module('bekApp')
         createRecommendedList: function(items) {
           // Type = 10 - Recommended list type that needs to be passed in
           var params = { type: 10 };
+          items.forEach(function(item){
+              item.active = true;
+          })
           return Service.createList(items, params);
         },
 
