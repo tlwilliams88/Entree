@@ -145,6 +145,7 @@ angular.module('bekApp')
         }
 
         list.permissions = permissions;
+        return list;
       }
 
       var Service = {
@@ -185,9 +186,11 @@ angular.module('bekApp')
           }
           return List.get(params).$promise.then(function(lists) {
             var listHeaders = lists.successResponse;
-            listHeaders.forEach(function(list) {
-              updateListPermissions(list);
-            });
+            if(listHeaders != null){
+              listHeaders.forEach(function(list) {
+                updateListPermissions(list);
+              });
+            }
             angular.copy(listHeaders, Service.lists);
             Service.listHeaders = listHeaders;
             return listHeaders;
@@ -528,6 +531,10 @@ angular.module('bekApp')
 
           newList.items = newItems.map(Service.remapItems);
 
+          newList.items.forEach(function(item){
+              item.active = true;
+          })
+
           if (params.type === 9) {
             newList.name = 'Mandatory';
           } else if (params.type === 10) {
@@ -673,6 +680,7 @@ angular.module('bekApp')
           item.position = 0;
           item.label = null;
           item.parlevel = null;
+          item.active = true;
 
           if(list) {
               return List.addItem({
@@ -739,11 +747,12 @@ angular.module('bekApp')
           var newItems = [];
           items.forEach(function(item) {
             newItems.push({
-              itemnumber: item.itemnumber,
-              each: item.each,
-              catalog_id: item.catalog_id,
-              category: item.category,
-              label: item.label
+                active: true,
+                itemnumber: item.itemnumber,
+                each: item.each,
+                catalog_id: item.catalog_id,
+                category: item.category,
+                label: item.label
             });
           });
 
@@ -821,6 +830,9 @@ angular.module('bekApp')
         createMandatoryList: function(items) {
           // Type 9 == Mandatory
           var params = { type: 9 };
+          items.forEach(function(item){
+              item.active = true;
+          })
           return Service.createList(items, params);
         },
 
@@ -847,6 +859,9 @@ angular.module('bekApp')
         createRecommendedList: function(items) {
           // Type = 10 - Recommended list type that needs to be passed in
           var params = { type: 10 };
+          items.forEach(function(item){
+              item.active = true;
+          })
           return Service.createList(items, params);
         },
 

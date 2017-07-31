@@ -215,10 +215,10 @@ angular.module('bekApp')
           .then($scope.addRow);
       };
 
-      $scope.addItemsFromList = function(listId, listType) {
+      $scope.addItemsFromList = function(list) {
         $scope.successMessage = '';
 
-        if(listId == 'Custom Inventory'){
+        if(list.listid == 'Custom Inventory'){
           ListService.getCustomInventoryList().then(function(list){
             $scope.successMessage = 'Added ' + list.items.length + ' items from ' + list.name + ' to report.';
             $scope.inventoryForm.$setDirty();
@@ -230,11 +230,11 @@ angular.module('bekApp')
             $scope.saveReport();
           });
         } else {
-            var list = {
-                listId: listId,
-                listType: listType
+            var report = {
+                listId: list.listid,
+                listType: list.type
             }
-            ListService.getListWithItems(list).then(function(listFound) {
+            ListService.getListWithItems(report).then(function(listFound) {
             $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
             $scope.inventoryForm.$setDirty();
             listFound.items.forEach(function(item) {
@@ -268,6 +268,7 @@ angular.module('bekApp')
 
         listPagingModel = new ListPagingModel(
           $scope.report.listid,
+          $scope.report.type,
           init,
           null,
           startLoading,
@@ -314,6 +315,8 @@ angular.module('bekApp')
             });
             highestDuplicate++;
             report.name = report.name.concat(' ('+(highestDuplicate)+')');
+            $scope.report = report;
+            $scope.reports.push($scope.report);
           }
         }
 
@@ -362,18 +365,18 @@ angular.module('bekApp')
         $scope.report.isRenaming = false;
       };
 
-      $scope.deleteReport = function(listId, listType){
+      $scope.deleteReport = function(list){
           List.delete({
-            listId: listId,
-            listType: listType
+            listId: list.listid,
+            listType: list.type
           }).$promise.then(function() {
             $scope.reports.forEach(function(report, index){
-              if(report.listid === listId){
+              if(report.listid === list.listid){
                 $scope.reports.splice(index,1);
               }
             });
-            var rep = ($scope.reports.length > 0) ? $scope.reports[$scope.reports.length - 1]: 'newReport';
-            $state.go('menu.inventoryreport', {listid: rep.listid, type: rep.type});
+            var rep = ($scope.reports.length > 0) ? $scope.reports[$scope.reports.length - 1].listid : 'newReport';
+            $state.go('menu.inventoryreport', {listid: rep});
           });
       };
 

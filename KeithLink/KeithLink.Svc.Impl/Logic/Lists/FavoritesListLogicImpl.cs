@@ -107,6 +107,20 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
             }
         }
 
+        public long CreateList(UserProfile user, UserSelectedContext catalogInfo) {
+            FavoritesListHeader header = _headerRepo.GetFavoritesList(user.UserId, catalogInfo);
+
+            if (header == null) {
+                // create the header
+                return _headerRepo.SaveFavoriteListHeader(new FavoritesListHeader() {
+                                                                                        BranchId = catalogInfo.BranchId,
+                                                                                        CustomerNumber = catalogInfo.CustomerId,
+                                                                                        UserId = user.UserId
+                                                                                    });
+            } else {
+                return header.Id;
+            }
+        }
         #endregion
     }
 }

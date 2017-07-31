@@ -448,7 +448,7 @@ angular.module('bekApp')
       $scope.userProfile = SessionService.userProfile;
       $scope.currentCustomer = LocalStorage.getCurrentCustomer();
 
-      $scope.aggregateCount = ($scope.brands.selected.length + $scope.itemspecs.selected.length + $scope.temp_zones.selected.length + $scope.manufacturers.selected.length + $scope.parentcategories.selected.length + $scope.subcategories.selected.length + $scope.specialfilters.selected.length);
+      $scope.aggregateCount = ($scope.brands.selected.length + $scope.itemspecs.selected.length + $scope.temp_zones.selected.length + $scope.manufacturers.selected.length + $scope.dietary.selected.length + $scope.parentcategories.selected.length + $scope.subcategories.selected.length + $scope.specialfilters.selected.length);
 
       if($scope.aggregateCount !== 0){
         facets = ProductService.getFacets(
@@ -602,15 +602,7 @@ angular.module('bekApp')
       var selectedCategory;
       // set the $scope.aggregates object using the response data
       if(facets){
-        var removeSpecialFilters = true;
-        if(facets.specialfilters != null ){
-          facets.specialfilters.forEach(function(filter){
-            if(filter.count !== '?'){
-              removeSpecialFilters = false;
-            }
-          });
-          facets.specialfilters = (removeSpecialFilters) ? [] : removeSpecialFilters;
-        }
+
         $scope.brands.available = facets.brands;
         $scope.manufacturers.available = facets.mfrname;
         $scope.dietary.available = facets.dietary;
