@@ -200,7 +200,7 @@
               id="specialFilterId_{{specialFilter.name}}"
               ng-checked=" specialfilters.selected.indexOf(specialFilter.name) > -1"
               ng-click="toggleSelection(false,  specialfilters.selected, specialFilter.name)">
-              <label for="specialFilterId_{{specialFilter.name}}">{{::specialFilter.displayname}} <span ng-show="specialFilter.count > 0">({{specialFilter.count}})</label>
+              <label for="specialFilterId_{{specialFilter.name}}">{{::specialFilter.displayname}} <span ng-show="specialFilter.count != '?'">({{specialFilter.count}})</label>
             </div>
           </div>
         </accordion-group>
@@ -388,7 +388,7 @@
                   ng-checked=" specialfilters.selected.indexOf(spec.name) > -1"
                   ng-click="toggleSelection(false,  specialfilters.selected, specialFilter.name)"
                   class="input-margin-5px">
-                <label>{{::specialFilter.desc}} <span>({{specialFilter.count}})</span></label>
+                <label>{{::specialFilter.desc}} <span ng-show="specialFilter.count != '?'">({{specialFilter.count}})</span></label>
               </li>
             </ul>
         </div>
