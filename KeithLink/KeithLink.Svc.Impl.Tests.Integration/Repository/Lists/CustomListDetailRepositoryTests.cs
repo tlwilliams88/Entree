@@ -295,6 +295,24 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
+            public void GoodDetail_DeleteSetsExpectedActive() {
+                // arrange
+                var detail = MakeDetail();
+                var repo = MakeRepo();
+                var expected = 0;
+
+                // act
+                var id = repo.SaveCustomListDetail(detail);
+                repo.DeleteCustomListDetails(id);
+                var results = repo.GetCustomListDetails(detail.HeaderId);
+
+                // assert
+                results.Count(x => x.Id.Equals(id))
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
             public void GoodDetail_SavesExpectedActive() {
                 // arrange
                 var detail = MakeDetail();
