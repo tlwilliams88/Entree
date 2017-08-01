@@ -330,6 +330,16 @@ angular.module('bekApp')
               $scope.successMessage = '';
               $scope.errorMessage = '';
               $scope.inventoryForm.$setPristine();
+              $scope.report = response.successResponse;
+
+              $scope.report.items.forEach(function(item){
+                  item.price = PricingService.getUnitPriceForItem(item);
+                  item.extprice = PricingService.getPriceForItem(item);
+                  refreshSubtotal()
+                  if (item.quantity) {
+                    item.quantity = parseFloat(item.quantity);
+                  }
+              })
 
               toaster.pop('success', 'Successfully saved report.');
             }, function() {
@@ -343,6 +353,11 @@ angular.module('bekApp')
               $scope.errorMessage = '';
               $scope.inventoryForm.$setPristine();
               $scope.report = response.successResponse;
+
+              $state.transitionTo('menu.inventoryreport',
+                  {listid: $scope.report.listid},
+                  {location: true, reload: false, notify: false}
+              );
 
               toaster.pop('success', 'Successfully saved report.');
             }, function() {
