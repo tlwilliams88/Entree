@@ -289,7 +289,11 @@ angular.module('bekApp')
               pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'},
               listToBeUsed = {},
-              listHeader = {};
+              listHeader = {},
+              selectedList = {
+                  listId: $stateParams.listId,
+                  listType: $stateParams.listType
+              };
 
           ListService.listHeaders.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){

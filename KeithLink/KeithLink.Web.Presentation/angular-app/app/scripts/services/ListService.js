@@ -584,13 +584,15 @@ angular.module('bekApp')
           }).then(function(response) {
             var data = response.data.successResponse;
 
-            if (response.data.isSuccess && data.success) {
+            if (data.successResponse.isSuccess == true && data.success == true) {
               // add new list to cache
               var list = {
-                listid: data.listid,
+                listid: data.list.listid,
+                type: data.list.type,
                 name: 'Imported List'
               };
               Service.lists.push(list);
+              Service.listHeaders.push(list);
 
               // display messages
               if (data.warningmsg) {

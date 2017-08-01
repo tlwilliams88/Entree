@@ -218,7 +218,7 @@ angular.module('bekApp')
       $scope.addItemsFromList = function(list) {
         $scope.successMessage = '';
 
-        if(list.listid == 'Custom Inventory'){
+        if(list == 'Custom Inventory'){
           ListService.getCustomInventoryList().then(function(list){
             $scope.successMessage = 'Added ' + list.items.length + ' items from ' + list.name + ' to report.';
             $scope.inventoryForm.$setDirty();
@@ -326,10 +326,20 @@ angular.module('bekApp')
         var promise;
         var creatingList = false;
         if (report.listid) {
-          List.update({}, report).$promise.then(function() {
+          List.update({}, report).$promise.then(function(response) {
               $scope.successMessage = '';
               $scope.errorMessage = '';
               $scope.inventoryForm.$setPristine();
+              $scope.report = response.successResponse;
+
+              $scope.report.items.forEach(function(item){
+                  item.price = PricingService.getUnitPriceForItem(item);
+                  item.extprice = PricingService.getPriceForItem(item);
+                  refreshSubtotal()
+                  if (item.quantity) {
+                    item.quantity = parseFloat(item.quantity);
+                  }
+              })
 
               toaster.pop('success', 'Successfully saved report.');
             }, function() {
@@ -338,10 +348,16 @@ angular.module('bekApp')
         } else {
           $analytics.eventTrack('Run Inventory Valuation', {  category: 'Reports'});
           creatingList = true;
-          List.save({ type: 'InventoryValuation' }, report).$promise.then(function() {
+          List.save({ type: 'InventoryValuation' }, report).$promise.then(function(response) {
               $scope.successMessage = '';
               $scope.errorMessage = '';
               $scope.inventoryForm.$setPristine();
+              $scope.report = response.successResponse;
+
+              $state.transitionTo('menu.inventoryreport',
+                  {listid: $scope.report.listid},
+                  {location: true, reload: false, notify: false}
+              );
 
               toaster.pop('success', 'Successfully saved report.');
             }, function() {
