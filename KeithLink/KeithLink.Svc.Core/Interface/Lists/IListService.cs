@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
                              ListType type,
                              ListModel list);
 
-        void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type, ListModel list);
+        ListModel UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type, ListModel list);
 
         List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel);
 

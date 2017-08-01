@@ -410,40 +410,42 @@ namespace KeithLink.Svc.Impl.Service.List
             return new RecentNonBEKList() { Catalog = catalog, Items = returnItems };
         }
 
-        public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                             ListModel list)
-        {
-            switch (type)
-            {
+        public ListModel UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                    ListModel list) {
+            ListModel retVal = null;
+
+            switch (type) {
                 case ListType.Worksheet:
                 case ListType.Contract:
                     // cannot add items to contracts or worksheets
                     break;
                 case ListType.Favorite:
-                    _favoritesLogic.SaveList(user, catalogInfo, list);
+                    retVal = _favoritesLogic.SaveList(user, catalogInfo, list);
                     break;
                 case ListType.Reminder:
-                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
+                    retVal = _reminderItemsLogic.SaveList(user, catalogInfo, list);
                     break;
                 //case ListType.RecommendedItems:
                 //    _recommendedItemsLogic.SaveDetail(catalogInfo, item.ToRecommendedItemsListDetail(headerId));
                 //    break;
                 case ListType.Mandatory:
-                    _mandatoryItemsLogic.SaveList(user, catalogInfo, list);
+                    retVal = _mandatoryItemsLogic.SaveList(user, catalogInfo, list);
                     break;
                 case ListType.Custom:
-                    _customListLogic.SaveList(user, catalogInfo, list);
+                    retVal = _customListLogic.SaveList(user, catalogInfo, list);
                     break;
                 //case ListType.Recent:
                 //    break;
                 //case ListType.Notes:
                 //    break;
                 case ListType.InventoryValuation:
-                    _inventoryValuationLogic.SaveList(user, catalogInfo, list);
+                    retVal = _inventoryValuationLogic.SaveList(user, catalogInfo, list);
                     break;
-                    //case ListType.RecentlyOrdered:
-                    //    break;
+                //case ListType.RecentlyOrdered:
+                //    break;
             }
+
+            return retVal;
         }
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
