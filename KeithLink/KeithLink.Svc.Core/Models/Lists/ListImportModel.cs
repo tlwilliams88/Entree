@@ -12,10 +12,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 	[DataContract]
 	public class ListImportModel
 	{
-        [DataMember(Name="listid")]
-        public long? ListId { get; set; }
-        [DataMember(Name = "listtype")]
-        public ListType ListType { get; set; }
+        [DataMember(Name = "list")]
+        public ListModel List { get; set; }
         [DataMember(Name="success")]
         public bool Success { get; set; }
 		[DataMember(Name="errormsg")]
