@@ -675,7 +675,7 @@
               <td class="visible-print hidden-drag" ng-if="(selectedList.permissions.canSeeQtylevel)">
                 {{item.quantity}}
               </td>
-              <td class="nowrap hidden-print large-icon icon-col" ng-click="$event.stopPropagation()">
+              <td class="nowrap hidden-print large-icon icon-col hidden-drag" ng-click="$event.stopPropagation()">
                 <div
                   id="optionsdropdown"
                   ng-if="!item.activeElement && item.isvalid"
