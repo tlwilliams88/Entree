@@ -314,11 +314,29 @@ angular.module('bekApp')
           listToBeUsed.listType = listHeader ? listHeader.type : listToBeUsed.listType;
 
           if((isNaN(listToBeUsed.listId) || !listHeader) && listToBeUsed.listId != 'nonbeklist'){
-            var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
-                favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
+            var contractList = $filter('filter')(ListService.listHeaders, { type: 2 }),
+                historyList = $filter('filter')(ListService.listHeaders, { type: 5 }),
+                favoritesList = $filter('filter')(ListService.listHeaders, { type: 1 }),
+                customList = $filter('filter')(ListService.listHeaders, { type: 0 });
 
-            listToBeUsed.listId =  historyList.length ? historyList[0].listid : favoritesList[0].listid;
-            listToBeUsed.listType = historyList.length ? historyList[0].type : favoritesList[0].type;
+            if(contractList.length > 0){
+              listToBeUsed = contractList[0];
+            }
+            else if(historyList.length > 0){
+              listToBeUsed = historyList[0];
+            }
+            else if(favoritesList.length > 0){
+              listToBeUsed = favoritesList[0];
+            }
+            else if(customList.length > 0){
+              listToBeUsed = customList[0];
+            }
+             else{
+              var defaultList = {type:1};
+              return ListService.createList([], defaultList).then(function(resp){
+                return ListService.updateListPermissions(resp);
+              });
+            }
           }
 
           if(listToBeUsed.listId == 'nonbeklist'){
@@ -598,7 +616,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.inventoryreport', {
-      url: '/reports/inventory/?listid/',
+      url: '/reports/inventory/:listid/',
       templateUrl: 'views/inventoryreport.html',
       controller: 'InventoryReportController',
       resolve: {

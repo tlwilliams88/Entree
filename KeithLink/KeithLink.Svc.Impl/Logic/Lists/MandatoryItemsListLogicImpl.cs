@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Lists {
     public class MandatoryItemsListLogicImpl : IMandatoryItemsListLogic {
@@ -23,9 +24,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         #endregion
 
         #region methods
-        public List<string> GetMandatoryItemNumbers(UserSelectedContext catalogInfo) {
+        public List<string> GetMandatoryItemNumbers(UserProfile profile, UserSelectedContext catalogInfo) {
             List<string> returnValue = new List<string>();
-            ListModel list = ReadList(catalogInfo, false);
+            ListModel list = ReadList(profile, catalogInfo, false);
 
             if (list != null)
                 returnValue.AddRange(list.Items.Select(i => i.ItemNumber)
@@ -35,10 +36,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
         }
 
         public ListModel GetListModel(UserProfile profile, UserSelectedContext catalogInfo, long id) {
-            return ReadList(catalogInfo, false);
+            return ReadList(profile, catalogInfo, false)
+                   .SetUserSpecificProperties(profile);
         }
 
-        public ListModel ReadList(UserSelectedContext catalogInfo, bool headerOnly) {
+        public ListModel ReadList(UserProfile profile, UserSelectedContext catalogInfo, bool headerOnly) {
             MandatoryItemsListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
             List<MandatoryItemsListDetail> items = null;
 
@@ -46,7 +48,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 headerOnly == false)
                 items = _detailsRepo.GetAllByHeader(header.Id);
 
-            return header.ToListModel(items);
+            return header.ToListModel(items)
+                         .SetUserSpecificProperties(profile);
         }
 
         public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
@@ -65,7 +68,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                     SaveDetail(catalogInfo, detail);
                 }
             }
-            return ReadList(catalogInfo, false);
+            return ReadList(user, catalogInfo, false);
         }
 
         public void SaveDetail(UserSelectedContext catalogInfo, MandatoryItemsListDetail detail) {

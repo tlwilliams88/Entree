@@ -431,6 +431,31 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
+        public class CreateList
+        {
+            // works differently if you want to verify a mock is called; we can't go through autofac
+            [Fact]
+            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime()
+            {
+                // arrange
+                Mock<IFavoriteListHeadersRepository> mockHeaderRepo = new Mock<IFavoriteListHeadersRepository>();
+                Mock<IFavoriteListDetailsRepository> mockDetailsRepo = new Mock<IFavoriteListDetailsRepository>();
+                FavoritesListLogicImpl testunit = new FavoritesListLogicImpl(mockDetailsRepo.Object, mockHeaderRepo.Object);
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                UserProfile fakeUser = new UserProfile();
+
+                // act
+                testunit.CreateList(fakeUser, testcontext);
+
+                // assert - Always returns what is setup provided the mock is called
+                mockHeaderRepo.Verify(h => h.SaveFavoriteListHeader(It.IsAny<FavoritesListHeader>()), Times.Once(), "Error updating");
+            }
+        }
+
         public class Save {
 // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]

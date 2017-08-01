@@ -73,10 +73,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                int emptylist = 0;
+
+                var emptylist = 0;
+                var fakeUser = new UserProfile();
 
                 // act
-                List<string> results = testunit.GetMandatoryItemNumbers(testcontext);
+                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
+
 
                 // assert
                 results.Count()
@@ -92,10 +95,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                int emptylist = 0;
+
+                var emptylist = 0;
+                var fakeUser = new UserProfile();
 
                 // act
-                List<string> results = testunit.GetMandatoryItemNumbers(testcontext);
+                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.Count()
@@ -111,10 +116,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                string expectedItem = "123456";
+
+                var expectedItem = "123456";
+                var fakeUser = new UserProfile();
 
                 // act
-                List<string> results = testunit.GetMandatoryItemNumbers(testcontext);
+                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.First()
@@ -193,9 +200,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
+                var fakeUser = new UserProfile();
 
                 // act
-                ListModel results = testunit.ReadList(testcontext, false);
+                var results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -210,9 +218,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
+                var fakeUser = new UserProfile();
 
                 // act
-                ListModel results = testunit.ReadList(testcontext, false);
+                var results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -227,10 +236,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                int expected = 1;
+
+                var expected = 1;
+                var fakeUser = new UserProfile();
 
                 // act
-                ListModel results = testunit.ReadList(testcontext, false);
+                var results = testunit.ReadList(fakeUser, testcontext, false);
+
 
                 // assert
                 results.ListId

@@ -55,6 +55,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public List<ListModel> ReadLists(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly) {
             List<CustomListHeader> headers = _headersRepo.GetCustomListHeadersByCustomer(catalogInfo);
+            var shares = _sharesRepo.GetCustomListSharesByCustomer(catalogInfo);
+            if (shares != null) {
+                if (headers == null) {
+                    headers = new List<CustomListHeader>();
+                }
+                foreach (var share in shares) {
+                    headers.Add(_headersRepo.GetCustomListHeader(share.HeaderId));
+                }
+            }
             List<ListModel> list = new List<ListModel>();
 
             if(headers != null) {
