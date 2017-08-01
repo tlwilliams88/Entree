@@ -584,7 +584,7 @@ angular.module('bekApp')
           }).then(function(response) {
             var data = response.data.successResponse;
 
-            if (data.successResponse.isSuccess == true && data.success == true) {
+            if (response.data.isSuccess == true && data.success == true) {
               // add new list to cache
               var list = {
                 listid: data.list.listid,
