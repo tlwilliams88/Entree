@@ -533,18 +533,16 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [ApiKeyedRoute("list/")]
         public OperationReturnModel<ListModel> Put(ListModel updatedList) {
             OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
-            try
-            {
-                _listService.UpdateList(this.AuthenticatedUser, this.SelectedUserContext, updatedList.Type, updatedList);
-                ret.SuccessResponse = updatedList;
+            
+            try {
+                ret.SuccessResponse = _listService.UpdateList(this.AuthenticatedUser, this.SelectedUserContext, updatedList.Type, updatedList);
                 ret.IsSuccess = true;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
                 _elRepo.WriteErrorLog("PutList", ex);
             }
+
             return ret;
         }
 
