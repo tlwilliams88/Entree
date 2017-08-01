@@ -24,6 +24,9 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "is_contract_list")]
         public bool IsContractList { get; set; }
 
+	    [DataMember(Name = "has_contract_items")]
+	    public bool HasContractItems { get; set; }
+
         [DataMember(Name = "read_only")]
         public bool ReadOnly { get; set; }
 
@@ -47,16 +50,19 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember(Name = "isrecommended")]
 		public bool IsRecommended { get; set; }
-		
+
+	    [DataMember(Name = "iscustominventory")]
+	    public bool IsCustomInventory { get; set; }
+
         public string BranchId { get; set; }
+
+	    [DataMember(Name = "customernumber")]
+	    public string CustomerNumber { get; set; }
 
 		[DataMember]
 		public ListType Type { get; set; }
 
 		[DataMember(Name = "items")]
 		public PagedResults<ListItemModel> Items { get; set; }
-
-
-		
 	}
 }
