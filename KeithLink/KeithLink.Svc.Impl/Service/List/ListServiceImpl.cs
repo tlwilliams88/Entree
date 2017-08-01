@@ -440,6 +440,9 @@ namespace KeithLink.Svc.Impl.Service.List
                 //    break;
                 case ListType.InventoryValuation:
                     retVal = _inventoryValuationLogic.SaveList(user, catalogInfo, list);
+
+                    FillOutProducts(user, catalogInfo, retVal, true);
+
                     break;
                 //case ListType.RecentlyOrdered:
                 //    break;
@@ -604,6 +607,12 @@ namespace KeithLink.Svc.Impl.Service.List
                     item.Upc = product.UPC;
                 }
             });
+        }
+
+        private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, ListModel returnList, bool getprices) {
+            List<ListModel> tempList = new List<ListModel>() { returnList };
+
+            FillOutProducts(user, catalogInfo, tempList, getprices);
         }
 
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)
