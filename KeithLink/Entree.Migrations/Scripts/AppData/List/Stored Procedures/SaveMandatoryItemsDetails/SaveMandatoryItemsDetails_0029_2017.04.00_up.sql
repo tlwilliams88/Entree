@@ -1,7 +1,7 @@
 CREATE PROCEDURE [List].[SaveMandatoryItemByCustomerNumberBranch] 
     @Id                             BIGINT,
     @HeaderId                       BIGINT,
-    @ItemNumber                     CHAR (6),
+    @ItemNumber                     VARCHAR (6),
     @Each                           BIT,
     @CatalogId                      VARCHAR (10),
     @Active                         BIT,

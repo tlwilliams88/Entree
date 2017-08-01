@@ -1,7 +1,7 @@
 CREATE PROCEDURE [List].[SaveFavoriteDetails]
     @Id                         BIGINT,
     @HeaderId                   BIGINT,
-    @ItemNumber                 CHAR(6),
+    @ItemNumber                 VARCHAR(6),
     @LineNumber	                INT,
     @Each                       BIT             = NULL,
     @Label                      NVARCHAR(150)   = NULL,
