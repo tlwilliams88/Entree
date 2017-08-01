@@ -49,7 +49,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         public long SaveCustomListDetail(CustomListDetail model) {
             DynamicParameters parms = new DynamicParameters();
             parms.Add(PARMNAME_ID, model.Id);
-            parms.Add(PARMNAME_ACTIVE, true);
+            parms.Add(PARMNAME_ACTIVE, model.Active);
             parms.Add(PARMNAME_CATALOG, model.CatalogId);
             parms.Add(PARMNAME_EACH, model.Each);
             parms.Add(PARMNAME_HEADERID, model.HeaderId);

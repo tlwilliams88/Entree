@@ -135,6 +135,25 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             {
                 var mock = new Mock<IFavoritesListLogic>();
 
+                mock.Setup(f => f.GetListModel(It.IsAny<UserProfile>(), 
+                                               It.IsAny<UserSelectedContext>(), 
+                                               It.Is<long>(i => i == 1)))
+                    .Returns(new ListModel() {
+                        BranchId = "FUT",
+                        CustomerNumber = "123456",
+                        Items = new List<ListItemModel>() {
+                            new ListItemModel() {
+                                ItemNumber = "123456"
+                            },
+                            new ListItemModel() {
+                                ItemNumber = "234567"
+                            },
+                            new ListItemModel() {
+                                ItemNumber = "345678"
+                            }
+                        }
+                    });
+
                 return mock;
             }
 
@@ -1050,6 +1069,33 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
                 // assert
                 mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
+            }
+
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedItemWithExpectedCategory()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: true, mockDependents: ref mockDependents);
+                var fakeUser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var expectedItemNumber = "123456";
+                var expectedCategory = "Fake Category";
+                var testListType = ListType.Contract;
+                var testId = (long)0;
+
+                // act
+                var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
+
+                // assert
+                results.Items.First().Category
+                       .Should()
+                       .Be(expectedCategory);
             }
 
             [Fact]
@@ -2743,6 +2789,118 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
                 // assert
                 mockDependents.CustomInventoryItemsRepository.Verify(m => m.GetItemsByItemIds(It.IsAny<List<long>>()), Times.Once, "not called");
+            }
+        }
+        #endregion
+
+        #region DeleteItem
+        public class DeleteItem {
+            [Fact]
+            public void GoodItemNumber_DeletesTheSpecifiedFavoriteItem() {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testUnit = MakeTestsService(false, ref mockDependents);
+                var fakeUser = new UserProfile {
+                    UserId = new Guid("b514a6c2-6f07-48f1-a26c-650f28337b01")
+                };
+                var fakeCustomer = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeType = ListType.Favorite;
+                var fakeId = 1;
+                var fakeItemNumber = "234567";
+
+                // act
+                testUnit.DeleteItem(fakeUser, fakeCustomer,fakeType, fakeId, fakeItemNumber);
+
+                // assert
+                mockDependents.FavoritesListLogic.Verify(f => f.Save(It.IsAny<UserProfile>(), 
+                                                                     It.IsAny<UserSelectedContext>(),
+                                                                     It.Is<FavoritesListDetail>(d => d.ItemNumber == fakeItemNumber)),
+                                                              Times.Once);
+            }
+
+            [Fact]
+            public void BadItemNumber_DoesNotCallSaveItem() {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testUnit = MakeTestsService(false, ref mockDependents);
+                var fakeUser = new UserProfile {
+                    UserId = new Guid("b514a6c2-6f07-48f1-a26c-650f28337b01")
+                };
+                var fakeCustomer = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeType = ListType.Favorite;
+                var fakeId = 1;
+                var fakeItemNumber = "999999";
+
+                // act
+                testUnit.DeleteItem(fakeUser, fakeCustomer, fakeType, fakeId, fakeItemNumber);
+
+                // assert
+                mockDependents.FavoritesListLogic.Verify(f => f.Save(It.IsAny<UserProfile>(),
+                                                                     It.IsAny<UserSelectedContext>(),
+                                                                     It.IsAny<FavoritesListDetail>()),
+                                                         Times.Never);
+            }
+        }
+        #endregion
+
+        #region DeleteItems
+        public class DeleteItems {
+            [Fact]
+            public void GoodItemNumbers_DeletesTheSpecifiedFavoriteItems() {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testUnit = MakeTestsService(false, ref mockDependents);
+                var fakeUser = new UserProfile {
+                                                   UserId = new Guid("b514a6c2-6f07-48f1-a26c-650f28337b01")
+                                               };
+                var fakeCustomer = new UserSelectedContext() {
+                                                                 BranchId = "FUT",
+                                                                 CustomerId = "123456"
+                                                             };
+                var fakeType = ListType.Favorite;
+                var fakeId = 1;
+                var fakeItemNumbers = new List<string> { "234567", "345678"};
+
+                // act
+                testUnit.DeleteItems(fakeUser, fakeCustomer, fakeType, fakeId, fakeItemNumbers);
+                
+                // assert
+                mockDependents.FavoritesListLogic.Verify(f => f.Save(It.IsAny<UserProfile>(),
+                                                                     It.IsAny<UserSelectedContext>(),
+                                                                     It.Is<FavoritesListDetail>(d => fakeItemNumbers.Contains(d.ItemNumber) )),
+                                                         Times.Exactly(2));
+            }
+
+            [Fact]
+            public void EmptyItemNumberList_DoesNotCallTheSaveMethod() {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testUnit = MakeTestsService(false, ref mockDependents);
+                var fakeUser = new UserProfile {
+                                                   UserId = new Guid("b514a6c2-6f07-48f1-a26c-650f28337b01")
+                                               };
+                var fakeCustomer = new UserSelectedContext() {
+                                                                 BranchId = "FUT",
+                                                                 CustomerId = "123456"
+                                                             };
+                var fakeType = ListType.Favorite;
+                var fakeId = 1;
+                var fakeItemNumbers = new List<string> ();
+
+                // act
+                testUnit.DeleteItems(fakeUser, fakeCustomer, fakeType, fakeId, fakeItemNumbers);
+
+                // assert
+                mockDependents.FavoritesListLogic.Verify(f => f.Save(It.IsAny<UserProfile>(),
+                                                                     It.IsAny<UserSelectedContext>(),
+                                                                     It.IsAny<FavoritesListDetail>()),
+                                                         Times.Never);
             }
         }
         #endregion

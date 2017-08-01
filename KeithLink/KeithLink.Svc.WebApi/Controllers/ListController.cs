@@ -583,6 +583,54 @@ namespace KeithLink.Svc.WebApi.Controllers {
         }
 
         /// <summary>
+        /// Delete multiple list items
+        /// </summary>
+        /// <param name="type">list type</param>
+        /// <param name="listId">the header id</param>
+        /// <param name="itemNumbers">list of item numbers</param>
+        [HttpDelete]
+        [ApiKeyedRoute("list/{type}/{listId}/item")]
+        public OperationReturnModel<string> DeleteItem(ListType type, long listId, List<string> itemNumbers) {
+            OperationReturnModel<string> ret = new OperationReturnModel<string>();
+            try {
+                _listService.DeleteItems(AuthenticatedUser, SelectedUserContext, type, 
+                                         listId, itemNumbers);
+
+                ret.SuccessResponse = null;
+                ret.IsSuccess = true;
+            } catch(Exception ex) {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("DeleteItem", ex);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// Delete itemnumbers from a specific list
+        /// </summary>
+        /// <param name="type">list type</param>
+        /// <param name="Id">List Id</param>
+        /// <param name="itemNumber">Itemnumber to delete</param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ApiKeyedRoute("list/{type}/{Id}/item/{itemNumber}")]
+        public OperationReturnModel<bool> DeleteItemNumberFromList(ListType type, long Id, string itemNumber) {
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try {
+                _listService.DeleteItem(AuthenticatedUser, SelectedUserContext, type, 
+                                        Id, itemNumber);
+                
+                ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
+            } catch(Exception ex) {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("DeleteItemNumberFromList", ex);
+            }
+            return ret;
+        }
+
+        /// <summary>
         /// Retrieve the list Barcode report (PDF)
         /// </summary>
         /// <param name="listId">List Id</param>

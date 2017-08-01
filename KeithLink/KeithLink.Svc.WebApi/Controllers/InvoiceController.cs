@@ -58,13 +58,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="invService"></param>
 		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentsLogic invoiceLogic, IExportSettingLogic exportSettingsLogic,
                                  IOrderLogic orderLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo,
-                                 IExportInvoicesService invService) : base(profileLogic) {
+                                 IExportInvoicesService invService, IListService listService) : base(profileLogic) {
             _invLogic = invoiceLogic;
             _orderLogic = orderLogic;
 			_exportLogic = exportSettingsLogic;
             _imgLogic = invoiceImagingLogic;
             _log = logRepo;
             _invService = invService;
+            _listService = listService;
         }
         #endregion
 

@@ -68,12 +68,11 @@ namespace KeithLink.Svc.WebApi.Controllers
                 ListModel newList = _importService.BuildList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
                 ListModel createdList = _listService.CreateList(AuthenticatedUser, SelectedUserContext, ListType.Custom, newList);
 
+                _listService.SaveItems(AuthenticatedUser, SelectedUserContext, ListType.Custom, createdList.ListId, newList.Items);
+
+                importReturn.List = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, createdList.Type, createdList.ListId, true);
+
                 importReturn.Success = true;
-                importReturn.ListId = createdList.ListId;
-                importReturn.ListType = createdList.Type;
-
-                _listService.SaveItems(AuthenticatedUser, SelectedUserContext, ListType.Custom, importReturn.ListId.Value, newList.Items);
-
                 importReturn.WarningMessage = _importService.Warnings;
                 importReturn.ErrorMessage = _importService.Errors;
                 ret.SuccessResponse = importReturn;

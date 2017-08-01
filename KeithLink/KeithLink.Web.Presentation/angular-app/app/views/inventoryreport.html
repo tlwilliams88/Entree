@@ -87,7 +87,7 @@
     <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-left text-regular">Reports <span class="icon-arrow-down5"></span></a>
     <ul class="dropdown-menu dropdown-menu-scroll" role="menu">
       <li ng-repeat="availableReport in reports track by availableReport.listid" ng-if="::(report.listid !== availableReport.listid)">
-        <a ng-click="goToList(list, selectedCart)">
+        <a ng-click="goToReport(availableReport.listid)">
           {{availableReport.name}}
         </a>
       </li>

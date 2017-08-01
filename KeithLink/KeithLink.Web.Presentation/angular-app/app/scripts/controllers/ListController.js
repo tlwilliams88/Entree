@@ -444,7 +444,8 @@ angular.module('bekApp')
     function applyNewList(){
         originalList = $scope.selectedList;
         resetPage($scope.selectedList);
-        $scope.selectedList.isRenaming = true;
+        var isCustomList = !($scope.selectedList.isfavorite || $scope.selectedList.ismandatory || $scope.selectedList.isrecommended || $scope.selectedList.isreminder);
+        $scope.selectedList.isRenaming = isCustomList ? true : false;
         $scope.lists = ListService.lists;
         $state.transitionTo('menu.lists.items',
             {listId: $scope.selectedList.listid, listType: $scope.selectedList.type},

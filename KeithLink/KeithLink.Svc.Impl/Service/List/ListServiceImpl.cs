@@ -21,6 +21,7 @@ using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Models.EF;
+using Microsoft.Practices.ObjectBuilder2;
 
 namespace KeithLink.Svc.Impl.Service.List
 {
@@ -89,6 +90,7 @@ namespace KeithLink.Svc.Impl.Service.List
         }
         #endregion
 
+        #region methods
         public Dictionary<string, string> GetContractInformation(UserSelectedContext catalogInfo)
         {
             Dictionary<string, string> contractdictionary = new Dictionary<string, string>();
@@ -662,6 +664,8 @@ namespace KeithLink.Svc.Impl.Service.List
             if (list.Items == null || list.Items.Count == 0)
                 return;
 
+            if (_contractdictionary == null) { _contractdictionary = GetContractInformation(catalogInfo); }
+
 
             ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
@@ -679,6 +683,7 @@ namespace KeithLink.Svc.Impl.Service.List
             var productHash = products.Products.GroupBy(p => p.ItemNumber)
                                                .Select(i => i.First())
                                                .ToDictionary(p => p.ItemNumber);
+            Dictionary<long, CustomInventoryItem> customItemHash = GetCustomItemHash(catalogInfo);
 
             List<ItemHistory> itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                           f.CustomerNumber.Equals(catalogInfo.CustomerId))
@@ -687,34 +692,31 @@ namespace KeithLink.Svc.Impl.Service.List
             Parallel.ForEach(list.Items, listItem =>
             {
 
-                listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
-
                 if (listItem.CustomInventoryItemId > 0) {
-                    CustomInventoryItem Item = _customInventoryRepo.Get(listItem.CustomInventoryItemId);
-                    listItem.IsValid = true;
-                    listItem.Name = Item.Name;
-                    listItem.BrandExtendedDescription = Item.Brand;
-                    listItem.Label = Item.Label;
-                    listItem.Pack = Item.Pack;
-                    listItem.Size = Item.Size;
-                    listItem.PackSize = string.Format("{0} / {1}", Item.Pack, Item.Size);
-                    listItem.VendorItemNumber = Item.Vendor;
-                    listItem.Supplier = Item.Supplier;
-                    listItem.CasePriceNumeric = (double)Item.CasePrice;
-                    listItem.PackagePriceNumeric = (double)Item.PackagePrice;
-                    listItem.Each = Item.Each;
-
-                }
-                else {
+                    if(customItemHash != null && customItemHash.ContainsKey(listItem.CustomInventoryItemId)) {
+                        CustomInventoryItem item = customItemHash[listItem.CustomInventoryItemId];
+                        listItem.IsValid = true;
+                        listItem.Name = item.Name;
+                        listItem.BrandExtendedDescription = item.Brand;
+                        listItem.Label = item.Label;
+                        listItem.Pack = item.Pack;
+                        listItem.Size = item.Size;
+                        listItem.PackSize = $"{item.Pack} / {item.Size}";
+                        listItem.VendorItemNumber = item.Vendor;
+                        listItem.Supplier = item.Supplier;
+                        listItem.CasePriceNumeric = (double)item.CasePrice;
+                        listItem.PackagePriceNumeric = (double)item.PackagePrice;
+                        listItem.Each = item.Each;
+                    }
+                } else {
                     var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
-                    if (prod != null)
-                    {
+                    if (prod != null) {
                         listItem.IsValid = true;
                         listItem.Name = prod.Name;
                         listItem.Pack = prod.Pack;
                         listItem.Size = prod.Size;
-                        listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                        listItem.PackSize = $"{prod.Pack} / {prod.Size}";
                         listItem.Size = prod.Size;
                         listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
                         listItem.Description = prod.Description;
@@ -765,12 +767,20 @@ namespace KeithLink.Svc.Impl.Service.List
                                                            .Select(p => p.AverageUse)
                                                            .FirstOrDefault()
                         };
+                        listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
                     }
-
                 }
             });
 
             MarkFavoritesAndAddNotes(user, list, catalogInfo);
+        }
+
+        private Dictionary<long, CustomInventoryItem> GetCustomItemHash(UserSelectedContext catalogInfo) {
+            var custominv = _customInventoryRepo.GetItemsByBranchAndCustomer(catalogInfo.BranchId, catalogInfo.CustomerId);
+            Dictionary<long, CustomInventoryItem> customItemHash = null;
+            if (custominv != null)
+                customItemHash = custominv.ToDictionary(i => i.Id);
+            return customItemHash;
         }
 
         private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
@@ -1028,5 +1038,34 @@ namespace KeithLink.Svc.Impl.Service.List
             return position;
         }
 
+        public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+                               long headerId, string itemNumber) {
+            ListModel list      = ReadListById(user, catalogInfo, headerId, type);
+            ListItemModel item  = list?.Items
+                                      .FirstOrDefault(i => i.ItemNumber == itemNumber);
+
+            if(item != null) {
+                item.Active = false;
+
+                SaveItem(user, catalogInfo, type, headerId, item);
+            }
+        }
+
+        public void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+                                long headerId, List<string> itemNumbers) {
+            ListModel list                      = ReadListById(user, catalogInfo, headerId, type);
+            IEnumerable<ListItemModel> items    = list.Items
+                                                      .Where(i => itemNumbers.Contains(i.ItemNumber));
+
+            if(items != null) {
+                Parallel.ForEach(items, i => {
+                                            i.Active = false;
+                                        });
+                
+                SaveItems(user, catalogInfo, type, headerId, 
+                          items.ToList());
+            }
+        }
+        #endregion
     }
 }

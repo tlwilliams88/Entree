@@ -425,7 +425,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
 
                 // assert - Always returns what is setup provided the mock is called
                 mockDetailsRepo.Verify(
-                       x => x.DeleteFavoriteListDetail(It.Is<long>(d => d.Equals(2))),
+                       x => x.SaveFavoriteListDetail(It.Is<FavoritesListDetail>(d => d.Active.Equals(false))),
                        Times.Once(),
                        "Error updating");
             }

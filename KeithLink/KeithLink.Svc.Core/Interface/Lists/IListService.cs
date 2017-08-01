@@ -59,5 +59,11 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, long customInventoryItemId);
 
         List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, List<long> customInventoryItemIds);
+
+        void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+                        long headerId, string itemNumber);
+
+        void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+                         long headerId, List<string> itemNumbers);
     }
 }
