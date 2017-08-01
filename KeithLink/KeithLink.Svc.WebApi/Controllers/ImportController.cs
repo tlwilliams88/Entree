@@ -76,6 +76,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 importReturn.WarningMessage = _importService.Warnings;
                 importReturn.ErrorMessage = _importService.Errors;
                 ret.SuccessResponse = importReturn;
+                ret.IsSuccess = true;
             }
             catch (Exception ex)
             {
