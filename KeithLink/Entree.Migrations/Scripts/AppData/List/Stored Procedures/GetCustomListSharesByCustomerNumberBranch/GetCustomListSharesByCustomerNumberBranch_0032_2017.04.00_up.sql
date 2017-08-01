@@ -1,6 +1,6 @@
 CREATE PROCEDURE [List].[GetCustomListSharesByCustomerNumberBranch]
 	@BranchId       CHAR(3),
-	@CustomerNumber	CHAR(7)
+	@CustomerNumber	CHAR(6)
 AS
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.

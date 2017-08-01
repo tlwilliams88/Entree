@@ -2,7 +2,7 @@ CREATE PROCEDURE [List].[SaveCustomListDetails]
     @Id                         INT,
     @HeaderId                   BIGINT,
     @LineNumber                 INT,
-    @ItemNumber                 CHAR(6)         = NULL,
+    @ItemNumber                 VARCHAR(6)         = NULL,
     @Each                       BIT             = NULL,
     @Par                        DECIMAL(18, 2),
     @Label                      NVARCHAR(150)   = NULL,
