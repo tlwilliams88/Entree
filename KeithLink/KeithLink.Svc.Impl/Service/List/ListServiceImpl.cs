@@ -538,10 +538,6 @@ namespace KeithLink.Svc.Impl.Service.List
         public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel) {
             ListModel list = ReadList(user, catalogInfo, copyListModel.Type, copyListModel.ListId);
 
-            //ListModel list = _customListLogic.GetListModel(user, 
-            //                                               catalogInfo, 
-            //                                               copylistmodel.listid);
-
             list.Name = list.Name + " copy";
 
             List<ListModel> results = new List<ListModel>();
