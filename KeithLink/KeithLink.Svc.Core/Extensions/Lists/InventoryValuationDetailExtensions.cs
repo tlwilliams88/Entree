@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Extensions.Lists {
                 Type = ListType.InventoryValuation,
                 ItemNumber = value.ItemNumber,
                 CustomInventoryItemId = value.CustomInventoryItemId ?? 0,
+                Quantity = value.Quantity,
                 Position = value.LineNumber,
                 ModifiedUtc = value.ModifiedUtc,
                 CreatedUtc = value.CreatedUtc,

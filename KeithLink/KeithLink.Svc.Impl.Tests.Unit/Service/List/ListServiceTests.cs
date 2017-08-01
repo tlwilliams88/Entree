@@ -1071,6 +1071,33 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.ContractListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
             }
 
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedItemWithExpectedCategory()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: true, mockDependents: ref mockDependents);
+                var fakeUser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var expectedItemNumber = "123456";
+                var expectedCategory = "Fake Category";
+                var testListType = ListType.Contract;
+                var testId = (long)0;
+
+                // act
+                var results = testunit.ReadList(fakeUser, testcontext, testListType, testId);
+
+                // assert
+                results.Items.First().Category
+                       .Should()
+                       .Be(expectedCategory);
+            }
+
             [Fact]
             public void AnyUserAnyContextWithTypeNotes_CallsNotesListLogicGetList()
             {

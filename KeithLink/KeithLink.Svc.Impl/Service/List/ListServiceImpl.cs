@@ -664,6 +664,8 @@ namespace KeithLink.Svc.Impl.Service.List
             if (list.Items == null || list.Items.Count == 0)
                 return;
 
+            if (_contractdictionary == null) { _contractdictionary = GetContractInformation(catalogInfo); }
+
 
             ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
@@ -681,8 +683,7 @@ namespace KeithLink.Svc.Impl.Service.List
             var productHash = products.Products.GroupBy(p => p.ItemNumber)
                                                .Select(i => i.First())
                                                .ToDictionary(p => p.ItemNumber);
-            Dictionary<long, CustomInventoryItem> customItemHash = _customInventoryRepo.GetItemsByBranchAndCustomer(catalogInfo.BranchId, catalogInfo.CustomerId)
-                                                                                       .ToDictionary(i => i.Id);
+            Dictionary<long, CustomInventoryItem> customItemHash = GetCustomItemHash(catalogInfo);
 
             List<ItemHistory> itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                           f.CustomerNumber.Equals(catalogInfo.CustomerId))
@@ -690,8 +691,6 @@ namespace KeithLink.Svc.Impl.Service.List
 
             Parallel.ForEach(list.Items, listItem =>
             {
-
-                listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
 
                 if (listItem.CustomInventoryItemId > 0) {
                     if(customItemHash != null && customItemHash.ContainsKey(listItem.CustomInventoryItemId)) {
@@ -768,12 +767,20 @@ namespace KeithLink.Svc.Impl.Service.List
                                                            .Select(p => p.AverageUse)
                                                            .FirstOrDefault()
                         };
+                        listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
                     }
-
                 }
             });
 
             MarkFavoritesAndAddNotes(user, list, catalogInfo);
+        }
+
+        private Dictionary<long, CustomInventoryItem> GetCustomItemHash(UserSelectedContext catalogInfo) {
+            var custominv = _customInventoryRepo.GetItemsByBranchAndCustomer(catalogInfo.BranchId, catalogInfo.CustomerId);
+            Dictionary<long, CustomInventoryItem> customItemHash = null;
+            if (custominv != null)
+                customItemHash = custominv.ToDictionary(i => i.Id);
+            return customItemHash;
         }
 
         private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)

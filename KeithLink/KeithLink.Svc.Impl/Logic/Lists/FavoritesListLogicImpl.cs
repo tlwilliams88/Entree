@@ -100,11 +100,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 }
             }
 
-            if (model.Active == false) {
-                _detailRepo.DeleteFavoriteListDetail(model.Id);
-            } else {
-                _detailRepo.SaveFavoriteListDetail(model);
-            }
+            _detailRepo.SaveFavoriteListDetail(model);
         }
 
         public long CreateList(UserProfile user, UserSelectedContext catalogInfo) {

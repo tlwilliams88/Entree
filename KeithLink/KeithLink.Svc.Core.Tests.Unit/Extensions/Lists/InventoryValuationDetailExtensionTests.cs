@@ -23,7 +23,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 CreatedUtc = new DateTime(2017, 7, 20, 10, 44, 0, DateTimeKind.Utc),
                 Each = true,
                 CatalogId = "FUT",
-                CustomInventoryItemId = 1900
+                CustomInventoryItemId = 1900,
+                Quantity = 9.76m
             };
         }
 
@@ -142,6 +143,22 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
 
                 // assert
                 results.Each
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsExpectedQuantity()
+            {
+                // arrange
+                var detail = MakeDetail();
+                var expected = 9.76m;
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.Quantity
                        .Should()
                        .Be(expected);
             }

@@ -905,7 +905,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderNoDetail_IfIsDeleteIsTrueCallsDeleteMethodWithListItemId() {
+            public void GoodHeaderNoDetail_IfIsDeleteIsTrueSavesWithActiveFlagFalse() {
                 // arrange
                 var fakeCustomer = new UserSelectedContext();
                 var fakeUser = new UserProfile();
@@ -934,7 +934,40 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
 
                 // assert
-                detail.Verify(x => x.DeleteCustomListDetails(It.Is<long>(d => d.Equals(2))), Times.Never);
+                detail.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(false))), Times.Once);
+            }
+
+            [Fact]
+            public void GoodHeaderNoDetail_IfIsDeleteIsFalseAndActiveIsFalseSavesWithActiveFlagTrue() {
+                // arrange
+                var fakeCustomer = new UserSelectedContext();
+                var fakeUser = new UserProfile();
+                var farkModel = new ListModel() {
+                    ListId = 1,
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    Name = "Custom",
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {
+                            Active = false,
+                            ListItemId = 2,
+                            IsDelete = false,
+                            CatalogId = "FDF",
+                            ItemNumber = "123456"
+                        }
+                    }
+                };
+
+                var detail = new Mock<ICustomListDetailsRepository>();
+                var header = new Mock<ICustomListHeadersRepository>();
+                var shares = new Mock<ICustomListSharesRepository>();
+                var logic = new CustomListLogicImpl(shares.Object, header.Object, detail.Object);
+
+                // act
+                var results = logic.SaveList(fakeUser, fakeCustomer, farkModel);
+
+                // assert
+                detail.Verify(x => x.SaveCustomListDetail(It.Is<CustomListDetail>(d => d.Active.Equals(true))), Times.Once);
             }
 
             [Fact]
