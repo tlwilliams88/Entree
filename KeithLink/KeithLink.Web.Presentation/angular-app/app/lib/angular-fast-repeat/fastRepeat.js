@@ -192,8 +192,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     tplContainer.width(elParent.width());
                     if(!scope.itemIconsActive){
                         scope.itemIconsActive = false;
-                        scope.labelsActive = false;
-
                     }
 
                     if(busy) { return; }
@@ -282,7 +280,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
                         scope.itemIconsActive = true;
-                        scope.labelsActive = true;
                         $target.replaceWith(clone);
 
                         clone[0].children[0].className += ' unoptimized';

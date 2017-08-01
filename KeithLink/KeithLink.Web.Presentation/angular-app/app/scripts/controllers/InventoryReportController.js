@@ -93,9 +93,6 @@ angular.module('bekApp')
         }
 
         if(report) {
-          report.items.forEach(function(item) {
-            item.quantity = 0;
-          })
             $scope.report = report;
             updatePositions();
         }
