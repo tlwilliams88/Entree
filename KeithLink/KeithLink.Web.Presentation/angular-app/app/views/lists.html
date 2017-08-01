@@ -663,7 +663,7 @@
                   ng-if="!item.activeElement && item.isvalid"
                   class="context-menu-template context-menu__in-list hidden-print"
                   ng-mouseenter="item.activeElement = true"
-                  ng-style="!(showRowOptionsDropdown && item.canOrder) && {'visibility': 'hidden'}">
+                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
                   <a class="icon-plus2"></a>
                 </div>
                 <div
@@ -671,7 +671,7 @@
                   ng-if="item.activeElement && item.isvalid"
                   class="context-menu-template context-menu__in-list hidden-print"
                   context-menu-template
-                  ng-style="!(showRowOptionsDropdown && item.canOrder) && {'visibility': 'hidden'}">
+                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
                   <a class="icon-plus2"></a>
                 </div>
                 <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
