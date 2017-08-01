@@ -82,7 +82,7 @@ angular.module('bekApp')
       if (typeof price === 'number') {
         return price > 0;
       } else {
-        return price !== null && price !== '$0.00' && price !== '0' && price !== '0.00';
+        return price !== null && price !== undefined && price !== '$0.00' && price !== '0' && price !== '0.00';
       }
     },
 
