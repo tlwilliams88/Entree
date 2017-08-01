@@ -561,8 +561,9 @@ angular.module('bekApp')
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             Service.getListHeaders();
-            var newList = response.successResponse;
-            Service.renameList = true;
+            var newList = response.successResponse,
+                isCustomList = !(newList.isfavorite || newList.ismandatory || newList.isrecommended || newList.isreminder);
+            Service.renameList = isCustomList ? true : false;
             toaster.pop('success', null, 'Successfully created list.');
             newList.permissions = updateListPermissions(newList);
             return newList;
@@ -830,6 +831,9 @@ angular.module('bekApp')
         createMandatoryList: function(items) {
           // Type 9 == Mandatory
           var params = { type: 9 };
+          if(items == undefined){
+              items = [];
+          }
           items.forEach(function(item){
               item.active = true;
           })
@@ -859,6 +863,9 @@ angular.module('bekApp')
         createRecommendedList: function(items) {
           // Type = 10 - Recommended list type that needs to be passed in
           var params = { type: 10 };
+          if(items == undefined){
+              items = [];
+          }
           items.forEach(function(item){
               item.active = true;
           })
