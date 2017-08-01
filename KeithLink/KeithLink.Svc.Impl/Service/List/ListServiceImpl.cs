@@ -681,6 +681,8 @@ namespace KeithLink.Svc.Impl.Service.List
             var productHash = products.Products.GroupBy(p => p.ItemNumber)
                                                .Select(i => i.First())
                                                .ToDictionary(p => p.ItemNumber);
+            Dictionary<long, CustomInventoryItem> customItemHash = _customInventoryRepo.GetItemsByBranchAndCustomer(catalogInfo.BranchId, catalogInfo.CustomerId)
+                                                                                       .ToDictionary(i => i.Id);
 
             List<ItemHistory> itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                           f.CustomerNumber.Equals(catalogInfo.CustomerId))
@@ -692,31 +694,30 @@ namespace KeithLink.Svc.Impl.Service.List
                 listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
 
                 if (listItem.CustomInventoryItemId > 0) {
-                    CustomInventoryItem Item = _customInventoryRepo.Get(listItem.CustomInventoryItemId);
-                    listItem.IsValid = true;
-                    listItem.Name = Item.Name;
-                    listItem.BrandExtendedDescription = Item.Brand;
-                    listItem.Label = Item.Label;
-                    listItem.Pack = Item.Pack;
-                    listItem.Size = Item.Size;
-                    listItem.PackSize = string.Format("{0} / {1}", Item.Pack, Item.Size);
-                    listItem.VendorItemNumber = Item.Vendor;
-                    listItem.Supplier = Item.Supplier;
-                    listItem.CasePriceNumeric = (double)Item.CasePrice;
-                    listItem.PackagePriceNumeric = (double)Item.PackagePrice;
-                    listItem.Each = Item.Each;
-
-                }
-                else {
+                    if(customItemHash != null && customItemHash.ContainsKey(listItem.CustomInventoryItemId)) {
+                        CustomInventoryItem item = customItemHash[listItem.CustomInventoryItemId];
+                        listItem.IsValid = true;
+                        listItem.Name = item.Name;
+                        listItem.BrandExtendedDescription = item.Brand;
+                        listItem.Label = item.Label;
+                        listItem.Pack = item.Pack;
+                        listItem.Size = item.Size;
+                        listItem.PackSize = $"{item.Pack} / {item.Size}";
+                        listItem.VendorItemNumber = item.Vendor;
+                        listItem.Supplier = item.Supplier;
+                        listItem.CasePriceNumeric = (double)item.CasePrice;
+                        listItem.PackagePriceNumeric = (double)item.PackagePrice;
+                        listItem.Each = item.Each;
+                    }
+                } else {
                     var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
-                    if (prod != null)
-                    {
+                    if (prod != null) {
                         listItem.IsValid = true;
                         listItem.Name = prod.Name;
                         listItem.Pack = prod.Pack;
                         listItem.Size = prod.Size;
-                        listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                        listItem.PackSize = $"{prod.Pack} / {prod.Size}";
                         listItem.Size = prod.Size;
                         listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
                         listItem.Description = prod.Description;
