@@ -934,7 +934,9 @@ angular.module('bekApp')
         duplicateList: function(list, customers) {
           return Service.copyList(list, customers).then(function(lists) {
             var newList = lists[0];
+
             Service.lists.push(newList);
+            Service.listHeaders.push(newList);
             return newList;
           });
         },
