@@ -1700,7 +1700,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 //_log.WriteInformationLog(string.Format("Changes started, {0}",
                 //    JsonConvert.SerializeObject(changes)));
 
-                Customer customer = _customerRepo.GetCustomerByCustomerNumber(changes[0].CustomerId,
+                Customer customer = _customerRepo.GetCustomerByCustomerNumber(changes[0].CustomerNumber,
                     changes[0].BranchId);
 
                 if (customer != null)
@@ -1740,7 +1740,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             HasNewsNotification notifcation = new HasNewsNotification()
             {
-                CustomerNumber = changes[0].CustomerId,
+                CustomerNumber = changes[0].CustomerNumber,
                 BranchId = changes[0].BranchId,
                 Subject = template.Subject.Inject(new
                 {
