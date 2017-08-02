@@ -78,14 +78,6 @@ angular.module('bekApp')
     $scope.promoItems = [
       {
         imageurl: {
-          desktop: 'images/OREO_Banner.png',
-          mobile: 'images/Oreo_Mobile.png',
-        },
-        targeturl: "menu.catalog.products.list({ type: 'search', id: 'Oreo', dept: '4', deptName: 'Grocery', category: null, brand: null })",
-        targetType: "products"
-      },
-      {
-        imageurl: {
           desktop: 'images/KeithKitchenEssentials.png',
           mobile: 'images/KKE_Mobile.png'
         },
