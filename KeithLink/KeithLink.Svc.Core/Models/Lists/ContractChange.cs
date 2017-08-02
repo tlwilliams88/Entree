@@ -8,7 +8,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 {
     public class ContractChange
     {
-        public string CustomerId { get; set; }
+        public string CustomerNumber { get; set; }
 
         public string BranchId { get; set; }
 
