@@ -566,13 +566,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
             SaveItems(user, catalogInfo, ListType.Custom, newList.ListId, list.Items.Select(i => new ListItemModel() { ItemNumber = i.ItemNumber, Each = i.Each }).ToList());
 
-            return new ListModel()
-            {
-                BranchId = catalogInfo.BranchId,
-                CustomerNumber = catalogInfo.CustomerId,
-                ListId = newList.ListId,
-                Type = newList.Type
-            };
+            return ReadListById(user, catalogInfo, newList.ListId, newList.Type);
         }
 
         public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
