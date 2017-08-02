@@ -543,8 +543,6 @@ namespace KeithLink.Svc.Impl.Service.List
         public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel) {
             ListModel list = ReadList(user, catalogInfo, copyListModel.Type, copyListModel.ListId);
 
-            list.Name = list.Name + " copy";
-
             List<ListModel> results = new List<ListModel>();
 
             foreach (var customer in copyListModel.Customers) {
@@ -559,12 +557,13 @@ namespace KeithLink.Svc.Impl.Service.List
         }
 
         private ListModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+
+            var copyList = list.NewCopy();
+            
             var newList = CreateList(user,
                                      catalogInfo,
                                      ListType.Custom,
-                                     list);
-
-            SaveItems(user, catalogInfo, ListType.Custom, newList.ListId, list.Items.Select(i => new ListItemModel() { ItemNumber = i.ItemNumber, Each = i.Each }).ToList());
+                                     copyList);
 
             return ReadListById(user, catalogInfo, newList.ListId, newList.Type);
         }
