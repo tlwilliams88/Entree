@@ -490,7 +490,7 @@ angular.module('bekApp')
         };
 
         LocalStorage.setLastList(lastlist);
-        $state.go('menu.lists.items', { listId: lastlist.listid, listType: lastlist.type });
+        $state.go('menu.lists.items', { listId: lastlist.listId, listType: lastlist.listType });
       });
     };
 
