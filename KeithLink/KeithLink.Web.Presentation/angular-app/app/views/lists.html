@@ -575,7 +575,7 @@
                 {{item[selectedList.permissions.alternativeFieldName]}}
               </td>
               
-              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag" ng-class="{'bek-drag-handle': !item.custominventoryitemid}" ng-click="$event.stopPropagation()" ng-if="selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels">
+              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag" ng-class="{'bek-drag-handle': !item.custominventoryitemid}" ng-click="$event.stopPropagation()" ng-if="selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels && labelsActive">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
@@ -598,6 +598,20 @@
                 </ng-form>
               </td>
 
+               <td ng-if="!labelsActive && selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels" class="input-col nowrap hidden-sm hidden-xs hidden-drag" >
+                 <div class="bek-no-drag label-width right-margin-10">
+                   <select ng-if="item.label && item.label.length > 0" class="label-width">
+                     <option style="display:none" value="">{{item.label}}</option>
+                   </select>
+
+                    <select ng-if="!item.label || item.label.length == 0"  class="label-width">
+                     <option style="display:none" value=""> Select a label...</option>
+                   </select>
+
+                   <a class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                 </div>
+               </td>
+ 
               <td class="input-col nowrap hidden-xs hidden-sm hidden-drag label-col" ng-class="{'bek-drag-handle': !item.custominventoryitemid}" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
                 {{item.label}}
               </td>
