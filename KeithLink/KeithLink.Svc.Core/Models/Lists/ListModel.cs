@@ -36,9 +36,35 @@ namespace KeithLink.Svc.Core.Models.Lists {
             }
         }
 
+        public ListModel NewCopy()
+        {
+            var clonedList = new ListModel()
+            {
+                BranchId = this.BranchId,
+                CustomerNumber = this.CustomerNumber,
+                ListId = 0,
+                Name = this.Name + " copy",
+                Type = this.Type,
+                Items = new List<ListItemModel>()
+            };
+
+            if (this.Items != null)
+                foreach (var item in this.Items)
+                {
+                    clonedList.Items.Add(new ListItemModel()
+                    {
+                        ItemNumber = item.ItemNumber,
+                        Each = item.Each
+                    });
+                }
+
+            return clonedList;
+        }
+
         public ListModel ShallowCopy() {
             var clonedList = new ListModel() {
                 BranchId = this.BranchId,
+                CustomerNumber = this.CustomerNumber,
                 IsContractList = this.IsContractList,
                 IsFavorite = this.IsFavorite,
                 IsMandatory = this.IsMandatory,
