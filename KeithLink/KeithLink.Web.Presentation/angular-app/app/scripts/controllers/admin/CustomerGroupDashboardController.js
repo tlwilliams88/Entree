@@ -504,12 +504,21 @@ angular.module('bekApp')
       });
     }
 
-    MessagingService.broadcastMandatoryMessage(payload).then(function (success) {
-      $scope.displayMessage('success', 'The message was sent successfully.');
-      $scope.resetMessageFields(); //reset message inputs
-    }, function (error) {
-      $scope.displayMessage('error', 'There was an error sending the message: ' + error);
-    });
+    if($scope.isBEKSysAdmin == true && $scope.isSystemUpdate == true) {
+        MessagingService.broadcastMandatoryMessage(payload).then(function (success) {
+          $scope.displayMessage('success', 'The message was sent successfully.');
+          $scope.resetMessageFields(); //reset message inputs
+        }, function (error) {
+          $scope.displayMessage('error', 'There was an error sending the message: ' + error);
+        });
+    } else {
+        MessagingService.broadcastMessage(payload).then(function (success) {
+            $scope.displayMessage('success', 'The message was sent successfully.');
+            $scope.resetMessageFields(); //reset message inputs
+        }, function (error) {
+            $scope.displayMessage('error', 'There was an error sending the message: ' + error);
+        });
+    }
   };
 
 
