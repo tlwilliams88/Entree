@@ -372,7 +372,7 @@ angular.module('bekApp')
 
       var lastlist = {
           listid: listid,
-          listtiype: listtype
+          listtype: listtype
       };
 
       setLastList(lastlist);
