@@ -269,8 +269,8 @@ angular.module('bekApp')
       updateCart: function(cart, params, list) {
 
         if(list){
-          cart.listId = list.listid;
-          cart.listType = list.type;
+          cart.listid = list.listid;
+          cart.listtype = list.type;
           var lastList ={
             listId: cart.listId,
             listType: cart.listType
