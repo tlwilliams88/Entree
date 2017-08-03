@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IConfirmationLogic _confirmationLogic;
         private IOrderHistoryLogic _orderHistoryLogic;
         private ISpecialOrderLogic _specialOrderLogic;
-        private IListLogic _listLogic;
+        private IContractListChangesLogic _contractListChangesLogic;
         private INotificationQueueConsumer _orderConfirmationQueueConsumer;
         private INotificationQueueConsumer _hasNewsQueueConsumer;
         private INotificationQueueConsumer _paymentConfirmationQueueConsumer;
@@ -373,8 +373,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void ProcessContractChanges()
         {
             contractChangesScope = container.BeginLifetimeScope();
-            _listLogic = contractChangesScope.Resolve<IListLogic>();
-            _listLogic.ProcessContractChanges();
+            _contractListChangesLogic = contractChangesScope.Resolve<IContractListChangesLogic>();
+            _contractListChangesLogic.ProcessContractChanges();
         }
         #endregion
     }

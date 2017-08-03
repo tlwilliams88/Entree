@@ -313,6 +313,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Lists\ContractListChangesLogicImpl.cs" />
     <Compile Include="Logic\Lists\ContractListLogicImpl.cs" />
     <Compile Include="Logic\Lists\CustomListLogicImpl.cs" />
     <Compile Include="Logic\Lists\InventoryValuationListLogicImpl.cs" />

@@ -15,8 +15,6 @@ namespace KeithLink.Svc.Core.Interface.Lists {
     {
         // Commenting any calls that lead to logic methods that are obsolete using the new lists to make sure they aren't still used somewhere
 
-        void ProcessContractChanges();
-
         long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, long listId, long customInventoryItemId);
 
         List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<long> customInventoryItemIds);
@@ -29,7 +27,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         //void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist);
 
-        long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
+        //long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 
         //void DeleteItem(long Id);
 
@@ -43,11 +41,11 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         //void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
 
-        List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+        //List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 
         //List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 
-        ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
+        //ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
 
         //List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 
