@@ -570,6 +570,13 @@ angular.module('bekApp')
 
       if (!processingSaveList) {
         processingSaveList = true;
+        $scope.selectedList.items.forEach(function(item){
+            if(item.isEditing == true) {
+                item.isEditing = false;
+            }
+        })
+
+        unselectAllDraggedItems();
         var updatedList = angular.copy(list);
 
         angular.forEach(updatedList.items, function(item, itemIndex) {
@@ -699,7 +706,7 @@ angular.module('bekApp')
 
     $scope.applyNewLabel = function(label, item) {
       var items = getMultipleSelectedItems();
-      if(items.length > 0){
+      if(items.length > 0 && item == undefined){
           angular.forEach(items, function(item, index) {
             item.isEditing = false;
             item.label = label;
