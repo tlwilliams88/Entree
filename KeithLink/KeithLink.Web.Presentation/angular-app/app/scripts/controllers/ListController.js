@@ -691,19 +691,27 @@ angular.module('bekApp')
       angular.forEach(items, function(item, index) {
         item.label = label;
       });
+
+      unselectAllDraggedItems();
       $scope.forms.listForm.$setDirty();
       $scope.multiSelect.showLabels = false;
     };
 
-    $scope.applyNewLabel = function(label) {
+    $scope.applyNewLabel = function(label, item) {
       var items = getMultipleSelectedItems();
-      angular.forEach(items, function(item, index) {
-        item.isEditing = true;
-        item.editLabel = label;
-      });
-      $scope.addingNewLabel = false;
-      $scope.newLabel = null;
-      unselectAllDraggedItems();
+      if(items.length > 0){
+          angular.forEach(items, function(item, index) {
+            item.isEditing = false;
+            item.label = label;
+          });
+          $scope.addingNewLabel = false;
+          $scope.newLabel = null;
+          unselectAllDraggedItems();
+      } else {
+          item.label = label;
+          item.isEditing = false;
+      }
+
       $scope.forms.listForm.$setDirty();
     };
 
