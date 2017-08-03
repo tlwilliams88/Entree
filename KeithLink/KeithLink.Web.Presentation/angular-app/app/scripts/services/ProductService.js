@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', '$q', '$analytics', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
-    function($http, $q, $analytics, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
+  .factory('ProductService', ['$http', '$q', '$analytics', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService', 'PricingService',
+    function($http, $q, $analytics, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService, PricingService) {
 
       var defaultPageSize = Constants.infiniteScrollPageSize,
         defaultStartingIndex = 0;
@@ -88,15 +88,15 @@ angular.module('bekApp')
             dept: department,
             facets: facets,
             sfield: sortField,
-            sdir: sortDirection 
+            sdir: sortDirection
           };
           if (!params.facets) {
             delete params.facets;
-          } 
+          }
           if (!params.sfield) {
             delete params.sfield;
           }
-          return params;  
+          return params;
         },
 
         getSearchUrl: function(type, id, catalogType) {
@@ -116,7 +116,7 @@ angular.module('bekApp')
           if(type === 'search'){
 
             var dept = (params.dept === '') ? 'All' : params.dept;
-       
+
             $analytics.eventTrack('Search Department', {  category: 'Search', label: department });
             $analytics.eventTrack('Search Terms', {  category: 'Search', label: id });
           }
@@ -127,8 +127,8 @@ angular.module('bekApp')
           } else {
             url = '/catalog/campaign/' + campaign_id;
           }
-          
-          
+
+
           var config = {
             params: params
           };
@@ -136,11 +136,12 @@ angular.module('bekApp')
           return $http.get(url, config).then(function(response) {
             if(response.data.successResponse){
                 var dataTotalCount = response.data.successResponse.totalcount;
-                config.params.size = dataTotalCount;    
+                config.params.size = dataTotalCount;
             }
 
-            // return $http.get(url, config).then(function(response){
               var data = response.data.successResponse;
+
+              PricingService.updateCaculatedFields(data.products);
 
               // convert nonstock data structure to match other itemspecs
               if (data.facets && data.facets.nonstock && data.facets.nonstock.length > 0) {
@@ -155,7 +156,6 @@ angular.module('bekApp')
               }
 
               return data;
-            // });
           });
         },
 
@@ -168,7 +168,7 @@ angular.module('bekApp')
               }
               else{
                 return null;
-              }             
+              }
             });
           } else {
             returnProduct = Service.selectedProduct;
