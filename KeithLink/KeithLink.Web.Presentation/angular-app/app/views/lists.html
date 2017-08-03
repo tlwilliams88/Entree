@@ -574,13 +574,13 @@
               <td id="{{item[selectedList.permissions.alternativeFieldName]}}" ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
                 {{item[selectedList.permissions.alternativeFieldName]}}
               </td>
-              
+
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag" ng-class="{'bek-drag-handle': !item.custominventoryitemid}" ng-click="$event.stopPropagation()" ng-if="selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels && labelsActive">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
                   </select>
-                  <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                  <a ng-click="item.isEditing = true; item.editLabel = item.label" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
 
                 <ng-form class="hidden-print bek-no-drag" name="addLabelForm" ng-if="item.isEditing">
@@ -594,7 +594,8 @@
                     ng-required="item.isEditing"
                     ng-model="item.editLabel" />
 
-                  <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
+                  <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                  <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
 
@@ -611,7 +612,7 @@
                    <a class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                  </div>
                </td>
- 
+
               <td class="input-col nowrap hidden-xs hidden-sm hidden-drag label-col" ng-class="{'bek-drag-handle': !item.custominventoryitemid}" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
                 {{item.label}}
               </td>
@@ -742,7 +743,7 @@
                               <option style="display:none"  value="">{{item.label || 'Select A Label '}}</option>
                             </select>
                           </div>
-                          <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                          <a ng-click="item.isEditing = true; item.editLabel = item.label" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                         </div>
 
                         <ng-form
@@ -755,8 +756,10 @@
                             class="form-control edit-label bek-no-drag"
                             placeholder="New Label..."
                             ng-required="item.isEditing"
-                            ng-model-options="{ debounce: 1000 }" ng-model="item.editLabel" />
-                          <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
+                            ng-model="item.editLabel" />
+
+                          <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                          <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
                       <td class = "label-col" ng-if="(!selectedList.permissions.canEditLabels)">
@@ -974,21 +977,21 @@
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
                   </select>
-                  <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                  <a ng-click="item.isEditing = true; item.editLabel = item.label" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
 
                 <ng-form class="hidden-print bek-no-drag" name="addLabelForm" ng-if="item.isEditing">
-                  <input
-                    id="newLabel"
-                    name="newLabel"
-                    type="text"
-                    class="edit-label bek-no-drag form-control"
-                    focus-me="item.isEditing"
-                    placeholder="New Label..."
-                    ng-required="item.isEditing"
-                    ng-model="item.editLabel" />
-
-                  <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
+                    <input
+                        id="newLabel"
+                        name="newLabel"
+                        type="text"
+                        class="edit-label bek-no-drag form-control"
+                        focus-me="item.isEditing"
+                        placeholder="New Label..."
+                        ng-required="item.isEditing"
+                        ng-model="item.editLabel" />
+                    <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                    <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
               <td class="hidden-mobile-visible-print max-width-20" ng-if="!selectedList.read_only" style="vertical-align: middle;">
@@ -1115,7 +1118,7 @@
                               <option style="display:none"  value="">{{item.label || 'Select A Label '}}</option>
                             </select>
                           </div>
-                          <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                          <a ng-click="item.isEditing = true; item.editLabel = item.label" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                         </div>
 
                         <ng-form
@@ -1123,13 +1126,14 @@
                           name="addLabelForm_mobile"
                           ng-if="item.isEditing">
 
-                          <input
+                            <input
                             type="text"
                             class="form-control edit-label bek-no-drag"
                             placeholder="New Label..."
                             ng-required="item.isEditing"
-                            ng-model-options="{ debounce: 1000 }" ng-model="item.editLabel" />
-                          <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
+                            ng-model="item.editLabel" />
+                            <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                            <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
                     </tr>

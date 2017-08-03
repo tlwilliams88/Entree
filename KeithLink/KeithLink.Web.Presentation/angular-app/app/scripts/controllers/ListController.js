@@ -562,6 +562,13 @@ angular.module('bekApp')
 
       if (!processingSaveList) {
         processingSaveList = true;
+        $scope.selectedList.items.forEach(function(item){
+            if(item.isEditing == true) {
+                item.isEditing = false;
+            }
+        })
+
+        unselectAllDraggedItems();
         var updatedList = angular.copy(list);
 
         angular.forEach(updatedList.items, function(item, itemIndex) {
@@ -683,19 +690,27 @@ angular.module('bekApp')
       angular.forEach(items, function(item, index) {
         item.label = label;
       });
+
+      unselectAllDraggedItems();
       $scope.forms.listForm.$setDirty();
       $scope.multiSelect.showLabels = false;
     };
 
-    $scope.applyNewLabel = function(label) {
+    $scope.applyNewLabel = function(label, item) {
       var items = getMultipleSelectedItems();
-      angular.forEach(items, function(item, index) {
-        item.isEditing = true;
-        item.editLabel = label;
-      });
-      $scope.addingNewLabel = false;
-      $scope.newLabel = null;
-      unselectAllDraggedItems();
+      if(items.length > 0 && item == undefined){
+          angular.forEach(items, function(item, index) {
+            item.isEditing = false;
+            item.label = label;
+          });
+          $scope.addingNewLabel = false;
+          $scope.newLabel = null;
+          unselectAllDraggedItems();
+      } else {
+          item.label = label;
+          item.isEditing = false;
+      }
+
       $scope.forms.listForm.$setDirty();
     };
 
