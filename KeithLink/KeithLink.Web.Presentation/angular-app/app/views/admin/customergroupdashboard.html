@@ -275,7 +275,7 @@
               <label class="margin-right-10" for="useParlevel">This Message is Mandatory</label>
             </span>
             <span ng-show="isBEKSysAdmin">
-              <input id="isSystemUpdate" type="checkbox" ng-model="isSystemUpdate" ng-click="isMandatory = isSystemUpdate">
+              <input id="isSystemUpdate" type="checkbox" ng-model="isSystemUpdate" ng-change="selectAllUsers(isSystemUpdate)">
               <label class="margin-right-10" for="useParlevel">Entrée System Update</label>
             </span>
             <span ng-show="isMandatory">
@@ -292,8 +292,10 @@
         <li>
           <label class="control-label">Broadcast Recipients
             <span class="text-red">*</span>
-            <span ng-if="isMandatory" style="color: grey; font-size: 10px;">(Add more with the drop down menu above)</span>
-            <span ng-if="!isMandatory" style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span>
+            <span ng-if="isMandatory && !allUsersSelected" style="color: grey; font-size: 10px;">(Add more with the drop down menu above)</span>
+            <span ng-if="!isMandatory && !isSystemUpdate" style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span>
+            <span ng-if="isMandatory && allUsersSelected" style="color: grey; font-size: 10px;">(Remove All Users to add specific branches)</span>
+
           </label>
         </li>
 
@@ -304,7 +306,7 @@
       <ul class="form-control list-unstyled infiniteScroll" style="min-height: 135px;">
         <li ng-repeat="recipient in customerRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, customerRecipients)"></span> {{recipient.displayName}} (Customer)</li>
         <li ng-repeat="recipient in userRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, userRecipients)"></span> {{recipient.displayName}} (User)</li>
-        <li ng-repeat="recipient in branchRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="deselectBranch(recipient.displayName); removeFromRecipients(recipient.id, branchRecipients)"></span> {{recipient.id}} - {{recipient.displayName}} (Branch)</li>
+        <li ng-repeat="recipient in branchRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-if="!isSystemUpdate" ng-click="deselectBranch(recipient.displayName); removeFromRecipients(recipient.id, branchRecipients)"></span> {{recipient.id}} - {{recipient.displayName}} (Branch)</li>
       </ul>
     </div>
   </div>

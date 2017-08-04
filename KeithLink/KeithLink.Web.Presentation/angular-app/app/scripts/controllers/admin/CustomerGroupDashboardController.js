@@ -389,16 +389,34 @@ angular.module('bekApp')
     if(!$scope.branches) {
       BranchService.getBranches().then(function(resp) {
         $scope.branches = resp;
-
+        
         $scope.branches.forEach(function(branch){
           $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
         });
       })
-    }
+  } else {
+      $scope.branches.forEach(function(branch){
+        $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
+      });
+  }
+
+
   };
 
   $scope.resetMessageFields();
 
+  $scope.selectAllUsers = function(state) {
+      var allUsersBranch = $filter('filter')($scope.availableBranches, {name: 'All Users'});
+      
+      if(state == true) {
+          $scope.selectBranch(allUsersBranch[0]);
+      } else {
+          $scope.deselectBranch(allUsersBranch[0].name);
+          $scope.removeFromRecipients(allUsersBranch[0].id, $scope.branchRecipients);
+      }
+      
+  };
+  
    $scope.selectBranch = function(selected){
     if(!$scope.allUsersSelected){
       $scope.availableBranches.forEach(function(branch){
@@ -504,7 +522,7 @@ angular.module('bekApp')
       });
     }
 
-    if($scope.isBEKSysAdmin == true && $scope.isSystemUpdate == true) {
+    if($scope.isBEKSysAdmin == true && ($scope.isSystemUpdate == true || $scope.isMandatory)) {
         MessagingService.broadcastMandatoryMessage(payload).then(function (success) {
           $scope.displayMessage('success', 'The message was sent successfully.');
           $scope.resetMessageFields(); //reset message inputs
