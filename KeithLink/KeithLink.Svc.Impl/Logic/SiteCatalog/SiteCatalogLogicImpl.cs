@@ -41,7 +41,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private readonly IExportSettingLogic _externalCatalogRepository;
         private readonly IFavoritesListLogic _favoriteLogic;
         private readonly IHistoryLogic _historyLogic;
-        private readonly IListRepository _listRepo;
         private readonly IProductImageRepository _imgRepository;
         private readonly IOrderHistoryDetailRepository _orderDetailRepo;
         private readonly IOrderHistoryHeaderRepsitory _orderHeaderRepo;
@@ -57,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, ICategoryImageRepository categoryImageRepository, 
                                     ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryHeaderRepo, 
                                     IOrderHistoryDetailRepository orderHistoryDetailRepo, IExportSettingLogic externalCatalogRepository, IFavoritesListLogic favoriteLogic, 
-                                    INoteLogic noteLogic, IHistoryLogic historyLogic, IListRepository listRepo)
+                                    IHistoryLogic historyLogic)
         {
             _catalogCacheRepository = catalogCacheRepository;
             _catalogRepository = catalogRepository;
@@ -69,8 +68,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _imgRepository = imgRepository;
             _orderDetailRepo = orderHistoryDetailRepo;
             _orderHeaderRepo = orderHistoryHeaderRepo;
-            _noteLogic = noteLogic;
-            _listRepo = listRepo;
             _priceLogic = priceLogic;
         }
         #endregion
@@ -526,6 +523,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             ProductsReturn returnValue = new ProductsReturn() { Products = new List<Product>() };
 
             returnValue = _catalogRepository.GetProductsByItemNumbers(context.BranchId, itemNumbers, searchModel);
+
+            foreach (Product product in returnValue.Products) {
+                AddProductImageInfo(product);
+            }
 
             AddPricingInfo(returnValue, context, searchModel);
 
