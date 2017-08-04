@@ -34,6 +34,7 @@ angular.module('bekApp')
       link: function(scope, elem, attr) {
         scope.openExternalLink = $rootScope.openExternalLink;
         scope.isCatalog = attr.catalog == 'true' ? true : false;
+        scope.isMarketing = attr.marketing == 'true' ? true : false;
         scope.storePromoItemInformation = function(targeturltext, id){
           MarketingService.storeMarketingUserInteractionInformation(targeturltext, id);
         };

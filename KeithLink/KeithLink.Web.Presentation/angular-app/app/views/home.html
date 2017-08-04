@@ -49,13 +49,70 @@
         <div id="chart_div" style="height:140px;width:100%;"></div>
       </div>
       <!-- end Account Summary -->
+      <!-- Featured Items -->
+      <div class="row">
+        <div class="col-sm-12">
+          <h3>Latest From Ben E. Keith</h3>
+          <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
+          <p class="col-xs-12" ng-show="!promoMessage && marketingPromoItems && marketingPromoItems.length === 0">There are no promos to display at this time.</p>
+          <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
+
+          <div ng-if="marketingPromoItems.length > 0 && !loadingPromoItems">
+
+            <div class="col-xs-12">
+              <div featured-item-carousel="marketingPromoItems" marketing="true" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
+            </div>
+
+          </div>
+        </div>
+      </div>
     </div>
+
     <div class="col-md-8 col-md-pull-4">
+        <!-- Cart Summary -->
+        <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
+          <div class="col-md-3" style="margin-top: -25px">
+            <strong><h3>Pending Orders</h3></strong>
+          </div>
+          <div class="col-md-3 nowrap">
+            Ship Date
+          </div>
+          <div class="col-md-3 nowrap">
+            Item Count
+          </div>
+          <div class="col-md-3">
+            Subtotal
+          </div>
+        </div>
+        <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
+          <div class="row no-margin">
+            <div class="col-md-3 order-col">
+              <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
+              <span class="order-col__date" style="font-size:11px;">{{cart.createddate | formatDateWithTimezone}}</span>
+            </div>
+            <div class="col-md-3 table-col">
+              <span>{{(cart.requestedshipdate || 'N/A') | formatDate}}</span>
+            </div>
+            <div class="col-md-3 table-col">
+              {{cart.itemcount}}
+            </div>
+            <div class="col-md-3 table-col">
+              {{cart.subtotal | currency}}
+            </div>
+          </div>
+        </div>
+        <div class="text-center hidden-xs hidden-sm" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
+        <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartHeaders.length > 0 || loadingCarts">
+          No Carts to Display
+        </p>
+        <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
+          <a class="view-all" ui-sref="menu.order">View All</a>
+        </div>
       <!-- Order Summary -->
       <div ng-if="canViewOrders">
         <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin" style="margin-top:10px;">
-          <div class="col-md-3">
-            Confirmed Orders
+          <div class="col-md-3" style="margin-top: -25px">
+            <strong><h3>Confirmed Orders</h3></strong>
           </div>
           <div class="col-md-2 nowrap">
             Delivery Date
@@ -120,6 +177,55 @@
           No Recent Orders
         </div>
         <div class="text-red hidden-xs hidden-sm" ng-show="ordersMessage">{{ordersMessage}}</div>
+      </div>
+      <div ng-if="canCreateOrders">
+        <div class="row sub-content visible-xs visible-sm">
+          <div class="col-xs-8">
+            <h3>Pending Orders</h3>
+          </div>
+          <div class="col-xs-4">
+            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">View All</a>
+          </div>
+        </div>
+        <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2">
+          <div class="order-col">
+            <div class="row">
+              <div class="col-xs-6">
+                <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
+                <div class="order-col__number" order-link></div>
+              </div>
+              <div class="col-xs-6 order-col__date">
+                <span class="icon-calendar"></span> {{cart.createddate | formatDateWithTimezone}}
+              </div>
+            </div>
+          </div>
+          <div class="order-details">
+            <div class="details-item">
+              <div class="item-title">
+                Ship Date
+              </div>
+              <div class="item-value">
+                {{(cart.requestedshipdate || 'N/A') | formatDate}}
+              </div>
+            </div>
+            <div class="details-item">
+              <div class="item-title">
+                Item Count
+              </div>
+              <div class="item-value">
+                {{cart.itemcount}}
+              </div>
+            </div>
+            <div class="details-item">
+              <div class="item-title">
+                Subtotal
+              </div>
+              <div class="item-value highlight-col">
+                {{cart.subtotal | currency}}
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div ng-if="canViewOrders">
         <div class="row sub-content visible-xs visible-sm">
@@ -198,5 +304,127 @@
       </div>
       <!-- end Order Summary -->
 
+    </div>
+
+    <div class="col-xs-12">
+    <!-- Recommended Items -->
+    <div class="row" ng-if="isOrderEntryCustomer">
+        <div class="col-sm-12">
+            <h3>Recommended Items</h3>
+            <div loading-spinner="loadingRecommendedItems" ng-show="loadingRecommendedItems"></div>
+
+        <div ng-show="!loadingRecommendedItems && recommendedItems.length > 0">
+          <ul class="horizontal-slide hidden-xs hidden-sm">
+            <li ng-repeat="item in recommendedItems" class="item-holder">
+              <div class="featured-item text-center">
+                <img
+                  ng-if="item.images.length > 0"
+                  class="hand"
+                  ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })"
+                  ng-src="{{item.images[0].url}}"
+                  alt="product image">
+                <img
+                  ng-if="item.images.length === 0"
+                  class="product-placeholder-image"
+                  src="images/bek-logo.png"
+                  alt="default product image">
+                <span class="featured-item__detail">
+                  {{::item.name}}
+                  <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{::item.itemnumber}}</a>
+                </span>
+              </div>
+            </li>
+          </ul>
+
+          <div featured-item-carousel="recommendedItems" catalog="true" template="{{'views/featuredItemTemplates/product.html'}}"></div>
+        </div>
+        <h4 ng-if="recommendedItems == null || recommendedItems.length === 0">No recommended items to display.</h4>
+
+        </div>
+    </div>
+
+    <!-- Recently Viewed Items -->
+    <div class="row">
+      <div class="col-sm-12">
+          <h3>Recently Viewed Items <span><a class="clearRecent" ng-if="recentlyViewedItems.length > 0" ng-click="clearRecentlyViewedItems()"> Clear</a></span></h3>
+        <div loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></div>
+
+          <div ng-show="!loadingRecentlyViewedItems && recentlyViewedItems.length > 0">
+          <ul class="horizontal-slide hidden-xs hidden-sm">
+            <li ng-repeat="item in recentlyViewedItems" class="item-holder">
+              <div class="featured-item text-center">
+                <img
+                  ng-if="item.images.length > 0"
+                  class="hand"
+                  ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })"
+                  ng-src="{{item.images[0].url}}"
+                  alt="product image">
+                <img
+                  ng-if="item.images.length === 0"
+                  class="product-placeholder-image"
+                  src="images/bek-logo.png"
+                  alt="default product image">
+                <span class="featured-item__detail">
+                  {{::item.name}}
+                  <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{::item.itemnumber}}</a>
+                </span>
+              </div>
+            </li>
+          </ul>
+
+          <div featured-item-carousel="recentlyViewedItems" catalog="true" template="{{'views/featuredItemTemplates/product.html'}}"></div>
+        </div>
+        <h4 ng-if="recentlyViewedItems == null && !loadingRecentlyViewedItems">No recently viewed items to display.</h4>
+
+      </div>
+    </div>  <!-- end Recently Viewed Items -->
+
+    <!-- Categories -->
+    <div class="row">
+      <div class="col-sm-12">
+          <h3>Categories</h3>
+        <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
+
+        <div ng-show="!loadingCategories && categories.length > 0">
+              <ul class="horizontal-slide hidden-xs hidden-sm">
+                  <li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
+                      <div class="featured-item text-center">
+                          <img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
+                          <div class="featured-item__detail">
+                              {{::category.name}}
+                              <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="text-uppercase">Shop Category</a>
+                          </div>
+                      </div>
+                  </li>
+              </ul>
+
+              <div featured-item-carousel="categories" catalog="true" template="{{'views/featuredItemTemplates/category.html'}}"></div>
+        </div>
+      </div>
+    </div> <!-- end Categories -->
+
+    <!-- Brands -->
+        <div class="row">
+          <div class="col-sm-12">
+              <h3>Ben E. Keith Exclusive Brands</h3>
+              <div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
+
+            <div ng-show="!loadingBrands && brands.length > 0">
+              <ul class="horizontal-slide hidden-xs hidden-sm">
+                      <li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
+                          <div class="featured-item text-center">
+                              <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
+                              <div class="featured-item__detail">
+                                  {{::brand.extended_description}}
+                                  <a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" class="text-uppercase">Shop Brand</a>
+                              </div>
+                          </div>
+                      </li>
+                  </ul>
+
+              <div featured-item-carousel="brands" catalog="true" template="{{'views/featuredItemTemplates/brand.html'}}"></div>
+            </div>
+          </div>
+        </div>
     </div>
   </div>

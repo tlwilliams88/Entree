@@ -80,7 +80,7 @@ angular.module('bekApp')
 
   if (AccessService.isOrderEntryCustomer()) {
 
-    $scope.numOrdersToDisplay = 6;
+    $scope.numOrdersToDisplay = 5;
     $scope.numCartsToDisplay = 4;
 
     if (CartService.cartHeaders.length === 0 && $scope.canCreateOrders) {
@@ -88,8 +88,8 @@ angular.module('bekApp')
       delete $scope.cartMessage;
       CartService.getCartHeaders().then(
         function(carts) {
-          $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
-          $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
+        //   $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
+        //   $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
         },
         function() {
           $scope.cartMessage = 'Error loading carts.';

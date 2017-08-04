@@ -53,7 +53,7 @@
           <div class="order-item-value-1">{{UNFIOrder.invoicestatus || 'N/A'}}</div>
           <div class="order-item-title">PO Number</div>
           <div class="order-item-value-2">{{UNFIOrder.ponumber}}</div>
-        </div>        
+        </div>
         <hr ng-if="UNFIOrder.ischangeorderallowed && canCreateOrders">
         <ul ng-if="UNFIOrder.ischangeorderallowed && canCreateOrders" class="change-order-links">
           <li ui-sref="menu.cart.items({ cartId: UNFIOrder.ordernumber })"><a>View and Edit Change Order</a>
@@ -74,176 +74,179 @@
     </div>
   </div>
 
-  <table class="table table-border table-striped-rows table-unfiorder-items">
-    <thead>
-      <tr fsm-sticky-header scroll-body="'.table-unfiorder-items'" scroll-stop="0">
-        <th class="sort-col-header" ng-click="sortBy1='itemnumber';sortOrder1=!sortOrder1;">
-          Item
-          <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="sort-col-header" ng-click="sortBy1='name';sortOrder1=!sortOrder1;">
-          <span>Name <span sort-icons field="'name'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='brand';sortOrder1=!sortOrder1;">
-          <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='class';sortOrder1=!sortOrder1;">
-          <span>Class <span sort-icons field="'class'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print">
-          Pack/Size
-        </th>
-        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='notes';sortOrder1=!sortOrder1;">
-          <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="hidden-xs hidden-sm"></th>
-        <th class="hidden-mobile-visible-print"></th>
-        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='quantityordered';sortOrder1=!sortOrder1;">
-          #
-          <span>Ordered <span sort-icons field="'quantityordered'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='quantityshipped';sortOrder1=!sortOrder1;">
-          #
-          <span>Confirmed<span sort-icons field="'quantityshipped'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='each';sortOrder1=!sortOrder1;">
-          <span>Each <span sort-icons field="'each'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy1='price';sortOrder1=!sortOrder1;">
-          <span>Price <span sort-icons field="'price'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy1='linetotal';sortOrder1=!sortOrder1;">
-          Ext
-          <span>Price <span sort-icons field="'linetotal'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='status';sortOrder1=!sortOrder1;">
-          <span>Status <span sort-icons field="'status'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
-        </th>
-        <th class="large-icon icon-col">
-          <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Filter Row -->
-      <tr class="filter-row" ng-show="showFilter">
-        <td></td>
-        <td class="input-col">
-          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.name">
-        </td>
-        <td class="hidden-mobile-visible-print input-col">
-          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.brand">
-        </td>
-         <td class="hidden-mobile-visible-print input-col">
-          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.class">
-        </td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print input-col">
-          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.notes">
-        </td>
-        <td class="hidden-xs hidden-sm"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="large-icon icon-col">
-          <a class="hidden-print" ng-click="unfifilterFields = {}"><span class="text-light icon-cross3"></span></a>
-        </td>
-      </tr> <!-- end Filter Row -->
+  <div class="padding-right-15">
+    <table class="table table-border table-striped-rows table-unfiorder-items">
+      <thead>
+        <tr fsm-sticky-header scroll-body="'.table-unfiorder-items'" scroll-stop="0">
+          <th class="sort-col-header" ng-click="sortBy1='itemnumber';sortOrder1=!sortOrder1;">
+            Item
+            <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy1='name';sortOrder1=!sortOrder1;">
+            <span>Name <span sort-icons field="'name'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='brand';sortOrder1=!sortOrder1;">
+            <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='class';sortOrder1=!sortOrder1;">
+            <span>Class <span sort-icons field="'class'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="hidden-mobile-visible-print">
+            Pack/Size
+          </th>
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='notes';sortOrder1=!sortOrder1;">
+            <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="hidden-xs hidden-sm"></th>
+          <th class="hidden-mobile-visible-print"></th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='quantityordered';sortOrder1=!sortOrder1;">
+            #
+            <span>Ordered <span sort-icons field="'quantityordered'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='quantityshipped';sortOrder1=!sortOrder1;">
+            #
+            <span>Confirmed<span sort-icons field="'quantityshipped'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='each';sortOrder1=!sortOrder1;">
+            <span>Each <span sort-icons field="'each'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy1='price';sortOrder1=!sortOrder1;">
+            <span>Price <span sort-icons field="'price'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy1='linetotal';sortOrder1=!sortOrder1;">
+            Ext
+            <span>Price <span sort-icons field="'linetotal'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='status';sortOrder1=!sortOrder1;">
+            <span>Status <span sort-icons field="'status'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+          </th>
+          <th class="large-icon icon-col">
+            <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Filter Row -->
+        <tr class="filter-row" ng-show="showFilter">
+          <td></td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="unfifilterFields.name">
+          </td>
+          <td class="hidden-mobile-visible-print input-col">
+            <input type="text" placeholder="Filter..." ng-model="unfifilterFields.brand">
+          </td>
+           <td class="hidden-mobile-visible-print input-col">
+            <input type="text" placeholder="Filter..." ng-model="unfifilterFields.class">
+          </td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print input-col">
+            <input type="text" placeholder="Filter..." ng-model="unfifilterFields.notes">
+          </td>
+          <td class="hidden-xs hidden-sm"></td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print"></td>
+          <td class="large-icon icon-col">
+            <a class="hidden-print" ng-click="unfifilterFields = {}"><span class="text-light icon-cross3"></span></a>
+          </td>
+        </tr> <!-- end Filter Row -->
 
-      <tr ng-repeat-start="item in (unfifilteredItems = (UNFIOrder.items | filter:unfifilterFields | orderBy:sortBy1:sortOrder1))" ng-class="{ odd : $odd, even: $even }">
-        <td ng-class="{ 'red-border': item.substituteditemnumber }">
-          <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
-          <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
-        </td>
-        <td>{{item.name}}</td>
-        <td class="hidden-mobile-visible-print">{{item.brand}}</td>
-        <td class="hidden-mobile-visible-print">{{item.class}}</td>
-        <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
-        <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
-        <td class="hidden-xs hidden-sm">
-          <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
-        </td>
-        <td class="hidden-mobile-visible-print" item-icons></td>
-        <td class="hidden-mobile-visible-print">{{item.quantityordered}}</td>
-        <td class="hidden-mobile-visible-print">{{item.quantityshipped}}</td>
-        <td class="hidden-mobile-visible-print">
-          {{item.each ? 'Y' : 'N'}}
-        </td>
-        <td class="hidden-mobile-visible-print text-right">{{item.price | currency}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span></td>
-         
-        <td class="hidden-mobile-visible-print text-right">{{item.linetotal | currency}}</td>
-        <td class="hidden-mobile-visible-print">{{item.status}}</td>
-        <td class="large-icon icon-col">
-          <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-        </td>
-      </tr>
+        <tr ng-repeat-start="item in (unfifilteredItems = (UNFIOrder.items | filter:unfifilterFields | orderBy:sortBy1:sortOrder1))" ng-class="{ odd : $odd, even: $even }">
+          <td ng-class="{ 'red-border': item.substituteditemnumber }">
+            <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
+            <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+          </td>
+          <td>{{item.name}}</td>
+          <td class="hidden-mobile-visible-print">{{item.brand}}</td>
+          <td class="hidden-mobile-visible-print">{{item.class}}</td>
+          <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
+          <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
+          <td class="hidden-xs hidden-sm">
+            <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span>
+          </td>
+          <td class="hidden-mobile-visible-print" item-icons></td>
+          <td class="hidden-mobile-visible-print">{{item.quantityordered}}</td>
+          <td class="hidden-mobile-visible-print">{{item.quantityshipped}}</td>
+          <td class="hidden-mobile-visible-print">
+            {{item.each ? 'Y' : 'N'}}
+          </td>
+          <td class="hidden-mobile-visible-print text-right">{{item.price | currency}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span></td>
 
-      <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
-        <td colspan="4">
-          <table>
-            <colgroup>
-              <col width="25%" />
-              <col width="75%" />
-            </colgroup>
-            <tr>
-              <td>Notes</td>
-              <td>{{item.notes}}</td>
-            </tr>
-            <tr>
-              <td>Pack/Size</td>
-              <td>{{item.packsize}}</td>
-            </tr>
-            <tr>
-              <td>Brand</td>
-              <td>{{item.brand}}</td>
-            </tr>
-            <tr>
-              <td>Qty Ordered</td>
-              <td>{{item.quantityordered}}</td>
-            </tr>
-            <tr>
-              <td>Qty Confirmed</td>
-              <td>{{item.quantityshipped}}</td>
-            </tr>
-            <tr>
-              <td>Status</td>
-              <td>{{item.status}}</td>
-            </tr>
-            <tr>
-              <td item-icons></td>
-            </tr>
-            <tr>
-              <td>Each</td>
-              <td>
-                {{item.each ? 'Y' : 'N'}}
-              </td>
-            </tr>
-            <tr>
-              <td>Price</td>
-              <td>{{item.price | currency}}
-                <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
-              </td>
-            </tr>
-            <tr>
-              <td>Ext Price</td>
-              <td>{{item.linetotal | currency}}</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </tbody>
-    <tfoot ng-show="(UNFIOrder.items.length === 0 || !UNFIOrder.items || unfifilteredItems.length === 0) && UNFIOrder">
-      <tr>
-        <td colspan="14">
-          There are no products to display.
-        </td>
-      </tr>
-    </tfoot>
-  </table>
+          <td class="hidden-mobile-visible-print text-right">{{item.linetotal | currency}}</td>
+          <td class="hidden-mobile-visible-print">{{item.status}}</td>
+          <td class="large-icon icon-col">
+            <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+          </td>
+        </tr>
+
+        <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
+          <td colspan="4">
+            <table>
+              <colgroup>
+                <col width="25%" />
+                <col width="75%" />
+              </colgroup>
+              <tr>
+                <td>Notes</td>
+                <td>{{item.notes}}</td>
+              </tr>
+              <tr>
+                <td>Pack/Size</td>
+                <td>{{item.packsize}}</td>
+              </tr>
+              <tr>
+                <td>Brand</td>
+                <td>{{item.brand}}</td>
+              </tr>
+              <tr>
+                <td>Qty Ordered</td>
+                <td>{{item.quantityordered}}</td>
+              </tr>
+              <tr>
+                <td>Qty Confirmed</td>
+                <td>{{item.quantityshipped}}</td>
+              </tr>
+              <tr>
+                <td>Status</td>
+                <td>{{item.status}}</td>
+              </tr>
+              <tr>
+                <td item-icons></td>
+              </tr>
+              <tr>
+                <td>Each</td>
+                <td>
+                  {{item.each ? 'Y' : 'N'}}
+                </td>
+              </tr>
+              <tr>
+                <td>Price</td>
+                <td>{{item.price | currency}}
+                  <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                </td>
+              </tr>
+              <tr>
+                <td>Ext Price</td>
+                <td>{{item.linetotal | currency}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot ng-show="(UNFIOrder.items.length === 0 || !UNFIOrder.items || unfifilteredItems.length === 0) && UNFIOrder">
+        <tr>
+          <td colspan="14">
+            There are no products to display.
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+</div>
+
 </span>
 
 
@@ -289,7 +292,7 @@
           <div class="order-item-value-1">{{order.invoicestatus || 'N/A'}}</div>
           <div class="order-item-title">PO Number</div>
           <div class="order-item-value-2">{{order.ponumber}}</div>
-        </div>        
+        </div>
         <hr ng-if="order.ischangeorderallowed && canCreateOrders">
         <ul ng-if="order.ischangeorderallowed && canCreateOrders" class="change-order-links">
           <li ui-sref="menu.cart.items({ cartId: order.ordernumber })"><a>View and Edit Change Order</a>
@@ -310,6 +313,7 @@
     </div>
   </div>
 
+<div class="padding-right-15">
   <table class="table table-border table-striped-rows table-order-items">
     <thead>
       <tr fsm-sticky-header scroll-body="'.table-order-items'" scroll-stop="0">
@@ -401,7 +405,7 @@
         <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
         <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
         <td class="hidden-xs hidden-sm">
-          <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
+          <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span>
         </td>
         <td class="hidden-mobile-visible-print" item-icons></td>
         <td class="hidden-mobile-visible-print">{{item.quantityordered}}</td>
@@ -410,7 +414,7 @@
           {{item.each ? 'Y' : 'N'}}
         </td>
         <td class="hidden-mobile-visible-print text-right">{{item.price | currency}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span></td>
-         
+
         <td class="hidden-mobile-visible-print text-right">{{item.linetotal | currency}}</td>
         <td class="hidden-mobile-visible-print">{{item.status}}</td>
         <td class="large-icon icon-col">
@@ -480,4 +484,5 @@
       </tr>
     </tfoot>
   </table>
+  </div>
 </div>
