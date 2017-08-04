@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 using Autofac;
 using FluentAssertions;
@@ -18,8 +19,10 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Impl.Logic.Lists;
+using KeithLink.Svc.Impl.Seams;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
@@ -60,11 +63,34 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             {
                 var mock = new Mock<ICatalogLogic>();
 
+                switch (testCase)
+                {
+                    case "case1":
+                        mock.Setup(f => f.GetProductsByIds("FUT",It.IsAny<List<string>>()))
+                            .Returns(new ProductsReturn() {
+                                                              Products = new List<Product>() {
+                                                                                                 new Product() {
+                                                                                                                   ItemNumber = "123456",
+                                                                                                                   Name = "Test Product"
+                                                                                                               }
+                                                                                             }
+                                                          });
+                        break;
+                }
+
                 return mock;
             }
             public static Mock<ICustomerRepository> MakeMockCustomerRepository(string testCase)
             {
                 var mock = new Mock<ICustomerRepository>();
+
+                switch (testCase)
+                {
+                    case "case1":
+                        mock.Setup(f => f.GetCustomerByCustomerNumber("123456", "FUT"))
+                            .Returns(new Customer());
+                        break;
+                }
 
                 return mock;
             }
@@ -89,12 +115,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 
                 switch (testCase) {
                     case "case1":
-                        mock.Setup(f => f.ReadNextSet())
+                        mock.SetupSequence(f => f.ReadNextSet())
                             .Returns(new List<ContractChange>()
                             { new ContractChange() {
-                                                ItemNumber = "123456"
-                                           }
-                            });
+                                                        CustomerNumber = "123456",
+                                                        BranchId = "FUT",
+                                                        CatalogId = "FUT",
+                                                        ItemNumber = "123456",
+                                                        Status = "Added",
+                                                        ParentList_Id = 1
+                                                   }
+                            })
+                            .Returns(null);
                         break;
                 }
 
@@ -104,6 +136,66 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             public static Mock<IMessageTemplateLogic> MakeMockMessageTemplateLogic(string testCase)
             {
                 var mock = new Mock<IMessageTemplateLogic>();
+
+                switch (testCase)
+                {
+                    case "case1":
+                        mock.Setup(f => f.BuildHeader(It.IsAny<string>(), It.IsAny<Customer>()))
+                            .Returns(new StringBuilder("Fake Header"));
+                        break;
+                }
+
+                mock.Setup(f => f.ReadForKey("NotifHeader"))
+                    .Returns(new MessageTemplateModel()
+                    {
+                        TemplateKey = "NotifHeader",
+                        IsBodyHtml = true,
+                        Body = "<table style=\"width: 100 %; \">" +
+"<tr>" +
+"<td>| LOGO |</td>" +
+"<td style = \"text-align:center;\"><h3>{Subject}</h3></td>" +
+"<td style = \"text-align:right;\">" +
+"<table>" +
+"<tr>" +
+"<td>{CustomerName}</td>" +
+"</tr>" +
+"<tr>" +
+"<td> Customer: {CustomerNumber}</td>" +
+"</tr>" +
+"<tr>" +
+"<td> Branch: {BranchID}</td>" +
+"</tr></table></td></tr></table><hr/>"});
+
+                mock.Setup(f => f.ReadForKey("ContractChangeNotice"))
+                    .Returns(new MessageTemplateModel() {
+                                                            TemplateKey = "ContractChangeNotice",
+                                                            Subject = "Ben E. Keith: Contract Change Notice for {CustomerNumber}-{CustomerName}",
+                                                            IsBodyHtml = true,
+                                                            Body =  "{NotifHeader}<table style=\"width: 100 %; \">" +
+                                                                    "<tr style = \"border-bottom:1px solid gray;\" >" +
+                                                                    "<th style = \"text-align:left;\" > Change </ th >" +
+                                                                    "<th style = \"text-align:left;\" > Item # </th>" +
+                                                                    "<th style = \"text-align:left;\" > Description </th>" +
+                                                                    "<th style = \"text-align:left;\" > Brand </th>" +
+                                                                    "<th style = \"text-align:left;\" > Pack </th>" +
+                                                                    "<th style = \"text-align:left;\" > Size </th>" +
+                                                                    "</tr>" +
+                                                                    "{ContractChangeItems}" +
+                                                                    "</table>"});
+
+                mock.Setup(f => f.ReadForKey("ContractChangeItem"))
+                    .Returns(new MessageTemplateModel()
+                    {
+                        TemplateKey = "ContractChangeItem",
+                        IsBodyHtml = true,
+                        Body = "<tr>" +
+"<td style = \"text-align:left;font-size:small;\" >{Status}</td>" +
+"<td style = \"text-align:left;font-size:small;\" >{ProductNumber}</td>" +
+"<td style = \"text-align:left;font-size:small;\" >{ProductDescription}</td>" +
+"<td style = \"text-align:left;font-size:small;\" >{Brand}</td>" +
+"<td style = \"text-align:left;font-size:small;\" >{Pack}</td>" +
+"<td style = \"text-align:left;font-size:small;\" >{Size}</td>" +
+"</tr>"});
 
                 return mock;
             }
@@ -140,11 +232,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
         }
         #endregion
 
+        #region attributes
+        private const string MESSAGE_TEMPLATE_CONTRACTCHANGE = "ContractChangeNotice";
+        private const string MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS = "ContractChangeItem";
+        #endregion
+
         #region ProcessContractChanges
         public class ProcessContractChanges
         {
             [Fact]
-            public void EveryCall_CallsContractChangesRepositoryReadNextSetAtLeastOnce()
+            public void EveryCall_CallsContractChangesRepositoryReadNextSetOnce()
             {
                 // arrange
                 var mockDependents = new MockDependents();
@@ -154,11 +251,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 testunit.ProcessContractChanges();
 
                 // assert
-                mockDependents.ContractChangesRepository.Verify(m => m.ReadNextSet(), Times.AtLeastOnce, "not called");
+                mockDependents.ContractChangesRepository.Verify(m => m.ReadNextSet(), Times.Once, "not called");
             }
 
             [Fact]
-            public void WhenThereIsAContractChange_CallsContractChangesRepositoryReadNextSet()
+            public void WhenThereIsAContractChange1case_CallsContractChangesRepositoryReadNextSetTwice()
             {
                 // arrange
                 var mockDependents = new MockDependents();
@@ -168,7 +265,106 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 testunit.ProcessContractChanges();
 
                 // assert
-                mockDependents.ContractChangesRepository.Verify(m => m.ReadNextSet(), Times.Once, "not called");
+                mockDependents.ContractChangesRepository.Verify(m => m.ReadNextSet(), Times.Exactly(2), "not called");
+            }
+
+            [Fact]
+            public void WhenThereIsAContractChange1case_CallsToLookupCustomer()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents, testCase: "case1");
+
+                // act
+                testunit.ProcessContractChanges();
+
+                // assert
+                mockDependents.CustomerRepository.Verify(m => m.GetCustomerByCustomerNumber(It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
+            }
+
+            [Fact]
+            public void WhenThereIsAContractChange1case_CallsForMessageTemplateLogicBuildHeader()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents, testCase: "case1");
+
+                // act
+                testunit.ProcessContractChanges();
+
+                // assert
+                mockDependents.MessageTemplateLogic.Verify(m => m.BuildHeader(It.IsAny<string>(), It.IsAny<Customer>()), Times.Once, "not called");
+            }
+
+            [Fact]
+            public void WhenThereIsAContractChange1case_CallsForMessageTemplateLogicReadForKeyContractChangeNotice()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents, testCase: "case1");
+
+                // act
+                testunit.ProcessContractChanges();
+
+                // assert
+                mockDependents.MessageTemplateLogic.Verify(m => m.ReadForKey("ContractChangeNotice"), Times.Once, "not called");
+            }
+
+            [Fact]
+            public void WhenThereIsAContractChange1case_CallsForCatalogLogicGetProductsByIds()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents, testCase: "case1");
+
+                // act
+                testunit.ProcessContractChanges();
+
+                // assert
+                mockDependents.CatalogLogic.Verify(m => m.GetProductsByIds(It.IsAny<string>(), It.IsAny<List<string>>()), Times.Once, "not called");
+            }
+
+            [Fact]
+            public void WhenThereIsAContractChange1case_CallsForMessageTemplateLogicReadForKeyContractChangeItem()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents, testCase: "case1");
+
+                // act
+                testunit.ProcessContractChanges();
+
+                // assert
+                mockDependents.MessageTemplateLogic.Verify(m => m.ReadForKey("ContractChangeItem"), Times.Once, "not called");
+            }
+
+            [Fact]
+            public void WhenThereIsAContractChange1case_PublishesMessageWithExpectedItemNumber()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents, testCase: "case1");
+                BEKConfiguration.Add("RabbitMQNotificationServer", "Test");
+                BEKConfiguration.Add("RabbitMQNotificationUserNamePublisher", "Test");
+                BEKConfiguration.Add("RabbitMQNotificationUserPasswordPublisher", "Test");
+                BEKConfiguration.Add("RabbitMQVHostNotification", "Test");
+                BEKConfiguration.Add("RabbitMQExchangeNotificationV2", "Test");
+                var expected = ">123456<";
+
+                // act
+                testunit.ProcessContractChanges();
+                BEKConfiguration.Reset();
+
+                // assert
+                mockDependents.GenericQueueRepository.Verify(m => m.PublishToDirectedExchange(  It.Is<string>(s => s.IndexOf(expected)>-1), 
+                                                                                                It.IsAny<string>(), 
+                                                                                                It.IsAny<string>(), 
+                                                                                                It.IsAny<string>(), 
+                                                                                                It.IsAny<string>(), 
+                                                                                                It.IsAny<string>(), 
+                                                                                                It.IsAny<string>()), 
+                                                                                                Times.Once, 
+                                                                                                "not called");
             }
         }
         #endregion

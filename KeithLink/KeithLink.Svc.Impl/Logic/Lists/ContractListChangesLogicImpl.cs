@@ -21,6 +21,7 @@ using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Seams;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
@@ -84,11 +85,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 {
                     var notifcation = BuildContractChangeNotification(changes, customer);
                     _queueRepo.PublishToDirectedExchange(notifcation.ToJson(),
-                        Configuration.RabbitMQNotificationServer,
-                        Configuration.RabbitMQNotificationUserNamePublisher,
-                        Configuration.RabbitMQNotificationUserPasswordPublisher,
-                        Configuration.RabbitMQVHostNotification,
-                        Configuration.RabbitMQExchangeNotificationV2,
+                        BEKConfiguration.Get("RabbitMQNotificationServer"),
+                        BEKConfiguration.Get("RabbitMQNotificationUserNamePublisher"),
+                        BEKConfiguration.Get("RabbitMQNotificationUserPasswordPublisher"),
+                        BEKConfiguration.Get("RabbitMQVHostNotification"),
+                        BEKConfiguration.Get("RabbitMQExchangeNotificationV2"),
                         Constants.RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY);
                     _log.WriteInformationLog(string.Format("Published to notification exchange, {0}",
                         notifcation.ToJson()));
@@ -164,7 +165,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 ProductsReturn tempProducts = null;
                 List<string> tmp = new List<string>();
                 tmp.Add(change.ItemNumber);
-                tempProducts = _catalogLogic.GetProductsByIds(change.BranchId, tmp);
+                tempProducts = _catalogLogic.GetProductsByIds(change.CatalogId, tmp);
                 if (tempProducts != null)
                 {
                     itemdetail =
