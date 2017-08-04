@@ -20,7 +20,7 @@
 <div ng-if="isCatalog" class="featured-item-mobile visible-xs visible-sm">
   <span class="carousel-index">{{carouselIndex + 1}} / {{itemList.length}}</span>
   <ul rn-carousel rn-carousel-buffered rn-carousel-index="carouselIndex" class="featured-item-carousel" style="height: 84px;">
-    <li ng-repeat="item in itemList">
+    <li ng-repeat="item in itemList | orderBy: ['id']" ng-if="category.name != 'All'">
       <div ng-include="template"></div>
     </li>
     <div class="rn-carousel-controls">
@@ -40,7 +40,7 @@
     <li ng-repeat="item in itemList | orderBy:'-'">
       <div ng-include="template"></div>
     </li>
-    <div class="rn-carousel-controls">
+    <div class="rn-carousel-controls" ng-show="!isMarketing">
       <span class="rn-carousel-control carousel-control-prev" ng-click="prevSlide()" ng-if="carouselIndex > 0">
         <span class="glyphicon glyphicon-menu-left navigation-menu-icon"></span>
       </span>

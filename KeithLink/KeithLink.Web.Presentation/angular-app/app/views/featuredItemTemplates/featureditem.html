@@ -1,8 +1,8 @@
 <div class="hidden-lg">
   <div class="no-padding text-left">
-    <img class="featured-item-height" ng-if="item.imageurl && item.targetType != 'external'" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image" />
+    <img class="featured-item-height" ng-if="item.imageurl && item.targetType && item.targetType != 'external'" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image" />
     <a
-        ng-if="item.imageurl && item.targetType == 'external'"
+        ng-if="item.imageurl && item.targetType && item.targetType == 'external'"
         ng-href="{{item.targeturl}}"
         target="_blank">
         <img
@@ -12,7 +12,7 @@
     </a>
     <img
     class="featured-item-height"
-    ng-if="item.imageurl && item.targetType == 'external'"
+    ng-if="item.imageurl && item.targetType && item.targetType == 'external'"
     ng-src="{{item.imageurl.mobile}}"
     ng-href="{{item.targeturl}}"
     target="_blank" alt="image" />
@@ -21,6 +21,16 @@
         ng-if="!item.imageurl"
         src="images/bek-logo.png"
         alt="default product image" />
+
+        <a
+            ng-if="item.imageurl && !item.targetType"
+            ng-href="{{item.targeturl}}"
+            target="_blank">
+            <img
+                class="item-image featured-item-height"
+                ng-src="{{item.imageurl}}"
+                alt="image" />
+        </a>
   </div>
 </div>
 
@@ -28,7 +38,7 @@
   <div style="display:inline-block">
     <img
     class="item-image featured-item-height"
-    ng-if="item.imageurl && item.targetType != 'external'"
+    ng-if="item.imageurl && item.targetType && item.targetType != 'external'"
     ng-src="{{item.imageurl.desktop}}"
     ui-sref="{{item.targeturl}}"
     alt="image" />
@@ -39,6 +49,21 @@
         <img
             class="item-image featured-item-height"
             ng-src="{{item.imageurl.desktop}}"
+            alt="image" />
+    </a>
+    <!-- <img
+    class="item-image featured-item-height"
+    ng-if="item.imageurl && !item.targetType && item.targetType != 'external'"
+    ng-src="{{item.imageurl}}"
+    ui-sref="{{item.targeturl}}"
+    alt="image" /> -->
+    <a
+        ng-if="item.imageurl && !item.targetType"
+        ng-href="{{item.targeturl}}"
+        target="_blank">
+        <img
+            class="item-image featured-item-height"
+            ng-src="{{item.imageurl}}"
             alt="image" />
     </a>
     <img class="item-image featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image" />
