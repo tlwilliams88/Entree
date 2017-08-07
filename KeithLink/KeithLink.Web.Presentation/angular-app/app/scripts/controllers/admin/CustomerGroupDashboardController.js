@@ -509,7 +509,7 @@ angular.module('bekApp')
           branches = (branches.length === 0) ? branch.id : branches.concat(',' + branch.id);
         });
 
-        payload.branchtoalert = branches;
+        payload.branchestoalert = branches;
         }
       }
     }
