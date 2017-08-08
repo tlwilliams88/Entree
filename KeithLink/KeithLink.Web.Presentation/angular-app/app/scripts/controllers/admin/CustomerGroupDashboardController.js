@@ -499,11 +499,7 @@ angular.module('bekApp')
       }
     };
 
-    if(systemUpdate) {
-        $scope.isMandatory = true;
-    }
-
-    if($scope.isMandatory){
+    if($scope.isMandatory == true || systemUpdate == true){
       payload.msg.mandatory = true;
       var branches = '';
       if($scope.branchRecipients.length > 0){
