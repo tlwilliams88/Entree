@@ -23,11 +23,11 @@
         alt="default product image" />
 
         <a
-            ng-if="item.imageurl && !item.targetType"
+            ng-if="item.imageurl && !item.targetType && isMarketing"
             ng-href="{{item.targeturl}}"
             target="_blank">
             <img
-                class="item-image featured-item-height"
+                class="item-image featured-item-height-marketing"
                 ng-src="{{item.imageurl}}"
                 alt="image" />
         </a>
@@ -58,14 +58,14 @@
     ui-sref="{{item.targeturl}}"
     alt="image" /> -->
     <a
-        ng-if="item.imageurl && !item.targetType"
+        ng-if="item.imageurl && !item.targetType && isMarketing"
         ng-href="{{item.targeturl}}"
         target="_blank">
         <img
-            class="item-image featured-item-height"
+            class="item-image featured-item-height-marketing"
             ng-src="{{item.imageurl}}"
             alt="image" />
     </a>
-    <img class="item-image featured-item-height" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image" />
+    <img class="item-image featured-item-height-marketing" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image" />
   </div>
 </div>
