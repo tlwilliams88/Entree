@@ -172,6 +172,12 @@
   .featured-item-height-marketing {
     height: 310px;
   }
+  
+  .featured-item-width-marketing {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 @media (max-width: 65em) {
@@ -186,15 +192,21 @@
   }
 }
 
-@media (max-width: 47em) {
+@media (max-width: 62em) {
   .featured-item-height-marketing {
-    height: 160px;
+    height: 265px;
   }
   
   .featured-item-width-marketing {
-    width: 100%;
+    width: 70%;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+@media (max-width: 47em) {
+  .featured-item-height-marketing {
+    height: 160px;
   }
 }
 
