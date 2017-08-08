@@ -499,6 +499,10 @@ angular.module('bekApp')
       }
     };
 
+    if(systemUpdate) {
+        $scope.isMandatory = true;
+    }
+
     if($scope.isMandatory){
       payload.msg.mandatory = true;
       var branches = '';
