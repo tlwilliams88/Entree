@@ -54,7 +54,6 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
   });
 
-
   // global notification at the top of all pages
   // TODO: Global messaging backend?
   $scope.messageText = 'Hello world!';

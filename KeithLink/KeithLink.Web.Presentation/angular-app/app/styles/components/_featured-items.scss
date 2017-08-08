@@ -152,6 +152,52 @@
   }
 }
 
+.featured-item-height-marketing {
+  height: 267px;
+}
+
+@media (max-width: 110em) {
+    .featured-item-height-marketing {
+        height: 267px;
+    }
+}
+
+@media (max-width: 90em) {
+  .featured-item-height-marketing {
+    height: 265px;
+  }
+}
+
+@media (max-width: 72em) {
+  .featured-item-height-marketing {
+    height: 310px;
+  }
+}
+
+@media (max-width: 65em) {
+  .featured-item-height-marketing {
+    height: 265px;
+  }
+  
+  .featured-item-width-marketing {
+    width: 82%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 47em) {
+  .featured-item-height-marketing {
+    height: 160px;
+  }
+}
+
+@media (max-width: 29em) {
+  .featured-item-height-marketing {
+    height: 120px;
+  }
+}
+
 .navigation-menu-icon {
   font-size: 40px;
 }

@@ -212,7 +212,7 @@ angular.module('bekApp')
 
     $scope.clearRecentlyViewedItems = function(){
       ProductService.clearRecentlyViewedItems().then(function() {
-        $scope.recentlyViewedItems = '';
+        $scope.recentlyViewedItems = null;
         $scope.displayMessage('success', 'Successfully cleared recently viewed items.');
       });
     };
