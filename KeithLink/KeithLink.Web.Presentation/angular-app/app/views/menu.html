@@ -35,7 +35,7 @@
         <span class="icon-arrow-down7"></span>
       </div>
     </div>
-    <div class="sidebar-logo text-center hidden-xs hidden-sm">
+    <div class="sidebar-logo text-center hidden-xs hidden-sm hand-pointer">
       <img src="images/bek-logo.png" alt="logo" />
     </div>
 
@@ -100,7 +100,7 @@
             </li>
           </button>
             <span  ng-if="::!canViewOrders" tooltip="Create and manage orders. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
-          <button
+          <!-- <button
             class="btn-no-style"
             type="button"
             ng-disabled="::!canBrowseCatalog"
@@ -110,7 +110,7 @@
               <span class="icon-book2 sidebar-nav__icon"></span>
               Product Catalog
             </li>
-          </button>
+          </button> -->
           </div>
           <div>
           <li
@@ -374,8 +374,23 @@
           <div ui-select2="customerSelectOptions" ng-if="::isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
           </div>
         </div>
+        
+        <div class="hidden-sm hidden-xs hidden-md no-border-right-sm col-md-1 select-nav btn-group dropdown-toggle hand-pointer productsCatalogMenu margin-top-15" style="border: none; background-color: transparent; box-shadow: none; color: #9E987E;" dropdown>
+          <span class="nav-description text-light padding-right-5" style="font-size: 15px; color: #EDBB51;">Products</span>
+          <span class="caret text-light" style="color: #EDBB51;"></span>
+          <ul class="dropdown-menu col-xs-12" role="menu">
+            <li ng-repeat="department in departments" ng-if="department.name != 'All'">
+              <a ui-sref="menu.catalog.products.list({ catalogType: 'BEK', type: 'category', id: department.search_name, category: department.name})">
+                {{department.name}}
+              </a>
+            </li>
+            <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
+                <span class="hand-pointer" ui-sref="menu.catalog.home({catalogType: 'UNFI'})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</span>
+            </li>
+          </ul>
+        </div>
 
-        <div class="col-md-3 col-lg-4 width-22 padding-right-5 padding-left-5 margin-top-5">
+        <div class="col-md-3 width-22 padding-right-5 padding-left-5 margin-top-5">
           <form name="universalSearchForm" novalidate ng-if="::canBrowseCatalog">
             <div class="input-group input-group-lg">
                <div dropdown is-open="openScope" class="input-group-btn">
@@ -396,10 +411,9 @@
         </div>
 
         <div class="hidden-sm hidden-xs text-right nowrap pull-right margin-right-desktop-10 margin-top-3 margin-right-5" style="margin-left:none; padding-left:none; display:inline-flex;">
-
-          <div style="margin-top: 2%; margin-right: 10px;">
+          <!-- <div style="margin-top: 2%; margin-right: 10px;">
             <a class="hidden-md" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback" tooltip="Submit Feedback" tooltip-placement="left"><span class="icon-comment margin-right-5" style="font-size: 20px;"></span><span class="show-icon-only" style="width:80%"></span></a>
-          </div>
+          </div> -->
 
           <div class="mobile-margin-right-15 desktop-margin-right-10" style="display: inline-flex; width: 200px;">
             <div header-buttons>

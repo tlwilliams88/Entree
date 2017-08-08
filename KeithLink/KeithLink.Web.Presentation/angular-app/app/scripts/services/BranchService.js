@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * @ngdoc function
  * @name bekApp.service:CategoryService
@@ -46,13 +46,14 @@ angular.module('bekApp')
 
       $http.get('/catalog/divisions').then(function (response) {
         localStorageService.set('branches', response.data.successResponse);
+        Service.branches = response.data.successResponse;
         return deferred.resolve(response.data.successResponse);
       });
 
       return deferred.promise;
     }
   };
- 
+
   return Service;
- 
+
 }]);

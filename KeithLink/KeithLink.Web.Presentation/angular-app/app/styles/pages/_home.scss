@@ -105,7 +105,7 @@
 }
 
 .account-summary-info {
-  border-bottom: none;
+  border-bottom: 1px solid #c3bc9c;;
 }
 
 // Recent Activity
@@ -198,7 +198,7 @@ $order-col__background: #f1efe5;
 .order-summary__order {
   background-color: $color-white;
   border: 1px solid $color-border;
-  margin-top: 10px;
+  margin-top: 5px;
 
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
@@ -311,3 +311,4 @@ $order-col__background: #f1efe5;
 div.rn-carousel-indicator span.active {
   color: #D3D3D3;
 }
+

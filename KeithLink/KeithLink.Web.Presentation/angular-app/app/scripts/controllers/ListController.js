@@ -295,6 +295,15 @@ angular.module('bekApp')
       });
     }
 
+    function setLastList(list) {
+        var lastList = {
+            listId: list.listid,
+            listType: list.type
+        }
+
+        LocalStorage.setLastList(lastList);
+    }
+
     function appendListItems(list) {
       list.items.forEach(function(item) {
         item.editPosition = item.position;
@@ -362,11 +371,11 @@ angular.module('bekApp')
       }
 
       var lastlist = {
-          listId: listid,
-          listType: listtype
+          listid: listid,
+          type: listtype
       };
 
-      LocalStorage.setLastList(lastlist);
+      setLastList(lastlist);
       if($scope.unsavedChangesConfirmation()){
         if($scope.forms.listForm) {
           $scope.forms.listForm.$setPristine();
@@ -380,12 +389,8 @@ angular.module('bekApp')
     function goToNewList(newList) {
         // user loses changes if they go to a new list
         $scope.forms.listForm.$setPristine();
-        var lastlist ={
-            listId: newList.listid,
-            listType: newList.type
-        };
 
-        LocalStorage.setLastList(lastlist);
+        setLastList(newList);
         $state.go('menu.lists.items', {listId: newList.listid, listType: newList.type, renameList: true});
     }
 
@@ -446,7 +451,8 @@ angular.module('bekApp')
         resetPage($scope.selectedList);
         var isCustomList = !($scope.selectedList.isfavorite || $scope.selectedList.ismandatory || $scope.selectedList.isrecommended || $scope.selectedList.isreminder);
         $scope.selectedList.isRenaming = isCustomList ? true : false;
-        $scope.lists = ListService.lists;
+
+        setLastList($scope.selectedList)
         $state.transitionTo('menu.lists.items',
             {listId: $scope.selectedList.listid, listType: $scope.selectedList.type},
             {location: true, reload: false, notify: false}
@@ -484,13 +490,9 @@ angular.module('bekApp')
 
       ListService.duplicateList(list, customers).then(function(newList) {
         $scope.forms.listForm.$setPristine();
-        var lastlist = {
-          listId: newList.listid,
-          listType: newList.type
-        };
 
-        LocalStorage.setLastList(lastlist);
-        $state.go('menu.lists.items', { listId: lastlist.listId, listType: lastlist.listType });
+        setLastList(newList);
+        $scope.selectedList = newList;
       });
     };
 
@@ -500,12 +502,7 @@ angular.module('bekApp')
 
     $scope.createMandatoryList = function(items) {
         ListService.createMandatoryList(items).then(function(list) {
-            var lastlist = {
-                listId: list.listid,
-                listType: list.listtype
-            };
-
-            LocalStorage.setLastList(lastlist);
+            setLastList(list);
             $scope.hideMandatoryListCreateButton = true;
             $scope.selectedList = list;
             applyNewList();
@@ -523,12 +520,7 @@ angular.module('bekApp')
 
     $scope.createRecommendedList = function(items) {
         ListService.createRecommendedList(items).then(function(list) {
-            var lastlist = {
-                listId: list.listid,
-                listType: list.listtype
-            };
-
-            LocalStorage.setLastList(lastlist);
+            setLastList(list);
             $scope.hideRecommendedListCreateButton = true;
             $scope.selectedList = list;
             applyNewList();
@@ -570,6 +562,13 @@ angular.module('bekApp')
 
       if (!processingSaveList) {
         processingSaveList = true;
+        $scope.selectedList.items.forEach(function(item){
+            if(item.isEditing == true) {
+                item.isEditing = false;
+            }
+        })
+
+        unselectAllDraggedItems();
         var updatedList = angular.copy(list);
 
         angular.forEach(updatedList.items, function(item, itemIndex) {
@@ -691,19 +690,27 @@ angular.module('bekApp')
       angular.forEach(items, function(item, index) {
         item.label = label;
       });
+
+      unselectAllDraggedItems();
       $scope.forms.listForm.$setDirty();
       $scope.multiSelect.showLabels = false;
     };
 
-    $scope.applyNewLabel = function(label) {
+    $scope.applyNewLabel = function(label, item) {
       var items = getMultipleSelectedItems();
-      angular.forEach(items, function(item, index) {
-        item.isEditing = true;
-        item.editLabel = label;
-      });
-      $scope.addingNewLabel = false;
-      $scope.newLabel = null;
-      unselectAllDraggedItems();
+      if(items.length > 0 && item == undefined){
+          angular.forEach(items, function(item, index) {
+            item.isEditing = false;
+            item.label = label;
+          });
+          $scope.addingNewLabel = false;
+          $scope.newLabel = null;
+          unselectAllDraggedItems();
+      } else {
+          item.label = label;
+          item.isEditing = false;
+      }
+
       $scope.forms.listForm.$setDirty();
     };
 

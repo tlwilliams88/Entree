@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', 'ListService',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, ListService) {
+  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', 'ListService', 'ProductService', 'CategoryService', 'BrandService',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, ListService, ProductService, CategoryService, BrandService) {
 
     $scope.isHomePage = isHomePage;
 
@@ -21,7 +21,9 @@ angular.module('bekApp')
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
 
-    CartService.getCartHeaders();
+    CartService.getCartHeaders().then(function(carts){
+        $scope.cartHeaders = carts;
+    })
 
     // ListService.getListHeaders();
 
@@ -94,21 +96,21 @@ angular.module('bekApp')
     }
     ];
 
-    // // get promo/marketing items
-    // $scope.loadingPromoItems = true;
-    // MarketingService.getPromoItems().then(function(items) {
-    //   $scope.promoItems = items;
-    //   delete $scope.promoMessage;
-    // }, function(errorMessage) {
-    //   $scope.promoMessage = errorMessage;
-    // }).finally(function() {
-    //   $scope.loadingPromoItems = false;
-    //
-    //   // If Tutorial Should not show remove onboarding-focus class for icon element
-    //   if(!$scope.runTutorial){
-    //     $('.onboarding-focus').removeClass('onboarding-focus');
-    //   }
-    // });
+    // get promo/marketing items
+    $scope.loadingPromoItems = true;
+    MarketingService.getPromoItems().then(function(items) {
+      $scope.marketingPromoItems = items;
+      delete $scope.promoMessage;
+    }, function(errorMessage) {
+      $scope.promoMessage = errorMessage;
+    }).finally(function() {
+      $scope.loadingPromoItems = false;
+
+      // If Tutorial Should not show remove onboarding-focus class for icon element
+      if(!$scope.runTutorial){
+        $('.onboarding-focus').removeClass('onboarding-focus');
+      }
+    });
 
     // get account info
     $scope.loadingAccountBalance = true;
@@ -160,26 +162,66 @@ angular.module('bekApp')
       }]
     };
 
-    $scope.loadingRecentActivity = true;
-      NotificationService.getMessages($scope.notificationParams).then(function(data) {
-        var notifications =data.results,
-        notificationDates ={},
-        dates = [];
-        notifications.forEach(function(notification){
-         var date = DateService.momentObject(notification.messagecreated).format(Constants.dateFormat.yearMonthDayDashes);
+    // $scope.loadingRecentActivity = true;
+    //   NotificationService.getMessages($scope.notificationParams).then(function(data) {
+    //     var notifications =data.results,
+    //     notificationDates ={},
+    //     dates = [];
+    //     notifications.forEach(function(notification){
+    //      var date = DateService.momentObject(notification.messagecreated).format(Constants.dateFormat.yearMonthDayDashes);
+    //
+    //      if(notificationDates[date]){
+    //       notificationDates[date].push(notification);
+    //       }
+    //       else{
+    //         dates.push(date);
+    //         notificationDates[date] = [notification];
+    //       }
+    //
+    //     });
+    //   $scope.notificationDates = notificationDates;
+    //   $scope.dates = dates;
+    //   $scope.loadingRecentActivity = false;
+    // });
 
-         if(notificationDates[date]){
-          notificationDates[date].push(notification);
-          }
-          else{
-            dates.push(date);
-            notificationDates[date] = [notification];
-          }
+    $scope.loadingRecentlyViewedItems = true;
+    $scope.loadingrecentlyOrderedUnfiItems = true;
+    $scope.loadingCategories = true;
+    $scope.loadingBrands = true;
+    $scope.loadingRecommendedItems = true;
 
+    ProductService.getRecentlyViewedItems().then(function(items) {
+      $scope.recentlyViewedItems = items;
+      $scope.loadingRecentlyViewedItems = false;
+
+      ListService.getRecommendedItems().then(function(items) {
+        $scope.recommendedItems = items;
+        $scope.loadingRecommendedItems = false;
+
+        CategoryService.getCategories($state.params.catalogType).then(function(categories) {
+          $scope.categories = categories;
+          $scope.loadingCategories = false;
+
+          BrandService.getHouseBrands().then(function(data){
+            $scope.brands = data;
+            $scope.loadingBrands = false;
+          });
         });
-      $scope.notificationDates = notificationDates;
-      $scope.dates = dates;
-      $scope.loadingRecentActivity = false;
+      });
     });
+
+    $scope.clearRecentlyViewedItems = function(){
+      ProductService.clearRecentlyViewedItems().then(function() {
+        $scope.recentlyViewedItems = null;
+        $scope.displayMessage('success', 'Successfully cleared recently viewed items.');
+      });
+    };
+
+    $scope.clearRecentlyOrderedItems = function(){
+      OrderService.clearRecentlyOrderedUNFIItems().then(function(){
+        $scope.recentlyOrderedUnfiItems = '';
+        $scope.displayMessage('success', 'Successfully cleared recently ordered items.');
+      });
+    };
 
   }]);
