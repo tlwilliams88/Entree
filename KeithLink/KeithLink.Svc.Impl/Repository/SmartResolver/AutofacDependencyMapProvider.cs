@@ -274,6 +274,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<RecentlyOrderedListLogicImpl>().As<IRecentlyOrderedListLogic>();
             builder.RegisterType<InventoryValuationListLogicImpl>().As<IInventoryValuationListLogic>();
             builder.RegisterType<ContractListLogicImpl>().As<IContractListLogic>();
+            builder.RegisterType<ContractListChangesLogicImpl>().As<IContractListChangesLogic>();
             builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();
             builder.RegisterType<CustomListLogicImpl>().As<ICustomListLogic>();
             builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
