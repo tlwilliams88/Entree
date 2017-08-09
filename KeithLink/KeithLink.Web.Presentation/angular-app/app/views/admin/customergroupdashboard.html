@@ -259,8 +259,8 @@
       <label for="subjectHeader" class="control-label">Subject Header <span class="text-red">*</span></label>
       <input type="text" id="subjectHeader" required ng-model="broadcast.subject" class="form-control" placeholder="Enter Subject Header Here">
       <br>
-      <label for="bodyContent" class="control-label">Body Content</label>
-      <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
+      <label for="bodyContent" class="control-label">Body Content <span class="text-red">*</span></label>
+      <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" required placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
       <input ng-if="isSystemUpdate" type="text" id="broadcastLink" class="form-control" placeholder="Enter Link" ng-model="broadcast.link"></input>
       <button type="submit" class="btn btn-primary btn-lg top-buffer" ng-disabled="broadcastMessageForm.$invalid || (customerRecipients.length === 0 && userRecipients.length === 0 && branchRecipients.length === 0)" ng-click="sendMessage(broadcast, customerRecipients, userRecipients, isSystemUpdate)">Send Message</button>
     </div>

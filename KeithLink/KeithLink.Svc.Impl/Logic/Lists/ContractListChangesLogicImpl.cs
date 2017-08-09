@@ -86,10 +86,10 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     var notifcation = BuildContractChangeNotification(changes, customer);
                     _queueRepo.PublishToDirectedExchange(notifcation.ToJson(),
                         BEKConfiguration.Get("RabbitMQNotificationServer"),
-                        BEKConfiguration.Get("RabbitMQNotificationUserNamePublisher"),
-                        BEKConfiguration.Get("RabbitMQNotificationUserPasswordPublisher"),
-                        BEKConfiguration.Get("RabbitMQVHostNotification"),
-                        BEKConfiguration.Get("RabbitMQExchangeNotificationV2"),
+                        BEKConfiguration.Get("RabbitMQNotificationPublisherUserName"),
+                        BEKConfiguration.Get("RabbitMQNotificationPublisherUserPassword"),
+                        BEKConfiguration.Get("RabbitMQNotificationVHost"),
+                        BEKConfiguration.Get("RabbitMQNotificationExchangeV2"),
                         Constants.RABBITMQ_NOTIFICATION_HASNEWS_ROUTEKEY);
                     _log.WriteInformationLog(string.Format("Published to notification exchange, {0}",
                         notifcation.ToJson()));

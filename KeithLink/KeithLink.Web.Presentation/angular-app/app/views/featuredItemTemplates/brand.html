@@ -2,6 +2,5 @@
   <img style="height: 84px; max-width: 100%;" ng-src="{{item.imageurl}}">
 </div>
 <div class="col-xs-8 no-padding featured-item-mobile__detail">
-  {{item.extended_description}}<br />
-  <a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: item.brand_control_label, brand: item.extended_description })" class="text-uppercase">View Details</a>
+  <a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: item.brand_control_label, brand: item.extended_description })" >{{item.extended_description}}</a>
 </div>
