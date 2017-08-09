@@ -392,10 +392,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
 
                 BEKConfiguration.Add("RabbitMQNotificationServer", "Test");
-                BEKConfiguration.Add("RabbitMQNotificationUserNamePublisher", "Test");
-                BEKConfiguration.Add("RabbitMQNotificationUserPasswordPublisher", "Test");
-                BEKConfiguration.Add("RabbitMQVHostNotification", "Test");
-                BEKConfiguration.Add("RabbitMQExchangeNotificationV2", "Test");
+                BEKConfiguration.Add("RabbitMQNotificationPublisherUserName", "Test");
+                BEKConfiguration.Add("RabbitMQNotificationPublisherUserPassword", "Test");
+                BEKConfiguration.Add("RabbitMQNotificationVHost", "Test");
+                BEKConfiguration.Add("RabbitMQNotificationExchangeV2", "Test");
 
                 var expected = ">123456<";
 
