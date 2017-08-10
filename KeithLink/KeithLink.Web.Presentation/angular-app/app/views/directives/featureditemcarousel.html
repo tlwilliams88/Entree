@@ -26,7 +26,7 @@
 </div>
 
 <!--Used for Catalog Page-->
-<div ng-if="isCatalog" class="featured-item-mobile visible-xs visible-sm">
+<div ng-if="isCatalog" class="featured-item-mobile visible-xs visible-sm" ng-class="{ 'visible-md' : isMobile == true }">
   <span class="carousel-index">{{carouselIndex + 1}} / {{itemList.length}}</span>
   <ul rn-carousel rn-carousel-buffered rn-carousel-index="carouselIndex" class="featured-item-carousel" style="height: 84px;">
     <li ng-repeat="item in itemList | orderBy: ['id']" ng-if="item.name != 'All'">
