@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #region attributes
         private const string STOREDPROC_GET_NEXT = "[List].[ReadNextContractListChange]";
         private const string STOREDPROC_UPDATE_SENT_ON_SET = "[List].[UpdateSentOnContractListChangeById]";
-        private const string STOREDPROC_PURGE = "[List].[DeleteOrderListAssociation]";
+        private const string STOREDPROC_PURGE = "[List].[DeleteListItemsDelta]";
         #endregion
 
         #region constructor
