@@ -310,7 +310,7 @@
           <div loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></div>
 
             <div ng-show="!loadingRecentlyViewedItems && recentlyViewedItems.length > 0">
-            <ul class="horizontal-slide hidden-xs hidden-sm">
+            <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
               <li ng-repeat="item in recentlyViewedItems" class="item-holder">
                 <div class="featured-item text-center">
                   <img
@@ -340,13 +340,13 @@
       </div>  <!-- end Recently Viewed Items -->
       
       <!-- Categories -->
-      <div class="row" ng-if="recentlyViewedItems == null || recentlyViewedItems.length == 0 && cartHeaders.length == 0 || cartHeaders.length == 0 && orders.length == 0">
+      <div class="row" ng-if="recentlyViewedItems == null || recentlyViewedItems.length == 0 && cartHeaders.length == 0 || cartHeaders.length == 0 && orders.length == 0 || (cartHeaders.length == 0 || orders.length == 0) && isMobile == true">
         <div class="col-sm-12">
             <h3>Categories</h3>
           <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
 
           <div ng-show="!loadingCategories && categories.length > 0">
-                <ul class="horizontal-slide hidden-xs hidden-sm">
+                <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                     <li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
                         <div class="featured-item text-center">
                             <img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
@@ -369,7 +369,7 @@
               <div loading-spinner="loadingRecommendedItems" ng-show="loadingRecommendedItems"></div>
 
           <div ng-show="!loadingRecommendedItems && recommendedItems.length > 0">
-            <ul class="horizontal-slide hidden-xs hidden-sm">
+            <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
               <li ng-repeat="item in recommendedItems" class="item-holder">
                 <div class="featured-item text-center">
                   <img
@@ -399,13 +399,13 @@
       </div>
 
       <!-- Brands -->
-          <div class="row" ng-if="cartHeaders.length == 0 && orders.length == 0 && recommendedItems.length == 0">
+          <div class="row" ng-if="cartHeaders.length == 0 && orders.length == 0 && recommendedItems.length == 0 && isMobile == false || cartHeaders.length == 0 && recommendedItems.length == 0 && isMobile == true">
             <div class="col-sm-12">
                 <h3>Featured Brands</h3>
                 <div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
 
               <div ng-show="!loadingBrands && brands.length > 0">
-                <ul class="horizontal-slide hidden-xs hidden-sm">
+                <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                         <li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
                             <div class="featured-item text-center">
                                 <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
@@ -432,7 +432,7 @@
             <div loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></div>
 
               <div ng-show="!loadingRecentlyViewedItems && recentlyViewedItems.length > 0">
-              <ul class="horizontal-slide hidden-xs hidden-sm">
+              <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                 <li ng-repeat="item in recentlyViewedItems" class="item-holder">
                   <div class="featured-item text-center">
                     <img
@@ -462,13 +462,13 @@
         </div>  <!-- end Recently Viewed Items -->
 
     <!-- Categories -->
-    <div class="row" ng-hide="cartHeaders.length == 0 && recentlyViewedItems == null || cartHeaders.length == 0 && recentlyViewedItems.length == 0 || cartHeaders.length == 0 && orders.length == 0">
+    <div class="row" ng-hide="cartHeaders.length == 0 && recentlyViewedItems == null || cartHeaders.length == 0 && recentlyViewedItems.length == 0 || cartHeaders.length == 0 && orders.length == 0 || (cartHeaders.length == 0 || orders.length == 0) && isMobile == true">
       <div class="col-sm-12">
           <h3>Categories</h3>
         <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
 
         <div ng-show="!loadingCategories && categories.length > 0">
-              <ul class="horizontal-slide hidden-xs hidden-sm">
+              <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                   <li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
                       <div class="featured-item text-center">
                           <img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
@@ -491,7 +491,7 @@
             <div loading-spinner="loadingRecommendedItems" ng-show="loadingRecommendedItems"></div>
 
         <div ng-show="!loadingRecommendedItems && recommendedItems.length > 0">
-          <ul class="horizontal-slide hidden-xs hidden-sm">
+          <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
             <li ng-repeat="item in recommendedItems" class="item-holder">
               <div class="featured-item text-center">
                 <img
@@ -521,13 +521,13 @@
     </div>
 
     <!-- Brands -->
-        <div class="row" ng-hide="cartHeaders.length == 0 && orders.length == 0 && recommendedItems.length == 0">
+        <div class="row" ng-hide="cartHeaders.length == 0 && orders.length == 0 && recommendedItems.length == 0 && isMobile == false || cartHeaders.length == 0 && recommendedItems.length == 0 && isMobile == true">
           <div class="col-sm-12">
               <h3>Featured Brands</h3>
               <div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
 
             <div ng-show="!loadingBrands && brands.length > 0">
-              <ul class="horizontal-slide hidden-xs hidden-sm">
+              <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                       <li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
                           <div class="featured-item text-center">
                               <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
