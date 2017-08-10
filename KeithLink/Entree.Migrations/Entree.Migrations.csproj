@@ -103,6 +103,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0023.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0035.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0038.cs" />
+    <Compile Include="Migrations\v2017.04.00\Migration0040.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0039.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0037.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0036.cs" />
@@ -211,6 +212,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0017_2017.02.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0040_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Configuration\Tables\AppSettings\PostDeployment\AppSettingsSeed_0039_2017-04-00_up.sql">
@@ -805,6 +809,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteFavoriteDetail\DeleteFavoriteDetail_0033_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteListItemDelta\DeleteListItemDelta_0040_2017-04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\DeleteListItemDelta\DeleteListItemDelta_0040_2017-04-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\DeleteMandatoryItemDetails\DeleteMandatoryItemDetails_0029_2017.04.00_down.sql">
