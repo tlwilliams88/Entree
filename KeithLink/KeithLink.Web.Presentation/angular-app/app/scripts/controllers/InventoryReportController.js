@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$filter', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $filter, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List) {
+  .controller('InventoryReportController', ['$scope', '$filter', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List', 'ListPagingModel',
+    function($scope, $filter, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List, ListPagingModel) {
       $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
@@ -18,9 +18,13 @@ angular.module('bekApp')
       $scope.listsLoading = true;
       $scope.numberReportNamesToShow = 10;
       $scope.today = DateService.momentObject().format(Constants.dateFormat.yearMonthDayDashes);
+      $scope.sortBy = 'position';
+      $scope.sortOrder = true;
+
+      var listPagingModel;
 
       var orderBy = $filter('orderBy');
-      
+
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;
       }).finally(function() {
@@ -33,8 +37,8 @@ angular.module('bekApp')
       }
 
       //Toggle scope variable to render Reports side panel when screen is resized
-      $(window).resize(function(){ 
-        $scope.$apply(function(){ 
+      $(window).resize(function(){
+        $scope.$apply(function(){
           $scope.renderSidePanel();
         });
       });
@@ -45,7 +49,7 @@ angular.module('bekApp')
 
       $scope.renderSidePanel();
 
-      function init() {
+      function init(report) {
         $scope.report = {
           items: []
         };
@@ -53,8 +57,8 @@ angular.module('bekApp')
           var lastIndex = reports.length - 1;
           if($stateParams.listid){
             if($stateParams.listid === 'newReport'){
-            //Call save function to create new report             
-              $scope.saveReport($scope.report);
+            //Call save function to create new report
+              $scope.saveReport();
               $scope.showMoreReportNames = ((lastIndex + 1) > $scope.numberReportNamesToShow) ? true : false;
             }
             else{
@@ -65,13 +69,13 @@ angular.module('bekApp')
                   found = true;
                   $scope.report = report;
                   $scope.selectedReportName = $scope.report.name;
-                  $scope.showMoreReportNames = ((index + 1) > $scope.numberReportNamesToShow) ? true : false;           
+                  $scope.showMoreReportNames = ((index + 1) > $scope.numberReportNamesToShow) ? true : false;
                 }
               });
             }
           }
           else{
-            //Find last created report if none requested and not creating new report            
+            //Find last created report if none requested and not creating new report
             $scope.report = reports[lastIndex];
             $scope.selectedReportName = $scope.report.name;
             $scope.showMoreReportNames = (lastIndex > $scope.numberReportNamesToShow) ? true : false;
@@ -87,6 +91,25 @@ angular.module('bekApp')
             watchersEach.push($scope.$watch('report.items[' + index + '].each', onItemQuantityChanged));
           });
         }
+
+        if(report) {
+            $scope.report = report;
+            updatePositions();
+        }
+      }
+
+
+      function updatePositions() {
+
+        var newPosition = 1;
+        $scope.report.items.forEach(function(item, index) {
+          if(!item.isdeleted){
+              item.position = newPosition;
+              item.editPosition = newPosition;
+              newPosition += 1;
+          }
+        });
+
       }
 
       function onItemQuantityChanged(newVal, oldVal) {
@@ -94,10 +117,12 @@ angular.module('bekApp')
         var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
         var item = $scope.report.items[idx];
 
-        item.price = PricingService.getUnitPriceForItem(item);
-        item.extprice = PricingService.getPriceForItem(item);
-        if (item.quantity) {
-          item.quantity = parseFloat(item.quantity);
+        if(item != null && item.each != null){
+          item.price = PricingService.getUnitPriceForItem(item);
+          item.extprice = PricingService.getPriceForItem(item);
+          if (item.quantity) {
+            item.quantity = parseFloat(item.quantity);
+          }
         }
 
         refreshSubtotal();
@@ -122,7 +147,8 @@ angular.module('bekApp')
           item.isdeleted = true;
           deletedItems.push(item);
         }
-        $scope.sortTable('position', true);
+
+        updatePositions();
         refreshSubtotal();
       };
 
@@ -186,10 +212,10 @@ angular.module('bekApp')
           .then($scope.addRow);
       };
 
-      $scope.addItemsFromList = function(listId) {
+      $scope.addItemsFromList = function(list) {
         $scope.successMessage = '';
 
-        if(listId == 'Custom Inventory'){
+        if(list == 'Custom Inventory'){
           ListService.getCustomInventoryList().then(function(list){
             $scope.successMessage = 'Added ' + list.items.length + ' items from ' + list.name + ' to report.';
             $scope.inventoryForm.$setDirty();
@@ -197,11 +223,15 @@ angular.module('bekApp')
             list.items.forEach(function(item){
               item.isCustomInventory = true;
               $scope.addRow(item);
-            });          
-            $scope.sortTable('position', true);
+            });
+            $scope.saveReport();
           });
         } else {
-            ListService.getListWithItems(listId).then(function(listFound) {
+            var report = {
+                listId: list.listid,
+                listType: list.type
+            }
+            ListService.getListWithItems(report).then(function(listFound) {
             $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
             $scope.inventoryForm.$setDirty();
             listFound.items.forEach(function(item) {
@@ -210,46 +240,61 @@ angular.module('bekApp')
               }
               $scope.addRow(item);
             });
-            $scope.sortTable('position', true);
+
+            $scope.saveReport();
           });
         }
+
       };
 
-      $scope.sortTable = function(field, oldSortDescending, isSortingPosition) {
-        var sortDescending = !oldSortDescending;
-        if (oldSortDescending) {
-          sortDescending = false;
-        }
-        $scope.sortField = field;
-        $scope.sortDescending = sortDescending;
+      $scope.resetItemPositions = function() {
 
-        if(!isSortingPosition){
-          $scope.report.items = orderBy($scope.report.items, field, sortDescending);
-        }
+      };
 
-        if(isSortingPosition){
-          $scope.report.items = $scope.report.items.reverse();
-        }
+      function startLoading() {
+        $scope.loadingResults = true;
+      }
 
-        $scope.report.items.forEach(function(item, index) {
-          item.position = (index + 1);
-        });
+      function stopLoading() {
+        $scope.loadingResults = false;
+      }
 
-        $scope.inventoryForm.$setDirty();
+      $scope.sortList = function(sortBy, sortOrder) {
+
+        $scope.sortBy = sortBy;
+
+        listPagingModel = new ListPagingModel(
+          $scope.report.listid,
+          $scope.report.type,
+          init,
+          null,
+          startLoading,
+          stopLoading,
+          $scope.sort,
+          $scope.report.items.length
+        );
+
+        $scope.sortOrder = sortOrder ? 'asc' : 'desc';
+        $scope.sort = [{
+          field: $scope.sortBy,
+          order: $scope.sortOrder
+        }];
+        listPagingModel.sortListItems($scope.sort);
+
       };
 
       $scope.saveReport = function() {
         // $scope.report.items.reverse();
         var report = angular.copy($scope.report);
         var sameDayReports = [];
-        if(!report.name){         
+        if(!report.name){
           report.name = $scope.today;
         }
-        
-        if($scope.reports && $scope.reports.length > 0 && report.name.length === 10){   
+
+        if($scope.reports && $scope.reports.length > 0 && report.name.length === 10){
           $scope.reports.forEach(function(existingReport){
 
-            if(report.name === existingReport.name.slice(0,10)){             
+            if(report.name === existingReport.name.slice(0,10)){
               sameDayReports.push(existingReport);
             }
           });
@@ -267,6 +312,8 @@ angular.module('bekApp')
             });
             highestDuplicate++;
             report.name = report.name.concat(' ('+(highestDuplicate)+')');
+            $scope.report = report;
+            $scope.reports.push($scope.report);
           }
         }
 
@@ -276,27 +323,47 @@ angular.module('bekApp')
         var promise;
         var creatingList = false;
         if (report.listid) {
-          promise = List.update({}, report).$promise;
+          List.update({}, report).$promise.then(function(response) {
+              $scope.successMessage = '';
+              $scope.errorMessage = '';
+              $scope.inventoryForm.$setPristine();
+              $scope.report = response.successResponse;
+
+              $scope.report.items.forEach(function(item){
+                  item.price = PricingService.getUnitPriceForItem(item);
+                  item.extprice = PricingService.getPriceForItem(item);
+                  refreshSubtotal()
+                  if (item.quantity) {
+                    item.quantity = parseFloat(item.quantity);
+                  }
+              })
+
+              toaster.pop('success', 'Successfully saved report.');
+            }, function() {
+              toaster.pop('error', 'Error saving report.');
+            });
         } else {
           $analytics.eventTrack('Run Inventory Valuation', {  category: 'Reports'});
-          promise = List.save({ type: 'InventoryValuation' }, report).$promise;
           creatingList = true;
-        }
+          List.save({ type: 'InventoryValuation' }, report).$promise.then(function(response) {
+              $scope.successMessage = '';
+              $scope.errorMessage = '';
+              $scope.inventoryForm.$setPristine();
+              $scope.report = response.successResponse;
 
-        promise.then(function(response) {
-        
-          $scope.successMessage = '';
-          $scope.errorMessage = '';
-          $scope.inventoryForm.$setPristine();
+              $state.transitionTo('menu.inventoryreport',
+                  {listid: $scope.report.listid},
+                  {location: true, reload: false, notify: false}
+              );
 
-          if(creatingList){
-            $scope.goToReport(response.successResponse.listitemid);
+              toaster.pop('success', 'Successfully saved report.');
+            }, function() {
+              toaster.pop('error', 'Error saving report.');
+            });
+
           }
-          toaster.pop('success', 'Successfully saved report.');
-        }, function() {
-          toaster.pop('error', 'Error saving report.');
-        });
-      };
+
+        };
 
       /**************
         Rename Report
@@ -311,12 +378,13 @@ angular.module('bekApp')
         $scope.report.isRenaming = false;
       };
 
-      $scope.deleteReport = function(listId){
+      $scope.deleteReport = function(list){
           List.delete({
-            listId: listId
+            listId: list.listid,
+            listType: list.type
           }).$promise.then(function() {
             $scope.reports.forEach(function(report, index){
-              if(report.listid === listId){                
+              if(report.listid === list.listid){
                 $scope.reports.splice(index,1);
               }
             });
@@ -333,10 +401,10 @@ angular.module('bekApp')
         } else {
           $scope.selectedReportName = $scope.today;
         }
-        
+
       };
 
-      $scope.createReport = function(){        
+      $scope.createReport = function(){
         $state.go('menu.inventoryreport', {listid: 'newReport'});
       };
 
@@ -351,7 +419,7 @@ angular.module('bekApp')
         $scope.inventoryForm.$setDirty();
         $scope.successMessage = '';
         $scope.errorMessage = '';
-        $scope.subtotal = 0;      
+        $scope.subtotal = 0;
         //$scope.report = {};
         $scope.report.items.forEach(function(item){
           item.isdeleted = true;

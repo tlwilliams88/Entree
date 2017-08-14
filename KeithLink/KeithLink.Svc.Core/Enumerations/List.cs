@@ -6,35 +6,36 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Enumerations.List
 {
-	public enum BasketType
-	{
-		[Obsolete]
-		Notes,
-		[Obsolete]
-		Favorite,
-		[Obsolete]
-		Custom,
-		Cart,
-		[Obsolete]
-		RecentlyViewed
-	}
-
-
-	public enum ListType
-	{
-		Custom,
-		Favorite,
-		Contract,
-		Recent,
+    public enum BasketType
+    {
+        [Obsolete]
         Notes,
-		Worksheet,
-		ContractItemsAdded,
-		ContractItemsDeleted,
-		Reminder,
-		Mandatory,
-		RecommendedItems,
-		InventoryValuation,
-        RecentOrderedNonBEK,
+        [Obsolete]
+        Favorite,
+        [Obsolete]
+        Custom,
+        Cart,
+        [Obsolete]
+        RecentlyViewed
+    }
+
+
+    public enum ListType
+    {
+        Custom,
+        Favorite,
+        Contract,
+        Recent,
+        Notes,
+        Worksheet,
+        ContractItemsAdded,
+        ContractItemsDeleted,
+        Reminder,
+        Mandatory,
+        RecommendedItems,
+        InventoryValuation,
+        RecentlyOrdered,
+        RecentlyViewed,
         CustomInventory
     }
 }

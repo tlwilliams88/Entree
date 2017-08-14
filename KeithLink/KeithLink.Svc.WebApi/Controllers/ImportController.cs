@@ -13,6 +13,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Import;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.WebApi.Helpers;
+
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
@@ -22,6 +27,8 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ImportController : BaseController {
         #region attributes
         private readonly IImportLogic importLogic;
+        private readonly IImportService _importService;
+        private readonly IListService _listService;
         private readonly IEventLogRepository _log;
         #endregion
 
@@ -32,9 +39,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="profileLogic"></param>
         /// <param name="importLogic"></param>
         /// <param name="logRepo"></param>
-        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo)
-			: base(profileLogic)
-		{
+        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo, IImportService importService, IListService listService)
+			: base(profileLogic) {
+            _listService = listService;
+            _importService = importService;
 			this.importLogic = importLogic;
             _log = logRepo;
         }
@@ -53,43 +61,21 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<ListImportModel> ret = new OperationReturnModel<ListImportModel>();
             try
             {
-                if (!Request.Content.IsMimeMultipartContent())
-                    throw new InvalidOperationException();
+                var importReturn = new ListImportModel();
 
-                var provider = new MultipartMemoryStreamProvider();
-                await Request.Content.ReadAsMultipartAsync(provider);
+                ListImportFileModel fileModel = await ImportHelper.GetFileFromContent(Request.Content);
 
-                ListImportFileModel fileModel = new ListImportFileModel();
+                ListModel newList = _importService.BuildList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
+                ListModel createdList = _listService.CreateList(AuthenticatedUser, SelectedUserContext, ListType.Custom, newList);
 
-                foreach (var content in provider.Contents)
-                {
-                    var file = content;
-                    var paramName = file.Headers.ContentDisposition.Name.Trim('\"');
-                    var buffer = await file.ReadAsByteArrayAsync();
-                    var stream = new MemoryStream(buffer);
+                _listService.SaveItems(AuthenticatedUser, SelectedUserContext, ListType.Custom, createdList.ListId, newList.Items);
 
-                    using (var s = new StreamReader(stream))
-                    {
-                        switch (paramName)
-                        {
-                            case "file":
-                                stream.CopyTo(fileModel.Stream);
-                                fileModel.FileName = file.Headers.ContentDisposition.FileName.Trim('\"');
-                                stream.Seek(0, SeekOrigin.Begin);
-                                fileModel.Contents = s.ReadToEnd();
-                                break;
-                            case "options":
-                                // Figure out what to do here
-                                fileModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ListImportFileModel>(s.ReadToEnd());
-                                break;
-                        }
-                    }
-                }
+                importReturn.List = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, createdList.Type, createdList.ListId, true);
 
-                //if (string.IsNullOrEmpty(fileModel.Contents))
-                //    return new ListImportModel() { Success = false, ErrorMessage = "Invalid request" };
-
-                ret.SuccessResponse = importLogic.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
+                importReturn.Success = true;
+                importReturn.WarningMessage = _importService.Warnings;
+                importReturn.ErrorMessage = _importService.Errors;
+                ret.SuccessResponse = importReturn;
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
@@ -100,6 +86,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             return ret;
 		}
+
         #endregion
 
 

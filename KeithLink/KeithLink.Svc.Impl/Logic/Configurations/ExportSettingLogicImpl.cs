@@ -19,17 +19,15 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
         #region attributes
         private readonly IExportSettingRepository _exportSettingRepository;
         private readonly IExternalCatalogRepository _externalCatalogRepository;
-        private readonly IListRepository _listRepository;
         private readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region ctor
-        public ExportSettingLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository,
+        public ExportSettingLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository,
                                                     IExternalCatalogRepository externalCatalogRepository) {
             _unitOfWork = unitOfWork;
             _exportSettingRepository = exportSettingRepository;
             _externalCatalogRepository = externalCatalogRepository;
-            _listRepository = listRepository;
         }
         #endregion
 
@@ -51,7 +49,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Position", Label = "Line #" });
                     break;
                 case ExportType.Order:
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Label = "Order #" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "PONumber", Label = "PO #" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Label = "Order Date" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "DeliveryDate", Label = "Delivery Date" });
@@ -174,20 +172,11 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             return options;
         }
 
-        public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId) {
+        public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, ListType listType) {
             ExportSetting previousSettings = null;
-            ListType listType = ListType.Custom;
 
             if (type == ExportType.List) {
-                //Determine the list type
-                var list = _listRepository.ReadById(ListId.Value);
-
-                if (list == null)
-                    return null;
-
-                listType = list.Type;
-
-                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type && u.ListType == list.Type).FirstOrDefault();
+                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type && u.ListType == listType).FirstOrDefault();
             } else
                 previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type).FirstOrDefault();
 

@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DFB31DA7-4D1A-4B52-BE4B-29AFCB37FEA8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KeithLink.Svc.Impl.Tests.Unit</RootNamespace>
+    <AssemblyName>KeithLink.Svc.Impl.Tests.Unit</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Castle.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.1.0\lib\net45\Castle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Moq, Version=4.7.63.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.7.63\lib\net45\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseDITests.cs" />
+    <Compile Include="Extensions\ListModelExtensionsTests.cs" />
+    <Compile Include="Logic\Lists\ContractListChangesLogicTests.cs" />
+    <Compile Include="Logic\Lists\ContractListLogicTests.cs" />
+    <Compile Include="Logic\Lists\CustomListLogicTests.cs" />
+    <Compile Include="Helpers\ContractInformationHelperTests.cs" />
+    <Compile Include="Helpers\FavoritesAndNotesHelperTests.cs" />
+    <Compile Include="Logic\Lists\FavoritesListLogicTests.cs" />
+    <Compile Include="Logic\Lists\HistoryListLogicTests.cs" />
+    <Compile Include="Logic\Lists\InventoryValuationListLogicTests.cs" />
+    <Compile Include="Logic\Lists\MandatoryItemsListLogicTests.cs" />
+    <Compile Include="Logic\Lists\NotesListLogicTests.cs" />
+    <Compile Include="Logic\Lists\RecentlyOrderedListLogicTests.cs" />
+    <Compile Include="Logic\Lists\RecentlyViewedListLogicTests.cs" />
+    <Compile Include="Logic\Lists\RecommendedItemsListLogicTests.cs" />
+    <Compile Include="Logic\Lists\ReminderItemsListLogicTests.cs" />
+    <Compile Include="Logic\SiteCatalog\SiteCatalogListLogicTests.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
+    <Compile Include="Service\List\ListServiceTests.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Logic\ApplicationHealth\" />
+    <Folder Include="Logic\Configuration\" />
+    <Folder Include="Logic\ContentManagement\" />
+    <Folder Include="Logic\ETL\" />
+    <Folder Include="Logic\Export\" />
+    <Folder Include="Logic\Invoices\" />
+    <Folder Include="Logic\Messaging\" />
+    <Folder Include="Logic\OnlinePayments\" />
+    <Folder Include="Logic\Orders\" />
+    <Folder Include="Logic\PowerMenu\" />
+    <Folder Include="Logic\Profile\" />
+    <Folder Include="Logic\Reports\" />
+    <Folder Include="Logic\SingleSignOn\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
+      <Project>{A5061D47-AD81-4C9D-B171-8D92F38DB60D}</Project>
+      <Name>KeithLink.Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
+      <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
+      <Name>KeithLink.Svc.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.Impl\KeithLink.Svc.Impl.csproj">
+      <Project>{878aa2e7-769b-409c-8285-3a7faca750f9}</Project>
+      <Name>KeithLink.Svc.Impl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

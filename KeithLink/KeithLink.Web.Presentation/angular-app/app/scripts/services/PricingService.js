@@ -82,7 +82,7 @@ angular.module('bekApp')
       if (typeof price === 'number') {
         return price > 0;
       } else {
-        return price !== '$0.00' && price !== '0' && price !== '0.00';
+        return price !== null && price !== undefined && price !== '$0.00' && price !== '0' && price !== '0.00';
       }
     },
 
@@ -95,7 +95,7 @@ angular.module('bekApp')
     },
 
     canOrderItem: function(item) {
-      return Service.hasCasePrice(item) || Service.hasPackagePrice(item) || item.price;
+      return Service.hasCasePrice(item) || Service.hasPackagePrice(item) || Service.hasPrice(item.price);
     },
 
     updateCaculatedFields: function(items) {

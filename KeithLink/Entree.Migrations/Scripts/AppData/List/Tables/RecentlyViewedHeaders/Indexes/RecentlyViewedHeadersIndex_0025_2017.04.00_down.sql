@@ -1,0 +1,1 @@
+-- Table gets dropped in this migration. No need to drop index.

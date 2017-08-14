@@ -36,7 +36,8 @@ angular
     'angulartics',
     'angulartics.google.analytics',
     'gc.fastRepeat',
-    'angular-google-analytics'
+    'angular-google-analytics',
+    'ngTextTruncate'
   ])
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', '$analyticsProvider', 'AnalyticsProvider',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, $analyticsProvider, AnalyticsProvider) {
@@ -188,6 +189,7 @@ angular
       }
     }
 
+    $rootScope.$$listeners.$stateChangeStart = [];
   });
 
   /**********

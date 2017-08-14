@@ -1,85 +1,46 @@
-﻿using KeithLink.Svc.Core.Enumerations.List;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
 namespace KeithLink.Svc.Impl.Helpers
 {
+    /* For now this helper is in the Impl assembly (for testing), but should only be called from a controller in WebApi */
     public class ContractInformationHelper
     {
-        private const string CACHE_GROUPNAME = "ContractInformation";
-        private const string CACHE_NAME = "ContractInformation";
-        private const string CACHE_PREFIX = "Default";
-        public static Dictionary<string, string> GetContractInformation(UserSelectedContext catalogInfo, IListRepository listRepo, ICacheRepository cache)
+        public static void GetContractCategoriesFromLists(UserSelectedContext catalogInfo, Product prod, IListService listService)
         {
-            Dictionary<string, string> contractdictionary = new Dictionary<string, string>();
+            Dictionary<string, string> contractdictionary = listService.GetContractInformation(catalogInfo);
 
-            Dictionary<string, string> cachedContractdictionary = cache.GetItem<Dictionary<string, string>>(CACHE_GROUPNAME,
-                                                                                                             CACHE_PREFIX,
-                                                                                                             CACHE_NAME,
-                                                                                                             string.Format("ContractDictionary_{0}_{1}",
-                                                                                                                           catalogInfo.BranchId,
-                                                                                                                           catalogInfo.CustomerId));
-
-            if (cachedContractdictionary == null)
-            {
-                List contract = listRepo.ReadListForCustomer(catalogInfo, true)
-                                         .Where(i => i.Type == ListType.Contract)
-                                         .FirstOrDefault();
-                if (contract != null)
-                {
-                    // When we apply contract categories to other lists, on contracts that have the same itemnumber 
-                    // for case and package lines have the same itemnumber twice.So the dictionary blows up trying 
-                    // to put the two entries for the same itemnumber in...
-                    // The dictionary just applies the category to that same item used in other lists. So the only 
-                    // negative is if they specify the itemnumber/case as being in a different category than the 
-                    // item /package combination. Nothing changes in how it is used in an order or anything.
-                    contractdictionary = contract.Items
-                                                 .GroupBy(li => li.ItemNumber, StringComparer.CurrentCultureIgnoreCase)
-                                                 .ToDictionary(g => g.Key, 
-                                                               g => g.First().Category.Trim());
-                }
-                cache.AddItem<Dictionary<string, string>>(CACHE_GROUPNAME,
-                                                           CACHE_PREFIX,
-                                                           CACHE_NAME,
-                                                           string.Format("ContractDictionary_{0}_{1}",
-                                                                         catalogInfo.BranchId,
-                                                                         catalogInfo.CustomerId), TimeSpan.FromHours(2), contractdictionary);
-
-            }
-            else
-            {
-                contractdictionary = cachedContractdictionary;
-            }
-
-            return contractdictionary;
-        }
-
-        public static string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
-        {
-            return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
-        }
-
-        public static string AddContractInformationIfInContract
-            (Dictionary<string, string> contractdictionary, string itemNumber)
-        {
-            string itmcategory = null;
-            if (contractdictionary.Count > 0)
-            {
-                if (contractdictionary.ContainsKey(itemNumber))
-                {
-                    itmcategory = contractdictionary[itemNumber];
+            if (contractdictionary != null &&
+                contractdictionary.Count > 0) {
+                if (contractdictionary.ContainsKey(prod.ItemNumber)) {
+                    prod.Category = contractdictionary[prod.ItemNumber];
                 }
             }
+        }
+        public static void GetContractCategoriesFromLists(UserSelectedContext catalogInfo, List<Product> prods, IListService listService)
+        {
+            Dictionary<string, string> contractdictionary = listService.GetContractInformation(catalogInfo);
 
-            return itmcategory;
+            if (contractdictionary != null &&
+                contractdictionary.Count > 0)
+            {
+                Parallel.ForEach(prods, prod =>
+                {
+                    if (contractdictionary.ContainsKey(prod.ItemNumber))
+                    {
+                        prod.Category = contractdictionary[prod.ItemNumber];
+                    }
+                });
+            }
         }
     }
 }

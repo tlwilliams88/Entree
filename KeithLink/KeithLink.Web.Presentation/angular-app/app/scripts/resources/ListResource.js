@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('List', [ '$resource', 
+  .factory('List', [ '$resource',
   function ($resource) {
-    return $resource('/list/:listId', { }, {
+    return $resource('/list/:listType/:listId', { }, {
 
       // defaults: GET, QUERY, SAVE, DELETE
- 
+
       // accepts type of custom, inventoryvaluation, etc.
       getByType: {
         url: '/list/type/:type',
@@ -16,24 +16,24 @@ angular.module('bekApp')
 
       // postData is the list
       update: {
-        url: '/list',
+        url: '/list/:listType/:listId',
         method: 'PUT'
       },
 
-      // delete: {
-      //   url: '/list/:listId',
-      //   method: 'DELETE'
-      // },
+      delete: {
+        url: '/list/:listType/:listId',
+        method: 'DELETE'
+      },
 
       // postData is the item
       addItem: {
-        url: '/list/:listId/item',
+        url: '/list/:listType/:listId/item',
         method: 'POST'
       },
 
       // postData is the item
       updateItem: {
-        url: '/list/item',
+        url: '/list/:listType/:listId/item',
         method: 'PUT'
       },
 
@@ -43,13 +43,13 @@ angular.module('bekApp')
       },
 
       deleteItemByItemNumber: {
-        url: '/list/:listId/item/:itemNumber',
+        url: '/list/:listType/:listId/item/:itemNumber',
         method: 'DELETE'
       },
 
       // postData is an array of items
       addMultipleItems: {
-        url: '/list/:listId/items',
+        url: '/list/:listType/:listId/items',
         method: 'POST'
       },
 
@@ -77,7 +77,7 @@ angular.module('bekApp')
       },
 
       exportConfig: {
-        url: '/list/export/:listId',
+        url: '/list/export/:listType/:listId',
         method: 'GET'
       }
 
@@ -89,5 +89,5 @@ angular.module('bekApp')
       // }
 
     });
-  
+
   }]);

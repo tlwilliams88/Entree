@@ -200,7 +200,7 @@
               id="specialFilterId_{{specialFilter.name}}"
               ng-checked=" specialfilters.selected.indexOf(specialFilter.name) > -1"
               ng-click="toggleSelection(false,  specialfilters.selected, specialFilter.name)">
-              <label for="specialFilterId_{{specialFilter.name}}">{{::specialFilter.displayname}} <span ng-show="specialFilter.count > 0">({{specialFilter.count}})</label>
+              <label for="specialFilterId_{{specialFilter.name}}">{{::specialFilter.displayname}} <span ng-show="specialFilter.count != '?'">({{specialFilter.count}})</label>
             </div>
           </div>
         </accordion-group>
@@ -388,7 +388,7 @@
                   ng-checked=" specialfilters.selected.indexOf(spec.name) > -1"
                   ng-click="toggleSelection(false,  specialfilters.selected, specialFilter.name)"
                   class="input-margin-5px">
-                <label>{{::specialFilter.desc}} <span>({{specialFilter.count}})</span></label>
+                <label>{{::specialFilter.desc}} <span ng-show="specialFilter.count != '?'">({{specialFilter.count}})</span></label>
               </li>
             </ul>
         </div>
@@ -452,8 +452,13 @@
                         <span ng-if="isOrderEntryCustomer" class="large-icon" favorite-icons></span>
                       </div>
                       <h5 class="block-display">
-                        <span ng-if="item.brand_extended_description && !item.marketing_brand"><a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })"><a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
-                          {{item.brand_extended_description}}</a>
+                        <span ng-if="item.brand_extended_description && !item.marketing_brand">
+                          <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })">
+                            {{item.brand_extended_description}}
+                          </a>
+                          <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+                            {{item.brand_extended_description}}
+                          </a>
                         </span>
                         <span ng-if="!item.brand_extended_description && !item.marketing_brand">{{item.brand}}</span>
                         <span ng-if="item.marketing_brand">{{item.marketing_brand}}</span>
@@ -470,9 +475,11 @@
                     <h5>
                       {{item.packsize}}
                     </h5>
-                    <h6>
-                      <span ng-if="item.description && !item.marketing_description">{{item.description}}</span>
-                      <span ng-if="item.marketing_description">{{item.marketing_description}}</span>
+                    <h6 class="text show-more-height">
+                      <span ng-if="item.description && !item.marketing_description" ng-text-truncate="item.description"
+                      ng-tt-words-threshold="2" style="text-overflow: ellipsis; white-space: pre-line;">{{item.description}}</span>
+                      <span ng-if="item.marketing_description" ng-text-truncate="item.marketing_description"
+                      ng-tt-words-threshold="2" style="text-overflow: ellipsis; white-space: pre-line;">{{item.marketing_description}}</span>
                     </h6>
                     <h6 class="input-col" ng-if="canSeePrices">
                       <ng-form name="eachForm" ng-if="hasPackagePrice(item)">

@@ -296,6 +296,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Attribute\GlobalExceptionFilterAttribute.cs" />
+    <Compile Include="Helpers\ImportHelper.cs" />
     <Compile Include="Helpers\ListPrintHelper.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GuestProfileModel.cs" />

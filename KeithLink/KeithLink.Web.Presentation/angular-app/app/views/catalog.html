@@ -6,7 +6,7 @@
   <!-- <div header-buttons></div> -->
 </div>
 
-<div class="page-content"> 
+<div class="page-content">
   <!-- Recently Viewed Items -->
   <div class="row">
   	<div class="col-sm-12">
@@ -17,16 +17,16 @@
         <ul class="horizontal-slide hidden-xs hidden-sm">
           <li ng-repeat="item in recentlyViewedItems" class="item-holder">
             <div class="featured-item text-center">
-              <img 
-                ng-if="item.images.length > 0" 
-                class="hand" 
-                ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" 
-                ng-src="{{item.images[0].url}}" 
+              <img
+                ng-if="item.images.length > 0"
+                class="hand"
+                ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })"
+                ng-src="{{item.images[0].url}}"
                 alt="product image">
-              <img 
-                ng-if="item.images.length === 0" 
-                class="product-placeholder-image" 
-                src="images/bek-logo.png" 
+              <img
+                ng-if="item.images.length === 0"
+                class="product-placeholder-image"
+                src="images/bek-logo.png"
                 alt="default product image">
               <span class="featured-item__detail">
                 {{::item.name}}
@@ -38,7 +38,7 @@
 
         <div featured-item-carousel="recentlyViewedItems" catalog="true" template="{{'views/featuredItemTemplates/product.html'}}"></div>
       </div>
-      <h4 ng-if="recentlyViewedItems.length === 0">No recently viewed items to display.</h4>
+      <h4 ng-if="recentlyViewItems == null && !loadingRecentlyViewedItems">No recently viewed items to display.</h4>
 
   	</div>
   </div>  <!-- end Recently Viewed Items -->
@@ -53,16 +53,16 @@
         <ul class="horizontal-slide hidden-xs hidden-sm">
           <li ng-repeat="item in recommendedItems" class="item-holder">
             <div class="featured-item text-center">
-              <img 
-                ng-if="item.images.length > 0" 
-                class="hand" 
-                ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" 
-                ng-src="{{item.images[0].url}}" 
+              <img
+                ng-if="item.images.length > 0"
+                class="hand"
+                ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })"
+                ng-src="{{item.images[0].url}}"
                 alt="product image">
-              <img 
-                ng-if="item.images.length === 0" 
-                class="product-placeholder-image" 
-                src="images/bek-logo.png" 
+              <img
+                ng-if="item.images.length === 0"
+                class="product-placeholder-image"
+                src="images/bek-logo.png"
                 alt="default product image">
               <span class="featured-item__detail">
                 {{::item.name}}
@@ -87,17 +87,17 @@
 
       <div ng-show="!loadingCategories && categories.length > 0">
     		<ul class="horizontal-slide hidden-xs hidden-sm">
-    			<li ng-repeat="category in categories | orderBy: ['id']" class="item-holder">
-    				<div ng-if="category.name != 'All'" class="featured-item text-center">
+    			<li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
+    				<div class="featured-item text-center">
     					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
     					<div class="featured-item__detail">
     						{{::category.name}}
-    						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="text-uppercase">view category</a>
+    						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="text-uppercase">Shop Category</a>
     					</div>
     				</div>
     			</li>
     		</ul>
-    		
+
     		<div featured-item-carousel="categories" catalog="true" template="{{'views/featuredItemTemplates/category.html'}}"></div>
       </div>
   	</div>
@@ -116,7 +116,7 @@
     					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
     					<div class="featured-item__detail">
     						{{::brand.extended_description}}
-    						<a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" class="text-uppercase">view brand</a>
+    						<a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" class="text-uppercase">Shop Brand</a>
     					</div>
     				</div>
     			</li>

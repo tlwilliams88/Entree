@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * @ngdoc function
  * @name bekApp.service:CategoryService
@@ -8,10 +8,10 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CategoryService', function ($http) {
-    
+  .factory('CategoryService', function ($http, $filter) {
+
     var categories = {};
- 
+
     var Service = {
       getCategories: function(catalogType) {
         if (!categories.hasOwnProperty(catalogType)) {
@@ -22,7 +22,7 @@ angular.module('bekApp')
         return categories[catalogType];
       }
   };
- 
+
     return Service;
- 
+
   });

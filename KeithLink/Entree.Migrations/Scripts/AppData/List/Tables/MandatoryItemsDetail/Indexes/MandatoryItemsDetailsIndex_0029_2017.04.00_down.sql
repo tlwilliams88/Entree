@@ -1,0 +1,1 @@
+-- Index will be dropped with table in same migration

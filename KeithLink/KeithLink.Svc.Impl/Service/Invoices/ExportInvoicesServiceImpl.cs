@@ -53,7 +53,8 @@ namespace KeithLink.Svc.Impl.Service.Invoices
         public List<InvoiceItemModel> GetExportableInvoiceItems(UserProfile user,
                                                                 UserSelectedContext context,
                                                                 ExportRequestModel exportRequest,
-                                                                string invoiceNumber)
+                                                                string invoiceNumber,
+                                                                Dictionary<string, string> contractdictionary)
         {
             if (exportRequest.Fields != null)
                 _exportLogic.SaveUserExportSettings(user.UserId, 
@@ -65,8 +66,6 @@ namespace KeithLink.Svc.Impl.Service.Invoices
             Order order = _orderLogic.GetOrder(context.BranchId, invoiceNumber);
             List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
 
-            Dictionary<string, string> contractdictionary = 
-                ContractInformationHelper.GetContractInformation(context, _listRepo, _cache);
             items = items.Select(i => _invLogic.AssignContractCategory(contractdictionary, i)).ToList();
 
             return items;

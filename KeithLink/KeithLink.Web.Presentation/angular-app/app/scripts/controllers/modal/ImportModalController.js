@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ImportModalController', ['$scope', '$analytics', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders', 'listType', 'ExportService',
-  function ($scope, $analytics, $modalInstance, $state, ListService, CartService, customListHeaders, listType, ExportService) {
+.controller('ImportModalController', ['$scope', '$analytics', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders', 'listType', 'ExportService', 'LocalStorage',
+  function ($scope, $analytics, $modalInstance, $state, ListService, CartService, customListHeaders, listType, ExportService, LocalStorage) {
 
   $scope.customListHeaders = customListHeaders;
 
   $scope.nonBEKList = listType == 'CustomInventory' ? true : false;
-  
+
   $scope.upload = [];
   $scope.files = [];
-  $scope.invalidType = false;      
+  $scope.invalidType = false;
 
 
   function goToImportedPage(routeName, routeParams) {
@@ -25,10 +25,10 @@ angular.module('bekApp')
     $scope.files = [];
     var filetype = $files[0].name.slice($files[0].name.length -5,$files[0].name.length);
     filetype = filetype.slice(filetype.indexOf('.'), filetype.length);
-   $scope.invalidType = (filetype !== '.xlsx' && filetype !== '.xls' && filetype !== '.csv' && filetype !== '.txt');             
+   $scope.invalidType = (filetype !== '.xlsx' && filetype !== '.xls' && filetype !== '.csv' && filetype !== '.txt');
 
-    for (var i = 0; i < $files.length; i++) {     
-      $scope.files.push($files[i]);      
+    for (var i = 0; i < $files.length; i++) {
+      $scope.files.push($files[i]);
     }
   };
 
@@ -45,7 +45,16 @@ angular.module('bekApp')
       });
     } else {
       ListService.importList(file, options).then(function(data) {
-        goToImportedPage('menu.lists.items', { listId: data.listid });
+        var Id = data.list.listid,
+            Type = data.list.type,
+            list = {
+                listId: Id,
+                listType: Type
+            };
+
+        LocalStorage.setLastList(list);
+        
+        goToImportedPage('menu.lists.items', { listId: Id, listType: Type });
       });
     }
 
@@ -70,9 +79,9 @@ angular.module('bekApp')
       $modalInstance.close(data);
     });
   };
-  
+
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
-  
+
 }]);

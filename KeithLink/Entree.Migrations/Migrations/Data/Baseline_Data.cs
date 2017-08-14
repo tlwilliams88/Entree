@@ -18,7 +18,7 @@ namespace Entree.Migrations.Data {
         }
 
         public override void Down() {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

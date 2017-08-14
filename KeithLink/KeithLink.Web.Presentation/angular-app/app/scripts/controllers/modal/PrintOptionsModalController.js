@@ -33,15 +33,15 @@ angular.module('bekApp')
 
   $scope.printLabels = function(list, labelOption) {
     $analytics.eventTrack('Print List', {  category: 'Lists', label: 'Print Labels' });
-    ListService.printBarcodes(list.listid);
+    ListService.printBarcodes(list);
   };
 
   $scope.printList = function(list, landscape, showparvalues, groupLabels, shownotes, prices) {
     if(groupLabels){
-      pagingModelOptions= { 
+      pagingModelOptions= {
               sort: [{
                 field: 'label',
-                order:  'desc' 
+                order:  'desc'
               }],
               terms: undefined
             };
@@ -51,11 +51,11 @@ angular.module('bekApp')
     }
     if(!$scope.printingOrder){
       $analytics.eventTrack('Print List', {  category: 'Lists', label: 'Print Page' });
-      ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions, shownotes, prices);
+      ListService.printList(list, landscape, showparvalues, pagingModelOptions, shownotes, prices);
     }
     else{
       $analytics.eventTrack('Print Order', {  category: 'Add To Order'});
-      CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
+      CartService.printOrder(list, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
     }
   };
 

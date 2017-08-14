@@ -33,8 +33,13 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Models.Configuration;
+using Microsoft.ReportingServices.ReportProcessing.ExprHostObjectModel;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Lists
 {
@@ -55,8 +60,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         private readonly IProductImageRepository    _productImageRepo;
         private readonly IGenericQueueRepository    _queueRepo;
         private readonly ISettingsRepository        _settingsRepo;
+        private readonly IMessageTemplateLogic _messageTemplateLogic;
+        private readonly IContractChangesRepository _contractChangesRepo;
         private readonly IUnitOfWork                _uow;
 
+        private const string MESSAGE_TEMPLATE_CONTRACTCHANGE = "ContractChangeNotice";
+        private const string MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS = "ContractChangeItem";
         private const string CACHE_GROUPNAME = "UserList";
         private const string CACHE_NAME = "UserList";
         private const string CACHE_PREFIX = "Default";
@@ -67,7 +76,9 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                             ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic,
                             IProductImageRepository productImageRepository, IListShareRepository listShareRepository, ICustomerRepository customerRepository, 
                             IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository, ISettingsRepository settingsRepo,
-                            IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository, ICustomInventoryItemsRepository customInventoryRepo) {
+                            IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository, 
+                            ICustomInventoryItemsRepository customInventoryRepo, IContractChangesRepository contractChangesRepo,
+                            IMessageTemplateLogic messageTemplateLogic) {
 
             _cache = listCacheRepository;
             _catalogLogic = catalogLogic;
@@ -83,6 +94,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             _productImageRepo = productImageRepository;
             _queueRepo = queueRepository;
             _settingsRepo = settingsRepo;
+            _contractChangesRepo = contractChangesRepo;
+            _messageTemplateLogic = messageTemplateLogic;
             _uow = unitOfWork;
         }
         #endregion
@@ -96,7 +109,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// <returns>the list item's unique id</returns>
         public long? AddItem(UserProfile user, UserSelectedContext catalogInfo, long listId, ListItemModel newItem)
         {
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             var list = _listRepo.ReadById(listId);
 
@@ -116,14 +129,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     return dupItem.Id;
             }
 
-            string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, newItem);
+  //          string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, newItem);
 
             var item = new ListItem()
             {
                 ItemNumber = newItem.ItemNumber,
                 Label = newItem.Label,
                 Par = newItem.ParLevel,
-                Category = itmcategory,
+    //            Category = itmcategory,
                 Position = position,
                 Quantity = newItem.Quantity,
                 Each = newItem.Each ?? false,
@@ -230,7 +243,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
         {
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             var list = _listRepo.ReadById(listId);
             var nextPosition = 1;
@@ -245,14 +258,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 if ((list.Type == ListType.Favorite || list.Type == ListType.Reminder) && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
                     continue;
 
-                string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, item);
+//                string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, item);
 
                 ListItem itm = new ListItem()
                     {
                         ItemNumber = item.ItemNumber,
                         Label = item.Label,
                         Par = item.ParLevel,
-                        Category = itmcategory,
+//                        Category = itmcategory,
                         Each = !item.Each.Equals(null) ? item.Each : false,
                         Position = nextPosition,
                         Quantity = item.Quantity,
@@ -284,7 +297,8 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
 
-            return ReadList(user, catalogInfo, listId);
+            return null;
+//            return ReadList(user, catalogInfo, listId);
         }
 
         public void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote)
@@ -328,7 +342,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         public void AddRecentlyOrderedItems(UserProfile user, UserSelectedContext catalogInfo, RecentNonBEKList newlist) {
             List list = _listRepo.Read(i => i.UserId == user.UserId && 
-                                           i.Type == ListType.RecentOrderedNonBEK &&
+                                           i.Type == ListType.RecentlyOrdered &&
                                            i.BranchId == newlist.Catalog &&
                                            i.CustomerId.Equals(catalogInfo.CustomerId), 
                                       l => l.Items)
@@ -336,15 +350,15 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if(list == null) {
                 //Create a new recently ordered list
-                this.CreateList(user.UserId, new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = newlist.Catalog }, 
-                    new ListModel() {
-                    Name = "Recent Orders",
-                    BranchId = newlist.Catalog,
-                    Items = new List<ListItemModel>()
-                }, ListType.RecentOrderedNonBEK);
+                //this.CreateList(user.UserId, new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = newlist.Catalog }, 
+                //    new ListModel() {
+                //    Name = "Recent Orders",
+                //    BranchId = newlist.Catalog,
+                //    Items = new List<ListItemModel>()
+                //}, ListType.RecentlyOrdered);
                 // grab a pointer to the newly created list
                 list = _listRepo.Read(i => i.UserId == user.UserId &&
-                               i.Type == ListType.RecentOrderedNonBEK &&
+                               i.Type == ListType.RecentlyOrdered &&
                                i.BranchId == newlist.Catalog &&
                                i.CustomerId.Equals(catalogInfo.CustomerId),
                           l => l.Items)
@@ -390,17 +404,17 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             if (list == null)
             {
                 //Create a new recently viewed list
-                this.CreateList(user.UserId, catalogInfo, new ListModel()
-                {
-                    Name = "Recent",
-                    BranchId = catalogInfo.BranchId,
-                    Items = new List<ListItemModel>() {
-                        new ListItemModel()
-                        {
-                            ItemNumber = itemNumber
-                        }
-                    }
-                }, ListType.Recent);
+                //this.CreateList(user.UserId, catalogInfo, new ListModel()
+                //{
+                //    Name = "Recent",
+                //    BranchId = catalogInfo.BranchId,
+                //    Items = new List<ListItemModel>() {
+                //        new ListItemModel()
+                //        {
+                //            ItemNumber = itemNumber
+                //        }
+                //    }
+                //}, ListType.Recent);
 
             }
             else {
@@ -418,56 +432,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
 
             _uow.SaveChanges();
-        }
-
-        /// <summary>
-        /// copies the list for sharing with other users
-        /// </summary>
-        /// <param name="copyListModel">ListCopyShareModel</param>
-        /// <returns>the copied list</returns>
-        public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
-        {
-            var listToCopy = _listRepo.ReadById(copyListModel.ListId);
-
-            var listToCreate = new List<List>();
-            Dictionary<string, ExternalCatalog> externalCatalogDict = _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower());
-
-            foreach (var customer in copyListModel.Customers)
-            {
-                var newList = new List()
-                {
-                    DisplayName = string.Format("Copied - {0}", listToCopy.DisplayName),
-                    UserId = listToCopy.UserId,
-                    CustomerId = customer.CustomerNumber,
-                    BranchId = customer.CustomerBranch,
-                    Type = ListType.Custom,
-                    ReadOnly = false
-                };
-
-                ExternalCatalog currentExtCatalog = externalCatalogDict[customer.CustomerBranch.ToLower()];
-
-                newList.Items = new List<ListItem>();
-                foreach (var item in listToCopy.Items)
-                {
-                    newList.Items.Add(new ListItem()
-                    {
-                        Category = item.Category,
-                        ItemNumber = item.ItemNumber,
-                        Label = item.Label,
-                        Par = item.Par,
-                        Position = item.Position,
-                        Each = item.Each,
-                        CatalogId = IsBekBranch(item.CatalogId) ? customer.CustomerBranch : currentExtCatalog.ExternalBranchId
-                    });
-                }
-
-                _listRepo.Create(newList);
-                listToCreate.Add(newList);
-            }
-
-            _uow.SaveChanges();
-
-            return listToCreate.Select(l => new ListCopyResultModel() { CustomerId = l.CustomerId, BranchId = l.BranchId, NewListId = l.Id }).ToList();
         }
 
         public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
@@ -515,7 +479,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             foreach (long itemId in itemIds)
             {
-                DeleteItem(itemId);
+                //DeleteItem(itemId);
             }
         }
 
@@ -555,7 +519,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         {
             foreach (long listId in listIds)
             {
-                DeleteList(listId);
+                //DeleteList(listId);
             }
         }
 
@@ -608,14 +572,14 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                catalogInfo.CustomerId != null)
                 listcol =
                     _listRepo.Read(i => i.UserId == user.UserId &&
-                                        i.Type == ListType.RecentOrderedNonBEK &&
+                                        i.Type == ListType.RecentlyOrdered &&
                                         i.CustomerId.Equals(catalogInfo.CustomerId),
                                    l => l.Items)
                              .ToList();
             else
                 listcol =
                     _listRepo.Read(i => i.UserId == user.UserId &&
-                                        i.Type == ListType.RecentOrderedNonBEK,
+                                        i.Type == ListType.RecentlyOrdered,
                                    l => l.Items)
                              .ToList();
 
@@ -1048,11 +1012,11 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
                 MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
             }
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             foreach(var itm in listClone.Items)
             {
-                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+//                itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
             }
 
             if (includePrice)
@@ -1273,16 +1237,16 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             LookupProductDetails(user, tempList, catalogInfo);
             stopWatch.Read(_log, "FillOutListModelItems - LookupProductDetails");
 
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
             stopWatch.Read(_log, "FillOutListModelItems - GetContractInformation");
 
-            if (contractdictionary.Count > 0)
-            {
-                tempList.Items.ForEach
-                    (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
-                                           (contractdictionary, itm));
-                stopWatch.Read(_log, "FillOutListModelItems - AddContractInformationIfInContract");
-            }
+            //if (contractdictionary.Count > 0)
+            //{
+            //    tempList.Items.ForEach
+            //        (itm => itm.Category = ContractInformationHelper.AddContractInformationIfInContract
+            //                               (contractdictionary, itm));
+            //    stopWatch.Read(_log, "FillOutListModelItems - AddContractInformationIfInContract");
+            //}
         }
 
         private void RefreshSharingProps(UserSelectedContext catalogInfo, long Id, ListModel list)
@@ -1320,7 +1284,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             try
             {
                 var list = _listRepo.Read(i => i.UserId == user.UserId &&
-                                          i.Type == ListType.RecentOrderedNonBEK &&
+                                          i.Type == ListType.RecentlyOrdered &&
                                           i.BranchId.Equals(catalogInfo.BranchId) &&
                                           i.CustomerId.Equals(catalogInfo.CustomerId),
                                           l => l.Items).ToList();
@@ -1346,7 +1310,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 return new RecentNonBEKList() { Catalog = catalogInfo.BranchId, Items = returnItems };
             }catch (Exception ex)
             {
-                DeleteRecentlyOrdered(user, catalogInfo);
+                //DeleteRecentlyOrdered(user, catalogInfo);
                 _log.WriteInformationLog(" Getting recently ordered items list failed, reset list", ex);
                 return null;
             }
@@ -1411,13 +1375,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any())
             {
-                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
+                //this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
                 list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
 
             if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any())
             {
-                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
+                //this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
                 list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
 
@@ -1458,12 +1422,12 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                     LookupProductDetails(user, listItem, catalogInfo);
 
                     processedList.Add(listItem);
-                    Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//                    Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
-                    foreach (var itm in listItem.Items)
-                    {
-                        itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
-                    }
+                    //foreach (var itm in listItem.Items)
+                    //{
+                    //    itm.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, itm);
+                    //}
                     _cache.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId), TimeSpan.FromHours(2), listItem);
 
                 });
@@ -1612,7 +1576,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
         /// <param name="userList"></param>
         public void UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListModel userList)
         {
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
+//            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _cache);
 
             bool itemsAdded = false;
             var currentList = _listRepo.Read(l => l.Id.Equals(userList.ListId), i => i.Items)
@@ -1658,7 +1622,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                         if (string.IsNullOrEmpty(updateItem.ItemNumber))
                             continue;
 
-                        string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, updateItem);
+//                        string itmcategory = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, updateItem);
 
                         if (updateItem.ListItemId != 0)
                         {
@@ -1670,7 +1634,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                             item.Position = updateItem.Position;
                             item.Each = updateItem.Each;
                             item.Quantity = updateItem.Quantity;
-                            item.Category = itmcategory;
+//                            item.Category = itmcategory;
                         }
                         else {
                             if ((currentList.Type == ListType.Favorite ||
@@ -1704,7 +1668,6 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
         }
-
         #endregion
     }
 }

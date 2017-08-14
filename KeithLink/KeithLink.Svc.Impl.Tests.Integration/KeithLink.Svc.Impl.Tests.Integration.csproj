@@ -1,0 +1,167 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4AB969B8-E5E0-40AC-B82E-AB06B0C4AD51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>KeithLink.Svc.Impl.Tests.Integration</RootNamespace>
+    <AssemblyName>KeithLink.Svc.Impl.Tests.Integration</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentAssertions.Core, Version=4.19.2.0, Culture=neutral, PublicKeyToken=33f2691a05b67b6a, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentAssertions.4.19.2\lib\net45\FluentAssertions.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentMigrator, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.1.6.2\lib\40\FluentMigrator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentMigrator.Runner, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentMigrator.Runner.1.6.2\lib\40\FluentMigrator.Runner.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Migrator.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Lists\ContractListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\ContractListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\CustomListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\CustomListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\FavoriteListHeadersRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\CustomListShareRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\FavoriteListDetailsRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\HistoryListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\HistoryListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\NotesListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\MandatoryItemsListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\InventoryValuationListDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\NotesListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\MandatoryItemsListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\InventoryValuationListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\RecentlyViewedDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\RecentlyOrderedDetailRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\RecentlyViewedHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\RecommendedListDetailsRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\ReminderListDetailsRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\RecentlyOrderedHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\RecommendedListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Lists\ReminderListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\MigratedDatabaseTest.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Email\" />
+    <Folder Include="Helpers\" />
+    <Folder Include="Logic\" />
+    <Folder Include="Repository\BranchSupports\" />
+    <Folder Include="Repository\Brands\" />
+    <Folder Include="Repository\Cache\" />
+    <Folder Include="Repository\Configurations\" />
+    <Folder Include="Repository\ContentManagement\" />
+    <Folder Include="Repository\Customers\" />
+    <Folder Include="Repository\DataConnections\" />
+    <Folder Include="Repository\EF\" />
+    <Folder Include="Repository\Email\" />
+    <Folder Include="Repository\InternalCatalog\" />
+    <Folder Include="Repository\Invoices\" />
+    <Folder Include="Repository\Marketing\" />
+    <Folder Include="Repository\Messaging\" />
+    <Folder Include="Repository\Network\" />
+    <Folder Include="Repository\OnlinePayments\" />
+    <Folder Include="Repository\Orders\" />
+    <Folder Include="Repository\PowerMenu\" />
+    <Folder Include="Repository\Profile\" />
+    <Folder Include="Repository\Queue\" />
+    <Folder Include="Repository\Reports\" />
+    <Folder Include="Repository\SingleSignOn\" />
+    <Folder Include="Repository\SiteCatalog\" />
+    <Folder Include="Repository\SmartResolver\" />
+    <Folder Include="Repository\Templates\" />
+    <Folder Include="Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Entree.Migrations\Entree.Migrations.csproj">
+      <Project>{f11aeb8f-4e70-4c91-abe7-e40fb6a1f684}</Project>
+      <Name>Entree.Migrations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
+      <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
+      <Name>KeithLink.Svc.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.Impl\KeithLink.Svc.Impl.csproj">
+      <Project>{878aa2e7-769b-409c-8285-3a7faca750f9}</Project>
+      <Name>KeithLink.Svc.Impl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

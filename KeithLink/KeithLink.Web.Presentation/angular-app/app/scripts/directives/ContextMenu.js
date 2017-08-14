@@ -14,8 +14,11 @@ angular.module('bekApp')
 
       if ($scope.isOrderEntryCustomer) {
         var cartHeaders = CartService.cartHeaders,
-            listHeaders = ListService.listHeaders,
-            changeOrderHeaders = OrderService.changeOrderHeaders;
+            listHeaders = ListService.listHeaders;
+
+        OrderService.getChangeOrders().then(function(resp){
+          $scope.changeOrders = resp;
+        });
 
         $scope.lists = listHeaders.length > 0 ? listHeaders : ListService.getListHeaders();
 
@@ -23,7 +26,6 @@ angular.module('bekApp')
           CartService.getShipDates(); // needed if user creates a cart using the context menu
 
         $scope.carts = cartHeaders.length > 0 ? cartHeaders : CartService.getCartHeaders();
-        $scope.changeOrders = changeOrderHeaders.length > 0 ? changeOrderHeaders : OrderService.getChangeOrders();
 
         }
       }
@@ -44,28 +46,28 @@ angular.module('bekApp')
       LISTS
       *************/
 
-      $scope.addItemToList = function(listName, listId, item, selectedList) {
+      $scope.addItemToList = function(list, item, selectedList) {
       var newItem = angular.copy(item);
         if(selectedList && selectedList.iscustominventory){
           var newItem = [
             item
           ];
           $q.all([
-            ListService.addNewItemsFromCustomInventoryList(listId, newItem),
+            ListService.addNewItemsFromCustomInventoryList(list, newItem),
           ]).then(function(data) {
             item.favorite = true;
             closeModal();
           });
         } else {
           $q.all([
-            ListService.addItem(listId, newItem),
+            ListService.addItem(list, newItem),
             ListService.addItemToFavorites(newItem)
           ]).then(function(data) {
             item.favorite = true;
             closeModal();
-            $scope.displayMessage('success', 'Successfully added item to list ' + listName + '.');
+            $scope.displayMessage('success', 'Successfully added item to list ' + list.name + '.');
           }, function() {
-            $scope.displayMessage('error', 'Error adding item to list ' + listName + '.');
+            $scope.displayMessage('error', 'Error adding item to list ' + list.name + '.');
           });
         }
       };

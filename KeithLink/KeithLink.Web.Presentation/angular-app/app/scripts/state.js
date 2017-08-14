@@ -72,7 +72,9 @@ angular.module('bekApp')
         saveCarts: true,
       },
       resolve: {
-        isHomePage: ['$stateParams', function($stateParams) {
+        isHomePage: ['$stateParams', '$rootScope', function($stateParams, $rootScope) {
+          $rootScope.returnToStateItemNumber = '';
+          $rootScope.returnToStateName = '';
           return $stateParams.isHomePage = true;
         }]
       }
@@ -191,8 +193,10 @@ angular.module('bekApp')
         authorize: 'canBrowseCatalog'
       },
       resolve: {
-        security: ['LocalStorage', '$q', '$stateParams', function(LocalStorage, $q, $stateParams) {
+        security: ['LocalStorage', '$q', '$stateParams', 'ListService', function(LocalStorage, $q, $stateParams, ListService) {
           var customerRecord = LocalStorage.getCurrentCustomer();
+
+          ListService.getListHeaders();
 
           if( $stateParams.catalogType == 'UNFI' && customerRecord.customer.canViewUNFI == false){
             return $q.reject('Customer Cannot View UNFI Items.');
@@ -269,7 +273,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.lists.items', {
-      url: ':listId/?renameList',
+      url: ':listId/:listType/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
@@ -277,69 +281,73 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        validListId: ['$stateParams', 'ResolveService', 'lists', '$filter', function($stateParams, ResolveService, lists, $filter) {
-          var existingList = $filter('filter')(lists, {listid: $stateParams.listId})[0],
-              list = existingList ? existingList : $stateParams.listId;
-
-          if(list) {
-            return list.listid ? list.listid : list;
-          }
-        }],
-        originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
-         function($stateParams, $filter, validListId, lists, ListService, DateService, Constants, LocalStorage, ENV) {
+        originalList: ['$stateParams', '$filter', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
+         function($stateParams, $filter, lists, ListService, DateService, Constants, LocalStorage, ENV) {
 
           var last = LocalStorage.getLastList(),
               stillExists = false,
               pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'},
-              listIdtoBeUsed = '';
+              listToBeUsed = {},
+              listHeader = {},
+              selectedList = {
+                  listId: $stateParams.listId,
+                  listType: $stateParams.listType
+              };
 
-          ListService.lists.forEach(function(list){
+          ListService.listHeaders.forEach(function(list){
             if(last && last.listId && (last.listId == list.listid)){
               stillExists = true;
-              var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
-              if(last.timeset < timeoutDate){
-                stillExists = false;
-              }
+              listHeader = $filter('filter')(ListService.listHeaders, {listid: last.listId, type: last.listType})[0];
             }
           });
 
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
-            last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-            LocalStorage.setLastList(last);
-            listIdtoBeUsed = last.listId.listid ? last.listId.listid : last.listId;
+            listToBeUsed.listId = last.listId;
+            listToBeUsed.listType = last.listType;
           }
-          else{
-            LocalStorage.setLastList({});
-            listIdtoBeUsed = validListId;
-           }
-
-          var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
 
           if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
-              ListService.getParamsObject(params, 'lists').then(function(storedParams){
+            ListService.getParamsObject(params, 'lists').then(function(storedParams){
               $stateParams.sortingParams = storedParams;
               params = storedParams;
             });
           }
 
-          if(listIdtoBeUsed !== 'nonbeklist') {
-            listIdtoBeUsed = parseInt(listIdtoBeUsed, 10);
+          listToBeUsed.listId = listToBeUsed.listId != 'nonbeklist' ? parseInt(listToBeUsed.listId, 10) : listToBeUsed.listId;
+          listToBeUsed.listType = listHeader ? listHeader.type : listToBeUsed.listType;
 
-            if(isNaN(listIdtoBeUsed) || (listIdtoBeUsed == 0 && !listHeader)){
-              var historyList = $filter('filter')(ListService.lists, {name: 'History'}),
-                  favoritesList = $filter('filter')(ListService.lists, {name: 'Favorites'});
+          if((isNaN(listToBeUsed.listId) || !listHeader) && listToBeUsed.listId != 'nonbeklist'){
+            var contractList = $filter('filter')(ListService.listHeaders, { type: 2 }),
+                historyList = $filter('filter')(ListService.listHeaders, { type: 5 }),
+                favoritesList = $filter('filter')(ListService.listHeaders, { type: 1 }),
+                customList = $filter('filter')(ListService.listHeaders, { type: 0 });
 
-              listIdtoBeUsed =  historyList.length ? historyList[0].listid : favoritesList[0].listid;
+            if(contractList.length > 0){
+              listToBeUsed = contractList[0];
+            }
+            else if(historyList.length > 0){
+              listToBeUsed = historyList[0];
+            }
+            else if(favoritesList.length > 0){
+              listToBeUsed = favoritesList[0];
+            }
+            else if(customList.length > 0){
+              listToBeUsed = customList[0];
+            }
+             else{
+              var defaultList = {type:1};
+              return ListService.createList([], defaultList).then(function(resp){
+                return ListService.updateListPermissions(resp);
+              });
             }
           }
 
-
-          if(listIdtoBeUsed == 'nonbeklist'){
+          if(listToBeUsed.listId == 'nonbeklist'){
             return ListService.getCustomInventoryList();
           } else {
-            LocalStorage.setLastList(listIdtoBeUsed);
-            return ListService.getList(listIdtoBeUsed, params);
+            LocalStorage.setLastList(listToBeUsed);
+            return ListService.getList(listToBeUsed, params);
           }
 
         }]
@@ -347,7 +355,7 @@ angular.module('bekApp')
     })
 
     .state('menu.organizelist', {
-      url: '/lists/:listId/organize',
+      url: '/lists/:listType/:listId/organize',
       templateUrl: 'views/listsorganize.html',
       controller: 'ListOrganizeController',
       data: {
@@ -356,7 +364,11 @@ angular.module('bekApp')
       },
       resolve: {
         list: ['$stateParams', 'ListService', function ($stateParams, ListService) {
-          return ListService.getListWithItems($stateParams.listId, {includePrice: false});
+          var list = {
+            listId : $stateParams.listId,
+            listType : $stateParams.listType
+          }
+          return ListService.getListWithItems(list, {includePrice: false});
         }]
       }
     })
@@ -433,8 +445,10 @@ angular.module('bekApp')
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage/?pageLoaded',
-      params: {listItems: null},
+      url: ':cartId/list/:listId/:listType/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage/?pageLoaded',
+      params: {
+        listItems: null
+      },
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
@@ -443,14 +457,6 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        // validBasketId: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
-        //   return ResolveService.validateBasket($stateParams.cartId, changeOrders);
-        // }],
-        // selectedCart: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
-        //   if ($stateParams.cartId !== 'New') {
-        //     return ResolveService.selectValidBasket(validBasketId, changeOrders);
-        //   }
-        // }],
         selectedCart: ['$stateParams', 'CartService', 'OrderService', function($stateParams, CartService, OrderService) {
 
           if ($stateParams.cartId !== 'New') {
@@ -462,37 +468,33 @@ angular.module('bekApp')
             }
           }
         }],
-        validListId: ['$stateParams', 'ResolveService', 'LocalStorage', function($stateParams, ResolveService, LocalStorage) {
-          var lastList;
-
-          lastList = $stateParams.listId ? $stateParams.listId : LocalStorage.getLastList();
-
-          return ResolveService.validateList(lastList, 'isworksheet');
-        }],
-        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
-         function($stateParams, $filter, lists, validListId, ListService, DateService, Constants, LocalStorage, ENV) {
+        selectedList: ['$stateParams', '$filter', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
+         function($stateParams, $filter, lists, ListService, DateService, Constants, LocalStorage, ENV) {
 
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: []},
-              listId = $stateParams.listId.listId ? $stateParams.listId.listId : $stateParams.listId,
+              listToBeUsed = {},
               historyList = $filter('filter')(lists, {name: 'history'})[0],
               favoritesList = $filter('filter')(lists, {name: 'favorites'})[0],
+              lastOrderList = LocalStorage.getLastOrderList(),
               listHeader;
 
-          listId = listId ? listId : LocalStorage.getLastList();
-          listHeader = listId.listId ? $filter('filter')(lists, {listid: listId.listId})[0] : $filter('filter')(lists, {listid: listId})[0];
+          listHeader = $filter('filter')(lists, {listid: $stateParams.listId, type: $stateParams.listType})[0];
 
-          if(!listHeader) {
-
-            if(historyList) {
-              listHeader = historyList;
-            } else {
-              listHeader = favoritesList;
-            }
-
+          if(listHeader == null || listHeader == undefined) {
+              if(lastOrderList != null || lastOrderList != undefined) {
+                 listHeader = $filter('filter')(lists, {listid: lastOrderList.listId, type: lastOrderList.listType})[0];
+             } else {
+                 if(historyList) {
+                   listHeader = historyList;
+                 } else {
+                   listHeader = favoritesList;
+                 }
+             }
           }
 
-          listId = listHeader.listid;
+          listToBeUsed.listId = listHeader.listid;
+          listToBeUsed.listType = listHeader.type;
 
           if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
@@ -501,7 +503,7 @@ angular.module('bekApp')
             });
           }
 
-          return ListService.getList(listId, params);
+          return ListService.getList(listToBeUsed, params);
         }]
       }
     })
@@ -618,7 +620,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.inventoryreport', {
-      url: '/reports/inventory/?listid/',
+      url: '/reports/inventory/:listid/',
       templateUrl: 'views/inventoryreport.html',
       controller: 'InventoryReportController',
       resolve: {

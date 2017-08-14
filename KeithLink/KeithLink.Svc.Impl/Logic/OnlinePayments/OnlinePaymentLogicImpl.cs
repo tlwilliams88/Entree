@@ -93,11 +93,9 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         #region methods
         public InvoiceItemModel AssignContractCategory
-            (Dictionary<string, string> contractdictionary, InvoiceItemModel item)
-        {
-            string itmcategory = ContractInformationHelper.AddContractInformationIfInContract
-                (contractdictionary, item.ItemNumber);
-            item.Category = itmcategory;
+            (Dictionary<string, string> contractdictionary, InvoiceItemModel item) {
+            string itmcategory = null;
+            if(contractdictionary != null && contractdictionary.Count>0 && contractdictionary.ContainsKey(item.ItemNumber)) item.Category = contractdictionary[item.ItemNumber];
             return item;
         }
 

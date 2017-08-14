@@ -15,8 +15,9 @@
         <li class="cart" ng-repeat="cart in cartsHeaders | orderBy:'createddate':true | limitTo: 2">
           <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
           <div class="cart-dropdown__info">
-            <strong>{{cart.name}}</strong>
-            <br>
+            <p>
+              <span><strong>{{cart.name}}</strong></span>
+            </p>
             Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
             <br>
             Item Count: {{(cart.itemcount || 0) + (cart.itemcount === 1 ? ' Item' : ' Items')+ '/'+(cart.piececount || 0) + (cart.piececount === 1 ? ' Piece ' : ' Pieces')}}
@@ -24,10 +25,10 @@
             Cart Total: {{cart.subtotal | currency}}
             <br>
             <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="display: table;">View Cart</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id, listId: cart.listid })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id, listId: cart.listid, listType: cart.listtype })">Continue Shopping</a>
           </div>
         </li>
-        <li class="cart-dropdown__view-all">
+        <li class="cart-dropdown__view-all" ng-if="cartsHeaders.length > 2">
           <div>
             <a ui-sref="menu.order" class="btn btn-primary">View All Carts</a>
           </div>
@@ -36,7 +37,7 @@
         <li class="cart" ng-repeat="changeOrder in changeOrders | orderBy:'createddate':true | limitTo: 2">
           <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
           <div class="cart-dropdown__info">
-            <strong>{{changeOrder.invoicenumber}}</strong>
+            <strong><span ng-if="!changeOrder.ponumber"># {{changeOrder.invoicenumber}}</span><span ng-if="changeOrder.ponumber">{{changeOrder.ponumber}}</span></strong>
             <br>
             Ship Date: {{changeOrder.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
             <br>
@@ -45,7 +46,12 @@
             Change Order Total: {{changeOrder.ordertotal | currency}}
             <br>
             <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;">View Change Order</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber, listId: changeOrder.listid })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber, listId: changeOrder.listid, listType: changeOrder.listtype })">Continue Shopping</a>
+          </div>
+        </li>
+        <li class="cart-dropdown__view-all" ng-if="changeOrders.length > 2">
+          <div>
+            <a ui-sref="menu.order" class="btn btn-primary">View Change Orders</a>
           </div>
         </li>
       </ul>

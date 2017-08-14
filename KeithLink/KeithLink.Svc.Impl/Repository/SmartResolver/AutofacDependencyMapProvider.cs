@@ -98,11 +98,13 @@ using System;
 using KeithLink.Svc.Core.Enumerations.Dependencies;
 using KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External;
 using KeithLink.Svc.Core.Interface.ApplicationHealth;
+using KeithLink.Svc.Core.Interface.Import;
 using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 using KeithLink.Svc.Impl.Repository.Templates;
 using KeithLink.Svc.Core.Interface.Templates;
 using KeithLink.Svc.Impl.Service.Invoices;
 using KeithLink.Svc.Impl.Service.SiteCatalog;
+using KeithLink.Svc.Impl.Service.List;
 
 namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
@@ -151,9 +153,33 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // lists
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
+            builder.RegisterType<FavoriteListHeaderRepositoryImpl>().As<IFavoriteListHeadersRepository>();
+            builder.RegisterType<FavoriteListDetailRepositoryImpl>().As<IFavoriteListDetailsRepository>();
+            builder.RegisterType<NotesHeadersRepositoryImpl>().As<INotesHeadersListRepository>();
+            builder.RegisterType<NotesDetailsRepositoryImpl>().As<INotesDetailsListRepository>();
+            builder.RegisterType<RecentlyViewedListHeadersRepositoryImpl>().As<IRecentlyViewedListHeadersRepository>();
+            builder.RegisterType<RecentlyViewedListDetailsRepositoryImpl>().As<IRecentlyViewedListDetailsRepository>();
+            builder.RegisterType<RecentlyOrderedListHeadersRepositoryImpl>().As<IRecentlyOrderedListHeadersRepository>();
+            builder.RegisterType<RecentlyOrderedListDetailsRepositoryImpl>().As<IRecentlyOrderedListDetailsRepository>();
+            builder.RegisterType<RecommendedItemsListHeadersRepositoryImpl>().As<IRecommendedItemsListHeadersRepository>();
+            builder.RegisterType<RecommendedItemsListDetailsRepositoryImpl>().As<IRecommendedItemsListDetailsRepository>();
+            builder.RegisterType<InventoryValuationListHeadersRepositoryImpl>().As<IInventoryValuationListHeadersRepository>();
+            builder.RegisterType<InventoryValuationListDetailsRepositoryImpl>().As<IInventoryValuationListDetailsRepository>();
+            builder.RegisterType<HistoryListHeaderRepositoryImpl>().As<IHistoryListHeaderRepository>();
+            builder.RegisterType<HistoryListDetailRepositoryImpl>().As<IHistoryListDetailRepository>();
+            builder.RegisterType<ContractListHeadersRepositoryImpl>().As<IContractListHeadersRepository>();
+            builder.RegisterType<ContractListDetailsRepositoryImpl>().As<IContractListDetailsRepository>();
+            builder.RegisterType<ReminderItemsListDetailsRepositoryImpl>().As<IRemindersListDetailsRepository>();
+            builder.RegisterType<ReminderItemsListHeadersRepositoryImpl>().As<IRemindersListHeadersRepository>();
+            builder.RegisterType<MandatoryItemsListHeadersRepositoryImpl>().As<IMandatoryItemsListHeadersRepository>();
+            builder.RegisterType<MandatoryItemsListDetailsRepositoryImpl>().As<IMandatoryItemsListDetailsRepository>();
+            builder.RegisterType<CustomListHeadersRepositoryImpl>().As<ICustomListHeadersRepository>();
+            builder.RegisterType<CustomListDetailsRepositoryImpl>().As<ICustomListDetailsRepository>();
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
             builder.RegisterType<CustomInventoryItemsRepositoryImpl>().As<ICustomInventoryItemsRepository>();
+            builder.RegisterType<CustomListSharesRepositoryImpl>().As<ICustomListSharesRepository>();
+            builder.RegisterType<ContractChangesRepositoryImpl>().As<IContractChangesRepository>();
 
             // marketing
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
@@ -192,6 +218,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<ApplicationHealthLogicImpl>().As<IApplicationHealthLogic>();
             builder.RegisterType<TemplatesRepositoryImpl>().As<ITemplatesRepository>();
+            builder.RegisterType<ItemBarcodeImageRepositoryImpl>().As<IItemBarcodeImageRepository>();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
@@ -238,7 +265,18 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             // lists
-            builder.RegisterType<FavoriteLogicImpl>().As<IFavoriteLogic>();
+            builder.RegisterType<FavoritesListLogicImpl>().As<IFavoritesListLogic>();
+            builder.RegisterType<NotesListLogicImpl>().As<INotesListLogic>();
+            builder.RegisterType<RecommendedItemsListLogicImpl>().As<IRecommendedItemsListLogic>();
+            builder.RegisterType<ReminderItemsListLogicImpl>().As<IRemindersListLogic>();
+            builder.RegisterType<MandatoryItemsListLogicImpl>().As<IMandatoryItemsListLogic>();
+            builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
+            builder.RegisterType<RecentlyOrderedListLogicImpl>().As<IRecentlyOrderedListLogic>();
+            builder.RegisterType<InventoryValuationListLogicImpl>().As<IInventoryValuationListLogic>();
+            builder.RegisterType<ContractListLogicImpl>().As<IContractListLogic>();
+            builder.RegisterType<ContractListChangesLogicImpl>().As<IContractListChangesLogic>();
+            builder.RegisterType<HistoryListLogicImpl>().As<IHistoryListLogic>();
+            builder.RegisterType<CustomListLogicImpl>().As<ICustomListLogic>();
             builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
             builder.RegisterType<NoteLogicImpl>().As<INoteLogic>();
@@ -307,6 +345,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // invoices
             builder.RegisterType<ExportInvoicesServiceImpl>().As<IExportInvoicesService>();
+
+            builder.RegisterType<ListServiceImpl>().As<IListService>();
+
+            builder.RegisterType<ImportServiceImpl>().As<IImportService>();
 
             ///////////////////////////////////////////////////////////////////////////////
             // Environment Specific Classes

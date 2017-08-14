@@ -6,7 +6,7 @@
     "email": "",
     "href": ""
   },
-  "version": "0.0.1",
+  "version": "2017.4.0",
   "environment": {
     "debug": {
       "name": "debug",
@@ -24,7 +24,7 @@
         "mobile": "UA-58495462-4"
       }
     },
-	"demo": {
+    "demo": {
       "name": "demo",
       "apiKey": "web_test_v1",
       "apiEndpoint": "https://shopapistaging.benekeith.com",
@@ -38,7 +38,7 @@
         "mobile": "UA-58495462-4"
       }
     },
-  "dev": {
+    "dev": {
       "name": "dev",
       "apiKey": "web_dev_v1",
       "apiEndpoint": "https://shopapidev.benekeith.com",
@@ -72,7 +72,7 @@
     "prod": {
       "name": "prod",
       "apiKey": "web_prod_v1",
-	    "apiEndpoint": "https://shop.benekeith.com/api",
+      "apiEndpoint": "https://shop.benekeith.com/api",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
@@ -84,10 +84,10 @@
         "mobile": "UA-58495462-3"
       }
     },
-	"beta": {
+    "beta": {
       "name": "beta",
       "apiKey": "web_prod_v1",
-	  "apiEndpoint": "https://shopbeta.benekeith.com/api",
+      "apiEndpoint": "https://shopbeta.benekeith.com/api",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "lastListStorageTimeout": "48",
       "mobileApp": false,
@@ -105,7 +105,6 @@
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "mobileApp": false,
       "enableDebugInfo": false,
-      "loggingEnabled": false,
       "loggingEnabled": false,
       "googleAnalytics": {
         "web": "UA-58495303-1",

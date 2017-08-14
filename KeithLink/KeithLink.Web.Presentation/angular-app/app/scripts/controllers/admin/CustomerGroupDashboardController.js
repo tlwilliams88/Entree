@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', '$filter', 'toaster', 'UserProfileService', 'CustomerGroupService', 'MessagingService',
+  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', '$filter', 'toaster', 'UserProfileService', 'CustomerGroupService', 'MessagingService', 'BranchService',
     function (
       $scope, $q, $log, // angular
       $stateParams, $state, $modal, $filter, toaster,// ui router
-      UserProfileService, CustomerGroupService, MessagingService // custom bek services
+      UserProfileService, CustomerGroupService, MessagingService, BranchService // custom bek services
     ) {
 
   function getCustomerGroupDetails(customerGroupId) {
@@ -389,15 +389,34 @@ angular.module('bekApp')
     if(!$scope.branches) {
       BranchService.getBranches().then(function(resp) {
         $scope.branches = resp;
+        
+        $scope.branches.forEach(function(branch){
+          $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
+        });
       })
-    }
-    $scope.branches.forEach(function(branch){
-      $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
-    });
+  } else {
+      $scope.branches.forEach(function(branch){
+        $scope.availableBranches.push({name: branch.name, id: branch.id, selected: false});
+      });
+  }
+
+
   };
 
   $scope.resetMessageFields();
 
+  $scope.selectAllUsers = function(state) {
+      var allUsersBranch = $filter('filter')($scope.availableBranches, {name: 'All Users'});
+      
+      if(state == true) {
+          $scope.selectBranch(allUsersBranch[0]);
+      } else {
+          $scope.deselectBranch(allUsersBranch[0].name);
+          $scope.removeFromRecipients(allUsersBranch[0].id, $scope.branchRecipients);
+      }
+      
+  };
+  
    $scope.selectBranch = function(selected){
     if(!$scope.allUsersSelected){
       $scope.availableBranches.forEach(function(branch){
@@ -480,7 +499,7 @@ angular.module('bekApp')
       }
     };
 
-    if($scope.isMandatory){
+    if($scope.isMandatory == true || systemUpdate == true){
       payload.msg.mandatory = true;
       var branches = '';
       if($scope.branchRecipients.length > 0){
@@ -490,7 +509,7 @@ angular.module('bekApp')
           branches = (branches.length === 0) ? branch.id : branches.concat(',' + branch.id);
         });
 
-        payload.branchtoalert = branches;
+        payload.branchestoalert = branches;
         }
       }
     }
@@ -503,12 +522,21 @@ angular.module('bekApp')
       });
     }
 
-    MessagingService.broadcastMandatoryMessage(payload).then(function (success) {
-      $scope.displayMessage('success', 'The message was sent successfully.');
-      $scope.resetMessageFields(); //reset message inputs
-    }, function (error) {
-      $scope.displayMessage('error', 'There was an error sending the message: ' + error);
-    });
+    if($scope.isBEKSysAdmin == true && ($scope.isSystemUpdate == true || $scope.isMandatory)) {
+        MessagingService.broadcastMandatoryMessage(payload).then(function (success) {
+          $scope.displayMessage('success', 'The message was sent successfully.');
+          $scope.resetMessageFields(); //reset message inputs
+        }, function (error) {
+          $scope.displayMessage('error', 'There was an error sending the message: ' + error);
+        });
+    } else {
+        MessagingService.broadcastMessage(payload).then(function (success) {
+            $scope.displayMessage('success', 'The message was sent successfully.');
+            $scope.resetMessageFields(); //reset message inputs
+        }, function (error) {
+            $scope.displayMessage('error', 'There was an error sending the message: ' + error);
+        });
+    }
   };
 
 

@@ -1,24 +1,27 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations.List;
 
 using KeithLink.Svc.Core.Helpers;
 
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Reports;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
+using KeithLink.Svc.Core.Models.Lists.RecentlyViewed;
+using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
+using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 
 namespace KeithLink.Svc.Core.Extensions
 {
     public static class ListExtensions
     {
+ 
         #region methods
         /// <summary>
         /// convert the ListModel to a List object
@@ -97,6 +100,32 @@ namespace KeithLink.Svc.Core.Extensions
                         CustomInventoryItemId = i.CustomInventoryItemId.HasValue ? i.CustomInventoryItemId.Value : 0
                     } ).OrderBy( l => l.Position ).ToList()
             };
+        }
+
+        public static PagedListModel ToPagedList(this ListModel returnList, PagingModel paging)
+        {
+            var pagedList = new PagedListModel()
+            {
+                BranchId = returnList.BranchId,
+                IsContractList = returnList.IsContractList,
+                IsFavorite = returnList.IsFavorite,
+                IsMandatory = returnList.IsMandatory,
+                IsRecommended = returnList.IsRecommended,
+                IsReminder = returnList.IsReminder,
+                IsShared = returnList.IsShared,
+                IsSharing = returnList.IsSharing,
+                IsWorksheet = returnList.IsWorksheet,
+                ListId = returnList.ListId,
+                Name = returnList.Name,
+                ReadOnly = returnList.ReadOnly,
+                SharedWith = returnList.SharedWith,
+                Type = returnList.Type
+            };
+
+            if (returnList.Items != null)
+                pagedList.Items = returnList.Items.AsQueryable<ListItemModel>().GetPage<ListItemModel>(paging, "Position");
+
+            return pagedList;
         }
 
         /// <summary>

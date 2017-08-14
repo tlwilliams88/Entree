@@ -72,6 +72,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                             MessageBody = hasNewsNotification.Notification,
                             NotificationType = NotificationType.HasNews
                         };
+                        msg.BodyIsHtml = true;
 
                         base.SendMessage(recipients, msg);
                     }

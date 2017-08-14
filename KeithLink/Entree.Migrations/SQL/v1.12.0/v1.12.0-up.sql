@@ -1,4 +1,4 @@
-﻿USE BEK_Commerce_AppData
+﻿
 
 GO
 EXEC sp_rename '__MigrationHistory', 'bak__MigrationHistory';

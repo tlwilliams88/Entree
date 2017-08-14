@@ -54,7 +54,6 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
   });
 
-
   // global notification at the top of all pages
   // TODO: Global messaging backend?
   $scope.messageText = 'Hello world!';
@@ -68,9 +67,7 @@ angular.module('bekApp')
   $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
   $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
 
-  $scope.webVersionNum = '2017.3.0';
-  $scope.androidVersionNum = '2017.3.0';
-  $scope.iOSVersionNum = '2017.3.0';
+  $scope.versionNum = ENV.version;
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
@@ -82,7 +79,7 @@ angular.module('bekApp')
 
   if (AccessService.isOrderEntryCustomer()) {
 
-    $scope.numOrdersToDisplay = 6;
+    $scope.numOrdersToDisplay = 5;
     $scope.numCartsToDisplay = 4;
 
     if (CartService.cartHeaders.length === 0 && $scope.canCreateOrders) {
@@ -90,8 +87,8 @@ angular.module('bekApp')
       delete $scope.cartMessage;
       CartService.getCartHeaders().then(
         function(carts) {
-          $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
-          $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
+        //   $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
+        //   $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
         },
         function() {
           $scope.cartMessage = 'Error loading carts.';
@@ -283,6 +280,7 @@ angular.module('bekApp')
   };
 
   function refreshPage() {
+    location.replace('#/home/');
     location.reload();
   }
 

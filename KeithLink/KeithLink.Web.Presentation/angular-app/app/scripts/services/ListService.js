@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService',
-    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage', 'UserProfileService', 'DateService', 'Constants', 'SessionService', '$rootScope', 'blockUI',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage, UserProfileService, DateService, Constants, SessionService, $rootScope, blockUI) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -51,19 +51,26 @@ angular.module('bekApp')
           getCurrentUserProfile();
         }
 
-        // FAVORITES
-        if (list.isfavorite) {
+        // FAVORITES - RECOMMENDED - MANDATORY FOR INTERNAL USE - REMINDER
+        if (list.isfavorite || list.isrecommended || (list.ismandatory && Service.isInternalUser) || list.isreminder) {
           permissions.canEditList = true;
           permissions.canDeleteItems = true;
           permissions.canAddItems = true;
-          permissions.specialDisplay = true;
           permissions.canReorderItems = true;
           permissions.canAddNonBEKItems = false;
-
+          if(list.isrecommended && list.ismandatory) {
+            permissions.canDeleteList = true;
+          } else if(list.isfavorite) {
+            permissions.specialDisplay = true;
+          } else if(list.ismandatory) {
+            permissions.canEditQtylevel = true;
+            permissions.canSeeQtylevel = true;
+            permissions.alternativeParHeader = 'Required Qty';
+          }
         // CONTRACT, WORKSHEET / HISTORY
-         } else if (list.is_contract_list || list.isworksheet) {
+        } else if (list.is_contract_list || list.isworksheet) {
           if(list.is_contract_list){
-            //Set Hedader and fields for wildcard columns on lists page.
+            //Set Header and fields for wildcard columns on lists page.
             //Contract items have two: Contract Category and read-only Each.
             //History has one: read-only Each.
             permissions.alternativeFieldName = 'category';
@@ -76,34 +83,15 @@ angular.module('bekApp')
             });
           }
 
-        // RECOMMENDED
-        } else if (list.isrecommended) {
-          permissions.canEditList = true;
-          permissions.canDeleteList = true;
-          permissions.canAddItems = true;
-          permissions.canDeleteItems = true;
-          permissions.canDeleteList = true;
-          permissions.canReorderItems = true;
-          permissions.canAddNonBEKItems = false;
-
-        // MANDATORY -- only editable by internal users
-        } else if (list.ismandatory) {
-          if(Service.isInternalUser){
-            permissions.canDeleteList = true;
-            permissions.canAddItems = true;
-            permissions.canEditList = true;
-            permissions.canDeleteItems = true;
-            permissions.canEditParlevel = true;
-          } else {
+        // MANDATORY NON-INTERNAL USE -- only editable by internal users
+        } else if (list.ismandatory && !Service.isInternalUser) {
             permissions.canDeleteList = false;
             permissions.canAddItems = false;
             permissions.canEditList = false;
             permissions.canDeleteItems = false;
-            permissions.canEditParlevel = false;
-          }
-          permissions.canSeeParlevel = true;
-          permissions.alternativeParHeader = 'Required Qty';
-
+            permissions.canEditQtylevel = false;
+            permissions.canSeeQtylevel = true;
+            permissions.alternativeParHeader = 'Required Qty';
 
         // REMINDER
         } else if (list.isreminder) {
@@ -118,7 +106,6 @@ angular.module('bekApp')
 
           // SHARED WITH ME
           if (list.isshared) {
-            // permissions.canEditList = true;
             permissions.canSeeLabels = true;
             permissions.canSeeParlevel = true;
             // permissions.canEditParlevel = true;
@@ -158,6 +145,7 @@ angular.module('bekApp')
         }
 
         list.permissions = permissions;
+        return list;
       }
 
       var Service = {
@@ -198,9 +186,11 @@ angular.module('bekApp')
           }
           return List.get(params).$promise.then(function(lists) {
             var listHeaders = lists.successResponse;
-            listHeaders.forEach(function(list) {
-              updateListPermissions(list);
-            });
+            if(listHeaders != null){
+              listHeaders.forEach(function(list) {
+                updateListPermissions(list);
+              });
+            }
             angular.copy(listHeaders, Service.lists);
             Service.listHeaders = listHeaders;
             return listHeaders;
@@ -264,7 +254,7 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getListWithItems: function(listId, params, displayMessage) {
+        getListWithItems: function(list, params, displayMessage) {
           var savingOrLoadingItems = displayMessage ? displayMessage : 'Loading Items...';
           Service.userProfile = UserProfileService.getCurrentUserProfile(savingOrLoadingItems);
           if (!params) {
@@ -275,7 +265,7 @@ angular.module('bekApp')
           var data = {
             params: params
           };
-          return $http.get('/list/' + listId, data).then(function(response) {
+          return $http.get('/list/' + list.listType + '/' + list.listId, data).then(function(response) {
             var list = response.data.successResponse;
             if (!list) {
               return $q.reject('No list found.');
@@ -294,7 +284,7 @@ angular.module('bekApp')
 
         // accepts listId (guid), paging params
         // returns paged list object
-        getList: function(listId, params) {
+        getList: function(list, params) {
 
             getCurrentUserProfile();
 
@@ -306,8 +296,11 @@ angular.module('bekApp')
               };
             }
 
+            var listType = (list != undefined && list != null) && list.type != null ? list.type : list.listType,
+                listId = (list != undefined && list != null) && list.listid != null ? list.listid : list.listId;
+
             Service.sortObject = params.sort;
-            return $http.post('/list/' + listId, params).then(function(response) {
+            return $http.post('/list/' + listType + '/' + listId, params).then(function(response) {
               var list = response.data.successResponse;
               if (!list) {
                 return $q.reject('No list found.');
@@ -339,9 +332,8 @@ angular.module('bekApp')
           if (!isNaN(parseInt(listId))) {
             listId = parseInt(listId);
           }
-          Service.getAllLists().then(function(){
-            return UtilityService.findObjectByField(Service.lists, 'listid', listId);
-          });
+
+          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
 
         },
 
@@ -363,21 +355,21 @@ angular.module('bekApp')
         },
 
         addNewItemFromCustomInventoryList: function(listitem) {
-          return $http.post('/custominventoryitem', listitem).then(function(response){
+          return $http.post('/list/' +  list.type + '/' + list.listid + '/custominventoryitem', listitem).then(function(response){
             var customInventoryItems = response.data.successResponse.items;
 
             return customInventoryItems;
           });
         },
 
-        addNewItemsFromCustomInventoryList: function(listid, listitems) {
+        addNewItemsFromCustomInventoryList: function(list, listitems) {
           var itemsToAdd = [];
 
           listitems.forEach(function(item){
             itemsToAdd.push(item.id);
           });
 
-          return $http.post('/list/'+ listid + '/custominventoryitem', itemsToAdd).then(function() {
+          return $http.post('/list/' +  list.type + '/' + list.listid + '/custominventoryitem', itemsToAdd).then(function() {
             toaster.pop('success', null, 'Successfully added items to list.');
           }, function(error) {
             toaster.pop('error', null, 'Error adding items to list.');
@@ -456,26 +448,27 @@ angular.module('bekApp')
         EXPORT
         ********************/
 
-        getExportConfig: function(listId) {
+        getExportConfig: function(list) {
           return List.exportConfig({
-            listId: listId
+            listId: list.listid,
+            listType: list.type
           }).$promise.then(function(resp){
             return resp.successResponse;
           });
         },
 
-        exportList: function(config, listId) {
-          ExportService.export('/list/export/' + listId, config);
+        exportList: function(config, list) {
+          ExportService.export('/list/export/' + list.listType + '/' + list.listId, config);
         },
 
-        printBarcodes: function(listId) {
-          var promise = $http.get('/list/barcode/' + listId, {
+        printBarcodes: function(list) {
+          var promise = $http.get('/list/barcode/' + list.type + '/' + list.listid, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);
         },
 
-        printList: function(listId, landscape, showparvalues, options, shownotes, prices) {
+        printList: function(list, landscape, showparvalues, options, shownotes, prices) {
 
             var printparams = {
               landscape: landscape,
@@ -486,7 +479,7 @@ angular.module('bekApp')
             };
 
 
-          var promise = $http.post('/list/print/' + listId, printparams, {
+          var promise = $http.post('/list/print/' + list.type + '/' + list.listid, printparams, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);
@@ -538,6 +531,10 @@ angular.module('bekApp')
 
           newList.items = newItems.map(Service.remapItems);
 
+          newList.items.forEach(function(item){
+              item.active = true;
+          })
+
           if (params.type === 9) {
             newList.name = 'Mandatory';
           } else if (params.type === 10) {
@@ -563,9 +560,13 @@ angular.module('bekApp')
           $analytics.eventTrack('Create List', {  category: 'Lists'});
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
-            Service.renameList = true;
+            var newList = response.successResponse,
+                isCustomList = !(newList.isfavorite || newList.ismandatory || newList.isrecommended || newList.isreminder);
+            Service.renameList = isCustomList ? true : false;
             toaster.pop('success', null, 'Successfully created list.');
-            return Service.getList(response.successResponse.listitemid);
+            newList = updateListPermissions(newList);
+            Service.listHeaders.push(newList);
+            return newList;
           }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
             return $q.reject(error);
@@ -583,13 +584,15 @@ angular.module('bekApp')
           }).then(function(response) {
             var data = response.data.successResponse;
 
-            if (response.data.isSuccess && data.success) {
+            if (response.data.isSuccess == true && data.success == true) {
               // add new list to cache
               var list = {
-                listid: data.listid,
+                listid: data.list.listid,
+                type: data.list.type,
                 name: 'Imported List'
               };
               Service.lists.push(list);
+              Service.listHeaders.push(list);
 
               // display messages
               if (data.warningmsg) {
@@ -626,44 +629,39 @@ angular.module('bekApp')
               }
             });
 
-            var promise;
-            if (getEntireList) {
-              promise = Service.getListWithItems(list.listid, { includePrice: false }, 'Saving List...');
+            if(response.isSuccess == true) {
+                toaster.pop('success', null, 'Successfully updated list.');
             } else {
-              promise = Service.getList(list.listid, params);
+                toaster.pop('error', null, 'Error updating list.' + response.errorMessage);
             }
-            return promise.then(function(list) {
-              if(!addingItem){
-                toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
-              }
-              return list;
-            });
-          }, function(error) {
-            if(!addingItem){
-              toaster.pop('error', null, 'Error saving list ' + list.name + '.');
-            }
-            return $q.reject(error);
-          });
+
+            blockUI.stop();
+            return;
+          })
         },
 
         // accepts listId (guid)
-        deleteList: function(listId) {
+        deleteList: function(list) {
           return List.delete({
-            listId: listId
-          }).$promise.then(function(response) {
+            listId: list.listid,
+            listType: list.type
+        }).$promise.then(function(response) {
             // TODO: can I clean this up?
-            var deletedList = Service.findListById(listId);
+            var deletedList = Service.findListById(list.listid);
             var idx = Service.lists.indexOf(deletedList);
             if (idx > -1) {
               Service.lists.splice(idx, 1);
             }
 
-            toaster.pop('success', null, 'Successfully deleted list.');
-            return Service.getFavoritesList();
-          }, function(error) {
-            toaster.pop('error', null, 'Error deleting list.');
-            return $q.reject(error);
-          });
+            if(response.isSuccess == true) {
+                toaster.pop('success', null, 'Successfully deleted list.');
+                return Service.getFavoritesList();
+            } else {
+                toaster.pop('error', null, 'Error deleting list.');
+                return $q.reject(error);
+            }
+
+          })
         },
 
         deleteMultipleLists: function(listGuidArray) {
@@ -680,21 +678,29 @@ angular.module('bekApp')
         // accepts listId (guid) and item object
         // returns promise and listitemid
         // Only context menu uses this function
-        addItem: function (listId, item) {
+        addItem: function (list, item) {
+          delete item.listitemid;
+          item.position = 0;
+          item.label = null;
+          item.parlevel = null;
+          item.active = true;
 
+          if(list) {
+              return List.addItem({
+                listId: list.listid,
+                listType: list.type
+              }, item).$promise.then(function(response) {
+                Service.getListHeaders().then(function(listheaders){
+                  $rootScope.listHeaders = listheaders;
+                })
+                item.listitemid = response.successResponse.listitemid;
+                item.editPosition = 0;
+                return item;
+              }, function(error) {
+                return $q.reject(error);
+              });
+            }
 
-          return List.addItem({
-            listId: listId
-          }, item).$promise.then(function(response) {
-            ListService.getListHeaders().then(function(listheaders){
-              $rootScope.listHeaders = listheaders;
-            })
-            item.listitemid = response.successResponse.listitemid;
-            item.editPosition = 0;
-            return item;
-          }, function(error) {
-            return $q.reject(error);
-          });
         },
 
         // accepts listId (guid) and item object
@@ -719,9 +725,10 @@ angular.module('bekApp')
           });
         },
 
-        deleteItemByItemNumber: function(listId, itemNumber) {
+        deleteItemByItemNumber: function(list, itemNumber) {
           return List.deleteItemByItemNumber({
-            listId: listId,
+            listId: list.listid,
+            listType: list.type,
             itemNumber: itemNumber
           }).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully removed item from list.');
@@ -738,25 +745,27 @@ angular.module('bekApp')
 
         // accepts listId (guid) and an array of items to add
         // params: allowDuplicates
-        addMultipleItems: function(listId, items) {
+        addMultipleItems: function(list, items) {
 
           var newItems = [];
           items.forEach(function(item) {
             newItems.push({
-              itemnumber: item.itemnumber,
-              each: item.each,
-              catalog_id: item.catalog_id,
-              category: item.category,
-              label: item.label
+                active: true,
+                itemnumber: item.itemnumber,
+                each: item.each,
+                catalog_id: item.catalog_id,
+                category: item.category,
+                label: item.label
             });
           });
 
           return List.addMultipleItems({
-            listId: listId
+            listId: list.listid,
+            listType: list.type
           }, newItems).$promise.then(function() {
             // TODO: favorite all items if favorites list
             toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
-            return Service.getList(listId);
+            return Service.getList(list);
           }, function(error) {
             toaster.pop('error', null, 'Error adding ' + items.length + ' items to list.');
             return $q.reject(error);
@@ -765,7 +774,7 @@ angular.module('bekApp')
 
         // accepts listId (guid) and an array of items
         // NOTE $resource does not accept deletes with payloads
-        deleteMultipleItems: function(listId, items) {
+        deleteMultipleItems: function(list, items) {
 
           // create array of list item ids
           var listItemIds = [];
@@ -773,7 +782,7 @@ angular.module('bekApp')
             listItemIds.push(item.listitemid);
           });
 
-          return $http.delete('/list/' + listId + '/item', {
+          return $http.delete('/list/' + list.type + '/' + list.listid + '/item', {
             headers: {'Content-Type': 'application/json'},
             data: listItemIds
           }).then(function() {
@@ -808,12 +817,13 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.deleteItemByItemNumber(favoritesList.listid, itemNumber);
+          return Service.deleteItemByItemNumber(favoritesList, itemNumber);
         },
 
         addItemToFavorites: function(item) {
           $analytics.eventTrack('Add Favorite', {  category: 'Lists'});
-          return Service.addItem(Service.getFavoritesList().listid, item, true);
+          var favoritesList = Service.getFavoritesList() || {listid: 0, type: 1};
+          return Service.addItem(favoritesList, item, true);
         },
 
         /*****************************
@@ -823,6 +833,12 @@ angular.module('bekApp')
         createMandatoryList: function(items) {
           // Type 9 == Mandatory
           var params = { type: 9 };
+          if(items == undefined){
+              items = [];
+          }
+          items.forEach(function(item){
+              item.active = true;
+          })
           return Service.createList(items, params);
         },
 
@@ -849,6 +865,12 @@ angular.module('bekApp')
         createRecommendedList: function(items) {
           // Type = 10 - Recommended list type that needs to be passed in
           var params = { type: 10 };
+          if(items == undefined){
+              items = [];
+          }
+          items.forEach(function(item){
+              item.active = true;
+          })
           return Service.createList(items, params);
         },
 
@@ -877,6 +899,7 @@ angular.module('bekApp')
         shareList: function(list, customers) {
           var copyListData = {
             listid: list.listid,
+            listtype: list.type,
             customers: customers
           };
 
@@ -892,62 +915,42 @@ angular.module('bekApp')
         copyList: function(list, customers) {
           var copyListData = {
             listid: list.listid,
+            listtype: list.type,
             customers: customers
           };
 
           return List.copyList(copyListData).$promise.then(function(newLists) {
-            toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
-            return newLists.successResponse;
-          }, function(error) {
-            toaster.pop('error', null, 'Error copying list.');
-            return $q.reject(error);
-          });
+            if(newLists.isSuccess == true) {
+                toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
+                return newLists.successResponse;
+            } else {
+                toaster.pop('error', null, 'Error copying list.');
+                return $q.reject(newLists.errorMessage);
+            }
+          })
         },
 
         // copy list to current customer and redirect to that list
         duplicateList: function(list, customers) {
           return Service.copyList(list, customers).then(function(lists) {
             var newList = lists[0];
-            Service.lists.push({
-              listid: newList.newlistid,
-              name: 'Copied - ' + list.name
-            });
-            return newList.newlistid;
+
+            Service.lists.push(newList);
+            Service.listHeaders.push(newList);
+            return newList;
           });
         },
 
         /*******************
         SET LAST ORDER LIST
         *******************/
-        setLastOrderList: function(listId, cart){
-          var cartId = cart,
-              timeset = DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute),
-              orderList = {
+        setLastOrderList: function(listId, listType){
+          var orderList = {
                 listId: listId,
-                cartId: cartId,
-                timeset: timeset
-              },
-              allSets = [],
-              allSets = LocalStorage.getLastOrderList();
-            if(!allSets || (allSets[0] && !allSets[0].timeset)){
-              allSets = [];
-            }
+                listType: listType,
+            };
 
-            var matchFound = false;
-            if(orderList.cartId !== 'New'){
-              allSets.forEach(function(set){
-                if(set.cartId === orderList.cartId){
-                  set.listId = orderList.listId;
-                  set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
-                  matchFound = true;
-                }
-              });
-              if(!matchFound){
-                allSets.push(orderList);
-              }
-            }
-
-          LocalStorage.setLastOrderList(allSets);
+          LocalStorage.setLastOrderList(orderList);
           }
         };
 

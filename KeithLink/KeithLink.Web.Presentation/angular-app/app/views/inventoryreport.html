@@ -1,54 +1,53 @@
 <div page-header-bar>
   <div header-message>
     <span ng-if="!report.isRenaming && reports.length">{{report.name}}</span><span ng-if="!reports.length">{{today}}</span><span class = "visible-print pull-right">{{selectedUserContext.customer.customerName}}</span>
-    <div 
+    <div
         class="inline-block-display" ng-if="!report.isRenaming">
-        
-        <a 
+
+        <a
           ng-click="report.isRenaming = true;"
           ng-if="report && report.name">
           <span class="hidden-print large-icon text-light icon-pencil"></span>
         </a>
-        
+
       </div>
       <form name="renameReportForm" class="style-validation-errors inline-header-form nowrap" ng-if="report.isRenaming">
-      <input 
-        no-duplicates="name" 
-        collection="reports" 
-        type="text" 
-        focus-me="report.isRenaming" 
+      <input
+        no-duplicates="name"
+        collection="reports"
+        type="text"
+        focus-me="report.isRenaming"
         required
         ng-model="selectedReportName"
-        ng-model-options="{ debounce: 1000 }" 
-        name="reportName" 
-        id="reportName" 
+        ng-model-options="{ debounce: 1000 }"
+        name="reportName"
+        id="reportName"
         class="input-lg form-control" />
-      
-      <button 
-        ng-disabled="renameReportForm.$invalid" 
-        class="btn-no-style" 
-        type="submit" 
+
+      <button
+        ng-disabled="renameReportForm.$invalid"
+        class="btn-no-style"
+        type="submit"
         ng-click="renameReport(selectedReportName); renameReportForm.$setPristine();">
         <span class="large-icon text-green icon-checkmark"></span>
       </button>
-      
+
       <a ng-click="cancelRenameReport()"><span class="large-icon text-red icon-cross"></span></a>
-      
+
       <span class="form-error-message" ng-if="renameReportForm.reportName.$error.required">Report name is required</span>
       <span class="form-error-message" ng-if="renameReportForm.reportName.$error.noDuplicates">Duplicate report name</span>
     </form>
-  <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6 hidden-print" ng-click="clearReport(report.listid)" type="button">Clear</button> 
+  <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6 hidden-print" ng-click="clearReport(report.listid)" type="button">Clear</button>
  <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right hidden-print" ng-click="saveReport(report)" type="button">Save</button>
   </div>
   <div class="pull-right margin-right-10 hidden-xs hidden-sm">
-  <button class="btn btn-lg btn-primary" 
-    ng-disabled="inventoryForm.$invalid || inventoryForm.$pristine" 
+  <button class="btn btn-lg btn-primary"
     ng-click="saveReport(report)" type="button">Save
   </button>
   <button
     class="btn-lg btn btn-danger"
     ng-show="reports.length > 0"
-    confirmed-click="deleteReport(report.listid)"
+    confirmed-click="deleteReport(report)"
     ng-confirm-click="{{'This will delete the report created on ' + report.name + '. Are you sure you want to delete this report?'}}">Delete
   </button>
     <button class="btn btn-lg btn-default" ng-click="clearReport(report.listid)" type="button">Clear</button>
@@ -61,34 +60,34 @@
 <!-- Mobile subheader bar -->
 <div class="visible-xs visible-sm hidden-print row page-subheader-bar">
 
-  <button  
-    class="btn-no-style page-subheader-bar__button button-right" 
-    confirmed-click="deleteReport(report.listid)"
-    ng-confirm-click="{{'This will delete the report created on ' + report.name + '. Are you sure you want to delete this report?'}}" 
+  <button
+    class="btn-no-style page-subheader-bar__button button-right"
+    confirmed-click="deleteReport(report.listid, report.type)"
+    ng-confirm-click="{{'This will delete the report created on ' + report.name + '. Are you sure you want to delete this report?'}}"
     ng-show="reports.length > 0"
     type="button">
     Delete
   </button>
-  <button  
-    class="btn-no-style page-subheader-bar__button button-right" 
-    ng-click="clearReport(report.listid)" 
+  <button
+    class="btn-no-style page-subheader-bar__button button-right"
+    ng-click="clearReport(report.listid)"
     type="button">
     Clear
   </button>
   <button
-    type="submit" 
-    class="btn-no-style page-subheader-bar__button button-right"  
-    ng-disabled="inventoryForm.$invalid || inventoryForm.$pristine"  
+    type="submit"
+    class="btn-no-style page-subheader-bar__button button-right"
+    ng-disabled="inventoryForm.$invalid || inventoryForm.$pristine"
     ng-click="saveReport(report)">
     Save
   </button>
-   
+
 
   <div class="btn-group pull-left" dropdown is-open="status.listsisopen">
     <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-left text-regular">Reports <span class="icon-arrow-down5"></span></a>
     <ul class="dropdown-menu dropdown-menu-scroll" role="menu">
       <li ng-repeat="availableReport in reports track by availableReport.listid" ng-if="::(report.listid !== availableReport.listid)">
-        <a ng-click="goToList(list, selectedCart)">
+        <a ng-click="goToReport(availableReport.listid)">
           {{availableReport.name}}
         </a>
       </li>
@@ -98,7 +97,7 @@
 
 </div>
 
-<div class="page-content inventory-report">  
+<div class="page-content inventory-report">
   <div class="row margin-bottom-none">
     <a class="col-xs-12 hidden-print text-large btn-link max-width-100px" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
 
@@ -106,15 +105,15 @@
       <div class="form-group pull-right text-right">
 
         <p class="text-green margin-right-25" ng-show="successMessage">{{successMessage}}</p>
-        <p class="text-red margin-right-25" ng-show="errorMessage">{{errorMessage}}</p>     
+        <p class="text-red margin-right-25" ng-show="errorMessage">{{errorMessage}}</p>
         <button type="submit" class="btn btn-primary btn-lg margin-right-25 float-right margin-bottom-6"  ng-disabled="!itemNumber"  ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
-        <input 
-          type="text" 
-          placeholder="Item Number" 
-          ng-model="itemNumber" 
+        <input
+          type="text"
+          placeholder="Item Number"
+          ng-model="itemNumber"
           class="item-number-input form-control input-lg  margin-bottom-6 float-right"
-          integer 
-          allowleadingzeroes='true'/>        
+          integer
+          allowleadingzeroes='true'/>
         <div class=" btn-group hidden-print padding-right-25" dropdown is-open="status.listactions" style="text-align:right max-width:100px !important;">
           <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
             <div ng-if="!listsLoading">Add Items from List <span class="icon-arrow-down6"></span></div>
@@ -126,7 +125,7 @@
               <a ng-click="addItemsFromList('Custom Inventory')">Custom Inventory</a>
             </li>
             <li ng-repeat="list in ::lists | sortLists">
-              <a ng-click="addItemsFromList(list.listid)">{{::list.name}}</a>
+              <a ng-click="addItemsFromList(list)">{{list.name}}</a>
             </li>
           </ul>
         </div>
@@ -137,7 +136,7 @@
 
   </div>
 <div class="overflow-hide width-full-percent">
-    <div class="width-150 float-left">   
+    <div class="width-150 float-left">
      <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists" ng-if="resized">
       <div class="row">
         <div class="col-sm-12 padding-left-none" sticky>
@@ -145,44 +144,44 @@
             <h3>Your Reports</h3>
 
             <div class="btn-group-vertical list-names text-blue">
-              <button 
-                type="button" 
-                ng-repeat="availableReport in reports | sortLists | limitTo: showMoreReportNames ? reports.length : numberReportNamesToShow track by availableReport.listid" 
+              <button
+                type="button"
+                ng-repeat="availableReport in reports | sortLists | limitTo: showMoreReportNames ? reports.length : numberReportNamesToShow track by availableReport.listid"
                 ng-show="reports.length > 0"
-                ng-click="goToReport(availableReport.listid)" 
-                ng-class="{'current-list' : availableReport.listid == report.listid}" 
+                ng-click="goToReport(availableReport.listid)"
+                ng-class="{'current-list' : availableReport.listid == report.listid}"
                 class="btn-lg custom-lists__name btn btn-default btn-list">
                 {{availableReport.name}}
               </button>
-              <button 
-                type="button"                
-                ng-show="!reports.length"                 
+              <button
+                type="button"
+                ng-show="!reports.length"
                 class="btn-lg custom-lists__name btn btn-default btn-list current-list">
                 {{today}}
               </button>
             </div>
             <h5>
-              <a 
-                ng-show="reports.length > numberReportNamesToShow" 
+              <a
+                ng-show="reports.length > numberReportNamesToShow"
                 ng-click="showMoreReportNames = !showMoreReportNames">
                 {{!showMoreReportNames ? '+ Show More' : '- Show Less'}}
               </a>
-            </h5>            
+            </h5>
           </div>
             <div class="btn-group-vertical">
-            <button 
-              type="button" 
-              ng-click="createReport()" 
+            <button
+              type="button"
+              ng-click="createReport()"
               class="btn btn-default btn-list text-light btn-lg">
               Create A Report
             </button>
-            </div> 
+            </div>
         </div>
       </div>
     </div>
     </div>
     <div  class=" items col-md-10 col-xs-12" >
-    
+
     <form name="inventoryForm" class="style-validation-errors " width="100%" unsaved-warning-form>
       <div class="row sub-content height-40">
         <div class="col-xs-7">
@@ -192,33 +191,33 @@
           {{subtotal | currency}}
         </div>
       </div>
-      <table class="table table-border table-striped-rows table-inventory-valuation" navigate-table>
+      <table class="table table-border table-striped-rows table-inventory-valuation" navigate-table="lists">
         <thead>
         <tr fsm-sticky-header scroll-body="'.table-inventory-valuation'" scroll-stop="0" scroll-offset="245">
-            <th class="sort-col-header" ng-click="sortTable('position', sortDescending, true)">
-              <span># <span sort-icons field="'position'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th class="sort-col-header" ng-click="sortList('position', sortDescending = !sortDescending, true)">
+              <span># <span sort-icons field="'position'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortTable('itemnumber', sortDescending)">
-              Item <span># <span sort-icons field="'itemnumber'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th class="sort-col-header" ng-click="sortList('itemnumber', sortDescending = !sortDescending)">
+              Item <span># <span sort-icons field="'itemnumber'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortTable('name', sortDescending)">
-              <span>Name <span sort-icons field="'name'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th class="sort-col-header" ng-click="sortList('name', sortDescending = !sortDescending)">
+              <span>Name <span sort-icons field="'name'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('brand_extended_description', sortDescending)">
-              <span>Brand <span sort-icons field="'brand_extended_description'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortList('brandextendeddescription', sortDescending = !sortDescending)">
+              <span>Brand <span sort-icons field="'brandextendeddescription'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('class', sortDescending)">
-              <span>Category <span sort-icons field="'class'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortList('itemclass', sortDescending = !sortDescending)">
+              <span>Category <span sort-icons field="'itemclass'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
-            <th ng-if="report.has_contract_items || report.hasContractCategories" class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('category', sortDescending)">
-              <span>Contract Category <span sort-icons field="'category'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th ng-if="report.has_contract_items || report.hasContractCategories" class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortList('category', sortDescending = !sortDescending)">
+              <span>Contract Category <span sort-icons field="'category'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
-            <th ng-if="hasCustomItems" class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('supplier', sortDescending)">
-              <span>Supplier <span sort-icons field="'supplier'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th ng-if="hasCustomItems" class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortList('supplier', sortDescending = !sortDescending)">
+              <span>Supplier <span sort-icons field="'supplier'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
             <th class="hidden-mobile-visible-print">Pack/Size</th>
-            <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortTable('label', sortDescending)">
-              <span>Label <span sort-icons field="'label'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('label', sortDescending = !sortDescending)">
+              <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
             <th>Qty</th>
             <th class="hidden-xs hidden-sm">Each</th>
@@ -227,27 +226,37 @@
             <th></th>
           </tr>
         </thead>
-        <tbody>
-          <tr ng-repeat-start="item in report.items" ng-class="{ odd : $odd, even: $even }" ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">
+        <tbody fast-repeat="item in report.items" class="highlightRows" ng-style="item.custominventoryitemid && {'border-left': '3px solid orange'}">
+          <tr >
             <td>{{item.position}}</td>
             <td>
-              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
+              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
             </td>
-            <td>{{::item.name}}</td>
-            <td class="hidden-mobile item-usage-drop-column" ng-if="!item.isCustomInventory">{{::item.brand_extended_description}}</td>
-            <td class="hidden-mobile item-usage-drop-column" ng-if="item.isCustomInventory">{{::item.brand}}</td>
-            <td class="hidden-mobile item-usage-drop-column">{{::item.class}}</td>
-            <td ng-if="report.has_contract_items || report.hasContractCategories" class="hidden-mobile item-usage-drop-column">{{::item.category}}</td>
-            <td ng-if="hasCustomItems" class="hidden-mobile item-usage-drop-column">{{::item.supplier}}</td>
-            <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
-            <td class="hidden-mobile-visible-print label-col">{{::item.label}}</td>
-            <td class="input-col nowrap counter-container">  
-            <button type="button" class="btn btn-warning icon-minus3 hidden-lg hidden-print" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1;"></button> 
-              <input type="text" numeric-validation class="input-number tabstop" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity" min="0" length="5" autocomplete="off">
-              <button type="button" class="btn btn-warning icon-plus3 hidden-lg hidden-print" ng-click="item.quantity = item.quantity + 1;"></button> 
+            <td>{{item.name}}</td>
+            <td class="hidden-mobile item-usage-drop-column" ng-if="!item.isCustomInventory">{{item.brand_extended_description}}</td>
+            <td class="hidden-mobile item-usage-drop-column" ng-if="item.isCustomInventory">{{item.brand}}</td>
+            <td class="hidden-mobile item-usage-drop-column">{{item.class}}</td>
+            <td ng-if="report.has_contract_items || report.hasContractCategories" class="hidden-mobile item-usage-drop-column">{{item.category}}</td>
+            <td ng-if="hasCustomItems" class="hidden-mobile item-usage-drop-column">{{item.supplier}}</td>
+            <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
+            <td class="hidden-mobile-visible-print label-col">{{item.label}}</td>
+            <td class="input-col nowrap counter-container">
+            <button type="button" class="btn btn-warning icon-minus3 hidden-lg hidden-print" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1;"></button>
+              <input type="text"
+                id="defaultElement-{{currentIndex}}"
+                numeric-validation
+                class="input-number tabstop"
+                name="inventoryRep"
+                ng-keypress="confirmQuantity('quantity', item, item.quantity)"
+                ng-model="item.quantity"
+                min="0"
+                length="5"
+                autocomplete="off"
+                onfocus="this.select()">
+              <button type="button" class="btn btn-warning icon-plus3 hidden-lg hidden-print" ng-click="item.quantity = item.quantity + 1;"></button>
             </td>
             <td class="input-col hidden-xs hidden-sm">
-              <input ng-if="item.packageprice > 0" ng-checked = "::((item.caseprice == 0) || item.each)" ng-disabled = "::(item.caseprice == 0)" name="each" type="checkbox" ng-model="item.each">
+              <input ng-if="item.packageprice > 0" ng-checked = "((item.caseprice == 0) || item.each)" ng-disabled = "(item.caseprice == 0)" name="each" type="checkbox" ng-model="item.each">
             </td>
             <td class="hidden-mobile-visible-print">
               {{item.each ? item.packageprice : item.caseprice | currency}}
@@ -257,12 +266,12 @@
               {{item.extprice | currency}}
             </td>
             <td class="icon-col">
-              <a class="hidden-xs hidden-sm" ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
-              <a class="hidden-print visible-xs-inline visible-sm-inline" ng-click="showDetails = !showDetails;"><span class="text-light large-icon icon-ellipsis"></span></a>
+              <span class="hidden-xs hidden-sm" ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></span>
+              <span ng-click="showDetails = !showDetails;" class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span>
             </td>
           </tr>
-          <tr ng-repeat-end ng-show="showDetails" class="mobile-details-row" ng-class="{ odd : $odd, even: $even }">
-            <td colspan="4">
+          <tr ng-if="showDetails" class="mobile-details-row highlightRows">
+            <td colspan="5">
               <table>
                 <colgroup>
                   <col width="25%" />
@@ -270,23 +279,23 @@
                 </colgroup>
                 <tr>
                   <td>Brand</td>
-                  <td>{{::item.brand_extended_description}}</td>
+                  <td>{{item.brand_extended_description}}</td>
                 </tr>
                 <tr>
                   <td>Category</td>
-                  <td>{{::item.class}}</td>
+                  <td>{{item.class}}</td>
                 </tr>
                 <tr ng-if="report.has_contract_items || report.hasContractCategories">
                   <td>Contract Category</td>
-                  <td>{{::item.category}}</td>
+                  <td>{{item.category}}</td>
                 </tr>
                 <tr>
                   <td>Pack/Size</td>
-                  <td>{{::item.packsize}}</td>
+                  <td>{{item.packsize}}</td>
                 </tr>
                 <tr>
                   <td>Label</td>
-                  <td>{{::item.label}}</td>
+                  <td>{{item.label}}</td>
                 </tr>
                 <tr ng-if="item.packageprice > 0">
                   <td>Each</td>

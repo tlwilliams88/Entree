@@ -1,0 +1,1 @@
+-- Same migration as table creation. No need to dork it, it'll dork the dork itdork

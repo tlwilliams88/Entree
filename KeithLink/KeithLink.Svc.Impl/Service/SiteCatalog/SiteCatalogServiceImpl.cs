@@ -41,10 +41,10 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         private readonly ICatalogRepository _catalogRepository;
         private readonly IPriceLogic _priceLogic;
         private readonly IListRepository _listRepo;
-        private readonly IFavoriteLogic _favoriteLogic;
+        private readonly IFavoritesListLogic _favoritesLogic;
         private readonly IHistoryLogic _historyLogic;
         private readonly IItemHistoryRepository _itemHistoryRepo;
-        private readonly INoteLogic _noteLogic;
+        private readonly INotesListLogic _notesLogic;
 
         protected string CACHE_GROUPNAME { get { return "Catalog"; } }
         protected string CACHE_NAME { get { return "Catalog"; } }
@@ -54,8 +54,8 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         #region constructor
         public SiteCatalogServiceImpl(ICacheRepository catalogCacheRepository, ICatalogLogic catalogLogic
                                       , ICatalogRepository catalogRepository, IPriceLogic priceLogic
-                                      , IListRepository listRepo, IFavoriteLogic favoriteLogic
-                                      , IHistoryLogic historyLogic, INoteLogic noteLogic
+                                      , IListRepository listRepo, IFavoritesListLogic favoritesLogic
+                                      , IHistoryLogic historyLogic, INotesListLogic notesLogic
                                       , IItemHistoryRepository itemHistoryRepo)
         {
             _catalogCacheRepository = catalogCacheRepository;
@@ -63,10 +63,10 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _listRepo = listRepo;
-            _favoriteLogic = favoriteLogic;
+            _favoritesLogic = favoritesLogic;
             _historyLogic = historyLogic;
             _itemHistoryRepo = itemHistoryRepo;
-            _noteLogic = noteLogic;
+            _notesLogic = notesLogic;
         }
         #endregion
 
@@ -365,15 +365,9 @@ namespace KeithLink.Svc.Impl.Service.SiteCatalog
         {
             if (profile != null)
             {
-                var favorites = _favoriteLogic.GetFavoritedItemNumbers(profile, catalogInfo);
-                var notes = _noteLogic.GetNotes(profile, catalogInfo);
                 var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
 
                 ret.Products.ForEach(delegate (Product prod) {
-                    prod.Favorite = favorites.Contains(prod.ItemNumber);
-                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
-                                      .Select(i => i.Notes)
-                                      .FirstOrDefault();
                     prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                             .FirstOrDefault()
                                             .InHistory;

@@ -39,9 +39,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private readonly ICategoryImageRepository _categoryImageRepository;
 		private readonly IDivisionLogic _divisionLogic;
         private readonly IExportSettingLogic _externalCatalogRepository;
-        private readonly IFavoriteLogic _favoriteLogic;
+        private readonly IFavoritesListLogic _favoriteLogic;
         private readonly IHistoryLogic _historyLogic;
-        private readonly IListRepository _listRepo;
         private readonly IProductImageRepository _imgRepository;
         private readonly IOrderHistoryDetailRepository _orderDetailRepo;
         private readonly IOrderHistoryHeaderRepsitory _orderHeaderRepo;
@@ -56,8 +55,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         #region constructor
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, ICategoryImageRepository categoryImageRepository, 
                                     ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryHeaderRepo, 
-                                    IOrderHistoryDetailRepository orderHistoryDetailRepo, IExportSettingLogic externalCatalogRepository, IFavoriteLogic favoriteLogic, 
-                                    INoteLogic noteLogic, IHistoryLogic historyLogic, IListRepository listRepo)
+                                    IOrderHistoryDetailRepository orderHistoryDetailRepo, IExportSettingLogic externalCatalogRepository, IFavoritesListLogic favoriteLogic, 
+                                    IHistoryLogic historyLogic)
         {
             _catalogCacheRepository = catalogCacheRepository;
             _catalogRepository = catalogRepository;
@@ -69,8 +68,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _imgRepository = imgRepository;
             _orderDetailRepo = orderHistoryDetailRepo;
             _orderHeaderRepo = orderHistoryHeaderRepo;
-            _noteLogic = noteLogic;
-            _listRepo = listRepo;
             _priceLogic = priceLogic;
         }
         #endregion
@@ -206,25 +203,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret.ProductImages = _imgRepository.GetImageList(ret.UPC, false).ProductImages;
             } else {
                 ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
-            }
-        }
-
-        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo) {
-            if (profile != null) {
-                var favorites = _favoriteLogic.GetFavoritedItemNumbers(profile, catalogInfo);
-                var notes = _noteLogic.GetNotes(profile, catalogInfo);
-                var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
-
-                ret.Products.ForEach(delegate(Product prod) {
-                    prod.Favorite = favorites.Contains(prod.ItemNumber);
-                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
-                                      .Select(i => i.Notes)
-                                      .FirstOrDefault();
-                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
-                                            .FirstOrDefault()
-                                            .InHistory;
-                    AddProductImageInfo(prod);
-                });
             }
         }
 
@@ -395,18 +373,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             string catalogId = GetBranchId( catalogInfo.BranchId, catalogType );
             catalogInfo.BranchId = catalogId;  
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
-            Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _catalogCacheRepository);
+            //Dictionary<string, string> contractdictionary = ContractInformationHelper.GetContractInformation(catalogInfo, _listRepo, _catalogCacheRepository);
 
             if (ret == null)
                 return null;
 
-            catalogInfo.BranchId = bekBranchId;
-            GetAdditionalProductInfo(profile, new ProductsReturn() { Count = 1, Products = new List<Product>() { ret } }, catalogInfo);
-            catalogInfo.BranchId = catalogId;
-            //AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
-            ret.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, new ListItemModel() { ItemNumber = ret.ItemNumber });
+            //ret.Category = ContractInformationHelper.AddContractInformationIfInContract(contractdictionary, new ListItemModel() { ItemNumber = ret.ItemNumber });
 
             PriceReturn pricingInfo = null;
 
@@ -475,9 +449,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (ret == null)
                 return null;
 
-            GetAdditionalProductInfo(profile, new ProductsReturn() { Count = 1, Products = new List<Product>() { ret } }, catalogInfo);
-
-            //AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
 
@@ -553,8 +524,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             returnValue = _catalogRepository.GetProductsByItemNumbers(context.BranchId, itemNumbers, searchModel);
 
+            foreach (Product product in returnValue.Products) {
+                AddProductImageInfo(product);
+            }
+
             AddPricingInfo(returnValue, context, searchModel);
-            GetAdditionalProductInfo(profile, returnValue, context);
 
             return returnValue;
         }
@@ -617,7 +591,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
 
             AddPricingInfo(ret, catalogInfo, searchModel);
-            GetAdditionalProductInfo(profile, ret, catalogInfo);
             ret.CatalogCounts = catalogCounts;
 
             foreach (var product in ret.Products)
