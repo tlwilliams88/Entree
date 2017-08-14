@@ -110,7 +110,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0034.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
-    <Compile Include="Migrations\v2017.04.01\Migration0040.cs" />
+    <Compile Include="Migrations\v2017.04.01\Migration0041.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
