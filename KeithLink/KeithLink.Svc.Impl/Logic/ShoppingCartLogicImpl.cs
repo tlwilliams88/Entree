@@ -449,9 +449,8 @@ namespace KeithLink.Svc.Impl.Logic
         /// <param name="listId"></param>
         /// <param name="paging"></param>
         /// <returns></returns>
-        public ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options ) {
+        private ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, PagedListModel list) {
             ShoppingCart cart = ReadCart(user, context, cartId);
-            PagedListModel list = listServiceRepository.ReadPagedList( user, context, listId, PagingHelper.BuildPagingFilter(options).Paging );
 
             if (cart == null || list == null)
                 return null;
@@ -476,7 +475,7 @@ namespace KeithLink.Svc.Impl.Logic
             return new ShoppingCartReportModel() { CartName = cart.Name, ListName = list.Name, CartItems = cartReportItems, ListItems = listReportItems };
         }
 
-        public MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options)
+        public MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, PagedListModel list, PrintListModel options)
         {
             ReportViewer rv = new ReportViewer();
 
@@ -495,7 +494,10 @@ namespace KeithLink.Svc.Impl.Logic
                 rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
             }
 
-            ShoppingCartReportModel reportModel = PrintCartWithList(user, context, cartId, listId, options);
+            ShoppingCartReportModel reportModel = PrintCartWithList(user, 
+                                                                    context, 
+                                                                    cartId, 
+                                                                    list);
 
             rv.LocalReport.LoadReportDefinition(rdlcStream);
             ReportParameter[] parameters = new ReportParameter[3];
