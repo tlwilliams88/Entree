@@ -129,7 +129,7 @@ angular
     if ($rootScope.returnToStateName != null && toState.name === 'menu.catalog.products.details' && $rootScope.directedToProduct === true) {
       $rootScope.returnToStateName = '';
       $rootScope.returnToStateItemNumber = '';
-    } else if(toState.name == 'menu.catalog.products.details') {
+    } else if(toState.name == "menu.catalog.products.details") {
       $rootScope.directedToProduct = true;
       $rootScope.returnToStateName = toState.name;
       $rootScope.returnToStateItemNumber = toParams.itemNumber;
