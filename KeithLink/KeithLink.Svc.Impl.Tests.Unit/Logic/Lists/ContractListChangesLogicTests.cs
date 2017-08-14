@@ -236,8 +236,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                      BranchId = "FUT",
                                                                                      CatalogId = "FUT",
                                                                                      ItemNumber = "123456",
-                                                                                     Status = "Added",
-                                                                                     ParentList_Id = 1
+                                                                                     Status = "Added"
                                                                                  }
                                                         })
                     .Returns(null);
@@ -263,8 +262,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                      BranchId = "FUT",
                                                                                      CatalogId = "FUT",
                                                                                      ItemNumber = "123456",
-                                                                                     Status = "Added",
-                                                                                     ParentList_Id = 1
+                                                                                     Status = "Added"
                                                                                  }
                                                         })
                     .Returns(null);
@@ -290,8 +288,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                      BranchId = "FUT",
                                                                                      CatalogId = "FUT",
                                                                                      ItemNumber = "123456",
-                                                                                     Status = "Added",
-                                                                                     ParentList_Id = 1
+                                                                                     Status = "Added"
                                                                                  }
                                                         })
                     .Returns(null);
@@ -317,8 +314,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                      BranchId = "FUT",
                                                                                      CatalogId = "FUT",
                                                                                      ItemNumber = "123456",
-                                                                                     Status = "Added",
-                                                                                     ParentList_Id = 1
+                                                                                     Status = "Added"
                                                                                  }
                                                         })
                     .Returns(null);
@@ -344,8 +340,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                      BranchId = "FUT",
                                                                                      CatalogId = "FUT",
                                                                                      ItemNumber = "123456",
-                                                                                     Status = "Added",
-                                                                                     ParentList_Id = 1
+                                                                                     Status = "Added"
                                                                                  }
                                                         })
                     .Returns(null);
@@ -371,8 +366,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                      BranchId = "FUT",
                                                                                      CatalogId = "FUT",
                                                                                      ItemNumber = "123456",
-                                                                                     Status = "Added",
-                                                                                     ParentList_Id = 1
+                                                                                     Status = "Added"
                                                                                  }
                                                         })
                     .Returns(null);
@@ -406,8 +400,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                      BranchId = "FUT",
                                                                                      CatalogId = "FUT",
                                                                                      ItemNumber = "123456",
-                                                                                     Status = "Added",
-                                                                                     ParentList_Id = 1
+                                                                                     Status = "Added"
                                                                                  }
                                                         })
                     .Returns(null);

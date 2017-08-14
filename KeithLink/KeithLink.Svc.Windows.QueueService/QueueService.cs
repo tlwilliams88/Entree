@@ -266,9 +266,9 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void ProcessMinuteTick(object state)
         {
-            //if (true)
+            if (true)
             // only process at the top of the hour
-            if (DateTime.Now.Minute == 0)
+            //if (DateTime.Now.Minute == 0)
             {
                 //StartEntreeProcess(Configuration.CheckLostOrders, "CheckLostOrders", () => ProcessCheckLostOrdersTick());
 

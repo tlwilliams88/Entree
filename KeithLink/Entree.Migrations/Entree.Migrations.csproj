@@ -110,6 +110,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0034.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
+    <Compile Include="Migrations\v2017.04.01\Migration0040.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -376,7 +377,13 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0015_2017-02-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0041_2017.04-01_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04.00_up.sql">
@@ -1006,7 +1013,13 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0019_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0041_2017.04.01_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0039_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0039_2017.04.00_up.sql">
@@ -1165,7 +1178,19 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveReminderHeaders\SaveReminderHeaders_0028_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\UpdateSentOnContractListChangeByCustomerNumberBranch_0041_2017.04.01_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\UpdateSentOnContractListChangeByCustomerNumberBranch_0041_2017.04.01_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0041_2017.04.01_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0019_2017.04.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0019_2017.04.00_up.sql">
@@ -1351,10 +1376,19 @@
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\PostDeployment\MigrateInventoryValuationList_0030_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0041_2017.04.01_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0019_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0041_2017.04.01_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0019_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\PostDeployment\MigrateListItemsDelta_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\PostDeployment\MigrateListItemsDelta_0034_2017.04.00_up.sql">
