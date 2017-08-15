@@ -302,8 +302,8 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> list = new List<ListModel>();
 
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Favorite, false));
-            list.AddRange(ReadListByType(user, catalogInfo, ListType.Custom, false));
+            list.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false));
+            list.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, false));
 
             List<ListItemModel> items = new List<ListItemModel>();
             foreach (ListModel lst in list) {
