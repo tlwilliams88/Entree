@@ -344,8 +344,12 @@
 
           </li>
         </ul>
-        <img src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.home" />
-        <img src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.home" />
+        <img ng-if="userProfile.rolename != 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.home" />
+        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo.png" alt="logo" class="logo-mobile hide-icon-423px" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
+
+        <img ng-if="userProfile.rolename != 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.home" />
+        <img ng-if="userProfile.rolename == 'guest'" src="images/bek-logo-small.png" alt="logo" class="logo-mobile show-small-icon-422px" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
+
       </div>
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print">
       <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
@@ -365,7 +369,8 @@
         <div id="menuIcon" class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
           <a ng-hide="tutorialRunning" ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
           <a ng-show="tutorialRunning" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
-          <img class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.home" />
+          <img ng-if="userProfile.rolename != 'guest'" class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.home" />
+          <img ng-if="userProfile.rolename == 'guest'" class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
         </div>
 
 
