@@ -14,11 +14,14 @@ angular.module('bekApp')
 
       if ($scope.isOrderEntryCustomer) {
         var cartHeaders = CartService.cartHeaders,
-            listHeaders = ListService.listHeaders;
+            listHeaders = ListService.listHeaders,
+            changeOrderHeaders = OrderService.changeOrderHeaders;
 
-        OrderService.getChangeOrders().then(function(resp){
-          $scope.changeOrders = resp;
-        });
+      if(changeOrderHeaders == null || changeOrderHeaders.length == 0) {
+          OrderService.getChangeOrders().then(function(resp){
+            $scope.changeOrders = resp;
+          });
+      }
 
         $scope.lists = listHeaders.length > 0 ? listHeaders : ListService.getListHeaders();
 
