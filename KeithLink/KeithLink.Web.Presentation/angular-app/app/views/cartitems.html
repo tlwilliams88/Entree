@@ -122,9 +122,9 @@
           </div>
 
           <div class="col-xs-7 hidden-print text-right-lg text-right-xs">
-            <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id, listId: currentCart.listId, listType: currentCart.listType  })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id, listId: currentCart.listid, listType: currentCart.listtype  })" class="btn btn-default">Continue Shopping</a>
 
-            <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber, listId: currentCart.listId, listType: currentCart.listType })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber, listId: currentCart.listid, listType: currentCart.listtype })" class="btn btn-default">Continue Shopping</a>
           </div>
 
         </div>
