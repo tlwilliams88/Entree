@@ -222,6 +222,7 @@ module.exports = function(grunt) {
       prod: {
         constants: {
           ENV: {
+            version: '<%= config.version %>',
             name: '<%= config.environment.prod.name %>',
             apiKey: '<%= config.environment.prod.apiKey %>',
             apiEndpoint: '<%= config.environment.prod.apiEndpoint %>',
@@ -305,6 +306,12 @@ module.exports = function(grunt) {
     grunt.task.run('connect:server');
     return grunt.task.run('watch');
   });
+  
+  grunt.registerTask('updateVersion', function() {
+    var versionNumber = grunt.option('appVersion') || 'No version number set';
+    config['version'] = versionNumber;
+    grunt.file.write('config.json', JSON.stringify(config, null, 2));
+  });
 
   // takes ios or android as platform
   // takes prod, review, or test as targets
@@ -332,9 +339,10 @@ module.exports = function(grunt) {
     }
 
     grunt.task.run([
-     'copy:logo',
-     'ngconstant:' + target,
-     phonegapBuild
+        'updateVersion',
+        'copy:logo',
+        'ngconstant:' + target,
+        phonegapBuild
     ]);
   });
 
