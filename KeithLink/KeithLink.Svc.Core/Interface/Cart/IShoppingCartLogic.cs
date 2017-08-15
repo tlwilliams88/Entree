@@ -31,9 +31,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
         /// </summary>
         bool IsSubmitted(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 
-        ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext catalogInfo, Guid cartId, long listId, Core.Models.Lists.PrintListModel options );
-
-        System.IO.MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options);
+        System.IO.MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, PagedListModel list, PrintListModel options);
 
         SaveOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
 

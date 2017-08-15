@@ -100,7 +100,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                 _log.WriteErrorLog("Error creating contract change notification", ex);
             }
 
-            _contractChangesRepo.Update(changes[0].ParentList_Id, true);
+            _contractChangesRepo.Update(changes[0].CustomerNumber, changes[0].BranchId, true);
         }
 
         private HasNewsNotification BuildContractChangeNotification(List<ContractChange> changes, Customer customer)

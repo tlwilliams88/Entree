@@ -934,6 +934,22 @@ angular.module('bekApp')
         duplicateList: function(list, customers) {
           return Service.copyList(list, customers).then(function(lists) {
             var newList = lists[0];
+            
+            // transform paged data
+            newList.itemCount = lists[0].items.length;
+            newList.items.forEach(function(item){
+              if(item.onhand < 0.01){
+                item.onhand = '';
+              } else if(item.quantity < 1){
+                  item.quantity = '';
+              }
+            });
+            
+            // get calculated fields
+            PricingService.updateCaculatedFields(newList.items);
+            updateListPermissions(newList, Service.isInternalUser);
+
+            Service.updateCache(newList);
 
             Service.lists.push(newList);
             Service.listHeaders.push(newList);

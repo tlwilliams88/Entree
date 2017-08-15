@@ -58,27 +58,21 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IGenericQueueRepository queueRepository;
 		private readonly IBasketLogic basketLogic;
-		private readonly IListLogic listServiceRepository;
         private readonly INoteLogic _noteLogic;
         private readonly IOrderQueueLogic orderQueueLogic;
         private readonly IOrderHistoryLogic _historyLogic;
 		private readonly IAuditLogRepository auditLogRepository;
         private readonly IEventLogRepository _log;
-        private readonly IExportSettingLogic externalServiceRepository;
         private readonly IUserActiveCartLogic _activeCartLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IOrderedFromListRepository _orderedFromListRepository;
-
-        private const string CACHE_GROUPNAME = "ShoppingCart";
-        private const string CACHE_NAME = "ProcessingCart";
-        private const string CACHE_PREFIX = "Default";
         #endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
-									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
-                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
+									 IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
+                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, 
                                      INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
                                      ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository)
 		{
@@ -88,7 +82,6 @@ namespace KeithLink.Svc.Impl.Logic
 			this.priceLogic = priceLogic;
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
-			this.listServiceRepository = listServiceRepository;
             _noteLogic = noteLogic;
 			this.basketLogic = basketLogic;
             this.orderQueueLogic = orderQueueLogic;
@@ -96,7 +89,6 @@ namespace KeithLink.Svc.Impl.Logic
 			this.customerRepository = customerRepository;
 			this.auditLogRepository = auditLogRepository;
             _log = log;
-            this.externalServiceRepository = externalServiceRepository;
             _activeCartLogic = userActiveCartLogic;
             _externalCatalogRepo = externalCatalogRepo;
             _orderedFromListRepository = orderedFromListRepository;
@@ -449,9 +441,8 @@ namespace KeithLink.Svc.Impl.Logic
         /// <param name="listId"></param>
         /// <param name="paging"></param>
         /// <returns></returns>
-        public ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options ) {
+        private ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, PagedListModel list) {
             ShoppingCart cart = ReadCart(user, context, cartId);
-            PagedListModel list = listServiceRepository.ReadPagedList( user, context, listId, PagingHelper.BuildPagingFilter(options).Paging );
 
             if (cart == null || list == null)
                 return null;
@@ -476,7 +467,7 @@ namespace KeithLink.Svc.Impl.Logic
             return new ShoppingCartReportModel() { CartName = cart.Name, ListName = list.Name, CartItems = cartReportItems, ListItems = listReportItems };
         }
 
-        public MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options)
+        public MemoryStream CartReport(UserProfile user, UserSelectedContext context, Guid cartId, PagedListModel list, PrintListModel options)
         {
             ReportViewer rv = new ReportViewer();
 
@@ -495,21 +486,27 @@ namespace KeithLink.Svc.Impl.Logic
                 rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
             }
 
-            ShoppingCartReportModel reportModel = PrintCartWithList(user, context, cartId, listId, options);
+            ShoppingCartReportModel reportModel = PrintCartWithList(user, 
+                                                                    context, 
+                                                                    cartId, 
+                                                                    list);
 
             rv.LocalReport.LoadReportDefinition(rdlcStream);
             ReportParameter[] parameters = new ReportParameter[3];
-            parameters[0] = new ReportParameter("ListName", reportModel.ListName);
-            parameters[1] = new ReportParameter("CartName", reportModel.CartName);
-            parameters[2] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
+            if (reportModel != null) {
+                parameters[0] = new ReportParameter("ListName", reportModel.ListName);
+                parameters[1] = new ReportParameter("CartName", reportModel.CartName);
+                parameters[2] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
 
-            rv.LocalReport.SetParameters(parameters);
+                rv.LocalReport.SetParameters(parameters);
 
-            rv.LocalReport.DataSources.Add(new ReportDataSource("CartItems", reportModel.CartItems));
-            rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", reportModel.ListItems));
+                rv.LocalReport.DataSources.Add(new ReportDataSource("CartItems", reportModel.CartItems));
+                rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", reportModel.ListItems));
 
-            var bytes = rv.LocalReport.Render("PDF", deviceInfo);
-            return new MemoryStream(bytes);
+                var bytes = rv.LocalReport.Render("PDF", deviceInfo);
+                return new MemoryStream(bytes);
+            }
+            return null;
         }
 
         public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
@@ -715,20 +712,20 @@ namespace KeithLink.Svc.Impl.Logic
                 SubTotal = basket.TempSubTotal.HasValue ? basket.TempSubTotal.Value : 0,
                 ItemCount = basket.LineItems != null ? basket.LineItems.Count() : 0,
                 PieceCount = basket.LineItems != null ? (int)basket.LineItems.Sum(i => i.Quantity) : 0,
-                CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
-                Items = basket.LineItems
-                    .Select(l => new ShoppingCartItem()
-                {
-                    ItemNumber = l.ProductId,
-                    CartItemId = l.Id.ToGuid(),
-                    strPosition = l.LinePosition,
-                    Notes = l.Notes,
-                    Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-                    Each = l.Each.HasValue ? l.Each.Value : false,
-                    Label = l.Label,
-                    CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    CatalogId = l.CatalogName
-                }).ToList()
+                CreatedDate = basket.Properties != null && basket.Properties["DateCreated"] != null ? basket.Properties["DateCreated"].ToString().ToDateTime().Value : DateTime.MinValue,
+                Items = basket.LineItems != null ? basket.LineItems
+                                                    .Select(l => new ShoppingCartItem()
+                                                    {
+                                                        ItemNumber = l.ProductId,
+                                                        CartItemId = l.Id.ToGuid(),
+                                                        strPosition = l.LinePosition,
+                                                        Notes = l.Notes,
+                                                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                                                        Each = l.Each.HasValue ? l.Each.Value : false,
+                                                        Label = l.Label,
+                                                        CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                                                        CatalogId = l.CatalogName
+                                                    }).ToList() : new List<ShoppingCartItem>()
             };
             foreach (ShoppingCartItem item in sc.Items)
             {
