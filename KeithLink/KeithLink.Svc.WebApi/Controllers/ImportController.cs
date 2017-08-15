@@ -68,8 +68,6 @@ namespace KeithLink.Svc.WebApi.Controllers
                 ListModel newList = _importService.BuildList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
                 ListModel createdList = _listService.CreateList(AuthenticatedUser, SelectedUserContext, ListType.Custom, newList);
 
-                _listService.SaveItems(AuthenticatedUser, SelectedUserContext, ListType.Custom, createdList.ListId, newList.Items);
-
                 importReturn.List = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, createdList.Type, createdList.ListId, true);
 
                 importReturn.Success = true;
@@ -88,7 +86,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
         #endregion
-
 
         #region Import Order
         /// <summary>
