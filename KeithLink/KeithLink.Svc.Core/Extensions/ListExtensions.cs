@@ -160,32 +160,35 @@ namespace KeithLink.Svc.Core.Extensions
         {
             List<ShoppingCartItemReportModel> items = new List<ShoppingCartItemReportModel>();
 
-            foreach (ListItemModel i in list.Items.Results)
-            {
-                ShoppingCartItemReportModel item = new ShoppingCartItemReportModel();
-
-                item.ItemNumber = i.ItemNumber;
-                item.Name = i.Name;
-                item.Brand = i.BrandExtendedDescription;
-                item.Category = i.ItemClass;
-                item.PackSize = i.PackSize;
-                if (i.Notes != null)
+            if (list.Items != null &&
+                list.Items.Results != null) {
+                foreach (ListItemModel i in list.Items.Results)
                 {
-                    item.Notes = i.Notes;
+                    ShoppingCartItemReportModel item = new ShoppingCartItemReportModel();
+
+                    item.ItemNumber = i.ItemNumber;
+                    item.Name = i.Name;
+                    item.Brand = i.BrandExtendedDescription;
+                    item.Category = i.ItemClass;
+                    item.PackSize = i.PackSize;
+                    if (i.Notes != null)
+                    {
+                        item.Notes = i.Notes;
+                    }
+                    item.Label = i.Label;
+                    item.ParLevel = i.ParLevel;
+                    item.Quantity = i.Quantity;
+                    item.Each = i.Each;
+                    item.CasePrice = i.CasePrice.ToDouble().Value;
+                    item.PackagePrice = i.PackagePrice.ToDouble().Value;
+
+
+                    item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
+                                                           (i.Each ?? false), i.CatchWeight, i.AverageWeight,
+                                                           i.Pack.ToInt(1));
+
+                    items.Add(item);
                 }
-                item.Label = i.Label;
-                item.ParLevel = i.ParLevel;
-                item.Quantity = i.Quantity;
-                item.Each = i.Each;
-                item.CasePrice = i.CasePrice.ToDouble().Value;
-                item.PackagePrice = i.PackagePrice.ToDouble().Value;
-                
-
-                item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
-                                                       (i.Each ?? false), i.CatchWeight, i.AverageWeight,
-                                                       i.Pack.ToInt(1));
-
-                items.Add(item);
             }
 
             return items;
