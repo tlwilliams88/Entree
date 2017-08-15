@@ -47,7 +47,7 @@
             class="btn-no-style"
             type="button"
             ng-click="isSidebarOpen = false"
-            ui-sref="menu.userProfile">
+            ui-sref="menu.userprofile">
             <li>Profile Settings</li>
           </button>
           <button
@@ -437,7 +437,7 @@
               <span ng-if="userProfile.displayRole === 'approver'" class="user-info__job-title">Buyer</span>
               <span ng-if="userProfile.displayRole === 'buyer'" class="user-info__job-title">Shopper</span>
               <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                <button class="btn btn-lg btn-default" ui-sref="menu.userProfile">Profile Settings</button>
+                <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                 <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
                 <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                 <a class="feedback-link" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><button class="btn btn-lg btn-default feedback-btn">Send Feedback</button> </a>
