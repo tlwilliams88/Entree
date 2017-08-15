@@ -44,9 +44,6 @@ namespace Entree.Migrations.Helpers
 
             Queue<string> returnValue = new Queue<string>();
 
-            GetSchemaList(filesGlob)
-                .ForEach(x => returnValue.Enqueue(x));
-
             GetObjectList(SCHEMA_OBJECT_TYPES, filesGlob)
                 .ForEach(x => returnValue.Enqueue(x));
 
@@ -69,6 +66,9 @@ namespace Entree.Migrations.Helpers
                 .ForEach(x => returnValue.Enqueue(x));
 
             GetObjectList(SCHEMA_OBJECT_STOREDPROCEDURES, filesGlob)
+                .ForEach(x => returnValue.Enqueue(x));
+
+            GetSchemaList(filesGlob)
                 .ForEach(x => returnValue.Enqueue(x));
 
             return returnValue;
