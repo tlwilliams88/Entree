@@ -44,16 +44,10 @@ namespace Entree.Migrations.Helpers
 
             Queue<string> returnValue = new Queue<string>();
 
-            GetObjectList(SCHEMA_OBJECT_POSTDEPLOYMENTS, filesGlob)
-                .ForEach(x => returnValue.Enqueue(x));
-
-            GetObjectList(SCHEMA_OBJECT_STOREDPROCEDURES, filesGlob)
+            GetObjectList(SCHEMA_OBJECT_TYPES, filesGlob)
                 .ForEach(x => returnValue.Enqueue(x));
 
             GetObjectList(SCHEMA_OBJECT_FUNCTIONS, filesGlob)
-                .ForEach(x => returnValue.Enqueue(x));
-
-            GetObjectList(SCHEMA_OBJECT_VIEWS, filesGlob)
                 .ForEach(x => returnValue.Enqueue(x));
 
             GetObjectList(SCHEMA_OBJECT_CONSTRAINTS, filesGlob)
@@ -65,7 +59,13 @@ namespace Entree.Migrations.Helpers
             GetTableList(filesGlob)
                 .ForEach(x => returnValue.Enqueue(x));
 
-            GetObjectList(SCHEMA_OBJECT_TYPES, filesGlob)
+            GetObjectList(SCHEMA_OBJECT_VIEWS, filesGlob)
+                .ForEach(x => returnValue.Enqueue(x));
+
+            GetObjectList(SCHEMA_OBJECT_POSTDEPLOYMENTS, filesGlob)
+                .ForEach(x => returnValue.Enqueue(x));
+
+            GetObjectList(SCHEMA_OBJECT_STOREDPROCEDURES, filesGlob)
                 .ForEach(x => returnValue.Enqueue(x));
 
             GetSchemaList(filesGlob)
