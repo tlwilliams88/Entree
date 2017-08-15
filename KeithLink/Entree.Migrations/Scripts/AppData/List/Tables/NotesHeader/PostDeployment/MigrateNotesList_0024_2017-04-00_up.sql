@@ -41,7 +41,7 @@
              ,[CreatedUtc])
         SELECT
             fh.[Id]
-            ,li.[ItemNumber]
+            li.[ItemNumber]
             ,li.[CatalogId]
             ,li.Each
             ,li.Note
@@ -51,13 +51,6 @@
         INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
         INNER JOIN List.[NotesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
         WHERE
-            l.Type = 4 and
-            NOT EXISTS (
-                SELECT
-                    'x'
-                    FROM [List].[NotesDetails]
-                    INNER JOIN List.[Lists] l on l.Id = li.ParentList_Id
-                    INNER JOIN List.[NotesHeaders] fh on fh.CustomerNumber = l.CustomerId and fh.BranchId = l.BranchId
-                    WHERE [ItemNumber] = li.[ItemNumber]
-                        AND [Each] = li.[Each]
-                        AND [CatalogId] = li.[CatalogId])
+            l.Type = 4 
+            and li.Note is not null
+            and li.Note != ''
