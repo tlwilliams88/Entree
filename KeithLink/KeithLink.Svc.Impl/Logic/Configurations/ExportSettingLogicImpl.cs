@@ -104,6 +104,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
 
             //Common product detail fields
             options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Label = "Item" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Label = "Each" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Label = "Name" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Favorite", Label = "Favorite" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Description", Label = "Description" });
