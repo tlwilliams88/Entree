@@ -11,7 +11,7 @@ angular.module('bekApp')
                  toATOOrFromATO = (toState.name == 'menu.addtoorder.items' || fromState.name == 'menu.addtoorder.items'),
                  toATOAndFromATO = (toState.name == 'menu.addtoorder.items' && fromState.name == 'menu.addtoorder.items'),
                  toRegister = (toState.name == 'register'),
-                 selectedCart = (selectedCart != null && selectedCart.items.length > 0);
+                 selectedCart = ($scope.selectedCart != null);
 
              if(!toCart &&
                  !toATOAndFromATO &&
