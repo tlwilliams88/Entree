@@ -217,6 +217,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
                     break;
 
+                // To attribute Favorites on the items in another collection, we go through MarkFavoritesAndAddNotes and GetFavoritesHash.  We only get full product info and prices for the visible favorites list.
                 case ListType.Favorite:
                     tempList = _favoritesLogic.GetListModel(user, catalogInfo, Id);
                     break;
@@ -229,9 +230,10 @@ namespace KeithLink.Svc.Impl.Service.List
                     tempList = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
                     break;
 
-                case ListType.Notes:
-                    tempList = _notesLogic.GetList(catalogInfo);
-                    break;
+                // goes through MarkFavoritesAndAddNotes and GetNotesHash for notes
+                //case ListType.Notes:
+                //    tempList = _notesLogic.GetList(catalogInfo);
+                //    break;
 
                 case ListType.Worksheet:
                     tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
