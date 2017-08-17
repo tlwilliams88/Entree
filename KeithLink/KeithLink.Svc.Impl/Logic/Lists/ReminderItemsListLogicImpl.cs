@@ -39,6 +39,22 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
         }
 
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly) {
+            ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
+
+            if (header == null) {
+                return null;
+            } else {
+                if (headerOnly) {
+                    header.ToListModel();
+                }
+
+                List<ReminderItemsListDetail> items = _detailsRepo.GetRemindersDetails(header.Id);
+
+                return header.ToListModel(items);
+            }
+        }
+
         public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
         {
             ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);

@@ -139,6 +139,74 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
+        public class ReadList
+        {
+            [Fact]
+            public void BadBranchId_ReturnsNull()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void BadCustomerId_ReturnsNull()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "223456"
+                };
+                var fakeUser = new UserProfile();
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var expected = "123456";
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.CustomerNumber
+                       .Should()
+                       .Be(expected);
+            }
+        }
+
         public class ItemsInHistoryList
         {
             [Fact]

@@ -7,6 +7,7 @@ using Moq;
 using Xunit;
 
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Contract;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -190,6 +191,125 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
 
                 // act
                 var results = logic.GetListModel(fakeUser, test, fakeId);
+
+                // assert
+                results
+                    .Items
+                    .Count
+                    .Should()
+                    .Be(expected);
+            }
+        }
+
+        public class ReadList
+        {
+            [Fact]
+            public void BadBranchId_ReturnsNull()
+            {
+                // arrange
+                var logic = MakeMockLogic();
+                var test = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var headerOnly = false;
+
+                // act
+                ListModel results = logic.ReadList(fakeUser, test, headerOnly);
+
+                // assert
+                results.Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void BadCustomerId_ReturnsNull()
+            {
+                // arrange
+                var logic = MakeMockLogic();
+                var test = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "999999"
+                };
+                var fakeUser = new UserProfile();
+                var headerOnly = false;
+
+                // act
+                ListModel results = logic.ReadList(fakeUser, test, headerOnly);
+
+                // assert
+                results.Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedHeaderId()
+            {
+                // arrange
+                var expected = 1;
+                var fakeUser = new UserProfile();
+                var logic = MakeMockLogic();
+                var test = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var headerOnly = false;
+
+                // act
+                ListModel results = logic.ReadList(fakeUser, test, headerOnly);
+
+                // assert
+                results
+                    .ListId
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomer_ReturnsExpectedItemCount()
+            {
+                // arrange
+                var expected = 2;
+                var fakeUser = new UserProfile();
+                var logic = MakeMockLogic();
+                var test = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var headerOnly = false;
+
+                // act
+                ListModel results = logic.ReadList(fakeUser, test, headerOnly);
+
+                // assert
+                results
+                    .Items
+                    .Count
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void ContractWithNoItems_ReturnsZeroLengthItemList()
+            {
+                // arrange
+                var expected = 0;
+                var fakeUser = new UserProfile();
+                var logic = MakeMockLogic();
+                var test = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                var headerOnly = false;
+
+                // act
+                ListModel results = logic.ReadList(fakeUser, test, headerOnly);
 
                 // assert
                 results

@@ -44,6 +44,25 @@ namespace KeithLink.Svc.Impl.Logic.Lists
             }
         }
 
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+        {
+            HistoryListHeader header = _headerRepo.GetHistoryListHeader(catalogInfo);
+
+            if (header == null)
+            {
+                return null;
+            }
+            else
+            {
+                if (headerOnly) {
+                    return header.ToListModel();
+                }
+                List<HistoryListDetail> items = _detailRepo.GetAllHistoryDetails(header.Id);
+
+                return header.ToListModel(items);
+            }
+        }
+
         public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
         {
             var returnModel = new BlockingCollection<InHistoryReturnModel>();

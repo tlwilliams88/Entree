@@ -33,6 +33,27 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 return null;
             }
         }
+
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+        {
+            ContractListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
+
+            if (header != null)
+            {
+                if (headerOnly) {
+                    return header.ToListModel();
+                }
+                else {
+                    List<ContractListDetail> items = _detailsRepo.GetContractListDetails(header.Id);
+
+                    return header.ToListModel(items);
+                }
+            }
+            else
+            {
+                return null;
+            }
+        }
         #endregion
     }
 }

@@ -158,22 +158,22 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
 
                 case ListType.Contract:
-                    returnList.TryAdd(_contractListLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_contractListLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
-                case ListType.Notes: 
-                    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
-                    break;
+                //case ListType.Notes: 
+                //    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
+                //    break;
 
                 case ListType.Worksheet:
-                    returnList.TryAdd(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_historyListLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                 // no contract items added lists
                 // no contract items deleted lists
 
                 case ListType.Reminder:
-                    returnList.TryAdd(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
+                    returnList.TryAdd(_reminderItemsLogic.ReadList(user, catalogInfo, headerOnly));
                     break;
 
                 case ListType.Mandatory:
