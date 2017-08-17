@@ -57,7 +57,7 @@ namespace KeithLink.Svc.Core.Interface.Lists {
 
         //List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
 
-        PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, PagingModel paging);
+        //PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, PagingModel paging);
 
         //List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 

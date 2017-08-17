@@ -12,8 +12,6 @@ namespace KeithLink.Svc.Core.Models.Lists
 
         public string BranchId { get; set; }
 
-        public long ParentList_Id { get; set; }
-
         public string ItemNumber { get; set; }
 
         public bool Each { get; set; }

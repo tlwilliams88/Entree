@@ -22,6 +22,9 @@ using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Common.Impl.Email;
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Paging;
 
 using Newtonsoft.Json;
 
@@ -38,6 +41,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		private readonly IShoppingCartLogic _shoppingCartLogic;
         private readonly IExportSettingLogic _exportLogic;
         private readonly IEventLogRepository _log;
+        private readonly IListService _listService;
         #endregion
 
         #region ctor
@@ -49,11 +53,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="userActiveCartLogic"></param>
         /// <param name="exportSettingsLogic"></param>
-        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, 
+        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, IListService listService,
                                       IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic) : base(profileLogic) {
             _activeCartLogic = userActiveCartLogic;
 			_shoppingCartLogic = shoppingCartLogic;
             _exportLogic = exportSettingsLogic;
+            _listService = listService;
             _log = logRepo;
         }
         #endregion
@@ -149,7 +154,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             { //TODO: Unravel this cartreport list...
                 Stream stream = _shoppingCartLogic.CartReport
-                    (AuthenticatedUser, SelectedUserContext, cartId, listId, options);
+                    (AuthenticatedUser, 
+                     SelectedUserContext, 
+                     cartId,
+                     _listService.ReadPagedList(AuthenticatedUser, SelectedUserContext, listType, listId, PagingHelper.BuildPagingFilter(options)
+                                                                                                                      .Paging), 
+                     options);
 
                 HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
                 result.Content = new StreamContent(stream);

@@ -272,8 +272,8 @@ angular.module('bekApp')
           cart.listid = list.listid;
           cart.listtype = list.type;
           var lastList ={
-            listId: cart.listId,
-            listType: cart.listType
+            listId: cart.listid,
+            listType: cart.listtype
           };
 
           LocalStorage.setLastList(lastList);
