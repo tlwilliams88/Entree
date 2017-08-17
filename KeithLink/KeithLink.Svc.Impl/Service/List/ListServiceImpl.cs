@@ -29,6 +29,7 @@ namespace KeithLink.Svc.Impl.Service.List
     {
         #region attributes
         private readonly ICacheRepository _cache;
+        private readonly ICacheListLogic _cacheHelper;
         private readonly IContractListLogic _contractListLogic;
         private readonly IHistoryListLogic _historyListLogic;
         private readonly IFavoritesListLogic _favoritesLogic;
@@ -51,9 +52,59 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private Dictionary<string, string> _contractdictionary;
 
+        private const bool CACHELISTS = true;
+
         private const string CACHE_CONTRACT_GROUPNAME = "ContractInformation";
         private const string CACHE_CONTRACT_NAME = "ContractInformation";
         private const string CACHE_CONTRACT_PREFIX = "Default";
+
+        private const string CACHE_LIST_GROUPNAME = "ContractInformation";
+        private const string CACHE_LIST_NAME = "ContractInformation";
+        private const string CACHE_LIST_PREFIX = "Default";
+
+        private const string CACHEKEY_PREFIX_CONTRACTDICT = "ContractDictionary";
+        private string GetCacheKeyContractDictionary(UserSelectedContext catalogInfo) {
+            return string.Format("{0}_{1}_{2}",
+                                 CACHEKEY_PREFIX_CONTRACTDICT,
+                                 catalogInfo.BranchId,
+                                 catalogInfo.CustomerId);
+        }
+
+        private const string CACHEKEY_PREFIX_TYPELISTOFLISTS = "Lists";
+        private string GetCacheKeyTypedLists(UserSelectedContext catalogInfo, ListType type)
+        {
+            return string.Format("{0}_{1}_{2}_{3}",
+                                 CACHEKEY_PREFIX_TYPELISTOFLISTS,
+                                 catalogInfo.BranchId,
+                                 catalogInfo.CustomerId,
+                                 type);
+        }
+
+        private const string CACHEKEY_PREFIX_LISTOFLISTS = "Lists";
+        private string GetCacheKeyUserLists(UserSelectedContext catalogInfo)
+        {
+            return string.Format("{0}_{1}_{2}",
+                                 CACHEKEY_PREFIX_LISTOFLISTS,
+                                 catalogInfo.BranchId,
+                                 catalogInfo.CustomerId);
+        }
+
+        private const string CACHEKEY_PREFIX_LIST = "List";
+        private string GetCacheKeySpecificLists(UserSelectedContext catalogInfo, ListType type, long Id)
+        {
+            return string.Format("{0}_{1}_{2}_{3}_{4}",
+                                                                           CACHEKEY_PREFIX_LIST,
+                                                                           catalogInfo.BranchId,
+                                                                           catalogInfo.CustomerId,
+                                                                           type,
+                                                                           Id);
+        }
+
+
+        private const int CACHETIME_HOURS_CONTRACTDICT = 2;
+        private const int CACHETIME_HOURS_TYPELISTOFLISTS = 2;
+        private const int CACHETIME_HOURS_LISTOFLISTS = 2;
+        private const int CACHETIME_HOURS_LIST = 2;
         #endregion
 
         #region ctor
@@ -64,9 +115,10 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
                                 IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
-                                IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo)
+                                IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo, ICacheListLogic cacheHelper)
         {
             _cache = cache;
+            _cacheHelper = cacheHelper;
             // specific lists -
             _contractListLogic = contractListLogic;
             _historyListLogic = historyListLogic;
@@ -95,12 +147,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             Dictionary<string, string> contractdictionary = new Dictionary<string, string>();
 
-            Dictionary<string, string> cachedContractdictionary = _cache.GetItem<Dictionary<string, string>>(CACHE_CONTRACT_GROUPNAME,
-                                                                                                             CACHE_CONTRACT_PREFIX,
-                                                                                                             CACHE_CONTRACT_NAME,
-                                                                                                             string.Format("ContractDictionary_{0}_{1}",
-                                                                                                                           catalogInfo.BranchId,
-                                                                                                                           catalogInfo.CustomerId));
+            Dictionary<string, string> cachedContractdictionary = CACHELISTS ? _cacheHelper.GetCachedContractInformation(catalogInfo) : null;
 
             if (cachedContractdictionary == null)
             {
@@ -118,13 +165,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                                  .ToDictionary(g => g.Key,
                                                                g => g.First().Category.Trim());
                 }
-                _cache.AddItem<Dictionary<string, string>>(CACHE_CONTRACT_GROUPNAME,
-                                                           CACHE_CONTRACT_PREFIX,
-                                                           CACHE_CONTRACT_NAME,
-                                                           string.Format("ContractDictionary_{0}_{1}",
-                                                                         catalogInfo.BranchId,
-                                                                         catalogInfo.CustomerId), TimeSpan.FromHours(2), contractdictionary);
-
+                _cacheHelper.AddCachedContractInformation(catalogInfo, contractdictionary);
             }
             else
             {
@@ -147,62 +188,77 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> returnList = new List<ListModel>();
 
-            switch (type)
-            {
-                case ListType.Custom:
-                    returnList.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
-                    break;
+            List<ListModel> cachedList = CACHELISTS ? _cacheHelper.GetCachedTypedLists(catalogInfo, type) : null;
 
-                case ListType.Favorite:
-                    returnList.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
-                    break;
+            if (cachedList == null) {
+                switch (type) {
+                    case ListType.Custom:
+                        returnList.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
+                        break;
 
-                case ListType.Contract:
-                    returnList.TryAdd(_contractListLogic.GetListModel(user, catalogInfo, 0));
-                    break;
+                    case ListType.Favorite:
+                        returnList.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
+                        break;
 
-                case ListType.Notes: 
-                    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
-                    break;
+                    case ListType.Contract:
+                        returnList.TryAdd(_contractListLogic.GetListModel(user, catalogInfo, 0));
+                        break;
 
-                case ListType.Worksheet:
-                    returnList.TryAdd(_historyListLogic.GetListModel(user, catalogInfo, 0));
-                    break;
+                    // we get notes through GetNotesHash to avoid the full product load
+                    //case ListType.Notes: 
+                    //    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
+                    //    break;
 
-                // no contract items added lists
-                // no contract items deleted lists
+                    case ListType.Worksheet:
+                        returnList.TryAdd(_historyListLogic.GetListModel(user, catalogInfo, 0));
+                        break;
 
-                case ListType.Reminder:
-                    returnList.TryAdd(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
-                    break;
+                    // no contract items added lists
+                    // no contract items deleted lists
 
-                case ListType.Mandatory:
-                    returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                    break;
+                    case ListType.Reminder:
+                        returnList.TryAdd(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
+                        break;
 
-                case ListType.RecommendedItems:
-                    returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                    break;
+                    case ListType.Mandatory:
+                        returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
-                case ListType.InventoryValuation:
-                    returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
-                    break;
+                    case ListType.RecommendedItems:
+                        returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
-                case ListType.RecentlyOrdered:
-                    returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
-                    break;
+                    case ListType.InventoryValuation:
+                        returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+                        break;
 
-                case ListType.RecentlyViewed:
-                    returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
-                    break;
+                    case ListType.RecentlyOrdered:
+                        returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
+
+                    case ListType.RecentlyViewed:
+                        returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
                     //case ListType.CustomInventory: //uses its own controller and works a little differently
                     //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
                     //    break;
-            }
+                }
 
-            if (returnList.Count > 0) {
-                FillOutProducts(user, catalogInfo, returnList, true);
+                if (returnList.Count > 0 &&
+                    headerOnly == false) {
+                    FillOutProducts(user: user,
+                                    catalogInfo: catalogInfo,
+                                    returnList: returnList,
+                                    getprices: true);
+                }
+
+                if (CACHELISTS) {
+                    _cacheHelper.AddCachedTypedLists(catalogInfo, type, returnList);
+                }
+            }
+            else {
+                returnList = cachedList;
             }
 
             return returnList;
@@ -211,66 +267,82 @@ namespace KeithLink.Svc.Impl.Service.List
         private ListModel ReadListById(UserProfile user, UserSelectedContext catalogInfo, long Id, ListType type)
         {
             ListModel tempList = null;
-            switch (type)
-            {
-                case ListType.Custom:
-                    tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
 
-                // To attribute Favorites on the items in another collection, we go through MarkFavoritesAndAddNotes and GetFavoritesHash.  We only get full product info and prices for the visible favorites list.
-                case ListType.Favorite:
-                    tempList = _favoritesLogic.GetListModel(user, catalogInfo, Id);
-                    break;
+            ListModel cachedList = CACHELISTS ? _cacheHelper.GetCachedSpecificList(catalogInfo, type, Id) : null;
 
-                case ListType.Contract:
-                    tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
+            if (cachedList == null) {
+                switch (type) {
+                    case ListType.Custom:
+                        tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
+                        break;
 
-                case ListType.RecentlyViewed:
-                    tempList = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
-                    break;
+                    // To attribute Favorites on the items in another collection, we go through MarkFavoritesAndAddNotes and GetFavoritesHash.  We only get full product info and prices for the visible favorites list.
+                    case ListType.Favorite:
+                        tempList = _favoritesLogic.GetListModel(user, catalogInfo, Id);
+                        break;
 
-                // goes through MarkFavoritesAndAddNotes and GetNotesHash for notes
-                //case ListType.Notes:
-                //    tempList = _notesLogic.GetList(catalogInfo);
-                //    break;
+                    // goes through MarkFavoritesAndAddNotes and GetNotesHash for notes
+                    //case ListType.Notes:
+                    //    tempList = _notesLogic.GetList(catalogInfo);
+                    //    break;
 
-                case ListType.Worksheet:
-                    tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
-                    break;
+                    case ListType.Contract:
+                        tempList = _contractListLogic.GetListModel(user, catalogInfo, Id);
+                        break;
 
-                //// no contract items added lists
-                //// no contract items deleted lists
+                    case ListType.RecentlyViewed:
+                        tempList = _recentlyViewedLogic.ReadList(user, catalogInfo, false);
+                        break;
 
-                case ListType.Reminder:
-                    tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
-                    break;
+                    case ListType.Notes:
+                        tempList = _notesLogic.GetList(catalogInfo);
+                        break;
 
-                case ListType.Mandatory:
-                    tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
-                    break;
+                    case ListType.Worksheet:
+                        tempList = _historyListLogic.GetListModel(user, catalogInfo, Id);
+                        break;
 
-                case ListType.RecommendedItems:
-                    tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
-                    break;
+                    //// no contract items added lists
+                    //// no contract items deleted lists
 
-                case ListType.InventoryValuation:
-                    tempList = _inventoryValuationLogic.ReadList(Id, catalogInfo, false);
-                    break;
+                    case ListType.Reminder:
+                        tempList = _reminderItemsLogic.GetListModel(user, catalogInfo, Id);
+                        break;
 
-                case ListType.RecentlyOrdered:
-                    ////    returnList.Add(_recentlyOrderedLogic.GetListModel(user, catalogInfo, 0));
-                    break;
+                    case ListType.Mandatory:
+                        tempList = _mandatoryItemsLogic.GetListModel(user, catalogInfo, Id);
+                        break;
+
+                    case ListType.RecommendedItems:
+                        tempList = _recommendedItemsLogic.GetListModel(user, catalogInfo, Id);
+                        break;
+
+                    case ListType.InventoryValuation:
+                        tempList = _inventoryValuationLogic.ReadList(Id, catalogInfo, false);
+                        break;
+
+                    case ListType.RecentlyOrdered:
+                        ////    returnList.Add(_recentlyOrderedLogic.GetListModel(user, catalogInfo, 0));
+                        break;
 
                     ////case ListType.CustomInventory: //uses its own controller and works a little differently
                     ////    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
                     ////    break;
 
-            }
+                }
 
-            if (tempList != null && tempList.Items != null && tempList.Items.Count > 0)
-            {
-                FillOutProducts(user, catalogInfo, new List<ListModel>() { tempList }, true);
+                if (tempList != null &&
+                    tempList.Items != null &&
+                    tempList.Items.Count > 0) {
+                    FillOutProducts(user, catalogInfo, new List<ListModel>() {tempList}, true);
+                }
+
+                if (CACHELISTS) {
+                    _cacheHelper.AddCachedSpecificList(catalogInfo, type, Id, tempList);
+                }
+            }
+            else {
+                tempList = cachedList;
             }
 
             return tempList;
@@ -279,16 +351,28 @@ namespace KeithLink.Svc.Impl.Service.List
         public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
         {
             List<ListModel> list = new List<ListModel>();
-            
-            if(_contractdictionary == null) { _contractdictionary = GetContractInformation(catalogInfo); }
 
-            AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, headerOnly);
-            AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
-            AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
-            AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, headerOnly);
-            AddListsIfNotNull(user, catalogInfo, ListType.RecommendedItems, list, headerOnly);
-            AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
-            AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
+            List<ListModel> cachedList = CACHELISTS ? _cacheHelper.GetCachedCustomerLists(catalogInfo) : null;
+
+            if (cachedList == null) {
+                if (_contractdictionary == null) {
+                    _contractdictionary = GetContractInformation(catalogInfo);
+                }
+
+                AddListsIfNotNull(user, catalogInfo, ListType.Worksheet, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Contract, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Favorite, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Reminder, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.RecommendedItems, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
+                AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
+
+                if (CACHELISTS) {
+                    _cacheHelper.AddCachedCustomerLists(catalogInfo, list);
+                }
+            } else {
+                list = cachedList;
+            }
 
             return list;
         }
@@ -450,6 +534,10 @@ namespace KeithLink.Svc.Impl.Service.List
                 //    break;
             }
 
+            if (CACHELISTS) {
+                _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
+            }
+
             return retVal;
         }
 
@@ -499,6 +587,9 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.RecentlyOrdered:
                     break;
             }
+
+            _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
+
         }
 
         public void SaveItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
@@ -539,10 +630,13 @@ namespace KeithLink.Svc.Impl.Service.List
                 SaveItems(user,catalogInfo, type, id, list.Items);
             }
 
+            _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
+
             return ReadList(user, catalogInfo, type, id, true);
         }
 
         public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel) {
+
             ListModel list = ReadList(user, catalogInfo, copyListModel.Type, copyListModel.ListId);
 
             List<ListModel> results = new List<ListModel>();
@@ -567,19 +661,27 @@ namespace KeithLink.Svc.Impl.Service.List
                                      ListType.Custom,
                                      copyList);
 
+            _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
+
             return ReadListById(user, catalogInfo, newList.ListId, newList.Type);
         }
 
         public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                                       ListModel list)
         {
+
             switch (type)
             {
                 case ListType.Custom:
                     _customListLogic.DeleteList(user, catalogInfo, list);
+
+                    _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
+
                     break;
                 case ListType.InventoryValuation:
+
                     long x = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, false);
+
                     break;
             }
         }
