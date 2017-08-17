@@ -43,6 +43,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
         public class MockDependents {
             public Mock<ICacheRepository> CacheRepository { get; set; }
 
+            public Mock<ICacheListLogic> CacheListHelper { get; set; }
+
             public Mock<IContractListLogic> ContractListLogic { get; set; }
 
             public Mock<IHistoryListLogic> HistoryListLogic { get; set; }
@@ -114,6 +116,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                   .As<IEventLogRepository>();
                 cb.RegisterInstance(MakeMockCacheRepository().Object)
                   .As<ICacheRepository>();
+                cb.RegisterInstance(MakeMockCacheListHelper().Object)
+                  .As<ICacheListLogic>();
                 cb.RegisterInstance(MakeMockContractListLogic().Object)
                   .As<IContractListLogic>();
                 cb.RegisterInstance(MakeMockHistoryListLogic().Object)
@@ -373,6 +377,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
                 return mock;
             }
+
+            public static Mock<ICacheListLogic> MakeMockCacheListHelper()
+            {
+                var mock = new Mock<ICacheListLogic>();
+
+                return mock;
+            }
         }
 
         private static IListService MakeTestsService(bool useAutoFac, ref MockDependents mockDependents)
@@ -392,6 +403,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
             {
                 mockDependents = new MockDependents();
                 mockDependents.CacheRepository = MockDependents.MakeMockCacheRepository();
+                mockDependents.CacheListHelper = MockDependents.MakeMockCacheListHelper();
                 mockDependents.CatalogLogic = MockDependents.MakeMockCatalogLogic();
                 mockDependents.ContractListLogic = MockDependents.MakeMockContractListLogic();
                 mockDependents.CustomListLogic = MockDependents.MakeMockCustomListLogic();
@@ -420,7 +432,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                    mockDependents.ItemBarcodeRepository.Object, mockDependents.MandatoryItemsListLogic.Object,
                                                    mockDependents.InventoryValuationListLogic.Object, mockDependents.ContractListLogic.Object,
                                                    mockDependents.CustomListLogic.Object, mockDependents.CacheRepository.Object, 
-                                                   mockDependents.EventLogRepository.Object, mockDependents.CustomInventoryItemsRepository.Object);
+                                                   mockDependents.EventLogRepository.Object, mockDependents.CustomInventoryItemsRepository.Object,
+                                                   mockDependents.CacheListHelper.Object);
                 return testunit;
             }
         }
