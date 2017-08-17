@@ -23,15 +23,42 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
         #region methods
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long id) {
+            ListModel list = null;
+
             ContractListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
 
             if (header != null) {
                 List<ContractListDetail> items = _detailsRepo.GetContractListDetails(header.Id);
 
-                return header.ToListModel(items);
+                list = header.ToListModel(items);
             } else {
-                return null;
+                list = null;
             }
+            return list;
+        }
+
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+        {
+            ListModel list = null;
+
+            ContractListHeader header = _headersRepo.GetListHeaderForCustomer(catalogInfo);
+
+            if (header != null)
+            {
+                if (headerOnly) {
+                    list = header.ToListModel();
+                }
+                else {
+                    List<ContractListDetail> items = _detailsRepo.GetContractListDetails(header.Id);
+
+                    list = header.ToListModel(items);
+                }
+            }
+            else
+            {
+                list = null;
+            }
+            return list;
         }
         #endregion
     }

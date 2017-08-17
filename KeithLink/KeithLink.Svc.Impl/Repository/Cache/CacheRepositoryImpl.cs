@@ -5,12 +5,21 @@ using CommerceServer.Foundation;
 using System;
 using System.Net.Http;
 
+using KeithLink.Common.Core.Interfaces.Logging;
+
 namespace KeithLink.Svc.Impl.Repository.Cache
 {
 	public class CacheRepositoryImpl: ICacheRepository
 	{
         #region attributes
         private ICacheProvider _cache { get; set; }
+        private IEventLogRepository _log { get; set; }
+        #endregion
+
+        #region constructor
+	    public CacheRepositoryImpl(IEventLogRepository log) {
+	        _log = log;
+	    }
         #endregion
 
         #region methods
@@ -45,8 +54,15 @@ namespace KeithLink.Svc.Impl.Repository.Cache
             foreach(var server in servers) {
                 using(HttpClient client = new HttpClient()) {
                     try {
-                        var r = client.GetAsync(string.Format("{0}/Cache/RefreshCacheItem?cacheGroupName={1}&cachePrefix={2}&cacheName={3}&key={4}", server, cacheGroupName, cachePrefix, cacheName, key)).Result;
-                    } catch(Exception) { }//Log?
+                        var r = client.GetAsync(string.Format("{0}/Cache/RefreshCacheItem?cacheGroupName={1}&cachePrefix={2}&cacheName={3}&key={4}", server, cacheGroupName, cachePrefix, cacheName, key))
+                                      .Result;
+                        if (r.IsSuccessStatusCode != true) {
+                            _log.WriteErrorLog(string.Format("Cache endpoint {0} returned a status code {1}. Message: {3}", server, r.StatusCode, r.Content.ReadAsStringAsync()
+                                                                                                                                                   .Result.ToString()));
+                        }
+                    } catch (Exception ex) {
+                        _log.WriteErrorLog("Cache endpoint failed.", ex);
+                    }//Log?
                 }
             }
         }
@@ -58,8 +74,15 @@ namespace KeithLink.Svc.Impl.Repository.Cache
             foreach(var server in servers) {
                 using(HttpClient client = new HttpClient()) {
                     try {
-                        var r = client.GetAsync(string.Format("{0}/Cache/RefreshCache?cacheGroupName={1}&cachePrefix={2}&cacheName={3}", server, cacheGroupName, cachePrefix, cacheName)).Result;
-                    } catch(Exception) { }
+                        var r = client.GetAsync(string.Format("{0}/Cache/RefreshCache?cacheGroupName={1}&cachePrefix={2}&cacheName={3}", server, cacheGroupName, cachePrefix, cacheName))
+                                      .Result;
+                        if (r.IsSuccessStatusCode != true) {
+                            _log.WriteErrorLog(string.Format("Cache endpoint {0} returned a status code {1}. Message: {3}", server, r.StatusCode, r.Content.ReadAsStringAsync()
+                                                                                                                                                   .Result.ToString()));
+                        }
+                    } catch (Exception ex) {
+                        _log.WriteErrorLog("Cache endpoint failed.", ex);
+                    }
                 }
             }
         }

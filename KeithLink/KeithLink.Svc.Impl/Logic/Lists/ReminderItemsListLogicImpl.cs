@@ -28,15 +28,39 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         #region methods
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+            ListModel list = null;
+
             ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
 
             if (header == null) {
-                return null;
+                list = null;
             } else {
                 List<ReminderItemsListDetail> items = _detailsRepo.GetRemindersDetails(header.Id);
 
-                return header.ToListModel(items);
+                list = header.ToListModel(items);
             }
+
+            return list;
+        }
+
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly) {
+            ListModel list = null;
+
+            ReminderItemsListHeader header = _headersRepo.GetReminderItemsHeader(catalogInfo);
+
+            if (header == null) {
+                list = null;
+            }
+            else {
+                if (headerOnly) {
+                    list = header.ToListModel();
+                } else {
+                    List<ReminderItemsListDetail> items = _detailsRepo.GetRemindersDetails(header.Id);
+
+                    list = header.ToListModel(items);
+                }
+            }
+            return list;
         }
 
         public ListModel SaveList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)

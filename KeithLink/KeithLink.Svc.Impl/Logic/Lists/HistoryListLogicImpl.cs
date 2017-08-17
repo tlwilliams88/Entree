@@ -33,15 +33,41 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
         #region methods
         public ListModel GetListModel(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+            ListModel list = null;
+
             HistoryListHeader header = _headerRepo.GetHistoryListHeader(catalogInfo);
 
             if (header == null) {
-                return null;
+                list = null;
             } else {
                 List<HistoryListDetail> items = _detailRepo.GetAllHistoryDetails(header.Id);
 
-                return header.ToListModel(items);
+                list = header.ToListModel(items);
             }
+            return list;
+        }
+
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+        {
+            ListModel list = null;
+
+            HistoryListHeader header = _headerRepo.GetHistoryListHeader(catalogInfo);
+
+            if (header == null)
+            {
+                list = null;
+            }
+            else
+            {
+                if (headerOnly) {
+                    list = header.ToListModel();
+                } else {
+                    List<HistoryListDetail> items = _detailRepo.GetAllHistoryDetails(header.Id);
+
+                    list = header.ToListModel(items);
+                }
+            }
+            return list;
         }
 
         public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
