@@ -139,6 +139,77 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
+        public class ReadList
+        {
+            [Fact]
+            public void BadBranchId_ReturnsNull()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                UserProfile fakeUser = new UserProfile();
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void BadCustomerId_ReturnsNull()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "223456"
+                };
+                UserProfile fakeUser = new UserProfile();
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                int expectedListId = 1;
+                UserProfile fakeUser = new UserProfile();
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.ListId
+                       .Should()
+                       .Be(expectedListId);
+            }
+        }
+
         public class SaveList {
 // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
@@ -232,6 +303,56 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
 
                 // assert - Always returns what is setup provided the mock is called
                 mockDependants.detailsRepository.Verify(x => x.SaveReminderListDetail(It.Is<ReminderItemsListDetail>(d => d.Active.Equals(true))), Times.Once(), "Error updating");
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranchHeaderOnlyFalse_ReturnsExpectedNumberOfItems()
+            {
+                // arrange
+                MockDependents mockDependants = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependants);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var expected = 1;
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranchHeaderOnlyTrue_ReturnsExpectedNumberOfItems()
+            {
+                // arrange
+                MockDependents mockDependants = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac:true,mockDependents:ref mockDependants);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var expected = 0;
+                var headerOnly = true;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
             }
         }
 

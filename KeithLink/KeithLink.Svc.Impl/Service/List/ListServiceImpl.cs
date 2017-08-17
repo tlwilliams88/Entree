@@ -200,45 +200,45 @@ namespace KeithLink.Svc.Impl.Service.List
                         returnList.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
                         break;
 
-                    case ListType.Contract:
-                        returnList.TryAdd(_contractListLogic.GetListModel(user, catalogInfo, 0));
-                        break;
+                  case ListType.Contract:
+                      returnList.TryAdd(_contractListLogic.ReadList(user, catalogInfo, headerOnly));
+                      break;
 
-                    // we get notes through GetNotesHash to avoid the full product load
-                    //case ListType.Notes: 
-                    //    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
-                    //    break;
+                  // we get notes through GetNotesHash to avoid the full product load
+                  //case ListType.Notes: 
+                  //    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
+                  //    break;
 
-                    case ListType.Worksheet:
-                        returnList.TryAdd(_historyListLogic.GetListModel(user, catalogInfo, 0));
-                        break;
+                  case ListType.Worksheet:
+                      returnList.TryAdd(_historyListLogic.ReadList(user, catalogInfo, headerOnly));
+                      break;
 
                     // no contract items added lists
                     // no contract items deleted lists
 
-                    case ListType.Reminder:
-                        returnList.TryAdd(_reminderItemsLogic.GetListModel(user, catalogInfo, 0));
-                        break;
+                  case ListType.Reminder:
+                      returnList.TryAdd(_reminderItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                      break;
+                      
+                  case ListType.Mandatory:
+                      returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                      break;
 
-                    case ListType.Mandatory:
-                        returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                        break;
+                  case ListType.RecommendedItems:
+                      returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                      break;
 
-                    case ListType.RecommendedItems:
-                        returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                        break;
+                  case ListType.InventoryValuation:
+                      returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+                      break;
 
-                    case ListType.InventoryValuation:
-                        returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
-                        break;
+                  case ListType.RecentlyOrdered:
+                      returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
+                      break;
 
-                    case ListType.RecentlyOrdered:
-                        returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
-                        break;
-
-                    case ListType.RecentlyViewed:
-                        returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
-                        break;
+                  case ListType.RecentlyViewed:
+                      returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                      break;
 
                     //case ListType.CustomInventory: //uses its own controller and works a little differently
                     //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
