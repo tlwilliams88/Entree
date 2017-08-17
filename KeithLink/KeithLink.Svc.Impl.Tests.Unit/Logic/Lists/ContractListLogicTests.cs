@@ -295,6 +295,56 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
+            public void GoodCustomerHeaderOnlyFalse_ReturnsExpectedItemCount()
+            {
+                // arrange
+                var expected = 2;
+                var fakeUser = new UserProfile();
+                var logic = MakeMockLogic();
+                var test = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var headerOnly = false;
+
+                // act
+                ListModel results = logic.ReadList(fakeUser, test, headerOnly);
+
+                // assert
+                results
+                    .Items
+                    .Count
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomerHeaderOnlyTrue_ReturnsExpectedItemCount()
+            {
+                // arrange
+                var expected = 0;
+                var fakeUser = new UserProfile();
+                var logic = MakeMockLogic();
+                var test = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var headerOnly = true;
+
+                // act
+                ListModel results = logic.ReadList(fakeUser, test, headerOnly);
+
+                // assert
+                results
+                    .Items
+                    .Count
+                    .Should()
+                    .Be(expected);
+            }
+
+            [Fact]
             public void ContractWithNoItems_ReturnsZeroLengthItemList()
             {
                 // arrange

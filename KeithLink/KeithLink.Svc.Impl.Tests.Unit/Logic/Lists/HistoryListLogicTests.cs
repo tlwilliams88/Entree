@@ -205,6 +205,54 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                        .Should()
                        .Be(expected);
             }
+
+            [Fact]
+            public void GoodCustomerIdAndBranchHeaderOnlyFalse_ReturnsExpectedNumberOfItems()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var expected = 1;
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranchHeaderOnlyTrue_ReturnsExpectedNumberOfItems()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var expected = 0;
+                var headerOnly = true;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
         }
 
         public class ItemsInHistoryList

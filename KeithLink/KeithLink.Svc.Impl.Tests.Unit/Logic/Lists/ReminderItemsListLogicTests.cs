@@ -304,6 +304,56 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // assert - Always returns what is setup provided the mock is called
                 mockDependants.detailsRepository.Verify(x => x.SaveReminderListDetail(It.Is<ReminderItemsListDetail>(d => d.Active.Equals(true))), Times.Once(), "Error updating");
             }
+
+            [Fact]
+            public void GoodCustomerIdAndBranchHeaderOnlyFalse_ReturnsExpectedNumberOfItems()
+            {
+                // arrange
+                MockDependents mockDependants = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependants);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var expected = 1;
+                var headerOnly = false;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranchHeaderOnlyTrue_ReturnsExpectedNumberOfItems()
+            {
+                // arrange
+                MockDependents mockDependants = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac:true,mockDependents:ref mockDependants);
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var fakeUser = new UserProfile();
+                var expected = 0;
+                var headerOnly = true;
+
+                // act
+                ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
         }
 
         public class Save {
