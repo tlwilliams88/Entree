@@ -280,6 +280,9 @@ angular.module('bekApp')
         authorize: 'canManageLists',
         saveLists: true
       },
+      params: {
+        noAvailableLists: false
+      },
       resolve: {
         originalList: ['$stateParams', '$filter', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
          function($stateParams, $filter, lists, ListService, DateService, Constants, LocalStorage, ENV) {
@@ -338,10 +341,14 @@ angular.module('bekApp')
              else{
               var defaultList = {type:1};
               return ListService.createList([], defaultList).then(function(resp){
+                $stateParams.noAvailableLists = true;
                 return ListService.updateListPermissions(resp);
               });
             }
           }
+          
+          $stateParams.listId = listToBeUsed.listid ? listToBeUsed.listid : listToBeUsed.listId;
+          $stateParams.listType = listToBeUsed.type ? listToBeUsed.type : listToBeUsed.listType;
 
           if(listToBeUsed.listId == 'nonbeklist'){
             return ListService.getCustomInventoryList();
