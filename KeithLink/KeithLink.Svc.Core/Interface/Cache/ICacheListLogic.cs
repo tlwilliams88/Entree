@@ -16,6 +16,10 @@ namespace KeithLink.Svc.Core.Interface.Cache
 
         void AddCachedContractInformation(UserSelectedContext catalogInfo, Dictionary<string, string> contractdictionary);
 
+        List<string> GetCachedLabels(UserSelectedContext catalogInfo);
+
+        void AddCachedLabels(UserSelectedContext catalogInfo, List<string> list);
+
         List<ListModel> GetCachedTypedLists(UserSelectedContext catalogInfo, ListType type);
 
         void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, List<ListModel> lists);
@@ -28,6 +32,6 @@ namespace KeithLink.Svc.Core.Interface.Cache
 
         void AddCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id, ListModel list);
 
-        void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo);
+        void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists);
     }
 }

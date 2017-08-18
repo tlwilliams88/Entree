@@ -66,11 +66,20 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                                                            Id);
         }
 
+        private const string CACHEKEY_PREFIX_LABELS = "Labels";
+        private string GetCacheKeyLabels(UserSelectedContext catalogInfo)
+        {
+            return string.Format("{0}_{1}_{2}",
+                                 CACHEKEY_PREFIX_LABELS,
+                                 catalogInfo.BranchId,
+                                 catalogInfo.CustomerId);
+        }
 
         private const int CACHETIME_HOURS_CONTRACTDICT = 2;
         private const int CACHETIME_HOURS_TYPELISTOFLISTS = 2;
         private const int CACHETIME_HOURS_LISTOFLISTS = 2;
         private const int CACHETIME_HOURS_LIST = 2;
+        private const int CACHETIME_HOURS_LABELS = 2;
         #endregion
 
         #region ctor
@@ -96,6 +105,24 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                                        GetCacheKeyContractDictionary(catalogInfo),
                                                        TimeSpan.FromHours(CACHETIME_HOURS_CONTRACTDICT),
                                                        contractdictionary);
+        }
+
+        public List<string> GetCachedLabels(UserSelectedContext catalogInfo)
+        {
+            return _cache.GetItem<List<string>>(CACHE_LIST_GROUPNAME,
+                                                CACHE_LIST_PREFIX,
+                                                CACHE_LIST_NAME,
+                                                GetCacheKeyLabels(catalogInfo));
+        }
+
+        public void AddCachedLabels(UserSelectedContext catalogInfo, List<string> list)
+        {
+            _cache.AddItem<List<string>>(CACHE_LIST_GROUPNAME,
+                                         CACHE_LIST_PREFIX,
+                                         CACHE_LIST_NAME,
+                                         GetCacheKeyLabels(catalogInfo),
+                                         TimeSpan.FromHours(CACHETIME_HOURS_LABELS),
+                                         list);
         }
 
         public List<ListModel> GetCachedTypedLists(UserSelectedContext catalogInfo, ListType type) {
@@ -149,11 +176,51 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                       list);
         }
 
-        public void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo)
+        public void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists)
         {
-            _cache.ResetAllItems(CACHE_LIST_GROUPNAME,
-                                 CACHE_LIST_PREFIX,
-                                 CACHE_LIST_NAME);
+            //_cache.ResetAllItems(CACHE_LIST_GROUPNAME,
+            //                     CACHE_LIST_PREFIX,
+            //                     CACHE_LIST_NAME);
+
+            foreach (var list in lists) {
+                // typed lists
+                _cache.RemoveItem(CACHE_LIST_GROUPNAME,
+                                  CACHE_LIST_PREFIX,
+                                  CACHE_LIST_NAME,
+                                  string.Format("{0}_{1}_{2}_{3}",
+                                                CACHEKEY_PREFIX_TYPELISTOFLISTS,
+                                                list.BranchId,
+                                                list.CustomerNumber,
+                                                list.Type));
+
+                // specific list
+                _cache.RemoveItem(CACHE_LIST_GROUPNAME,
+                                  CACHE_LIST_PREFIX,
+                                  CACHE_LIST_NAME,
+                                  string.Format("{0}_{1}_{2}_{3}_{4}",
+                                                CACHEKEY_PREFIX_LIST,
+                                                list.BranchId,
+                                                list.CustomerNumber,
+                                                list.Type,
+                                                list.ListId));
+            }
+            // customer lists
+            _cache.RemoveItem(CACHE_LIST_GROUPNAME,
+                              CACHE_LIST_PREFIX,
+                              CACHE_LIST_NAME,
+                              string.Format("{0}_{1}_{2}",
+                                            CACHEKEY_PREFIX_LISTOFLISTS,
+                                            lists[0].BranchId,
+                                            lists[0].CustomerNumber));
+
+            // customer labels
+            _cache.RemoveItem(CACHE_LIST_GROUPNAME,
+                              CACHE_LIST_PREFIX,
+                              CACHE_LIST_NAME,
+                              string.Format("{0}_{1}_{2}",
+                                            CACHEKEY_PREFIX_LABELS,
+                                            lists[0].BranchId,
+                                            lists[0].CustomerNumber));
         }
         #endregion
     }
