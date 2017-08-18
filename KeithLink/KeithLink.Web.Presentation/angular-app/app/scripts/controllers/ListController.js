@@ -18,8 +18,8 @@ angular.module('bekApp')
       $scope.selectedList = originalList;
       blockUI.stop();
     }
-    if ($stateParams.listId !== originalList.listid.toString()) {
-      $state.go('menu.lists.items', {listId: originalList.listid, listType: originalList.type, renameList: null}, {location:'replace', inherit:false, notify: false});
+    if ($stateParams.listId != originalList.listid.toString() && $stateParams.noAvailableLists != true) {
+      $state.go('menu.lists.items', {listId: originalList.listid, listType: originalList.type}, {location:'replace', inherit:false, notify: false});
     }
 
     var orderBy = $filter('orderBy');
@@ -381,7 +381,7 @@ angular.module('bekApp')
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listType: listtype, listId: listid, renameList: false});
+          return $state.go('menu.lists.items', {listType: listtype, listId: listid});
         });
       }
     };

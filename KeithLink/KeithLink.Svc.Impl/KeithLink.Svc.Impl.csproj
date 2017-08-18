@@ -292,6 +292,7 @@
     <Compile Include="Helpers\EntreeStopWatchHelper.cs" />
     <Compile Include="Helpers\UserContextEqualityComparer.cs" />
     <Compile Include="Logic\ApplicationHealth\ApplicationHealthLogicImpl.cs" />
+    <Compile Include="Logic\Cache\CacheListLogicImpl.cs" />
     <Compile Include="Logic\CatalogCampaignLogicImpl.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />

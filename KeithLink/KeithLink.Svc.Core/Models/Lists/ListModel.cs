@@ -54,7 +54,8 @@ namespace KeithLink.Svc.Core.Models.Lists {
                     clonedList.Items.Add(new ListItemModel()
                     {
                         ItemNumber = item.ItemNumber,
-                        Each = item.Each
+                        Each = item.Each,
+                        CatalogId = item.CatalogId
                     });
                 }
 
