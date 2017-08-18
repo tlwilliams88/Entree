@@ -80,6 +80,7 @@
     <Compile Include="BaseDITests.cs" />
     <Compile Include="Extensions\ListModelExtensionsTests.cs" />
     <Compile Include="Logic\Cache\CacheListLogicTests.cs" />
+    <Compile Include="Logic\Configuration\ExportSettingLogicTests.cs" />
     <Compile Include="Logic\Lists\ContractListChangesLogicTests.cs" />
     <Compile Include="Logic\Lists\ContractListLogicTests.cs" />
     <Compile Include="Logic\Lists\CustomListLogicTests.cs" />
@@ -102,7 +103,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Logic\ApplicationHealth\" />
-    <Folder Include="Logic\Configuration\" />
     <Folder Include="Logic\ContentManagement\" />
     <Folder Include="Logic\ETL\" />
     <Folder Include="Logic\Export\" />
