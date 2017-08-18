@@ -102,6 +102,8 @@ using KeithLink.Svc.Core.Interface.Import;
 using KeithLink.Svc.Impl.Logic.ApplicationHealth;
 using KeithLink.Svc.Impl.Repository.Templates;
 using KeithLink.Svc.Core.Interface.Templates;
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Impl.Logic.Cache;
 using KeithLink.Svc.Impl.Service.Invoices;
 using KeithLink.Svc.Impl.Service.SiteCatalog;
 using KeithLink.Svc.Impl.Service.List;
@@ -363,10 +365,12 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 #endif
 
 
-            // Services
+            // Services8
 
             // Shopping Cart
             builder.RegisterType<ShoppingCartServiceImpl>().As<IShoppingCartService>();
+
+            builder.RegisterType<CacheListLogicImpl>().As<ICacheListLogic>();
 
             AddDatabaseDependencies(builder, type);
         }
