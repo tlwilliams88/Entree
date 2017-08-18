@@ -70,6 +70,12 @@
               <exactMethodMatcher methodName="ClearCustomersListCaches"/>
           </match>
       </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/ClearCustomersLabelsCache">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="ClearCustomersLabelsCache"/>
+          </match>
+      </tracerFactory>
 
       <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/GetTypeSpecificExportOptions">
       <match assemblyName="KeithLink.Svc.Impl"

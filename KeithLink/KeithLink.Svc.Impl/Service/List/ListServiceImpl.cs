@@ -615,6 +615,14 @@ namespace KeithLink.Svc.Impl.Service.List
                     BranchId = customer.CustomerBranch,
                     CustomerId = customer.CustomerNumber
                 }, list));
+
+                if (CACHELISTS)
+                {
+                    _cacheHelper.ClearCustomersLabelsCache(new UserSelectedContext() {
+                                                                                         CustomerId = customer.CustomerNumber,
+                                                                                         BranchId = customer.CustomerBranch
+                                                                                     });
+                }
             }
 
             return results;

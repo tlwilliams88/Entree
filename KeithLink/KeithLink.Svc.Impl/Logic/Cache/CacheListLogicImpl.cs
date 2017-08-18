@@ -178,10 +178,6 @@ namespace KeithLink.Svc.Impl.Logic.Cache
 
         public void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists)
         {
-            //_cache.ResetAllItems(CACHE_LIST_GROUPNAME,
-            //                     CACHE_LIST_PREFIX,
-            //                     CACHE_LIST_NAME);
-
             foreach (var list in lists) {
                 // typed lists
                 _cache.RemoveItem(CACHE_LIST_GROUPNAME,
@@ -212,16 +208,20 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                             CACHEKEY_PREFIX_LISTOFLISTS,
                                             lists[0].BranchId,
                                             lists[0].CustomerNumber));
+        }
 
+        public void ClearCustomersLabelsCache(UserSelectedContext catalogInfo)
+        {
             // customer labels
             _cache.RemoveItem(CACHE_LIST_GROUPNAME,
                               CACHE_LIST_PREFIX,
                               CACHE_LIST_NAME,
                               string.Format("{0}_{1}_{2}",
                                             CACHEKEY_PREFIX_LABELS,
-                                            lists[0].BranchId,
-                                            lists[0].CustomerNumber));
+                                            catalogInfo.BranchId,
+                                            catalogInfo.CustomerId));
         }
+
         #endregion
     }
 }

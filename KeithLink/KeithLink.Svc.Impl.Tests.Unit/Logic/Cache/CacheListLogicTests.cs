@@ -327,7 +327,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         public class ClearCustomersListCaches
         {
             [Fact]
-            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem6Times()
+            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem5Times()
             {
                 // arrange
                 var mockDependents = new MockDependents();
@@ -360,7 +360,35 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>(),
-                                                                        It.IsAny<string>()), Times.Exactly(6), "not called");
+                                                                        It.IsAny<string>()), Times.Exactly(5), "not called");
+            }
+
+        }
+        #endregion
+
+        #region ClearCustomersLabelsCache
+        public class ClearCustomersLabelsCache
+        {
+            [Fact]
+            public void AnyCall_CallsCacheRepositoryRemoveTimes()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
+                var testContext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+
+                // act
+                testunit.ClearCustomersLabelsCache(testContext);
+
+                // assert
+                mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>()), Times.Once, "not called");
             }
 
         }
