@@ -110,7 +110,7 @@
       ng-if="selectedFilterView.name !== 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser && userCanPayInvoice"
       ng-disabled="getSelectedInvoices() <= 0 || errorMessage.length || validating"
       ng-click="payInvoices()"
-      class="btn-lg btn btn-primary pull-right-sm "
+      class="btn-lg btn btn-primary pull-right-sm hidden-xs hidden-sm"
       analytics-on
       analytics-category="Invoices"
       analytics-event="Pay Invoice">
@@ -179,15 +179,15 @@
               <input type="checkbox" id="invoiceHasCreditMemos" ng-click="filterInvoices('hascreditmemos', toggleCreditMemos)" ng-model="toggleCreditMemos" ng-disabled="hasCreditMemosDisabled"> Invoices with Credit Memos
             </span>
             <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="pull-left selectallinvoices credit-memo-toggle hidden-print">
-              <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="selectAll('selectAllInvoices')"> Select All Invoices
+              <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="selectAll('selectAllInvoices', null, $event)"> Select All Invoices
             </span>
             <div>
-              <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-right-xs pull-left-xxs">Total: {{totalPaymentAmount() | currency}}</span>
+              <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-right-xs pull-left-xxs">Total to Pay: {{totalPaymentAmount() | currency}}</span>
             </div>
           </div>
           <div ng-if="totalInvoices > 0" class="pull-right">
             <span class="btn-group pull-right-lg pull-right-md pull-right-sm pull-left-xs xs-right-5" ng-if="totalInvoices > 0 && !isInternalUser">
-              <button class="btn btn-default hidden-print" ng-click="expandcollapseAll(collapsed = !collapsed)">Expand/Collapse All</button>
+              <button class="btn btn-default hidden-print" ng-click="expandCollapseAll('expandCollapse')">Expand/Collapse All</button>
             </span>
             <div class="input-group hidden-print">
               <div class="input-group-btn">
@@ -215,8 +215,8 @@
                 <div class="white-space: normal;">
                   <span style="padding-left:10px;"> {{customer.customerNumber}} - {{customer.customerName}} ({{customer.invoices.totalinvoices}})</span>
                   <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.address.street}} {{customer.address.city}}<span ng-if="customer.address.regioncode">,</span> {{customer.address.regioncode}} {{customer.address.postalcode}}</span>
-                  <span class="pull-right"><span ng-if="userCanPayInvoice && !isInternalAccountAdminUser && customer.haspayableinvoices">Customer Total: {{customer.total | currency}}</span>
-                    <i class="margin-left-10" ng-class="{'icon-arrow-up6': customer.isOpen, 'icon-arrow-down7': !customer.isOpen}"></i>
+                  <i class="margin-left-10 pull-right" ng-class="{'icon-arrow-up6': customer.isOpen, 'icon-arrow-down7': !customer.isOpen}"></i>
+                  <span class="pull-right"><span ng-if="userCanPayInvoice && !isInternalAccountAdminUser && customer.haspayableinvoices"><span class="hidden-xs">Balance: {{customer.totaldue | currency}} <span style="margin-right: 10px; margin-left: 10px;">|</span></span>Total<span class="hidden-xs"> to Pay:</span> {{customer.total | currency}}</span>
                   </span>
                 </div>
               </accordion-heading>

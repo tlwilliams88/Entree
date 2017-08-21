@@ -19,6 +19,7 @@ angular.module('bekApp')
   $scope.sortParametervalue = 'invoicedate';
   $scope.sortDirection = 'Asc';
   $scope.userCanPayInvoice = canPayInvoices;
+  $scope.collapsed = false;
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -683,10 +684,10 @@ angular.module('bekApp')
       $scope.errorMessage = '';
     }
     if(fromLocation === 'selectAllInvoices'){
-      $scope.collapsed = !$scope.collapsed;
-      $scope.expandcollapseAll($scope.collapsed);
+      $scope.collapsed = $event.currentTarget.checked;
+      $scope.expandCollapseAll('selectAll', $scope.collapsed);
       angular.forEach($scope.invoices, function (customer, index) {
-        customer.selected = !customer.selected;
+        customer.selected = $scope.collapsed;
         angular.forEach(customer.invoices.results, function(invoice, index){
           if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
             invoice.isSelected = customer.selected;
@@ -731,9 +732,10 @@ angular.module('bekApp')
     return total;
   };
 
-  $scope.expandcollapseAll = function(state){
+  $scope.expandCollapseAll = function(from, state){
+    $scope.collapsed = from == 'expandCollapse' ? !$scope.collapsed : state;
     for (var i=0; i<$scope.invoices.length; i++) {
-      $scope.invoices[i].isOpen=state;
+      $scope.invoices[i].isOpen = $scope.collapsed;
     }
   };
 
