@@ -54,57 +54,6 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private const bool CACHELISTS = true;
 
-        private const string CACHE_CONTRACT_GROUPNAME = "ContractInformation";
-        private const string CACHE_CONTRACT_NAME = "ContractInformation";
-        private const string CACHE_CONTRACT_PREFIX = "Default";
-
-        private const string CACHE_LIST_GROUPNAME = "ContractInformation";
-        private const string CACHE_LIST_NAME = "ContractInformation";
-        private const string CACHE_LIST_PREFIX = "Default";
-
-        private const string CACHEKEY_PREFIX_CONTRACTDICT = "ContractDictionary";
-        private string GetCacheKeyContractDictionary(UserSelectedContext catalogInfo) {
-            return string.Format("{0}_{1}_{2}",
-                                 CACHEKEY_PREFIX_CONTRACTDICT,
-                                 catalogInfo.BranchId,
-                                 catalogInfo.CustomerId);
-        }
-
-        private const string CACHEKEY_PREFIX_TYPELISTOFLISTS = "Lists";
-        private string GetCacheKeyTypedLists(UserSelectedContext catalogInfo, ListType type)
-        {
-            return string.Format("{0}_{1}_{2}_{3}",
-                                 CACHEKEY_PREFIX_TYPELISTOFLISTS,
-                                 catalogInfo.BranchId,
-                                 catalogInfo.CustomerId,
-                                 type);
-        }
-
-        private const string CACHEKEY_PREFIX_LISTOFLISTS = "Lists";
-        private string GetCacheKeyUserLists(UserSelectedContext catalogInfo)
-        {
-            return string.Format("{0}_{1}_{2}",
-                                 CACHEKEY_PREFIX_LISTOFLISTS,
-                                 catalogInfo.BranchId,
-                                 catalogInfo.CustomerId);
-        }
-
-        private const string CACHEKEY_PREFIX_LIST = "List";
-        private string GetCacheKeySpecificLists(UserSelectedContext catalogInfo, ListType type, long Id)
-        {
-            return string.Format("{0}_{1}_{2}_{3}_{4}",
-                                                                           CACHEKEY_PREFIX_LIST,
-                                                                           catalogInfo.BranchId,
-                                                                           catalogInfo.CustomerId,
-                                                                           type,
-                                                                           Id);
-        }
-
-
-        private const int CACHETIME_HOURS_CONTRACTDICT = 2;
-        private const int CACHETIME_HOURS_TYPELISTOFLISTS = 2;
-        private const int CACHETIME_HOURS_LISTOFLISTS = 2;
-        private const int CACHETIME_HOURS_LIST = 2;
         #endregion
 
         #region ctor
