@@ -73,7 +73,7 @@
             ng-click="logout()">
             <li>Sign Out</li>
           </button>
-          </div>
+        </div>
 
         <div ng-click="isSidebarOpen = false">
           <button
@@ -111,8 +111,8 @@
               Product Catalog
             </li>
           </button> -->
-          </div>
-          <div>
+        </div>
+        <div>
           <li
               ng-if="selectedUserContext.customer.canViewUNFI"
               ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == 'UNFI' || $state.params.catalogType == 'E&S')}"
@@ -144,8 +144,17 @@
                 </button> -->
             </ul>
           </li>
-          </div>
-          <div ng-click="isSidebarOpen = false">
+        </div>
+        <div ng-click="isSidebarOpen = false">
+          <li class="btn-no-style"
+            analytics-on
+            analytics-category="External Applications"
+            analytics-event="Menumax"
+            ng-click="openExternalLink('https://www.menumax.com/')"
+            target="_blank" >
+            <span class="icon-spoon-knife sidebar-nav__icon"></span>
+            Menumax
+          </li>
           <a
             analytics-on
             analytics-category="External Applications"
