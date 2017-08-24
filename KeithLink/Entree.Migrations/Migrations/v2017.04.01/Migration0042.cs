@@ -7,10 +7,10 @@ using BEK.FluentMigratorBase;
 using FluentMigrator;
 
 namespace Entree.Migrations {
-    [Migration(41, "Modify how contract change notifications work to simplify.")]
-    public class Migration0041 : BaseMigration {
-        public Migration0041() {
-            //MigrationNumber = "0041";
+    [Migration(42, "Fixed notes migration")]
+    public class Migration0042 : BaseMigration {
+        public Migration0042() {
+            MigrationNumber = "0042";
         }
     }
 }
