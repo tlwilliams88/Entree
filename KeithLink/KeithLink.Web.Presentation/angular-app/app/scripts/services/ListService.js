@@ -130,7 +130,7 @@ angular.module('bekApp')
         }
 
         // overwrite read only lists
-        if (list.read_only) {
+        if (list.read_only && Service.isInternalUser == false) {
           permissions.canEditList = false;
           permissions.canReorderItems = false;
           permissions.canDeleteList = false;
