@@ -154,10 +154,11 @@ angular.module('bekApp')
 
       $scope.addRow = function(item, useListItemId) {
         var nextLineNumber = $scope.report.items.length + 1,
-            reportItem = {
-              itemnumber: item.itemnumber,
+              reportItem = {
               position: nextLineNumber,
+              itemnumber: item.itemnumber,
               name: item.name,
+              catalog_id: item.catalog_id,
               packsize: item.packsize,
               pack: item.pack,
               label: item.label,
