@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BEK.FluentMigratorBase, Version=2017.1.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BEK.FluentMigrator.2017.1.2\lib\net452\BEK.FluentMigratorBase.dll</HintPath>
+    <Reference Include="BEK.FluentMigratorBase, Version=2017.1.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BEK.FluentMigrator.2017.1.3\lib\net452\BEK.FluentMigratorBase.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="FluentMigrator, Version=1.6.2.0, Culture=neutral, PublicKeyToken=aacfc7de5acabf05, processorArchitecture=MSIL">
@@ -114,8 +114,8 @@
     <Compile Include="Migrations\v2017.04.00\Migration0034.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
-    <Compile Include="Migrations\v2017.04.04\Migration0042.cs" />
-    <Compile Include="Migrations\v2017.04.01\Migration0041.cs" />
+    <Compile Include="Migrations\v2017.04.01\Migration0042.cs" />
+    <Compile Include="Migrations\v2017.04.04\Migration0043.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1006,10 +1006,10 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0030_2017-04-00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0042_2017-04-04_down.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0043_2017-04-04_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0042_2017-04-04_up.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0043_2017-04-04_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadInventoryValuationListDetailsByHeaderId\ReadInventoryValuationListDetailsByHeaderId_0030_2017-04-00_up.sql">
@@ -1099,10 +1099,10 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveFavoriteDetails\SaveFavoriteDetails_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\SaveInventoryValuationItem\SaveInventoryValuationItem_0042_2017.04.04_up .sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveInventoryValuationItem\SaveInventoryValuationItem_0043_2017.04.04_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\SaveInventoryValuationItem\SaveInventoryValuationItem_0042_2017.04.04_down.sql">
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveInventoryValuationItem\SaveInventoryValuationItem_0043_2017.04.04_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveNotesHeaders_0038_2017.04.00_down.sql">
@@ -1372,13 +1372,13 @@
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\Indexes\idx_ParentInventoryValudationHeaderId_Active_0033_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0042_2017.04.04_down.sql">
+    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0043_2017.04.04_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0042_2017.04.04_up.sql">
+    <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0043_2017.04.04_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListDetails\InventoryValuationListDetails_0030_2017.04.00_up.sql">
@@ -1517,6 +1517,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\NotesHeaders_0024_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Tables\NotesHeader\PostDeployment\MigrateNotesList_0042_2017-04-01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\NotesHeader\PostDeployment\MigrateNotesList_0024_2017-04-00_up.sql">
