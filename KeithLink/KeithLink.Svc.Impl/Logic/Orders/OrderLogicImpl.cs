@@ -1,4 +1,14 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml;
+
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Interfaces.Logging;
 
@@ -8,9 +18,7 @@ using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Extensions.Orders;
-using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
-
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
@@ -18,7 +26,6 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
-
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
@@ -29,20 +36,9 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
-
 using KeithLink.Svc.Impl.com.benekeith.FoundationService;
 
 using CommerceServer.Core;
-
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Data;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -58,8 +54,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private readonly IOrderQueueLogic _orderQueueLogic;
         private readonly IPriceLogic _priceLogic;
         private readonly IPurchaseOrderRepository _poRepo;
-        private readonly IUnitOfWork _uow;
-        private readonly IUserActiveCartRepository _userActiveCartRepository;
         private readonly IShipDateRepository _shipRepo;
         private readonly IOrderedFromListRepository _order2ListRepo;
         #endregion
@@ -67,8 +61,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #region ctor
         public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, ICacheRepository cache,
                               IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, IShipDateRepository shipRepo,
-                              ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, 
-                              IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository,
+                              ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, 
+                              IKPayInvoiceRepository kpayInvoiceRepository,
                               IOrderedFromListRepository order2ListRepo) {
             _cache = cache;
 			_catalogLogic = catalogLogic;
@@ -82,8 +76,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _priceLogic = priceLogic;
             _shipRepo = shipRepo;
 			_poRepo = purchaseOrderRepository;
-            _uow = unitOfWork;
-            _userActiveCartRepository = userActiveCartRepository;
         }
         #endregion
 
@@ -578,6 +570,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     item.IsValid = true;
                     item.Name = prod.Name;
                     item.Description = prod.Description;
+                    item.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                    prod.Name,
+                                                    prod.ItemNumber,
+                                                    prod.BrandExtendedDescription,
+                                                    prod.ItemClass,
+                                                    prod.PackSize);
                     item.Pack = prod.Pack;
                     item.Size = prod.Size;
                     item.Brand = prod.Brand;

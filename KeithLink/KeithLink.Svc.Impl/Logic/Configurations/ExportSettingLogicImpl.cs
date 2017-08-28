@@ -70,7 +70,8 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     return options;
                 case ExportType.ItemUsage:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Order = 2, Label = "Name" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Detail", Order = 20, Label = "Detailed Description" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Class", Order = 21, Label = "Category" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Brand", Order = 22, Label = "Brand" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Order = 23, Label = "Mfr Name" });
@@ -104,13 +105,14 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
 
             //Common product detail fields
             options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Label = "Item" });
-            options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Label = "Each" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Label = "Name" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Detail", Label = "Detailed Description" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Favorite", Label = "Favorite" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Description", Label = "Description" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Label = "Brand" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Pack", Label = "Pack" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Size", Label = "Size" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Label = "Each" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "PackagePrice", Label = "Pack Price" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Category", Label = "Contract Category" });

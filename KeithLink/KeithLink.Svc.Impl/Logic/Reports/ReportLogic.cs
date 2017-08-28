@@ -69,7 +69,6 @@ namespace KeithLink.Svc.Impl.Logic.Reports {
 
             LookupProductInfo(orderLines, usageQuery.UserSelectedContext.BranchId);
 
-
             var reportItems = orderLines.GroupBy(x => new { x.ItemNumber, x.Each }).Select(g => new ItemUsageReportItemModel()
             {
                 ItemNumber = g.Key.ItemNumber,
@@ -93,6 +92,14 @@ namespace KeithLink.Svc.Impl.Logic.Reports {
             {
                 item.Pack = item.PackSize.Substring(0, item.PackSize.IndexOf('/'));
                 item.Size = item.PackSize.Substring(item.PackSize.IndexOf('/') + 1);
+                if (item.Name != null) {
+                    item.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                item.Name,
+                                                item.ItemNumber,
+                                                item.Brand,
+                                                item.Class,
+                                                item.PackSize);
+                }
             }
 
             var sortInfo = new SortInfo() { Field = "ItemNumber" };

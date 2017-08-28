@@ -95,9 +95,13 @@
     <Compile Include="Logic\Lists\RecentlyViewedListLogicTests.cs" />
     <Compile Include="Logic\Lists\RecommendedItemsListLogicTests.cs" />
     <Compile Include="Logic\Lists\ReminderItemsListLogicTests.cs" />
+    <Compile Include="Logic\OnlinePayments\OnlinePaymentLogicTests.cs" />
+    <Compile Include="Logic\Orders\OrderLogicTests.cs" />
+    <Compile Include="Logic\Reports\ReportLogicTests.cs" />
     <Compile Include="Logic\ShoppingCartLogicTests.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogListLogicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\SiteCatelog\ElasticSearchCatalogRepositoryTests.cs" />
     <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
     <Compile Include="Service\List\ListServiceTests.cs" />
   </ItemGroup>
@@ -108,11 +112,8 @@
     <Folder Include="Logic\Export\" />
     <Folder Include="Logic\Invoices\" />
     <Folder Include="Logic\Messaging\" />
-    <Folder Include="Logic\OnlinePayments\" />
-    <Folder Include="Logic\Orders\" />
     <Folder Include="Logic\PowerMenu\" />
     <Folder Include="Logic\Profile\" />
-    <Folder Include="Logic\Reports\" />
     <Folder Include="Logic\SingleSignOn\" />
   </ItemGroup>
   <ItemGroup>

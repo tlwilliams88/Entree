@@ -68,6 +68,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "packageaverage")]
         public int PackageAverage { get; set; }
 
+        [DataMember(Name = "detail")]
+        public string Detail { get; set; }
+
         [DataMember(Name = "cube")]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string CaseCube { get; set; }

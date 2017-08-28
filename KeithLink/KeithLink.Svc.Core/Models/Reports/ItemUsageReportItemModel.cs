@@ -23,6 +23,10 @@ namespace KeithLink.Svc.Core.Models.Reports
 		[Description("Item")]
         public new string ItemNumber { get; set; }
 
+        [DataMember(Name = "detail")]
+        [Description("Detail")]
+        public new string Detail { get; set; }
+
         [DataMember(Name = "name")]
 		[Description("Name")]
         public new string Name { get; set; }

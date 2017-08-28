@@ -29,7 +29,10 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
         [DataMember(Name = "name")]
 		public new string Name { get; set; }
 
-		[DataMember(Name ="notes")]
+        [DataMember(Name = "detail")]
+        public new string Detail { get; set; }
+
+        [DataMember(Name ="notes")]
 		public new string Notes { get; set; }
 
         [DataMember( Name = "label" )]

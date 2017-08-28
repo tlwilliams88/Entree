@@ -25,6 +25,7 @@ using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Impl.Helpers;
 
 using Newtonsoft.Json;
 
@@ -216,6 +217,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
                 var cart = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                ContractInformationHelper.GetContractCategoriesFromLists(this.SelectedUserContext, cart.Items, _listService);
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.CartDetail, Core.Enumerations.List.ListType.Custom,
                                                         exportRequest.Fields, exportRequest.SelectedType);

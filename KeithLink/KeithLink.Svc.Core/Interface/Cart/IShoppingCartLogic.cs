@@ -41,5 +41,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 
 		QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items);
 
+	    void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null);
+
 	}
 }

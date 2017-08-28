@@ -27,6 +27,9 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "listitemid")]
         public long ListItemId { get; set; }
 
+        [DataMember(Name = "detail")]
+        public string Detail { get; set; }
+
         [DataMember(Name = "each")]
         public bool? Each { get; set; }
 

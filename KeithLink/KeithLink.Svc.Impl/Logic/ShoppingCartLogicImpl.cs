@@ -1,13 +1,24 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿// Core
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using System.Reflection;
+
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
 
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
 
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.Orders;
-using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
@@ -25,26 +36,13 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
-using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.Impl.Helpers;
 
-// Core
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using KeithLink.Svc.Core;
-using System.IO;
-using Microsoft.Reporting.WinForms;
-using System.Reflection;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -231,7 +229,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(basket.UserId.ToGuid(), cartId, itemId);
 		}
         
-		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null)
+		public void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null)
 		{
 			if (cart.Items == null)
 				return;
@@ -273,6 +271,12 @@ namespace KeithLink.Svc.Impl.Logic
 				{
                     item.IsValid = true;
 					item.Name = prod.Name;
+                    item.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                    prod.Name,
+                                                    prod.ItemNumber,
+                                                    prod.BrandExtendedDescription,
+                                                    prod.ItemClass,
+                                                    prod.PackSize);
                     item.Pack = prod.Pack;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional == null ? "" : prod.Nutritional.StorageTemp;

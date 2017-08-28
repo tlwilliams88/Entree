@@ -14,6 +14,9 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
 
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Impl.Helpers;
+
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
@@ -23,7 +26,8 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ReportController : BaseController {
         #region attributes
         private readonly IReportLogic _reportLogic;
-		private readonly IExportSettingLogic _exportLogic;
+        private readonly IListService _listService;
+        private readonly IExportSettingLogic _exportLogic;
 		private readonly IInventoryValuationReportLogic _inventoryValuationReportLogic;
         private readonly IEventLogRepository _log;
 
@@ -39,11 +43,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="inventoryValuationReportLogic"></param>
         /// <param name="logRepo"></param>
         public ReportController(IReportLogic reportLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
-                                IInventoryValuationReportLogic inventoryValuationReportLogic, IEventLogRepository logRepo) 
+                                IInventoryValuationReportLogic inventoryValuationReportLogic, IListService listService, IEventLogRepository logRepo) 
             : base(profileLogic) {
 			_exportLogic = exportSettingsLogic;
 			_inventoryValuationReportLogic = inventoryValuationReportLogic;
             _reportLogic = reportLogic;
+            _listService = listService;
             _log = logRepo;
         }
         #endregion
@@ -99,6 +104,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 {
                     usageQuery.UserSelectedContext = this.SelectedUserContext;
                     var ret = _reportLogic.GetItemUsage(usageQuery);
+                    ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, ret, _listService);
 
                     if (exportRequest.Fields != null)
                         _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.ItemUsage, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);

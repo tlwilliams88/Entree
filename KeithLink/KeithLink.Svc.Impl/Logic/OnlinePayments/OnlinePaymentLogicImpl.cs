@@ -1,18 +1,18 @@
-﻿using KeithLink.Common.Core.Enumerations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Interfaces.Logging;
 
 using KeithLink.Svc.Core;
-
 using KeithLink.Svc.Core.Enumerations;
-
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.OnlinePayments;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
-using KeithLink.Svc.Core.Extensions.Orders.History;
-
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
@@ -20,9 +20,7 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Profile;
-
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
@@ -32,19 +30,11 @@ using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-
-using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.Helpers;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Customers;
 using KeithLink.Svc.Core.Interface.Cache;
+
 using Newtonsoft.Json;
-using System.Transactions;
 
 namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 {
@@ -95,7 +85,17 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         public InvoiceItemModel AssignContractCategory
             (Dictionary<string, string> contractdictionary, InvoiceItemModel item) {
             string itmcategory = null;
-            if(contractdictionary != null && contractdictionary.Count>0 && contractdictionary.ContainsKey(item.ItemNumber)) item.Category = contractdictionary[item.ItemNumber];
+            if (contractdictionary != null &&
+                contractdictionary.Count > 0 &&
+                contractdictionary.ContainsKey(item.ItemNumber)) {
+                item.Category = contractdictionary[item.ItemNumber];
+                item.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                            item.Name,
+                                            item.ItemNumber,
+                                            item.BrandExtendedDescription,
+                                            contractdictionary[item.ItemNumber],
+                                            item.PackSize);
+            }
             return item;
         }
 

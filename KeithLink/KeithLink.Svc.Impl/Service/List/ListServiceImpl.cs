@@ -820,6 +820,12 @@ namespace KeithLink.Svc.Impl.Service.List
                     if (prod != null) {
                         listItem.IsValid = true;
                         listItem.Name = prod.Name;
+                        listItem.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                        prod.Name,
+                                                        prod.ItemNumber,
+                                                        prod.BrandExtendedDescription,
+                                                        prod.ItemClass,
+                                                        prod.PackSize);
                         listItem.Pack = prod.Pack;
                         listItem.Size = prod.Size;
                         listItem.PackSize = $"{prod.Pack} / {prod.Size}";
@@ -873,7 +879,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                                            .Select(p => p.AverageUse)
                                                            .FirstOrDefault()
                         };
-                        listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
+                        AddContractInformationIfInContract(_contractdictionary, listItem);
                     }
                 }
             });
@@ -1018,24 +1024,22 @@ namespace KeithLink.Svc.Impl.Service.List
             return notesHash;
         }
 
-        private string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
+        private void AddContractInformationIfInContract
+            (Dictionary<string, string> contractdictionary, ListItemModel item)
         {
-            return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
-        }
-
-        private string AddContractInformationIfInContract
-            (Dictionary<string, string> contractdictionary, string itemNumber)
-        {
-            string itmcategory = null;
             if (contractdictionary != null && contractdictionary.Count > 0)
             {
-                if (contractdictionary.ContainsKey(itemNumber))
+                if (contractdictionary.ContainsKey(item.ItemNumber))
                 {
-                    itmcategory = contractdictionary[itemNumber];
+                    item.Category = contractdictionary[item.ItemNumber];
+                    item.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                item.Name,
+                                                item.ItemNumber,
+                                                item.BrandExtendedDescription,
+                                                contractdictionary[item.ItemNumber],
+                                                item.PackSize);
                 }
             }
-
-            return itmcategory;
         }
 
 
