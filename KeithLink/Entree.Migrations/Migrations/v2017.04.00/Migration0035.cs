@@ -1,4 +1,5 @@
 ﻿using Entree.Migrations.Core;
+using BEK.FluentMigratorBase; 
 using FluentMigrator;
 
 

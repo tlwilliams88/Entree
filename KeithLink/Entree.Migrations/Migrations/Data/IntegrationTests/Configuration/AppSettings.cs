@@ -1,4 +1,5 @@
 ﻿using System;
+using BEK.FluentMigratorBase; 
 using FluentMigrator;
 
 namespace Entree.Migrations.Migrations.Data.IntegrationTests.Configuration {
