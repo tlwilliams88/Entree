@@ -215,6 +215,14 @@ angular.module('bekApp')
 
       $scope.addItemsFromList = function(list) {
         $scope.successMessage = '';
+        var params = {includePrice: true, sort: []};
+        
+        if(list.read_only || list.isrecommended || list.ismandatory){
+          ListService.getParamsObject(params, 'lists').then(function(storedParams){
+            $stateParams.sortingParams = storedParams;
+            params = storedParams;
+          });
+        }
 
         if(list == 'Custom Inventory'){
           ListService.getCustomInventoryList().then(function(list){
@@ -231,8 +239,9 @@ angular.module('bekApp')
             var report = {
                 listId: list.listid,
                 listType: list.type
-            }
-            ListService.getListWithItems(report).then(function(listFound) {
+            };
+            
+            ListService.getList(report, params).then(function(listFound) {
             $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.';
             $scope.inventoryForm.$setDirty();
             listFound.items.forEach(function(item) {
