@@ -116,6 +116,9 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
     <Compile Include="Migrations\v2017.04.01\Migration0042.cs" />
     <Compile Include="Migrations\v2017.04.04\Migration0043.cs" />
+    <None Include="NuGet.config">
+      <SubType>Designer</SubType>
+    </None>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
