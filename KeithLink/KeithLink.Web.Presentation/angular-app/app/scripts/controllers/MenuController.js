@@ -40,9 +40,11 @@ angular.module('bekApp')
   $scope.systemUpdates = NotificationService.systemUpdates;
   ENV.username = localStorageService.get('userName');
 
-  OrderService.getChangeOrders().then(function(resp){
-    $scope.changeOrders = resp;
-  });
+  if(OrderService.changeOrderHeaders == null || OrderService.changeOrderHeaders.length == 0) {
+      OrderService.getChangeOrders().then(function(resp){
+        $scope.changeOrders = resp;
+      });
+  }
 
   CategoryService.getCategories('BEK').then(function(resp){
     $scope.departments = resp;
