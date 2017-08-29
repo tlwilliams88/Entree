@@ -15,7 +15,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             return new InventoryValuationListDetail() {
                 Active = true,
                 CustomInventoryItemId = 15,
-                Quantity = 7.37m
+                Quantity = 7.37m,
+                Label = "Test Label"
             };
         }
 
@@ -105,6 +106,36 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
                 test.Quantity
                     .Should()
                     .Be(expected);
+            }
+        }
+
+        public class Get_Label {
+            [Fact]
+            public void GoodItem_ReturnsGoodValue() {
+                // arrange
+                var fakeItem = MakeItem();
+                var expected = "Test Label";
+
+                // act
+
+                // assert
+                fakeItem.Label
+                        .Should()
+                        .Be(expected);
+            }
+
+            [Fact]
+            public void InitializedItem_HasDefaultValue() {
+                // arrange
+                var test = new InventoryValuationListDetail();
+
+                // act
+
+                // assert
+                test.Label
+                    .Should()
+                    .BeNull();
+
             }
         }
     }

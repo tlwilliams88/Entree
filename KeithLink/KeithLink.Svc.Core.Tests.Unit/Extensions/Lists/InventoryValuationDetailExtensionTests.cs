@@ -24,7 +24,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 Each = true,
                 CatalogId = "FUT",
                 CustomInventoryItemId = 1900,
-                Quantity = 9.76m
+                Quantity = 9.76m,
+                Label = "Test Label"
             };
         }
 
@@ -37,7 +38,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 ListItemId = 19,
                 ItemNumber = "123456",
                 Position = 23,
-                Quantity = 9.76m
+                Quantity = 9.76m,
+                Label = "Test Label"
             };
         }
 
@@ -208,6 +210,22 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                        .Be(expected);
             }
 
+
+            [Fact]
+            public void GoodDetail_ReturnsGoodLabel() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = "Test Label";
+
+                // act
+                var results = detail.ToWebModel();
+
+                // assert
+                results.Label
+                       .Should()
+                       .Be(expected);
+            }
+
             [Fact]
             public void GoodDetail_ReturnsNullPackSize() {
                 // arrange
@@ -293,21 +311,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsQuantityOfZero() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = 0;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Quantity
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
             public void GoodDetail_ReturnsIsDeleteAsFalse() {
                 // arrange
                 var detail = MakeDetail();
@@ -360,20 +363,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
 
                 // assert
                 results.Supplier
-                       .Should()
-                       .BeNull();
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsNullLabel() {
-                // arrange
-                var detail = MakeDetail();
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Label
                        .Should()
                        .BeNull();
             }
@@ -536,6 +525,22 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
 
                 // assert
                 results.HeaderId
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodModel_ReturnsExpectedLabel() {
+                // arrange
+                var expected = "Test Label";
+                var headerId = 1;
+                var model = MakeModel();
+
+                // act
+                var results = model.ToInventoryValuationListDetail(headerId);
+
+                // assert
+                results.Label
                        .Should()
                        .Be(expected);
             }
