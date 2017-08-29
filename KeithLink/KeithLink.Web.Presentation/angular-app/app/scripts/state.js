@@ -180,7 +180,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:deptName/?currentPage/?startingPoint/?categories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?tempzones/?specialfilters',
+      url: ':type/:id/:deptName/?currentPage/?startingPoint/?parentcategories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?temp_zones/?specialfilters',
       params: {
         brand: null,
         category: null,

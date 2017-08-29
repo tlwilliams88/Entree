@@ -448,6 +448,19 @@ angular.module('bekApp')
         $scope.filterCount += aggregateDataSelected.length;
       }
     }
+    
+    function updateAggregates(aggregate) {
+        var aggregateState = $stateParams[aggregate],
+            aggregateScope = $scope[aggregate].selected;
+                                        
+        if(Array.isArray(aggregateState) && aggregateState.length > 1) {
+            aggregateState.forEach(function(category) {
+                aggregateScope.push(category);
+            })
+        } else {
+            aggregateScope.push(aggregateState);
+        }
+    }
 
     $scope.selectBreadcrumb = function(selectedaggregate) {
 
@@ -487,85 +500,30 @@ angular.module('bekApp')
       var facets;
       $scope.userProfile = SessionService.userProfile;
       $scope.currentCustomer = LocalStorage.getCurrentCustomer();
-      
-      if($stateParams.categories != undefined) {
-          if(Array.isArray($stateParams.categories) && $stateParams.categories.length > 1) {
-              $stateParams.categories.forEach(function(category) {
-                  $scope.parentcategories.selected.push(category)
-              })
-          } else {
-              $scope.parentcategories.selected.push($stateParams.categories)
-          }
+            
+      if($stateParams.parentcategories != undefined) {
+          updateAggregates('parentcategories');
       }
       if($stateParams.subcategories != undefined) {
-          if(Array.isArray($stateParams.subcategories) && $stateParams.subcategories.length > 1) {
-              $stateParams.subcategories.forEach(function(subcategory) {
-                  $scope.subcategories.selected.push(subcategory)
-              })
-          } else {
-              $scope.subcategories.selected.push($stateParams.subcategories)
-          }
+          updateAggregates('subcategories');
       }
       if($stateParams.brands != undefined) {
-          if(Array.isArray($stateParams.brands) && $stateParams.brands.length > 1) {
-              $stateParams.brands.forEach(function(brand) {
-                  $scope.brands.selected.push(brand)
-              })
-          } else {
-              $scope.brands.selected.push($stateParams.brands)
-          }
-
+          updateAggregates('brands');
       }
       if($stateParams.manufacturers != undefined) {
-          if(Array.isArray($stateParams.manufacturers) && $stateParams.manufacturers.length > 1) {
-              $stateParams.manufacturers.forEach(function(manufacturer) {
-                  $scope.manufacturers.selected.push(manufacturer)
-              })
-          } else {
-              $scope.manufacturers.selected.push($stateParams.manufacturers)
-          }
-
+          updateAggregates('manufacturers');
       }
       if($stateParams.dietary != undefined) {
-          if(Array.isArray($stateParams.dietary) && $stateParams.dietary.length > 1) {
-              $stateParams.dietary.forEach(function(dietary) {
-                  $scope.dietary.selected.push(dietary)
-              })
-          } else {
-              $scope.dietary.selected.push($stateParams.dietary)
-          }
-
+          updateAggregates('dietary');
       }
       if($stateParams.itemspecs != undefined) {
-          if(Array.isArray($stateParams.itemspecs) && $stateParams.itemspecs.length > 1) {
-              $stateParams.itemspecs.forEach(function(itemspec) {
-                  $scope.itemspecs.selected.push(itemspec)
-              })  
-          } else {
-              $scope.itemspecs.selected.push($stateParams.itemspecs)
-          }
-
+          updateAggregates('itemspecs');
       }
       if($stateParams.specialfilters != undefined) {
-          if(Array.isArray($stateParams.specialfilters) && $stateParams.specialfilters.length > 1) {
-              $stateParams.specialfilters.forEach(function(specialfilter) {
-                  $scope.specialfilters.selected.push(specialfilter);
-              })
-              
-          } else {
-              $scope.specialfilters.selected.push($stateParams.specialfilters);
-          }
-
+          updateAggregates('specialfilters');
       }
-      if($stateParams.tempzones != undefined) {
-          if(Array.isArray($stateParams.tempzones) && $stateParams.tempzones.length > 1) {
-              $stateParams.tempzones.forEach(function(tempzone) {
-                  $scope.temp_zones.selected.push(tempzone);
-              })
-          } else {
-              $scope.temp_zones.selected.push($stateParams.tempzones);
-          }
-
+      if($stateParams.temp_zones != undefined) {
+          updateAggregates('temp_zones');
       }
 
       $scope.aggregateCount = ($scope.brands.selected.length + $scope.itemspecs.selected.length + $scope.temp_zones.selected.length + $scope.manufacturers.selected.length + $scope.dietary.selected.length + $scope.parentcategories.selected.length + $scope.subcategories.selected.length + $scope.specialfilters.selected.length);
@@ -749,7 +707,7 @@ angular.module('bekApp')
       $scope.itemspecs.selected = [];
       $scope.specialfilters.selected = [];
       
-      $stateParams.categories = undefined;
+      $stateParams.parentcategories = undefined;
       $stateParams.subcategories = undefined;
       $stateParams.brands = undefined;
       $stateParams.manufacturers = undefined;
