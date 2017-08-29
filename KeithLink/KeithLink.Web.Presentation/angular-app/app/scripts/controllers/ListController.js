@@ -111,6 +111,9 @@ angular.module('bekApp')
     if (ListService.findRecommendedList()) {
       $scope.hideRecommendedListCreateButton = true;
     }
+    if (ListService.findReminderList()) {
+      $scope.hideReminderListCreateButton = true;
+    }
 
     //Toggle scope variable to render Reports side panel when screen is resized
     $(window).resize(function(){
@@ -530,6 +533,24 @@ angular.module('bekApp')
     $scope.createRecommendedListFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.createRecommendedList(dragSelection);
+    };
+    
+    /**********
+    CREATE REMINDER LIST
+    **********/
+
+    $scope.createReminderList = function(items) {
+        ListService.createReminderList(items).then(function(list) {
+            setLastList(list);
+            $scope.hideRecommendedListCreateButton = true;
+            $scope.selectedList = list;
+            applyNewList();
+        });
+    };
+
+    $scope.createReminderListFromDrag = function(event, helper) {
+      var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.createReminderList(dragSelection);
     };
 
     /**********
