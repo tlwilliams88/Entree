@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BEK.FluentMigratorBase; 
 using FluentMigrator;
 
 namespace Entree.Migrations.Migrations.Data.IntegrationTests.Lists {
@@ -20,6 +21,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Lists {
                     Quantity = 2,
                     CatalogId = "FDF",
                     Active = true,
+                    Label = "Test Label #1",
                     CreatedUtc = new DateTime(2017, 7, 3, 11, 33, 0, DateTimeKind.Utc),
                     ModifiedUtc = new DateTime(2017, 7, 3, 11, 34, 0, DateTimeKind.Utc)
                   });
@@ -34,6 +36,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Lists {
                         Quantity = 3,
                         CatalogId = "FDF",
                         Active = true,
+                        Label = "Test Label #2",
                         CreatedUtc = new DateTime(2017, 7, 3, 11, 33, 0, DateTimeKind.Utc),
                         ModifiedUtc = new DateTime(2017, 7, 3, 11, 34, 0, DateTimeKind.Utc)
                     });
@@ -48,6 +51,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Lists {
                         Quantity = 4,
                         CatalogId = "FDF",
                         Active = false,
+                        Label = "Test Label #3",
                         CreatedUtc = new DateTime(2017, 7, 3, 11, 33, 0, DateTimeKind.Utc),
                         ModifiedUtc = new DateTime(2017, 7, 3, 11, 34, 0, DateTimeKind.Utc)
                     });
