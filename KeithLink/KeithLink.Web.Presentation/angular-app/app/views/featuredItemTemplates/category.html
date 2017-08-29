@@ -1,6 +1,6 @@
-<div ng-show="item.category_image.url" class="col-xs-4 no-padding text-left">
+<div ng-show="item.category_image.url" class="col-xs-4 no-padding text-left" analytics-on analytics-category="Homepage-Categories-Mobile" analytics-event="Categories" analytics-label="{{item.name}}">
   <img style="height: 84px; max-width: 100%;" ng-src="{{item.category_image.url}}">
 </div>
-<div class="col-xs-8 no-padding featured-item-mobile__detail">
+<div class="col-xs-8 no-padding featured-item-mobile__detail" analytics-on analytics-category="Homepage-Categories-Mobile" analytics-event="Categories" analytics-label="{{item.name}}">
   <a ui-sref="menu.catalog.products.list({ type: 'category', id: item.search_name, category: item.name})" >{{item.name}}</a>
 </div>

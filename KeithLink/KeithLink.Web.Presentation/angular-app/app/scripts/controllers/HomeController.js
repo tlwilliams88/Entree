@@ -84,7 +84,8 @@ angular.module('bekApp')
           mobile: 'images/KKE_Mobile.png'
         },
         targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })",
-        targetType: "campaign"
+        targetType: "campaign",
+        targeturltext: "keith-kitchen-essentials"
     },
     {
       imageurl: {
@@ -92,7 +93,8 @@ angular.module('bekApp')
         mobile: 'images/MenuMaxBanner_Mobile.png'
       },
       targeturl: "https://www.menumax.com/",
-      targetType: "external"
+      targetType: "external",
+      targeturltext: "menu-max"
     }
     ];
 

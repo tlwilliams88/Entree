@@ -712,7 +712,7 @@ angular.module('bekApp')
 
   $scope.totalPaymentAmount = function () {    
     var total = 0;
-    if($scope.invoices.length ){
+    if($scope.invoices.length > 0){
       $scope.invoices.forEach(function (customer) {
         customer.total = 0;
         if(customer.invoices.results && customer.invoices.results.length){
