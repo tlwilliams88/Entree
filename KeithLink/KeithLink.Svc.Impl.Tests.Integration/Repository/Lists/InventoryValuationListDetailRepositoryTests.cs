@@ -219,6 +219,23 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
             }
 
             [Fact]
+            public void GoodDetail_ReturnsExpectedLabel() {
+                // arrange
+                var expected = "Test Label #1";
+                var headerId = 1;
+                var repo = MakeRepo();
+
+                // act
+                var results = repo.GetInventoryValuationDetails(headerId);
+
+                // assert
+                results.FirstOrDefault()
+                       .Label
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
             public void GoodDetail_ReturnsExpectedCreatedUtc() {
                 // arrange
                 var expected = new DateTime(2017, 7, 3, 11, 33, 0, DateTimeKind.Utc);
@@ -313,7 +330,8 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                     ItemNumber = "123456",
                     LineNumber = 2,
                     ModifiedUtc = new DateTime(2017, 7, 3, 14, 47, 0, DateTimeKind.Utc),
-                    Quantity = 15
+                    Quantity = 15,
+                    Label = "Test Save Label"
                 };
             }
 
@@ -467,6 +485,24 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                     .LineNumber
                     .Should()
                     .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_SavesExpectedLabel() {
+                // arrange
+                var detail = MakeDetail();
+                var expected = "Test Save Label";
+                var repo = MakeRepo();
+
+                // act
+                var detailId = repo.SaveInventoryValuationDetail(detail);
+                var results = repo.GetInventoryValuationDetails(detail.HeaderId);
+                
+                // assert
+                results.FirstOrDefault(d => d.Id.Equals(detailId))
+                       .Label
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
