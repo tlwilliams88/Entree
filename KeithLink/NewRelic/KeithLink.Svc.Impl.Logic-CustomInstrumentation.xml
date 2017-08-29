@@ -4,7 +4,80 @@
   <!--If a tracer just defines a method that is part of a recorded trace, but doesn't record one itself, you don't add the name attribute-->
   <!--If a tracer is to actually record a trace you add the name attribute-->
   <instrumentation>
-    <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/GetTypeSpecificExportOptions">
+     <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedContractInformation">
+         <match assemblyName="KeithLink.Svc.Impl"
+                className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+             <exactMethodMatcher methodName="GetCachedContractInformation"/>
+         </match>
+     </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedContractInformation">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="AddCachedContractInformation"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedLabels">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="GetCachedLabels"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedLabels">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="AddCachedLabels"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedTypedLists">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="GetCachedTypedLists"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedTypedLists">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="AddCachedTypedLists"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedCustomerLists">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="GetCachedCustomerLists"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedCustomerLists">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="AddCachedCustomerLists"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedSpecificList">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="GetCachedSpecificList"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedSpecificList">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="AddCachedSpecificList"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/ClearCustomersListCaches">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="ClearCustomersListCaches"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/ClearCustomersLabelsCache">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="ClearCustomersLabelsCache"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/GetTypeSpecificExportOptions">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">
         <exactMethodMatcher methodName="GetTypeSpecificExportOptions"/>
