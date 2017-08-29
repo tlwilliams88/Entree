@@ -594,7 +594,7 @@
                     ng-required="item.isEditing"
                     ng-model="item.editLabel" />
 
-                  <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                  <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                   <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
@@ -758,7 +758,7 @@
                             ng-required="item.isEditing"
                             ng-model="item.editLabel" />
 
-                          <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                          <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                           <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
@@ -990,7 +990,7 @@
                         placeholder="New Label..."
                         ng-required="item.isEditing"
                         ng-model="item.editLabel" />
-                    <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                    <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                     <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
@@ -1132,7 +1132,7 @@
                             placeholder="New Label..."
                             ng-required="item.isEditing"
                             ng-model="item.editLabel" />
-                            <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                            <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                             <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
