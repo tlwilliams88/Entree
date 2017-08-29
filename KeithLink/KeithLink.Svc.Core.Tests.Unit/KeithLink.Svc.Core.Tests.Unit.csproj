@@ -109,6 +109,7 @@
     <Compile Include="Models\Lists\History\HistoryListDetailTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValidationListHeaderTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValudationDetailTests.cs" />
+    <Compile Include="Models\Lists\ListModelTests.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListDetailTests.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListHeaderTests.cs" />
     <Compile Include="Models\Lists\Notes\NotesDetailListTests.cs" />

@@ -30,6 +30,7 @@ using System.Reflection;
 using System.Web.Http;
 
 using KeithLink.Svc.Core.Models.Lists.CustomListShares;
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
@@ -38,6 +39,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
     [Authorize]
     public class ListController : BaseController {
         #region attributes
+        private readonly ICacheListLogic _cacheListLogic;
         private readonly IAuditLogRepository _auditLogRepo;
         private readonly IListLogic _listLogic;
         private readonly IListService _listService;
@@ -57,11 +59,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="elRepo"></param>
         /// <param name="auditLogRepo"></param>
         /// <param name="listRepo"></param>
-        public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic,
+        public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic, ICacheListLogic cacheListLogic,
                               IEventLogRepository elRepo, IAuditLogRepository auditLogRepo, ICustomListSharesRepository customListSharesRepo, IListService listService)
             : base(profileLogic) {
             _auditLogRepo = auditLogRepo;
             _listLogic = listLogic;
+            _cacheListLogic = cacheListLogic;
             _profileLogic = profileLogic;
             _exportLogic = exportSettingsLogic;
             _elRepo = elRepo;
@@ -441,7 +444,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
                         HeaderId = copyListModel.ListId,
                         CustomerNumber = customer.CustomerNumber,
                         BranchId = customer.CustomerBranch
-                                                                                    });
+                    });
+
+                    _cacheListLogic.ClearCustomersLabelsCache(new UserSelectedContext() {
+                                                                                            CustomerId = customer.CustomerNumber,
+                                                                                            BranchId = customer.CustomerBranch
+                                                                                        });
                 }
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;

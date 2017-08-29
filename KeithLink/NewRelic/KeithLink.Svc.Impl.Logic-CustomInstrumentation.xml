@@ -28,10 +28,16 @@
               <exactMethodMatcher methodName="AddCachedTypedLists"/>
           </match>
       </tracerFactory>
-      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedContractInformation">
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedLabels">
           <match assemblyName="KeithLink.Svc.Impl"
                  className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
-              <exactMethodMatcher methodName="GetCachedContractInformation"/>
+              <exactMethodMatcher methodName="GetCachedLabels"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedLabels">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="AddCachedLabels"/>
           </match>
       </tracerFactory>
       <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedCustomerLists">
@@ -64,7 +70,7 @@
               <exactMethodMatcher methodName="ClearCustomersListCaches"/>
           </match>
       </tracerFactory>
-      
+
     <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/GetTypeSpecificExportOptions">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">

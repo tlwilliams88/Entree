@@ -1,21 +1,23 @@
-<div class="hidden-lg">
+<div class="hidden-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)">
   <div class="no-padding text-left">
-    <img class="featured-item-height" ng-if="item.imageurl && item.targetType && item.targetType != 'external'" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image" />
+    <img class="featured-item-height" ng-if="item.imageurl && item.targetType && item.targetType != 'external'" ng-src="{{item.imageurl.mobile}}" ui-sref="{{item.targeturl}}" alt="image" analytics-on analytics-category="Homepage-Marketing-Content-Banner-Mobile" analytics-event="Banner Marketing Content" analytics-label="{{item.targeturltext}}"/>
     <a
         ng-if="item.imageurl && item.targetType && item.targetType == 'external'"
         ng-href="{{item.targeturl}}"
-        target="_blank">
+        target="_blank"
+        analytics-on analytics-category="Homepage-Marketing-Content-Banner-Mobile" analytics-event="Banner Marketing Content" analytics-label="{{item.targeturltext}}">
         <img
             class="featured-item-height"
             ng-src="{{item.imageurl.mobile}}"
             alt="image" />
     </a>
     <img
-    class="featured-item-height"
-    ng-if="item.imageurl && item.targetType && item.targetType == 'external'"
-    ng-src="{{item.imageurl.mobile}}"
-    ng-href="{{item.targeturl}}"
-    target="_blank" alt="image" />
+        class="featured-item-height"
+        ng-if="item.imageurl && item.targetType && item.targetType == 'external'"
+        ng-src="{{item.imageurl.mobile}}"
+        ng-href="{{item.targeturl}}"
+        target="_blank" alt="image"
+        analytics-on analytics-category="Homepage-Marketing-Content-Banner-Mobile" analytics-event="Banner Marketing Content" analytics-label="{{item.targeturltext}}"/>
     <img
         class="featured-item-height product-placeholder-image"
         ng-if="!item.imageurl"
@@ -25,7 +27,8 @@
         <a
             ng-if="item.imageurl && !item.targetType && isMarketing"
             ng-href="{{item.targeturl}}"
-            target="_blank">
+            target="_blank"
+            analytics-on analytics-category="Homepage-Marketing-Content-Secondary-Mobile" analytics-event="Secondary Marketing Content" analytics-label="{{item.targeturltext}}">
             <img
                 class="item-image featured-item-height-marketing"
                 ng-src="{{item.imageurl}}"
@@ -37,15 +40,17 @@
 <div class="text-center box visible-lg" ng-click="storePromoItemInformation(item.targeturltext, item.id)" style="background:transparent;">
   <div style="display:inline-block">
     <img
-    class="item-image featured-item-height"
-    ng-if="item.imageurl && item.targetType && item.targetType != 'external'"
-    ng-src="{{item.imageurl.desktop}}"
-    ui-sref="{{item.targeturl}}"
-    alt="image" />
+        class="item-image featured-item-height"
+        ng-if="item.imageurl && item.targetType && item.targetType != 'external'"
+        ng-src="{{item.imageurl.desktop}}"
+        ui-sref="{{item.targeturl}}"
+        alt="image"
+        analytics-on analytics-category="Homepage-Marketing-Content-Banner-Desktop" analytics-event="Banner Marketing Content" analytics-label="{{item.targeturltext}}"/>
     <a
         ng-if="item.imageurl && item.targetType == 'external'"
         ng-href="{{item.targeturl}}"
-        target="_blank">
+        target="_blank"
+        analytics-on analytics-category="Homepage-Marketing-Content-Banner-Desktop" analytics-event="Banner Marketing Content" analytics-label="{{item.targeturltext}}">
         <img
             class="item-image featured-item-height"
             ng-src="{{item.imageurl.desktop}}"
@@ -60,7 +65,8 @@
     <a
         ng-if="item.imageurl && !item.targetType && isMarketing"
         ng-href="{{item.targeturl}}"
-        target="_blank">
+        target="_blank"
+        analytics-on analytics-category="Homepage-Marketing-Content-Secondary-Desktop" analytics-event="Secondary Marketing Content" analytics-label="{{item.targeturltext}}">
         <img
             class="item-image featured-item-height-marketing"
             ng-src="{{item.imageurl}}"

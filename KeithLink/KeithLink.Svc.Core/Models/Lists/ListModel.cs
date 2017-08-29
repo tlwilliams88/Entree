@@ -55,7 +55,8 @@ namespace KeithLink.Svc.Core.Models.Lists {
                     {
                         ItemNumber = item.ItemNumber,
                         Each = item.Each,
-                        CatalogId = item.CatalogId
+                        CatalogId = item.CatalogId,
+                        CustomInventoryItemId = item.CustomInventoryItemId
                     });
                 }
 
