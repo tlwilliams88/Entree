@@ -310,13 +310,6 @@ angular.module('bekApp')
             listToBeUsed.listType = last.listType;
           }
 
-          if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
-            ListService.getParamsObject(params, 'lists').then(function(storedParams){
-              $stateParams.sortingParams = storedParams;
-              params = storedParams;
-            });
-          }
-
           listToBeUsed.listId = listToBeUsed.listId != 'nonbeklist' ? parseInt(listToBeUsed.listId, 10) : listToBeUsed.listId;
           listToBeUsed.listType = listHeader ? listHeader.type : listToBeUsed.listType;
 
@@ -347,6 +340,13 @@ angular.module('bekApp')
             }
           }
           
+          if(listToBeUsed && (listToBeUsed.read_only || listToBeUsed.isrecommended || listToBeUsed.ismandatory)){
+            ListService.getParamsObject(params, 'lists').then(function(storedParams){
+              $stateParams.sortingParams = storedParams;
+              params = storedParams;
+            });
+          }
+           
           $stateParams.listId = listToBeUsed.listid ? listToBeUsed.listid : listToBeUsed.listId;
           $stateParams.listType = listToBeUsed.type ? listToBeUsed.type : listToBeUsed.listType;
 
