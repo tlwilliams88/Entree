@@ -272,13 +272,13 @@ angular.module('bekApp')
         type: $scope.paramType, 
         id: $scope.paramId, 
         deptName: $stateParams.deptName, 
-        categories: $scope.parentcategories.selected,
+        parentcategories: $scope.parentcategories.selected,
         subcategories: $scope.subcategories.selected,
         brands: $scope.brands.selected,
         manufacturers: $scope.manufacturers.selected,
         dietary: $scope.dietary.selected,
         itemspecs: $scope.itemspecs.selected,
-        tempzones: $scope.temp_zones.selected,
+        temp_zones: $scope.temp_zones.selected,
         specialfilters: $scope.specialfilters.selected,
         startingPoint: parseInt($scope.startingPoint),
         currentPage: parseInt($scope.currentPage)
@@ -330,13 +330,13 @@ angular.module('bekApp')
             {   type: updatedPage.type, 
                 id: updatedPage.id, 
                 deptName: updatedPage.deptName, 
-                categories: updatedPage.categories,
+                parentcategories: updatedPage.parentcategories,
                 subcategories: updatedPage.subcategories,
                 brands: updatedPage.brands,
                 manufacturers: updatedPage.manufacturers,
                 dietary: updatedPage.dietary,
                 itemspecs: updatedPage.itemspecs,
-                tempzones: updatedPage.tempzones,
+                temp_zones: updatedPage.temp_zones,
                 specialfilters: updatedPage.specialfilters,
                 startingPoint: updatedPage.startingPoint,
                 currentPage: updatedPage.currentPage
@@ -545,13 +545,13 @@ angular.module('bekApp')
         type: $scope.paramType, 
         id: $scope.paramId, 
         deptName: $stateParams.deptName, 
-        categories: $scope.parentcategories.selected,
+        parentcategories: $scope.parentcategories.selected,
         subcategories: $scope.subcategories.selected,
         brands: $scope.brands.selected,
         manufacturers: $scope.manufacturers.selected,
         dietary: $scope.dietary.selected,
         itemspecs: $scope.itemspecs.selected,
-        tempzones: $scope.temp_zones.selected,
+        temp_zones: $scope.temp_zones.selected,
         specialfilters: $scope.specialfilters.selected,
         startingPoint: $stateParams.startingPoint,
         currentPage: $stateParams.currentPage
@@ -712,7 +712,7 @@ angular.module('bekApp')
       $stateParams.brands = undefined;
       $stateParams.manufacturers = undefined;
       $stateParams.dietary = undefined;
-      $stateParams.tempzones = undefined;
+      $stateParams.temp_zones = undefined;
       $stateParams.itemspecs = undefined;
       $stateParams.specialfilters = undefined;
       loadProducts().then(refreshFacets);
