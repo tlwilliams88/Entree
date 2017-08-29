@@ -462,7 +462,7 @@
         </div>  <!-- end Recently Viewed Items -->
 
     <!-- Categories -->
-    <div class="row" ng-hide="cartHeaders.length == 0 && recentlyViewedItems == null || cartHeaders.length == 0 && recentlyViewedItems.length == 0 || cartHeaders.length == 0 && orders.length == 0 || (cartHeaders.length == 0 || orders.length == 0) && isMobile == true">
+    <div class="row" ng-hide="(categories.length > 0 && recentlyViewedItems == null) || (cartHeaders.length == 0 && (recentlyViewedItems == null || recentlyViewedItems.length == 0 || orders.length == 0))">
       <div class="col-sm-12">
           <h3>Categories</h3>
         <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>

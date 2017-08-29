@@ -1,4 +1,5 @@
-﻿using FluentMigrator;
+﻿using BEK.FluentMigratorBase; 
+using FluentMigrator;
 
 using System;
 using System.Collections.Generic;

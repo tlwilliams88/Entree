@@ -1,5 +1,6 @@
 INSERT INTO [Configuration].[AppSettings] (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'AppName', 'Entree', 0)
-INSERT INTO [Configuration].[AppSettings] (Comment, [Key], Value, [Disabled]) VALUES('Site Settings', 'CartOrOrder2ListIdPurgeDays', '-7', 0)
+-- This value is commented out because it's part of a migration already
+--INSERT INTO [Configuration].[AppSettings] (Comment, [Key], Value, [Disabled]) VALUES('Site Settings', 'CartOrOrder2ListIdPurgeDays', '-7', 0)
 INSERT INTO [Configuration].[AppSettings] (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'PresentationUrl', 'http://localhost:8080/', 0)
 INSERT INTO [Configuration].[AppSettings] (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'AllowedApiKeys', 'android_dev_v1,iphone_dev_v1,web_dev_v1,', 0)
 INSERT INTO [Configuration].[AppSettings] (Comment, [Key], Value, [Disabled]) VALUES( 'Site Settings', 'BrandAssetsUrl', 'http://devkeithlink.bekco.com/assets/brands', 0)
