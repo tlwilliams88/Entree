@@ -208,6 +208,7 @@
     <Compile Include="Extensions\PowerMenu\PowerMenuExtensions.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensions.cs" />
     <Compile Include="Interface\ApplicationHealth\IApplicationHealthLogic.cs" />
+    <Compile Include="Interface\Cache\ICacheListLogic.cs" />
     <Compile Include="Interface\Cart\IShoppingCartService.cs" />
     <Compile Include="Interface\Common\IGenericSubscriptionQueueRepository.cs" />
     <Compile Include="Interface\Configurations\IExternalCatalogRepository.cs" />
