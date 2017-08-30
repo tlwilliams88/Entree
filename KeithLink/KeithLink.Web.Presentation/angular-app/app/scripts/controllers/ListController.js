@@ -986,11 +986,12 @@ angular.module('bekApp')
             return ListService.getExportConfig($scope.selectedList);
           },
           exportParams: function() {
-            var list = {
+            var params = {
                 listType: $scope.selectedList.type,
-                listId: $scope.selectedList.listid
+                listId: $scope.selectedList.listid,
+                sort: $scope.sort[0]
             }
-            return list;
+            return params;
           }
         }
       });
