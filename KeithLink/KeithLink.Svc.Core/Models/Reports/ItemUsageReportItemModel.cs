@@ -38,6 +38,7 @@ namespace KeithLink.Svc.Core.Models.Reports
         [DataMember(Name = "images")]
         public List<ProductImage> Images { get; set; }
 
+        [Description("Item Order History")]
         public string OrderHistoryString { get; set; }
 
         [DataMember(Name = "totalquantityordered")]

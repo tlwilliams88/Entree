@@ -62,6 +62,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
         public string ExtendedDescription { get; set; }
 
+        [Description("Item Order History")]
         public string OrderHistoryString { get; set; }
 
         [DataMember(Name = "caseaverage")]

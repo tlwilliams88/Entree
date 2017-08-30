@@ -3,6 +3,7 @@ using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -19,6 +20,7 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name = "quantity")]
 		public decimal Quantity { get; set; }
 
+        [Description("Item Order History")]
         public string OrderHistoryString { get; set; }
 
         public string strPosition { get; set; }
