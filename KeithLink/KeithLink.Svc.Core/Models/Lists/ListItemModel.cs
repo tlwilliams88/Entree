@@ -30,6 +30,8 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "detail")]
         public string Detail { get; set; }
 
+        public string OrderHistoryString { get; set; }
+
         [DataMember(Name = "each")]
         public bool? Each { get; set; }
 

@@ -26,6 +26,8 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "detail")]
         public string Detail { get; set; }
 
+        public string OrderHistoryString { get; set; }
+
         [DataMember(Name = "linenumber")]
         public int LineNumber { get; set; }
 

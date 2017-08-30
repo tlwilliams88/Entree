@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Models.Reports
 
         [DataMember(Name = "detail")]
         [Description("Detail")]
-        public new string Detail { get; set; }
+        public string Detail { get; set; }
 
         [DataMember(Name = "name")]
 		[Description("Name")]
@@ -37,6 +37,8 @@ namespace KeithLink.Svc.Core.Models.Reports
 
         [DataMember(Name = "images")]
         public List<ProductImage> Images { get; set; }
+
+        public string OrderHistoryString { get; set; }
 
         [DataMember(Name = "totalquantityordered")]
 		[Description("Qty Ordered")]

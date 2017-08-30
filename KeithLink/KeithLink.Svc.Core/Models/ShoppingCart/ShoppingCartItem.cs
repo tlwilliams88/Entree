@@ -19,6 +19,8 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name = "quantity")]
 		public decimal Quantity { get; set; }
 
+        public string OrderHistoryString { get; set; }
+
         public string strPosition { get; set; }
         [DataMember(Name = "position")]
         public int Position { get; set; }
