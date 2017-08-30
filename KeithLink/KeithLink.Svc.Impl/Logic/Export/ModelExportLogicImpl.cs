@@ -587,6 +587,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
                     case "Price":
+                    case "LineTotal":
                         styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
                         break;
                 }
@@ -635,6 +636,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     case "QantityShipped":
                     case "CasePrice":
                     case "PackagePrice":
+                    case "Price":
+                    case "LineTotal":
                         celltype = CellValues.Number;
                         break;
                 }

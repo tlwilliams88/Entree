@@ -163,6 +163,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Quantity", Label = "# Confirmed" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "EachYN", Label = "Each" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Price", Label = "Price" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "LineTotal", Label = "Ext Price" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });
                     break;
                 case ExportType.InvoiceDetail:

@@ -33,6 +33,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         public int LineNumber { get; set; }
 
         [DataMember(Name = "linetotal")]
+        [Description("Ext Price")]
         public double LineTotal
         {
             get
@@ -220,6 +221,7 @@ namespace KeithLink.Svc.Core.Models.Orders
             defaultConfig.Add(new ExportModelConfiguration() { Field = "QantityShipped", Order = 75 });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "EachYN", Order = 80 });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "Price", Order = 90 });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "LineTotal", Order = 95, Label = "Ext Price" });
             defaultConfig.Add(new ExportModelConfiguration() { Field = "Status", Order = 100 });
 
 
