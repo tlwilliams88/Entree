@@ -28,8 +28,7 @@ namespace KeithLink.Svc.Impl.Service.List
     public class ListServiceImpl : IListService
     {
         #region attributes
-        private readonly ICacheRepository _cache;
-        private readonly ICacheListLogic _cacheHelper;
+        private readonly ICacheListLogic _cacheListLogic;
         private readonly IContractListLogic _contractListLogic;
         private readonly IHistoryListLogic _historyListLogic;
         private readonly IFavoritesListLogic _favoritesLogic;
@@ -63,11 +62,10 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
+                                IContractListLogic contractListLogic, ICustomListLogic customListLogic,
                                 IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo, ICacheListLogic cacheHelper)
         {
-            _cache = cache;
-            _cacheHelper = cacheHelper;
+            _cacheListLogic = cacheHelper;
             // specific lists -
             _contractListLogic = contractListLogic;
             _historyListLogic = historyListLogic;
@@ -96,7 +94,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             Dictionary<string, string> contractdictionary = new Dictionary<string, string>();
 
-            Dictionary<string, string> cachedContractdictionary = CACHELISTS ? _cacheHelper.GetCachedContractInformation(catalogInfo) : null;
+            Dictionary<string, string> cachedContractdictionary = CACHELISTS ? _cacheListLogic.GetCachedContractInformation(catalogInfo) : null;
 
             if (cachedContractdictionary == null)
             {
@@ -114,7 +112,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                                  .ToDictionary(g => g.Key,
                                                                g => g.First().Category.Trim());
                 }
-                _cacheHelper.AddCachedContractInformation(catalogInfo, contractdictionary);
+                _cacheListLogic.AddCachedContractInformation(catalogInfo, contractdictionary);
             }
             else
             {
@@ -137,7 +135,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> returnList = new List<ListModel>();
 
-            List<ListModel> cachedList = CACHELISTS ? _cacheHelper.GetCachedTypedLists(catalogInfo, type) : null;
+            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedTypedLists(catalogInfo, type) : null;
 
             if (cachedList == null) {
                 switch (type) {
@@ -203,7 +201,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
 
                 if (CACHELISTS) {
-                    _cacheHelper.AddCachedTypedLists(catalogInfo, type, returnList);
+                    _cacheListLogic.AddCachedTypedLists(catalogInfo, type, returnList);
                 }
             }
             else {
@@ -217,7 +215,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             ListModel tempList = null;
 
-            ListModel cachedList = CACHELISTS ? _cacheHelper.GetCachedSpecificList(catalogInfo, type, Id) : null;
+            ListModel cachedList = CACHELISTS ? _cacheListLogic.GetCachedSpecificList(catalogInfo, type, Id) : null;
 
             if (cachedList == null) {
                 switch (type) {
@@ -287,7 +285,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
 
                 if (CACHELISTS) {
-                    _cacheHelper.AddCachedSpecificList(catalogInfo, type, Id, tempList);
+                    _cacheListLogic.AddCachedSpecificList(catalogInfo, type, Id, tempList);
                 }
             }
             else {
@@ -301,7 +299,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> list = new List<ListModel>();
 
-            List<ListModel> cachedList = CACHELISTS ? _cacheHelper.GetCachedCustomerLists(catalogInfo) : null;
+            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedCustomerLists(catalogInfo) : null;
 
             if (cachedList == null) {
                 if (_contractdictionary == null) {
@@ -317,7 +315,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
                 if (CACHELISTS) {
-                    _cacheHelper.AddCachedCustomerLists(catalogInfo, list);
+                    _cacheListLogic.AddCachedCustomerLists(catalogInfo, list);
                 }
             } else {
                 list = cachedList;
@@ -337,7 +335,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<string> labels = new List<string>();
 
-            List<string> cachedList = CACHELISTS ? _cacheHelper.GetCachedLabels(catalogInfo) : null;
+            List<string> cachedList = CACHELISTS ? _cacheListLogic.GetCachedLabels(catalogInfo) : null;
 
             if (cachedList == null) {
 
@@ -363,7 +361,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 if (CACHELISTS)
                 {
-                    _cacheHelper.AddCachedLabels(catalogInfo, labels);
+                    _cacheListLogic.AddCachedLabels(catalogInfo, labels);
                 }
 
             } else {
@@ -503,7 +501,7 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             if (CACHELISTS) {
-                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
 
             return retVal;
@@ -556,7 +554,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
             }
 
-            _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+            _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
 
         }
 
@@ -598,7 +596,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 SaveItems(user,catalogInfo, type, id, list.Items);
             }
 
-            _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+            _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
 
             return ReadList(user, catalogInfo, type, id, true);
         }
@@ -618,7 +616,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 if (CACHELISTS)
                 {
-                    _cacheHelper.ClearCustomersLabelsCache(new UserSelectedContext() {
+                    _cacheListLogic.ClearCustomersLabelsCache(new UserSelectedContext() {
                                                                                          CustomerId = customer.CustomerNumber,
                                                                                          BranchId = customer.CustomerBranch
                                                                                      });
@@ -637,7 +635,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                      ListType.Custom,
                                      copyList);
 
-            _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+            _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
 
             return ReadListById(user, catalogInfo, newList.ListId, newList.Type);
         }
@@ -651,7 +649,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Custom:
                     _customListLogic.DeleteList(user, catalogInfo, list);
 
-                    _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+                    _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
 
                     break;
                 case ListType.InventoryValuation:
