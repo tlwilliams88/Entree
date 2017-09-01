@@ -558,7 +558,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
             if (CACHELISTS)
             {
-                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, false));
+                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
 
         }
@@ -572,7 +572,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
             if (CACHELISTS)
             {
-                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, false));
+                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
         }
 
@@ -608,7 +608,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
             if (CACHELISTS)
             {
-                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, false));
+                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
             return ReadList(user, catalogInfo, type, id, true);
         }
@@ -671,7 +671,7 @@ namespace KeithLink.Svc.Impl.Service.List
 
             if (CACHELISTS)
             {
-                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, false));
+                _cacheHelper.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
         }
 
