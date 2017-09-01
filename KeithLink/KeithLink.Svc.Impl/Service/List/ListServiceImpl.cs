@@ -554,7 +554,10 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
             }
 
-            _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+            if (CACHELISTS)
+            {
+                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+            }
 
         }
 
@@ -563,6 +566,11 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             foreach (var item in items) {
                 SaveItem(user, catalogInfo, type, headerId, item);
+            }
+
+            if (CACHELISTS)
+            {
+                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
         }
 
@@ -596,7 +604,10 @@ namespace KeithLink.Svc.Impl.Service.List
                 SaveItems(user,catalogInfo, type, id, list.Items);
             }
 
-            _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+            if (CACHELISTS)
+            {
+                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
+            }
 
             return ReadList(user, catalogInfo, type, id, true);
         }
@@ -649,14 +660,17 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.Custom:
                     _customListLogic.DeleteList(user, catalogInfo, list);
 
-                    _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
-
                     break;
                 case ListType.InventoryValuation:
 
                     long x = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, false);
 
                     break;
+            }
+
+            if (CACHELISTS)
+            {
+                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
         }
 

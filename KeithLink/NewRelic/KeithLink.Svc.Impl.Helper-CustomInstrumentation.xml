@@ -29,16 +29,10 @@
       </match>
     </tracerFactory>
     
-    <tracerFactory metricName="Custom/Impl/Helpers/ContractInformationHelper/GetContractInformation">
+    <tracerFactory metricName="Custom/Impl/Helpers/ContractInformationHelper/GetContractCategoriesFromLists">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Helpers.ContractInformationHelper">
-        <exactMethodMatcher methodName="GetContractInformation"/>
-      </match>
-    </tracerFactory>
-    <tracerFactory metricName="Custom/Impl/Helpers/ContractInformationHelper/AddContractInformationIfInContract">
-      <match assemblyName="KeithLink.Svc.Impl"
-             className="KeithLink.Svc.Impl.Helpers.ContractInformationHelper">
-        <exactMethodMatcher methodName="AddContractInformationIfInContract"/>
+        <exactMethodMatcher methodName="GetContractCategoriesFromLists"/>
       </match>
     </tracerFactory>
     
@@ -55,7 +49,27 @@
         <exactMethodMatcher methodName="RawSearch"/>
       </match>
     </tracerFactory>
-    <tracerFactory metricName="Custom/Impl/Helpers/FoundationService/ExecuteRequest">
+
+      <tracerFactory metricName="Custom/Impl/Helpers/FavoritesAndNotesHelper/GetFavoritesAndNotesFromLists">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Helpers.FavoritesAndNotesHelper">
+              <exactMethodMatcher methodName="GetFavoritesAndNotesFromLists"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Helpers/FavoritesAndNotesHelper/GetFavoritesAndNotesFromLists">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Helpers.FavoritesAndNotesHelper">
+              <exactMethodMatcher methodName="GetFavoritesAndNotesFromLists"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Helpers/FavoritesAndNotesHelper/SetFavoriteNotesAndInHistory">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Helpers.FavoritesAndNotesHelper">
+              <exactMethodMatcher methodName="SetFavoriteNotesAndInHistory"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Helpers/FoundationService/ExecuteRequest">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Helpers.FoundationService">
         <exactMethodMatcher methodName="ExecuteRequest"/>

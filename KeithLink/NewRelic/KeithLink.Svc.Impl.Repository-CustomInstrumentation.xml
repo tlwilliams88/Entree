@@ -161,15 +161,453 @@
         <exactMethodMatcher methodName="GetResizedRectangleWithAspectRatio"/>
       </match>
     </tracerFactory>
-    
-    <tracerFactory metricName="Custom/Impl/Repository/Lists/ListRepositoryImpl/ReadListForCustomer">
-      <match assemblyName="KeithLink.Svc.Impl"
-             className="KeithLink.Svc.Impl.Repository.Lists.ListRepositoryImpl">
-        <exactMethodMatcher methodName="ReadListForCustomer"/>
-      </match>
-    </tracerFactory>
-    
-    <tracerFactory metricName="Custom/Impl/Repository/OnlinePayments/Customer/CustomerBankRepositoryImpl/GetAllCustomerBanks">
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ContractChangesRepositoryImpl/ReadNextSet">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ContractChangesRepositoryImpl">
+              <exactMethodMatcher methodName="ReadNextSet"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ContractChangesRepositoryImpl/Update">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ContractChangesRepositoryImpl">
+              <exactMethodMatcher methodName="Update"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ContractChangesRepositoryImpl/Purge">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ContractChangesRepositoryImpl">
+              <exactMethodMatcher methodName="Purge"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ContractListDetailsRepositoryImpl/GetContractListDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ContractListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetContractListDetails"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ContractListHeadersRepositoryImpl/GetListHeaderForCustomer">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ContractListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetListHeaderForCustomer"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/Get">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="Get"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/Get">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="Get"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/GetItemsByItemIds">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="GetItemsByItemIds"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/GetItemsByBranchAndCustomer">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="GetItemsByBranchAndCustomer"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/SaveRange">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="SaveRange"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/Delete">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="Delete"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/DeleteRange">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteRange"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/DeleteRange">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteRange"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomInventoryItemsRepositoryImpl/GetDeleteCommandWithTvpParameters">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomInventoryItemsRepositoryImpl">
+              <exactMethodMatcher methodName="GetDeleteCommandWithTvpParameters"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListDetailsRepositoryImpl/GetCustomListDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetCustomListDetails"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListDetailsRepositoryImpl/DeleteCustomListDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteCustomListDetails"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListDetailsRepositoryImpl/SaveCustomListDetail">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="SaveCustomListDetail"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListHeadersRepositoryImpl/GetCustomListHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetCustomListHeader"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListHeadersRepositoryImpl/GetCustomListHeadersByCustomer">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetCustomListHeadersByCustomer"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListHeadersRepositoryImpl/SaveCustomListHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="SaveCustomListHeader"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListSharesRepositoryImpl/DeleteCustomListShares">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListSharesRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteCustomListShares"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListSharesRepositoryImpl/GetCustomListShare">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListSharesRepositoryImpl">
+              <exactMethodMatcher methodName="GetCustomListShare"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListSharesRepositoryImpl/GetCustomListSharesByCustomer">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListSharesRepositoryImpl">
+              <exactMethodMatcher methodName="GetCustomListSharesByCustomer"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListSharesRepositoryImpl/GetCustomListSharesByHeaderId">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListSharesRepositoryImpl">
+              <exactMethodMatcher methodName="GetCustomListSharesByHeaderId"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/CustomListSharesRepositoryImpl/SaveCustomListShare">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.CustomListSharesRepositoryImpl">
+              <exactMethodMatcher methodName="SaveCustomListShare"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/FavoriteListDetailRepositoryImpl/DeleteFavoriteListDetail">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.FavoriteListDetailRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteFavoriteListDetail"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/FavoriteListDetailRepositoryImpl/GetFavoriteDetail">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.FavoriteListDetailRepositoryImpl">
+              <exactMethodMatcher methodName="GetFavoriteDetail"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/FavoriteListDetailRepositoryImpl/GetFavoritesListDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.FavoriteListDetailRepositoryImpl">
+              <exactMethodMatcher methodName="GetFavoritesListDetails"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/FavoriteListDetailRepositoryImpl/SaveFavoriteListDetail">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.FavoriteListDetailRepositoryImpl">
+              <exactMethodMatcher methodName="SaveFavoriteListDetail"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/FavoriteListHeaderRepositoryImpl/GetFavoritesList">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.FavoriteListHeaderRepositoryImpl">
+              <exactMethodMatcher methodName="GetFavoritesList"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/FavoriteListHeaderRepositoryImpl/SaveFavoriteListHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.FavoriteListHeaderRepositoryImpl">
+              <exactMethodMatcher methodName="SaveFavoriteListHeader"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/HistoryListDetailRepositoryImpl/GetAllHistoryDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.HistoryListDetailRepositoryImpl">
+              <exactMethodMatcher methodName="GetAllHistoryDetails"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/HistoryListHeaderRepositoryImpl/GetHistoryListHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.HistoryListHeaderRepositoryImpl">
+              <exactMethodMatcher methodName="GetHistoryListHeader"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/InventoryValuationListDetailsRepositoryImpl/GetInventoryValuationDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.InventoryValuationListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetInventoryValuationDetails"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/InventoryValuationListDetailsRepositoryImpl/SaveInventoryValuationDetail">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.InventoryValuationListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="SaveInventoryValuationDetail"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/InventoryValuationListHeadersRepositoryImpl/GetInventoryValuationListHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.InventoryValuationListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetInventoryValuationListHeader"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/InventoryValuationListHeadersRepositoryImpl/GetInventoryValuationListHeaders">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.InventoryValuationListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetInventoryValuationListHeaders"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/InventoryValuationListHeadersRepositoryImpl/SaveInventoryValuationListHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.InventoryValuationListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="SaveInventoryValuationListHeader"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/MandatoryItemsListDetailsRepositoryImpl/GetAllByHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.MandatoryItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetAllByHeader"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/MandatoryItemsListDetailsRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.MandatoryItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/MandatoryItemsListDetailsRepositoryImpl/Delete">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.MandatoryItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Delete"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/MandatoryItemsListHeadersRepositoryImpl/GetListHeaderForCustomer">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.MandatoryItemsListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetListHeaderForCustomer"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/MandatoryItemsListHeadersRepositoryImpl/SaveMandatoryItemsHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.MandatoryItemsListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="SaveMandatoryItemsHeader"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/NotesDetailsRepositoryImpl/Get">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.NotesDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Get"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/NotesDetailsRepositoryImpl/GetAll">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.NotesDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetAll"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/NotesDetailsRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.NotesDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/NotesHeadersRepositoryImpl/GetHeadersForCustomer">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.NotesHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetHeadersForCustomer"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/NotesHeadersRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.NotesHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyOrderedListDetailsRepositoryImpl/GetRecentlyOrderedDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyOrderedListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetRecentlyOrderedDetails"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyOrderedListDetailsRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyOrderedListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyOrderedListDetailsRepositoryImpl/DeleteRecentlyOrdered">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyOrderedListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteRecentlyOrdered"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyOrderedListDetailsRepositoryImpl/DeleteOldRecentlyOrdered">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyOrderedListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteOldRecentlyOrdered"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyOrderedListHeadersRepositoryImpl/GetRecentlyOrderedHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyOrderedListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetRecentlyOrderedHeader"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyOrderedListHeadersRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyOrderedListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyViewedListDetailsRepositoryImpl/GetRecentlyViewedDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyViewedListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetRecentlyViewedDetails"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyViewedListDetailsRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyViewedListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyViewedListDetailsRepositoryImpl/DeleteRecentlyViewed">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyViewedListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteRecentlyViewed"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyViewedListHeadersRepositoryImpl/GetRecentlyViewedHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyViewedListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetRecentlyViewedHeader"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecentlyViewedListHeadersRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecentlyViewedListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecommendedItemsListDetailsRepositoryImpl/GetAllByHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecommendedItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetAllByHeader"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecommendedItemsListDetailsRepositoryImpl/Save">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecommendedItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Save"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecommendedItemsListDetailsRepositoryImpl/Delete">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecommendedItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="Delete"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecommendedItemsListHeadersRepositoryImpl/GetRecommendedItemsHeaderByCustomerNumberBranch">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecommendedItemsListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetRecommendedItemsHeaderByCustomerNumberBranch"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/RecommendedItemsListHeadersRepositoryImpl/SaveRecommendedItemsHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.RecommendedItemsListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="SaveRecommendedItemsHeader"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ReminderItemsListDetailsRepositoryImpl/DeleteReminderListDetail">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ReminderItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="DeleteReminderListDetail"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ReminderItemsListDetailsRepositoryImpl/GetRemindersDetails">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ReminderItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="GetRemindersDetails"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ReminderItemsListDetailsRepositoryImpl/SaveReminderListDetail">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ReminderItemsListDetailsRepositoryImpl">
+              <exactMethodMatcher methodName="SaveReminderListDetail"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ReminderItemsListHeadersRepositoryImpl/GetReminderItemsHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ReminderItemsListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="GetReminderItemsHeader"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Repository/Lists/ReminderItemsListHeadersRepositoryImpl/SaveReminderListHeader">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Repository.Lists.ReminderItemsListHeadersRepositoryImpl">
+              <exactMethodMatcher methodName="SaveReminderListHeader"/>
+          </match>
+      </tracerFactory>
+
+      <tracerFactory metricName="Custom/Impl/Repository/OnlinePayments/Customer/CustomerBankRepositoryImpl/GetAllCustomerBanks">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Repository.OnlinePayments.Customer.CustomerBankRepositoryImpl">
         <exactMethodMatcher methodName="GetAllCustomerBanks"/>
