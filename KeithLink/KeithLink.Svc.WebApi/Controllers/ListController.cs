@@ -91,6 +91,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
                 ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, list.Items);
 
+                if (exportRequest.Sort != null) {
+                    list.Items = list.Items.AsQueryable()
+                                     .Sort(exportRequest.Sort)
+                                     .ToList();
+                }
+
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,
                                                                    exportRequest.Fields, exportRequest.SelectedType);
