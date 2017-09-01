@@ -137,5 +137,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             throw new NotImplementedException();
         }
+
+        public Product LoadProductFromElasticSearchProduct(bool listonly, dynamic oProd)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

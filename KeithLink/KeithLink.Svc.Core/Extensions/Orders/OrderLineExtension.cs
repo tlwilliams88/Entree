@@ -21,9 +21,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             retVal.LineNumber = value.LineNumber.ToString();
             retVal.IsValid = value.IsValid;
             retVal.Name = value.Name;
+            retVal.Detail = value.Detail;
             retVal.Description = value.Description;
             retVal.PackSize = value.PackSize;
             retVal.Pack = value.Pack;
+            retVal.Size = value.Size;
             retVal.Each = value.Each;
             retVal.Brand = value.BrandExtendedDescription;
             retVal.BrandExtendedDescription = value.BrandExtendedDescription;
@@ -45,6 +47,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             retVal.ManufacturerNumber = value.ManufacturerNumber;
             retVal.Nutritional = value.Nutritional;
             retVal.ExtCatchWeight = value.TotalShippedWeight;
+            retVal.CatalogId = value.CatalogId;
 
             return retVal;
         }
