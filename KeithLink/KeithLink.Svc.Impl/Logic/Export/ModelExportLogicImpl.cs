@@ -131,11 +131,6 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 colIndex++;
                 width = 0;
-                try
-                {
-                    width = int.Parse(DBAppSettingsRepositoryImpl.GetValue("EW." + modelName + "." + config.Field, "0"));
-                }
-                catch { }
                 if (modelName.Equals("OrderLine"))
                 {
                     switch (config.Field)
