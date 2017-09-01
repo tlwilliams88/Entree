@@ -9,6 +9,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 
+using KeithLink.Svc.Core.Interface.Lists;
+
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
@@ -21,6 +23,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private ICacheRefreshRepository cacheRepository;
         private readonly IEventLogRepository _elRepo;
+        private readonly IListService _listService;
+        private readonly ICacheListLogic _cacheListLogic;
         #endregion
 
         #region ctor
@@ -30,13 +34,77 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="cacheRepository"></param>
         /// <param name="profileLogic"></param>
         /// <param name="elRepo"></param>
-        public CacheController(ICacheRefreshRepository cacheRepository, IUserProfileLogic profileLogic, IEventLogRepository elRepo) : base(profileLogic) {
+        public CacheController(ICacheRefreshRepository cacheRepository, IUserProfileLogic profileLogic, IEventLogRepository elRepo, 
+                               IListService listService, ICacheListLogic cacheListLogic) : base(profileLogic) {
             this.cacheRepository = cacheRepository;
+            _listService = listService;
+            _cacheListLogic = cacheListLogic;
             this._elRepo = elRepo;
         }
         #endregion
 
         #region methods
+        /// <summary>
+        /// admin/cache/clearcustomerslists
+        /// </summary>
+        /// <returns>OperationReturnModel-bool</returns>
+        [Route("admin/cache/clearcustomerslists")]
+        [HttpGet]
+        public OperationReturnModel<bool> ClearCustomersLists()
+        {
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try {
+                if (AuthenticatedUser.RoleName.Equals("beksysadmin", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    _cacheListLogic.ClearCustomersListCaches(AuthenticatedUser, SelectedUserContext, _listService.ReadUserList(AuthenticatedUser, SelectedUserContext, true));
+                    ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
+                }
+                else
+                {
+                    ret.ErrorMessage = "Must be a beksysadmin user";
+                    ret.IsSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("ClearCustomersLists", ex);
+            }
+            return ret;
+        }
+
+        /// <summary>
+        /// admin/cache/clearcustomerslabels
+        /// </summary>
+        /// <returns>OperationReturnModel-bool</returns>
+        [Route("admin/cache/clearcustomerslabels")]
+        [HttpGet]
+        public OperationReturnModel<bool> ClearCustomersLabels()
+        {
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try
+            {
+                if (AuthenticatedUser.RoleName.Equals("beksysadmin", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    _cacheListLogic.ClearCustomersLabelsCache(SelectedUserContext);
+                    ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
+                }
+                else
+                {
+                    ret.ErrorMessage = "Must be a beksysadmin user";
+                    ret.IsSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("ClearCustomersLists", ex);
+            }
+            return ret;
+        }
+
         /// <summary>
         /// Used for clearing an item from the WebAPI cache
         /// </summary>

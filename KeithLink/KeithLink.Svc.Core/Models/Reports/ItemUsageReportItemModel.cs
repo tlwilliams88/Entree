@@ -23,6 +23,10 @@ namespace KeithLink.Svc.Core.Models.Reports
 		[Description("Item")]
         public new string ItemNumber { get; set; }
 
+        [DataMember(Name = "detail")]
+        [Description("Detail")]
+        public string Detail { get; set; }
+
         [DataMember(Name = "name")]
 		[Description("Name")]
         public new string Name { get; set; }
@@ -33,6 +37,9 @@ namespace KeithLink.Svc.Core.Models.Reports
 
         [DataMember(Name = "images")]
         public List<ProductImage> Images { get; set; }
+
+        [Description("Item Order History")]
+        public string OrderHistoryString { get; set; }
 
         [DataMember(Name = "totalquantityordered")]
 		[Description("Qty Ordered")]

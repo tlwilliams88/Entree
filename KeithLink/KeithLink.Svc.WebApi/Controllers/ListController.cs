@@ -47,6 +47,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         private readonly IExportSettingLogic _exportLogic;
         private readonly IEventLogRepository _elRepo;
         private readonly IUserProfileLogic _profileLogic;
+        private readonly ICatalogLogic _catalogLogic;
         #endregion
 
         #region ctor
@@ -59,7 +60,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="elRepo"></param>
         /// <param name="auditLogRepo"></param>
         /// <param name="listRepo"></param>
-        public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic, ICacheListLogic cacheListLogic,
+        public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic, ICacheListLogic cacheListLogic, ICatalogLogic catalogLogic,
                               IEventLogRepository elRepo, IAuditLogRepository auditLogRepo, ICustomListSharesRepository customListSharesRepo, IListService listService)
             : base(profileLogic) {
             _auditLogRepo = auditLogRepo;
@@ -70,6 +71,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             _elRepo = elRepo;
             _listService = listService;
             _customListSharesRepo = customListSharesRepo;
+            _catalogLogic = catalogLogic;
         }
         #endregion
 
@@ -87,6 +89,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
+                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, list.Items);
+
+                if (exportRequest.Sort != null) {
+                    list.Items = list.Items.AsQueryable()
+                                     .Sort(exportRequest.Sort)
+                                     .ToList();
+                }
 
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,

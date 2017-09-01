@@ -58,7 +58,8 @@ angular.module('bekApp')
     //fix this
     $analytics.eventTrack(location.action, {  category: location.category, label: 'Default Export' });
     var config = {
-      selectedtype: $scope.exportConfig.selectedtype
+      selectedtype: $scope.exportConfig.selectedtype,
+      sort: exportParams.sort
       // do not set fields for default export
     };
     exportMethod(config, exportParams);
@@ -75,7 +76,8 @@ angular.module('bekApp')
 
     var config = {
       selectedtype: $scope.exportConfig.selectedtype,
-      fields: $scope.selectedFields
+      fields: $scope.selectedFields,
+      sort: exportConfig.sort
     };
 
     exportMethod(config, exportParams);

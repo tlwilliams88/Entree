@@ -24,5 +24,6 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         void RecalculateFacets(ProductsReturn ret, List<string> specialFilters);
         void AddSpecialFiltersToFacets(ExpandoObject facets, string countDeviated = null, string countRecentOrdered = null);
         ProductsReturn GetProductNumbersBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
+        Product LoadProductFromElasticSearchProduct(bool listonly, dynamic oProd);
     }
 }

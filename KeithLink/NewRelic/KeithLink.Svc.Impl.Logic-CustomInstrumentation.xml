@@ -4,28 +4,16 @@
   <!--If a tracer just defines a method that is part of a recorded trace, but doesn't record one itself, you don't add the name attribute-->
   <!--If a tracer is to actually record a trace you add the name attribute-->
   <instrumentation>
-     <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedContractInformation">
-         <match assemblyName="KeithLink.Svc.Impl"
-                className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
-             <exactMethodMatcher methodName="GetCachedContractInformation"/>
-         </match>
-     </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedContractInformation">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="GetCachedContractInformation"/>
+          </match>
+      </tracerFactory>
       <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedContractInformation">
           <match assemblyName="KeithLink.Svc.Impl"
                  className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
               <exactMethodMatcher methodName="AddCachedContractInformation"/>
-          </match>
-      </tracerFactory>
-      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedLabels">
-          <match assemblyName="KeithLink.Svc.Impl"
-                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
-              <exactMethodMatcher methodName="GetCachedLabels"/>
-          </match>
-      </tracerFactory>
-      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedLabels">
-          <match assemblyName="KeithLink.Svc.Impl"
-                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
-              <exactMethodMatcher methodName="AddCachedLabels"/>
           </match>
       </tracerFactory>
       <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedTypedLists">
@@ -38,6 +26,18 @@
           <match assemblyName="KeithLink.Svc.Impl"
                  className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
               <exactMethodMatcher methodName="AddCachedTypedLists"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedLabels">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="GetCachedLabels"/>
+          </match>
+      </tracerFactory>
+      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/AddCachedLabels">
+          <match assemblyName="KeithLink.Svc.Impl"
+                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
+              <exactMethodMatcher methodName="AddCachedLabels"/>
           </match>
       </tracerFactory>
       <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/GetCachedCustomerLists">
@@ -70,14 +70,8 @@
               <exactMethodMatcher methodName="ClearCustomersListCaches"/>
           </match>
       </tracerFactory>
-      <tracerFactory metricName="Custom/Impl/Logic/Cache/CacheListLogicImpl/ClearCustomersLabelsCache">
-          <match assemblyName="KeithLink.Svc.Impl"
-                 className="KeithLink.Svc.Impl.Logic.Cache.CacheListLogicImpl">
-              <exactMethodMatcher methodName="ClearCustomersLabelsCache"/>
-          </match>
-      </tracerFactory>
 
-      <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/GetTypeSpecificExportOptions">
+    <tracerFactory metricName="Custom/Impl/Logic/Configurations/ExportSettingLogicImpl/GetTypeSpecificExportOptions">
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Configurations.ExportSettingLogicImpl">
         <exactMethodMatcher methodName="GetTypeSpecificExportOptions"/>
@@ -826,6 +820,390 @@
       <match assemblyName="KeithLink.Svc.Impl"
              className="KeithLink.Svc.Impl.Logic.Lists.FavoriteLogicImpl">
         <exactMethodMatcher methodName="GetFavoritedItemNumbers"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListChangesLogicImpl/ProcessContractChanges">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListChangesLogicImpl">
+        <exactMethodMatcher methodName="ProcessContractChanges"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListChangesLogicImpl/ProcessContractChanges">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListChangesLogicImpl">
+        <exactMethodMatcher methodName="ProcessContractChanges"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListChangesLogicImpl/BuildContractChangeNotifications">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListChangesLogicImpl">
+        <exactMethodMatcher methodName="BuildContractChangeNotifications"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListChangesLogicImpl/BuildContractChangeNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListChangesLogicImpl">
+        <exactMethodMatcher methodName="BuildContractChangeNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListChangesLogicImpl/AddContractChangeToNotification">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListChangesLogicImpl">
+        <exactMethodMatcher methodName="AddContractChangeToNotification"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListChangesLogicImpl/ToContractChangeString">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListChangesLogicImpl">
+        <exactMethodMatcher methodName="ToContractChangeString"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListChangesLogicImpl/TryToFindProductForContractChange">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListChangesLogicImpl">
+        <exactMethodMatcher methodName="TryToFindProductForContractChange"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ContractListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ContractListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/GetCompletedModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="GetCompletedModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/ReadLists">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="ReadLists"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/SaveList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="SaveList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/DeleteList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="DeleteList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/SaveItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="SaveItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/CustomListLogicImpl/CreateOrUpdateList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.CustomListLogicImpl">
+        <exactMethodMatcher methodName="CreateOrUpdateList"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/FavoritesListLogicImpl/GetFavoritedItemNumbers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.FavoritesListLogicImpl">
+        <exactMethodMatcher methodName="GetFavoritedItemNumbers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/FavoritesListLogicImpl/GetFavoritesList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.FavoritesListLogicImpl">
+        <exactMethodMatcher methodName="GetFavoritesList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/FavoritesListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.FavoritesListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/FavoritesListLogicImpl/SaveList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.FavoritesListLogicImpl">
+        <exactMethodMatcher methodName="SaveList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/FavoritesListLogicImpl/Save">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.FavoritesListLogicImpl">
+        <exactMethodMatcher methodName="Save"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/FavoritesListLogicImpl/CreateList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.FavoritesListLogicImpl">
+        <exactMethodMatcher methodName="CreateList"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/HistoryListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.HistoryListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/HistoryListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.HistoryListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/HistoryListLogicImpl/ItemsInHistoryList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.HistoryListLogicImpl">
+        <exactMethodMatcher methodName="ItemsInHistoryList"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/InventoryValuationListLogicImpl/GetCompletedLists">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.InventoryValuationListLogicImpl">
+        <exactMethodMatcher methodName="GetCompletedLists"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/InventoryValuationListLogicImpl/ReadLists">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.InventoryValuationListLogicImpl">
+        <exactMethodMatcher methodName="ReadLists"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/InventoryValuationListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.InventoryValuationListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/InventoryValuationListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.InventoryValuationListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/InventoryValuationListLogicImpl/CreateOrUpdateList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.InventoryValuationListLogicImpl">
+        <exactMethodMatcher methodName="CreateOrUpdateList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/InventoryValuationListLogicImpl/SaveItem">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.InventoryValuationListLogicImpl">
+        <exactMethodMatcher methodName="SaveItem"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/InventoryValuationListLogicImpl/SaveList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.InventoryValuationListLogicImpl">
+        <exactMethodMatcher methodName="SaveList"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/MandatoryItemsListLogicImpl/GetMandatoryItemNumbers">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.MandatoryItemsListLogicImpl">
+        <exactMethodMatcher methodName="GetMandatoryItemNumbers"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/MandatoryItemsListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.MandatoryItemsListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/MandatoryItemsListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.MandatoryItemsListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/MandatoryItemsListLogicImpl/SaveList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.MandatoryItemsListLogicImpl">
+        <exactMethodMatcher methodName="SaveList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/MandatoryItemsListLogicImpl/SaveDetail">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.MandatoryItemsListLogicImpl">
+        <exactMethodMatcher methodName="SaveDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/MandatoryItemsListLogicImpl/DeleteMandatoryItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.MandatoryItemsListLogicImpl">
+        <exactMethodMatcher methodName="DeleteMandatoryItems"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/MandatoryItemsListLogicImpl/CreateList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.MandatoryItemsListLogicImpl">
+        <exactMethodMatcher methodName="CreateList"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/NotesListLogicImpl/GetNote">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.NotesListLogicImpl">
+        <exactMethodMatcher methodName="GetNote"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/NotesListLogicImpl/GetList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.NotesListLogicImpl">
+        <exactMethodMatcher methodName="GetList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/NotesListLogicImpl/SaveNote">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.NotesListLogicImpl">
+        <exactMethodMatcher methodName="SaveNote"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyOrderedListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyOrderedListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyOrderedListLogicImpl/PostRecentOrder">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyOrderedListLogicImpl">
+        <exactMethodMatcher methodName="PostRecentOrder"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyOrderedListLogicImpl/Save">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyOrderedListLogicImpl">
+        <exactMethodMatcher methodName="Save"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyOrderedListLogicImpl/DeleteAll">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyOrderedListLogicImpl">
+        <exactMethodMatcher methodName="DeleteAll"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyOrderedListLogicImpl/DeleteOldRecentlyOrdered">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyOrderedListLogicImpl">
+        <exactMethodMatcher methodName="DeleteOldRecentlyOrdered"/>
+      </match>
+    </tracerFactory>
+      
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyViewedListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyViewedListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyViewedListLogicImpl/PostRecentView">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyViewedListLogicImpl">
+        <exactMethodMatcher methodName="PostRecentView"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyViewedListLogicImpl/Save">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyViewedListLogicImpl">
+        <exactMethodMatcher methodName="Save"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyViewedListLogicImpl/DeleteAll">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyViewedListLogicImpl">
+        <exactMethodMatcher methodName="DeleteAll"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecentlyViewedListLogicImpl/DeleteOldRecentlyViewed">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecentlyViewedListLogicImpl">
+        <exactMethodMatcher methodName="DeleteOldRecentlyViewed"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecommendedItemsListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecommendedItemsListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecommendedItemsListLogicImpl/SaveDetail">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecommendedItemsListLogicImpl">
+        <exactMethodMatcher methodName="SaveDetail"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecommendedItemsListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecommendedItemsListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecommendedItemsListLogicImpl/CreateList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecommendedItemsListLogicImpl">
+        <exactMethodMatcher methodName="CreateList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/RecommendedItemsListLogicImpl/DeleteRecommendedItems">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.RecommendedItemsListLogicImpl">
+        <exactMethodMatcher methodName="DeleteRecommendedItems"/>
+      </match>
+    </tracerFactory>
+
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ReminderItemsListLogicImpl/GetListModel">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ReminderItemsListLogicImpl">
+        <exactMethodMatcher methodName="GetListModel"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ReminderItemsListLogicImpl/ReadList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ReminderItemsListLogicImpl">
+        <exactMethodMatcher methodName="ReadList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ReminderItemsListLogicImpl/SaveList">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ReminderItemsListLogicImpl">
+        <exactMethodMatcher methodName="SaveList"/>
+      </match>
+    </tracerFactory>
+    <tracerFactory metricName="Custom/Impl/Logic/Lists/ReminderItemsListLogicImpl/Save">
+      <match assemblyName="KeithLink.Svc.Impl"
+             className="KeithLink.Svc.Impl.Logic.Lists.ReminderItemsListLogicImpl">
+        <exactMethodMatcher methodName="Save"/>
       </match>
     </tracerFactory>
 

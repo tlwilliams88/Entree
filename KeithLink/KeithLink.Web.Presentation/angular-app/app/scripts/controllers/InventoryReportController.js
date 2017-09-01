@@ -270,26 +270,33 @@ angular.module('bekApp')
       }
 
       $scope.sortList = function(sortBy, sortOrder) {
+          
+          List.update({}, $scope.report).$promise.then(function(response) {
+              $scope.sortBy = sortBy;
+              
+              $scope.report = response.successResponse;
 
-        $scope.sortBy = sortBy;
+              listPagingModel = new ListPagingModel(
+                $scope.report.listid,
+                $scope.report.type,
+                init,
+                null,
+                startLoading,
+                stopLoading,
+                $scope.sort,
+                $scope.report.items.length
+              );
 
-        listPagingModel = new ListPagingModel(
-          $scope.report.listid,
-          $scope.report.type,
-          init,
-          null,
-          startLoading,
-          stopLoading,
-          $scope.sort,
-          $scope.report.items.length
-        );
+              $scope.sortOrder = sortOrder ? 'asc' : 'desc';
+              $scope.sort = [{
+                field: $scope.sortBy,
+                order: $scope.sortOrder
+              }];
+              listPagingModel.sortListItems($scope.sort);
 
-        $scope.sortOrder = sortOrder ? 'asc' : 'desc';
-        $scope.sort = [{
-          field: $scope.sortBy,
-          order: $scope.sortOrder
-        }];
-        listPagingModel.sortListItems($scope.sort);
+            }, function() {
+              toaster.pop('error', 'Error saving report.');
+            });
 
       };
 
@@ -363,7 +370,7 @@ angular.module('bekApp')
 
               $state.transitionTo('menu.inventoryreport',
                   {listid: $scope.report.listid},
-                  {location: true, reload: false, notify: false}
+                  {location: true, reload: true, notify: true}
               );
 
               toaster.pop('success', 'Successfully saved report.');

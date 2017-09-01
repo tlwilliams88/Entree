@@ -21,6 +21,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+
 namespace KeithLink.Svc.WebApi.Controllers
 {
     /// <summary>
@@ -36,8 +39,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IShoppingCartLogic _shoppingCartLogic;
 		//private readonly IOrderServiceRepository _orderServiceRepository;
 		private readonly IExportSettingLogic _exportLogic;
+        private readonly ICatalogLogic _catalogLogic;
         private readonly IEventLogRepository _log;
         private readonly IOrderHistoryLogic _historyLogic;
+        private readonly IListService _listService;
         #endregion
 
         #region ctor
@@ -53,8 +58,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="historyHeaderRepository"></param>
         /// <param name="orderHistoryLogic"></param>
-        public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo,
-							   IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
+        public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo, IListService listService, ICatalogLogic catalogLogic,
+                               IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
                                IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory historyHeaderRepository, IOrderHistoryLogic orderHistoryLogic) : base(profileLogic) {
             _historyRequestLogic = historyRequestLogic;
 			_orderLogic = orderLogic;
@@ -64,6 +69,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             _log = logRepo;
             _historyHeaderRepo = historyHeaderRepository;
             _historyLogic = orderHistoryLogic;
+            _listService = listService;
+            _catalogLogic = catalogLogic;
         }
         #endregion
 
@@ -305,6 +312,9 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
                 var order = _orderLogic.UpdateOrderForEta(AuthenticatedUser, _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
+                ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, order.Items, _listService);
+                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, order.Items);
+
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, Core.Enumerations.List.ListType.Custom, 
                                                         exportRequest.Fields, exportRequest.SelectedType);

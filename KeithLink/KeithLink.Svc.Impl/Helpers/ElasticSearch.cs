@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Nest;
 using Elasticsearch.Net;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Impl.Seams;
 
 namespace KeithLink.Svc.Impl.Helpers
 {
@@ -24,7 +25,7 @@ namespace KeithLink.Svc.Impl.Helpers
 
         public ElasticSearch()
         {
-            _elasticSearchUri = new Uri(Configuration.ElasticSearchURL);
+            _elasticSearchUri = new Uri(BEKConfiguration.Get("ElasticSearchURL"));
             _connectionConfig = new ConnectionSettings(_elasticSearchUri);
             _client = new ElasticClient(_connectionConfig);
 

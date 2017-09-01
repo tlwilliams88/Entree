@@ -241,9 +241,12 @@
             type="button"
             ng-disabled="!isOrderEntryCustomer"
             ui-sref="menu.notifications"
-            ui-sref-active="is-selected" >
+            ui-sref-active="is-selected" 
+            analytics-on 
+            analytics-category="Menu-Notifications-Mobile" 
+            analytics-event="Notification">
             <li>
-              <div class="sidebar-nav__icon"><span class="icon-bell user-bar-buttons"></span></div>
+              <div class="sidebar-nav__icon"><span class="icon-bell user-bar-buttons" ></span></div>
               <span ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" class="badge">{{userBar.userNotificationsCount.unread}}</span>
               Notifications
             </li>
@@ -307,7 +310,7 @@
           <li class="mobile-menu-item" ng-if="canCreateOrders" style="padding-right: 23px;">
 
             <div class="btn-group btn-small-mobile-truck" dropdown is-open="status.cartisopenmobile" style="margin-top: -2px; margin-bottom: -3px;">
-              <button class="badge-parent btn-no-style dropdown-toggle" style="padding: 0;">
+              <button class="badge-parent btn-no-style dropdown-toggle" style="padding: 0;" analytics-on analytics-category="Menu-Carts-Mobile" analytics-event="Truck Icon">
                 <span title="Carts" class="icon-truck"></span>
               </button>
               <ul class="dropdown-menu truck-dropdown">
@@ -323,8 +326,8 @@
                     <br>
                     Cart Total: {{cart.subtotal | currency}}
                     <br>
-                    <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
-                    <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })">Continue Shopping</a>
+                    <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" analytics-on analytics-category="Menu-Carts-Mobile-Cart" analytics-event="Cart Selected">View Cart</a>
+                    <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })" analytics-on analytics-category="Menu-Carts-Mobile-Cart" analytics-event="Continue Shopping">Continue Shopping</a>
                   </div>
                 </li>
                 <li class="cart-dropdown__view-all">
@@ -344,8 +347,8 @@
                     <br>
                     Change Order Total: {{changeOrder.ordertotal | currency}}
                     <br>
-                    <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;">View Change Order</a>
-                    <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber })">Continue Shopping</a>
+                    <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;" analytics-on analytics-category="Menu-Carts-Mobile-Change-Order" analytics-event="Change Order Selected">View Change Order</a>
+                    <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber })" analytics-on analytics-category="Menu-Carts-Mobile-Change-Order" analytics-event="Change Order Continue Shopping">Continue Shopping</a>
                   </div>
                 </li>
               </ul>
@@ -393,12 +396,12 @@
           <span class="nav-description text-light padding-right-5" style="font-size: 15px; color: #EDBB51;">Products</span>
           <span class="caret text-light" style="color: #EDBB51;"></span>
           <ul class="dropdown-menu col-xs-12" role="menu">
-            <li ng-repeat="department in departments" ng-if="department.name != 'All'">
+            <li ng-repeat="department in departments" ng-if="department.name != 'All'" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="{{department.name}}">
               <a ui-sref="menu.catalog.products.list({ catalogType: 'BEK', type: 'category', id: department.search_name, category: department.name})">
                 {{department.name}}
               </a>
             </li>
-            <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
+            <li class="hand-pointer" ng-if="selectedUserContext.customer.canViewUNFI" style="padding-left: 10px; padding-top: 10px; padding-bottom: 10px;" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="UNFI catalog">
                 <span class="hand-pointer" ui-sref="menu.catalog.home({catalogType: 'UNFI'})" style="color: green;"><span class="icon-leaf padding-right-5"></span>Natural and Organic</span>
             </li>
           </ul>
@@ -436,7 +439,7 @@
           </div>
 
           <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent margin-top-5 margin-left-5 padding-right-15">
-            <span class="icon-bell user-bar-buttons"></span>
+            <span class="icon-bell user-bar-buttons" analytics-on analytics-category="Menu-Notifications-Desktop" analytics-event="Notification Icon"></span>
             <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" style="margin-right: 12px;">{{userBar.userNotificationsCount.unread}}</span>
           </span></a>
           <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">

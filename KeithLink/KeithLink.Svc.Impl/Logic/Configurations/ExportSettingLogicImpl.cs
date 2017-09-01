@@ -48,6 +48,9 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                 case ExportType.List:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Position", Label = "Line #" });
                     break;
+                case ExportType.CartDetail:
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Quantity", Label = "Qty" });
+                    break;
                 case ExportType.Order:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "PONumber", Label = "PO #" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Label = "Order Date" });
@@ -70,7 +73,9 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     return options;
                 case ExportType.ItemUsage:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Order = 2, Label = "Name" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Detail", Order = 19, Label = "Detailed Description" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "OrderHistoryString", Order = 20, Label = "Order History" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Class", Order = 21, Label = "Category" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Brand", Order = 22, Label = "Brand" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Order = 23, Label = "Mfr Name" });
@@ -104,13 +109,15 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
 
             //Common product detail fields
             options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Label = "Item" });
-            options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Label = "Each" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Label = "Name" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Detail", Label = "Detailed Description" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Favorite", Label = "Favorite" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Description", Label = "Description" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "OrderHistoryString", Label = "Order History" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Label = "Brand" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Pack", Label = "Pack" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Size", Label = "Size" });
+            options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Label = "Each" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "PackagePrice", Label = "Pack Price" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
             options.Fields.Add(new ExportModelConfiguration() { Field = "Category", Label = "Contract Category" });
@@ -159,6 +166,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Quantity", Label = "# Confirmed" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "EachYN", Label = "Each" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Price", Label = "Price" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "LineTotal", Label = "Ext Price" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });
                     break;
                 case ExportType.InvoiceDetail:
