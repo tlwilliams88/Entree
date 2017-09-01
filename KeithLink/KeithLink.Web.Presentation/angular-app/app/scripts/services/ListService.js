@@ -312,7 +312,7 @@ angular.module('bekApp')
               list.items.forEach(function(item){
                 if(item.onhand < 0.01){
                   item.onhand = '';
-                } else if(item.quantity < 1){
+              } else if(item.quantity < 1 && listType != 11){
                     item.quantity = '';
                 }
               });
