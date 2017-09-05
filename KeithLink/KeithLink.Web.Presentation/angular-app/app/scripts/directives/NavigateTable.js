@@ -14,8 +14,11 @@ angular.module('bekApp')
 .directive('navigateTable', ['$timeout', function($timeout){
   return function(scope, element, attr) {
 
-    element.on('keyup', 'input[type="text"]', handleNavigation);
-    scope.$on('changed', 'input[type="text"]', handleNavigation);
+    element.on('keyup', 'input[type="text"], input[type="tel"]', handleNavigation);
+    scope.$on('changed', 'input[type="text"], input[type="tel"]', handleNavigation);
+    
+    // element.on('keyup', 'input[type="tel"]', handleNavigation);
+    // scope.$on('changed', 'input[type="tel"]', handleNavigation);
 
     function getPreviousTabstop(row) {
       return row.prevUntil('tr td .tabstop').find('.tabstop').last()[0];
