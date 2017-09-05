@@ -16,9 +16,6 @@ angular.module('bekApp')
 
     element.on('keyup', 'input[type="text"], input[type="tel"]', handleNavigation);
     scope.$on('changed', 'input[type="text"], input[type="tel"]', handleNavigation);
-    
-    // element.on('keyup', 'input[type="tel"]', handleNavigation);
-    // scope.$on('changed', 'input[type="tel"]', handleNavigation);
 
     function getPreviousTabstop(row) {
       return row.prevUntil('tr td .tabstop').find('.tabstop').last()[0];
