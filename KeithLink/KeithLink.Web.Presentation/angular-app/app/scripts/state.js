@@ -180,7 +180,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:deptName/?currentPage/?startingPoint/?parentcategories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?temp_zones/?specialfilters',
+      url: ':type/:id/:deptName',
       params: {
         brand: null,
         category: null,
@@ -308,13 +308,6 @@ angular.module('bekApp')
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
             listToBeUsed.listId = last.listId;
             listToBeUsed.listType = last.listType;
-          }
-
-          if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
-            ListService.getParamsObject(params, 'lists').then(function(storedParams){
-              $stateParams.sortingParams = storedParams;
-              params = storedParams;
-            });
           }
 
           listToBeUsed.listId = listToBeUsed.listId != 'nonbeklist' ? parseInt(listToBeUsed.listId, 10) : listToBeUsed.listId;
@@ -487,41 +480,30 @@ angular.module('bekApp')
 
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize(),
               params = {size: pageSize, from: 0, sort: []},
-              listToBeUsed = {
-                 listId: $stateParams.listId,
-                 listType: $stateParams.listType
-              },
+              listToBeUsed = {},
               lists = ListService.listHeaders,
               lastOrderList = LocalStorage.getLastOrderList();
           
-          listToBeUsed = listToBeUsed.listId && listToBeUsed.listType ? listToBeUsed : $filter('filter')(lists, {listid: lastOrderList.listId, type: lastOrderList.listType})[0];
+          listToBeUsed = $stateParams.listId && $stateParams.listType ? $filter('filter')(lists, {listid: $stateParams.listId, type: $stateParams.listType})[0] : $filter('filter')(lists, {listid: lastOrderList.listId, type: lastOrderList.listType})[0];
           
           if(listToBeUsed == undefined){
-            if(lists.length == 0) {
-              listToBeUsed = {
-                  listId: $stateParams.listId,
-                  listType: $stateParams.listType
-              }
-            } else if (list.length > 0) {
-              var contractList = $filter('filter')(lists, { type: 2 }),
-                  historyList = $filter('filter')(lists, { type: 5 }),
-                  favoritesList = $filter('filter')(lists, { type: 1 }),
-                  customList = $filter('filter')(lists, { type: 0 });
+            var contractList = $filter('filter')(lists, { type: 2 }),
+                historyList = $filter('filter')(lists, { type: 5 }),
+                favoritesList = $filter('filter')(lists, { type: 1 }),
+                customList = $filter('filter')(lists, { type: 0 });
 
-              if(contractList.length > 0){
-                listToBeUsed = contractList[0];
-              }
-              else if(historyList.length > 0){
-                listToBeUsed = historyList[0];
-              }
-              else if(favoritesList.length > 0){
-                listToBeUsed = favoritesList[0];
-              }
-              else if(customList.length > 0){
-                listToBeUsed = customList[0];
-              }
+            if(contractList.length > 0){
+              listToBeUsed = contractList[0];
             }
-
+            else if(historyList.length > 0){
+              listToBeUsed = historyList[0];
+            }
+            else if(favoritesList.length > 0){
+              listToBeUsed = favoritesList[0];
+            }
+            else if(customList.length > 0){
+              listToBeUsed = customList[0];
+            }
           }
 
           if(listToBeUsed.read_only || listToBeUsed.isrecommended || listToBeUsed.ismandatory){
