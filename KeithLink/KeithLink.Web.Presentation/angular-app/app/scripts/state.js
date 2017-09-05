@@ -180,7 +180,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/:deptName',
+      url: ':type/:id/:deptName/?currentPage/?startingPoint/?parentcategories/?subcategories/?brands/?manufacturers/?dietary/?itemspecs/?temp_zones/?specialfilters',
       params: {
         brand: null,
         category: null,
@@ -308,6 +308,13 @@ angular.module('bekApp')
           if((last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')) || last && last.listId == 'nonbeklist'){
             listToBeUsed.listId = last.listId;
             listToBeUsed.listType = last.listType;
+          }
+
+          if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
+            ListService.getParamsObject(params, 'lists').then(function(storedParams){
+              $stateParams.sortingParams = storedParams;
+              params = storedParams;
+            });
           }
 
           listToBeUsed.listId = listToBeUsed.listId != 'nonbeklist' ? parseInt(listToBeUsed.listId, 10) : listToBeUsed.listId;
