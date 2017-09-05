@@ -17,6 +17,6 @@ namespace KeithLink.Svc.Core.Models.ModelExport
 		[DataMember(Name = "selectedtype")]
 		public string SelectedType { get; set; }
         [DataMember(Name = "sort")]
-        public List<SortInfo> Sort { get; set; }
+        public SortInfo Sort { get; set; }
     }
 }
