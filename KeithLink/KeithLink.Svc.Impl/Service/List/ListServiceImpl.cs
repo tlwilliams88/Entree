@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, 
+                                IContractListLogic contractListLogic, ICustomListLogic customListLogic,
                                 IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo, ICacheListLogic cacheHelper)
         {
             _cacheListLogic = cacheHelper;
@@ -583,8 +583,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _recommendedItemsLogic.CreateList(catalogInfo);
                     break;
                 case ListType.Reminder:
-                    var newlist = _reminderItemsLogic.SaveList(user, catalogInfo, list);
-                    id = newlist.ListId;
+                    id = _reminderItemsLogic.SaveList(user, catalogInfo, list).ListId;
                     break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
