@@ -539,7 +539,7 @@ angular.module('bekApp')
             newList.name = 'Mandatory';
           } else if (params.type === 10) {
             newList.name = 'Recommended';
-        } else if (params.type === 13) {
+        } else if (params.type === 8) {
             newList.name = 'Reminder';
         } else if (params.name && params.name !== null) {
             newList.name = params.name;
@@ -892,7 +892,7 @@ angular.module('bekApp')
 
         createReminderList: function(items) {
           // Type = 13 - Reminder list type that needs to be passed in
-          var params = { type: 13 };
+          var params = { type: 8 };
           if(items == undefined){
               items = [];
           }
