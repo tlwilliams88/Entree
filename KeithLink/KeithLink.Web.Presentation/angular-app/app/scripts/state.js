@@ -531,6 +531,7 @@ angular.module('bekApp')
             });
           }
 
+          LocalStorage.setLastOrderList(listToBeUsed);
           return ListService.getList(listToBeUsed, params);
         }]
       }

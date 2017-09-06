@@ -25,8 +25,6 @@ angular.module('bekApp')
         $scope.cartHeaders = carts;
     })
 
-    // ListService.getListHeaders();
-
     OrderService.getChangeOrders();
 
     // Tutorial
