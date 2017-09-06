@@ -283,7 +283,10 @@ angular.module('bekApp')
         startingPoint: parseInt($scope.startingPoint),
         currentPage: parseInt($scope.currentPage)
       };
-      updatePage(updatedPage);
+      
+      if($scope.aggregateCount !== 0){
+          updatePage(updatedPage);
+      }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id).then(function(data){
@@ -556,7 +559,9 @@ angular.module('bekApp')
         startingPoint: $stateParams.startingPoint,
         currentPage: $stateParams.currentPage
       };
-      updatePage(updatedPage);
+      if($scope.aggregateCount !== 0){
+          updatePage(updatedPage);
+      }
        
       $scope.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 1;
       
@@ -707,14 +712,23 @@ angular.module('bekApp')
       $scope.itemspecs.selected = [];
       $scope.specialfilters.selected = [];
       
-      $stateParams.parentcategories = undefined;
-      $stateParams.subcategories = undefined;
-      $stateParams.brands = undefined;
-      $stateParams.manufacturers = undefined;
-      $stateParams.dietary = undefined;
-      $stateParams.temp_zones = undefined;
-      $stateParams.itemspecs = undefined;
-      $stateParams.specialfilters = undefined;
+      var updatedPage = {
+        type: $scope.paramType, 
+        id: $scope.paramId, 
+        deptName: $stateParams.deptName, 
+        parentcategories: undefined,
+        subcategories: undefined,
+        brands: undefined,
+        manufacturers: undefined,
+        dietary: undefined,
+        itemspecs: undefined,
+        temp_zones: undefined,
+        specialfilters: undefined,
+        startingPoint: undefined,
+        currentPage: undefined
+      };
+      updatePage(updatedPage);
+
       loadProducts().then(refreshFacets);
       $scope.noFiltersSelected = true;
     };
