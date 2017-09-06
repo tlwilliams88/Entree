@@ -21,6 +21,8 @@ using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
+
 using Microsoft.Practices.ObjectBuilder2;
 
 namespace KeithLink.Svc.Impl.Service.List
@@ -38,6 +40,7 @@ namespace KeithLink.Svc.Impl.Service.List
         private readonly IMandatoryItemsListLogic _mandatoryItemsLogic;
         private readonly IInventoryValuationListLogic _inventoryValuationLogic;
         private readonly IRemindersListLogic _reminderItemsLogic;
+        private readonly IRemindersListHeadersRepository _remindersHeadersRepo;
         private readonly ICustomListLogic _customListLogic;
         private readonly INotesListLogic _notesLogic;
         private readonly ICatalogLogic _catalogLogic;
@@ -62,7 +65,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, ICustomListLogic customListLogic,
+                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, IRemindersListHeadersRepository remindersHeadersRepo,
                                 IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo, ICacheListLogic cacheHelper)
         {
             _cacheListLogic = cacheHelper;
@@ -74,6 +77,7 @@ namespace KeithLink.Svc.Impl.Service.List
             _recentlyOrderedLogic = recentlyOrderedLogic;
             _recommendedItemsLogic = recommendedItemsLogic;
             _reminderItemsLogic = reminderItemsLogic;
+            _remindersHeadersRepo = remindersHeadersRepo;
             _mandatoryItemsLogic = mandatoryItemsLogic;
             _inventoryValuationLogic = inventoryValuationLogic;
             _customListLogic = customListLogic;
@@ -583,7 +587,8 @@ namespace KeithLink.Svc.Impl.Service.List
                     _recommendedItemsLogic.CreateList(catalogInfo);
                     break;
                 case ListType.Reminder:
-                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
+                    ReminderItemsListHeader model = new ReminderItemsListHeader() { BranchId = catalogInfo.BranchId, CustomerNumber = catalogInfo.CustomerId };
+                    id = _remindersHeadersRepo.SaveReminderListHeader(model);
                     break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
