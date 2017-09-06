@@ -143,10 +143,20 @@ namespace KeithLink.Svc.Impl.Logic
                 item.Position = startpos++;
             }
 
-            return basketRepository.CreateOrUpdateBasket(customer.CustomerId, 
+            Guid newCartId = basketRepository.CreateOrUpdateBasket(customer.CustomerId, 
                                                          cartBranchId.ToLower(), 
                                                          newBasket, 
                                                          cart.Items.Select(l => l.ToLineItem()).ToList());
+
+		    if (cart.ListId != null) {
+		        _orderedFromListRepository.Write(new OrderedFromList() {
+		            ControlNumber = newCartId.ToString(),
+		            ListId = cart.ListId,
+		            ListType = cart.ListType
+		        });
+		    }
+
+		    return newCartId;
 		}
 
         public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)

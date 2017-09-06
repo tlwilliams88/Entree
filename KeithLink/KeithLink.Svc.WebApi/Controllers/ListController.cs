@@ -84,7 +84,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/export/{type}/{listId}")]
-        public HttpResponseMessage ExportList(ListType type, long listId, ExportRequestModel exportRequest) {
+        public HttpResponseMessage ExportList(ListType type, long listId, [FromBody]ExportRequestModel exportRequest) {
             HttpResponseMessage ret;
             try
             {
@@ -92,8 +92,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, list.Items);
 
                 if (exportRequest.Sort != null) {
+                    List<SortInfo> slist = new List<SortInfo>();
+                    slist.Add(exportRequest.Sort);
                     list.Items = list.Items.AsQueryable()
-                                     .Sort(exportRequest.Sort)
+                                     .Sort(slist)
                                      .ToList();
                 }
 
@@ -291,6 +293,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 ret.SuccessResponse = _listService.CreateList(this.AuthenticatedUser, this.SelectedUserContext, type, list);
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
@@ -317,6 +320,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try {
                 _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, type, 
                                       listId, newItem);
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
                 ret.SuccessResponse = true;
                 ret.IsSuccess = true;
             } catch (Exception ex) {
@@ -346,6 +350,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             {
                 _listService.SaveItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, newItems);
                 var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
 
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;

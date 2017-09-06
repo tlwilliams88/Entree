@@ -168,8 +168,15 @@ namespace KeithLink.Svc.Impl.Logic.Cache
             // customer lists
             RemoveListCacheItem(string.Format("{0}_{1}_{2}",
                                               CACHEKEY_PREFIX_LISTOFLISTS,
-                                              lists[0].BranchId,
-                                              lists[0].CustomerNumber));
+                                              catalogInfo.BranchId,
+                                              catalogInfo.CustomerId));
+
+            // always try to remove inventory valuation lists; they are not in the regular rollup
+            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}",
+                                              CACHEKEY_PREFIX_TYPELISTOFLISTS,
+                                              catalogInfo.BranchId,
+                                              catalogInfo.CustomerId,
+                                              ListType.InventoryValuation));
         }
 
         public void ClearCustomersLabelsCache(UserSelectedContext catalogInfo)

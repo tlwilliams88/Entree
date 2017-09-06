@@ -707,14 +707,23 @@ angular.module('bekApp')
       $scope.itemspecs.selected = [];
       $scope.specialfilters.selected = [];
       
-      $stateParams.parentcategories = undefined;
-      $stateParams.subcategories = undefined;
-      $stateParams.brands = undefined;
-      $stateParams.manufacturers = undefined;
-      $stateParams.dietary = undefined;
-      $stateParams.temp_zones = undefined;
-      $stateParams.itemspecs = undefined;
-      $stateParams.specialfilters = undefined;
+      var updatedPage = {
+        type: $scope.paramType, 
+        id: $scope.paramId, 
+        deptName: $stateParams.deptName, 
+        parentcategories: undefined,
+        subcategories: undefined,
+        brands: undefined,
+        manufacturers: undefined,
+        dietary: undefined,
+        itemspecs: undefined,
+        temp_zones: undefined,
+        specialfilters: undefined,
+        startingPoint: undefined,
+        currentPage: undefined
+      };
+      updatePage(updatedPage);
+
       loadProducts().then(refreshFacets);
       $scope.noFiltersSelected = true;
     };

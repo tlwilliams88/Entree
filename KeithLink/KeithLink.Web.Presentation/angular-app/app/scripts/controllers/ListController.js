@@ -384,7 +384,7 @@ angular.module('bekApp')
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listType: listtype, listId: listid});
+          return $state.transitionTo('menu.lists.items', {listId: listid, listType: listtype}, {location: true, reload: true, notify: true});
         });
       }
     };
@@ -496,6 +496,7 @@ angular.module('bekApp')
 
         setLastList(newList);
         $scope.selectedList = newList;
+        $state.transitionTo('menu.lists.items', {listId: $scope.selectedList.listid, listType: $scope.selectedList.type}, {location: true, reload: false, notify: true});
       });
     };
 

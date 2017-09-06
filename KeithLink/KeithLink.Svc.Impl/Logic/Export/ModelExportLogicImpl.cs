@@ -538,10 +538,12 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                     //    break;
                     case "Pack":
-                    case "CasePrice":
-                    case "PackagePrice":
                     case "parlevel":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "CasePrice":
+                    case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
                         break;
                 }
             }
@@ -641,6 +643,8 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 switch (fieldName)
                 {
+                    case "CasePrice":
+                    case "PackagePrice":
                     case "Price":
                     case "parlevel":
                         celltype = CellValues.Number;
