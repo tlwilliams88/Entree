@@ -283,10 +283,7 @@ angular.module('bekApp')
         startingPoint: parseInt($scope.startingPoint),
         currentPage: parseInt($scope.currentPage)
       };
-      
-      if($scope.aggregateCount !== 0){
-          updatePage(updatedPage);
-      }
+      updatePage(updatedPage);
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id).then(function(data){
@@ -559,9 +556,7 @@ angular.module('bekApp')
         startingPoint: $stateParams.startingPoint,
         currentPage: $stateParams.currentPage
       };
-      if($scope.aggregateCount !== 0){
-          updatePage(updatedPage);
-      }
+      updatePage(updatedPage);
        
       $scope.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 1;
       
