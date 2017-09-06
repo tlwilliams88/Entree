@@ -84,7 +84,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/export/{type}/{listId}")]
-        public HttpResponseMessage ExportList(ListType type, long listId, ExportRequestModel exportRequest) {
+        public HttpResponseMessage ExportList(ListType type, long listId, [FromBody]ExportRequestModel exportRequest) {
             HttpResponseMessage ret;
             try
             {
@@ -92,8 +92,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, list.Items);
 
                 if (exportRequest.Sort != null) {
+                    List<SortInfo> slist = new List<SortInfo>();
+                    slist.Add(exportRequest.Sort);
                     list.Items = list.Items.AsQueryable()
-                                     .Sort(exportRequest.Sort)
+                                     .Sort(slist)
                                      .ToList();
                 }
 

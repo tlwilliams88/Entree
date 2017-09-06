@@ -12,11 +12,11 @@ namespace KeithLink.Svc.Core.Models.ModelExport
 	[DataContract]
 	public class ExportRequestModel
 	{
-		[DataMember(Name="fields")]
-		public List<ExportModelConfiguration> Fields { get; set; }
-		[DataMember(Name = "selectedtype")]
-		public string SelectedType { get; set; }
+        [DataMember(Name="fields")]
+        public List<ExportModelConfiguration> Fields { get; set; }
+        [DataMember(Name = "selectedtype")]
+        public string SelectedType { get; set; }
         [DataMember(Name = "sort")]
-        public List<SortInfo> Sort { get; set; }
+        public SortInfo Sort { get; set; }
     }
 }
