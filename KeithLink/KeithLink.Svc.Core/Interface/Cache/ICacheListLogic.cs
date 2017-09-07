@@ -34,6 +34,8 @@ namespace KeithLink.Svc.Core.Interface.Cache
 
         void RemoveSpecificCachedList(ListModel list);
 
+        void RemoveTypeOfListsCache(UserSelectedContext catalogInfo, ListType type);
+
         void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists);
 
         void ClearCustomersLabelsCache(UserSelectedContext catalogInfo);
