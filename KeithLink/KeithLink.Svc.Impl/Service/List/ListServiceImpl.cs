@@ -583,7 +583,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _recommendedItemsLogic.CreateList(catalogInfo);
                     break;
                 case ListType.Reminder:
-                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
+                    id = _reminderItemsLogic.SaveList(user, catalogInfo, list).ListId;
                     break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
