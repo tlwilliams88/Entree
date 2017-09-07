@@ -293,7 +293,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 ret.SuccessResponse = _listService.CreateList(this.AuthenticatedUser, this.SelectedUserContext, type, list);
+
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 ret.IsSuccess = true;
             }
             catch (Exception ex)
@@ -320,7 +322,19 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try {
                 _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, type, 
                                       listId, newItem);
+
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = listId
+                };
+
+                _cacheListLogic.RemoveSpecificCachedList(list);
+
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 ret.SuccessResponse = true;
                 ret.IsSuccess = true;
             } catch (Exception ex) {
@@ -349,7 +363,16 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 _listService.SaveItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, newItems);
-                var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
+
+                var list = new ListModel() {
+                                               BranchId = SelectedUserContext.BranchId,
+                                               CustomerNumber = SelectedUserContext.CustomerId,
+                                               Type = type,
+                                               ListId = listId
+                                           }; 
+
+                _cacheListLogic.RemoveSpecificCachedList(list);
+
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
 
                 ret.SuccessResponse = list;
@@ -375,6 +398,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
             try {
                 NewListItem listItem = new NewListItem() { Id = _listService.AddCustomInventory(this.AuthenticatedUser, this.SelectedUserContext, type, listId, customInventoryId) };
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 returnValue.SuccessResponse = listItem;
                 returnValue.IsSuccess = true;
             } catch (Exception ex) {
@@ -401,6 +427,19 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 List<long?> newListItems = _listService.AddCustomInventoryItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, customInventoryIds);
+
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = listId
+                };
+
+                _cacheListLogic.RemoveSpecificCachedList(list);
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 returnValue.SuccessResponse = true;
                 returnValue.IsSuccess = true;
             }
@@ -428,6 +467,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 var list = _listService.CopyList(this.AuthenticatedUser, this.SelectedUserContext, copyListModel);
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
 
                 ret.SuccessResponse = list;
                 ret.IsSuccess = true;
@@ -558,6 +599,17 @@ namespace KeithLink.Svc.WebApi.Controllers {
             
             try {
                 ret.SuccessResponse = _listService.UpdateList(this.AuthenticatedUser, this.SelectedUserContext, updatedList.Type, updatedList);
+
+                _cacheListLogic.RemoveSpecificCachedList(new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = updatedList.Type,
+                    ListId = updatedList.ListId
+                });
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 ret.IsSuccess = true;
             } catch (Exception ex) {
                 ret.IsSuccess = false;
@@ -590,6 +642,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
                                   this.SelectedUserContext.CustomerId, 
                                   this.SelectedUserContext.BranchId));
 
+                _cacheListLogic.RemoveSpecificCachedList(list);
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;
             }
@@ -616,6 +672,18 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _listService.DeleteItems(AuthenticatedUser, SelectedUserContext, type, 
                                          listId, itemNumbers);
 
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = listId
+                };
+
+                _cacheListLogic.RemoveSpecificCachedList(list);
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;
             } catch(Exception ex) {
@@ -640,7 +708,19 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try {
                 _listService.DeleteItem(AuthenticatedUser, SelectedUserContext, type, 
                                         Id, itemNumber);
-                
+
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = Id
+                };
+
+                _cacheListLogic.RemoveSpecificCachedList(list);
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
             } catch(Exception ex) {
                 ret.IsSuccess = false;

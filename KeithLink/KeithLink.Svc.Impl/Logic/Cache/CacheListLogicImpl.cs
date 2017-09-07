@@ -23,8 +23,8 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         private const string CACHE_CONTRACT_NAME = "ContractInformation";
         private const string CACHE_CONTRACT_PREFIX = "Default";
 
-        private const string CACHE_LIST_GROUPNAME = "ContractInformation";
-        private const string CACHE_LIST_NAME = "ContractInformation";
+        private const string CACHE_LIST_GROUPNAME = "List";
+        private const string CACHE_LIST_NAME = "List";
         private const string CACHE_LIST_PREFIX = "Default";
 
         private const string CACHEKEY_PREFIX_CONTRACTDICT = "ContractDictionary";
@@ -145,6 +145,15 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         public void AddCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id, ListModel list)
         {
             AddListCacheItem<ListModel>(GetCacheKeySpecificLists(catalogInfo, type, Id), CACHETIME_HOURS_LIST, list);
+        }
+
+        public void RemoveSpecificCachedList(ListModel list) {
+            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
+                                              CACHEKEY_PREFIX_LIST,
+                                              list.BranchId,
+                                              list.CustomerNumber,
+                                              list.Type,
+                                              list.ListId));
         }
 
         public void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists)

@@ -283,7 +283,9 @@ angular.module('bekApp')
         startingPoint: parseInt($scope.startingPoint),
         currentPage: parseInt($scope.currentPage)
       };
-      updatePage(updatedPage);
+      if($scope.aggregateCount !== 0 || $scope.startingPoint > 0 || $scope.currentPage > 1){
+          updatePage(updatedPage);
+      }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
       ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id).then(function(data){
@@ -326,7 +328,7 @@ angular.module('bekApp')
     }
     
     function updatePage(updatedPage) {
-        $state.transitionTo('menu.catalog.products.list',
+        $state.go('menu.catalog.products.list',
             {   type: updatedPage.type, 
                 id: updatedPage.id, 
                 deptName: updatedPage.deptName, 
@@ -556,7 +558,9 @@ angular.module('bekApp')
         startingPoint: $stateParams.startingPoint,
         currentPage: $stateParams.currentPage
       };
-      updatePage(updatedPage);
+      if($scope.aggregateCount !== 0 || $scope.startingPoint > 0 || $scope.currentPage > 1){
+          updatePage(updatedPage);
+      }
        
       $scope.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 1;
       
