@@ -95,6 +95,7 @@ angular.module('bekApp')
         if(report) {
             $scope.report = report;
             updatePositions();
+            refreshSubtotal();
         }
       }
 
