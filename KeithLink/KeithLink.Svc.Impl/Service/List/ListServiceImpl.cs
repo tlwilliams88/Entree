@@ -284,7 +284,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     FillOutProducts(user, catalogInfo, new List<ListModel>() {tempList}, true);
                 }
 
-                if (CACHELISTS) {
+                if (CACHELISTS && type != ListType.InventoryValuation) {
                     _cacheListLogic.AddCachedSpecificList(catalogInfo, type, Id, tempList);
                 }
             }
@@ -500,10 +500,6 @@ namespace KeithLink.Svc.Impl.Service.List
                 //    break;
             }
 
-            if (CACHELISTS) {
-                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
-            }
-
             return retVal;
         }
 
@@ -554,11 +550,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
             }
 
-            if (CACHELISTS)
-            {
-                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
-            }
-
         }
 
         public void SaveItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
@@ -566,11 +557,6 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             foreach (var item in items) {
                 SaveItem(user, catalogInfo, type, headerId, item);
-            }
-
-            if (CACHELISTS)
-            {
-                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
         }
 
@@ -602,11 +588,6 @@ namespace KeithLink.Svc.Impl.Service.List
             if (list.Items != null &&
                 list.Items.Count > 0) {
                 SaveItems(user,catalogInfo, type, id, list.Items);
-            }
-
-            if (CACHELISTS)
-            {
-                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
 
             return ReadList(user, catalogInfo, type, id, true);
@@ -646,8 +627,6 @@ namespace KeithLink.Svc.Impl.Service.List
                                      ListType.Custom,
                                      copyList);
 
-            _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
-
             return ReadListById(user, catalogInfo, newList.ListId, newList.Type);
         }
 
@@ -666,11 +645,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     long x = _inventoryValuationLogic.CreateOrUpdateList(user, catalogInfo, list.ListId, list.Name, false);
 
                     break;
-            }
-
-            if (CACHELISTS)
-            {
-                _cacheListLogic.ClearCustomersListCaches(user, catalogInfo, ReadUserList(user, catalogInfo, true));
             }
         }
 
