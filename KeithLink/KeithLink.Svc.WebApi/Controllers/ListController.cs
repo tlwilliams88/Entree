@@ -323,7 +323,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, type, 
                                       listId, newItem);
 
-                var list = _listService.ReadList(AuthenticatedUser, SelectedUserContext, type, listId);
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = listId
+                };
 
                 _cacheListLogic.RemoveSpecificCachedList(list);
 
@@ -358,7 +364,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
             {
                 _listService.SaveItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, newItems);
 
-                var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
+                var list = new ListModel() {
+                                               BranchId = SelectedUserContext.BranchId,
+                                               CustomerNumber = SelectedUserContext.CustomerId,
+                                               Type = type,
+                                               ListId = listId
+                                           }; 
 
                 _cacheListLogic.RemoveSpecificCachedList(list);
 
@@ -387,7 +398,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
             try {
                 NewListItem listItem = new NewListItem() { Id = _listService.AddCustomInventory(this.AuthenticatedUser, this.SelectedUserContext, type, listId, customInventoryId) };
+
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
+
                 returnValue.SuccessResponse = listItem;
                 returnValue.IsSuccess = true;
             } catch (Exception ex) {
@@ -415,7 +428,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
             {
                 List<long?> newListItems = _listService.AddCustomInventoryItems(this.AuthenticatedUser, this.SelectedUserContext, type, listId, customInventoryIds);
 
-                var list = _listService.ReadList(AuthenticatedUser, SelectedUserContext, type, listId);
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = listId
+                };
 
                 _cacheListLogic.RemoveSpecificCachedList(list);
 
@@ -647,7 +666,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _listService.DeleteItems(AuthenticatedUser, SelectedUserContext, type, 
                                          listId, itemNumbers);
 
-                var list = _listService.ReadList(AuthenticatedUser, SelectedUserContext, type, listId);
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = listId
+                };
 
                 _cacheListLogic.RemoveSpecificCachedList(list);
 
@@ -678,7 +703,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _listService.DeleteItem(AuthenticatedUser, SelectedUserContext, type, 
                                         Id, itemNumber);
 
-                var list = _listService.ReadList(AuthenticatedUser, SelectedUserContext, type, Id);
+                var list = new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = type,
+                    ListId = Id
+                };
 
                 _cacheListLogic.RemoveSpecificCachedList(list);
 
