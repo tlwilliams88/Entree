@@ -294,6 +294,16 @@ namespace KeithLink.Svc.WebApi.Controllers {
             {
                 ret.SuccessResponse = _listService.CreateList(this.AuthenticatedUser, this.SelectedUserContext, type, list);
 
+                _cacheListLogic.RemoveSpecificCachedList(new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = ret.SuccessResponse.Type,
+                    ListId = ret.SuccessResponse.ListId
+                });
+
+                _cacheListLogic.RemoveTypeOfListsCache(SelectedUserContext, type);
+
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
 
                 ret.IsSuccess = true;

@@ -327,7 +327,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         public class ClearCustomersListCaches
         {
             [Fact]
-            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem5Times()
+            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem6Times()
             {
                 // arrange
                 var mockDependents = new MockDependents();
@@ -360,7 +360,65 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>(),
-                                                                        It.IsAny<string>()), Times.Exactly(5), "not called");
+                                                                        It.IsAny<string>()), Times.Exactly(6), "not called");
+            }
+
+        }
+        #endregion
+
+        #region RemoveSpecificCachedList
+        public class RemoveSpecificCachedList
+        {
+            [Fact]
+            public void CallWithGoodList_CallsCacheRepositoryRemoveItemOnce()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
+                var testList = new ListModel() {
+                                        BranchId="FUT",
+                                        CustomerNumber = "123456",
+                                        Type = ListType.Contract,
+                                        ListId = 5
+                                    };
+
+                // act
+                testunit.RemoveSpecificCachedList(testList);
+
+                // assert
+                mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>()), Times.Once, "not called");
+            }
+
+        }
+        #endregion
+
+        #region RemoveTypeOfListsCache
+        public class RemoveTypeOfListsCache
+        {
+            [Fact]
+            public void CallWithGoodType_CallsCacheRepositoryRemoveItemOnce()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
+                var testContext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                var testListType = ListType.Custom;
+
+                // act
+                testunit.RemoveTypeOfListsCache(testContext, testListType);
+
+                // assert
+                mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>()), Times.Once, "not called");
             }
 
         }

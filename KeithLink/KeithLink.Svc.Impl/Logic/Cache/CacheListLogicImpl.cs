@@ -147,6 +147,15 @@ namespace KeithLink.Svc.Impl.Logic.Cache
             AddListCacheItem<ListModel>(GetCacheKeySpecificLists(catalogInfo, type, Id), CACHETIME_HOURS_LIST, list);
         }
 
+        public void RemoveTypeOfListsCache(UserSelectedContext catalogInfo, ListType type)
+        {
+            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}",
+                                              CACHEKEY_PREFIX_TYPELISTOFLISTS,
+                                              catalogInfo.BranchId,
+                                              catalogInfo.CustomerId,
+                                              type));
+        }
+
         public void RemoveSpecificCachedList(ListModel list) {
             RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
                                               CACHEKEY_PREFIX_LIST,

@@ -16,7 +16,6 @@ namespace KeithLink.Svc.WebApi.Controllers
     /// <summary>
     /// end points for dealing with cache
     /// </summary>
-	[AllowAnonymous]
 	[RequireHttps(true)]
 	public class CacheController: BaseController
 	{
@@ -50,6 +49,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns>OperationReturnModel-bool</returns>
         [Route("admin/cache/clearcustomerslists")]
         [HttpGet]
+        [Authorize]
         public OperationReturnModel<bool> ClearCustomersLists()
         {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
@@ -80,6 +80,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns>OperationReturnModel-bool</returns>
         [Route("admin/cache/clearcustomerslabels")]
         [HttpGet]
+        [Authorize]
         public OperationReturnModel<bool> ClearCustomersLabels()
         {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
@@ -114,6 +115,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="key">Cache Key</param>
         [Route("cache/RefreshCacheItem")]
         [HttpGet]
+        [AllowAnonymous]
         public OperationReturnModel<bool> RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key) {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
             try {
@@ -136,6 +138,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="cacheName">Cache Name</param>
         [Route("cache/RefreshCache")]
         [HttpGet]
+        [AllowAnonymous]
         public OperationReturnModel<bool> RefreshCache(string cacheGroupName, string cachePrefix, string cacheName) {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
             try {
