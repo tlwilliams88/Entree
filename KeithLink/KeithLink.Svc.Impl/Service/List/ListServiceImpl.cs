@@ -284,7 +284,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     FillOutProducts(user, catalogInfo, new List<ListModel>() {tempList}, true);
                 }
 
-                if (CACHELISTS && type != ListType.InventoryValuation) {
+                if (CACHELISTS) {
                     _cacheListLogic.AddCachedSpecificList(catalogInfo, type, Id, tempList);
                 }
             }
