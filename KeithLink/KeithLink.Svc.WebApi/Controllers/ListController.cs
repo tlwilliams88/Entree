@@ -600,7 +600,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try {
                 ret.SuccessResponse = _listService.UpdateList(this.AuthenticatedUser, this.SelectedUserContext, updatedList.Type, updatedList);
 
-                _cacheListLogic.RemoveSpecificCachedList(updatedList);
+                _cacheListLogic.RemoveSpecificCachedList(new ListModel()
+                {
+                    BranchId = SelectedUserContext.BranchId,
+                    CustomerNumber = SelectedUserContext.CustomerId,
+                    Type = updatedList.Type,
+                    ListId = updatedList.ListId
+                });
 
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
 
