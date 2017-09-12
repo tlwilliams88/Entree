@@ -41,7 +41,6 @@ namespace KeithLink.Svc.WebApi.Controllers {
         #region attributes
         private readonly ICacheListLogic _cacheListLogic;
         private readonly IAuditLogRepository _auditLogRepo;
-        private readonly IListLogic _listLogic;
         private readonly IListService _listService;
         private readonly ICustomListSharesRepository _customListSharesRepo;
         private readonly IExportSettingLogic _exportLogic;
@@ -60,11 +59,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="elRepo"></param>
         /// <param name="auditLogRepo"></param>
         /// <param name="listRepo"></param>
-        public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic, ICacheListLogic cacheListLogic, ICatalogLogic catalogLogic,
+        public ListController(IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, ICacheListLogic cacheListLogic, ICatalogLogic catalogLogic,
                               IEventLogRepository elRepo, IAuditLogRepository auditLogRepo, ICustomListSharesRepository customListSharesRepo, IListService listService)
             : base(profileLogic) {
             _auditLogRepo = auditLogRepo;
-            _listLogic = listLogic;
             _cacheListLogic = cacheListLogic;
             _profileLogic = profileLogic;
             _exportLogic = exportSettingsLogic;

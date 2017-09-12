@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
 
             public Mock<IBasketLogic> BasketLogic { get; set; }
 
-            public Mock<INoteLogic> NoteLogic { get; set; }
+            public Mock<INotesListLogic> NotesListLogic { get; set; }
 
             public Mock<IOrderQueueLogic> OrderQueueLogic { get; set; }
 
@@ -90,8 +90,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                   .As<IGenericQueueRepository>();
                 cb.RegisterInstance(MakeIBasketLogic().Object)
                   .As<IBasketLogic>();
-                cb.RegisterInstance(MakeINoteLogic().Object)
-                  .As<INoteLogic>();
+                cb.RegisterInstance(MakeINotesListLogic().Object)
+                  .As<INotesListLogic>();
                 cb.RegisterInstance(MakeIOrderQueueLogic().Object)
                   .As<IOrderQueueLogic>();
                 cb.RegisterInstance(MakeIOrderHistoryLogic().Object)
@@ -190,9 +190,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                 return mock;
             }
 
-            public static Mock<INoteLogic> MakeINoteLogic()
+            public static Mock<INotesListLogic> MakeINotesListLogic()
             {
-                var mock = new Mock<INoteLogic>();
+                var mock = new Mock<INotesListLogic>();
 
                 return mock;
             }
@@ -273,7 +273,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                 mockDependents.EventLogRepository = MockDependents.MakeIEventLogRepository();
                 mockDependents.ExternalCatalogRepository = MockDependents.MakeIExternalCatalogRepository();
                 mockDependents.GenericQueueRepository = MockDependents.MakeIGenericQueueRepository();
-                mockDependents.NoteLogic = MockDependents.MakeINoteLogic();
+                mockDependents.NotesListLogic = MockDependents.MakeINotesListLogic();
                 mockDependents.OrderHistoryLogic = MockDependents.MakeIOrderHistoryLogic();
                 mockDependents.OrderQueueLogic = MockDependents.MakeIOrderQueueLogic();
                 mockDependents.OrderedFromListRepository = MockDependents.MakeIOrderedFromListRepository();
@@ -284,7 +284,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                 var testunit = new ShoppingCartLogicImpl(mockDependents.BasketRepository.Object, mockDependents.CatalogLogic.Object, mockDependents.PriceLogic.Object,
                                                          mockDependents.OrderQueueLogic.Object, mockDependents.PurchaseOrderRepository.Object, mockDependents.GenericQueueRepository.Object,
                                                          mockDependents.BasketLogic.Object, mockDependents.OrderHistoryLogic.Object, mockDependents.CustomerRepository.Object,
-                                                         mockDependents.AuditLogRepository.Object, mockDependents.NoteLogic.Object, mockDependents.UserActiveCartLogic.Object,
+                                                         mockDependents.AuditLogRepository.Object, mockDependents.NotesListLogic.Object, mockDependents.UserActiveCartLogic.Object,
                                                          mockDependents.ExternalCatalogRepository.Object, mockDependents.CacheRepository.Object, mockDependents.EventLogRepository.Object,
                                                          mockDependents.OrderedFromListRepository.Object);
                 return testunit;
