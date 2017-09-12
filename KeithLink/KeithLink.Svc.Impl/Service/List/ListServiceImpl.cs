@@ -135,7 +135,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> returnList = new List<ListModel>();
 
-            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedTypedLists(catalogInfo, type) : null;
+            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedTypedLists(catalogInfo, type, headerOnly) : null;
 
             if (cachedList == null) {
                 switch (type) {
@@ -201,7 +201,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
 
                 if (CACHELISTS) {
-                    _cacheListLogic.AddCachedTypedLists(catalogInfo, type, returnList);
+                    _cacheListLogic.AddCachedTypedLists(catalogInfo, type, headerOnly, returnList);
                 }
             }
             else {

@@ -37,13 +37,14 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         }
 
         private const string CACHEKEY_PREFIX_TYPELISTOFLISTS = "Lists";
-        private string GetCacheKeyTypedLists(UserSelectedContext catalogInfo, ListType type)
+        private string GetCacheKeyTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly)
         {
-            return string.Format("{0}_{1}_{2}_{3}",
+            return string.Format("{0}_{1}_{2}_{3}_{4}",
                                  CACHEKEY_PREFIX_TYPELISTOFLISTS,
                                  catalogInfo.BranchId,
                                  catalogInfo.CustomerId,
-                                 type);
+                                 type,
+                                 headerOnly);
         }
 
         private const string CACHEKEY_PREFIX_LISTOFLISTS = "Lists";
@@ -117,13 +118,13 @@ namespace KeithLink.Svc.Impl.Logic.Cache
             AddListCacheItem<List<string>>(GetCacheKeyLabels(catalogInfo), CACHETIME_HOURS_LABELS, list);
         }
 
-        public List<ListModel> GetCachedTypedLists(UserSelectedContext catalogInfo, ListType type) {
-            return GetListCacheItem<List<ListModel>>(GetCacheKeyTypedLists(catalogInfo, type));
+        public List<ListModel> GetCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly) {
+            return GetListCacheItem<List<ListModel>>(GetCacheKeyTypedLists(catalogInfo, type, headerOnly));
         }
 
-        public void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, List<ListModel> lists)
+        public void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly, List<ListModel> lists)
         {
-            AddListCacheItem<List<ListModel>>(GetCacheKeyTypedLists(catalogInfo, type), CACHETIME_HOURS_TYPELISTOFLISTS, lists);
+            AddListCacheItem<List<ListModel>>(GetCacheKeyTypedLists(catalogInfo, type, headerOnly), CACHETIME_HOURS_TYPELISTOFLISTS, lists);
         }
 
         public List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo) {
