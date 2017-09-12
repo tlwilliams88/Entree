@@ -478,6 +478,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
             {
                 var list = _listService.CopyList(this.AuthenticatedUser, this.SelectedUserContext, copyListModel);
 
+                foreach (ListModel l in list) {
+                    _cacheListLogic.RemoveSpecificCachedList(l);
+                }
+
                 _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
 
                 ret.SuccessResponse = list;
