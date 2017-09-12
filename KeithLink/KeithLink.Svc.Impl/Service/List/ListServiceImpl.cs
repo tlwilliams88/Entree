@@ -368,6 +368,11 @@ namespace KeithLink.Svc.Impl.Service.List
                 labels = cachedList;
             }
 
+            // Insert blank at the start if there is none; to blank the existing label on an item
+            if (labels.Contains(string.Empty) == false) {
+                labels.Insert(0, string.Empty);
+            }
+
             return labels;
         }
 
