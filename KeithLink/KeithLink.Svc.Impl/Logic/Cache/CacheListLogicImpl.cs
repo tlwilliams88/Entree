@@ -195,6 +195,8 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                               catalogInfo.BranchId,
                                               catalogInfo.CustomerId,
                                               ListType.InventoryValuation));
+
+            ClearCustomersLabelsCache(catalogInfo);
         }
 
         public void ClearCustomersLabelsCache(UserSelectedContext catalogInfo)
