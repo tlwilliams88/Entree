@@ -12,8 +12,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic.Cache
 {
-    public class CacheListLogicImpl : ICacheListLogic
-    {
+    public class CacheListLogicImpl : ICacheListLogic {
         #region attributes
         private readonly ICacheRepository _cache;
 
@@ -28,8 +27,8 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         private const string CACHE_LIST_PREFIX = "Default";
 
         private const string CACHEKEY_PREFIX_CONTRACTDICT = "ContractDictionary";
-        private string GetCacheKeyContractDictionary(UserSelectedContext catalogInfo)
-        {
+
+        private string GetCacheKeyContractDictionary(UserSelectedContext catalogInfo) {
             return string.Format("{0}_{1}_{2}",
                                  CACHEKEY_PREFIX_CONTRACTDICT,
                                  catalogInfo.BranchId,
@@ -37,8 +36,8 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         }
 
         private const string CACHEKEY_PREFIX_TYPELISTOFLISTS = "Lists";
-        private string GetCacheKeyTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly)
-        {
+
+        private string GetCacheKeyTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly) {
             return string.Format("{0}_{1}_{2}_{3}_{4}",
                                  CACHEKEY_PREFIX_TYPELISTOFLISTS,
                                  catalogInfo.BranchId,
@@ -48,8 +47,8 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         }
 
         private const string CACHEKEY_PREFIX_LISTOFLISTS = "Lists";
-        private string GetCacheKeyUserLists(UserSelectedContext catalogInfo)
-        {
+
+        private string GetCacheKeyUserLists(UserSelectedContext catalogInfo) {
             return string.Format("{0}_{1}_{2}",
                                  CACHEKEY_PREFIX_LISTOFLISTS,
                                  catalogInfo.BranchId,
@@ -57,19 +56,19 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         }
 
         private const string CACHEKEY_PREFIX_LIST = "List";
-        private string GetCacheKeySpecificLists(UserSelectedContext catalogInfo, ListType type, long Id)
-        {
+
+        private string GetCacheKeySpecificLists(UserSelectedContext catalogInfo, ListType type, long Id) {
             return string.Format("{0}_{1}_{2}_{3}_{4}",
-                                                                           CACHEKEY_PREFIX_LIST,
-                                                                           catalogInfo.BranchId,
-                                                                           catalogInfo.CustomerId,
-                                                                           type,
-                                                                           Id);
+                                 CACHEKEY_PREFIX_LIST,
+                                 catalogInfo.BranchId,
+                                 catalogInfo.CustomerId,
+                                 type,
+                                 Id);
         }
 
         private const string CACHEKEY_PREFIX_LABELS = "Labels";
-        private string GetCacheKeyLabels(UserSelectedContext catalogInfo)
-        {
+
+        private string GetCacheKeyLabels(UserSelectedContext catalogInfo) {
             return string.Format("{0}_{1}_{2}",
                                  CACHEKEY_PREFIX_LABELS,
                                  catalogInfo.BranchId,
@@ -84,8 +83,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         #endregion
 
         #region ctor
-        public CacheListLogicImpl(ICacheRepository cache)
-        {
+        public CacheListLogicImpl(ICacheRepository cache) {
             _cache = cache;
         }
         #endregion
@@ -98,8 +96,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                                               GetCacheKeyContractDictionary(catalogInfo));
         }
 
-        public void AddCachedContractInformation(UserSelectedContext catalogInfo, Dictionary<string, string> contractdictionary)
-        {
+        public void AddCachedContractInformation(UserSelectedContext catalogInfo, Dictionary<string, string> contractdictionary) {
             _cache.AddItem<Dictionary<string, string>>(CACHE_CONTRACT_GROUPNAME,
                                                        CACHE_CONTRACT_PREFIX,
                                                        CACHE_CONTRACT_NAME,
@@ -108,32 +105,31 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                                        contractdictionary);
         }
 
-        public List<string> GetCachedLabels(UserSelectedContext catalogInfo)
-        {
+        public List<string> GetCachedLabels(UserSelectedContext catalogInfo) {
             return GetListCacheItem<List<string>>(GetCacheKeyLabels(catalogInfo));
         }
 
-        public void AddCachedLabels(UserSelectedContext catalogInfo, List<string> list)
-        {
+        public void AddCachedLabels(UserSelectedContext catalogInfo, List<string> list) {
             AddListCacheItem<List<string>>(GetCacheKeyLabels(catalogInfo), CACHETIME_HOURS_LABELS, list);
+            AddCustomersCachedObjects(catalogInfo, GetCacheKeyLabels(catalogInfo));
         }
 
         public List<ListModel> GetCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly) {
             return GetListCacheItem<List<ListModel>>(GetCacheKeyTypedLists(catalogInfo, type, headerOnly));
         }
 
-        public void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly, List<ListModel> lists)
-        {
+        public void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly, List<ListModel> lists) {
             AddListCacheItem<List<ListModel>>(GetCacheKeyTypedLists(catalogInfo, type, headerOnly), CACHETIME_HOURS_TYPELISTOFLISTS, lists);
+            AddCustomersCachedObjects(catalogInfo, GetCacheKeyTypedLists(catalogInfo, type, headerOnly));
         }
 
         public List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo) {
             return GetListCacheItem<List<ListModel>>(GetCacheKeyUserLists(catalogInfo));
         }
 
-        public void AddCachedCustomerLists(UserSelectedContext catalogInfo, List<ListModel> lists)
-        {
+        public void AddCachedCustomerLists(UserSelectedContext catalogInfo, List<ListModel> lists) {
             AddListCacheItem<List<ListModel>>(GetCacheKeyUserLists(catalogInfo), CACHETIME_HOURS_LISTOFLISTS, lists);
+            AddCustomersCachedObjects(catalogInfo, GetCacheKeyUserLists(catalogInfo));
         }
 
         public ListModel GetCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id) {
@@ -143,13 +139,12 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                              GetCacheKeySpecificLists(catalogInfo, type, Id));
         }
 
-        public void AddCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id, ListModel list)
-        {
+        public void AddCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id, ListModel list) {
             AddListCacheItem<ListModel>(GetCacheKeySpecificLists(catalogInfo, type, Id), CACHETIME_HOURS_LIST, list);
+            AddCustomersCachedObjects(catalogInfo, GetCacheKeySpecificLists(catalogInfo, type, Id));
         }
 
-        public void RemoveTypeOfListsCache(UserSelectedContext catalogInfo, ListType type)
-        {
+        public void RemoveTypeOfListsCache(UserSelectedContext catalogInfo, ListType type) {
             RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
                                               CACHEKEY_PREFIX_TYPELISTOFLISTS,
                                               catalogInfo.BranchId,
@@ -173,8 +168,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                               list.ListId));
         }
 
-        public void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists)
-        {
+        public void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists) {
             foreach (var list in lists) {
                 // typed lists
                 RemoveTypeOfListsCache(catalogInfo, list.Type);
@@ -201,10 +195,20 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                               ListType.InventoryValuation));
 
             ClearCustomersLabelsCache(catalogInfo);
+
+            // try to remove anything registered
+            List<string> mylist = GetCustomersCachedObjects(catalogInfo);
+            if (mylist != null &&
+                mylist.Count > 0) {
+                foreach (var str in mylist)
+                {
+                    RemoveListCacheItem(str);
+                }
+            }
+            EmptyCustomersCachedObjects(catalogInfo);
         }
 
-        public void ClearCustomersLabelsCache(UserSelectedContext catalogInfo)
-        {
+        public void ClearCustomersLabelsCache(UserSelectedContext catalogInfo) {
             // customer labels
             RemoveListCacheItem(string.Format("{0}_{1}_{2}",
                                               CACHEKEY_PREFIX_LABELS,
@@ -212,16 +216,14 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                               catalogInfo.CustomerId));
         }
 
-        private T GetListCacheItem<T>(string key)
-        {
+        private T GetListCacheItem<T>(string key) {
             return _cache.GetItem<T>(CACHE_LIST_GROUPNAME,
                                      CACHE_LIST_PREFIX,
                                      CACHE_LIST_NAME,
                                      key);
         }
 
-        private void AddListCacheItem<T>(string key, int hours, T item)
-        {
+        private void AddListCacheItem<T>(string key, int hours, T item) {
             _cache.AddItem<T>(CACHE_LIST_GROUPNAME,
                               CACHE_LIST_PREFIX,
                               CACHE_LIST_NAME,
@@ -230,8 +232,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                               item);
         }
 
-        private void RemoveListCacheItem(string key)
-        {
+        private void RemoveListCacheItem(string key) {
             // customer labels
             _cache.RemoveItem(CACHE_LIST_GROUPNAME,
                               CACHE_LIST_PREFIX,
@@ -239,6 +240,38 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                               key);
         }
 
+        private List<string> GetCustomersCachedObjects(UserSelectedContext catalogInfo) {
+            return GetListCacheItem<List<string>>(string.Format("{0}_{1}_{2}",
+                                                                CACHEKEY_PREFIX_LIST,
+                                                                catalogInfo.BranchId,
+                                                                catalogInfo.CustomerId));
+        }
+
+        private void AddCustomersCachedObjects(UserSelectedContext catalogInfo, string key) {
+            var list = GetListCacheItem<List<string>>(string.Format("{0}_{1}_{2}",
+                                                                    CACHEKEY_PREFIX_LIST,
+                                                                    catalogInfo.BranchId,
+                                                                    catalogInfo.CustomerId));
+            if (list == null) {
+                list = new List<string>();
+            }
+            list.Add(key);
+            AddListCacheItem(string.Format("{0}_{1}_{2}",
+                                           CACHEKEY_PREFIX_LIST,
+                                           catalogInfo.BranchId,
+                                           catalogInfo.CustomerId),
+                             CACHETIME_HOURS_LIST,
+                             list);
+        }
+
+        private void EmptyCustomersCachedObjects(UserSelectedContext catalogInfo) {
+            AddListCacheItem(string.Format("{0}_{1}_{2}",
+                                           CACHEKEY_PREFIX_LIST,
+                                           catalogInfo.BranchId,
+                                           catalogInfo.CustomerId),
+                             CACHETIME_HOURS_LIST,
+                             new List<string>());
+        }
         #endregion
     }
 }
