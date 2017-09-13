@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Import;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.WebApi.Helpers;
@@ -26,6 +27,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 	[Authorize]
     public class ImportController : BaseController {
         #region attributes
+        private readonly ICacheListLogic _cacheListLogic;
         private readonly IImportLogic importLogic;
         private readonly IImportService _importService;
         private readonly IListService _listService;
@@ -39,12 +41,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="profileLogic"></param>
         /// <param name="importLogic"></param>
         /// <param name="logRepo"></param>
-        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo, IImportService importService, IListService listService)
+        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic, IEventLogRepository logRepo, IImportService importService, 
+            IListService listService, ICacheListLogic cacheListLogic)
 			: base(profileLogic) {
             _listService = listService;
             _importService = importService;
 			this.importLogic = importLogic;
             _log = logRepo;
+            _cacheListLogic = cacheListLogic;
         }
         #endregion
 
@@ -67,6 +71,17 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 ListModel newList = _importService.BuildList(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
                 ListModel createdList = _listService.CreateList(AuthenticatedUser, SelectedUserContext, ListType.Custom, newList);
+
+                importReturn.List = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, createdList.Type, createdList.ListId, true);
+
+                _cacheListLogic.RemoveSpecificCachedList(new ListModel() {
+                                                                             BranchId = SelectedUserContext.BranchId,
+                                                                             CustomerNumber = SelectedUserContext.CustomerId,
+                                                                             ListId = createdList.ListId,
+                                                                             Type = createdList.Type
+                                                                         });
+
+                _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, this.SelectedUserContext, _listService.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, true));
 
                 importReturn.List = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, createdList.Type, createdList.ListId, true);
 
