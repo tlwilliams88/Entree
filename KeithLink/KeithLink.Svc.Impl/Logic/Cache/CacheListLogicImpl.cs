@@ -66,12 +66,11 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                  Id);
         }
 
-        private string GetCacheKeyCustomerCacheObjects(UserSelectedContext catalogInfo)
-        {
+        private string GetCacheKeyCustomerCacheObjects(UserSelectedContext catalogInfo) {
             return string.Format("{0}_{1}_{2}",
-                                           CACHEKEY_PREFIX_LIST,
-                                           catalogInfo.BranchId,
-                                           catalogInfo.CustomerId);
+                                 CACHEKEY_PREFIX_LIST,
+                                 catalogInfo.BranchId,
+                                 catalogInfo.CustomerId);
         }
 
         private const string CACHEKEY_PREFIX_LABELS = "Labels";
@@ -186,8 +185,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
             List<string> mylist = GetCustomersCachedObjects(catalogInfo);
             if (mylist != null &&
                 mylist.Count > 0) {
-                foreach (var str in mylist)
-                {
+                foreach (var str in mylist) {
                     RemoveListCacheItem(str);
                 }
             }
