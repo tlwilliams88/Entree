@@ -20,9 +20,9 @@ namespace KeithLink.Svc.Core.Interface.Cache
 
         void AddCachedLabels(UserSelectedContext catalogInfo, List<string> list);
 
-        List<ListModel> GetCachedTypedLists(UserSelectedContext catalogInfo, ListType type);
+        List<ListModel> GetCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly);
 
-        void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, List<ListModel> lists);
+        void AddCachedTypedLists(UserSelectedContext catalogInfo, ListType type, bool headerOnly, List<ListModel> lists);
 
         List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo);
 

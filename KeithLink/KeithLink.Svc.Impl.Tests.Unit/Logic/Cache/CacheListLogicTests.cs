@@ -166,9 +166,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                     CustomerId = "234567"
                 };
                 var testtype = ListType.Contract;
+                var testHeaderOnly = false;
 
                 // act
-                var results = testunit.GetCachedTypedLists(testContext, testtype);
+                var results = testunit.GetCachedTypedLists(testContext, testtype, testHeaderOnly);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<List<ListModel>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
@@ -193,9 +194,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 };
                 var testtype = ListType.Contract;
                 var lists = new List<ListModel>();
+                var testHeaderOnly = false;
 
                 // act
-                testunit.AddCachedTypedLists(testContext, testtype, lists);
+                testunit.AddCachedTypedLists(testContext, testtype, testHeaderOnly, lists);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.AddItem<List<ListModel>>(It.IsAny<string>(), 
