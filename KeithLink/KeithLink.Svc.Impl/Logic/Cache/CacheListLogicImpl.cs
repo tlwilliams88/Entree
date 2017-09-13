@@ -150,11 +150,18 @@ namespace KeithLink.Svc.Impl.Logic.Cache
 
         public void RemoveTypeOfListsCache(UserSelectedContext catalogInfo, ListType type)
         {
-            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}",
+            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
                                               CACHEKEY_PREFIX_TYPELISTOFLISTS,
                                               catalogInfo.BranchId,
                                               catalogInfo.CustomerId,
-                                              type));
+                                              type,
+                                              true));
+            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
+                                              CACHEKEY_PREFIX_TYPELISTOFLISTS,
+                                              catalogInfo.BranchId,
+                                              catalogInfo.CustomerId,
+                                              type,
+                                              false));
         }
 
         public void RemoveSpecificCachedList(ListModel list) {
@@ -170,11 +177,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         {
             foreach (var list in lists) {
                 // typed lists
-                RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}",
-                                                  CACHEKEY_PREFIX_TYPELISTOFLISTS,
-                                                  list.BranchId,
-                                                  list.CustomerNumber,
-                                                  list.Type));
+                RemoveTypeOfListsCache(catalogInfo, list.Type);
 
                 // specific list
                 RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
