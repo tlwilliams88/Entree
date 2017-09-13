@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
 
         private const string CACHEKEY_PREFIX_LISTOFLISTS = "Lists";
 
-        private string ListOfListForListPageCacheKey(UserSelectedContext catalogInfo) {
+        private string UserListsCacheKey(UserSelectedContext catalogInfo) {
             return string.Format("{0}_{1}_{2}",
                                  CACHEKEY_PREFIX_LISTOFLISTS,
                                  catalogInfo.BranchId,
@@ -131,12 +131,12 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         }
 
         public List<ListModel> GetCachedCustomerLists(UserSelectedContext catalogInfo) {
-            return GetListCacheItem<List<ListModel>>(ListOfListForListPageCacheKey(catalogInfo));
+            return GetListCacheItem<List<ListModel>>(UserListsCacheKey(catalogInfo));
         }
 
         public void AddCachedCustomerLists(UserSelectedContext catalogInfo, List<ListModel> lists) {
-            AddListCacheItem<List<ListModel>>(ListOfListForListPageCacheKey(catalogInfo), HOURS_FOR_LISTPAGE_HEADERS_TO_CACHE, lists);
-            AddCustomersCachedObjects(catalogInfo, ListOfListForListPageCacheKey(catalogInfo));
+            AddListCacheItem<List<ListModel>>(UserListsCacheKey(catalogInfo), HOURS_FOR_LISTPAGE_HEADERS_TO_CACHE, lists);
+            AddCustomersCachedObjects(catalogInfo, UserListsCacheKey(catalogInfo));
         }
 
         public ListModel GetCachedSpecificList(UserSelectedContext catalogInfo, ListType type, long Id) {
@@ -174,7 +174,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                 RemoveListCacheItem(SpecificListCacheKey(catalogInfo, list.Type, list.ListId));
             }
             // customer lists
-            RemoveListCacheItem(ListOfListForListPageCacheKey(catalogInfo));
+            RemoveListCacheItem(UserListsCacheKey(catalogInfo));
 
             // always try to remove inventory valuation lists; they are not in the regular rollup
             RemoveTypeOfListsCache(catalogInfo, ListType.InventoryValuation);
