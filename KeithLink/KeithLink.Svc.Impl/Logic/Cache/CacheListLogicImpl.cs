@@ -66,6 +66,14 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                                  Id);
         }
 
+        private string GetCacheKeyCustomerCacheObjects(UserSelectedContext catalogInfo)
+        {
+            return string.Format("{0}_{1}_{2}",
+                                           CACHEKEY_PREFIX_LIST,
+                                           catalogInfo.BranchId,
+                                           catalogInfo.CustomerId);
+        }
+
         private const string CACHEKEY_PREFIX_LABELS = "Labels";
 
         private string GetCacheKeyLabels(UserSelectedContext catalogInfo) {
@@ -145,27 +153,17 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         }
 
         public void RemoveTypeOfListsCache(UserSelectedContext catalogInfo, ListType type) {
-            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
-                                              CACHEKEY_PREFIX_TYPELISTOFLISTS,
-                                              catalogInfo.BranchId,
-                                              catalogInfo.CustomerId,
-                                              type,
-                                              true));
-            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
-                                              CACHEKEY_PREFIX_TYPELISTOFLISTS,
-                                              catalogInfo.BranchId,
-                                              catalogInfo.CustomerId,
-                                              type,
-                                              false));
+            RemoveListCacheItem(GetCacheKeyTypedLists(catalogInfo, type, true));
+            RemoveListCacheItem(GetCacheKeyTypedLists(catalogInfo, type, false));
         }
 
         public void RemoveSpecificCachedList(ListModel list) {
-            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
-                                              CACHEKEY_PREFIX_LIST,
-                                              list.BranchId,
-                                              list.CustomerNumber,
-                                              list.Type,
-                                              list.ListId));
+            RemoveListCacheItem(GetCacheKeySpecificLists(new UserSelectedContext() {
+                                                                                       BranchId = list.BranchId,
+                                                                                       CustomerId = list.CustomerNumber
+                                                                                   },
+                                                         list.Type,
+                                                         list.ListId));
         }
 
         public void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists) {
@@ -174,25 +172,13 @@ namespace KeithLink.Svc.Impl.Logic.Cache
                 RemoveTypeOfListsCache(catalogInfo, list.Type);
 
                 // specific list
-                RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}_{4}",
-                                                  CACHEKEY_PREFIX_LIST,
-                                                  list.BranchId,
-                                                  list.CustomerNumber,
-                                                  list.Type,
-                                                  list.ListId));
+                RemoveListCacheItem(GetCacheKeySpecificLists(catalogInfo, list.Type, list.ListId));
             }
             // customer lists
-            RemoveListCacheItem(string.Format("{0}_{1}_{2}",
-                                              CACHEKEY_PREFIX_LISTOFLISTS,
-                                              catalogInfo.BranchId,
-                                              catalogInfo.CustomerId));
+            RemoveListCacheItem(GetCacheKeyUserLists(catalogInfo));
 
             // always try to remove inventory valuation lists; they are not in the regular rollup
-            RemoveListCacheItem(string.Format("{0}_{1}_{2}_{3}",
-                                              CACHEKEY_PREFIX_TYPELISTOFLISTS,
-                                              catalogInfo.BranchId,
-                                              catalogInfo.CustomerId,
-                                              ListType.InventoryValuation));
+            RemoveTypeOfListsCache(catalogInfo, ListType.InventoryValuation);
 
             ClearCustomersLabelsCache(catalogInfo);
 
@@ -210,10 +196,7 @@ namespace KeithLink.Svc.Impl.Logic.Cache
 
         public void ClearCustomersLabelsCache(UserSelectedContext catalogInfo) {
             // customer labels
-            RemoveListCacheItem(string.Format("{0}_{1}_{2}",
-                                              CACHEKEY_PREFIX_LABELS,
-                                              catalogInfo.BranchId,
-                                              catalogInfo.CustomerId));
+            RemoveListCacheItem(GetCacheKeyLabels(catalogInfo));
         }
 
         private T GetListCacheItem<T>(string key) {
@@ -241,34 +224,22 @@ namespace KeithLink.Svc.Impl.Logic.Cache
         }
 
         private List<string> GetCustomersCachedObjects(UserSelectedContext catalogInfo) {
-            return GetListCacheItem<List<string>>(string.Format("{0}_{1}_{2}",
-                                                                CACHEKEY_PREFIX_LIST,
-                                                                catalogInfo.BranchId,
-                                                                catalogInfo.CustomerId));
+            return GetListCacheItem<List<string>>(GetCacheKeyCustomerCacheObjects(catalogInfo));
         }
 
         private void AddCustomersCachedObjects(UserSelectedContext catalogInfo, string key) {
-            var list = GetListCacheItem<List<string>>(string.Format("{0}_{1}_{2}",
-                                                                    CACHEKEY_PREFIX_LIST,
-                                                                    catalogInfo.BranchId,
-                                                                    catalogInfo.CustomerId));
+            var list = GetListCacheItem<List<string>>(GetCacheKeyCustomerCacheObjects(catalogInfo));
             if (list == null) {
                 list = new List<string>();
             }
             list.Add(key);
-            AddListCacheItem(string.Format("{0}_{1}_{2}",
-                                           CACHEKEY_PREFIX_LIST,
-                                           catalogInfo.BranchId,
-                                           catalogInfo.CustomerId),
+            AddListCacheItem(GetCacheKeyCustomerCacheObjects(catalogInfo),
                              CACHETIME_HOURS_LIST,
                              list);
         }
 
         private void EmptyCustomersCachedObjects(UserSelectedContext catalogInfo) {
-            AddListCacheItem(string.Format("{0}_{1}_{2}",
-                                           CACHEKEY_PREFIX_LIST,
-                                           catalogInfo.BranchId,
-                                           catalogInfo.CustomerId),
+            AddListCacheItem(GetCacheKeyCustomerCacheObjects(catalogInfo),
                              CACHETIME_HOURS_LIST,
                              new List<string>());
         }
