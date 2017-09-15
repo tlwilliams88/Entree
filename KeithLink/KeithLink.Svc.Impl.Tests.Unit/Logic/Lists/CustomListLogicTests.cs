@@ -425,9 +425,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // arrange
                 var headerId = 0;
                 var logic = MakeMockLogic();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var results = logic.ReadList(headerId, true);
+                var results = logic.ReadList(headerId, testcontext, true);
 
                 // assert
                 results.Should()
@@ -440,14 +445,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 1;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, true);
-            
+                var results = logic.ReadList(headerId, testcontext, true);
+
                 // assert
-                result.ListId
-                      .Should()
-                      .Be(expected);
+                results.ListId
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
@@ -456,15 +466,20 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, true);
+                var results = logic.ReadList(headerId, testcontext, true);
 
                 // assert
-                result.Items
-                      .Count
-                      .Should()
-                      .Be(expected);
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
@@ -473,31 +488,41 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 1;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, false);
+                var results = logic.ReadList(headerId, testcontext, true);
 
                 // assert
-                result.ListId
-                      .Should()
-                      .Be(expected);
+                results.ListId
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
             public void GoodHeaderIdWithItems_ReturnsExpectedItemCount() {
                 // arrange
-                var expected = 2;
+                var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, false);
+                var results = logic.ReadList(headerId, testcontext, true);
 
                 // assert
-                result.Items
-                      .Count
-                      .Should()
-                      .Be(expected);
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
@@ -506,32 +531,42 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, true);
+                var results = logic.ReadList(headerId, testcontext, true);
 
                 // assert
-                result.SharedWith
-                      .Count
-                      .Should()
-                      .Be(expected);
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
             }
 
             [Fact]
             public void GoodHeaderIdWithItems_ReturnsExpectedShareCount() {
                 // arrange
-                var expected = 2;
+                var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, false);
+                var results = logic.ReadList(headerId, testcontext, true);
 
                 // assert
-                result.SharedWith
-                      .Count
-                      .Should()
-                      .Be(expected);
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
             }
         }
 

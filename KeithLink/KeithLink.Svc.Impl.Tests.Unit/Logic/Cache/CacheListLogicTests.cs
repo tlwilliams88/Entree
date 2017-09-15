@@ -145,7 +145,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                                       It.IsAny<string>(),
                                                                                       It.IsAny<string>(),
                                                                                       It.IsAny<TimeSpan>(),
-                                                                                      It.IsAny<List<string>>()), Times.Once, "not called");
+                                                                                      It.IsAny<List<string>>()), Times.Exactly(2), "not called");
             }
 
         }
@@ -329,7 +329,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         public class ClearCustomersListCaches
         {
             [Fact]
-            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem6Times()
+            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem10Times()
             {
                 // arrange
                 var mockDependents = new MockDependents();
@@ -362,7 +362,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>(),
-                                                                        It.IsAny<string>()), Times.Exactly(6), "not called");
+                                                                        It.IsAny<string>()), Times.Exactly(10), "not called");
             }
 
         }
@@ -401,7 +401,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         public class RemoveTypeOfListsCache
         {
             [Fact]
-            public void CallWithGoodType_CallsCacheRepositoryRemoveItemOnce()
+            public void CallWithGoodType_CallsCacheRepositoryRemoveItemTwice()
             {
                 // arrange
                 var mockDependents = new MockDependents();
@@ -420,7 +420,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>(),
-                                                                        It.IsAny<string>()), Times.Once, "not called");
+                                                                        It.IsAny<string>()), Times.Exactly(2), "not called");
             }
 
         }
