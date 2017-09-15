@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
         public string OrderHistoryString { get; set; }
 
         [DataMember(Name = "quantityordered")]
-		[Description("# Ordereed")]
+		[Description("# Ordered")]
 		public int? QuantityOrdered { get; set; }
         [DataMember(Name = "each")]
         [Description("Each")]

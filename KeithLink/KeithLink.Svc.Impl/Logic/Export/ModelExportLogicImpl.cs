@@ -244,6 +244,21 @@ namespace KeithLink.Svc.Impl.Logic.Export
                             break;
                     }
                 }
+                else if (modelName.Equals("InvoiceItemModel"))
+                {
+                    switch (config.Field)
+                    {
+                        case "Name":
+                        case "Brand":
+                        case "ItemClass":
+                        case "Category":
+                        case "label":
+                        case "Notes":
+                        case "PackSize":
+                            width = 20;
+                            break;
+                    }
+                }
 
                 if (width > 0)
                     OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, colIndex, width);
@@ -425,6 +440,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
                 switch (fieldName)
                 {
+                    case "ItemNumber":
                     case "Pack":
                     case "TotalQuantityOrdered":
                     case "TotalQuantityShipped":
@@ -439,10 +455,29 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
                 switch (fieldName)
                 {
+                    case "ItemNumber":
                     case "Pack":
                     case "CasePrice":
                     case "PackagePrice":
                     case "parlevel":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("InvoiceItemModel"))
+            {
+                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
+                switch (fieldName)
+                {
+                    case "ItemNumber":
+                    case "Pack":
+                    case "CasePrice":
+                    case "PackagePrice":
+                    case "parlevel":
+                    case "QuantityOrdered":
+                    case "QuantityShipped":
+                    case "ItemPrice":
+                    case "ExtSalesNet":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
                         break;
                 }
@@ -452,6 +487,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
                 switch (fieldName)
                 {
+                    case "ItemNumber":
                     case "Pack":
                     case "UnitCost":
                     case "CasePrice":
@@ -465,6 +501,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                 styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
                 switch (fieldName)
                 {
+                    case "ItemNumber":
                     case "Pack":
                     case "QuantityOrdered":
                     case "QantityShipped":
@@ -516,6 +553,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     //case "ManufacturerName":
                     //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                     //    break;
+                    case "ItemNumber":
                     case "Pack":
                     case "TotalQuantityOrdered":
                     case "TotalQuantityShipped":
@@ -537,12 +575,32 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     //case "Notes":
                     //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                     //    break;
+                    case "ItemNumber":
                     case "Pack":
                     case "parlevel":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
                     case "CasePrice":
                     case "PackagePrice":
+                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
+                        break;
+                }
+            }
+            else if (modelName.Equals("InvoiceItemModel"))
+            {
+                switch (fieldName)
+                {
+                    case "ItemNumber":
+                    case "Pack":
+                    case "parlevel":
+                    case "QuantityOrdered":
+                    case "QuantityShipped":
+                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
+                        break;
+                    case "CasePrice":
+                    case "PackagePrice":
+                    case "ItemPrice":
+                    case "ExtSalesNet":
                         styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
                         break;
                 }
@@ -556,6 +614,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     //case "Size":
                     //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                     //    break;
+                    case "ItemNumber":
                     case "Pack":
                         styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
                         break;
@@ -577,6 +636,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
                     //case "Status":
                     //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
                     //    break;
+                    case "ItemNumber":
                     case "Pack":
                     case "QuantityOrdered":
                     case "QantityShipped":
@@ -629,6 +689,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
             {
                 switch (fieldName)
                 {
+                    case "ItemNumber":
                     case "QuantityOrdered":
                     case "QantityShipped":
                     case "CasePrice":
@@ -639,10 +700,11 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
-            else if (modelName.Equals("ListItemModel"))
+            else if (modelName.Equals("ItemUsageReportItemModel"))
             {
                 switch (fieldName)
                 {
+                    case "ItemNumber":
                     case "CasePrice":
                     case "PackagePrice":
                     case "Price":
@@ -651,10 +713,38 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         break;
                 }
             }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                switch (fieldName)
+                {
+                    case "ItemNumber":
+                    case "CasePrice":
+                    case "PackagePrice":
+                    case "Price":
+                    case "parlevel":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
+            else if (modelName.Equals("InvoiceItemModel"))
+            {
+                switch (fieldName)
+                {
+                    case "ItemNumber":
+                    case "ItemPrice":
+                    case "ExtSalesNet":
+                    case "parlevel":
+                    case "QuantityOrdered":
+                    case "QuantityShipped":
+                        celltype = CellValues.Number;
+                        break;
+                }
+            }
             else if (modelName.Equals("Product"))
             {
                 switch (fieldName)
                 {
+                    case "ItemNumber":
                     case "UnitCost":
                     case "CasePrice":
                     case "PackagePrice":
