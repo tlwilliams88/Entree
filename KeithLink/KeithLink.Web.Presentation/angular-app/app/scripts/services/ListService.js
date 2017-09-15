@@ -468,14 +468,15 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(list, landscape, showparvalues, options, shownotes, prices) {
+        printList: function(list, landscape, showparvalues, options, shownotes, prices, contractFilter) {
 
             var printparams = {
               landscape: landscape,
               showparvalues: showparvalues,
               shownotes: shownotes,
               paging: options,
-              showprices: prices
+              showprices: prices,
+              filter: contractFilter
             };
 
 
