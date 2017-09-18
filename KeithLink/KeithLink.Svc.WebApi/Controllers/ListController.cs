@@ -502,16 +502,23 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [ApiKeyedRoute("list/share")]
         public OperationReturnModel<string> ShareList(ListCopyShareModel copyListModel) {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
-            try
-            {
+            try {
                 foreach (var customer in copyListModel.Customers) {
-                    _customListSharesRepo.SaveCustomListShare(new CustomListShare()
-                    {
-                        Active = true,
-                        HeaderId = copyListModel.ListId,
-                        CustomerNumber = customer.CustomerNumber,
-                        BranchId = customer.CustomerBranch
-                    });
+                    _customListSharesRepo.SaveCustomListShare(new CustomListShare() {
+                                                                                        Active = true,
+                                                                                        HeaderId = copyListModel.ListId,
+                                                                                        CustomerNumber = customer.CustomerNumber,
+                                                                                        BranchId = customer.CustomerBranch
+                                                                                    });
+
+                    _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, new UserSelectedContext() {
+                                                                                                                   CustomerId = customer.CustomerNumber,
+                                                                                                                   BranchId = customer.CustomerBranch
+                                                                                                               },
+                                                             _listService.ReadUserList(this.AuthenticatedUser, new UserSelectedContext() {
+                                                                                                                                             CustomerId = customer.CustomerNumber,
+                                                                                                                                             BranchId = customer.CustomerBranch
+                                                                                                                                         }, true));
 
                     _cacheListLogic.ClearCustomersLabelsCache(new UserSelectedContext() {
                                                                                             CustomerId = customer.CustomerNumber,
@@ -520,9 +527,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 }
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
                 _elRepo.WriteErrorLog("ShareList", ex);
