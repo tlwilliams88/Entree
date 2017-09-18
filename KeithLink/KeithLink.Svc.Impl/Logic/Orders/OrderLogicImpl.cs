@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
         private readonly IEventLogRepository _log;
-        private readonly INoteLogic _noteLogic;
+        private readonly INotesListLogic _notesLogic;
         private readonly IOrderHistoryHeaderRepsitory _historyHeaderRepo;
         private readonly IKPayInvoiceRepository _invoiceRepository;
         private readonly IOrderQueueLogic _orderQueueLogic;
@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region ctor
-        public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, ICacheRepository cache,
+        public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INotesListLogic notesLogic, ICacheRepository cache,
                               IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, IShipDateRepository shipRepo,
                               ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, 
                               IKPayInvoiceRepository kpayInvoiceRepository,
@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			_catalogLogic = catalogLogic;
             _customerRepository = customerRepository;
             _log = eventLogRepository;
-            _noteLogic = noteLogic;
+            _notesLogic = notesLogic;
             _order2ListRepo = order2ListRepo;
             _historyHeaderRepo = orderHistoryRepository;
             _invoiceRepository = kpayInvoiceRepository;
@@ -735,7 +735,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
             var order = _poRepo.ReadPurchaseOrder(customer.CustomerId, orderNumber);
             var returnOrder = ToOrder(order, false);
-            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
+            var notes = _notesLogic.GetNotes(userProfile, catalogInfo);
 
 
             LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
@@ -756,7 +756,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var returnOrders = orders.Select(p => ToOrder(p, header))
                                      .ToList();
             stopWatch.Read(_log, "ReadOrders - SelectToOrder");
-            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
+            var notes = _notesLogic.GetNotes(userProfile, catalogInfo);
             stopWatch.Read(_log, "ReadOrders - GetNotes");
 
             returnOrders.ForEach(delegate (Order order) {
@@ -780,7 +780,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             List<Order> orders = GetOrders(userProfile.UserId, catalogInfo);
 
             //var returnOrders = orders.Select(p => ToOrder(p)).ToList();
-            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
+            var notes = _notesLogic.GetNotes(userProfile, catalogInfo);
 
             //return returnOrders;
             return orders;
@@ -946,7 +946,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
             Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber, false);
-            var notes = _noteLogic.GetNotes(user, catalogInfo);
+            var notes = _notesLogic.GetNotes(user, catalogInfo);
 
             LookupProductDetails(user, catalogInfo, order, notes);
             UpdateExistingOrderInfo(order, existingOrder, deleteOmmitedItems);

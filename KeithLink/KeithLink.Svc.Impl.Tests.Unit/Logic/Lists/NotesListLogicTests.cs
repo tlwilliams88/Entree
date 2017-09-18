@@ -147,6 +147,72 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
+        #region GetNotes
+        public class GetNotes
+        {
+            [Fact]
+            public void BadBranchId_ReturnsEmptyList()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testuser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+
+                // act
+                var results = testunit.GetNotes(testuser, testcontext);
+
+                // assert
+                results.Count.Should()
+                       .Be(0);
+            }
+
+            [Fact]
+            public void BadCustomerId_ReturnsEmptyList()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testuser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+
+                // act
+                var results = testunit.GetNotes(testuser, testcontext);
+
+                // assert
+                results.Count.Should()
+                       .Be(0);
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
+            {
+                // arrange
+                var testunit = MakeTestsObject();
+                var testuser = new UserProfile();
+                var testcontext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var expectedCount = 1;
+
+                // act
+                var results = testunit.GetNotes(testuser, testcontext);
+
+                // assert
+                results.Count.Should()
+                       .Be(expectedCount);
+            }
+        }
+        #endregion
+
         public class GetList
         {
             [Fact]

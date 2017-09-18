@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
             public Mock<ICacheRepository> ICacheRepository { get; set; }
             public Mock<IEventLogRepository> IEventLogRepository { get; set; }
             public Mock<ICatalogLogic> ICatalogLogic { get; set; }
-            public Mock<INoteLogic> INoteLogic { get; set; }
+            public Mock<INotesListLogic> INoteLogic { get; set; }
             public Mock<IPriceLogic> IPriceLogic { get; set; }
             public Mock<ICustomerRepository> ICustomerRepository { get; set; }
             public Mock<IKPayInvoiceRepository> IKPayInvoiceRepository { get; set; }
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 cb.RegisterInstance(MakeICatalogLogic().Object)
                   .As<ICatalogLogic>();
                 cb.RegisterInstance(MakeINoteLogic().Object)
-                  .As<INoteLogic>();
+                  .As<INotesListLogic>();
                 cb.RegisterInstance(MakeIPriceLogic().Object)
                   .As<IPriceLogic>();
                 cb.RegisterInstance(MakeICustomerRepository().Object)
@@ -120,9 +120,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 return mock;
             }
 
-            public static Mock<INoteLogic> MakeINoteLogic()
+            public static Mock<INotesListLogic> MakeINoteLogic()
             {
-                var mock = new Mock<INoteLogic>();
+                var mock = new Mock<INotesListLogic>();
 
                 return mock;
             }
