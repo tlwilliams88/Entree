@@ -503,6 +503,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
         public OperationReturnModel<string> ShareList(ListCopyShareModel copyListModel) {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try {
+                _customListSharesRepo.DeleteCustomListShares(copyListModel.ListId);
+
                 foreach (var customer in copyListModel.Customers) {
                     _customListSharesRepo.SaveCustomListShare(new CustomListShare() {
                                                                                         Active = true,
@@ -511,20 +513,31 @@ namespace KeithLink.Svc.WebApi.Controllers {
                                                                                         BranchId = customer.CustomerBranch
                                                                                     });
 
-                    _cacheListLogic.ClearCustomersListCaches(this.AuthenticatedUser, new UserSelectedContext() {
-                                                                                                                   CustomerId = customer.CustomerNumber,
-                                                                                                                   BranchId = customer.CustomerBranch
-                                                                                                               },
-                                                             _listService.ReadUserList(this.AuthenticatedUser, new UserSelectedContext() {
-                                                                                                                                             CustomerId = customer.CustomerNumber,
-                                                                                                                                             BranchId = customer.CustomerBranch
-                                                                                                                                         }, true));
+                    _cacheListLogic.ClearCustomersListCaches(AuthenticatedUser,
+                                                             new UserSelectedContext() {
+                                                                                           CustomerId = customer.CustomerNumber,
+                                                                                           BranchId = customer.CustomerBranch
+                                                                                       },
+                                                             _listService.ReadUserList(AuthenticatedUser,
+                                                                                       new UserSelectedContext() {
+                                                                                                                     CustomerId = customer.CustomerNumber,
+                                                                                                                     BranchId = customer.CustomerBranch
+                                                                                                                 }, true));
 
                     _cacheListLogic.ClearCustomersLabelsCache(new UserSelectedContext() {
                                                                                             CustomerId = customer.CustomerNumber,
                                                                                             BranchId = customer.CustomerBranch
                                                                                         });
                 }
+
+                _cacheListLogic.ClearCustomersListCaches(AuthenticatedUser,
+                                                         SelectedUserContext,
+                                                         _listService.ReadUserList(AuthenticatedUser,
+                                                                                   SelectedUserContext,
+                                                                                   true));
+
+                _cacheListLogic.ClearCustomersLabelsCache(SelectedUserContext);
+
                 ret.SuccessResponse = null;
                 ret.IsSuccess = true;
             } catch (Exception ex) {
