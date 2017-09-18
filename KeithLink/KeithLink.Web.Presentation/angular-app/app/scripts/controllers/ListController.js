@@ -79,6 +79,7 @@ angular.module('bekApp')
     ];
 
     $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
+    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter});
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
@@ -1077,6 +1078,11 @@ angular.module('bekApp')
             return {
               sort: $scope.sort,
               terms: $scope.listSearchTerm
+            };
+          },
+          contractFilter: function() {
+            return {
+              filter: $scope.selectedFilter[0].filter
             };
           }
         }
