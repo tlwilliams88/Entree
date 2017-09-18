@@ -1,6 +1,5 @@
 <!-- Featured Items -->
 <div class="row">
-    <!-- <h3>Latest From Ben E. Keith</h3> -->
     <div loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
     <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
     <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
@@ -21,7 +20,7 @@
     <div class="col-md-4 col-md-push-8">
       <!-- Account Summary -->
       <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" ng-if="canViewInvoices">
-        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser || hidePayNowButton" class="pull-right btn btn-primary btn-lg">Pay Now</a>
+        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser || hidePayNowButton" class="pull-right btn btn-primary btn-lg" analytics-on analytics-category="Homepage-Pay-Invoice" analytics-event="Pay Invoice Button">Pay Now</a>
         <h4><strong>Account Balance</strong></h4>
         <div loading-spinner="loadingAccountBalance"></div>
         <div ng-show="!loadingAccountBalance">
@@ -87,7 +86,7 @@
                 Subtotal
               </div>
             </div>
-            <div class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
+            <div class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay" analytics-on analytics-category="Homepage-Pending-Orders-Desktop" analytics-event="Pending Orders" analytics-label="{{cart.name}}">
               <div class="row no-margin">
                 <div class="col-md-3 order-col">
                   <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
@@ -106,7 +105,7 @@
             </div>
             <div class="text-center hidden-xs hidden-sm" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
             <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
-              <a class="view-all" ui-sref="menu.order">View All</a>
+              <a class="view-all" ui-sref="menu.order" analytics-on analytics-category="Homepage-Pending-Orders-Desktop" analytics-event="Pending Orders View All">View All</a>
             </div>
         </div>
         
@@ -129,7 +128,7 @@
             Invoice Status
           </div>
         </div>
-        <div class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" ng-class="order.highlightClass">
+        <div class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" analytics-on analytics-category="Homepage-Confirmed-Orders-Desktop" analytics-event="Confirmed Orders" ng-class="order.highlightClass">
           <div class="row no-margin">
             <div class="col-md-3 order-col">
               <div class="order-col__number" order-link></div>
@@ -172,7 +171,7 @@
           </div>
         </div>
         <div class="text-center hidden-xs hidden-sm" ng-hide="loadingOrders || ordersMessage || orders.length === 0">
-          <a class="view-all" ui-sref="menu.order">View All</a>
+          <a class="view-all" ui-sref="menu.order" analytics-on analytics-category="Homepage-Confirmed-Orders-Desktop" analytics-event="Confirmed Orders View All">View All</a>
         </div>
         <div class="text-center hidden-sm hidden-xs" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
         <div class="text-red hidden-xs hidden-sm" ng-show="ordersMessage">{{ordersMessage}}</div>
@@ -183,10 +182,10 @@
             <h3>Pending Orders</h3>
           </div>
           <div class="col-xs-4">
-            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">View All</a>
+            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0"  analytics-on analytics-category="Homepage-Pending-Orders-Desktop" analytics-event="Pending Orders View All">View All</a>
           </div>
         </div>
-        <div class="order-summary__order visible-xs visible-sm" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2">
+        <div class="order-summary__order visible-xs visible-sm" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2" analytics-on analytics-category="Homepage-Pending-Orders-Mobile" analytics-event="Pending Orders">
           <div class="order-col">
             <div class="row">
               <div class="col-xs-6">
@@ -232,11 +231,11 @@
             <h3>Confirmed Orders</h3>
           </div>
           <div class="col-xs-4">
-            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingOrders || ordersMessage || orders.length === 0">View All</a>
+            <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg"  ng-hide="loadingOrders || ordersMessage || orders.length === 0" analytics-on analytics-category="Homepage-Confirmed-Orders-Mobile" analytics-event="Confirmed Orders View All">View All</a>
           </div>
         </div>
         <p class="text-red hidden-md hidden-lg" ng-show="ordersMessage">{{ordersMessage}}</p>
-        <div class="order-summary__order visible-xs visible-sm" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2" ng-class="order.highlightClass">
+        <div class="order-summary__order visible-xs visible-sm" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2" analytics-on analytics-category="Homepage-Confirmed-Orders-Mobile" analytics-event="Confirmed Orders" ng-class="order.highlightClass">
           <div class="order-col">
             <div class="row">
               <div class="col-xs-6">
@@ -311,7 +310,7 @@
 
             <div ng-show="!loadingRecentlyViewedItems && recentlyViewedItems.length > 0">
             <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
-              <li ng-repeat="item in recentlyViewedItems" class="item-holder">
+              <li ng-repeat="item in recentlyViewedItems" class="item-holder" analytics-on analytics-category="Homepage-Recently-Viewed-Items-Desktop" analytics-event="Recently Viewed Items" analytics-label="{{item.name}}">
                 <div class="featured-item text-center">
                   <img
                     ng-if="item.images.length > 0"
@@ -348,7 +347,7 @@
           <div ng-show="!loadingCategories && categories.length > 0">
                 <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                     <li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
-                        <div class="featured-item text-center">
+                        <div class="featured-item text-center" analytics-on analytics-category="Homepage-Categories-Desktop" analytics-event="Categories" analytics-label="{{category.name}}">
                             <img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
                             <div>
                                 <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="featured-item__detail">{{::category.name}}</a>
@@ -370,7 +369,7 @@
 
           <div ng-show="!loadingRecommendedItems && recommendedItems.length > 0">
             <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
-              <li ng-repeat="item in recommendedItems" class="item-holder">
+              <li ng-repeat="item in recommendedItems" class="item-holder" analytics-on analytics-category="Homepage-Recommended-Items-Desktop" analytics-event="Recommended Items" analytics-label="{{item.itemnumber}}">
                 <div class="featured-item text-center">
                   <img
                     ng-if="item.images.length > 0"
@@ -407,7 +406,7 @@
               <div ng-show="!loadingBrands && brands.length > 0">
                 <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                         <li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
-                            <div class="featured-item text-center">
+                            <div class="featured-item text-center" analytics-on analytics-category="Homepage-Brands-Desktop" analytics-event="Brands" analytics-label="{{brand.extended_description}}">
                                 <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
                                 <div>
                                     <a ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" class="featured-item__detail">{{::brand.extended_description}}</a>
@@ -433,7 +432,7 @@
 
               <div ng-show="!loadingRecentlyViewedItems && recentlyViewedItems.length > 0">
               <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
-                <li ng-repeat="item in recentlyViewedItems" class="item-holder">
+                <li ng-repeat="item in recentlyViewedItems" class="item-holder" analytics-on analytics-category="Homepage-Recently-Viewed-Items-Desktop" analytics-event="Recently Viewed Items" analytics-label="{{item.itemnumber}}">
                   <div class="featured-item text-center">
                     <img
                       ng-if="item.images.length > 0"
@@ -470,7 +469,7 @@
         <div ng-show="!loadingCategories && categories.length > 0">
               <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
                   <li ng-repeat="category in categories | orderBy: ['id']" ng-if="category.name != 'All'" class="item-holder">
-                      <div class="featured-item text-center">
+                      <div class="featured-item text-center" analytics-on analytics-category="Homepage-Categories-Desktop" analytics-event="Categories" analytics-label="{{category.name}}">
                           <img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" ng-src="{{category.category_image.url}}" alt="image">
                           <div>
                               <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name, category: category.name})" class="featured-item__detail">{{::category.name}}</a>
@@ -492,7 +491,7 @@
 
         <div ng-show="!loadingRecommendedItems && recommendedItems.length > 0">
           <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
-            <li ng-repeat="item in recommendedItems" class="item-holder">
+            <li ng-repeat="item in recommendedItems" class="item-holder" analytics-on analytics-category="Homepage-Recommended-Items-Desktop" analytics-event="Recommended Items" analytics-label="{{item.itemnumber}}">
               <div class="featured-item text-center">
                 <img
                   ng-if="item.images.length > 0"
@@ -528,7 +527,7 @@
 
             <div ng-show="!loadingBrands && brands.length > 0">
               <ul class="horizontal-slide hidden-xs hidden-sm" ng-class="{ 'hidden-md' : isMobile == true }">
-                      <li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
+                      <li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder" analytics-on analytics-category="Homepage-Brands-Desktop" analytics-event="Brands" analytics-label="brand.extended_description">
                           <div class="featured-item text-center">
                               <img class="hand" ui-sref="menu.catalog.products.list({ type: 'housebrand', id: brand.brand_control_label, brand: brand.extended_description })" ng-src="{{brand.imageurl}}" alt="image">
                               <div>

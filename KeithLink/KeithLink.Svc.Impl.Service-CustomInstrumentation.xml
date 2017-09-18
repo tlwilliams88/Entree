@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension xmlns="urn:newrelic-extension">
+    <!--If you need to remove some of the methods from a trace (If it's too long it won't record them all) just comment those tracers out-->
+    <!--If a tracer just defines a method that is part of a recorded trace, but doesn't record one itself, you don't add the name attribute-->
+    <!--If a tracer is to actually record a trace you add the name attribute-->
+    <instrumentation>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/GetContractInformation">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="GetContractInformation"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/GetItemsHistoryList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="GetItemsHistoryList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadListByType">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadListByType"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadListById">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadListById"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadUserList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadUserList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/AddListsIfNotNull">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="AddListsIfNotNull"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadLabels">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadLabels"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadPagedList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadPagedList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadRecent">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadRecent"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadRecentOrder">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadRecentOrder"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/UpdateList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="UpdateList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/SaveItem">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="SaveItem"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/SaveItems">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="SaveItems"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/CreateList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="CreateList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/CopyList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="CopyList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/CopyList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="CopyList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/DeleteList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="DeleteList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/PopulateProductDetails">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="PopulateProductDetails"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/FillOutProducts">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="FillOutProducts"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/FillOutProducts">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="FillOutProducts"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/LookupProductDetails">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="LookupProductDetails"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/LookupProductDetails">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="LookupProductDetails"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/GetCustomItemHash">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="GetCustomItemHash"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/LookupPrices">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="LookupPrices"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/ReadRecommendedItemsList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="ReadRecommendedItemsList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/MarkFavoritesAndAddNotes">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="MarkFavoritesAndAddNotes"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/MarkFavoritesAndAddNotes">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="MarkFavoritesAndAddNotes"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/GetFavoritesHash">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="GetFavoritesHash"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/GetNotesHash">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="GetNotesHash"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/AddContractInformationIfInContract">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="AddContractInformationIfInContract"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/GetBarcodeForList">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="GetBarcodeForList"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/AddCustomInventory">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="AddCustomInventory"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/AddCustomInventoryItems">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="AddCustomInventoryItems"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/SetPosition">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="SetPosition"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/DeleteItem">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="DeleteItem"/>
+            </match>
+        </tracerFactory>
+        <tracerFactory metricName="Custom/Impl/Service/ListServiceImpl/DeleteItems">
+            <match assemblyName="KeithLink.Svc.Impl"
+                   className="KeithLink.Svc.Impl.Service.ListServiceImpl">
+                <exactMethodMatcher methodName="DeleteItems"/>
+            </match>
+        </tracerFactory>
+    </instrumentation>
+</extension>

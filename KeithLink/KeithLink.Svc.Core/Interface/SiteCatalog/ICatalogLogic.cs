@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
-    public interface ICatalogLogic
-    {
+    public interface ICatalogLogic {
+        List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber);
+
         void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel);
 
         CategoriesReturn GetCategories(int from, int size, string catalogType);

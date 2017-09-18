@@ -100,11 +100,13 @@ angular.module('bekApp')
     function setMandatoryAndReminder(cart){
       if ($scope.mandatoryList) {
         $scope.mandatoryList.active = true;
+        if($scope.mandatoryList.items && $scope.mandatoryList.items.length > 0){
           cart.items.forEach(function(item){
             if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
               item.isMandatory = true;
             }
           });
+        }
       } else if ($scope.reminderList) {
         $scope.reminderList.active = true;
       } else {
@@ -298,7 +300,7 @@ angular.module('bekApp')
                 }
               }
 
-            analyticsRecordTransaction(orderNumber, cart)
+            analyticsRecordTransaction(orderNumber, cart);
 
             $state.go('menu.orderitems', { invoiceNumber: orderNumber });
             $scope.displayMessage(status, message);
@@ -594,7 +596,7 @@ angular.module('bekApp')
 
         // Add item to transaction
         Analytics.addItem(orderNumber, item.itemnumber, item.name, item.class, item.price, item.quantity);
-      })
+    });
 
       // Complete transaction
       Analytics.trackTrans();

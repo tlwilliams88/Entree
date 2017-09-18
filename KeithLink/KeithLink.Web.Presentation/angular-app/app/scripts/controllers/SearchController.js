@@ -267,9 +267,28 @@ angular.module('bekApp')
           $scope.specialfilters.selected
         );
       }
+      
+      var updatedPage = {
+        type: $scope.paramType, 
+        id: $scope.paramId, 
+        deptName: $stateParams.deptName, 
+        parentcategories: $scope.parentcategories.selected,
+        subcategories: $scope.subcategories.selected,
+        brands: $scope.brands.selected,
+        manufacturers: $scope.manufacturers.selected,
+        dietary: $scope.dietary.selected,
+        itemspecs: $scope.itemspecs.selected,
+        temp_zones: $scope.temp_zones.selected,
+        specialfilters: $scope.specialfilters.selected,
+        startingPoint: parseInt($scope.startingPoint),
+        currentPage: parseInt($scope.currentPage)
+      };
+      if($scope.aggregateCount !== 0 || $scope.startingPoint > 0 || $scope.currentPage > 1){
+          updatePage(updatedPage);
+      }
 
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
-      ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params, $stateParams.deptName, $stateParams.campaign_id).then(function(data){
+      ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id).then(function(data){
         $scope.products = data.products;
         if($scope.toggleView){
           resetPage($scope.products, true);
@@ -298,7 +317,7 @@ angular.module('bekApp')
       $scope.rangeStartOffset = 0;
       $scope.rangeEndOffset = 0;
 
-      if(initialPageLoad){
+      if(initialPageLoad && !$stateParams.currentPage){
         $scope.currentPage = 1;
         $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage);
         $scope.products = $scope.products.slice($scope.firstPageItem, ($scope.currentPage * $scope.itemsPerPage));
@@ -306,6 +325,29 @@ angular.module('bekApp')
         $scope.visitedPages.push({page: 1, items: $scope.products, deletedCount: 0});
       }
       $scope.setRange();
+    }
+    
+    function updatePage(updatedPage) {
+        $state.go('menu.catalog.products.list',
+            {   type: updatedPage.type, 
+                id: updatedPage.id, 
+                deptName: updatedPage.deptName, 
+                parentcategories: updatedPage.parentcategories,
+                subcategories: updatedPage.subcategories,
+                brands: updatedPage.brands,
+                manufacturers: updatedPage.manufacturers,
+                dietary: updatedPage.dietary,
+                itemspecs: updatedPage.itemspecs,
+                temp_zones: updatedPage.temp_zones,
+                specialfilters: updatedPage.specialfilters,
+                startingPoint: updatedPage.startingPoint,
+                currentPage: updatedPage.currentPage
+            },
+            {   location: true,
+                reload: false,
+                notify: false
+            }
+         )
     }
 
     function appendProducts(results) {
@@ -408,6 +450,19 @@ angular.module('bekApp')
         $scope.filterCount += aggregateDataSelected.length;
       }
     }
+    
+    function updateAggregates(aggregate) {
+        var aggregateState = $stateParams[aggregate],
+            aggregateScope = $scope[aggregate].selected;
+                                        
+        if(Array.isArray(aggregateState) && aggregateState.length > 1) {
+            aggregateState.forEach(function(category) {
+                aggregateScope.push(category);
+            })
+        } else {
+            aggregateScope.push(aggregateState);
+        }
+    }
 
     $scope.selectBreadcrumb = function(selectedaggregate) {
 
@@ -447,6 +502,31 @@ angular.module('bekApp')
       var facets;
       $scope.userProfile = SessionService.userProfile;
       $scope.currentCustomer = LocalStorage.getCurrentCustomer();
+            
+      if($stateParams.parentcategories != undefined) {
+          updateAggregates('parentcategories');
+      }
+      if($stateParams.subcategories != undefined) {
+          updateAggregates('subcategories');
+      }
+      if($stateParams.brands != undefined) {
+          updateAggregates('brands');
+      }
+      if($stateParams.manufacturers != undefined) {
+          updateAggregates('manufacturers');
+      }
+      if($stateParams.dietary != undefined) {
+          updateAggregates('dietary');
+      }
+      if($stateParams.itemspecs != undefined) {
+          updateAggregates('itemspecs');
+      }
+      if($stateParams.specialfilters != undefined) {
+          updateAggregates('specialfilters');
+      }
+      if($stateParams.temp_zones != undefined) {
+          updateAggregates('temp_zones');
+      }
 
       $scope.aggregateCount = ($scope.brands.selected.length + $scope.itemspecs.selected.length + $scope.temp_zones.selected.length + $scope.manufacturers.selected.length + $scope.dietary.selected.length + $scope.parentcategories.selected.length + $scope.subcategories.selected.length + $scope.specialfilters.selected.length);
 
@@ -462,13 +542,38 @@ angular.module('bekApp')
           $scope.specialfilters.selected
         );
       }
+      
+      var updatedPage = {
+        type: $scope.paramType, 
+        id: $scope.paramId, 
+        deptName: $stateParams.deptName, 
+        parentcategories: $scope.parentcategories.selected,
+        subcategories: $scope.subcategories.selected,
+        brands: $scope.brands.selected,
+        manufacturers: $scope.manufacturers.selected,
+        dietary: $scope.dietary.selected,
+        itemspecs: $scope.itemspecs.selected,
+        temp_zones: $scope.temp_zones.selected,
+        specialfilters: $scope.specialfilters.selected,
+        startingPoint: $stateParams.startingPoint,
+        currentPage: $stateParams.currentPage
+      };
+      if($scope.aggregateCount !== 0 || $scope.startingPoint > 0 || $scope.currentPage > 1){
+          updatePage(updatedPage);
+      }
+       
+      $scope.currentPage = $stateParams.currentPage ? parseInt($stateParams.currentPage) : 1;
+      
+      $scope.startingPoint = parseInt($stateParams.startingPoint);
+      $scope.endPoint = angular.copy($scope.startingPoint + $scope.itemsPerPage);
+      $scope.firstPageItem = ($scope.currentPage * $scope.itemsPerPage) - ($scope.itemsPerPage - 1);
 
-      if($scope.sortField === 'itemnumber' && $state.params.catalogType && $state.params.catalogType != 'BEK'){
+      if($scope.sortField === 'itemnumber' && $stateParams.catalogType && $stateParams.catalogType != 'BEK'){
         $scope.sortField  = '';
       }
 
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType, params, $stateParams.deptName, $stateParams.campaign_id);
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $stateParams.startingPoint, $scope.sortField, $scope.sortDirection, facets, $stateParams.dept);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $stateParams.catalogType, params, $stateParams.deptName, $stateParams.campaign_id);
     }
 
     //Load list of products and block UI with message
@@ -521,6 +626,17 @@ angular.module('bekApp')
         blockUI.stop();
 
         delete $scope.searchMessage;
+
+        $timeout(function() {
+            $('.nav').on( 'mousewheel DOMMouseScroll', function (e) { 
+
+                var d = e.originalEvent.wheelDelta || -e.originalEvent.detail,
+                    dir = d > 0 ? 'up' : 'down',
+                    stop = (dir == 'up' && this.scrollTop == 0) || 
+                           (dir == 'down' && this.scrollTop >= this.scrollHeight-this.offsetHeight);
+                stop && e.preventDefault();
+            });
+        }, 100);
 
         return data.facets;
         });
@@ -594,6 +710,24 @@ angular.module('bekApp')
       $scope.temp_zones.selected = [];
       $scope.itemspecs.selected = [];
       $scope.specialfilters.selected = [];
+      
+      var updatedPage = {
+        type: $scope.paramType, 
+        id: $scope.paramId, 
+        deptName: $stateParams.deptName, 
+        parentcategories: undefined,
+        subcategories: undefined,
+        brands: undefined,
+        manufacturers: undefined,
+        dietary: undefined,
+        itemspecs: undefined,
+        temp_zones: undefined,
+        specialfilters: undefined,
+        startingPoint: undefined,
+        currentPage: undefined
+      };
+      updatePage(updatedPage);
+
       loadProducts().then(refreshFacets);
       $scope.noFiltersSelected = true;
     };
@@ -745,6 +879,8 @@ angular.module('bekApp')
 
     $scope.toggleSelection = function(category, facetList, selectedFacet, parentcategory, index) {
       $scope.startingPoint = 0;
+      $stateParams.startingPoint = 0;
+      $stateParams.currentPage = 1;
       $scope.noFiltersSelected = !$scope.noFiltersSelected;
       var parentCategorySelected,
           parentCategoryAvailableIdx,

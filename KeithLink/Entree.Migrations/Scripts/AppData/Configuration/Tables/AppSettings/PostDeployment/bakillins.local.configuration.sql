@@ -49,7 +49,7 @@ INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('AmazonSnsSe
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('AppName', 'Entree', 'Site Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('BillPayCutOffTime', '14:00:00', 'BillPay Settings: this setting must be in a 24 hour format', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('BrandAssetsUrl', 'http://devkeithlink.bekco.com/assets/brands', 'Site Settings', 0)
-INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CacheServerEndpoints', 'http://corpmisdev2a.bekco.com:60606', 'Misc Settings', 0)
+INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CacheServerEndpoints', 'http://corpmisdev2h.bekco.com:60606', 'Misc Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CategoryPrefixesToExclude', 'AA,ZZ,TW', 'Elastic Search Settings', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('CheckForAppSettingsChangeDelayMinutes', '3', 'DB Has Changed', 0)
 INSERT @AppSettings ([Key], [Value], [Comment], [Disabled]) VALUES ('ClientSettingsProvider.ServiceUri', '', 'Email Settings', 0)

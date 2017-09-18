@@ -111,6 +111,9 @@ angular.module('bekApp')
     if (ListService.findRecommendedList()) {
       $scope.hideRecommendedListCreateButton = true;
     }
+    if (ListService.findReminderList()) {
+      $scope.hideReminderListCreateButton = true;
+    }
 
     //Toggle scope variable to render Reports side panel when screen is resized
     $(window).resize(function(){
@@ -381,7 +384,7 @@ angular.module('bekApp')
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listType: listtype, listId: listid});
+          return $state.transitionTo('menu.lists.items', {listId: listid, listType: listtype}, {location: true, reload: true, notify: true});
         });
       }
     };
@@ -493,6 +496,7 @@ angular.module('bekApp')
 
         setLastList(newList);
         $scope.selectedList = newList;
+        $state.transitionTo('menu.lists.items', {listId: $scope.selectedList.listid, listType: $scope.selectedList.type}, {location: true, reload: false, notify: true});
       });
     };
 
@@ -530,6 +534,24 @@ angular.module('bekApp')
     $scope.createRecommendedListFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.createRecommendedList(dragSelection);
+    };
+    
+    /**********
+    CREATE REMINDER LIST
+    **********/
+
+    $scope.createReminderList = function(items) {
+        ListService.createReminderList(items).then(function(list) {
+            setLastList(list);
+            $scope.hideRecommendedListCreateButton = true;
+            $scope.selectedList = list;
+            applyNewList();
+        });
+    };
+
+    $scope.createReminderListFromDrag = function(event, helper) {
+      var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.createReminderList(dragSelection);
     };
 
     /**********
@@ -986,11 +1008,12 @@ angular.module('bekApp')
             return ListService.getExportConfig($scope.selectedList);
           },
           exportParams: function() {
-            var list = {
+            var params = {
                 listType: $scope.selectedList.type,
-                listId: $scope.selectedList.listid
+                listId: $scope.selectedList.listid,
+                sort: $scope.sort[0]
             }
-            return list;
+            return params;
           }
         }
       });

@@ -14,6 +14,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using KeithLink.Svc.Impl.Seams;
+
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
     public class ElasticSearchCatalogRepositoryImpl : ICatalogRepository {
         #region attributes
@@ -27,7 +29,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         #region constructor
         public ElasticSearchCatalogRepositoryImpl() {
             _eshelper = new Helpers.ElasticSearch();
-            _client = GetElasticsearchClient(Configuration.ElasticSearchURL);
+            _client = GetElasticsearchClient(BEKConfiguration.Get("ElasticSearchURL"));
             _catalog = "bek";
         }
         #endregion
@@ -1365,7 +1367,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             }
         }
 
-        private Product LoadProductFromElasticSearchProduct(bool listonly, dynamic oProd)
+        public Product LoadProductFromElasticSearchProduct(bool listonly, dynamic oProd)
         {
             Product p = new Product();
             GetBaseProductProperties(oProd, p);
@@ -1597,6 +1599,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.ItemClass = oProd._source.parentcategoryname;
             p.Pack = oProd._source.pack;
             p.Size = oProd._source.size;
+            p.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                     p.Name,
+                                     p.ItemNumber,
+                                     p.BrandExtendedDescription,
+                                     p.ItemClass,
+                                     p.PackSize);
             p.CaseOnly = oProd._source.caseonly == "Y";
             p.TempZone = oProd._source.temp_zone;
             p.IsProprietary = oProd._source.isproprietary;

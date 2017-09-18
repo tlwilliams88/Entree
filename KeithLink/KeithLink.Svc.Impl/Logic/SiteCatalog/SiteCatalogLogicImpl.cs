@@ -326,7 +326,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return returnDict;
         }
 
-        private List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber) {
+        public List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber) {
             List<OrderHistoryFile> returnValue = new List<OrderHistoryFile>();
 
             List<EF.OrderHistoryHeader> history = _orderHeaderRepo.GetLastFiveOrdersByItem(catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber);

@@ -312,7 +312,7 @@ angular.module('bekApp')
               list.items.forEach(function(item){
                 if(item.onhand < 0.01){
                   item.onhand = '';
-                } else if(item.quantity < 1){
+              } else if(item.quantity < 1 && listType != 11){
                     item.quantity = '';
                 }
               });
@@ -539,7 +539,9 @@ angular.module('bekApp')
             newList.name = 'Mandatory';
           } else if (params.type === 10) {
             newList.name = 'Recommended';
-          } else if (params.name && params.name !== null) {
+        } else if (params.type === 8) {
+            newList.name = 'Reminder';
+        } else if (params.name && params.name !== null) {
             newList.name = params.name;
           }
           else{
@@ -883,7 +885,27 @@ angular.module('bekApp')
         findRecommendedList: function() {
           return UtilityService.findObjectByField(Service.lists, 'isrecommended', true);
         },
+        
+        /**********************
+        REMINDER ITEMS LISTS
+        ***********************/
 
+        createReminderList: function(items) {
+          // Type = 13 - Reminder list type that needs to be passed in
+          var params = { type: 8 };
+          if(items == undefined){
+              items = [];
+          }
+          items.forEach(function(item){
+              item.active = true;
+          })
+          return Service.createList(items, params);
+        },
+
+        findReminderList: function() {
+          return UtilityService.findObjectByField(Service.lists, 'isreminder', true);
+        },
+        
         /**********************
         OTHER SPECIAL LISTS
         ***********************/

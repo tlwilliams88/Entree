@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Notes;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic.Lists {
@@ -35,6 +36,22 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
 
             return returnValue;
         }
+
+        public List<ListItemModel> GetNotes(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            NotesListHeader header = _headerRepo.GetHeadersForCustomer(catalogInfo);
+
+            List<ListItemModel> notes = new List<ListItemModel>();
+
+            if (header != null) {
+                var notedetails = _detailRepo.GetAll(header.Id);
+                notes = notedetails.Select(d => d.ToWebModel())
+                                   .ToList();
+            }
+
+            return notes;
+        }
+
         public ListModel GetList(UserSelectedContext catalogInfo) {
             NotesListHeader header = _headerRepo.GetHeadersForCustomer(catalogInfo);
             List<NotesListDetail> details = new List<NotesListDetail>();

@@ -550,6 +550,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, prods.Products, _listService);
 
+                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, prods.Products);
+
                 if (exportRequest.Fields != null)
                     _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 

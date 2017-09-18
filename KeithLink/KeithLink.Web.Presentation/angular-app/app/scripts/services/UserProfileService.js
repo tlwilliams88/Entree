@@ -120,8 +120,6 @@ angular.module('bekApp')
       },
 
       createUser: function(userProfile) {
-        userProfile.password = encodeURIComponent(userProfile.password);
-        userProfile.confirmpassword = encodeURIComponent(userProfile.confirmpassword);
         userProfile.message = 'Creating user...';
 
         var promise = $http.post('/profile/register', userProfile);

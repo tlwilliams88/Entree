@@ -37,13 +37,13 @@
 @media (max-width: $screen-md-max) AND (min-width: $screen-sm-max) {
   .orderFromListDropdown {
     width:78%; 
-    margin-left:16px;
+    margin-left:14px;
   }
 }
 
 @media (max-width: $screen-sm-max){
   .orderFromListDropdown {
-    width:75%;
+    width:78%;
   }
 
   .createOrderModalCustomer {
@@ -54,6 +54,7 @@
 @media (max-width: $screen-sm-max) and (orientation:portrait){
   .orderFromListDropdown {
     margin-left: 12px;
+    width:79%;
   }
   .createOrderModalRemoveField {
     display:none;
@@ -65,7 +66,7 @@
 
 @media (max-width: $screen-sm-max) and (orientation:landscape){
   .orderFromListDropdown {
-    margin-left: 38px;
+    margin-left: 14px;
   }
   .padding-left-8-orderModal {
     margin: auto;
@@ -79,4 +80,16 @@
     width:80%; 
     margin-left:16px;
   }
+}
+
+@media (max-width: $screen-xs-max) and (orientation:portrait){
+    .orderFromListDropdown {
+        width: 76%;
+    }
+}
+
+@media (max-width: $screen-xs-max) and (orientation:landscape){
+    .orderFromListDropdown {
+        width: 79%;
+    }
 }

@@ -69,11 +69,20 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if (header == null)
             {
-                foreach (var item in list.Items)
-                {
-                    ReminderItemsListDetail detail = item.ToReminderItemsListDetail(0);
-                    detail.Active = !item.IsDelete;
-                    Save(catalogInfo, detail);
+                if (list.Items.Count == 0) {
+                    ReminderItemsListHeader model = new ReminderItemsListHeader() {
+                                                                                      BranchId = catalogInfo.BranchId,
+                                                                                      CustomerNumber = catalogInfo.CustomerId
+                                                                                  };
+                    _headersRepo.SaveReminderListHeader(model);
+                }
+                else {
+                    foreach (var item in list.Items)
+                    {
+                        ReminderItemsListDetail detail = item.ToReminderItemsListDetail(0);
+                        detail.Active = !item.IsDelete;
+                        Save(catalogInfo, detail);
+                    }
                 }
             }
             else

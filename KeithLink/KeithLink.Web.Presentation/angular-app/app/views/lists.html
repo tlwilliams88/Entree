@@ -246,6 +246,19 @@
                 title="Create Recommended Items List for Customer">
                 Create <br>Recommended...
               </button>
+              
+              
+              <button
+                type="button"
+                ng-click="createReminderList()"
+                data-drop="isDragging"
+                data-jqyoui-options="{hoverClass:'bek-drag-hover', tolerance:'pointer, activeClass:'bek-drag-active'}"
+                jqyoui-droppable="{onDrop: 'createReminderListFromDrag()'}"
+                class="btn btn-default btn-list text-left text-light btn-lg"
+                ng-if="!hideReminderListCreateButton"
+                title="Create Reminder Items List for Customer">
+                Create <br>Reminder...
+              </button>
               </div>
 
               <button
@@ -594,7 +607,7 @@
                     ng-required="item.isEditing"
                     ng-model="item.editLabel" />
 
-                  <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                  <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                   <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
@@ -758,7 +771,7 @@
                             ng-required="item.isEditing"
                             ng-model="item.editLabel" />
 
-                          <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                          <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                           <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
@@ -940,8 +953,7 @@
                   <ng-form>
                     <input
                     id="defaultElement-{{currentIndex}}"
-                    type="text"
-                    pattern="([0-9])"
+                    type="tel"
                     ng-model="item.pack"
                     class="text-right bek-no-drag tabstop form-control"
                     maxlength="4"
@@ -974,7 +986,7 @@
               <!-- Label -->
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-click="$event.stopPropagation()" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)" style="vertical-align: middle;">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
-                  <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
+                  <select name="" id="label" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
                     <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
                   </select>
                   <a ng-click="item.isEditing = true; item.editLabel = item.label" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
@@ -990,7 +1002,7 @@
                         placeholder="New Label..."
                         ng-required="item.isEditing"
                         ng-model="item.editLabel" />
-                    <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                    <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                     <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
@@ -1132,7 +1144,7 @@
                             placeholder="New Label..."
                             ng-required="item.isEditing"
                             ng-model="item.editLabel" />
-                            <a ng-click="applyNewLabel(item.editLabel, item)"><span class="large-icon text-green icon-checkmark"></span></a>
+                            <a ng-click="applyNewLabel(item.editLabel, item); saveList(selectedList);"><span class="large-icon text-green icon-checkmark"></span></a>
                             <a ng-click="item.isEditing = false; item.editLabel = ''"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
