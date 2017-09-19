@@ -14,56 +14,16 @@ namespace KeithLink.Svc.Impl.Helpers
     {
         public static void GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<ShoppingCartItem> prods, IListService listService)
         {
-            List<Product> products = new List<Product>();
-            foreach (ShoppingCartItem prod in prods)
-            {
-                products.Add(new Product() { ItemNumber = prod.ItemNumber });
-            }
-
-            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
-
-            if (products != null && products.Count > 0)
-            {
-                foreach (ShoppingCartItem prod in prods)
-                {
-                    SetFavoriteNotesAndInHistory(prod, products);
-                }
-            }
+            PullInformationFromDataAndDistribute(user, catalogInfo, prods, listService);
         }
 
         public static void GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<OrderLine> prods, IListService listService)
         {
-            List<Product> products = new List<Product>();
-            foreach (OrderLine prod in prods)
-            {
-                products.Add(new Product() { ItemNumber = prod.ItemNumber });
-            }
-
-            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
-
-            if (products != null && products.Count > 0)
-            {
-                foreach (OrderLine prod in prods)
-                {
-                    SetFavoriteNotesAndInHistory(prod, products);
-                }
-            }
+            PullInformationFromDataAndDistribute(user, catalogInfo, prods, listService);
         }
 
-        public static List<Product> GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<Product> prods, IListService listService)
-        {
-            List<Product> products = new List<Product>();
-            foreach (Product prod in prods) {
-                products.Add(new Product() { ItemNumber = prod.ItemNumber });
-            }
-
-            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
-
-            if (products != null && products.Count > 0) {
-                foreach (Product prod in prods) {
-                    SetFavoriteNotesAndInHistory(prod, products);
-                }
-            }
+        public static List<Product> GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<Product> prods, IListService listService) {
+            PullInformationFromDataAndDistribute(user, catalogInfo, prods, listService);
 
             return prods;
         }
@@ -71,6 +31,7 @@ namespace KeithLink.Svc.Impl.Helpers
         public static Product GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, Product prod, IListService listService) {
 
             List<Product> products = new List<Product>();
+
             products.Add(new Product() {ItemNumber = prod.ItemNumber});
 
             products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
@@ -78,6 +39,42 @@ namespace KeithLink.Svc.Impl.Helpers
             SetFavoriteNotesAndInHistory(prod, products);
 
             return prod;
+        }
+
+        private static void PullInformationFromDataAndDistribute(UserProfile user, UserSelectedContext catalogInfo, dynamic prods, IListService listService)
+        {
+            List<Product> products = new List<Product>();
+
+            LoadProductsToGetInformation(prods, products);
+
+            GetInformationForItems(user, catalogInfo, listService, products);
+
+            if (products != null &&
+                products.Count > 0)
+            {
+                DistributeInformation(prods, products);
+            }
+        }
+
+        private static void GetInformationForItems(UserProfile user, UserSelectedContext catalogInfo, IListService listService, dynamic products)
+        {
+            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
+        }
+
+        private static void DistributeInformation(dynamic prods, List<Product> products)
+        {
+            foreach (dynamic prod in prods)
+            {
+                SetFavoriteNotesAndInHistory(prod, products);
+            }
+        }
+
+        private static void LoadProductsToGetInformation(dynamic prods, List<Product> products)
+        {
+            foreach (BaseProductInfo prod in prods)
+            {
+                products.Add(new Product() { ItemNumber = prod.ItemNumber });
+            }
         }
 
         private static void SetFavoriteNotesAndInHistory(ShoppingCartItem prod, List<Product> products)
