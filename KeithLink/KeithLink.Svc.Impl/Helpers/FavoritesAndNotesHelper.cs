@@ -12,40 +12,33 @@ namespace KeithLink.Svc.Impl.Helpers
     /* For now this helper is in the Impl assembly (for testing), but should only be called from a controller in WebApi */
     public class FavoritesAndNotesHelper
     {
-        public static void GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<ShoppingCartItem> prods, IListService listService)
-        {
-            List<Product> products = new List<Product>();
-            foreach (ShoppingCartItem prod in prods)
-            {
-                products.Add(new Product() { ItemNumber = prod.ItemNumber });
-            }
+        public static void GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<ShoppingCartItem> prods, IListService listService) {
+            var favorites = listService.GetFavoritesHash(user, catalogInfo);
+            var notes = listService.GetNotesHash(catalogInfo);
 
-            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
+            foreach (ShoppingCartItem prod in prods) {
+                if (favorites.ContainsKey(prod.ItemNumber)) {
+                    prod.Favorite = true;
+                }
 
-            if (products != null && products.Count > 0)
-            {
-                foreach (ShoppingCartItem prod in prods)
-                {
-                    SetFavoriteNotesAndInHistory(prod, products);
+                if (notes.ContainsKey(prod.ItemNumber)) {
+                    prod.Notes = notes[prod.ItemNumber].Notes;
                 }
             }
         }
 
         public static void GetFavoritesAndNotesFromLists(UserProfile user, UserSelectedContext catalogInfo, List<OrderLine> prods, IListService listService)
         {
-            List<Product> products = new List<Product>();
-            foreach (OrderLine prod in prods)
-            {
-                products.Add(new Product() { ItemNumber = prod.ItemNumber });
-            }
+            var favorites = listService.GetFavoritesHash(user, catalogInfo);
+            var notes = listService.GetNotesHash(catalogInfo);
 
-            products = listService.MarkFavoritesAndAddNotes(user, products, catalogInfo);
+            foreach (OrderLine prod in prods) {
+                if (favorites.ContainsKey(prod.ItemNumber)) {
+                    prod.Favorite = true;
+                }
 
-            if (products != null && products.Count > 0)
-            {
-                foreach (OrderLine prod in prods)
-                {
-                    SetFavoriteNotesAndInHistory(prod, products);
+                if (notes.ContainsKey(prod.ItemNumber)) {
+                    prod.Notes = notes[prod.ItemNumber].Notes;
                 }
             }
         }
