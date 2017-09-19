@@ -79,7 +79,7 @@ angular.module('bekApp')
     ];
 
     $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter});
+    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
