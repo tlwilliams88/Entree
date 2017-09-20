@@ -316,7 +316,8 @@ namespace KeithLink.Svc.Impl.Logic
                     string[] vals = row.Split(Delimiter);
                     string itmNum = DetermineItemNumber(vals[itemNumberColumn].PadLeft(6, '0'), file.Options, user, catalogInfo);
                     decimal qty = 1;
-                    if (file.Options.Contents.Equals(FileContentType.ItemQty))
+                    if (file.Options.Contents.Equals(FileContentType.ItemQty) |
+                        file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase))
                     {
                         qty = DetermineQuantity(vals[itemNumberColumn].PadLeft(6, '0'), vals[quantityColumn], file.Options, parList);
                     }
