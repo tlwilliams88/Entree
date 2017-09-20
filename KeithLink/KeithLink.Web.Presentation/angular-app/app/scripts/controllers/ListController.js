@@ -1085,7 +1085,7 @@ angular.module('bekApp')
           },
           contractFilter: function() {
             return {
-              filter: $scope.selectedFilter[0].filter
+              filter: $scope.selectedFilter
             };
           }
         }
