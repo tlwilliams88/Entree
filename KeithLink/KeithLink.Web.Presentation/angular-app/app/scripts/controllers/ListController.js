@@ -1014,6 +1014,9 @@ angular.module('bekApp')
                 listId: $scope.selectedList.listid,
                 sort: $scope.sort[0]
             }
+            if($scope.selectedList.is_contract_list == true) {
+                params.filter = $scope.selectedFilter;
+            }
             return params;
           }
         }
