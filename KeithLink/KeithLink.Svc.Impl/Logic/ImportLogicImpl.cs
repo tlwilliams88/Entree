@@ -380,7 +380,8 @@ namespace KeithLink.Svc.Impl.Logic
                 {
                     string itmNum = DetermineItemNumber(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), file.Options, user, catalogInfo);
                     decimal qty = 1;
-                    if (file.Options.Contents.Equals(FileContentType.ItemQty))
+                    if (file.Options.Contents.Equals(FileContentType.ItemQty) | 
+                        file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase))
                     {
                         qty = DetermineQuantity(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), rdr.GetString(quantityColumn), file.Options, parList);
                     }
