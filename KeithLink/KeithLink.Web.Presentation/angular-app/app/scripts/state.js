@@ -346,7 +346,7 @@ angular.module('bekApp')
               });
             }
           }
-          if(listToBeUsed && (listToBeUsed.listType == 5 || listToBeUsed.listType == 2 || listToBeUsed.listType == 10 || listToBeUsed.listType == 9)){
+          if(listToBeUsed && (listToBeUsed.listType == Constants.listType.Worksheet || listToBeUsed.listType == Constants.listType.Contract || listToBeUsed.listType == Constants.listType.Recommended || listToBeUsed.listType == Constants.listType.Mandatory)){
             ListService.getParamsObject(params, 'lists').then(function(storedParams){
               $stateParams.sortingParams = storedParams;
               params = storedParams;
@@ -523,7 +523,7 @@ angular.module('bekApp')
 
           }
 
-          if(listToBeUsed && (listToBeUsed.listType == 5 || listToBeUsed.listType == 2 || listToBeUsed.listType == 10 || listToBeUsed.listType == 9)){
+          if(listToBeUsed && (listToBeUsed.listType == Constants.listType.Worksheet || listToBeUsed.listType == Constants.listType.Contract || listToBeUsed.listType == Constants.listType.Recommended || listToBeUsed.listType == Constants.listType.Mandatory)){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
               $stateParams.sortingParams = storedParams;
               params = storedParams;
