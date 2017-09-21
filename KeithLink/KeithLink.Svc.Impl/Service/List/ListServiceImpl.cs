@@ -280,7 +280,8 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 if (tempList != null &&
                     tempList.Items != null &&
-                    tempList.Items.Count > 0) {
+                    tempList.Items.Count > 0 && 
+                    type != ListType.Notes) {
                     FillOutProducts(user, catalogInfo, new List<ListModel>() {tempList}, true);
                 }
 

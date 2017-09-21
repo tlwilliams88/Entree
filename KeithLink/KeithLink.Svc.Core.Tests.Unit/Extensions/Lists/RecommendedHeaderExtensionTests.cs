@@ -476,7 +476,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodHeader_ReturnsExpectedIsRecommended() {
                 // arrange
                 var details = MakeListOfDetails();
-                var expected = false;
+                var expected = true;
                 var header = MakeHeader();
 
                 // act
@@ -798,7 +798,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             public void GoodHeader_ReturnsExpectedIsRecommended() {
                 // arrange
                 var details = MakeListOfModels();
-                var expected = false;
+                var expected = true;
                 var header = MakeHeader();
 
                 // act
