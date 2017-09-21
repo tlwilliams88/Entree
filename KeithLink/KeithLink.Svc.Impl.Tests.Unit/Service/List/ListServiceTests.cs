@@ -740,10 +740,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List {
                 var testListType = ListType.Worksheet;
 
                 // act
-                var results = testunit.ReadList(fakeUser, testcontext, testListType, 1);
+                var results = testunit.ReadListByType(fakeUser, testcontext, testListType);
                 
                 // assert
-                mockDependents.HistoryListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Once, "not called");
+                mockDependents.HistoryListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), false), Times.Once, "not called");
             }
 
             [Fact]
