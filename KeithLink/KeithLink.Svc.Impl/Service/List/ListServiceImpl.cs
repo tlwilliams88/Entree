@@ -280,7 +280,8 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 if (tempList != null &&
                     tempList.Items != null &&
-                    tempList.Items.Count > 0) {
+                    tempList.Items.Count > 0 && 
+                    type != ListType.Notes) {
                     FillOutProducts(user, catalogInfo, new List<ListModel>() {tempList}, true);
                 }
 
@@ -969,7 +970,7 @@ namespace KeithLink.Svc.Impl.Service.List
             return list;
         }
 
-        private Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo) {
+        public Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo) {
             ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
             var favHash = new Dictionary<string, ListItemModel>();
             if (favorites != null &&
@@ -980,7 +981,7 @@ namespace KeithLink.Svc.Impl.Service.List
             return favHash;
         }
 
-        private Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo) {
+        public Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo) {
             ListModel notes = _notesLogic.GetList(catalogInfo);
             var notesHash = new Dictionary<string, ListItemModel>();
             if (notes != null &&

@@ -425,9 +425,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // arrange
                 var headerId = 0;
                 var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
-                // act
-                var results = logic.ReadList(headerId, true);
+            // act
+                var results = logic.ReadList(headerId, userSelectedContext, true);
 
                 // assert
                 results.Should()
@@ -440,9 +444,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 1;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, true);
+                var result = logic.ReadList(headerId, userSelectedContext, true);
             
                 // assert
                 result.ListId
@@ -456,9 +464,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, true);
+                var result = logic.ReadList(headerId, userSelectedContext, true);
 
                 // assert
                 result.Items
@@ -473,9 +485,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 1;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, false);
+                var result = logic.ReadList(headerId, userSelectedContext, false);
 
                 // assert
                 result.ListId
@@ -489,9 +505,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 2;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, false);
+                var result = logic.ReadList(headerId, userSelectedContext, false);
 
                 // assert
                 result.Items
@@ -506,9 +526,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, true);
+                var result = logic.ReadList(headerId, userSelectedContext, true);
 
                 // assert
                 result.SharedWith
@@ -523,9 +547,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 var expected = 2;
                 var headerId = 1;
                 var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
 
                 // act
-                var result = logic.ReadList(headerId, false);
+                var result = logic.ReadList(headerId, userSelectedContext, false);
 
                 // assert
                 result.SharedWith
