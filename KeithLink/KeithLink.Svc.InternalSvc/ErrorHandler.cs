@@ -19,7 +19,9 @@ namespace KeithLink.Svc.InternalSvc
 
 			eventLogRepository.WriteErrorLog("Unhandled Service Exception", error);
 
-			return false;
+            KeithLink.Common.Impl.Email.ExceptionEmail.Send(error);
+
+            return false;
 		}
 
 		public void ProvideFault(Exception error, System.ServiceModel.Channels.MessageVersion version, ref System.ServiceModel.Channels.Message fault)

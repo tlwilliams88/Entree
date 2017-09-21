@@ -233,7 +233,10 @@ namespace KeithLink.Svc.Impl.ETL
 			catch (Exception e)
 			{
 				eventLog.WriteErrorLog(String.Format("ETL: Error Importing catalog -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
-			}
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
+                    "ETL: Error Importing catalog -- whole process failed.");
+            }
         }
 
 		public void ImportUNFICatalog()
@@ -266,8 +269,11 @@ namespace KeithLink.Svc.Impl.ETL
 			catch (Exception e)
 			{
 				eventLog.WriteErrorLog(String.Format("ETL: Error Importing catalog -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
-			}
-		}
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
+                    "ETL: Error Importing catalog -- whole process failed.");
+            }
+        }
         #endregion  
     }
 }

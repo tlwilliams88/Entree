@@ -208,10 +208,13 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			catch (Exception e)
 			{
 				_eventLog.WriteErrorLog(String.Format("ETL: Error importing categories to CS -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
-			}
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
+                    "ETL: Error importing categories to CS -- whole process failed.");
+            }
 
 
-		}
+        }
 
         #endregion
 
