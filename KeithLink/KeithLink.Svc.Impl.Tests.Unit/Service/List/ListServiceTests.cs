@@ -591,6 +591,60 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List {
         }
         #endregion
 
+        #region GetNotesHash
+        public class GetNotesHash {
+            [Fact]
+            public void AnyContext_CallsNotesGetList() {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: false, mockDependents: ref mockDependents);
+
+                var testContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+
+                // act
+                var results = testunit.GetNotesHash(testContext);
+
+                // assert
+                mockDependents.NotesListLogic.Verify(m => m.GetList(It.Is<UserSelectedContext>(x => x.BranchId.Equals(testContext.BranchId) && x.CustomerId.Equals(testContext.CustomerId))), Times.Once, "not called");
+            }
+        }
+        #endregion
+
+        #region GetFavoritesHash
+        public class GetFavoritesHash {
+            [Fact]
+            public void AnyContext_CallsFavoritesGetList() {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsService(useAutoFac: false, mockDependents: ref mockDependents);
+
+                var testContext = new UserSelectedContext() {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+
+                var testProfile = new UserProfile() {
+                    UserId = new Guid()
+                };
+
+                // act
+                var results = testunit.GetFavoritesHash(testProfile, testContext);
+
+                // assert
+                mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(
+                It.Is<Guid>(g => g.Equals(testProfile.UserId)),
+                It.Is<UserSelectedContext>(
+                    x => x.BranchId.Equals(testContext.BranchId) && 
+                    x.CustomerId.Equals(testContext.CustomerId)),
+                false),
+                Times.Once, "not called");
+            }
+        }
+        #endregion
+
         #region ReadListByType
         public class ReadListByType {
             [Fact]
