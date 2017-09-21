@@ -346,8 +346,7 @@ angular.module('bekApp')
               });
             }
           }
-          
-          if(listToBeUsed && (listToBeUsed.read_only || listToBeUsed.isrecommended || listToBeUsed.ismandatory)){
+          if(listToBeUsed && (listToBeUsed.listType == 5 || listToBeUsed.listType == 2 || listToBeUsed.listType == 10 || listToBeUsed.listType == 9)){
             ListService.getParamsObject(params, 'lists').then(function(storedParams){
               $stateParams.sortingParams = storedParams;
               params = storedParams;
@@ -524,7 +523,7 @@ angular.module('bekApp')
 
           }
 
-          if(listToBeUsed.read_only || listToBeUsed.isrecommended || listToBeUsed.ismandatory){
+          if(listToBeUsed && (listToBeUsed.listType == 5 || listToBeUsed.listType == 2 || listToBeUsed.listType == 10 || listToBeUsed.listType == 9)){
             ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
               $stateParams.sortingParams = storedParams;
               params = storedParams;
