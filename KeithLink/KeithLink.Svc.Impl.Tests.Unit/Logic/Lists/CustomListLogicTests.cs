@@ -1,12 +1,7 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using Autofac;
-using FluentAssertions;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.CustomList;
@@ -15,12 +10,18 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
+
+using Autofac;
+using FluentAssertions;
 using Moq;
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
-    public class CustomListLogicTests {
-        private static ICustomListLogic MakeMockLogic() {
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
+{
+    public class CustomListLogicTests
+    {
+        private static ICustomListLogic MakeMockLogic()
+        {
             ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
 
             cb.RegisterInstance(MakeDetailRepo())
@@ -35,12 +36,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return diMap.Resolve<ICustomListLogic>();
         }
 
-        private static ICustomListDetailsRepository MakeDetailRepo() {
+        private static ICustomListDetailsRepository MakeDetailRepo()
+        {
             var repo = new Mock<ICustomListDetailsRepository>();
 
             repo.Setup(d => d.GetCustomListDetails(It.Is<long>(i => i == 1)))
                 .Returns(
-                    new List<CustomListDetail>() { 
+                    new List<CustomListDetail>() {
                         new CustomListDetail() {
                             Active = true,
                             CatalogId = "FUT",
@@ -78,11 +80,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return repo.Object;
         }
 
-        private static ICustomListHeadersRepository MakeHeaderRepo() {
+        private static ICustomListHeadersRepository MakeHeaderRepo()
+        {
             var repo = new Mock<ICustomListHeadersRepository>();
 
             repo.Setup(h => h.GetCustomListHeader(It.Is<long>(i => i == 1)))
-                .Returns(new CustomListHeader() {
+                .Returns(new CustomListHeader()
+                {
                     Active = true,
                     BranchId = "FUT",
                     CustomerNumber = "123456",
@@ -93,7 +97,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 });
 
-            repo.Setup(h => h.GetCustomListHeadersByCustomer(It.Is<UserSelectedContext>(u => u.BranchId == "FUT" && 
+            repo.Setup(h => h.GetCustomListHeadersByCustomer(It.Is<UserSelectedContext>(u => u.BranchId == "FUT" &&
                                                                                              u.CustomerId == "123456")))
                 .Returns(new List<CustomListHeader>() {
                     new CustomListHeader() {
@@ -126,7 +130,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return repo.Object;
         }
 
-        private static ICustomListSharesRepository MakeShareRepo() {
+        private static ICustomListSharesRepository MakeShareRepo()
+        {
             var repo = new Mock<ICustomListSharesRepository>();
 
             repo.Setup(s => s.GetCustomListSharesByHeaderId(It.Is<long>(i => i == 1)))
@@ -171,9 +176,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return repo.Object;
         }
 
-        public class CreateOrUpdateList {
+        public class CreateOrUpdateList
+        {
             [Fact]
-            public void ExistingHeader_ReturnsTheSameHeaderId() {
+            public void ExistingHeader_ReturnsTheSameHeaderId()
+            {
                 // arrange
                 var expected = 1;
                 var fakeActive = true;
@@ -192,7 +199,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void NewHeader_ReturnsTheNextAvailableHeaderId() {
+            public void NewHeader_ReturnsTheNextAvailableHeaderId()
+            {
                 // arrange
                 var expected = 1;
                 var fakeActive = true;
@@ -211,7 +219,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void CallingMethod_HitsTheSaveHeaderMethodOnce() {
+            public void CallingMethod_HitsTheSaveHeaderMethodOnce()
+            {
                 // arrange
                 var expected = 1;
                 var fakeActive = true;
@@ -231,14 +240,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
         }
-        
-        public class DeleteList {
+
+        public class DeleteList
+        {
             [Fact]
-            public void CallingMethod_HitsTheSaveHeaderMethodOnce() {
+            public void CallingMethod_HitsTheSaveHeaderMethodOnce()
+            {
                 // arrange
                 var expected = 1;
                 var fakeCustomer = new UserSelectedContext();
-                var fakeList = new ListModel() {
+                var fakeList = new ListModel()
+                {
                     ListId = 1,
                     Name = "Fake Name"
                 };
@@ -255,19 +267,23 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 header.Verify(h => h.SaveCustomListHeader(It.IsAny<CustomListHeader>()), Times.Once);
             }
         }
-        
-        public class GetListModel {
+
+        public class GetListModel
+        {
             [Fact]
-            public void BadBranchId_ReturnsExpectedList() {
+            public void BadBranchId_ReturnsExpectedList()
+            {
                 // arrange
                 var logic = MakeMockLogic();
                 var headerId = 1;
                 var expected = 1;
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
 
@@ -281,16 +297,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsExpectedList() {
+            public void BadCustomerId_ReturnsExpectedList()
+            {
                 // arrange
                 var logic = MakeMockLogic();
                 var headerId = 1;
                 var expected = 1;
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
 
@@ -304,15 +323,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadHeaderId_ReturnsNull() {
+            public void BadHeaderId_ReturnsNull()
+            {
                 // arrange
                 var logic = MakeMockLogic();
                 var headerId = 157;
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("9615ef5f-fa2a-4497-a59f-69f34cbe6921")
                 };
 
@@ -325,18 +347,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadUser_ReturnsExpectedList() {
+            public void BadUser_ReturnsExpectedList()
+            {
                 // arrange
                 var logic = MakeMockLogic();
                 var headerId = 1;
                 var expected = 1;
-                var customer = new UserSelectedContext() {
-                                                             BranchId = "FUT",
-                                                             CustomerId = "123456"
-                                                         };
-                var user = new UserProfile() {
-                                                 UserId = new Guid("9615ef5f-fa2a-4497-a59f-69f34cbe6921")
-                                             };
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                var user = new UserProfile()
+                {
+                    UserId = new Guid("9615ef5f-fa2a-4497-a59f-69f34cbe6921")
+                };
 
                 // act
                 var results = logic.GetListModel(user, customer, headerId);
@@ -348,16 +373,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderId_ReturnsExpectedList() {
+            public void GoodHeaderId_ReturnsExpectedList()
+            {
                 // arrange
                 var logic = MakeMockLogic();
                 var headerId = 1;
                 var expected = 1;
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
 
@@ -371,16 +399,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderId_ReturnsExpectedItemCount() {
+            public void GoodHeaderId_ReturnsExpectedItemCount()
+            {
                 // arrange
                 var logic = MakeMockLogic();
                 var headerId = 1;
                 var expected = 2;
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
 
@@ -395,16 +426,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderId_ReturnsExpectedSharedCount() {
+            public void GoodHeaderId_ReturnsExpectedSharedCount()
+            {
                 // arrange
                 var logic = MakeMockLogic();
                 var headerId = 1;
                 var expected = 2;
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
 
@@ -419,20 +453,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
-        public class ReadList {
+        public class ReadList
+        {
             [Fact]
-            public void BadHeaderIdWithoutItems_ReturnsNull() {
+            public void BadHeaderIdWithoutItems_ReturnsNull()
+            {
                 // arrange
                 var headerId = 0;
                 var logic = MakeMockLogic();
-                UserSelectedContext testcontext = new UserSelectedContext
+                var userSelectedContext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = logic.ReadList(headerId, testcontext, true);
+                var results = logic.ReadList(headerId, userSelectedContext, true);
 
                 // assert
                 results.Should()
@@ -440,142 +476,151 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderIdWithoutItems_ReturnsExpectedListModel() {
+            public void GoodHeaderIdWithoutItems_ReturnsExpectedListModel()
+            {
                 // arrange
                 var expected = 1;
                 var headerId = 1;
                 var logic = MakeMockLogic();
-                UserSelectedContext testcontext = new UserSelectedContext
+                var userSelectedContext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = logic.ReadList(headerId, testcontext, true);
+                var result = logic.ReadList(headerId, userSelectedContext, true);
 
                 // assert
-                results.ListId
-                       .Should()
-                       .Be(expected);
+                result.ListId
+                      .Should()
+                      .Be(expected);
             }
 
             [Fact]
-            public void GoodHeaderIdWithoutItems_ReturnsExpectedItemCount() {
+            public void GoodHeaderIdWithoutItems_ReturnsExpectedItemCount()
+            {
                 // arrange
                 var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
-                UserSelectedContext testcontext = new UserSelectedContext
+                var userSelectedContext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = logic.ReadList(headerId, testcontext, true);
+                var result = logic.ReadList(headerId, userSelectedContext, true);
 
                 // assert
-                results.Items
-                       .Count
-                       .Should()
-                       .Be(expected);
+                result.Items
+                      .Count
+                      .Should()
+                      .Be(expected);
             }
 
             [Fact]
-            public void GoodHeaderIdWithItems_ReturnsExpectedListModel() {
+            public void GoodHeaderIdWithItems_ReturnsExpectedListModel()
+            {
                 // arrange
                 var expected = 1;
                 var headerId = 1;
                 var logic = MakeMockLogic();
-                UserSelectedContext testcontext = new UserSelectedContext
+                var userSelectedContext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = logic.ReadList(headerId, testcontext, true);
+                var result = logic.ReadList(headerId, userSelectedContext, false);
 
                 // assert
-                results.ListId
-                       .Should()
-                       .Be(expected);
+                result.ListId
+                      .Should()
+                      .Be(expected);
             }
 
             [Fact]
-            public void GoodHeaderIdWithItems_ReturnsExpectedItemCount() {
+            public void GoodHeaderIdWithItems_ReturnsExpectedItemCount()
+            {
+                // arrange
+                var expected = 2;
+                var headerId = 1;
+                var logic = MakeMockLogic();
+                var userSelectedContext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+
+                // act
+                var result = logic.ReadList(headerId, userSelectedContext, false);
+
+                // assert
+                result.Items
+                      .Count
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeaderIdWithoutItems_ReturnsExpectedShareCount()
+            {
                 // arrange
                 var expected = 0;
                 var headerId = 1;
                 var logic = MakeMockLogic();
-                UserSelectedContext testcontext = new UserSelectedContext
+                var userSelectedContext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = logic.ReadList(headerId, testcontext, true);
+                var result = logic.ReadList(headerId, userSelectedContext, true);
 
                 // assert
-                results.Items
-                       .Count
-                       .Should()
-                       .Be(expected);
+                result.SharedWith
+                      .Count
+                      .Should()
+                      .Be(expected);
             }
 
             [Fact]
-            public void GoodHeaderIdWithoutItems_ReturnsExpectedShareCount() {
+            public void GoodHeaderIdWithItems_ReturnsExpectedShareCount()
+            {
                 // arrange
-                var expected = 0;
+                var expected = 2;
                 var headerId = 1;
                 var logic = MakeMockLogic();
-                UserSelectedContext testcontext = new UserSelectedContext
+                var userSelectedContext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = logic.ReadList(headerId, testcontext, true);
+                var result = logic.ReadList(headerId, userSelectedContext, false);
 
                 // assert
-                results.SharedWith
-                       .Count
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeaderIdWithItems_ReturnsExpectedShareCount() {
-                // arrange
-                var expected = 0;
-                var headerId = 1;
-                var logic = MakeMockLogic();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "FUT",
-                    CustomerId = "123456"
-                };
-
-                // act
-                var results = logic.ReadList(headerId, testcontext, true);
-
-                // assert
-                results.SharedWith
-                       .Count
-                       .Should()
-                       .Be(expected);
+                result.SharedWith
+                      .Count
+                      .Should()
+                      .Be(expected);
             }
         }
 
-        public class ReadLists {
+        public class ReadLists
+        {
             [Fact]
-            public void BadBranchIdWithDetails_ReturnsListWithNoHeaders() {
+            public void BadBranchIdWithDetails_ReturnsListWithNoHeaders()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -592,10 +637,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadCustomerIdWithDetails_ReturnsListWithNoHeaders() {
+            public void BadCustomerIdWithDetails_ReturnsListWithNoHeaders()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
@@ -612,10 +659,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadBranchIdWithoutDetails_ReturnsListWithNoHeaders() {
+            public void BadBranchIdWithoutDetails_ReturnsListWithNoHeaders()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -632,10 +681,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadCustomerIdWithoutDetails_ReturnsListWithNoHeaders() {
+            public void BadCustomerIdWithoutDetails_ReturnsListWithNoHeaders()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
@@ -652,14 +703,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadUserWithoutDetails_ReturnsExpectedCountOfTwo() {
+            public void BadUserWithoutDetails_ReturnsExpectedCountOfTwo()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("9615ef5f-fa2a-4497-a59f-69f34cbe6921")
                 };
                 var expected = 2;
@@ -674,10 +728,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwo() {
+            public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwo()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -694,10 +750,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwoItemsForHeaderIdOf1() {
+            public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwoItemsForHeaderIdOf1()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -717,13 +775,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwoSharesForHeaderIdOf1() {
+            public void GoodCustomerWithDetails_ReturnsExpectedCountOfTwoSharesForHeaderIdOf1()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
-                                                             BranchId = "FUT",
-                                                             CustomerId = "123456"
-                                                         };
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
                 var user = new UserProfile();
                 var headerId = 1;
                 var expected = 2;
@@ -740,10 +800,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerWithoutDetails_ReturnsExpectedCountOfTwo() {
+            public void GoodCustomerWithoutDetails_ReturnsExpectedCountOfTwo()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -760,14 +822,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodUserWithoutDetails_ReturnsExpectedCountOfTwo() {
+            public void GoodUserWithoutDetails_ReturnsExpectedCountOfTwo()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var user = new UserProfile() {
+                var user = new UserProfile()
+                {
                     UserId = new Guid("c04afdba-90be-4cc9-8ec3-0969463a018c")
                 };
                 var expected = 2;
@@ -782,10 +847,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void NullUserWithDetails_ReturnsCountOfTwoHeaders() {
+            public void NullUserWithDetails_ReturnsCountOfTwoHeaders()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -802,10 +869,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void NullUserWithoutDetails_ReturnsCountOfTwoHeaders() {
+            public void NullUserWithoutDetails_ReturnsCountOfTwoHeaders()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -867,10 +936,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
-        public class SaveItem {
+        public class SaveItem
+        {
             // reads header id from the listitem
             [Fact]
-            public void BadHeaderId_ThrowsArgumentException() {
+            public void BadHeaderId_ThrowsArgumentException()
+            {
                 // arrange
                 var detail = new CustomListDetail();
                 var logic = MakeMockLogic();
@@ -884,9 +955,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
 
             // the list item is what is passed to detailRepo.save
             [Fact]
-            public void GoodHeaderId_CallsTheExpectedMethod() {
+            public void GoodHeaderId_CallsTheExpectedMethod()
+            {
                 // arrange
-                var detail = new CustomListDetail() {
+                var detail = new CustomListDetail()
+                {
                     HeaderId = 17
                 };
                 var detailRepo = new Mock<ICustomListDetailsRepository>();
@@ -902,9 +975,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
-        public class SaveList {
+        public class SaveList
+        {
             [Fact]
-            public void GoodHeader_CallsHeaderSaveMetodOnce() {
+            public void GoodHeader_CallsHeaderSaveMetodOnce()
+            {
                 // arrange
                 var fakeCustomer = new UserSelectedContext();
                 var farkModel = new ListModel();
@@ -922,7 +997,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderNoDetail_DoesNotCallSaveDetails() {
+            public void GoodHeaderNoDetail_DoesNotCallSaveDetails()
+            {
                 // arrange
                 var fakeCustomer = new UserSelectedContext();
                 var farkModel = new ListModel();
@@ -940,11 +1016,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderNoDetail_IfIsDeleteIsTrueSavesWithActiveFlagFalse() {
+            public void GoodHeaderNoDetail_IfIsDeleteIsTrueSavesWithActiveFlagFalse()
+            {
                 // arrange
                 var fakeCustomer = new UserSelectedContext();
                 var fakeUser = new UserProfile();
-                var farkModel = new ListModel() {
+                var farkModel = new ListModel()
+                {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -973,11 +1051,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderNoDetail_IfIsDeleteIsFalseAndActiveIsFalseSavesWithActiveFlagTrue() {
+            public void GoodHeaderNoDetail_IfIsDeleteIsFalseAndActiveIsFalseSavesWithActiveFlagTrue()
+            {
                 // arrange
                 var fakeCustomer = new UserSelectedContext();
                 var fakeUser = new UserProfile();
-                var farkModel = new ListModel() {
+                var farkModel = new ListModel()
+                {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -1006,10 +1086,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodHeaderGoodDetail_CallsSaveDetailsTwice() {
+            public void GoodHeaderGoodDetail_CallsSaveDetailsTwice()
+            {
                 // arrange
                 var fakeCustomer = new UserSelectedContext();
-                var fakeModel = new ListModel() {
+                var fakeModel = new ListModel()
+                {
                     ListId = 17,
                     Items = new List<ListItemModel>() {
                         new ListItemModel() {
