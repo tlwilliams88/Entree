@@ -286,7 +286,9 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
             try
             {
-                retVal.SuccessResponse = _orderLogic.UpdateOrderForEta(AuthenticatedUser, _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
+                Order order = _orderLogic.UpdateOrderForEta(AuthenticatedUser, _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(AuthenticatedUser, SelectedUserContext, order.Items, _listService);
+                retVal.SuccessResponse = order;
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -314,6 +316,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 var order = _orderLogic.UpdateOrderForEta(AuthenticatedUser, _orderLogic.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
                 ContractInformationHelper.GetContractCategoriesFromLists(SelectedUserContext, order.Items, _listService);
                 ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, order.Items);
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(AuthenticatedUser, SelectedUserContext, order.Items, _listService);
 
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, Core.Enumerations.List.ListType.Custom, 

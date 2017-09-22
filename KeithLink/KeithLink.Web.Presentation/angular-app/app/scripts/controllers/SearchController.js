@@ -654,11 +654,11 @@ angular.module('bekApp')
 
     function updateFacetCount(facets, data){
 
-      if(facets && facets.available){
+      if(facets && facets.available.length > 0){
 
         facets.available.forEach(function(facet){
 
-          var facetName = $filter('filter') (data, {name: facet.name});
+          var facetName = $filter('filter') (data, {name: facet.name, brand_control_label: facet.brand_control_label});
           facet.count = 0;
 
           if(facetName.length > 0 && facet.name){

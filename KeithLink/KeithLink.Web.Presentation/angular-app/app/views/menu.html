@@ -397,7 +397,22 @@
           <span class="caret text-light" style="color: #EDBB51;"></span>
           <ul class="dropdown-menu col-xs-12" role="menu">
             <li ng-repeat="department in departments" ng-if="department.name != 'All'" analytics-on analytics-category="Menu-Products-Dropdown" analytics-event="Products Dropdown" analytics-label="{{department.name}}">
-              <a ui-sref="menu.catalog.products.list({ catalogType: 'BEK', type: 'category', id: department.search_name, category: department.name})">
+              <a ui-sref="menu.catalog.products.list({ 
+                catalogType: 'BEK', type: 'category', 
+                id: department.search_name,
+                dept: department.id, 
+                category: department.name,
+                brand: null, 
+                parentcategories: undefined, 
+                subcategories: undefined,
+                brands: undefined,
+                manufacturers: undefined,
+                dietary: undefined,
+                itemspecs: undefined,
+                temp_zones: undefined,
+                specialfilters: undefined,
+                startingPoint: undefined,
+                currentPage: undefined})">
                 {{department.name}}
               </a>
             </li>

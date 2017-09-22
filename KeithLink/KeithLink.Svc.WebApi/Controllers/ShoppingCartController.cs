@@ -222,6 +222,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 var cart = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
                 ContractInformationHelper.GetContractCategoriesFromLists(this.SelectedUserContext, cart.Items, _listService);
                 ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, cart.Items);
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(AuthenticatedUser, SelectedUserContext, cart.Items, _listService);
 
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.CartDetail, Core.Enumerations.List.ListType.Custom,
