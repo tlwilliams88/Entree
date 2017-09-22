@@ -22,6 +22,24 @@ angular.module('bekApp')
       hideTutorialSearch: 'hideTutorialSearch',
       hideTutorialAddToOrder: 'hideTutorialAddToOrder'
     },
+    
+    listType: {
+      Custom: 0,  
+      Favorite: 1,  
+      Contract: 2,  
+      Recent: 3,  
+      Notes: 4,  
+      Worksheet: 5,  
+      ContractItemsAdded: 6,  
+      ContractItemsDeleted: 7,  
+      Reminders: 8,  
+      Mandatory: 9,  
+      Recommended: 10,  
+      InventoryValuation: 11,  
+      RecentlyOrdered: 12,  
+      RecentlyViewed: 13,  
+      CustomInventory: 14
+  },
 
     offlineLocalStorage: {
       labels: 'labels',
