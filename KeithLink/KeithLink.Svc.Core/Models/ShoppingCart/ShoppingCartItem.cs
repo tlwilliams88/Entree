@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.ModelExport;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
@@ -11,14 +12,14 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.ShoppingCart
 {
-	[DataContract(Name="ShoppingCartItem")]
-	public class ShoppingCartItem: BaseProductInfo, IExportableModel 
+    [DataContract(Name = "ShoppingCartItem")]
+    public class ShoppingCartItem : BaseProductInfo, IExportableModel
     {
-		[DataMember(Name = "cartitemid")]
-		public Guid CartItemId { get; set; }
+        [DataMember(Name = "cartitemid")]
+        public Guid CartItemId { get; set; }
 
-		[DataMember(Name = "quantity")]
-		public decimal Quantity { get; set; }
+        [DataMember(Name = "quantity")]
+        public decimal Quantity { get; set; }
 
         [Description("Item Order History")]
         public string OrderHistoryString { get; set; }
@@ -28,55 +29,55 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
         public int Position { get; set; }
 
         [DataMember(Name = "packsize")]
-		public new string PackSize { get; set; }
+        public new string PackSize { get; set; }
 
         [DataMember(Name = "name")]
-		public new string Name { get; set; }
+        public new string Name { get; set; }
 
         [DataMember(Name = "detail")]
         public new string Detail { get; set; }
 
-        [DataMember(Name ="notes")]
-		public new string Notes { get; set; }
+        [DataMember(Name = "notes")]
+        public new string Notes { get; set; }
 
-        [DataMember( Name = "label" )]
+        [DataMember(Name = "label")]
         public string Label { get; set; }
 
-        [DataMember( Name = "iscombinedquantity" )]
+        [DataMember(Name = "iscombinedquantity")]
         public bool IsCombinedQuantity { get; set; }
 
-        [DataMember( Name = "parlevel" )]
+        [DataMember(Name = "parlevel")]
         public decimal ParLevel { get; set; }
 
-		[DataMember(Name="each")]
-		public bool Each { get; set; }
+        [DataMember(Name = "each")]
+        public bool Each { get; set; }
 
-		[DataMember(Name = "storagetemp")]
-		public string StorageTemp { get; set; }
+        [DataMember(Name = "storagetemp")]
+        public string StorageTemp { get; set; }
 
-		[DataMember(Name = "createddate")]
-		public DateTime CreatedDate { get; set; }
-		
-		public double LineTotal(double Price)
-		{
+        [DataMember(Name = "createddate")]
+        public DateTime CreatedDate { get; set; }
 
-			if (this.CatchWeight)
-			{
-				if (this.Each) //package catchweight
-				{
-					return ((this.AverageWeight / Int32.Parse(this.Pack)) * (double)this.Quantity) * Price;
-				}
-				else //case catchweight
-				{
-					return (this.AverageWeight * (double)this.Quantity) * Price;
-				}
+        public double LineTotal(double Price)
+        {
 
-			}
-			else
-			{
-				return (double)this.Quantity * Price;
-			}
-		}
+            if (this.CatchWeight)
+            {
+                if (this.Each) //package catchweight
+                {
+                    return ((this.AverageWeight / Int32.Parse(this.Pack)) * (double)this.Quantity) * Price;
+                }
+                else //case catchweight
+                {
+                    return (this.AverageWeight * (double)this.Quantity) * Price;
+                }
+
+            }
+            else
+            {
+                return (double)this.Quantity * Price;
+            }
+        }
         public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
         {
             var defaultConfig = new List<ExportModelConfiguration>();
@@ -94,5 +95,83 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 
             return defaultConfig;
         }
+
+        #region OpenXml exports
+        public static int SetWidths(ExportModelConfiguration config, int width)
+        {
+            switch (config.Field)
+            {
+                case "Name":
+                case "BrandExtendedDescription":
+                case "ItemClass":
+                case "Notes":
+                case "Status":
+                    width = 20;
+                    break;
+                case "Detail":
+                case "OrderHistoryString":
+                    width = 80;
+                    break;
+                case "Pack":
+                    width = 8;
+                    break;
+                case "Size":
+                case "Quantity":
+                    width = 12;
+                    break;
+            }
+            return width;
+        }
+
+        public static uint SetStyleForHeader(string fieldName, uint styleInd)
+        {
+            styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
+            switch (fieldName)
+            {
+                case "ItemNumber":
+                case "Pack":
+                case "Quantity":
+                case "EachYN":
+                case "CasePrice":
+                case "PackagePrice":
+                    styleInd = Constants.OPENXML_RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                    break;
+            }
+            return styleInd;
+        }
+
+        public static uint SetStyleForCell(string fieldName, uint styleInd)
+        {
+            switch (fieldName)
+            {
+                case "ItemNumber":
+                case "Pack":
+                case "Quantity":
+                case "EachYN":
+                    styleInd = Constants.OPENXML_RIGHT_ALIGNED_CELL;
+                    break;
+                case "CasePrice":
+                case "PackagePrice":
+                    styleInd = Constants.OPENXML_NUMBER_F2_CELL;
+                    break;
+            }
+            return styleInd;
+        }
+
+        public static CellValues SetCellValueTypeForCells(string fieldName, CellValues celltype)
+        {
+            switch (fieldName)
+            {
+                case "ItemNumber":
+                case "Quantity":
+                case "CasePrice":
+                case "PackagePrice":
+                    celltype = CellValues.Number;
+                    break;
+            }
+            return celltype;
+        }
+
+        #endregion
     }
 }

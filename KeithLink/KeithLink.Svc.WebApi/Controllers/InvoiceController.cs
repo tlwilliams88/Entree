@@ -318,16 +318,24 @@ namespace KeithLink.Svc.WebApi.Controllers {
         public HttpResponseMessage ExportInvoiceDetail(string invoiceNumber, ExportRequestModel exportRequest) {
             HttpResponseMessage ret;
             try {
-                List<InvoiceItemModel> items = _invService.GetExportableInvoiceItems(AuthenticatedUser,
-                                                                                     SelectedUserContext,
-                                                                                     exportRequest,
-                                                                                     invoiceNumber,
-                                                                                     _listService.GetContractInformation(SelectedUserContext));
-                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, items);
+                InvoiceModel invoice = _invService.GetExportableInvoice(AuthenticatedUser,
+                                                                        SelectedUserContext,
+                                                                        exportRequest,
+                                                                        invoiceNumber,
+                                                                        _listService.GetContractInformation(SelectedUserContext));
 
-                ret = ExportModel<InvoiceItemModel>(items, 
-                                                    exportRequest, 
-                                                    SelectedUserContext);
+                invoice.Items = _invService.GetExportableInvoiceItems(AuthenticatedUser,
+                                                                      SelectedUserContext,
+                                                                      exportRequest,
+                                                                      invoiceNumber,
+                                                                      _listService.GetContractInformation(SelectedUserContext));
+
+                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, invoice.Items);
+
+                ret = ExportModel<InvoiceItemModel>(invoice.Items,
+                                                    exportRequest,
+                                                    SelectedUserContext,
+                                                    invoice);
             }
             catch (Exception ex)
             {

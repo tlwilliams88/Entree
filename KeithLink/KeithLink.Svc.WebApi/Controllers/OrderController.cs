@@ -319,10 +319,10 @@ namespace KeithLink.Svc.WebApi.Controllers
                 FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(AuthenticatedUser, SelectedUserContext, order.Items, _listService);
 
                 if (exportRequest.Fields != null)
-                    _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, Core.Enumerations.List.ListType.Custom, 
+                    _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, Core.Enumerations.List.ListType.Custom,
                                                         exportRequest.Fields, exportRequest.SelectedType);
 
-                ret = ExportModel<OrderLine>(order.Items, exportRequest, SelectedUserContext);
+                ret = ExportModel<OrderLine>(order.Items, exportRequest, SelectedUserContext, order);
             }
             catch (Exception ex)
             {

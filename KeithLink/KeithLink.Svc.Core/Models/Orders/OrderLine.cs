@@ -12,6 +12,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
+using DocumentFormat.OpenXml.Spreadsheet;
+
 namespace KeithLink.Svc.Core.Models.Orders
 {
     [DataContract(Name = "OrderLine")]
@@ -42,17 +44,17 @@ namespace KeithLink.Svc.Core.Models.Orders
 
                 if (this.IsDeleted == false)
                 {
-                    if (!string.IsNullOrEmpty(this.OrderStatus) 
+                    if (!string.IsNullOrEmpty(this.OrderStatus)
                         && this.OrderStatus.Equals("i", StringComparison.CurrentCultureIgnoreCase))
                         total = PricingHelper.GetFixedPrice(QantityShipped, Price, CatchWeight, (double)TotalShippedWeight, AverageWeight);
-                    else if(Pack != null)
+                    else if (Pack != null)
                     {
-                        total = PricingHelper.GetPrice(QantityShipped, 
-                                                       Price, 
-                                                       Price, 
-                                                       Each, 
-                                                       CatchWeight, 
-                                                       AverageWeight, 
+                        total = PricingHelper.GetPrice(QantityShipped,
+                                                       Price,
+                                                       Price,
+                                                       Each,
+                                                       CatchWeight,
+                                                       AverageWeight,
                                                        (Pack != null) ? int.Parse(Pack) : 0);
                     }
                 }
@@ -227,5 +229,90 @@ namespace KeithLink.Svc.Core.Models.Orders
 
             return defaultConfig;
         }
+
+        #region OpenXml exports
+        public static int SetWidths(ExportModelConfiguration config, int width)
+        {
+            switch (config.Field)
+            {
+                case "Name":
+                case "BrandExtendedDescription":
+                case "ItemClass":
+                case "Notes":
+                case "Status":
+                    width = 20;
+                    break;
+                case "Detail":
+                case "OrderHistoryString":
+                    width = 80;
+                    break;
+                case "Pack":
+                    width = 8;
+                    break;
+                case "Size":
+                case "QuantityOrdered":
+                case "QantityShipped":
+                    width = 12;
+                    break;
+            }
+            return width;
+        }
+
+        public static uint SetStyleForHeader(string fieldName, uint styleInd)
+        {
+            styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
+            switch (fieldName)
+            {
+                case "ItemNumber":
+                case "Pack":
+                case "QuantityOrdered":
+                case "QantityShipped":
+                case "EachYN":
+                case "Price":
+                case "LineTotal":
+                    styleInd = Constants.OPENXML_RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                    break;
+            }
+            return styleInd;
+        }
+
+        public static uint SetStyleForCell(string fieldName, uint styleInd)
+        {
+            switch (fieldName)
+            {
+                case "ItemNumber":
+                case "Pack":
+                case "QuantityOrdered":
+                case "QantityShipped":
+                case "EachYN":
+                    styleInd = Constants.OPENXML_RIGHT_ALIGNED_CELL;
+                    break;
+                case "Price":
+                case "LineTotal":
+                    styleInd = Constants.OPENXML_NUMBER_F2_CELL;
+                    break;
+            }
+            return styleInd;
+        }
+
+        public static CellValues SetCellValueTypeForCells(string fieldName, CellValues celltype)
+        {
+            switch (fieldName)
+            {
+                case "ItemNumber":
+                case "QuantityOrdered":
+                case "QantityShipped":
+                case "CasePrice":
+                case "PackagePrice":
+                case "Price":
+                case "LineTotal":
+                    celltype = CellValues.Number;
+                    break;
+            }
+            return celltype;
+        }
+
+        #endregion
+
     }
 }

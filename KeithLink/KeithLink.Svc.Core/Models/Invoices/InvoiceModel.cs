@@ -13,6 +13,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
+using DocumentFormat.OpenXml.Spreadsheet;
+
 namespace KeithLink.Svc.Core.Models.Invoices
 {
     [DataContract(Name = "Invoice")]
@@ -114,16 +116,109 @@ namespace KeithLink.Svc.Core.Models.Invoices
         {
             var defaultConfig = new List<ExportModelConfiguration>();
 
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Label = "Reference #", Order = 10 });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "TypeDescription", Order = 20 });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "StatusDescription", Order = 30 });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "PONumber", Order = 40 });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "InvoiceDate", Order = 50 });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "DueDate", Order = 60 });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "InvoiceAmount", Order = 70 });
-            defaultConfig.Add(new ExportModelConfiguration() { Field = "Amount", Order = 80 });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "InvoiceNumber",
+                                                                 Label = "Reference #",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_01ST
+                                                             });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "TypeDescription",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_02ND
+                                                             });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "StatusDescription",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_03RD
+                                                             });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "PONumber",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_04TH
+                                                             });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "InvoiceDate",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_05TH
+                                                             });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "DueDate",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_06TH
+                                                             });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "InvoiceAmount",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_07TH
+                                                             });
+            defaultConfig.Add(new ExportModelConfiguration() {
+                                                                 Field = "Amount",
+                                                                 Order = Constants.PLACEHOLDER_ORDER_08TH
+                                                             });
 
             return defaultConfig;
         }
+
+        #region OpenXml exports
+        public static int SetWidths(ExportModelConfiguration config, int width)
+        {
+            switch (config.Field)
+            {
+                case "InvoiceNumber":
+                case "PONumber":
+                case "TypeDescription":
+                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_12;
+                    break;
+                case "InvoiceAmount":
+                case "Amount":
+                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_16;
+                    break;
+                case "InvoiceDate":
+                case "DueDate":
+                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_14;
+                    break;
+            }
+            return width;
+        }
+
+        public static uint SetStyleForHeader(string fieldName, uint styleInd)
+        {
+            styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
+            switch (fieldName)
+            {
+                case "InvoiceDate":
+                case "DueDate":
+                case "InvoiceAmount":
+                case "Amount":
+                    styleInd = Constants.OPENXML_RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
+                    break;
+            }
+            return styleInd;
+        }
+
+        public static uint SetStyleForCell(string fieldName, uint styleInd)
+        {
+            styleInd = Constants.OPENXML_TEXT_WRAP_CELL;
+            switch (fieldName)
+            {
+                case "InvoiceDate":
+                case "DueDate":
+                    styleInd = Constants.OPENXML_RIGHT_ALIGNED_CELL;
+                    break;
+                case "InvoiceAmount":
+                case "Amount":
+                    styleInd = Constants.OPENXML_NUMBER_F2_CELL;
+                    break;
+            }
+            return styleInd;
+        }
+
+        public static CellValues SetCellValueTypeForCells(string fieldName, CellValues celltype)
+        {
+            switch (fieldName)
+            {
+                case "InvoiceAmount":
+                case "Amount":
+                    celltype = CellValues.Number;
+                    break;
+            }
+            return celltype;
+        }
+
+        #endregion
     }
 }
