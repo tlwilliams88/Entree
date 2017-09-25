@@ -141,30 +141,31 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="exportRequest"></param>
         /// <param name="context"></param>
         /// <returns></returns>
-		public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest, UserSelectedContext context) where T : class, IExportableModel
-		{
-			var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
-                
-			MemoryStream stream;
-			if (exportRequest.Fields == null)
-				stream = exportLogic.Export(model, exportRequest.SelectedType, context);// new ModelExporter<T>(model).Export(exportRequest.SelectedType);
-			else
-			{
-				stream = exportLogic.Export(model,exportRequest.Fields,  exportRequest.SelectedType, context); //new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
-			}
-			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-			result.Content = new StreamContent(stream);
-			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-			
-			if(exportRequest.SelectedType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
-				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-			else if(exportRequest.SelectedType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
-				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/tab-separated-values");
-			else
-				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+		public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest, UserSelectedContext context, dynamic headerInfo = null) where T : class, IExportableModel
+        {
+            var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
 
-			return result;
-		}
+            MemoryStream stream;
+            if (exportRequest.Fields == null)
+                stream = exportLogic.Export(model, exportRequest.SelectedType, context, headerInfo);// new ModelExporter<T>(model).Export(exportRequest.SelectedType);
+            else
+            {
+                stream = exportLogic.Export(model, exportRequest.Fields, exportRequest.SelectedType, context, headerInfo); //new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
+            }
+            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+
+            if (exportRequest.SelectedType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            else if (exportRequest.SelectedType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/tab-separated-values");
+            else
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+
+            return result;
+        }
+
 
         #endregion
 

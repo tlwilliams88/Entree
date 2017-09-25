@@ -1,22 +1,24 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using KeithLink.Common.Impl.Repository.Settings;
-using KeithLink.Svc.Core.Interface.Export;
-using KeithLink.Svc.Core.Interface.ModelExport;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.ModelExport;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.Reports;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Impl.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using KeithLink.Svc.Core.Interface.Export;
+using KeithLink.Svc.Core.Interface.ModelExport;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Helpers;
+using DocumentFormat.OpenXml.Spreadsheet;
+
+using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Reports;
+using KeithLink.Svc.Core.Models.ShoppingCart;
 
 namespace KeithLink.Svc.Impl.Logic.Export
 {
@@ -26,48 +28,77 @@ namespace KeithLink.Svc.Impl.Logic.Export
         private List<ExportModelConfiguration> exportConfig = null;
         private ICustomerRepository _customerRepo;
         private UserSelectedContext _context;
+        private dynamic _headerInfo;
 
         public ModelExportLogicImpl(ICustomerRepository customerRepo)
         {
             _customerRepo = customerRepo;
         }
 
-        public System.IO.MemoryStream Export(IList<T> model, List<ExportModelConfiguration> exportConfig, string exportType, UserSelectedContext context)
+        public System.IO.MemoryStream Export(IList<T> model, List<ExportModelConfiguration> exportConfig, string exportType, UserSelectedContext context, dynamic headerInfo = null)
         {
             this.Model = model;
             this.exportConfig = exportConfig;
             this._context = context;
+            if (headerInfo != null)
+            {
+                _headerInfo = headerInfo;
+            }
             return Export(exportType);
         }
 
-        public System.IO.MemoryStream Export(IList<T> model, string exportType, UserSelectedContext context)
+        public System.IO.MemoryStream Export(IList<T> model, string exportType, UserSelectedContext context, dynamic headerInfo = null)
         {
             this.Model = model;
             this.exportConfig = model.First().DefaultExportConfiguration();
             this._context = context;
+            if (headerInfo != null)
+            {
+                _headerInfo = headerInfo;
+            }
             return Export(exportType);
         }
 
         private MemoryStream Export(string exportType)
         {
-            StringBuilder sb = new StringBuilder();
+            MemoryStream ms = null;
 
             if (exportType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
-                return this.GenerateExcelExport();
+                ms = GenerateExcelExport();
 
             if (exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) || exportType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
             {
-                AddTitleToTextExport(exportType, sb);
-                AddCustomerToTextExport(exportType, sb);
-                this.WriteHeaderRecord(sb, exportType);
+                ms = GenerateTextReport(exportType);
             }
 
-            if (this.Model != null && this.Model.Count > 0) // is there any data to render
+            return ms;
+        }
+
+        #region Text Report
+        private MemoryStream GenerateTextReport(string exportType)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            AddTitleToTextExport(exportType, sb);
+            AddCustomerToTextExport(exportType, sb);
+            if (typeof(T).Name.Equals("OrderLine"))
+            {
+                AddOrderHeaderToTextExport(exportType, sb);
+            }
+            if (typeof(T).Name.Equals("InvoiceItemModel"))
+            {
+                AddInvoiceHeaderToTextExport(exportType, sb);
+            }
+
+            WriteHeaderRecord(sb, exportType);
+
+            if (this.Model != null &&
+                this.Model.Count > 0) // is there any data to render
             {
                 foreach (var item in this.Model)
                 {
                     if (item != null)
-                        this.WriteItemRecord(sb, item, exportType);
+                        WriteItemRecord(sb, item, exportType);
                 }
                 if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
                 {
@@ -82,6 +113,37 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
             ms.Seek(0, SeekOrigin.Begin);
             return ms;
+        }
+
+        private void AddOrderHeaderToTextExport(string exportType, StringBuilder sb)
+        {
+            Order headerInfo = (Order)_headerInfo;
+            sb.AppendLine(string.Format("ORDER INFORMATION (System: {0})", headerInfo.OrderSystem));
+            sb.AppendLine(string.Format("  Invoice # {0}", headerInfo.InvoiceNumber));
+            sb.AppendLine(string.Format("  Order Date {0}", headerInfo.CreatedDate.ToString("ddd-M-dd-yy")));
+            sb.AppendLine(string.Format("  Delivery Date {0}", DateTime.Parse(headerInfo.DeliveryDate).ToString("ddd-M-dd-yy")));
+            sb.AppendLine(string.Format("  Subtotal ${0}", headerInfo.OrderTotal));
+            sb.AppendLine(string.Format("  Invoice Status {0}", headerInfo.InvoiceStatus));
+            sb.AppendLine(string.Format("  Order Status {0}", headerInfo.Status));
+            sb.AppendLine(string.Format("  Requested Ship Date {0}", DateTime.Parse(headerInfo.RequestedShipDate).ToString("ddd-M-dd-yy")));
+            sb.AppendLine(string.Format("  Delivered {0}", headerInfo.ActualDeliveryTime));
+            sb.AppendLine(string.Format("  Items {0} Items / {1} Pieces", headerInfo.ItemCount, headerInfo.Items.Sum(i => i.Quantity)));
+            sb.AppendLine(string.Format("  PO Number {0}", headerInfo.PONumber));
+        }
+
+        private void AddInvoiceHeaderToTextExport(string exportType, StringBuilder sb)
+        {
+            InvoiceModel headerInfo = (InvoiceModel)_headerInfo;
+            sb.AppendLine("INVOICE INFORMATION");
+            sb.AppendLine(string.Format("  Invoice,# {0}", headerInfo.InvoiceNumber));
+            sb.AppendLine(string.Format("  Invoice Status,{0}", headerInfo.Status));
+            sb.AppendLine(string.Format("  Amount Due,${0}", headerInfo.Amount));
+            sb.AppendLine(string.Format("  Order Date,{0}", headerInfo.OrderDate.Value.ToString("ddd-M-dd-yy")));
+            sb.AppendLine(string.Format("  PO Number,{0}", headerInfo.PONumber));
+            sb.AppendLine(string.Format("  Type,{0}", headerInfo.Type));
+            sb.AppendLine(string.Format("  Due Date,{0}", headerInfo.DueDate.Value.ToString("ddd-M-dd-yy")));
+            sb.AppendLine(string.Format("  Items,{0}", headerInfo.Items.Count));
+            sb.AppendLine(string.Format("  Ship Date,{0}", headerInfo.InvoiceDate.Value.ToString("ddd-M-dd-yy")));
         }
 
         private void AddCustomerToTextExport(string exportType, StringBuilder sb)
@@ -101,701 +163,6 @@ namespace KeithLink.Svc.Impl.Logic.Export
             }
         }
 
-        private void AddTitleToTextExport(string exportType, StringBuilder sb)
-        {
-            List<string> exports = Configuration.ExportAddTitle;
-            foreach (string gettitle in exports)
-            {
-                if (gettitle.StartsWith(typeof(T).Name))
-                {
-                    sb.AppendLine("\"" + gettitle.Substring(gettitle.IndexOf(';') + 1) + "\"");
-                }
-            }
-        }
-
-        #region Excel Export
-        private MemoryStream GenerateExcelExport()
-        {
-            MemoryStream stream = OpenXmlSpreadsheetUtilities.MakeSpreadSheet
-                (SetCustomColumnWidths(typeof(T).Name, new DocumentFormat.OpenXml.Spreadsheet.Worksheet()),
-                 WriteDataTableToExcelWorksheet(),
-                 typeof(T).Name);
-            return stream;
-        }
-
-        private Worksheet SetCustomColumnWidths(string modelName, Worksheet workSheet)
-        {
-            uint colIndex = 0;
-            int width = 0;
-            foreach (ExportModelConfiguration config in exportConfig.OrderBy(c => c.Order))
-            {
-                colIndex++;
-                width = 0;
-                if (modelName.Equals("OrderLine"))
-                {
-                    switch (config.Field)
-                    {
-                        case "Name":
-                        case "BrandExtendedDescription":
-                        case "ItemClass":
-                        case "Notes":
-                        case "Status":
-                            width = 20;
-                            break;
-                        case "Pack":
-                            width = 8;
-                            break;
-                        case "Size":
-                        case "QuantityOrdered":
-                        case "QantityShipped":
-                            width = 12;
-                            break;
-                    }
-                }
-                else if (modelName.Equals("Product"))
-                {
-                    switch (config.Field)
-                    {
-                        case "Name":
-                        case "BrandExtendedDescription":
-                            width = 20;
-                            break;
-                        case "Pack":
-                            width = 8;
-                            break;
-                        case "UnitCost":
-                            width = 14;
-                            break;
-                        case "CasePrice":
-                        case "PackagePrice":
-                        case "Size":
-                            width = 12;
-                            break;
-                    }
-                }
-                else if (modelName.Equals("Order"))
-                {
-                    switch (config.Field)
-                    {
-                        case "Status":
-                        case "InvoiceStatus":
-                        case "PONumber":
-                        case "OrderSystem":
-                        case "DeliveryDate":
-                            width = 20;
-                            break;
-                        case "InvoiceNumber":
-                        case "CreatedDate":
-                        case "ItemCount":
-                        case "OrderTotal":
-                            width = 12;
-                            break;
-                    }
-                }
-                else if (modelName.Equals("ItemUsageReportItemModel"))
-                {
-                    switch (config.Field)
-                    {
-                        case "Brand":
-                        case "Class":
-                        case "ManufacturerName":
-                        case "Name":
-                            width = 25;
-                            break;
-                        case "UPC":
-                            width = 15;
-                            break;
-                        case "AveragePrice":
-                        case "TotalCost":
-                            width = 10;
-                            break;
-                    }
-                }
-                else if (modelName.Equals("InvoiceModel"))
-                {
-                    switch (config.Field)
-                    {
-                        case "InvoiceNumber":
-                        case "PONumber":
-                        case "TypeDescription":
-                            width = 12;
-                            break;
-                        case "InvoiceAmount":
-                        case "Amount":
-                            width = 16;
-                            break;
-                        case "InvoiceDate":
-                        case "DueDate":
-                            width = 14;
-                            break;
-                    }
-                }
-                else if (modelName.Equals("ListItemModel"))
-                {
-                    switch (config.Field)
-                    {
-                        case "Name":
-                        case "Brand":
-                        case "ItemClass":
-                        case "Category":
-                        case "label":
-                        case "Notes":
-                            width = 16;
-                            break;
-                    }
-                }
-                else if (modelName.Equals("InvoiceItemModel"))
-                {
-                    switch (config.Field)
-                    {
-                        case "Name":
-                        case "Brand":
-                        case "ItemClass":
-                        case "Category":
-                        case "label":
-                        case "Notes":
-                        case "PackSize":
-                            width = 20;
-                            break;
-                    }
-                }
-
-                if (width > 0)
-                    OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, colIndex, width);
-            }
-            return workSheet;
-        }
-
-        private SheetData WriteDataTableToExcelWorksheet()
-        {
-            SheetData sheetData = new DocumentFormat.OpenXml.Spreadsheet.SheetData();
-
-            //  Create a Header Row in our Excel file, containing one header for each Column of data in our DataTable.
-            //
-            //  We'll also create an array, showing which type each column of data is (Text or Numeric), so when we come to write the actual
-            //  cells of data, we'll know if to write Text values or Numeric cell values.
-            int numberOfColumns = this.exportConfig.Count;
-            bool[] IsNumericColumn = new bool[numberOfColumns];
-
-            string[] excelColumnNames = new string[numberOfColumns];
-            for (int n = 0; n < numberOfColumns; n++)
-                excelColumnNames[n] = GetExcelColumnName(n);
-
-            uint rowIndex = 1;
-            //
-            //  Create the Header row in our Excel Worksheet
-            //
-            rowIndex = AddTitleToExcelExport(sheetData, excelColumnNames, rowIndex);
-            rowIndex = AddCustomerToExcelExport(sheetData, excelColumnNames, rowIndex);
-
-            var headerRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
-            sheetData.Append(headerRow);
-
-            var properties = typeof(T).GetProperties();
-            int columnIndex = 0;
-            foreach (var config in exportConfig.OrderBy(e => e.Order))
-            {
-                var propertyName = config.Field.Split('.');
-                uint styleInd = SetStyleForHeaderCell(typeof(T).Name, config.Field);
-
-                if (propertyName.Length == 1)
-                {
-
-                    var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                    if (property != null)
-                    {
-                        OpenXmlSpreadsheetUtilities.AppendTextCell
-                            (excelColumnNames[columnIndex] + rowIndex.ToString(), GetPropertyDescription(property).Trim(), headerRow, CellValues.String, styleInd);
-                        columnIndex++;
-                    }
-                }
-                else
-                {
-                    var childProp = properties.Where(p => p.Name.Equals(propertyName[0])).FirstOrDefault();
-                    var childProperties = childProp.PropertyType.GetProperties();
-                    var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1])).FirstOrDefault();
-                    if (subProperty != null)
-                    {
-                        OpenXmlSpreadsheetUtilities.AppendTextCell
-                            (excelColumnNames[columnIndex] + rowIndex.ToString(), GetPropertyDescription(subProperty).Trim(), headerRow);
-                        columnIndex++;
-                    }
-                }
-
-            }
-
-            //
-            //  Now, step through each row of data in our DataTable...
-
-            foreach (var item in this.Model)
-            {
-                rowIndex++;
-                var newExcelRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
-                sheetData.Append(newExcelRow);
-                if (item != null)
-                {
-                    columnIndex = 0;
-                    foreach (var config in exportConfig.OrderBy(e => e.Order))
-                    {
-                        var propertyName = config.Field.Split('.');
-                        if (propertyName.Length == 1)
-                        {
-                            ExportModelConfiguration thisConfig = new ExportModelConfiguration()
-                            { // just a shallow copy
-                                Field = config.Field,
-                                Label = config.Label,
-                                Order = config.Order,
-                                Selected = config.Selected
-                            };
-                            SetPriceConfig(properties, item, thisConfig);
-                            var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                            uint styleInd = SetStyleForCell(typeof(T).Name, thisConfig.Field);
-                            CellValues celltype = SetCellValuesForCell(typeof(T).Name, thisConfig.Field);
-                            if (property != null)
-                            {
-                                OpenXmlSpreadsheetUtilities.AppendTextCell
-                                    (excelColumnNames[columnIndex] + rowIndex.ToString(),
-                                    this.GetFieldValue(item, property).Trim(), newExcelRow,
-                                    celltype,
-                                    styleInd);
-                            }
-                        }
-                        else
-                        {
-                            var childProp = properties.Where(p => p.Name.Equals(propertyName[0])).FirstOrDefault();
-                            var childProperties = childProp.PropertyType.GetProperties();
-                            var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1])).FirstOrDefault();
-                            if (subProperty != null)
-                            {
-                                OpenXmlSpreadsheetUtilities.AppendTextCell
-                                    (excelColumnNames[columnIndex] + rowIndex.ToString(), this.GetFieldValue(childProp.GetValue(item), subProperty).Trim(), newExcelRow);
-                            }
-
-                        }
-
-                        columnIndex++;
-                    }
-                }
-            }
-            if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
-            {
-                AddTotalRowExcel(rowIndex, excelColumnNames, sheetData);
-            }
-            return sheetData;
-        }
-
-        private uint AddCustomerToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
-        {
-            List<string> exports = Configuration.ExportAddCustomer;
-            foreach (string gettitle in exports)
-            {
-                if (gettitle.Equals(typeof(T).Name))
-                {
-                    rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
-                        (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
-                }
-            }
-
-            return rowIndex;
-        }
-
-        private static uint AddTitleToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
-        {
-            List<string> exports = Configuration.ExportAddTitle;
-            foreach (string gettitle in exports)
-            {
-                if (gettitle.StartsWith(typeof(T).Name))
-                {
-                    rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
-                        (rowIndex, typeof(T).Name, excelColumnNames, gettitle.Substring(gettitle.IndexOf(';') + 1), sheetData);
-                }
-            }
-
-            return rowIndex;
-        }
-
-        private void SetPriceConfig(PropertyInfo[] properties, T item, ExportModelConfiguration thisConfig)
-        {
-            if (thisConfig.Label != null &&
-                thisConfig.Label.Equals("Price") &&
-                properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
-            {
-                PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-                if (eachProperty != null)
-                {
-                    string each = GetFieldValue(item, eachProperty).Trim();
-                    if (each.Equals("Y"))
-                    {
-                        thisConfig.Field = "PackagePrice";
-                    }
-                }
-            }
-        }
-
-        private uint SetStyleForHeaderCell(string modelName, string fieldName)
-        {
-            uint styleInd = OpenXmlSpreadsheetUtilities.DEFAULT_CELL;
-            if (modelName.Equals("ItemUsageReportItemModel"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "Pack":
-                    case "TotalQuantityOrdered":
-                    case "TotalQuantityShipped":
-                    case "AveragePrice":
-                    case "TotalCost":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("ListItemModel"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "Pack":
-                    case "CasePrice":
-                    case "PackagePrice":
-                    case "parlevel":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("InvoiceItemModel"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "Pack":
-                    case "CasePrice":
-                    case "PackagePrice":
-                    case "parlevel":
-                    case "QuantityOrdered":
-                    case "QuantityShipped":
-                    case "ItemPrice":
-                    case "ExtSalesNet":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("Product"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "Pack":
-                    case "UnitCost":
-                    case "CasePrice":
-                    case "PackagePrice":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("OrderLine"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "Pack":
-                    case "QuantityOrdered":
-                    case "QantityShipped":
-                    case "EachYN":
-                    case "Price":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("Order"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
-                switch (fieldName)
-                {
-                    case "CreatedDate":
-                    case "DeliveryDate":
-                    case "ItemCount":
-                    case "OrderTotal":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("InvoiceModel"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL;
-                switch (fieldName)
-                {
-                    case "InvoiceDate":
-                    case "DueDate":
-                    case "InvoiceAmount":
-                    case "Amount":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL;
-                        break;
-                }
-            }
-            return styleInd;
-        }
-
-        private uint SetStyleForCell(string modelName, string fieldName)
-        {
-            uint styleInd = OpenXmlSpreadsheetUtilities.DEFAULT_CELL;
-            if (modelName.Equals("ItemUsageReportItemModel"))
-            {
-                switch (fieldName)
-                {
-                    //case "Name": // they don't want wrapped cells per danny
-                    //case "Brand":
-                    //case "Class":
-                    //case "ManufacturerName":
-                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                    //    break;
-                    case "ItemNumber":
-                    case "Pack":
-                    case "TotalQuantityOrdered":
-                    case "TotalQuantityShipped":
-                    case "AveragePrice":
-                    case "TotalCost":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("ListItemModel"))
-            {
-                switch (fieldName)
-                {
-                    //case "Name": // they don't want wrapped cells per danny
-                    //case "Brand":
-                    //case "ItemClass":
-                    //case "label":
-                    //case "Category":
-                    //case "Notes":
-                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                    //    break;
-                    case "ItemNumber":
-                    case "Pack":
-                    case "parlevel":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
-                        break;
-                    case "CasePrice":
-                    case "PackagePrice":
-                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("InvoiceItemModel"))
-            {
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "Pack":
-                    case "parlevel":
-                    case "QuantityOrdered":
-                    case "QuantityShipped":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
-                        break;
-                    case "CasePrice":
-                    case "PackagePrice":
-                    case "ItemPrice":
-                    case "ExtSalesNet":
-                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("Product"))
-            {
-                switch (fieldName)
-                {
-                    //case "Name": // they don't want wrapped cells per danny
-                    //case "BrandExtendedDescription":
-                    //case "Size":
-                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                    //    break;
-                    case "ItemNumber":
-                    case "Pack":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
-                        break;
-                    case "UnitCost":
-                    case "CasePrice":
-                    case "PackagePrice":
-                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("OrderLine"))
-            {
-                switch (fieldName)
-                {
-                    //case "Name": // they don't want wrapped cells per danny
-                    //case "ItemClass":
-                    //case "BrandExtendedDescription":
-                    //case "Notes":
-                    //case "Status":
-                    //    styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                    //    break;
-                    case "ItemNumber":
-                    case "Pack":
-                    case "QuantityOrdered":
-                    case "QantityShipped":
-                    case "EachYN":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
-                        break;
-                    case "Price":
-                    case "LineTotal":
-                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("Order"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                switch (fieldName)
-                {
-                    //case "CreatedDate": // they don't want wrapped cells per danny
-                    //case "DeliveryDate":
-                    //case "ItemCount":
-                    //    styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_CELL;
-                    //    break;
-                    case "OrderTotal":
-                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
-                        break;
-                }
-            }
-            else if (modelName.Equals("InvoiceModel"))
-            {
-                styleInd = OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL;
-                switch (fieldName)
-                {
-                    case "InvoiceDate":
-                    case "DueDate":
-                        styleInd = OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL;
-                        break;
-                    case "InvoiceAmount":
-                    case "Amount":
-                        styleInd = OpenXmlSpreadsheetUtilities.NUMBER_F2_CELL;
-                        break;
-                }
-            }
-            return styleInd;
-        }
-
-        private CellValues SetCellValuesForCell(string modelName, string fieldName)
-        {
-            CellValues celltype = CellValues.String;
-            if (modelName.Equals("OrderLine"))
-            {
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "QuantityOrdered":
-                    case "QantityShipped":
-                    case "CasePrice":
-                    case "PackagePrice":
-                    case "Price":
-                    case "LineTotal":
-                        celltype = CellValues.Number;
-                        break;
-                }
-            }
-            else if (modelName.Equals("ItemUsageReportItemModel"))
-            {
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "CasePrice":
-                    case "PackagePrice":
-                    case "Price":
-                    case "parlevel":
-                        celltype = CellValues.Number;
-                        break;
-                }
-            }
-            else if (modelName.Equals("ListItemModel"))
-            {
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "CasePrice":
-                    case "PackagePrice":
-                    case "Price":
-                    case "parlevel":
-                        celltype = CellValues.Number;
-                        break;
-                }
-            }
-            else if (modelName.Equals("InvoiceItemModel"))
-            {
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "ItemPrice":
-                    case "ExtSalesNet":
-                    case "parlevel":
-                    case "QuantityOrdered":
-                    case "QuantityShipped":
-                        celltype = CellValues.Number;
-                        break;
-                }
-            }
-            else if (modelName.Equals("Product"))
-            {
-                switch (fieldName)
-                {
-                    case "ItemNumber":
-                    case "UnitCost":
-                    case "CasePrice":
-                    case "PackagePrice":
-                        celltype = CellValues.Number;
-                        break;
-                }
-            }
-            else if (modelName.Equals("InvoiceModel"))
-            {
-                switch (fieldName)
-                {
-                    case "InvoiceAmount":
-                    case "Amount":
-                        celltype = CellValues.Number;
-                        break;
-                }
-            }
-            else if (modelName.Equals("Order"))
-            {
-                switch (fieldName)
-                {
-                    case "OrderTotal":
-                        celltype = CellValues.Number;
-                        break;
-                }
-            }
-            return celltype;
-        }
-
-        private static string GetExcelColumnName(int columnIndex)
-        {
-            //  Convert a zero-based column index into an Excel column reference  (A, B, C.. Y, Y, AA, AB, AC... AY, AZ, B1, B2..)
-            //
-            //  eg  GetExcelColumnName(0) should return "A"
-            //      GetExcelColumnName(1) should return "B"
-            //      GetExcelColumnName(25) should return "Z"
-            //      GetExcelColumnName(26) should return "AA"
-            //      GetExcelColumnName(27) should return "AB"
-            //      ..etc..
-            //
-            if (columnIndex < 26)
-                return ((char)('A' + columnIndex)).ToString();
-
-            char firstChar = (char)('A' + (columnIndex / 26) - 1);
-            char secondChar = (char)('A' + (columnIndex % 26));
-
-            return string.Format("{0}{1}", firstChar, secondChar);
-        }
-        #endregion
-
-        #region CSV and Tab Export
         private void WriteItemRecord(StringBuilder sb, T item, string exportType)
         {
             List<string> itemRecord = new List<string>();
@@ -863,7 +230,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
         private uint AddTotalRowExcel(uint rowIndex, string[] excelColumnNames, SheetData sheetData)
         {
-            if(this.exportConfig.Where(e => e.Field == "TotalCost").Count() > 0 && this.exportConfig.Count > 1)
+            if (this.exportConfig.Where(e => e.Field == "TotalCost").Count() > 0 && this.exportConfig.Count > 1)
             {
                 rowIndex++;
                 var totalRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
@@ -883,9 +250,6 @@ namespace KeithLink.Svc.Impl.Logic.Export
                         }
                     }
                 }
-                OpenXmlSpreadsheetUtilities.AppendTextCell
-                    (excelColumnNames[this.exportConfig.Count - 1] + rowIndex.ToString(), total.ToString(), totalRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
-                sheetData.Append(totalRow);
             }
             return rowIndex;
         }
@@ -932,7 +296,6 @@ namespace KeithLink.Svc.Impl.Logic.Export
             }
             return fieldName;
         }
-
         private void WriteHeaderRecord(StringBuilder sb, string exportType)
         {
             var headerRecord = new List<string>();
@@ -964,7 +327,7 @@ namespace KeithLink.Svc.Impl.Logic.Export
             sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", headerRecord));
         }
 
-        private static string GetPropertyDescription(PropertyInfo property)
+        private string GetPropertyDescription(PropertyInfo property)
         {
             var description = property.GetCustomAttribute<DescriptionAttribute>();
             string value = string.Empty;
@@ -973,6 +336,455 @@ namespace KeithLink.Svc.Impl.Logic.Export
             else
                 value = property.Name;
             return value;
+        }
+
+        private void AddTitleToTextExport(string exportType, StringBuilder sb)
+        {
+            List<string> exports = Configuration.ExportAddTitle;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.StartsWith(typeof(T).Name))
+                {
+                    sb.AppendLine("\"" + gettitle.Substring(gettitle.IndexOf(';') + 1) + "\"");
+                }
+            }
+        }
+        #endregion
+
+        #region Excel Export
+        private MemoryStream GenerateExcelExport()
+        {
+            MemoryStream stream = OpenXmlSpreadsheetUtilities.MakeSpreadSheet
+                (SetCustomColumnWidths(typeof(T).Name, new DocumentFormat.OpenXml.Spreadsheet.Worksheet()),
+                 WriteDataTableToExcelWorksheet(),
+                 typeof(T).Name);
+            return stream;
+        }
+
+        private Worksheet SetCustomColumnWidths(string modelName, Worksheet workSheet)
+        {
+            uint colIndex = 0;
+            int width = 0;
+            foreach (ExportModelConfiguration config in exportConfig.OrderBy(c => c.Order))
+            {
+                colIndex++;
+                width = 0;
+                switch (modelName)
+                {
+                    case ("OrderLine"):
+                        width = OrderLine.SetWidths(config, width);
+                        break;
+                    case ("ShoppingCartItem"):
+                        width = ShoppingCartItem.SetWidths(config, width);
+                        break;
+                    case ("InvoiceItemModel"):
+                        width = InvoiceItemModel.SetWidths(config, width);
+                        break;
+                    case ("Product"):
+                        width = Product.SetWidths(config, width);
+                        break;
+                    case ("Order"):
+                        width = Order.SetWidths(config, width);
+                        break;
+                    case ("ItemUsageReportItemModel"):
+                        width = ItemUsageReportItemModel.SetWidths(config, width);
+                        break;
+                    case ("InvoiceModel"):
+                        width = InvoiceModel.SetWidths(config, width);
+                        break;
+                    case ("ListItemModel"):
+                        width = ListItemModel.SetWidths(config, width);
+                        break;
+                }
+
+                if (width > 0)
+                    OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, colIndex, width);
+            }
+            return workSheet;
+        }
+
+        private SheetData WriteDataTableToExcelWorksheet()
+        {
+            SheetData sheetData = new DocumentFormat.OpenXml.Spreadsheet.SheetData();
+
+            //  Create a Header Row in our Excel file, containing one header for each Column of data in our DataTable.
+            //
+            //  We'll also create an array, showing which type each column of data is (Text or Numeric), so when we come to write the actual
+            //  cells of data, we'll know if to write Text values or Numeric cell values.
+            int numberOfColumns = this.exportConfig.Count;
+
+            string[] excelColumnNames = new string[numberOfColumns];
+            for (int n = 0; n < numberOfColumns; n++)
+                excelColumnNames[n] = GetExcelColumnName(n);
+
+            uint rowIndex = 1;
+            //
+            //  Create the Header row in our Excel Worksheet
+            //
+            rowIndex = WriteHeaderToExcelWorksheet(rowIndex, sheetData, excelColumnNames);
+
+            PropertyInfo[] properties = WriteDataFieldsHeaderToExcelWorksheet(rowIndex, sheetData, excelColumnNames);
+
+            //
+            //  Now, step through each row of data in our DataTable...
+
+            rowIndex = WriteDataFieldsDataRowsToExcelWorksheet(rowIndex, sheetData, properties, excelColumnNames);
+            if (typeof(T).Name.Equals("ItemUsageReportItemModel"))
+            {
+                AddTotalRowExcel(rowIndex, excelColumnNames, sheetData);
+            }
+            return sheetData;
+        }
+
+        private uint WriteDataFieldsDataRowsToExcelWorksheet(uint rowIndex, SheetData sheetData, PropertyInfo[] properties, string[] excelColumnNames)
+        {
+            int columnIndex;
+
+            foreach (var item in this.Model)
+            {
+                rowIndex++;
+                var newExcelRow = new Row { RowIndex = rowIndex }; // add a row at the top of spreadsheet
+                sheetData.Append(newExcelRow);
+                if (item != null)
+                {
+                    columnIndex = 0;
+                    foreach (var config in exportConfig.OrderBy(e => e.Order))
+                    {
+                        var propertyName = config.Field.Split('.');
+                        if (propertyName.Length == 1)
+                        {
+                            ExportModelConfiguration thisConfig = new ExportModelConfiguration()
+                            {
+                                // just a shallow copy
+                                Field = config.Field,
+                                Label = config.Label,
+                                Order = config.Order,
+                                Selected = config.Selected
+                            };
+                            SetPriceConfig(properties, item, thisConfig);
+                            var property = properties.Where(p => p.Name.Equals(thisConfig.Field, StringComparison.CurrentCultureIgnoreCase))
+                                                     .FirstOrDefault();
+                            uint styleInd = SetStyleForCell(typeof(T).Name, thisConfig.Field);
+                            CellValues celltype = SetCellValueTypesForCell(typeof(T).Name, thisConfig.Field);
+                            if (property != null)
+                            {
+                                OpenXmlSpreadsheetUtilities.AppendTextCell
+                                        (excelColumnNames[columnIndex] + rowIndex.ToString(),
+                                         this.GetFieldValue(item, property)
+                                             .Trim(), newExcelRow,
+                                         celltype,
+                                         styleInd);
+                            }
+                        }
+                        else
+                        {
+                            var childProp = properties.Where(p => p.Name.Equals(propertyName[0]))
+                                                      .FirstOrDefault();
+                            var childProperties = childProp.PropertyType.GetProperties();
+                            var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1]))
+                                                             .FirstOrDefault();
+                            if (subProperty != null)
+                            {
+                                OpenXmlSpreadsheetUtilities.AppendTextCell
+                                        (excelColumnNames[columnIndex] + rowIndex.ToString(), this.GetFieldValue(childProp.GetValue(item), subProperty)
+                                                                                                  .Trim(), newExcelRow);
+                            }
+                        }
+
+                        columnIndex++;
+                    }
+                }
+            }
+            return rowIndex;
+        }
+
+        private PropertyInfo[] WriteDataFieldsHeaderToExcelWorksheet(uint rowIndex, SheetData sheetData, string[] excelColumnNames)
+        {
+            var headerRow = new Row { RowIndex = rowIndex }; // add a row at the to name the fields of spreadsheet
+            sheetData.Append(headerRow);
+
+            var properties = typeof(T).GetProperties();
+            int columnIndex = 0;
+            foreach (var config in exportConfig.OrderBy(e => e.Order))
+            {
+                var propertyName = config.Field.Split('.');
+                uint styleInd = SetStyleForHeaderCell(typeof(T).Name, config.Field);
+
+                if (propertyName.Length == 1)
+                {
+                    var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase))
+                                             .FirstOrDefault();
+                    if (property != null)
+                    {
+                        OpenXmlSpreadsheetUtilities.AppendTextCell
+                                (excelColumnNames[columnIndex] + rowIndex.ToString(), GetPropertyDescription(property)
+                                         .Trim(), headerRow, CellValues.String, styleInd);
+                        columnIndex++;
+                    }
+                }
+                else
+                {
+                    var childProp = properties.Where(p => p.Name.Equals(propertyName[0]))
+                                              .FirstOrDefault();
+                    var childProperties = childProp.PropertyType.GetProperties();
+                    var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1]))
+                                                     .FirstOrDefault();
+                    if (subProperty != null)
+                    {
+                        OpenXmlSpreadsheetUtilities.AppendTextCell
+                                (excelColumnNames[columnIndex] + rowIndex.ToString(), GetPropertyDescription(subProperty)
+                                         .Trim(), headerRow);
+                        columnIndex++;
+                    }
+                }
+            }
+            return properties;
+        }
+
+        private uint WriteHeaderToExcelWorksheet(uint rowIndex, SheetData sheetData, string[] excelColumnNames)
+        {
+            rowIndex = AddTitleToExcelExport(sheetData, excelColumnNames, rowIndex);
+            rowIndex = AddCustomerToExcelExport(sheetData, excelColumnNames, rowIndex);
+            if (typeof(T).Name.Equals("OrderLine"))
+            {
+                rowIndex = AddOrderHeaderToExcelExport(sheetData, excelColumnNames, rowIndex);
+            }
+            if (typeof(T).Name.Equals("InvoiceItemModel"))
+            {
+                rowIndex = AddInvoiceHeaderToExcelExport(sheetData, excelColumnNames, rowIndex);
+            }
+            return rowIndex;
+        }
+
+        private uint AddCustomerToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            List<string> exports = Configuration.ExportAddCustomer;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.Equals(typeof(T).Name) && excelColumnNames.Length > 2)
+                {
+                    rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
+                        (rowIndex, typeof(T).Name, excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
+                }
+            }
+
+            return rowIndex;
+        }
+
+        private static uint AddTitleToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            List<string> exports = Configuration.ExportAddTitle;
+            foreach (string gettitle in exports)
+            {
+                if (gettitle.StartsWith(typeof(T).Name) && excelColumnNames.Length > 0)
+                {
+                    rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
+                        (rowIndex, typeof(T).Name, excelColumnNames, gettitle.Substring(gettitle.IndexOf(';') + 1), sheetData);
+                }
+            }
+
+            return rowIndex;
+        }
+
+        private uint AddOrderHeaderToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            Order headerInfo = (Order)_headerInfo;
+            List<string> list = new List<string>();
+            list.Add(string.Format("ORDER INFORMATION (System: {0})", headerInfo.OrderSystem));
+            list.Add(string.Format("Invoice # {0}", headerInfo.InvoiceNumber));
+            list.Add(string.Format("Order Date {0}", headerInfo.CreatedDate.ToString("ddd, M-dd-yy")));
+            list.Add(string.Format("Delivery Date {0}", DateTime.Parse(headerInfo.DeliveryDate).ToString("ddd, M-dd-yy")));
+            list.Add(string.Format("Subtotal ${0}", headerInfo.OrderTotal));
+            list.Add(string.Format("Invoice Status {0}", headerInfo.InvoiceStatus));
+            list.Add(string.Format("Order Status {0}", headerInfo.Status));
+            list.Add(string.Format("Requested Ship Date {0}", DateTime.Parse(headerInfo.RequestedShipDate).ToString("ddd, M-dd-yy")));
+            list.Add(string.Format("Delivered {0}", headerInfo.ActualDeliveryTime));
+            list.Add(string.Format("Items {0} Items / {1} Pieces", headerInfo.ItemCount, headerInfo.Items.Sum(i => i.Quantity)));
+            list.Add(string.Format("PO Number {0}", headerInfo.PONumber));
+
+            if (excelColumnNames.Length > 0)
+            {
+                rowIndex = OpenXmlSpreadsheetUtilities.AddHeaderRows
+                    (rowIndex, typeof(T).Name, excelColumnNames, list, sheetData);
+            }
+
+            return rowIndex;
+        }
+
+        private uint AddInvoiceHeaderToExcelExport(SheetData sheetData, string[] excelColumnNames, uint rowIndex)
+        {
+            InvoiceModel headerInfo = (InvoiceModel)_headerInfo;
+            List<string> list = new List<string>();
+            list.Add("INVOICE INFORMATION");
+            list.Add(string.Format("  Invoice,# {0}", headerInfo.InvoiceNumber));
+            list.Add(string.Format("  Invoice Status,{0}", headerInfo.Status));
+            list.Add(string.Format("  Amount Due,${0}", headerInfo.Amount));
+            list.Add(string.Format("  Order Date,{0}", headerInfo.OrderDate.Value.ToString("ddd-M-dd-yy")));
+            list.Add(string.Format("  PO Number,{0}", headerInfo.PONumber));
+            list.Add(string.Format("  Type,{0}", headerInfo.Type));
+            list.Add(string.Format("  Due Date,{0}", headerInfo.DueDate.Value.ToString("ddd-M-dd-yy")));
+            list.Add(string.Format("  Items,{0}", headerInfo.Items.Count));
+            list.Add(string.Format("  Ship Date,{0}", headerInfo.InvoiceDate.Value.ToString("ddd-M-dd-yy")));
+
+            if (excelColumnNames.Length > 0)
+            {
+                rowIndex = OpenXmlSpreadsheetUtilities.AddHeaderRows
+                    (rowIndex, typeof(T).Name, excelColumnNames, list, sheetData);
+            }
+
+            return rowIndex;
+        }
+
+        private void SetPriceConfig(PropertyInfo[] properties, T item, ExportModelConfiguration thisConfig)
+        {
+            if (thisConfig.Label != null &&
+                thisConfig.Label.Equals("Price") &&
+                properties.Select(p => p.Name).Contains("Each", StringComparer.CurrentCultureIgnoreCase))
+            {
+                PropertyInfo eachProperty = properties.Where(p => p.Name.Equals("Each", StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                if (eachProperty != null)
+                {
+                    string each = GetFieldValue(item, eachProperty).Trim();
+                    if (each.Equals("Y"))
+                    {
+                        thisConfig.Field = "PackagePrice";
+                    }
+                }
+            }
+        }
+
+        private uint SetStyleForHeaderCell(string modelName, string fieldName)
+        {
+            uint styleInd = OpenXmlSpreadsheetUtilities.DEFAULT_CELL;
+            if (modelName.Equals("ItemUsageReportItemModel"))
+            {
+                styleInd = ItemUsageReportItemModel.SetStyleForHeader(fieldName, styleInd);
+            }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                styleInd = ListItemModel.SetStyleForHeader(fieldName, styleInd);
+            }
+            else if (modelName.Equals("InvoiceItemModel"))
+            {
+                styleInd = InvoiceItemModel.SetStyleForHeader(fieldName, styleInd);
+            }
+            else if (modelName.Equals("Product"))
+            {
+                styleInd = Product.SetStyleForHeader(fieldName, styleInd);
+            }
+            else if (modelName.Equals("OrderLine"))
+            {
+                styleInd = OrderLine.SetStyleForHeader(fieldName, styleInd);
+            }
+            else if (modelName.Equals("ShoppingCartItem"))
+            {
+                styleInd = ShoppingCartItem.SetStyleForHeader(fieldName, styleInd);
+            }
+            else if (modelName.Equals("Order"))
+            {
+                styleInd = Order.SetStyleForHeader(fieldName, styleInd);
+            }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                styleInd = InvoiceModel.SetStyleForHeader(fieldName, styleInd);
+            }
+            return styleInd;
+        }
+
+        private uint SetStyleForCell(string modelName, string fieldName)
+        {
+            uint styleInd = OpenXmlSpreadsheetUtilities.DEFAULT_CELL;
+            if (modelName.Equals("ItemUsageReportItemModel"))
+            {
+                styleInd = ItemUsageReportItemModel.SetStyleForCell(fieldName, styleInd);
+            }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                styleInd = ListItemModel.SetStyleForCell(fieldName, styleInd);
+            }
+            else if (modelName.Equals("Product"))
+            {
+                styleInd = Product.SetStyleForCell(fieldName, styleInd);
+            }
+            else if (modelName.Equals("OrderLine"))
+            {
+                styleInd = OrderLine.SetStyleForCell(fieldName, styleInd);
+            }
+            else if (modelName.Equals("ShoppingCartItem"))
+            {
+                styleInd = ShoppingCartItem.SetStyleForCell(fieldName, styleInd);
+            }
+            else if (modelName.Equals("InvoiceItemModel"))
+            {
+                styleInd = InvoiceItemModel.SetStyleForCell(fieldName, styleInd);
+            }
+            else if (modelName.Equals("Order"))
+            {
+                styleInd = Order.SetStyleForCell(fieldName, styleInd);
+            }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                styleInd = InvoiceModel.SetStyleForCell(fieldName, styleInd);
+            }
+            return styleInd;
+        }
+
+        private CellValues SetCellValueTypesForCell(string modelName, string fieldName)
+        {
+            CellValues celltype = CellValues.String;
+            if (modelName.Equals("OrderLine"))
+            {
+                celltype = OrderLine.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            else if (modelName.Equals("ShoppingCartItem"))
+            {
+                celltype = ShoppingCartItem.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            else if (modelName.Equals("ItemUsageReportItemModel"))
+            {
+                celltype = ItemUsageReportItemModel.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            else if (modelName.Equals("InvoiceItemModel"))
+            {
+                celltype = InvoiceItemModel.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            else if (modelName.Equals("ListItemModel"))
+            {
+                celltype = ListItemModel.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            else if (modelName.Equals("Product"))
+            {
+                celltype = Product.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            else if (modelName.Equals("InvoiceModel"))
+            {
+                celltype = InvoiceModel.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            else if (modelName.Equals("Order"))
+            {
+                celltype = Order.SetCellValueTypeForCells(fieldName, celltype);
+            }
+            return celltype;
+        }
+
+        private string GetExcelColumnName(int columnIndex)
+        {
+            //  Convert a zero-based column index into an Excel column reference  (A, B, C.. Y, Y, AA, AB, AC... AY, AZ, B1, B2..)
+            //
+            //  eg  GetExcelColumnName(0) should return "A"
+            //      GetExcelColumnName(1) should return "B"
+            //      GetExcelColumnName(25) should return "Z"
+            //      GetExcelColumnName(26) should return "AA"
+            //      GetExcelColumnName(27) should return "AB"
+            //      ..etc..
+            //
+            if (columnIndex < 26)
+                return ((char)('A' + columnIndex)).ToString();
+
+            char firstChar = (char)('A' + (columnIndex / 26) - 1);
+            char secondChar = (char)('A' + (columnIndex % 26));
+
+            return string.Format("{0}{1}", firstChar, secondChar);
         }
         #endregion
     }
