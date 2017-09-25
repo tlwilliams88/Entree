@@ -130,18 +130,18 @@ namespace KeithLink.Svc.Core.Models.Invoices
                 case "Name":
                 case "Notes":
                 case "BrandExtendedDescription":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_25;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_25;
                     break;
                 case "Detail":
                 case "OrderHistoryString":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_80;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_80;
                     break;
                 case "Pack":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_08;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_08;
                     break;
                 case "quantityordered":
                 case "quantityshipped":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_14;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_14;
                     break;
                 case "ItemPrice":
                 case "ExtSalesNet":
@@ -157,7 +157,6 @@ namespace KeithLink.Svc.Core.Models.Invoices
             styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "QuantityOrdered":
                 case "QuantityShipped":
                 case "ItemPrice":
@@ -177,7 +176,6 @@ namespace KeithLink.Svc.Core.Models.Invoices
                 case "QuantityOrdered":
                 case "QuantityShipped":
                 case "Each":
-                case "ItemNumber":
                     styleInd = Constants.OPENXML_RIGHT_ALIGNED_CELL;
                     break;
                 case "ItemPrice":
@@ -196,7 +194,6 @@ namespace KeithLink.Svc.Core.Models.Invoices
                 case "ExtSalesNet":
                 case "Price":
                 case "parlevel":
-                case "ItemNumber":
                     celltype = CellValues.Number;
                     break;
             }

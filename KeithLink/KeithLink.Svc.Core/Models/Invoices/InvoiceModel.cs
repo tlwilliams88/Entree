@@ -161,15 +161,15 @@ namespace KeithLink.Svc.Core.Models.Invoices
                 case "InvoiceNumber":
                 case "PONumber":
                 case "TypeDescription":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_12;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_12;
                     break;
                 case "InvoiceAmount":
                 case "Amount":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_16;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_16;
                     break;
                 case "InvoiceDate":
                 case "DueDate":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_14;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_14;
                     break;
             }
             return width;

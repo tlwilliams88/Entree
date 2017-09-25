@@ -446,13 +446,13 @@ namespace KeithLink.Svc.Core
         public const int PLACEHOLDER_ORDER_12TH = 60;
         public const int PLACEHOLDER_ORDER_13TH = 65;
         public const int PLACEHOLDER_ORDER_14TH = 70;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_08 = 8;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_10 = 10;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_12 = 12;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_14 = 14;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_16 = 16;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_20 = 20;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_25 = 25;
-        public const int EXCEL_EXPORT_WIDTH_PIXELS_80 = 80;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_08 = 8;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_10 = 10;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_12 = 12;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_14 = 14;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_16 = 16;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_20 = 20;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_25 = 25;
+        public const int OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_80 = 80;
     }
 }

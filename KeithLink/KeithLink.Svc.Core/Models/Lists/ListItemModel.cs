@@ -201,7 +201,7 @@ namespace KeithLink.Svc.Core.Models.Lists
             List<string> fields = new List<string>() { "Name", "Brand", "ItemClass", "Category", "label", "Notes" };
             if (fields.Contains(config.Field))
             {
-                width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_16;
+                width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_16;
             }
             return width;
         }
@@ -211,7 +211,6 @@ namespace KeithLink.Svc.Core.Models.Lists
             styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                 case "CasePrice":
                 case "PackagePrice":
@@ -226,7 +225,6 @@ namespace KeithLink.Svc.Core.Models.Lists
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                 case "parlevel":
                     styleInd = Constants.OPENXML_RIGHT_ALIGNED_CELL;
@@ -243,7 +241,6 @@ namespace KeithLink.Svc.Core.Models.Lists
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "CasePrice":
                 case "PackagePrice":
                 case "Price":

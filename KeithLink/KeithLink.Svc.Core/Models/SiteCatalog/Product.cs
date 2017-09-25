@@ -96,22 +96,22 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
             {
                 case "Name":
                 case "BrandExtendedDescription":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_20;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_20;
                     break;
                 case "Detail":
                 case "OrderHistoryString":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_80;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_80;
                     break;
                 case "Pack":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_08;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_08;
                     break;
                 case "UnitCost":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_14;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_14;
                     break;
                 case "CasePrice":
                 case "PackagePrice":
                 case "Size":
-                    width = Constants.EXCEL_EXPORT_WIDTH_PIXELS_12;
+                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_12;
                     break;
             }
             return width;
@@ -122,7 +122,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
             styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                 case "UnitCost":
                 case "CasePrice":
@@ -137,7 +136,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                     styleInd = Constants.OPENXML_RIGHT_ALIGNED_CELL;
                     break;
@@ -154,7 +152,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "UnitCost":
                 case "CasePrice":
                 case "PackagePrice":

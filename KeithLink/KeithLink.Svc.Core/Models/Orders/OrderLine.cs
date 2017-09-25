@@ -263,7 +263,6 @@ namespace KeithLink.Svc.Core.Models.Orders
             styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                 case "QuantityOrdered":
                 case "QantityShipped":
@@ -280,7 +279,6 @@ namespace KeithLink.Svc.Core.Models.Orders
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                 case "QuantityOrdered":
                 case "QantityShipped":
@@ -299,7 +297,6 @@ namespace KeithLink.Svc.Core.Models.Orders
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "QuantityOrdered":
                 case "QantityShipped":
                 case "CasePrice":

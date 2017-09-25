@@ -128,7 +128,6 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
             styleInd = Constants.OPENXML_TEXT_WRAP_BOLD_CELL;
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                 case "Quantity":
                 case "EachYN":
@@ -144,7 +143,6 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Pack":
                 case "Quantity":
                 case "EachYN":
@@ -162,7 +160,6 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
         {
             switch (fieldName)
             {
-                case "ItemNumber":
                 case "Quantity":
                 case "CasePrice":
                 case "PackagePrice":
