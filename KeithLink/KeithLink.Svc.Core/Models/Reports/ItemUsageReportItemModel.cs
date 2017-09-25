@@ -160,18 +160,18 @@ namespace KeithLink.Svc.Core.Models.Reports
                 case "Class":
                 case "ManufacturerName":
                 case "Name":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_25;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_25;
                     break;
                 case "Detail":
                 case "OrderHistoryString":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_80;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_80;
                     break;
                 case "UPC":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_16;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_16;
                     break;
                 case "AveragePrice":
                 case "TotalCost":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_10;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_10;
                     break;
             }
             return width;

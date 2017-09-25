@@ -96,22 +96,22 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
             {
                 case "Name":
                 case "BrandExtendedDescription":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_20;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_20;
                     break;
                 case "Detail":
                 case "OrderHistoryString":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_80;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_80;
                     break;
                 case "Pack":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_08;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_08;
                     break;
                 case "UnitCost":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_14;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_14;
                     break;
                 case "CasePrice":
                 case "PackagePrice":
                 case "Size":
-                    width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_12;
+                    width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_12;
                     break;
             }
             return width;

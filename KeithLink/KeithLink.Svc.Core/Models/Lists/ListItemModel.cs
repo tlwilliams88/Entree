@@ -201,7 +201,7 @@ namespace KeithLink.Svc.Core.Models.Lists
             List<string> fields = new List<string>() { "Name", "Brand", "ItemClass", "Category", "label", "Notes" };
             if (fields.Contains(config.Field))
             {
-                width = Constants.OPENXML_EXPORT_WIDTH_WIDTH_PIXELS_16;
+                width = Constants.OPENXML_EXPORT_WIDTH_PIXELS_16;
             }
             return width;
         }
