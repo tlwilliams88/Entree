@@ -38,26 +38,26 @@ angular.module('bekApp')
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
 
-    // Tutorial
-    var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile,
-        runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
+    // Tutorial -- Tutorial Ignored 09/25
+    // var hideTutorial = LocalStorage.getHideTutorialAddToOrder() || isMobileApp || isMobile,
+    //     runTutorial =  hideTutorial || isMobileApp || isMobile ? false : true;
+    // 
+    // function setHideTutorial(){
+    //   LocalStorage.setHideTutorialAddToOrder(true);
+    //   guiders.hideAll();
+    // };
 
-    function setHideTutorial(){
-      LocalStorage.setHideTutorialAddToOrder(true);
-      guiders.hideAll();
-    };
+    // guiders.createGuider({
+    //   id: "addtoorder_tutorial",
+    //   title: "Refreshed Look And Feel",
+    //   buttons: [{name: "Close", onclick: setHideTutorial}],
+    //   description: "We changed the color and font of our screens to make everything easier to read.  <br/><br/> We hope these change help. <br/><br/> Also you may notice your list items have now been sorted by the simplified product categories.",
+    //   overlay: true
+    // })
 
-    guiders.createGuider({
-      id: "addtoorder_tutorial",
-      title: "Refreshed Look And Feel",
-      buttons: [{name: "Close", onclick: setHideTutorial}],
-      description: "We changed the color and font of our screens to make everything easier to read.  <br/><br/> We hope these change help. <br/><br/> Also you may notice your list items have now been sorted by the simplified product categories.",
-      overlay: true
-    })
-
-    if(runTutorial) {
-      guiders.show('addtoorder_tutorial');
-    }
+    // if(runTutorial) {
+    //   guiders.show('addtoorder_tutorial');
+    // }
 
     function calculatePieces(items){
       //total piece count for cart info box
