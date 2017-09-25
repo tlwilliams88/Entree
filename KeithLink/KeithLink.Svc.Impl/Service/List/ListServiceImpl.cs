@@ -909,23 +909,27 @@ namespace KeithLink.Svc.Impl.Service.List
             });
         }
 
-        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
+        {
+            List<RecommendedItemModel> recommended = null;
             ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
 
             if (list != null &&
                 list.Items != null &&
-                list.Items.Count > 0) {
-                var recommended = list.Items.Select(i => new RecommendedItemModel()
+                list.Items.Count > 0)
+            {
+                recommended = list.Items.Select(i => new RecommendedItemModel()
                 {
                     ItemNumber = i.ItemNumber,
                     Name = i.Name,
-                    Images = (_productImageRepo.GetImageList(i.ItemNumber, true) != null)?
-                        _productImageRepo.GetImageList(i.ItemNumber, true).ProductImages:null
+                    Images = (_productImageRepo.GetImageList(i.ItemNumber, true) != null) ?
+                        _productImageRepo.GetImageList(i.ItemNumber, true).ProductImages : null
                 }).ToList();
-                
+
             }
-            return new List<RecommendedItemModel>();
+            return recommended;
         }
+
 
         public ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
         {
