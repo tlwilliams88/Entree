@@ -55,7 +55,7 @@ namespace KeithLink.Svc.InternalSvc
         #region methods
 
         public bool ProcessAll()
-        {
+        { // this isn't actually run in production
             DateTime startTime = DateTime.Now;
 
             Task process = Task.Factory.StartNew(() => _log.WriteInformationLog(String.Format("ETL - Loading process started @ {0}", startTime)));
@@ -73,9 +73,6 @@ namespace KeithLink.Svc.InternalSvc
                 .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             process.ContinueWith((t) => customerLogic.ImportDsrInfo())
-                .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-
-            process.ContinueWith((t) => customerLogic.ImportCustomerItemHistory())
                 .ContinueWith((t) => { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             process.ContinueWith((t) => _esCategoriesImportLogic.ImportDepartments())
