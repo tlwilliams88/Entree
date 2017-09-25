@@ -165,9 +165,6 @@
           <td class="hidden-mobile-visible-print">{{item.class}}</td>
           <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
           <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
-          <td class="hidden-xs hidden-sm">
-            <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span>
-          </td>
           <td class="hidden-mobile-visible-print" item-icons></td>
           <td class="hidden-mobile-visible-print">{{item.quantityordered}}</td>
           <td class="hidden-mobile-visible-print">{{item.quantityshipped}}</td>
@@ -337,7 +334,6 @@
           <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-xs hidden-sm"></th>
-        <th class="hidden-mobile-visible-print"></th>
         <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='quantityordered';sortOrder=!sortOrder;">
           #
           <span>Ordered <span sort-icons field="'quantityordered'" sortorder="sortOrder" sortby="sortBy"></span></span>
@@ -404,9 +400,6 @@
         <td class="hidden-mobile-visible-print">{{item.class}}</td>
         <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
         <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
-        <td class="hidden-xs hidden-sm">
-          <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span>
-        </td>
         <td class="hidden-mobile-visible-print" item-icons></td>
         <td class="hidden-mobile-visible-print">{{item.quantityordered}}</td>
         <td class="hidden-mobile-visible-print">{{item.quantityshipped}}</td>
