@@ -25,11 +25,20 @@
           <span class="item-details__icons" item-icons="item"></span>
         </h3>
         <div>
-          <div ng-if="item.description && !item.marketing_description" class="main-info__description">
-            <strong>Description:</strong> {{::item.description}}
-          </div>
-          <div ng-if="item.marketing_description" class="main-info__description">
-            <strong>Description:</strong> {{::item.marketing_description}}
+          <div class="main-info__description">
+            <strong>
+                Description:
+            </strong> 
+            <span 
+                ng-if="item.description && !item.marketing_description" 
+                class="pre-line">
+                {{::item.description}}
+            </span>
+            <span
+                ng-if="item.marketing_description"
+                class="pre-line">
+                {{::item.marketing_description}}
+            </span>
           </div>
           <div>
             <span><strong>Item #</strong> {{item.itemnumber}} | </span>
