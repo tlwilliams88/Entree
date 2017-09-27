@@ -514,7 +514,24 @@ namespace KeithLink.Svc.WebApi.Controllers {
         public OperationReturnModel<string> ShareList(ListCopyShareModel copyListModel) {
             OperationReturnModel<string> ret = new OperationReturnModel<string>();
             try {
-                _customListSharesRepo.DeleteCustomListShares(copyListModel.ListId);
+                var existingShares = _customListSharesRepo.GetCustomListSharesByHeaderId(copyListModel.ListId);
+
+                foreach (var share in existingShares)
+                {
+                    _customListSharesRepo.DeleteCustomListShares(share.Id);
+
+                    _cacheListLogic.ClearCustomersListCaches(AuthenticatedUser,
+                                                             share.CustomerNumber,
+                                                             share.BranchId,
+                                                             _listService.ReadUserList(AuthenticatedUser,
+                                                                                       new UserSelectedContext()
+                                                                                       {
+                                                                                           CustomerId = share.CustomerNumber,
+                                                                                           BranchId = share.BranchId
+                                                                                       }, true));
+
+                    _cacheListLogic.ClearCustomersLabelsCache(share.CustomerNumber, share.BranchId);
+                }
 
                 foreach (var customer in copyListModel.Customers) {
                     _customListSharesRepo.SaveCustomListShare(new CustomListShare() {
