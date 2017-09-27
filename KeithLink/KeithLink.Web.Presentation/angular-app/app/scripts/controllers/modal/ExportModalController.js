@@ -62,6 +62,11 @@ angular.module('bekApp')
       sort: exportParams.sort
       // do not set fields for default export
     };
+    
+    if(exportParams.filter != null){
+        config.filter = exportParams.filter;
+    }
+    
     exportMethod(config, exportParams);
   };
 
@@ -79,6 +84,10 @@ angular.module('bekApp')
       fields: $scope.selectedFields,
       sort: exportConfig.sort
     };
+
+    if(exportParams.filter != null){
+        config.filter = exportParams.filter;
+    }
 
     exportMethod(config, exportParams);
   };
