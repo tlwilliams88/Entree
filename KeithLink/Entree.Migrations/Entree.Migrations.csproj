@@ -115,7 +115,8 @@
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
     <Compile Include="Migrations\v2017.04.01\Migration0042.cs" />
-    <Compile Include="Migrations\v2017.04.04\Migration0044.cs" />
+    <Compile Include="Migrations\v2017.06.00\Migration0046.cs" />
+    <Compile Include="Migrations\v2017.06.00\Migration0044.cs" />
     <Compile Include="Migrations\v2017.04.04\Migration0043.cs" />
     <None Include="NuGet.config">
       <SubType>Designer</SubType>
@@ -410,6 +411,12 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadAllItemKeywords\ReadAllItemKeywords_0046_2017.06.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadAllItemKeywords\ReadAllItemKeywords_0046_2017.06.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessItemHistoryData\ProcessItemHistoryData_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -696,6 +703,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\Staging_ItemData_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemKeywords\Staging_ItemKeywords_0046_2017.06.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemKeywords\Staging_ItemKeywords_0046_2017.06.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_KNet_Invoice\Staging_KNet_Invoice_0001_0001.11.00_down.sql">

@@ -85,12 +85,11 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 DataTable branches = _stagingRepository.ReadAllBranches();
 
-                // POC Code - it ain't gonna be pretty
                 DataTable itemKeywordsTable = _stagingRepository.ReadAllItemKeywords();
 
                 Dictionary<string, string> itemKeywords = new Dictionary<string, string>();
                 foreach (DataRow row in itemKeywordsTable.Rows) {
-                    itemKeywords.Add(row.GetString("ItemNumber"), row.GetString("keywords"));
+                    itemKeywords.Add(row.GetString("ItemNumber"), row.GetString("Keywords"));
                 }
 
                 foreach (DataRow row in branches.Rows)
