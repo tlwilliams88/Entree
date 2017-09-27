@@ -325,8 +325,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         }
         #endregion
 
-        #region ClearCustomersListCaches
-        public class ClearCustomersListCaches
+        #region ClearCustomersListCachesWithUserSelectedContext
+        public class ClearCustomersListCachesWithUserSelectedContext
         {
             [Fact]
             public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem10Times()
@@ -357,6 +357,49 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
 
                 // act
                 testunit.ClearCustomersListCaches(fakeUser, testContext, testLists);
+
+                // assert
+                mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>()), Times.Exactly(10), "not called");
+            }
+
+        }
+        #endregion
+
+        #region ClearCustomersListCachesWithCustomerNumberAndBranchId
+        public class ClearCustomersListCachesWithCustomerNumberAndBranchId
+        {
+            [Fact]
+            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem10Times()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
+                var testContext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                var fakeUser = new UserProfile();
+                var testLists = new List<ListModel> {
+                    new ListModel() {
+                                        BranchId="FUT",
+                                        CustomerNumber = "123456",
+                                        Type = ListType.Contract,
+                                        ListId = 5
+                                    },
+                    new ListModel() {
+                                        BranchId="FUT",
+                                        CustomerNumber = "123456",
+                                        Type = ListType.Favorite,
+                                        ListId = 5
+                                    }
+                    };
+
+                // act
+                testunit.ClearCustomersListCaches(fakeUser, testContext.CustomerId, testContext.BranchId, testLists);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
@@ -426,8 +469,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         }
         #endregion
 
-        #region ClearCustomersLabelsCache
-        public class ClearCustomersLabelsCache
+        #region ClearCustomersLabelsCacheWithUserSelectedContext
+        public class ClearCustomersLabelsCacheWithUserSelectedContext
         {
             [Fact]
             public void AnyCall_CallsCacheRepositoryRemoveTimes()
@@ -443,6 +486,34 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
 
                 // act
                 testunit.ClearCustomersLabelsCache(testContext);
+
+                // assert
+                mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>()), Times.Once, "not called");
+            }
+
+        }
+        #endregion
+
+        #region ClearCustomersLabelsCacheWithCustomerNumberAndBranchId
+        public class ClearCustomersLabelsCacheWithCustomerNumberAndBranchId
+        {
+            [Fact]
+            public void AnyCall_CallsCacheRepositoryRemoveTimes()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
+                var testContext = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+
+                // act
+                testunit.ClearCustomersLabelsCache(testContext.CustomerId, testContext.BranchId);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
