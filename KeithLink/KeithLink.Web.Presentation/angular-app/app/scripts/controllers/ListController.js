@@ -79,6 +79,7 @@ angular.module('bekApp')
     ];
 
     $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
+    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
@@ -211,7 +212,7 @@ angular.module('bekApp')
       });
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);
+        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems, $scope.selectedFilter);
       } else {
         $scope.setStartAndEndPoints(visited[0]);
         if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
@@ -1013,6 +1014,9 @@ angular.module('bekApp')
                 listId: $scope.selectedList.listid,
                 sort: $scope.sort[0]
             }
+            if($scope.selectedList.is_contract_list == true) {
+                params.filter = $scope.selectedFilter;
+            }
             return params;
           }
         }
@@ -1077,6 +1081,11 @@ angular.module('bekApp')
             return {
               sort: $scope.sort,
               terms: $scope.listSearchTerm
+            };
+          },
+          contractFilter: function() {
+            return {
+              filter: $scope.selectedFilter
             };
           }
         }

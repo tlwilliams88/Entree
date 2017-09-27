@@ -22,24 +22,24 @@ angular.module('bekApp')
       campaignInfo, ENV
     ) {
 
-    $scope.$on('$stateChangeStart',
-      function(){
-        guiders.hideAll();
-    });
+    // $scope.$on('$stateChangeStart',
+    //   function(){
+    //     guiders.hideAll();
+    // });
 
-    //$scope.runTutorial is set in the loadProducts function
+    //$scope.runTutorial is set in the loadProducts function -- Tutorial Ignored 09/25
 
-    guiders.createGuider({
-      id: "searchpage_tutorial",
-      title: "Updated Categories",
-      description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> As an example 'All Produce' is now 'Produce' and 'Frozen & Fresh Poultry' are under 'Center Of Plate'. <br/><br/> These categories are also available to choose from when searching or navigating from the product catalog. <br/><br/> To see sub-categories click the (+) icon.",
-      buttons: [{name: "Close", onclick: setHideTutorial}],
-      overlay: true,
-      attachTo: "#categoriesSection",
-      position: "right",
-      offset: {left: 245, top: 321.3889},
-      highlight: true
-    })
+    // guiders.createGuider({
+    //   id: "searchpage_tutorial",
+    //   title: "Updated Categories",
+    //   description: "We've simplified our product categories to make it easier to find what you need. <br/><br/> As an example 'All Produce' is now 'Produce' and 'Frozen & Fresh Poultry' are under 'Center Of Plate'. <br/><br/> These categories are also available to choose from when searching or navigating from the product catalog. <br/><br/> To see sub-categories click the (+) icon.",
+    //   buttons: [{name: "Close", onclick: setHideTutorial}],
+    //   overlay: true,
+    //   attachTo: "#categoriesSection",
+    //   position: "right",
+    //   offset: {left: 245, top: 321.3889},
+    //   highlight: true
+    // })
 
     var isMobile = UtilityService.isMobileDevice();
     var isMobileApp = ENV.mobileApp;
@@ -584,13 +584,13 @@ angular.module('bekApp')
         var page = 1;
         $scope.products = data.products;
         $scope.totalProducts = data.totalcount;
-        var hideTutorial = LocalStorage.getHideTutorialSearch(),
-            runTutorial = data.facets.categories.length && !(hideTutorial || isMobileApp || isMobile) ? true : false;
+        // var hideTutorial = LocalStorage.getHideTutorialSearch(),
+        //     runTutorial = data.facets.categories.length && !(hideTutorial || isMobileApp || isMobile) ? true : false;
 
-        if(runTutorial) {
-          $scope.tutorialRunning = true;
-          guiders.show('searchpage_tutorial');
-        }
+        // if(runTutorial) {
+        //   $scope.tutorialRunning = true;
+        //   guiders.show('searchpage_tutorial');
+        // }
 
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);

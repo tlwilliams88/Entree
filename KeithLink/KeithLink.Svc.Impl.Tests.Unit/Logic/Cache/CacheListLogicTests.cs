@@ -329,7 +329,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         public class ClearCustomersListCaches
         {
             [Fact]
-            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem6Times()
+            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem10Times()
             {
                 // arrange
                 var mockDependents = new MockDependents();
@@ -401,7 +401,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
         public class RemoveTypeOfListsCache
         {
             [Fact]
-            public void CallWithGoodType_CallsCacheRepositoryRemoveItemOnce()
+            public void CallWithGoodType_CallsCacheRepositoryRemoveItemTwice()
             {
                 // arrange
                 var mockDependents = new MockDependents();

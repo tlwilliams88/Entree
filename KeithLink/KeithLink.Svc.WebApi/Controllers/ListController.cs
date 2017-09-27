@@ -89,18 +89,29 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
                 ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, list.Items);
 
+                ListModel exportListModel = list.ShallowCopy();
+
+                if (exportRequest.Filter != null)
+                {
+                    exportListModel.Items = exportListModel.Items.AsQueryable()
+                                            .Filter(exportRequest.Filter, null)
+                                            .ToList();
+                }
+
+
+
                 if (exportRequest.Sort != null) {
                     List<SortInfo> slist = new List<SortInfo>();
                     slist.Add(exportRequest.Sort);
-                    list.Items = list.Items.AsQueryable()
-                                     .Sort(slist)
-                                     .ToList();
+                    exportListModel.Items = exportListModel.Items.AsQueryable()
+                                            .Sort(slist)
+                                            .ToList();
                 }
 
                 if (exportRequest.Fields != null)
-                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,
+                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, exportListModel.Type,
                                                                    exportRequest.Fields, exportRequest.SelectedType);
-                ret = ExportModel<ListItemModel>(list.Items, exportRequest, SelectedUserContext);
+                ret = ExportModel<ListItemModel>(exportListModel.Items, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {

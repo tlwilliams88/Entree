@@ -360,6 +360,12 @@ angular.module('bekApp')
             return ListService.getCustomInventoryList();
           } else {
             LocalStorage.setLastList(listToBeUsed);
+            if(listToBeUsed.listType == 2 || listToBeUsed.type == 2) {
+                params.filter = {
+                          field: 'delta',
+                          value: 'active'
+                        }
+            }
             return ListService.getList(listToBeUsed, params);
           }
 
@@ -531,6 +537,12 @@ angular.module('bekApp')
           }
 
           LocalStorage.setLastOrderList(listToBeUsed);
+          if(listToBeUsed.listType == 2 || listToBeUsed.type == 2) {
+              params.filter = {
+                        field: 'delta',
+                        value: 'active'
+                      }
+          }
           return ListService.getList(listToBeUsed, params);
         }]
       }
