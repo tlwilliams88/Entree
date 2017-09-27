@@ -36,6 +36,7 @@ angular.module('bekApp')
   $scope.selectedFields = [];
   $scope.unselectedFields = [];
   $scope.exportConfig = exportConfig;
+  $scope.exportParams = exportParams && exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields[0] : exportParams.params.filter[0];
 
   // build list of previously selected and unselected fields
   exportConfig.fields.forEach(function(field) {
@@ -62,7 +63,7 @@ angular.module('bekApp')
       sort: exportParams.sort
       // do not set fields for default export
     };
-    exportMethod(config, exportParams);
+    exportMethod(config, $scope.exportParams);
   };
 
   $scope.customExport = function() {
@@ -80,7 +81,7 @@ angular.module('bekApp')
       sort: exportConfig.sort
     };
 
-    exportMethod(config, exportParams);
+    exportMethod(config, $scope.exportParams);
   };
 
   $scope.cancel = function () {

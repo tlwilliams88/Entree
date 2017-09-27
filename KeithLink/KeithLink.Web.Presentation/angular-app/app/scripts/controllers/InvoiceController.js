@@ -945,10 +945,13 @@ angular.module('bekApp')
         exportParams: function () {
           return {
             isViewingAllCustomers: $scope.viewingAllCustomers,
-            paging: {
-              filter: $scope.invoicesFilters,
-              sort: $scope.sort
+            params: {
+                size: Constants.infiniteScrollPageSize,
+                from: 0,
+                sort: $scope.sort,
+                filter: $scope.selectedFilterView
             }
+            
           };
         }
       }
