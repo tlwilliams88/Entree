@@ -79,7 +79,7 @@ angular.module('bekApp')
     ];
 
     $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter});
+    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
@@ -212,7 +212,7 @@ angular.module('bekApp')
       });
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);
+        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems, $scope.selectedFilter);
       } else {
         $scope.setStartAndEndPoints(visited[0]);
         if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
