@@ -153,10 +153,12 @@ angular.module('bekApp')
 
       // accepts null, item object, or array of item objects and shipDate
       // returns promise and new cart object
-      createCart: function(items, shipDate, name, ponumber) {
+      createCart: function(items, shipDate, name, ponumber, listid, listtype) {
         var newCart = Service.beforeCreateCart(items, shipDate, name, ponumber);
 
         newCart.message = 'Creating cart...';
+        newCart.listid = listid;
+        newCart.listtype = listtype;
         return Cart.save({}, newCart).$promise.then(function(response) {
 
           newCart.id = response.successResponse.listitemid;

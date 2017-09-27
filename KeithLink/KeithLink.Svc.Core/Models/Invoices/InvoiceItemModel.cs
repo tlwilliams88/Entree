@@ -21,11 +21,19 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "linenumber")]
 		[Description("Line #")]
 		public string LineNumber { get; set; }
-		[DataMember(Name="itemnumber")]
+
+        [DataMember(Name="itemnumber")]
 		[Description("Item #")]
-		public new string ItemNumber { get; set; }
-		[DataMember(Name = "quantityordered")]
-		[Description("# Ordereed")]
+        public new string ItemNumber { get; set; }
+
+        [DataMember(Name = "detail")]
+        public string Detail { get; set; }
+
+        [Description("Item Order History")]
+        public string OrderHistoryString { get; set; }
+
+        [DataMember(Name = "quantityordered")]
+		[Description("# Ordered")]
 		public int? QuantityOrdered { get; set; }
         [DataMember(Name = "each")]
         [Description("Each")]

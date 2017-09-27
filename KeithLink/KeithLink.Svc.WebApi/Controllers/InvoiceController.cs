@@ -28,6 +28,8 @@ using System.Runtime.Serialization;
 using System.Web.Http;
 
  using KeithLink.Svc.Core.Interface.Lists;
+ using KeithLink.Svc.Core.Interface.SiteCatalog;
+ using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
@@ -43,6 +45,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         private readonly IOrderLogic _orderLogic;
         private readonly IImagingLogic _imgLogic;
         private readonly IEventLogRepository _log;
+        private readonly ICatalogLogic _catalogLogic;
         #endregion
 
         #region ctor
@@ -57,13 +60,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="logRepo"></param>
         /// <param name="invService"></param>
 		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentsLogic invoiceLogic, IExportSettingLogic exportSettingsLogic,
-                                 IOrderLogic orderLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo,
+                                 IOrderLogic orderLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo, ICatalogLogic catalogLogic,
                                  IExportInvoicesService invService, IListService listService) : base(profileLogic) {
             _invLogic = invoiceLogic;
             _orderLogic = orderLogic;
 			_exportLogic = exportSettingsLogic;
             _imgLogic = invoiceImagingLogic;
             _log = logRepo;
+            _catalogLogic = catalogLogic;
             _invService = invService;
             _listService = listService;
         }
@@ -313,13 +317,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [ApiKeyedRoute("invoice/export/{invoiceNumber}")]
         public HttpResponseMessage ExportInvoiceDetail(string invoiceNumber, ExportRequestModel exportRequest) {
             HttpResponseMessage ret;
-            try
-            {
-                ret = ExportModel<InvoiceItemModel>(_invService.GetExportableInvoiceItems(AuthenticatedUser,
-                                                                                          SelectedUserContext,
-                                                                                          exportRequest,
-                                                                                          invoiceNumber,
-                                                                                          _listService.GetContractInformation(SelectedUserContext)), 
+            try {
+                List<InvoiceItemModel> items = _invService.GetExportableInvoiceItems(AuthenticatedUser,
+                                                                                     SelectedUserContext,
+                                                                                     exportRequest,
+                                                                                     invoiceNumber,
+                                                                                     _listService.GetContractInformation(SelectedUserContext));
+                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, items);
+
+                ret = ExportModel<InvoiceItemModel>(items, 
                                                     exportRequest, 
                                                     SelectedUserContext);
             }

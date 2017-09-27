@@ -10,7 +10,11 @@ namespace KeithLink.Svc.Core.Interface.Lists
     public interface INotesListLogic
     {
         ListItemModel GetNote(UserSelectedContext catalogInfo, string itemNumber);
+
+        List<ListItemModel> GetNotes(UserProfile user, UserSelectedContext catalogInfo);
+
         ListModel GetList(UserSelectedContext catalogInfo);
+
         long SaveNote(UserSelectedContext catalogInfo, ListItemModel detail);
     }
 }

@@ -24,7 +24,9 @@ using KeithLink.Common.Impl.Email;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Impl.Helpers;
 
 using Newtonsoft.Json;
 
@@ -42,6 +44,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IExportSettingLogic _exportLogic;
         private readonly IEventLogRepository _log;
         private readonly IListService _listService;
+        private readonly ICatalogLogic _catalogLogic;
         #endregion
 
         #region ctor
@@ -53,12 +56,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="logRepo"></param>
         /// <param name="userActiveCartLogic"></param>
         /// <param name="exportSettingsLogic"></param>
-        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, IListService listService,
+        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, IListService listService, ICatalogLogic catalogLogic,
                                       IUserActiveCartLogic userActiveCartLogic, IExportSettingLogic exportSettingsLogic) : base(profileLogic) {
             _activeCartLogic = userActiveCartLogic;
 			_shoppingCartLogic = shoppingCartLogic;
             _exportLogic = exportSettingsLogic;
             _listService = listService;
+            _catalogLogic = catalogLogic;
             _log = logRepo;
         }
         #endregion
@@ -216,6 +220,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             try
             {
                 var cart = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                ContractInformationHelper.GetContractCategoriesFromLists(this.SelectedUserContext, cart.Items, _listService);
+                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, cart.Items);
+                FavoritesAndNotesHelper.GetFavoritesAndNotesFromLists(AuthenticatedUser, SelectedUserContext, cart.Items, _listService);
+
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.CartDetail, Core.Enumerations.List.ListType.Custom,
                                                         exportRequest.Fields, exportRequest.SelectedType);

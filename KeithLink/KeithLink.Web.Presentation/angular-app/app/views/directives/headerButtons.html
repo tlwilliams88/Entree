@@ -6,7 +6,7 @@
 
   <div class="page-header__orders" ng-if="isOrderEntryCustomer && canCreateOrders">
     <div class="btn-group" dropdown is-open="status.cartisopen" style="font-size: 23px; margin-top: 5px;" ng-class="{ 'negative-margin-left-10' : isMobileApp , 'margin-left-15' : !(isMobileApp || isMobile) }">
-      <button class="badge-parent btn-no-style dropdown-toggle btn-small-mobile-truck">
+      <button class="badge-parent btn-no-style dropdown-toggle btn-small-mobile-truck" analytics-on analytics-category="Menu-Carts-Desktop" analytics-event="Truck Icon">
         <span title="Carts" class="icon-truck user-bar-buttons"></span>
         <span ng-if="cartsHeaders != null && cartsHeaders.length > 0" class="badge" style="margin-top: -10px; margin-left: -10px;">{{cartsHeaders.length}}</span>
       </button>
@@ -24,8 +24,8 @@
             <br>
             Cart Total: {{cart.subtotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="display: table;">View Cart</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id, listId: cart.listid, listType: cart.listtype })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })" style="display: table;" analytics-on analytics-category="Menu-Carts-Desktop-Cart" analytics-event="Cart Selected">View Cart</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id, listId: cart.listid, listType: cart.listtype })" analytics-on analytics-category="Menu-Carts-Desktop-Cart" analytics-event="Cart Continue Shopping">Continue Shopping</a>
           </div>
         </li>
         <li class="cart-dropdown__view-all" ng-if="cartsHeaders.length > 2">
@@ -45,8 +45,8 @@
             <br>
             Change Order Total: {{changeOrder.ordertotal | currency}}
             <br>
-            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;">View Change Order</a>
-            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber, listId: changeOrder.listid, listType: changeOrder.listtype })">Continue Shopping</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: changeOrder.ordernumber })" style="display: table;" analytics-on analytics-category="Menu-Carts-Desktop-Change-Order" analytics-event="Change Order Selected">View Change Order</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: changeOrder.ordernumber, listId: changeOrder.listid, listType: changeOrder.listtype })" analytics-on analytics-category="Menu-Carts-Desktop-Change-Order" analytics-event="Change Order Continue Shopping">Continue Shopping</a>
           </div>
         </li>
         <li class="cart-dropdown__view-all" ng-if="changeOrders.length > 2">

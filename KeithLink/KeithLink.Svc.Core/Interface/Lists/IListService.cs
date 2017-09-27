@@ -22,6 +22,10 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                         ListModel list);
 
+        Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo);
+
+        Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo);
+
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
         RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog);

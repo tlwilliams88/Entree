@@ -111,6 +111,9 @@ angular.module('bekApp')
     if (ListService.findRecommendedList()) {
       $scope.hideRecommendedListCreateButton = true;
     }
+    if (ListService.findReminderList()) {
+      $scope.hideReminderListCreateButton = true;
+    }
 
     //Toggle scope variable to render Reports side panel when screen is resized
     $(window).resize(function(){
@@ -214,7 +217,7 @@ angular.module('bekApp')
         if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
           $scope.selectedList.allSelected = true;
         }
-        updateItemPositions();
+        // updateItemPositions();
       }
     };
 
@@ -274,7 +277,7 @@ angular.module('bekApp')
       if(initialPageLoad){
         $scope.currentPage = 1;
         $scope.visitedPages.push({page: 1, items: $scope.selectedList.items, deletedCount: 0});
-        updateItemPositions();
+        // updateItemPositions();
       }
       $scope.setRange();
 
@@ -329,7 +332,7 @@ angular.module('bekApp')
       else{
        $scope.setStartAndEndPoints(list);
       }
-       updateItemPositions();
+    //    updateItemPositions();
       if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
         $scope.selectedList.allSelected = true;
       }
@@ -381,7 +384,7 @@ angular.module('bekApp')
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.go('menu.lists.items', {listType: listtype, listId: listid});
+          return $state.transitionTo('menu.lists.items', {listId: listid, listType: listtype}, {location: true, reload: true, notify: true});
         });
       }
     };
@@ -493,6 +496,7 @@ angular.module('bekApp')
 
         setLastList(newList);
         $scope.selectedList = newList;
+        $state.transitionTo('menu.lists.items', {listId: $scope.selectedList.listid, listType: $scope.selectedList.type}, {location: true, reload: false, notify: true});
       });
     };
 
@@ -530,6 +534,24 @@ angular.module('bekApp')
     $scope.createRecommendedListFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.createRecommendedList(dragSelection);
+    };
+    
+    /**********
+    CREATE REMINDER LIST
+    **********/
+
+    $scope.createReminderList = function(items) {
+        ListService.createReminderList(items).then(function(list) {
+            setLastList(list);
+            $scope.hideRecommendedListCreateButton = true;
+            $scope.selectedList = list;
+            applyNewList();
+        });
+    };
+
+    $scope.createReminderListFromDrag = function(event, helper) {
+      var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.createReminderList(dragSelection);
     };
 
     /**********
@@ -608,36 +630,36 @@ angular.module('bekApp')
     };
 
       // saves new item indexes in cached editPosition field after sorting or ordering the list items
-     function updateItemPositions() {
-
-      if($scope.selectedList.read_only){
-        return;
-      }
-      var deletedItemCount = 0;
-      var currentPageDeletes = 0;
-      var currentPageDeletedCount = 0;
-      $scope.itemCountOffset = 0;
-      $scope.visitedPages.forEach(function(page){
-      if($scope.currentPage > page.page){
-        deletedItemCount += page.deletedCount;
-      }
-      if($scope.currentPage === page.page){
-        currentPageDeletedCount = page.deletedCount;
-      }
-      $scope.itemCountOffset += page.deletedCount;
-      });
-
-      $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
-      $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
-      var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
-      angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
-        if(!item.isdeleted){
-            item.position = newPosition;
-            item.editPosition = newPosition;
-            newPosition += 1;
-        }
-      });
-    }
+    //  function updateItemPositions() {
+    // 
+    //   if($scope.selectedList.read_only){
+    //     return;
+    //   }
+    //   var deletedItemCount = 0;
+    //   var currentPageDeletes = 0;
+    //   var currentPageDeletedCount = 0;
+    //   $scope.itemCountOffset = 0;
+    //   $scope.visitedPages.forEach(function(page){
+    //   if($scope.currentPage > page.page){
+    //     deletedItemCount += page.deletedCount;
+    //   }
+    //   if($scope.currentPage === page.page){
+    //     currentPageDeletedCount = page.deletedCount;
+    //   }
+    //   $scope.itemCountOffset += page.deletedCount;
+    //   });
+    // 
+    //   $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
+    //   $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
+    //   var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
+    //   angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
+    //     if(!item.isdeleted){
+    //         item.position = newPosition;
+    //         item.editPosition = newPosition;
+    //         newPosition += 1;
+    //     }
+    //   });
+    // }
 
     /**********
     DELETE ITEMS
@@ -654,7 +676,7 @@ angular.module('bekApp')
       $scope.forms.listForm.$setDirty();
       item.isdeleted = true;
       updateDeletedCount();
-      updateItemPositions();
+    //   updateItemPositions();
     };
 
     $scope.deleteMultipleItems = function() {
@@ -676,7 +698,7 @@ angular.module('bekApp')
       }
 
       $scope.selectedList.allSelected = false;
-      updateItemPositions();
+    //   updateItemPositions();
       $scope.forms.listForm.$setDirty();
       $scope.isDeletingItem = false;
     };
@@ -986,11 +1008,12 @@ angular.module('bekApp')
             return ListService.getExportConfig($scope.selectedList);
           },
           exportParams: function() {
-            var list = {
+            var params = {
                 listType: $scope.selectedList.type,
-                listId: $scope.selectedList.listid
+                listId: $scope.selectedList.listid,
+                sort: $scope.sort[0]
             }
-            return list;
+            return params;
           }
         }
       });

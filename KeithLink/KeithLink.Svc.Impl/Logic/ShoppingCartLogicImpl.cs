@@ -1,13 +1,24 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿// Core
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using System.Reflection;
+
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
 
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
 
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.Orders;
-using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
@@ -25,26 +36,13 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
-using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.Impl.Helpers;
 
-// Core
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.RegularExpressions;
-using KeithLink.Svc.Core;
-using System.IO;
-using Microsoft.Reporting.WinForms;
-using System.Reflection;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -58,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IGenericQueueRepository queueRepository;
 		private readonly IBasketLogic basketLogic;
-        private readonly INoteLogic _noteLogic;
+        private readonly INotesListLogic _notesLogic;
         private readonly IOrderQueueLogic orderQueueLogic;
         private readonly IOrderHistoryLogic _historyLogic;
 		private readonly IAuditLogRepository auditLogRepository;
@@ -72,8 +70,8 @@ namespace KeithLink.Svc.Impl.Logic
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
 									 IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
-                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, 
-                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
+                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository,
+                                     INotesListLogic notesLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
                                      ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository)
 		{
             _cache = cache;
@@ -82,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.priceLogic = priceLogic;
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
-            _noteLogic = noteLogic;
+            _notesLogic = notesLogic;
 			this.basketLogic = basketLogic;
             this.orderQueueLogic = orderQueueLogic;
 			_historyLogic = orderHistoryLogic;
@@ -145,10 +143,20 @@ namespace KeithLink.Svc.Impl.Logic
                 item.Position = startpos++;
             }
 
-            return basketRepository.CreateOrUpdateBasket(customer.CustomerId, 
+            Guid newCartId = basketRepository.CreateOrUpdateBasket(customer.CustomerId, 
                                                          cartBranchId.ToLower(), 
                                                          newBasket, 
                                                          cart.Items.Select(l => l.ToLineItem()).ToList());
+
+		    if (cart.ListId != null) {
+		        _orderedFromListRepository.Write(new OrderedFromList() {
+		            ControlNumber = newCartId.ToString(),
+		            ListId = cart.ListId,
+		            ListType = cart.ListType
+		        });
+		    }
+
+		    return newCartId;
 		}
 
         public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
@@ -231,7 +239,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(basket.UserId.ToGuid(), cartId, itemId);
 		}
         
-		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null)
+		public void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null)
 		{
 			if (cart.Items == null)
 				return;
@@ -273,6 +281,12 @@ namespace KeithLink.Svc.Impl.Logic
 				{
                     item.IsValid = true;
 					item.Name = prod.Name;
+                    item.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                    prod.Name,
+                                                    prod.ItemNumber,
+                                                    prod.BrandExtendedDescription,
+                                                    prod.ItemClass,
+                                                    prod.PackSize);
                     item.Pack = prod.Pack;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional == null ? "" : prod.Nutritional.StorageTemp;
@@ -363,7 +377,7 @@ namespace KeithLink.Svc.Impl.Logic
             else
 			{
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
-				var notes = _noteLogic.GetNotes(user, catalogInfo);
+				var notes = _notesLogic.GetNotes(user, catalogInfo);
 
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
@@ -402,7 +416,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
             cart.Items = cart.Items.OrderBy(i => i.Position).ToList();
-			var notes = _noteLogic.GetNotes(user, catalogInfo);
+			var notes = _notesLogic.GetNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
 

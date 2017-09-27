@@ -123,6 +123,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             }
 
             [Fact]
+            public void WhenExportTypeCartDetailIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.CartDetail;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
             public void WhenExportTypeOrderDetailIsCalledFor_ResultingFieldsContainEachTrue()
             {
                 // arrange
@@ -132,6 +155,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
                 var testExportType = ExportType.OrderDetail;
                 var testListType = ListType.Contract;
                 var expected = "Each";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
+            public void WhenExportTypeOrderDetailIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.OrderDetail;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
 
                 // act
                 var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
@@ -169,6 +215,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             }
 
             [Fact]
+            public void WhenExportTypeInvoiceDetailIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.InvoiceDetail;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
             public void WhenExportTypeProductsIsCalledFor_ResultingFieldsContainEachTrue()
             {
                 // arrange
@@ -178,6 +247,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
                 var testExportType = ExportType.Products;
                 var testListType = ListType.Contract;
                 var expected = "Each";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
+            public void WhenExportTypeProductsIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.Products;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
 
                 // act
                 var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
@@ -215,6 +307,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             }
 
             [Fact]
+            public void WhenExportTypeInvoiceIsCalledFor_ResultingFieldsContainDetailFalse()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.Invoice;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeFalse();
+            }
+
+            [Fact]
             public void WhenExportTypeItemUsageIsCalledFor_ResultingFieldsContainEachTrue()
             {
                 // arrange
@@ -224,6 +339,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
                 var testExportType = ExportType.ItemUsage;
                 var testListType = ListType.Contract;
                 var expected = "Each";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
+            public void WhenExportTypeItemUsageIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.ItemUsage;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
 
                 // act
                 var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
@@ -261,6 +399,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             }
 
             [Fact]
+            public void WhenExportTypeMarketingPreferencesIsCalledFor_ResultingFieldsContainDetailFalse()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.MarketingPreferences;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeFalse();
+            }
+
+            [Fact]
             public void WhenExportTypeFavoriteListIsCalledFor_ResultingFieldsContainEachTrue()
             {
                 // arrange
@@ -270,6 +431,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
                 var testExportType = ExportType.List;
                 var testListType = ListType.Favorite;
                 var expected = "Each";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
+            public void WhenExportTypeFavoriteListIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.List;
+                var testListType = ListType.Favorite;
+                var expected = "Detail";
 
                 // act
                 var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
@@ -307,6 +491,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             }
 
             [Fact]
+            public void WhenExportTypeCustomListIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.List;
+                var testListType = ListType.Custom;
+                var expected = "Detail";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
             public void WhenExportTypeContractListIsCalledFor_ResultingFieldsContainEachTrue()
             {
                 // arrange
@@ -330,6 +537,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
             }
 
             [Fact]
+            public void WhenExportTypeContractListIsCalledFor_ResultingFieldsContainDetailTrue()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.List;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeTrue();
+            }
+
+            [Fact]
             public void WhenExportTypePendingTransactionsIsCalledFor_ResultingFieldsContainEachFalse()
             {
                 // arrange
@@ -339,6 +569,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
                 var testExportType = ExportType.PendingTransactions;
                 var testListType = ListType.Contract;
                 var expected = "Each";
+
+                // act
+                var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);
+
+                // assert
+                results.Fields
+                       .Select(f => f.Field)
+                       .ToList()
+                       .Contains(expected)
+                       .Should()
+                       .BeFalse();
+            }
+
+            [Fact]
+            public void WhenExportTypePendingTransactionsIsCalledFor_ResultingFieldsContainDetailFalse()
+            {
+                // arrange
+                var mockDependents = new MockDependents();
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testGuid = new Guid();
+                var testExportType = ExportType.PendingTransactions;
+                var testListType = ListType.Contract;
+                var expected = "Detail";
 
                 // act
                 var results = testunit.ReadCustomExportOptions(testGuid, testExportType, testListType);

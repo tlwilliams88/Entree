@@ -285,6 +285,7 @@
     <Compile Include="Helpers\CustomInventoryHelper.cs" />
     <Compile Include="Helpers\FavoritesAndNotesHelper.cs" />
     <Compile Include="Extensions\ListModelExtensions.cs" />
+    <Compile Include="Helpers\ItemOrderHistoryHelper.cs" />
     <Compile Include="Helpers\ListSortHelper.cs" />
     <Compile Include="Helpers\OpenXmlSpreadsheetUtilities.cs" />
     <Compile Include="Helpers\OrderSubmissionHelper.cs" />

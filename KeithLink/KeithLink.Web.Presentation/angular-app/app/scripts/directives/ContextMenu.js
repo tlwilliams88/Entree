@@ -9,16 +9,19 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     // scope: true,
-    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService',
-    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService){
+    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter',
+    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter){
 
       if ($scope.isOrderEntryCustomer) {
         var cartHeaders = CartService.cartHeaders,
-            listHeaders = ListService.listHeaders;
+            listHeaders = ListService.listHeaders,
+            changeOrderHeaders = OrderService.changeOrderHeaders;
 
-        OrderService.getChangeOrders().then(function(resp){
-          $scope.changeOrders = resp;
-        });
+      if(changeOrderHeaders == null || changeOrderHeaders.length == 0) {
+          OrderService.getChangeOrders().then(function(resp){
+            $scope.changeOrders = resp;
+          });
+      }
 
         $scope.lists = listHeaders.length > 0 ? listHeaders : ListService.getListHeaders();
 
@@ -103,7 +106,27 @@ angular.module('bekApp')
       $scope.createCartWithItem = function(item) {
         var items = [item];
         CartService.renameCart = true;
-        CartService.createCart(items).then(function(data) {
+        
+        var contractList = $filter('filter')($scope.lists, { type: 2 }),
+            historyList = $filter('filter')($scope.lists, { type: 5 }),
+            favoritesList = $filter('filter')($scope.lists, { type: 1 }),
+            customList = $filter('filter')($scope.lists, { type: 0 }),
+            listToBeUsed = {};
+
+        if(contractList.length > 0){
+          listToBeUsed = contractList[0];
+        }
+        else if(historyList.length > 0){
+          listToBeUsed = historyList[0];
+        }
+        else if(favoritesList.length > 0){
+          listToBeUsed = favoritesList[0];
+        }
+        else if(customList.length > 0){
+          listToBeUsed = customList[0];
+        }
+        
+        CartService.createCart(items, null, null, null, listToBeUsed.listid, listToBeUsed.type).then(function(data) {
           closeModal();
           $scope.displayMessage('success', 'Successfully created new cart ' + data.name + '.');
         }, function() {

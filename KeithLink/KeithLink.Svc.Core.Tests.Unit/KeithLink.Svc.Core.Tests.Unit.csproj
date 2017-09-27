@@ -94,9 +94,11 @@
     <Compile Include="Extensions\Lists\RecommendedHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Lists\ReminderDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\ReminderHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Orders\OrderLineExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
     <Compile Include="Models\EntityTests.cs" />
+    <Compile Include="Models\Invoices\InvoiceItemModelTests.cs" />
     <Compile Include="Models\Lists\BaseListDetailTests.cs" />
     <Compile Include="Models\Lists\BaseListHeaderTests.cs" />
     <Compile Include="Models\Lists\Contract\ContractListDetailTests.cs" />
@@ -109,6 +111,8 @@
     <Compile Include="Models\Lists\History\HistoryListDetailTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValidationListHeaderTests.cs" />
     <Compile Include="Models\Lists\InventoryValuationList\InventoryValudationDetailTests.cs" />
+    <Compile Include="Models\Lists\ListItemModelTests.cs" />
+    <Compile Include="Models\Lists\ListModelTests.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListDetailTests.cs" />
     <Compile Include="Models\Lists\MandatoryItems\MandatoryItemsListHeaderTests.cs" />
     <Compile Include="Models\Lists\Notes\NotesDetailListTests.cs" />
@@ -120,6 +124,10 @@
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetailTests.cs" />
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListHeaderTests.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetailTests.cs" />
+    <Compile Include="Models\Orders\OrderLineTests.cs" />
+    <Compile Include="Models\Reports\ItemUsageReportItemModelTests.cs" />
+    <Compile Include="Models\ShoppingCart\ShoppingCartItemTests.cs" />
+    <Compile Include="Models\SiteCatalog\ProductTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +140,6 @@
     <Folder Include="Extensions\Marketing\" />
     <Folder Include="Extensions\Messaging\" />
     <Folder Include="Extensions\OnlinePayments\" />
-    <Folder Include="Extensions\Orders\" />
     <Folder Include="Extensions\PowerMenu\" />
     <Folder Include="Extensions\ShoppingCart\" />
     <Folder Include="Extensions\SingleSignOn\" />
@@ -147,19 +154,14 @@
     <Folder Include="Models\EF\" />
     <Folder Include="Models\ElasticSearch\" />
     <Folder Include="Models\ImportFiles\" />
-    <Folder Include="Models\Invoices\" />
     <Folder Include="Models\Marketing\" />
     <Folder Include="Models\Messaging\" />
     <Folder Include="Models\ModelExport\" />
     <Folder Include="Models\OnlinePayments\" />
-    <Folder Include="Models\Orders\" />
     <Folder Include="Models\Paging\" />
     <Folder Include="Models\PowerMenu\" />
     <Folder Include="Models\Profile\" />
-    <Folder Include="Models\Reports\" />
-    <Folder Include="Models\ShoppingCart\" />
     <Folder Include="Models\SingleSignOn\" />
-    <Folder Include="Models\SiteCatalog\" />
     <Folder Include="Models\SpecialOrders\" />
     <Folder Include="Models\Template\" />
   </ItemGroup>

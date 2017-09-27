@@ -74,8 +74,11 @@ angular.module('bekApp')
       }
       ApplicationSettingsService.setDefaultOrderList(selectedList);
     }
+    
+    cart.listid = $scope.selectedList.listid;
+    cart.listtype = $scope.selectedList.type; 
 
-    CartService.createCart(cart.items, cart.requestedshipdate, cart.name, cart.ponumber).then(function(cart) {
+    CartService.createCart(cart.items, cart.requestedshipdate, cart.name, cart.ponumber, cart.listid, cart.listtype).then(function(cart) {
       if(fromFunction == 'QuickAdd'){
         cart.type = 'QuickAdd';
       }

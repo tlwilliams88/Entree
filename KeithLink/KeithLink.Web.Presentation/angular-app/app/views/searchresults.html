@@ -2,10 +2,10 @@
   <div header-message>
     {{pageTitle}}
 
-    <div class="hand-pointer hidden-md hidden-lg pull-right hidden-print" style="color: #A1A1A1;">
+    <!-- <div class="hand-pointer hidden-md hidden-lg pull-right hidden-print" style="color: #A1A1A1;">
       <span ng-click="toggleListView('ViewWithoutImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithoutImages' }" class="icon-list extra-large-icon"></span>
       <span ng-click="toggleListView('ViewWithImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithImages' }" class="icon-layout extra-large-icon"></span>
-    </div>
+    </div> -->
   </div>
 
   <div class="pull-right">
@@ -22,23 +22,13 @@
         <a ng-click="selectBreadcrumb(bc.apiText)">{{bc.displayText}} </a> <span>>></span>
       </div>
     </div>
-    <div ng-show="products.length !== 0" class="pull-right input-group padding-right-15">
-      <div class="search-result-sort-buttons">
-        <span class="margin-right-5">Sort: </span>
-        <div class="btn-group">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
-            <ul class="dropdown-menu">
-              <li ng-repeat="sortParameter in sortParameters" >
-                <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
-              </li>
-            </ul>
-        </div>
-      </div>
+    <!-- <div ng-show="products.length !== 0" class="pull-right input-group padding-right-15">
+
       <div class="hand-pointer pull-right hidden-print">
         <span ng-click="toggleListView('ViewWithoutImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithoutImages' }" class="icon-list extra-large-icon"></span>
         <span ng-click="toggleListView('ViewWithImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithImages' }" class="icon-layout extra-large-icon"></span>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
 
@@ -88,7 +78,7 @@
                       <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
                     </label>
                   </div>
-                  <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen && $state.params.catalogType != 'UNFI', 'icon-plus3' : !parentcategory.isOpen && $state.params.catalogType != 'UNFI'}" ng-click="toggleSubCategories(parentcategory, $index)" class="subCategoryToggle pull-right"></span>
+                  <!-- <span style="margin-bottom:5px !important;" ng-class="{'icon-minus3' : parentcategory.isOpen && $state.params.catalogType != 'UNFI', 'icon-plus3' : !parentcategory.isOpen && $state.params.catalogType != 'UNFI'}" ng-click="toggleSubCategories(parentcategory, $index)" class="subCategoryToggle pull-right"></span> -->
                 </div>
               </accordion-heading>
               <div class="panel-body max-width-100Percent" ng-repeat="category in parentcategory.categories">
@@ -228,7 +218,7 @@
     <div class="row" ng-show="parentcategories.available.length > 0">
       <div class="col-sm-12" id="categoriesSection">
         <h3>Categories<span ng-show="filterCount > 0" style="font-size:.65em;"><a class="pull-right" ng-click="clearFacets()">Clear Filters</a></span></h3>
-          <ul class="nav search-results__category"  >
+          <ul class="nav search-results__category" style="max-height: 300px;">
             <li class="margin-left-10" ng-repeat="parentcategory in parentcategories.available | orderBy : 'code'">
             <div>
               <input
@@ -247,9 +237,9 @@
                 </span>
                 <span ng-show="parentcategory.count > 0">({{parentcategory.count}})</span>
               </label>
-              <a ng-class="{'icon-minus3' : parentcategory.IsOpen && $state.params.catalogType != 'UNFI', 'icon-plus3' : !parentcategory.IsOpen && $state.params.catalogType != 'UNFI'}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a>
+              <!-- <a ng-class="{'icon-minus3' : parentcategory.IsOpen && $state.params.catalogType != 'UNFI', 'icon-plus3' : !parentcategory.IsOpen && $state.params.catalogType != 'UNFI'}" class="subCategoryToggle large-icon inline-icon" ng-click="toggleSubCategories(parentcategory, $index)"></a> -->
             </div>
-            <ul class="subcategories_{{$index}} subcategory-description-md" style="display:none;">
+            <ul class="subcategories_{{$index}} subcategory-description-md">
               <li ng-repeat="category in parentcategory.categories">
                 <div>
                   <input
@@ -419,6 +409,24 @@
         class="pagination search-results-pagination">
       </pagination>
     </div>
+    <div class="search-result-sort-buttons hidden-xs hidden-sm" ng-show="products.length !== 0" style="width: 100%">
+      <span class="margin-right-5"><strong>Sort: </strong></span>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
+          <ul class="dropdown-menu">
+            <li ng-repeat="sortParameter in sortParameters" >
+              <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+            </li>
+          </ul>
+      </div>
+      <div class="pull-right input-group padding-right-15">
+
+        <div class="hand-pointer pull-right hidden-print">
+          <span ng-click="toggleListView('ViewWithoutImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithoutImages' }" class="icon-list extra-large-icon"></span>
+          <span ng-click="toggleListView('ViewWithImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithImages' }" class="icon-layout extra-large-icon"></span>
+        </div>
+      </div>
+    </div>
     <div class="row" ng-show="products.length !== 0">
       <div class="col-sm-12 col-xs-12">
         <div class="pull-left input-group hidden-md hidden-lg padding-right-15">
@@ -552,6 +560,24 @@
         ng-click="blockUIAndChangePage(this);"
         class="pagination search-results-pagination">
       </pagination>
+    </div>
+    <div class="search-result-sort-buttons hidden-xs hidden-sm" ng-show="products.length !== 0" style="width: 100%">
+      <span class="margin-right-5">Sort: </span>
+      <div class="btn-group">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{selectedSortParameter}}<span class="caret margin-left-5"></span></button>
+          <ul class="dropdown-menu">
+            <li ng-repeat="sortParameter in sortParameters" >
+              <a ng-click="selectSortParameter(sortParameter.name, sortParameter.value)">{{sortParameter.name}}</a>
+            </li>
+          </ul>
+      </div>
+      <div class="pull-right input-group padding-right-15">
+
+        <div class="hand-pointer pull-right hidden-print">
+          <span ng-click="toggleListView('ViewWithoutImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithoutImages' }" class="icon-list extra-large-icon"></span>
+          <span ng-click="toggleListView('ViewWithImages');" ng-class="{ 'ico-blue' : defaultSearchView == 'ViewWithImages' }" class="icon-layout extra-large-icon"></span>
+        </div>
+      </div>
     </div>
     <div class="row" ng-show="products.length !== 0">
       <div class="col-sm-12 col-xs-12">

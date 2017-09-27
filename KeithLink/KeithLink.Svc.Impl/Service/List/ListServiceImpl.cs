@@ -28,8 +28,7 @@ namespace KeithLink.Svc.Impl.Service.List
     public class ListServiceImpl : IListService
     {
         #region attributes
-        private readonly ICacheRepository _cache;
-        private readonly ICacheListLogic _cacheHelper;
+        private readonly ICacheListLogic _cacheListLogic;
         private readonly IContractListLogic _contractListLogic;
         private readonly IHistoryListLogic _historyListLogic;
         private readonly IFavoritesListLogic _favoritesLogic;
@@ -54,57 +53,6 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private const bool CACHELISTS = true;
 
-        private const string CACHE_CONTRACT_GROUPNAME = "ContractInformation";
-        private const string CACHE_CONTRACT_NAME = "ContractInformation";
-        private const string CACHE_CONTRACT_PREFIX = "Default";
-
-        private const string CACHE_LIST_GROUPNAME = "ContractInformation";
-        private const string CACHE_LIST_NAME = "ContractInformation";
-        private const string CACHE_LIST_PREFIX = "Default";
-
-        private const string CACHEKEY_PREFIX_CONTRACTDICT = "ContractDictionary";
-        private string GetCacheKeyContractDictionary(UserSelectedContext catalogInfo) {
-            return string.Format("{0}_{1}_{2}",
-                                 CACHEKEY_PREFIX_CONTRACTDICT,
-                                 catalogInfo.BranchId,
-                                 catalogInfo.CustomerId);
-        }
-
-        private const string CACHEKEY_PREFIX_TYPELISTOFLISTS = "Lists";
-        private string GetCacheKeyTypedLists(UserSelectedContext catalogInfo, ListType type)
-        {
-            return string.Format("{0}_{1}_{2}_{3}",
-                                 CACHEKEY_PREFIX_TYPELISTOFLISTS,
-                                 catalogInfo.BranchId,
-                                 catalogInfo.CustomerId,
-                                 type);
-        }
-
-        private const string CACHEKEY_PREFIX_LISTOFLISTS = "Lists";
-        private string GetCacheKeyUserLists(UserSelectedContext catalogInfo)
-        {
-            return string.Format("{0}_{1}_{2}",
-                                 CACHEKEY_PREFIX_LISTOFLISTS,
-                                 catalogInfo.BranchId,
-                                 catalogInfo.CustomerId);
-        }
-
-        private const string CACHEKEY_PREFIX_LIST = "List";
-        private string GetCacheKeySpecificLists(UserSelectedContext catalogInfo, ListType type, long Id)
-        {
-            return string.Format("{0}_{1}_{2}_{3}_{4}",
-                                                                           CACHEKEY_PREFIX_LIST,
-                                                                           catalogInfo.BranchId,
-                                                                           catalogInfo.CustomerId,
-                                                                           type,
-                                                                           Id);
-        }
-
-
-        private const int CACHETIME_HOURS_CONTRACTDICT = 2;
-        private const int CACHETIME_HOURS_TYPELISTOFLISTS = 2;
-        private const int CACHETIME_HOURS_LISTOFLISTS = 2;
-        private const int CACHETIME_HOURS_LIST = 2;
         #endregion
 
         #region ctor
@@ -114,11 +62,10 @@ namespace KeithLink.Svc.Impl.Service.List
                                 IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
                                 IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
                                 IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, ICustomListLogic customListLogic, ICacheRepository cache,
+                                IContractListLogic contractListLogic, ICustomListLogic customListLogic,
                                 IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo, ICacheListLogic cacheHelper)
         {
-            _cache = cache;
-            _cacheHelper = cacheHelper;
+            _cacheListLogic = cacheHelper;
             // specific lists -
             _contractListLogic = contractListLogic;
             _historyListLogic = historyListLogic;
@@ -147,7 +94,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             Dictionary<string, string> contractdictionary = new Dictionary<string, string>();
 
-            Dictionary<string, string> cachedContractdictionary = CACHELISTS ? _cacheHelper.GetCachedContractInformation(catalogInfo) : null;
+            Dictionary<string, string> cachedContractdictionary = CACHELISTS ? _cacheListLogic.GetCachedContractInformation(catalogInfo) : null;
 
             if (cachedContractdictionary == null)
             {
@@ -165,7 +112,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                                  .ToDictionary(g => g.Key,
                                                                g => g.First().Category.Trim());
                 }
-                _cacheHelper.AddCachedContractInformation(catalogInfo, contractdictionary);
+                _cacheListLogic.AddCachedContractInformation(catalogInfo, contractdictionary);
             }
             else
             {
@@ -188,7 +135,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> returnList = new List<ListModel>();
 
-            List<ListModel> cachedList = CACHELISTS ? _cacheHelper.GetCachedTypedLists(catalogInfo, type) : null;
+            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedTypedLists(catalogInfo, type, headerOnly) : null;
 
             if (cachedList == null) {
                 switch (type) {
@@ -254,7 +201,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
 
                 if (CACHELISTS) {
-                    _cacheHelper.AddCachedTypedLists(catalogInfo, type, returnList);
+                    _cacheListLogic.AddCachedTypedLists(catalogInfo, type, headerOnly, returnList);
                 }
             }
             else {
@@ -268,7 +215,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             ListModel tempList = null;
 
-            ListModel cachedList = CACHELISTS ? _cacheHelper.GetCachedSpecificList(catalogInfo, type, Id) : null;
+            ListModel cachedList = CACHELISTS ? _cacheListLogic.GetCachedSpecificList(catalogInfo, type, Id) : null;
 
             if (cachedList == null) {
                 switch (type) {
@@ -333,12 +280,13 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 if (tempList != null &&
                     tempList.Items != null &&
-                    tempList.Items.Count > 0) {
+                    tempList.Items.Count > 0 && 
+                    type != ListType.Notes) {
                     FillOutProducts(user, catalogInfo, new List<ListModel>() {tempList}, true);
                 }
 
                 if (CACHELISTS) {
-                    _cacheHelper.AddCachedSpecificList(catalogInfo, type, Id, tempList);
+                    _cacheListLogic.AddCachedSpecificList(catalogInfo, type, Id, tempList);
                 }
             }
             else {
@@ -352,7 +300,7 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             List<ListModel> list = new List<ListModel>();
 
-            List<ListModel> cachedList = CACHELISTS ? _cacheHelper.GetCachedCustomerLists(catalogInfo) : null;
+            List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedCustomerLists(catalogInfo) : null;
 
             if (cachedList == null) {
                 if (_contractdictionary == null) {
@@ -368,7 +316,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
                 if (CACHELISTS) {
-                    _cacheHelper.AddCachedCustomerLists(catalogInfo, list);
+                    _cacheListLogic.AddCachedCustomerLists(catalogInfo, list);
                 }
             } else {
                 list = cachedList;
@@ -386,21 +334,45 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<string> ReadLabels(UserProfile user, UserSelectedContext catalogInfo)
         {
-            List<ListModel> list = new List<ListModel>();
+            List<string> labels = new List<string>();
 
-            list.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false));
-            list.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, false));
+            List<string> cachedList = CACHELISTS ? _cacheListLogic.GetCachedLabels(catalogInfo) : null;
 
-            List<ListItemModel> items = new List<ListItemModel>();
-            foreach (ListModel lst in list) {
-                if (lst.Items != null &&
-                    lst.Items.Count > 0) {
-                    items.AddRange(lst.Items);
+            if (cachedList == null) {
+
+                List<ListModel> list = new List<ListModel>();
+
+                list.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false));
+                list.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, false));
+
+                List<ListItemModel> items = new List<ListItemModel>();
+                foreach (ListModel lst in list) {
+                    if (lst.Items != null &&
+                        lst.Items.Count > 0) {
+                        items.AddRange(lst.Items);
+                    }
                 }
-            }
-            List<string> labels = items.Select(l => l.Label).Distinct().Where(x => x != null).ToList();
 
-            labels.Sort();
+                labels = items.Select(l => l.Label)
+                              .Distinct()
+                              .Where(x => x != null)
+                              .ToList();
+
+                labels.Sort();
+
+                if (CACHELISTS)
+                {
+                    _cacheListLogic.AddCachedLabels(catalogInfo, labels);
+                }
+
+            } else {
+                labels = cachedList;
+            }
+
+            // Insert blank at the start if there is none; to blank the existing label on an item
+            if (labels.Contains(string.Empty) == false) {
+                labels.Insert(0, string.Empty);
+            }
 
             return labels;
         }
@@ -534,10 +506,6 @@ namespace KeithLink.Svc.Impl.Service.List
                 //    break;
             }
 
-            if (CACHELISTS) {
-                _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
-            }
-
             return retVal;
         }
 
@@ -588,8 +556,6 @@ namespace KeithLink.Svc.Impl.Service.List
                     break;
             }
 
-            _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
-
         }
 
         public void SaveItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
@@ -609,7 +575,7 @@ namespace KeithLink.Svc.Impl.Service.List
                     _recommendedItemsLogic.CreateList(catalogInfo);
                     break;
                 case ListType.Reminder:
-                    _reminderItemsLogic.SaveList(user, catalogInfo, list);
+                    id = _reminderItemsLogic.SaveList(user, catalogInfo, list).ListId;
                     break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
@@ -630,8 +596,6 @@ namespace KeithLink.Svc.Impl.Service.List
                 SaveItems(user,catalogInfo, type, id, list.Items);
             }
 
-            _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
-
             return ReadList(user, catalogInfo, type, id, true);
         }
 
@@ -647,6 +611,14 @@ namespace KeithLink.Svc.Impl.Service.List
                     BranchId = customer.CustomerBranch,
                     CustomerId = customer.CustomerNumber
                 }, list));
+
+                if (CACHELISTS)
+                {
+                    _cacheListLogic.ClearCustomersLabelsCache(new UserSelectedContext() {
+                                                                                         CustomerId = customer.CustomerNumber,
+                                                                                         BranchId = customer.CustomerBranch
+                                                                                     });
+                }
             }
 
             return results;
@@ -661,8 +633,6 @@ namespace KeithLink.Svc.Impl.Service.List
                                      ListType.Custom,
                                      copyList);
 
-            _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
-
             return ReadListById(user, catalogInfo, newList.ListId, newList.Type);
         }
 
@@ -674,8 +644,6 @@ namespace KeithLink.Svc.Impl.Service.List
             {
                 case ListType.Custom:
                     _customListLogic.DeleteList(user, catalogInfo, list);
-
-                    _cacheHelper.ClearCustomersListCaches(user, catalogInfo);
 
                     break;
                 case ListType.InventoryValuation:
@@ -820,6 +788,12 @@ namespace KeithLink.Svc.Impl.Service.List
                     if (prod != null) {
                         listItem.IsValid = true;
                         listItem.Name = prod.Name;
+                        listItem.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                        prod.Name,
+                                                        prod.ItemNumber,
+                                                        prod.BrandExtendedDescription,
+                                                        prod.ItemClass,
+                                                        prod.PackSize);
                         listItem.Pack = prod.Pack;
                         listItem.Size = prod.Size;
                         listItem.PackSize = $"{prod.Pack} / {prod.Size}";
@@ -873,7 +847,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                                            .Select(p => p.AverageUse)
                                                            .FirstOrDefault()
                         };
-                        listItem.Category = AddContractInformationIfInContract(_contractdictionary, listItem);
+                        AddContractInformationIfInContract(_contractdictionary, listItem);
                     }
                 }
             });
@@ -996,7 +970,7 @@ namespace KeithLink.Svc.Impl.Service.List
             return list;
         }
 
-        private Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo) {
+        public Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo) {
             ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
             var favHash = new Dictionary<string, ListItemModel>();
             if (favorites != null &&
@@ -1007,7 +981,7 @@ namespace KeithLink.Svc.Impl.Service.List
             return favHash;
         }
 
-        private Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo) {
+        public Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo) {
             ListModel notes = _notesLogic.GetList(catalogInfo);
             var notesHash = new Dictionary<string, ListItemModel>();
             if (notes != null &&
@@ -1018,24 +992,22 @@ namespace KeithLink.Svc.Impl.Service.List
             return notesHash;
         }
 
-        private string AddContractInformationIfInContract(Dictionary<string, string> contractdictionary, ListItemModel item)
+        private void AddContractInformationIfInContract
+            (Dictionary<string, string> contractdictionary, ListItemModel item)
         {
-            return AddContractInformationIfInContract(contractdictionary, item.ItemNumber);
-        }
-
-        private string AddContractInformationIfInContract
-            (Dictionary<string, string> contractdictionary, string itemNumber)
-        {
-            string itmcategory = null;
             if (contractdictionary != null && contractdictionary.Count > 0)
             {
-                if (contractdictionary.ContainsKey(itemNumber))
+                if (contractdictionary.ContainsKey(item.ItemNumber))
                 {
-                    itmcategory = contractdictionary[itemNumber];
+                    item.Category = contractdictionary[item.ItemNumber];
+                    item.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                                item.Name,
+                                                item.ItemNumber,
+                                                item.BrandExtendedDescription,
+                                                contractdictionary[item.ItemNumber],
+                                                item.PackSize);
                 }
             }
-
-            return itmcategory;
         }
 
 
