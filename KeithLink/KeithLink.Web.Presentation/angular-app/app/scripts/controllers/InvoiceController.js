@@ -281,6 +281,8 @@ angular.module('bekApp')
     invoicePagingModel.filter = filter;
     invoicePagingModel.pageIndex = 0;
 
+    $scope.invoicesFilters = filter ? filter : filterView;
+
     return filter;
   }
   
@@ -944,7 +946,8 @@ angular.module('bekApp')
           return {
             isViewingAllCustomers: $scope.viewingAllCustomers,
             paging: {
-              filter: getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView)
+              filter: $scope.invoicesFilters,
+              sort: $scope.sort
             }
           };
         }
