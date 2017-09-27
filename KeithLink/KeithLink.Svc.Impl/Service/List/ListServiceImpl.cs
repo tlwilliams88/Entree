@@ -911,14 +911,14 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
         {
-            List<RecommendedItemModel> recommended = null;
+            List<RecommendedItemModel> recommendedItemsList = null;
             ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
 
             if (list != null &&
                 list.Items != null &&
                 list.Items.Count > 0)
             {
-                recommended = list.Items.Select(i => new RecommendedItemModel()
+                recommendedItemsList = list.Items.Select(i => new RecommendedItemModel()
                 {
                     ItemNumber = i.ItemNumber,
                     Name = i.Name,
@@ -927,7 +927,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 }).ToList();
 
             }
-            return recommended;
+            return recommendedItemsList;
         }
 
 
