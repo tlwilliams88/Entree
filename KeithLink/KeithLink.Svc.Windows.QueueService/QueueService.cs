@@ -266,9 +266,8 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void ProcessMinuteTick(object state)
         {
-            if (true)
             // only process at the top of the hour
-            //if (DateTime.Now.Minute == 0)
+            if (DateTime.Now.Minute == 0)
             {
                 //StartEntreeProcess(Configuration.CheckLostOrders, "CheckLostOrders", () => ProcessCheckLostOrdersTick());
 
@@ -290,12 +289,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             if (checksetting.Equals("true", StringComparison.CurrentCultureIgnoreCase) &&
                 excluded.Contains(System.Environment.MachineName) == false)
             {
-                _log.WriteInformationLog(string.Format("{0} started", processname));
                 Task.Run(action);
-            }
-            else
-            {
-                _log.WriteInformationLog(string.Format("{0} not started", processname));
             }
         }
 
