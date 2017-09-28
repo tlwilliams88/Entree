@@ -29,12 +29,10 @@ namespace KeithLink.Svc.Impl.Service.Invoices
     public class ExportInvoicesServiceImpl : IExportInvoicesService
     {
         #region " attributes "
-        private readonly ICacheRepository _cache;
         private readonly IExportSettingLogic _exportLogic;
         private readonly ICustomerRepository _customerRepository;
         private readonly IOrderLogic _orderLogic;
         private readonly IOnlinePaymentsLogic _invLogic;
-        private readonly IListRepository _listRepo;
         private readonly IKPayInvoiceRepository _invoiceRepo;
         #endregion
 
@@ -47,21 +45,28 @@ namespace KeithLink.Svc.Impl.Service.Invoices
         /// <param name="listRepo"></param>
         /// <param name="cache"></param>
         /// <param name="invLogic"></param>
-        public ExportInvoicesServiceImpl(IExportSettingLogic exportLogic, IOrderLogic orderLogic, IListRepository listRepo,
-                                         ICacheRepository cache, IOnlinePaymentsLogic invLogic, IKPayInvoiceRepository invoiceRepo,
+        public ExportInvoicesServiceImpl(IExportSettingLogic exportLogic, IOrderLogic orderLogic, 
+                                         IOnlinePaymentsLogic invLogic, IKPayInvoiceRepository invoiceRepo,
                                          ICustomerRepository customerRepository)
         {
             _customerRepository = customerRepository;
             _exportLogic = exportLogic;
             _orderLogic = orderLogic;
             _invLogic = invLogic;
-            _listRepo = listRepo;
             _invoiceRepo = invoiceRepo;
-            _cache = cache;
         }
         #endregion
 
         #region " methods "
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="context"></param>
+        /// <param name="exportRequest"></param>
+        /// <param name="invoiceNumber"></param>
+        /// <param name="contractdictionary"></param>
+        /// <returns></returns>
         public List<InvoiceItemModel> GetExportableInvoiceItems(UserProfile user,
                                                                 UserSelectedContext context,
                                                                 ExportRequestModel exportRequest,
@@ -76,6 +81,7 @@ namespace KeithLink.Svc.Impl.Service.Invoices
                                                     exportRequest.SelectedType);
 
             Order order = _orderLogic.GetOrder(context.BranchId, invoiceNumber);
+
             List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
 
             items = items.Select(i => _invLogic.AssignContractCategory(contractdictionary, i)).ToList();
@@ -83,11 +89,19 @@ namespace KeithLink.Svc.Impl.Service.Invoices
             return items;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="context"></param>
+        /// <param name="exportRequest"></param>
+        /// <param name="invoiceNumber"></param>
+        /// <param name="contractdictionary"></param>
+        /// <returns></returns>
         public InvoiceModel GetExportableInvoice(UserProfile user,
                                                  UserSelectedContext context,
                                                  ExportRequestModel exportRequest,
-                                                 string invoiceNumber,
-                                                 Dictionary<string, string> contractdictionary)
+                                                 string invoiceNumber)
         {
             if (exportRequest.Fields != null)
                 _exportLogic.SaveUserExportSettings(user.UserId,
@@ -113,6 +127,44 @@ namespace KeithLink.Svc.Impl.Service.Invoices
 
             return invoiceModel;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="context"></param>
+        /// <param name="request"></param>
+        /// <param name="forAllCustomers"></param>
+        /// <returns></returns>
+        public List<InvoiceModel> GetExportableInvoiceModels(UserProfile user, UserSelectedContext context, InvoiceExportRequestModel request, bool forAllCustomers)
+        {
+            var list = _invLogic.GetInvoiceHeaders(user, context, request.paging, forAllCustomers);
+
+            if (request.export.Fields != null)
+                _exportLogic.SaveUserExportSettings(user.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
+
+            List<InvoiceModel> exportData = new List<InvoiceModel>();
+
+            if (list != null && 
+                list.PagedResults != null &&
+                list.PagedResults.Results != null &&
+                list.PagedResults.Results.Count > 0) {
+                exportData.AddRange(list.PagedResults.Results);
+            }
+
+            if (list != null && 
+                list.CustomersWithInvoices != null &&
+                list.CustomersWithInvoices.Results != null &&
+                list.CustomersWithInvoices.Results.Count > 0) {
+                foreach (var customer in list.CustomersWithInvoices.Results)
+                {
+                    exportData.AddRange(customer.PagedResults.Results);
+                }
+            }
+
+            return exportData;
+        }
+
         #endregion
     }
 }
