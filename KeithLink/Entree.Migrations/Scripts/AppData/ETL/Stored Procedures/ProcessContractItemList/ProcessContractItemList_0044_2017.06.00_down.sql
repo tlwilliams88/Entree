@@ -75,8 +75,7 @@ BEGIN
 		INTO [List].[ListItemsDelta]
 			([ItemNumber]
             ,[Each]
-            ,[CustomerNumber]
-            ,[BranchId]
+            ,[ParentList_Id]
             ,[CreatedUtc]
             ,[ModifiedUtc]
             ,[CatalogId]
@@ -84,8 +83,7 @@ BEGIN
         SELECT DISTINCT 
 			LTRIM(RTRIM(bcd.ItemNumber))
 			,CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END
-			,ltrim(rtrim(cb.CustomerNumber))
-            ,ltrim(rtrim(cb.DivisionNumber))
+			,l.Id
 			,GETUTCDATE()
 			,GETUTCDATE()
 			,LTRIM(RTRIM(cb.DivisionNumber))
@@ -95,22 +93,24 @@ BEGIN
 			INNER JOIN 
 				[ETL].[Staging_CustomerBid] cb
 				ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+			INNER JOIN 
+				List.[ContractHeaders] l
+				ON l.CustomerNumber = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 			WHERE
 				NOT EXISTS (
 					SELECT
 						'x'
 						FROM [List].[ListItemsDelta] li
-						WHERE li.[CustomerNumber] = ltrim(rtrim(cb.CustomerNumber))
-                              AND li.[BranchId] = ltrim(rtrim(cb.DivisionNumber))
-							  AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
-							  AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
+						WHERE li.ParentList_Id = l.Id 
+							AND li.ItemNumber = LTRIM(RTRIM(bcd.ItemNumber))
+							AND li.Each = CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END)
 
 	UPDATE
 		[List].[ContractDetails]
 		SET 
 			[LineNumber] = CAST(bcd.BidLineNumber as int) 
 			, Category = LTRIM(RTRIM(bcd.CategoryDescription))
-			, ToDate = DATEADD(day, 1, GETDATE())
+			, ToDate = DATEADD(day, 3, GETDATE())
 		FROM 
 			[List].[ContractDetails] li
 		INNER JOIN 
@@ -150,8 +150,7 @@ BEGIN
 		INTO [List].[ListItemsDelta]
 			([ItemNumber]
             ,[Each]
-            ,[CustomerNumber]
-            ,[BranchId]
+            ,[ParentList_Id]
             ,[CreatedUtc]
             ,[ModifiedUtc]
             ,[CatalogId]
@@ -159,17 +158,14 @@ BEGIN
         SELECT DISTINCT 
 			li.ItemNumber
 			,li.Each
-			,ltrim(rtrim(cb.CustomerNumber))
-            ,ltrim(rtrim(cb.DivisionNumber))
+			,l.Id
 			,GETUTCDATE()
 			,GETUTCDATE()
 			,l.BranchId
 			,'Deleted'
-		FROM [List].[ContractDetails] li
-			INNER JOIN [List].[ContractHeaders] l
-			ON li.HeaderId = l.Id
-            INNER JOIN [ETL].[Staging_CustomerBid] cb
-                ON ltrim(rtrim(cb.CustomerNumber))=l.CustomerNumber AND ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
+		FROM [List].[ListItems] li
+			INNER JOIN List.[ContractHeaders] l
+			ON li.ParentList_Id = l.Id
 	WHERE 
 		NOT EXISTS (
 			SELECT
@@ -178,11 +174,14 @@ BEGIN
 				INNER JOIN 
 					[ETL].[Staging_CustomerBid] cb
 					ON cb.BidNumber=bcd.BidNumber AND cb.DivisionNumber = bcd.DivisionNumber
+				INNER JOIN 
+					List.[ContractHeaders] l
+					ON l.CustomerNumber = ltrim(rtrim(cb.CustomerNumber)) and l.BranchId = ltrim(rtrim(cb.DivisionNumber))
 				WHERE
 					ltrim(rtrim(ItemNumber)) = li.ItemNumber
 					AND CASE WHEN bcd.ForceEachOrCaseOnly = 'B' THEN 1 ELSE 0 END = li.Each
 					AND ltrim(rtrim(cb.CustomerNumber)) = l.CustomerNumber 
-					AND ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
+					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
 			)
 		AND NOT EXISTS (
 			SELECT
@@ -192,8 +191,7 @@ BEGIN
 					lid.ItemNumber = li.ItemNumber
 					AND lid.Each = li.Each
 					AND lid.[Status] = 'Deleted' 
-					AND ltrim(rtrim(cb.CustomerNumber)) = lid.CustomerNumber 
-					AND ltrim(rtrim(cb.DivisionNumber)) = lid.BranchId
+					AND lid.ParentList_Id = li.ParentList_Id
 			)
 
 
@@ -219,5 +217,6 @@ BEGIN
 					AND ltrim(rtrim(cb.CustomerNumber)) = l.[CustomerNumber] 
 					and ltrim(rtrim(cb.DivisionNumber)) = l.BranchId
 			)
-			AND ToDate < DATEADD(day, -13, GETDATE())
+			--AND ToDate < DATEADD(day, -13, GETDATE())
+			--remove delayed delete
 END
