@@ -1034,13 +1034,7 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0019_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0041_2017.04.01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0039_2017.04.00_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0039_2017.04.00_up.sql">
@@ -1205,19 +1199,7 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveReminderHeaders\SaveReminderHeaders_0028_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\UpdateSentOnContractListChangeByCustomerNumberBranch_0041_2017.04.01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\UpdateSentOnContractListChangeByCustomerNumberBranch_0041_2017.04.01_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0041_2017.04.01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0019_2017.04.00_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0019_2017.04.00_up.sql">

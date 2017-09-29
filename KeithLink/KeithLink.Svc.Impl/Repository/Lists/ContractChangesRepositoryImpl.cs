@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     {
         #region attributes
         private const string STOREDPROC_GET_NEXT = "[List].[ReadNextContractListChange]";
-        private const string STOREDPROC_UPDATE_SENT_ON_SET = "[List].[UpdateSentOnContractListChangeByCustomerNumberBranch]";
+        private const string STOREDPROC_UPDATE_SENT_ON_SET = "[List].[UpdateSentOnContractListChangeById]";
         private const string STOREDPROC_PURGE = "[List].[DeleteListItemsDelta]";
         #endregion
 
@@ -34,12 +34,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             ));
         }
 
-        public void Update(string CustomerNumber, string BranchId, bool Sent)
+        public void Update(long Id, bool Sent)
         {
             DynamicParameters parms = new DynamicParameters();
             parms.Add("@Sent", Sent);
-            parms.Add("@CustomerNumber", CustomerNumber);
-            parms.Add("@BranchId", BranchId);
+            parms.Add("@Id", Id);
 
             ExecuteCommand(STOREDPROC_UPDATE_SENT_ON_SET, parms);
         }

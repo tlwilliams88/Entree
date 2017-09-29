@@ -16,6 +16,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 
         public bool Each { get; set; }
 
+        public long ParentList_Id { get; set; }
+
         public DateTime CreatedUtc { get; set; }
 
         public DateTime ModifiedUtc { get; set; }
