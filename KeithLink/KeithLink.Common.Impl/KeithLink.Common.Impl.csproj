@@ -96,9 +96,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BEKlibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd9c094739479d18, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\BEKlibrary.dll</HintPath>
+    <Reference Include="RabbitMQ.Client, Version=3.3.5.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.3.5\lib\net30\RabbitMQ.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -126,9 +125,10 @@
     <Compile Include="Repository\Settings\DBAppSettingsRepositoryImpl.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\BEKlibrary.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="CommonAPI\Sample Data\IN_BEK_FDF_20120809_064994.TXT" />
+    <Content Include="CommonAPI\Sample Data\IN_BEK_FSA_20120817_153678.TXT" />
+    <Content Include="CommonAPI\Sample Data\OC_BEK_FAM_G0139140.TXT" />
+    <Content Include="CommonAPI\Sample Data\OG_BEK_FLR_20120821_023005.TXT" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
@@ -138,6 +138,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="KeithLink.Svc.FoundationSvc.snk" />
+    <None Include="NuGet.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

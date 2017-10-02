@@ -5,18 +5,16 @@ using System.Diagnostics;
 using System.Text;
 using System.Threading;
 
-using BEKlibrary.EventLog.BusinessLayer;
-
 namespace KeithLink.Common.Impl.Repository.Logging
 {
-    public class EventLogQueueRepositoryImpl : IEventLogRepository
+    public class EventLogRepositoryImpl : IEventLogRepository
     {
         #region attributes
         private BEKlibrary.EventLog.BusinessLayer.LogEntry _log;
         #endregion
 
         #region ctor
-        public EventLogQueueRepositoryImpl(string applicationName)
+        public EventLogRepositoryImpl(string applicationName)
         {
             if (Configuration.LoggingConnectionString == null)
                 FailoverToWindowsEventLog("EventLog connection string was not found in the configuration file", null, EventLogEntryType.Warning);
@@ -28,7 +26,6 @@ namespace KeithLink.Common.Impl.Repository.Logging
         #region methods
         private string GetLogMessage(string message, Exception ex)
         {
-            LogEntry logEntry = new LogEntry();
             StringBuilder msg = new StringBuilder();
 					
 			msg.Append(message);
