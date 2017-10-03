@@ -1,31 +1,25 @@
-﻿using KeithLink.Svc.Core.Models.Lists;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
-{
-    public class BaseListHeaderTests
-    {
-        private class StubHeader : BaseListHeader { }
+using KeithLink.Svc.Core.Models.Lists;
 
-        private static StubHeader MakeHeader()
-        {
-            return new StubHeader()
-            {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
+    public class BaseListHeaderTests {
+        private static StubHeader MakeHeader() {
+            return new StubHeader {
                 BranchId = "Fake BranchId",
                 CustomerNumber = "Fake CustomerNumber"
             };
         }
 
-        public class Get_BranchId
-        {
+        private class StubHeader : BaseListHeader {}
+
+        public class Get_BranchId {
             [Fact]
-            public void GoodHeader_ReturnsExpectedValue()
-            {
+            public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = "Fake BranchId";
+                StubHeader fakeHeader = MakeHeader();
+                string expected = "Fake BranchId";
 
                 // act
 
@@ -36,10 +30,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void InitializedHeader_HasDefaultValue()
-            {
+            public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new StubHeader();
+                StubHeader test = new StubHeader();
 
                 // act
 
@@ -50,14 +43,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
         }
 
-        public class Get_CustomerNumber
-        {
+        public class Get_CustomerNumber {
             [Fact]
-            public void GoodHeader_ReturnsExpectedValue()
-            {
+            public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = "Fake CustomerNumber";
+                StubHeader fakeHeader = MakeHeader();
+                string expected = "Fake CustomerNumber";
 
                 // act
 
@@ -68,10 +59,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void InitializedHeader_HasDefaultValue()
-            {
+            public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new StubHeader();
+                StubHeader test = new StubHeader();
 
                 // act
 

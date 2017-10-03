@@ -1,30 +1,24 @@
 ﻿using System;
 
-using KeithLink.Svc.Core.Models.Lists.Favorites;
-
 using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites
-{
-    public class FavoritesListHeaderTests
-    {
-        private static FavoritesListHeader MakeHeader()
-        {
-            return new FavoritesListHeader()
-            {
+using KeithLink.Svc.Core.Models.Lists.Favorites;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
+    public class FavoritesListHeaderTests {
+        private static FavoritesListHeader MakeHeader() {
+            return new FavoritesListHeader {
                 UserId = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3")
             };
         }
 
-        public class Get_UserId
-        {
+        public class Get_UserId {
             [Fact]
-            public void GoodHeader_ReturnsExpectedValue()
-            {
+            public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3");
+                FavoritesListHeader fakeHeader = MakeHeader();
+                Guid expected = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3");
 
                 // act
 
@@ -35,10 +29,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites
             }
 
             [Fact]
-            public void InitializedHeader_HasDefaultValue()
-            {
+            public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new FavoritesListHeader();
+                FavoritesListHeader test = new FavoritesListHeader();
 
                 // act
 

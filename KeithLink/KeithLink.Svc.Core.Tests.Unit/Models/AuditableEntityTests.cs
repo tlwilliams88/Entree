@@ -1,48 +1,27 @@
 ﻿using System;
 
-using KeithLink.Svc.Core.Models;
-
 using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models
-{
-    public class AuditableEntityTests
-    {
-        private class StubAuditableEntity : AuditableEntity { }
+using KeithLink.Svc.Core.Models;
 
-        private static StubAuditableEntity MakeEntity()
-        {
-            return new StubAuditableEntity()
-            {
+namespace KeithLink.Svc.Core.Tests.Unit.Models {
+    public class AuditableEntityTests {
+        private static StubAuditableEntity MakeEntity() {
+            return new StubAuditableEntity {
                 CreatedUtc = new DateTime(2017, 6, 15, 14, 15, 0, DateTimeKind.Utc),
                 ModifiedUtc = new DateTime(2017, 6, 15, 14, 16, 0, DateTimeKind.Utc)
             };
         }
 
-        public class Get_CreatedUtc
-        {
+        private class StubAuditableEntity : AuditableEntity {}
+
+        public class Get_CreatedUtc {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue()
-            {
+            public void GoodDetail_ReturnsExpectedDateTimeKind() {
                 // arrange
-                var fakeEntity = MakeEntity();
-                var expected = new DateTime(2017, 6, 15, 14, 15, 0, DateTimeKind.Utc);
-
-                // act
-
-                // assert
-                fakeEntity.CreatedUtc
-                          .Should()
-                          .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedDateTimeKind()
-            {
-                // arrange
-                var fakeEntity = MakeEntity();
-                var expected = DateTimeKind.Utc;
+                StubAuditableEntity fakeEntity = MakeEntity();
+                DateTimeKind expected = DateTimeKind.Utc;
 
                 // act
 
@@ -54,11 +33,24 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue()
-            {
+            public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var test = new StubAuditableEntity();
-                var expected = DateTime.MinValue;
+                StubAuditableEntity fakeEntity = MakeEntity();
+                DateTime expected = new DateTime(2017, 6, 15, 14, 15, 0, DateTimeKind.Utc);
+
+                // act
+
+                // assert
+                fakeEntity.CreatedUtc
+                          .Should()
+                          .Be(expected);
+            }
+
+            [Fact]
+            public void InitalizedDetail_HasDefaultValue() {
+                // arrange
+                StubAuditableEntity test = new StubAuditableEntity();
+                DateTime expected = DateTime.MinValue;
 
                 // act
 
@@ -69,11 +61,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
 
             [Fact]
-            public void InitializedDetail_HeadDefaultDateTimeKind()
-            {
+            public void InitializedDetail_HeadDefaultDateTimeKind() {
                 // arrange
-                var test = new StubAuditableEntity();
-                var expected = DateTimeKind.Unspecified;
+                StubAuditableEntity test = new StubAuditableEntity();
+                DateTimeKind expected = DateTimeKind.Unspecified;
 
                 // act
 
@@ -85,15 +76,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
 
             [Fact]
-            public void LocalTime_ReturnsExpectedValue()
-            {
+            public void LocalTime_ReturnsExpectedDateTimeKind() {
                 // arrange
-                var test = new StubAuditableEntity();
+                StubAuditableEntity test = new StubAuditableEntity();
                 test.CreatedUtc = new DateTime(2017, 7, 26, 10, 17, 0, DateTimeKind.Local);
-                var expected = new DateTime(2017, 7, 26, 15, 17, 0, DateTimeKind.Utc);
+                DateTimeKind expected = DateTimeKind.Utc;
 
                 // act
-                var results = test.CreatedUtc;
+                DateTimeKind results = test.CreatedUtc.Kind;
 
                 // assert
                 results.Should()
@@ -101,15 +91,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
 
             [Fact]
-            public void LocalTime_ReturnsExpectedDateTimeKind()
-            {
+            public void LocalTime_ReturnsExpectedValue() {
                 // arrange
-                var test = new StubAuditableEntity();
+                StubAuditableEntity test = new StubAuditableEntity();
                 test.CreatedUtc = new DateTime(2017, 7, 26, 10, 17, 0, DateTimeKind.Local);
-                var expected = DateTimeKind.Utc;
+                DateTime expected = new DateTime(2017, 7, 26, 15, 17, 0, DateTimeKind.Utc);
 
                 // act
-                var results = test.CreatedUtc.Kind;
+                DateTime results = test.CreatedUtc;
 
                 // assert
                 results.Should()
@@ -117,29 +106,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
         }
 
-        public class Get_ModifiedUtc
-        {
+        public class Get_ModifiedUtc {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue()
-            {
+            public void GoodDetail_ReturnsExpectedDateTimeKind() {
                 // arrange
-                var fakeEntity = MakeEntity();
-                var expected = new DateTime(2017, 6, 15, 14, 16, 0, DateTimeKind.Utc);
-
-                // act
-
-                // assert
-                fakeEntity.ModifiedUtc
-                          .Should()
-                          .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedDateTimeKind()
-            {
-                // arrange
-                var fakeEntity = MakeEntity();
-                var expected = DateTimeKind.Utc;
+                StubAuditableEntity fakeEntity = MakeEntity();
+                DateTimeKind expected = DateTimeKind.Utc;
 
                 // act
 
@@ -151,11 +123,24 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue()
-            {
+            public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var test = new StubAuditableEntity();
-                var expected = DateTime.MinValue;
+                StubAuditableEntity fakeEntity = MakeEntity();
+                DateTime expected = new DateTime(2017, 6, 15, 14, 16, 0, DateTimeKind.Utc);
+
+                // act
+
+                // assert
+                fakeEntity.ModifiedUtc
+                          .Should()
+                          .Be(expected);
+            }
+
+            [Fact]
+            public void InitalizedDetail_HasDefaultValue() {
+                // arrange
+                StubAuditableEntity test = new StubAuditableEntity();
+                DateTime expected = DateTime.MinValue;
 
                 // act
 
@@ -166,11 +151,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
 
             [Fact]
-            public void InitializedDetail_HeadDefaultDateTimeKind()
-            {
+            public void InitializedDetail_HeadDefaultDateTimeKind() {
                 // arrange
-                var test = new StubAuditableEntity();
-                var expected = DateTimeKind.Unspecified;
+                StubAuditableEntity test = new StubAuditableEntity();
+                DateTimeKind expected = DateTimeKind.Unspecified;
 
                 // act
 

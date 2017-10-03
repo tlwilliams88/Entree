@@ -1,34 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-using KeithLink.Svc.Core.Enumerations.List;
-using KeithLink.Svc.Core.Models.Lists;
-
 using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
-{
-    public class ListModelTests
-    {
-        private static ListModel MakeModel()
-        {
-            return new ListModel()
-            {
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Lists;
+
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
+    public class ListModelTests {
+        private static ListModel MakeModel() {
+            return new ListModel {
                 BranchId = "FUT",
                 CustomerNumber = "123456",
                 ListId = 1,
                 Name = "Fake Name",
                 Type = ListType.Custom,
-                Items = new List<ListItemModel>() {
-                    new ListItemModel() {
+                Items = new List<ListItemModel> {
+                    new ListItemModel {
                         ItemNumber = "111111",
                         Position = 99,
                         Each = false,
                         CatalogId = "FUT",
                         CustomInventoryItemId = 2
                     },
-                    new ListItemModel() {
+                    new ListItemModel {
                         ItemNumber = "555555",
                         Position = 55,
                         Each = true,
@@ -40,18 +37,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
         }
 
         #region NewCopy
-
-        public class NewCopy
-        {
+        public class NewCopy {
             [Fact]
-            public void NewCopy_ResultHasExpectedBranch()
-            {
+            public void NewCopy_ResultHasExpectedBranch() {
                 // arrange
-                var testmodel = MakeModel();
-                var expected = "FUT";
+                ListModel testmodel = MakeModel();
+                string expected = "FUT";
 
                 // act
-                var result = testmodel.NewCopy();
+                ListModel result = testmodel.NewCopy();
 
                 // assert - Always returns what is setup provided the mock is called
                 result.BranchId
@@ -60,14 +54,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedCustomerNumber()
-            {
+            public void NewCopy_ResultHasExpectedCustomerNumber() {
                 // arrange
-                var testmodel = MakeModel();
-                var expected = "123456";
+                ListModel testmodel = MakeModel();
+                string expected = "123456";
 
                 // act
-                var result = testmodel.NewCopy();
+                ListModel result = testmodel.NewCopy();
 
                 // assert - Always returns what is setup provided the mock is called
                 result.CustomerNumber
@@ -76,14 +69,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedName()
-            {
+            public void NewCopy_ResultHasExpectedName() {
                 // arrange
-                var testmodel = MakeModel();
-                var expected = "Fake Name copy";
+                ListModel testmodel = MakeModel();
+                string expected = "Fake Name copy";
 
                 // act
-                var result = testmodel.NewCopy();
+                ListModel result = testmodel.NewCopy();
 
                 // assert - Always returns what is setup provided the mock is called
                 result.Name
@@ -92,15 +84,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedPosition()
-            {
+            public void NewCopy_ResultHasExpectedPosition() {
                 // arrange
-                var testmodel = MakeModel();
-                var itemNumber = "555555";
-                var expected = 55;
+                ListModel testmodel = MakeModel();
+                string itemNumber = "555555";
+                int expected = 55;
 
                 // act
-                var result = testmodel.NewCopy();
+                ListModel result = testmodel.NewCopy();
 
                 // assert - Always returns what is setup provided the mock is called
                 result.Items
@@ -111,14 +102,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedType()
-            {
+            public void NewCopy_ResultHasExpectedType() {
                 // arrange
-                var testmodel = MakeModel();
-                var expected = ListType.Custom;
+                ListModel testmodel = MakeModel();
+                ListType expected = ListType.Custom;
 
                 // act
-                var result = testmodel.NewCopy();
+                ListModel result = testmodel.NewCopy();
 
                 // assert - Always returns what is setup provided the mock is called
                 result.Type
@@ -127,50 +117,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void NewCopy_ResultHasItemWithExpectedItemNumber()
-            {
+            public void NewCopy_ResultHasItemWithExpectedCatalogId() {
                 // arrange
-                var testmodel = MakeModel();
-                var expected = "111111";
+                ListModel testmodel = MakeModel();
+                string expected = "FUT";
 
                 // act
-                var result = testmodel.NewCopy();
-
-                // assert - Always returns what is setup provided the mock is called
-                result.Items
-                      .First()
-                      .ItemNumber
-                      .Should()
-                      .Be(expected);
-            }
-
-            [Fact]
-            public void NewCopy_ResultHasItemWithExpectedEach()
-            {
-                // arrange
-                var testmodel = MakeModel();
-                var expected = false;
-
-                // act
-                var result = testmodel.NewCopy();
-
-                // assert - Always returns what is setup provided the mock is called
-                result.Items
-                      .First()
-                      .Each
-                      .Should()
-                      .Be(expected);
-            }
-
-            [Fact]
-            public void NewCopy_ResultHasItemWithExpectedCatalogId()
-            {
-                // arrange
-                var testmodel = MakeModel();
-                var expected = "FUT";
-
-                // act
-                var result = testmodel.NewCopy();
+                ListModel result = testmodel.NewCopy();
 
                 // assert - Always returns what is setup provided the mock is called
                 result.Items
@@ -181,14 +134,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
             }
 
             [Fact]
-            public void NewCopy_ResultHasItemWithExpectedCustomInventoryItemId()
-            {
+            public void NewCopy_ResultHasItemWithExpectedCustomInventoryItemId() {
                 // arrange
-                var testmodel = MakeModel();
-                var expected = 2;
+                ListModel testmodel = MakeModel();
+                int expected = 2;
 
                 // act
-                var result = testmodel.NewCopy();
+                ListModel result = testmodel.NewCopy();
 
                 // assert - Always returns what is setup provided the mock is called
                 result.Items
@@ -197,8 +149,41 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
                       .Should()
                       .Be(expected);
             }
-        }
 
+            [Fact]
+            public void NewCopy_ResultHasItemWithExpectedEach() {
+                // arrange
+                ListModel testmodel = MakeModel();
+                bool expected = false;
+
+                // act
+                ListModel result = testmodel.NewCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .Each
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void NewCopy_ResultHasItemWithExpectedItemNumber() {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "111111";
+
+                // act
+                ListModel result = testmodel.NewCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .ItemNumber
+                      .Should()
+                      .Be(expected);
+            }
+        }
         #endregion NewCopy
     }
 }

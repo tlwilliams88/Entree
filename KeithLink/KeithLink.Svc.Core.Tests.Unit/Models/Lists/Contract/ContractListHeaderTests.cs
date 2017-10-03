@@ -1,28 +1,22 @@
-﻿using KeithLink.Svc.Core.Models.Lists.Contract;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract
-{
-    public class ContractListHeaderTests
-    {
-        private static ContractListHeader MakeHeader()
-        {
-            return new ContractListHeader()
-            {
+using KeithLink.Svc.Core.Models.Lists.Contract;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
+    public class ContractListHeaderTests {
+        private static ContractListHeader MakeHeader() {
+            return new ContractListHeader {
                 ContractId = "Fake ContractId"
             };
         }
 
-        public class Get_ContractId
-        {
+        public class Get_ContractId {
             [Fact]
-            public void GoodHeader_ReturnsExpectedValue()
-            {
+            public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = "Fake ContractId";
+                ContractListHeader fakeHeader = MakeHeader();
+                string expected = "Fake ContractId";
 
                 // act
 
@@ -33,10 +27,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract
             }
 
             [Fact]
-            public void InitializedHeader_HasDefaultValue()
-            {
+            public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new ContractListHeader();
+                ContractListHeader test = new ContractListHeader();
 
                 // act
 

@@ -1,32 +1,26 @@
 ﻿using System;
 
-using KeithLink.Svc.Core.Models.Lists.CustomList;
-
 using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList
-{
-    public class CustomListHeaderTests
-    {
-        private static CustomListHeader MakeHeader()
-        {
-            return new CustomListHeader()
-            {
+using KeithLink.Svc.Core.Models.Lists.CustomList;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
+    public class CustomListHeaderTests {
+        private static CustomListHeader MakeHeader() {
+            return new CustomListHeader {
                 Active = true,
                 Name = "Fake Name",
                 UserId = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3")
             };
         }
 
-        public class Get_Active
-        {
+        public class Get_Active {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue()
-            {
+            public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeHeader();
-                var expected = true;
+                CustomListHeader fakeItem = MakeHeader();
+                bool expected = true;
 
                 // act
 
@@ -37,11 +31,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue()
-            {
+            public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListHeader();
-                var expected = false;
+                CustomListHeader test = new CustomListHeader();
+                bool expected = false;
 
                 // act
 
@@ -52,14 +45,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList
             }
         }
 
-        public class Get_Name
-        {
+        public class Get_Name {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue()
-            {
+            public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeHeader();
-                var expected = "Fake Name";
+                CustomListHeader fakeItem = MakeHeader();
+                string expected = "Fake Name";
 
                 // act
 
@@ -70,10 +61,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue()
-            {
+            public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListHeader();
+                CustomListHeader test = new CustomListHeader();
 
                 // act
 
@@ -84,14 +74,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList
             }
         }
 
-        public class Get_UserId
-        {
+        public class Get_UserId {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue()
-            {
+            public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeHeader();
-                var expected = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3");
+                CustomListHeader fakeItem = MakeHeader();
+                Guid expected = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3");
 
                 // act
 
@@ -102,10 +90,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue()
-            {
+            public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListHeader();
+                CustomListHeader test = new CustomListHeader();
 
                 // act
 

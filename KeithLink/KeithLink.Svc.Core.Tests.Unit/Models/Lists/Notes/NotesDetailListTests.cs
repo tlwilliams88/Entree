@@ -1,28 +1,22 @@
-﻿using KeithLink.Svc.Core.Models.Lists.Notes;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Notes
-{
-    public class NotesDetailListTests
-    {
-        public static NotesListDetail MakeDetail()
-        {
-            return new NotesListDetail
-            {
+using KeithLink.Svc.Core.Models.Lists.Notes;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Notes {
+    public class NotesDetailListTests {
+        public static NotesListDetail MakeDetail() {
+            return new NotesListDetail {
                 Note = "Scooby Dooby Doo"
             };
         }
 
-        public class Get_Note
-        {
+        public class Get_Note {
             [Fact]
-            public void GoodItem_ReturnsValue()
-            {
+            public void GoodItem_HasDefaultValue() {
                 // arrange
-                NotesListDetail detail = MakeDetail();
-                string expected = "Scooby Dooby Doo";
+                NotesListDetail detail = new NotesListDetail();
+                string expected = null;
 
                 // act
 
@@ -33,11 +27,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Notes
             }
 
             [Fact]
-            public void GoodItem_HasDefaultValue()
-            {
+            public void GoodItem_ReturnsValue() {
                 // arrange
-                NotesListDetail detail = new NotesListDetail();
-                string expected = null;
+                NotesListDetail detail = MakeDetail();
+                string expected = "Scooby Dooby Doo";
 
                 // act
 

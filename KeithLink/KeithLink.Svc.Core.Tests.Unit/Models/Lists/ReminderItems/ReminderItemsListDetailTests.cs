@@ -1,28 +1,22 @@
-﻿using KeithLink.Svc.Core.Models.Lists.ReminderItems;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.ReminderItems
-{
-    public class ReminderItemsListDetailTests
-    {
-        private static ReminderItemsListDetail MakeItem()
-        {
-            return new ReminderItemsListDetail()
-            {
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.ReminderItems {
+    public class ReminderItemsListDetailTests {
+        private static ReminderItemsListDetail MakeItem() {
+            return new ReminderItemsListDetail {
                 Active = true
             };
         }
 
-        public class Get_Active
-        {
+        public class Get_Active {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue()
-            {
+            public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = true;
+                ReminderItemsListDetail fakeItem = MakeItem();
+                bool expected = true;
 
                 // act
 
@@ -33,11 +27,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.ReminderItems
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue()
-            {
+            public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new ReminderItemsListDetail();
-                var expected = false;
+                ReminderItemsListDetail test = new ReminderItemsListDetail();
+                bool expected = false;
 
                 // act
 

@@ -1,30 +1,24 @@
-﻿using KeithLink.Svc.Core.Models;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models
-{
-    public class EntityTests
-    {
-        private class StubEntity : Entity { }
+using KeithLink.Svc.Core.Models;
 
-        private static StubEntity MakeEntity()
-        {
-            return new StubEntity()
-            {
+namespace KeithLink.Svc.Core.Tests.Unit.Models {
+    public class EntityTests {
+        private static StubEntity MakeEntity() {
+            return new StubEntity {
                 Id = 53
             };
         }
 
-        public class Get_Id
-        {
+        private class StubEntity : Entity {}
+
+        public class Get_Id {
             [Fact]
-            public void GoodEntity_ReturnsExpectedValue()
-            {
+            public void GoodEntity_ReturnsExpectedValue() {
                 // arrange
-                var fakeEntity = MakeEntity();
-                var expected = 53;
+                StubEntity fakeEntity = MakeEntity();
+                int expected = 53;
 
                 // act
 
@@ -35,11 +29,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models
             }
 
             [Fact]
-            public void InitializedEntity_HasDefaultValue()
-            {
+            public void InitializedEntity_HasDefaultValue() {
                 // arrange
-                var test = new StubEntity();
-                var expected = 0;
+                StubEntity test = new StubEntity();
+                int expected = 0;
 
                 // act
 
