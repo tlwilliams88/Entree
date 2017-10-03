@@ -1,7 +1,6 @@
-﻿using FluentAssertions;
+﻿using KeithLink.Svc.Core.Models.SiteCatalog;
 
-using KeithLink.Svc.Core.Models.SiteCatalog;
-
+using FluentAssertions;
 using Xunit;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
@@ -9,6 +8,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
     public class ProductTests
     {
         #region setup
+
         private static Product MakeTestData()
         {
             return new Product()
@@ -45,9 +45,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                 CatalogId = "FUT"
             };
         }
-        #endregion
+
+        #endregion setup
 
         #region Get_ItemNumber
+
         public class Get_ItemNumber
         {
             [Fact]
@@ -79,9 +81,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ItemNumber
 
         #region Get_IsValid
+
         public class Get_IsValid
         {
             [Fact]
@@ -113,9 +117,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeFalse();
             }
         }
-        #endregion
+
+        #endregion Get_IsValid
 
         #region Get_Name
+
         public class Get_Name
         {
             [Fact]
@@ -147,9 +153,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Name
 
         #region Get_Detail
+
         public class Get_Detail
         {
             [Fact]
@@ -181,9 +189,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Detail
 
         #region Get_Description
+
         public class Get_Description
         {
             [Fact]
@@ -215,9 +225,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Description
 
         #region Get_Pack
+
         public class Get_Pack
         {
             [Fact]
@@ -249,9 +261,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Pack
 
         #region Get_Size
+
         public class Get_Size
         {
             [Fact]
@@ -283,9 +297,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Size
 
         #region Get_Brand
+
         public class Get_Brand
         {
             [Fact]
@@ -317,9 +333,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Brand
 
         #region Get_BrandExtendedDescription
+
         public class Get_BrandExtendedDescription
         {
             [Fact]
@@ -351,9 +369,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_BrandExtendedDescription
 
         #region Get_ReplacedItem
+
         public class Get_ReplacedItem
         {
             [Fact]
@@ -385,9 +405,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ReplacedItem
 
         #region Get_ReplacementItem
+
         public class Get_ReplacementItem
         {
             [Fact]
@@ -419,9 +441,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ReplacementItem
 
         #region Get_NonStock
+
         public class Get_NonStock
         {
             [Fact]
@@ -453,9 +477,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_NonStock
 
         #region Get_ChildNutrition
+
         public class Get_ChildNutrition
         {
             [Fact]
@@ -487,9 +513,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ChildNutrition
 
         #region Get_CatchWeight
+
         public class Get_CatchWeight
         {
             [Fact]
@@ -521,9 +549,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeFalse();
             }
         }
-        #endregion
+
+        #endregion Get_CatchWeight
 
         #region Get_TempZone
+
         public class Get_TempZone
         {
             [Fact]
@@ -555,9 +585,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_TempZone
 
         #region Get_ItemClass
+
         public class Get_ItemClass
         {
             [Fact]
@@ -589,9 +621,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ItemClass
 
         #region Get_CategoryCode
+
         public class Get_CategoryCode
         {
             [Fact]
@@ -623,9 +657,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_CategoryCode
 
         #region Get_SubCategoryCode
+
         public class Get_SubCategoryCode
         {
             [Fact]
@@ -657,9 +693,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_SubCategoryCode
 
         #region Get_CategoryName
+
         public class Get_CategoryName
         {
             [Fact]
@@ -691,9 +729,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_CategoryName
 
         #region Get_UPC
+
         public class Get_UPC
         {
             [Fact]
@@ -725,9 +765,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_UPC
 
         #region Get_VendorItemNumber
+
         public class Get_VendorItemNumber
         {
             [Fact]
@@ -759,9 +801,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_VendorItemNumber
 
         #region Get_Cases
+
         public class Get_Cases
         {
             [Fact]
@@ -793,9 +837,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Cases
 
         #region Get_Kosher
+
         public class Get_Kosher
         {
             [Fact]
@@ -827,9 +873,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Kosher
 
         #region Get_ManufacturerName
+
         public class Get_ManufacturerName
         {
             [Fact]
@@ -861,9 +909,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ManufacturerName
 
         #region Get_ManufacturerNumber
+
         public class Get_ManufacturerNumber
         {
             [Fact]
@@ -895,9 +945,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ManufacturerNumber
 
         #region Get_Nutritional
+
         public class Get_Nutritional
         {
             [Fact]
@@ -928,9 +980,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Nutritional
 
         #region Get_CatalogId
+
         public class Get_CatalogId
         {
             [Fact]
@@ -962,7 +1016,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.SiteCatalog
                     .BeNull();
             }
         }
-        #endregion
 
+        #endregion Get_CatalogId
     }
 }

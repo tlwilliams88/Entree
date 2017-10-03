@@ -1,20 +1,26 @@
-﻿using FluentAssertions;
+﻿using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
+
+using FluentAssertions;
 using Xunit;
 
-using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
-
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
-    public class InventoryValidationListHeaderTests {
-        private static InventoryValuationListHeader MakeHeader() {
-            return new InventoryValuationListHeader() {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList
+{
+    public class InventoryValidationListHeaderTests
+    {
+        private static InventoryValuationListHeader MakeHeader()
+        {
+            return new InventoryValuationListHeader()
+            {
                 Name = "Fake Name",
                 Active = true
             };
         }
 
-        public class Get_Name {
+        public class Get_Name
+        {
             [Fact]
-            public void GoodHeader_returnsExpectedValue() {
+            public void GoodHeader_returnsExpectedValue()
+            {
                 // arrange
                 var fakeHeader = MakeHeader();
                 var expected = "Fake Name";
@@ -28,7 +34,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             }
 
             [Fact]
-            public void InitalizedHeader_HasDefaultValue() {
+            public void InitalizedHeader_HasDefaultValue()
+            {
                 // arrange
                 var test = new InventoryValuationListHeader();
 
@@ -41,9 +48,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             }
         }
 
-        public class Get_Active {
+        public class Get_Active
+        {
             [Fact]
-            public void GoodHeader_returnsExpectedValue() {
+            public void GoodHeader_returnsExpectedValue()
+            {
                 // arrange
                 var fakeHeader = MakeHeader();
                 var expected = true;
@@ -57,7 +66,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             }
 
             [Fact]
-            public void InitalizedHeader_HasDefaultValue() {
+            public void InitalizedHeader_HasDefaultValue()
+            {
                 // arrange
                 var test = new InventoryValuationListHeader();
                 var expected = false;

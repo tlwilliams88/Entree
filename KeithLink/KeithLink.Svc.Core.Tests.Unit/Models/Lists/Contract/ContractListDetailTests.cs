@@ -1,14 +1,18 @@
 ﻿using System;
 
+using KeithLink.Svc.Core.Models.Lists.Contract;
+
 using FluentAssertions;
 using Xunit;
 
-using KeithLink.Svc.Core.Models.Lists.Contract;
-
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
-    public class ContractListDetailTests {
-        private static ContractListDetail MakeContractListDetail() {
-            return new ContractListDetail() {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract
+{
+    public class ContractListDetailTests
+    {
+        private static ContractListDetail MakeContractListDetail()
+        {
+            return new ContractListDetail()
+            {
                 Category = "Fake Category",
                 FromDate = new DateTime(2017, 6, 13, 16, 50, 00),
                 LineNumber = 1023,
@@ -16,9 +20,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             };
         }
 
-        public class Get_Category {
+        public class Get_Category
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeContractListDetail();
                 var expected = "Fake Category";
@@ -32,7 +38,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new ContractListDetail();
 
@@ -45,9 +52,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
         }
 
-        public class Get_FromDate {
+        public class Get_FromDate
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeContractListDetail();
                 var expected = new DateTime(2017, 6, 13, 16, 50, 00);
@@ -61,7 +70,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedDateTimeKind() {
+            public void GoodDetail_ReturnsExpectedDateTimeKind()
+            {
                 // arrange
                 var fakeItem = MakeContractListDetail();
                 var expected = DateTimeKind.Unspecified;
@@ -77,7 +87,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new ContractListDetail();
 
@@ -90,9 +101,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
         }
 
-        public class Get_LineNumber {
+        public class Get_LineNumber
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeContractListDetail();
                 var expected = 1023;
@@ -106,7 +119,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new ContractListDetail();
                 var expected = 0;
@@ -120,9 +134,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
         }
 
-        public class Get_ToDate {
+        public class Get_ToDate
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeContractListDetail();
                 var expected = new DateTime(2017, 6, 13, 16, 52, 0);
@@ -136,7 +152,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedDateTimeKind() {
+            public void GoodDetail_ReturnsExpectedDateTimeKind()
+            {
                 // arrange
                 var fakeItem = MakeContractListDetail();
                 var expected = DateTimeKind.Unspecified;
@@ -152,7 +169,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new ContractListDetail();
 

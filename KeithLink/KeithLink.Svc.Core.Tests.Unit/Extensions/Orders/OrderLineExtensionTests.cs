@@ -1,15 +1,16 @@
-﻿using FluentAssertions;
-using Xunit;
-
-using KeithLink.Svc.Core.Extensions.Orders;
+﻿using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
+using FluentAssertions;
+using Xunit;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Orders
 {
     public class OrderLineExtensionTests
     {
         #region setup
+
         private static OrderLine MakeTestData()
         {
             return new OrderLine()
@@ -44,20 +45,24 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Orders
                 Kosher = "Fake Kosher",
                 ManufacturerName = "Fake ManufacturerName",
                 ManufacturerNumber = "Fake ManufacturerNumber",
-                Nutritional = new Nutritional() {
-                                                    BrandOwner = "Fake BrandOwner"
-                                                },
+                Nutritional = new Nutritional()
+                {
+                    BrandOwner = "Fake BrandOwner"
+                },
                 TotalShippedWeight = 42,
                 CatalogId = "FUT"
             };
         }
-        #endregion
+
+        #endregion setup
 
         #region ToInvoiceItem
+
         public class ToInvoiceItem
         {
             [Fact]
-            public void GoodOrderLine_ReturnsExpectedItemNumber() {
+            public void GoodOrderLine_ReturnsExpectedItemNumber()
+            {
                 // arrange
                 var testdata = MakeTestData();
                 var expected = "123456";
@@ -583,8 +588,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Orders
                        .Should()
                        .Be(expected);
             }
-
         }
-        #endregion
+
+        #endregion ToInvoiceItem
     }
 }

@@ -1,14 +1,16 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Lists.CustomList;
 
 using FluentAssertions;
 using Xunit;
 
-using KeithLink.Svc.Core.Models.Lists.CustomList;
-
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
-    public class CustomListDetailTests {
-        private static CustomListDetail MakeItem() {
-            return new CustomListDetail() {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList
+{
+    public class CustomListDetailTests
+    {
+        private static CustomListDetail MakeItem()
+        {
+            return new CustomListDetail()
+            {
                 Active = true,
                 CustomInventoryItemId = 1592,
                 Label = "Fake Label",
@@ -16,9 +18,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             };
         }
 
-        public class Get_Active {
+        public class Get_Active
+        {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue() {
+            public void GoodItem_ReturnsDefaultValue()
+            {
                 // arrange
                 var fakeItem = MakeItem();
                 var expected = true;
@@ -32,7 +36,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue() {
+            public void IniatlizedItem_HasDefaultValue()
+            {
                 // arrange
                 var test = new CustomListDetail();
                 var expected = false;
@@ -46,9 +51,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
         }
 
-        public class Get_CustomInventoryItemId {
+        public class Get_CustomInventoryItemId
+        {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue() {
+            public void GoodItem_ReturnsDefaultValue()
+            {
                 // arrange
                 var fakeItem = MakeItem();
                 var expected = 1592;
@@ -62,7 +69,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue() {
+            public void IniatlizedItem_HasDefaultValue()
+            {
                 // arrange
                 var test = new CustomListDetail();
 
@@ -75,9 +83,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
         }
 
-        public class Get_Label {
+        public class Get_Label
+        {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue() {
+            public void GoodItem_ReturnsDefaultValue()
+            {
                 // arrange
                 var fakeItem = MakeItem();
                 var expected = "Fake Label";
@@ -91,7 +101,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue() {
+            public void IniatlizedItem_HasDefaultValue()
+            {
                 // arrange
                 var test = new CustomListDetail();
 
@@ -104,9 +115,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
         }
 
-        public class Get_Par {
+        public class Get_Par
+        {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue() {
+            public void GoodItem_ReturnsDefaultValue()
+            {
                 // arrange
                 var fakeItem = MakeItem();
                 var expected = 19.5m;
@@ -120,7 +133,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue() {
+            public void IniatlizedItem_HasDefaultValue()
+            {
                 // arrange
                 var test = new CustomListDetail();
                 var expected = 0;

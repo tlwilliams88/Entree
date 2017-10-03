@@ -1,20 +1,26 @@
-﻿using FluentAssertions;
+﻿using KeithLink.Svc.Core.Models.Lists.CustomListShares;
+
+using FluentAssertions;
 using Xunit;
 
-using KeithLink.Svc.Core.Models.Lists.CustomListShares;
-
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
-    public class CustomListShareTests {
-        private  static CustomListShare MakeShare() {
-            return new CustomListShare() {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares
+{
+    public class CustomListShareTests
+    {
+        private static CustomListShare MakeShare()
+        {
+            return new CustomListShare()
+            {
                 Active = true,
                 HeaderId = 899
             };
         }
 
-        public class Get_Active {
+        public class Get_Active
+        {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue() {
+            public void GoodItem_ReturnsDefaultValue()
+            {
                 // arrange
                 var fakeItem = MakeShare();
                 var expected = true;
@@ -28,7 +34,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue() {
+            public void IniatlizedItem_HasDefaultValue()
+            {
                 // arrange
                 var test = new CustomListShare();
                 var expected = false;
@@ -42,9 +49,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
             }
         }
 
-        public class Get_HeaderId {
+        public class Get_HeaderId
+        {
             [Fact]
-            public void GoodItem_ReturnsDefaultValue() {
+            public void GoodItem_ReturnsDefaultValue()
+            {
                 // arrange
                 var fakeItem = MakeShare();
                 var expected = 899;
@@ -58,7 +67,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
             }
 
             [Fact]
-            public void IniatlizedItem_HasDefaultValue() {
+            public void IniatlizedItem_HasDefaultValue()
+            {
                 // arrange
                 var test = new CustomListShare();
                 var expected = 0;

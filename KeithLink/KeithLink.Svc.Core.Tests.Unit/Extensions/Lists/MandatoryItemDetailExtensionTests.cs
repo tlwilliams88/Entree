@@ -1,21 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using FluentAssertions;
-using Xunit;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
-    public class MandatoryItemDetailExtensionTests {
-        private static MandatoryItemsListDetail MakeDetail() {
-            return new MandatoryItemsListDetail() {
+using FluentAssertions;
+using Xunit;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists
+{
+    public class MandatoryItemDetailExtensionTests
+    {
+        private static MandatoryItemsListDetail MakeDetail()
+        {
+            return new MandatoryItemsListDetail()
+            {
                 Id = 15,
                 ItemNumber = "123456",
                 HeaderId = 23,
@@ -28,8 +28,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        private static ListItemModel MakeModel() {
-            return new ListItemModel() {
+        private static ListItemModel MakeModel()
+        {
+            return new ListItemModel()
+            {
                 Active = true,
                 CatalogId = "FUT",
                 Each = true,
@@ -41,9 +43,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        public class ToWebModel {
+        public class ToWebModel
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedListItemId() {
+            public void GoodDetail_ReturnsExpectedListItemId()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = 15;
@@ -58,7 +62,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedType() {
+            public void GoodDetail_ReturnsExpectedType()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = ListType.Mandatory;
@@ -73,7 +78,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedItemNumber() {
+            public void GoodDetail_ReturnsExpectedItemNumber()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = "123456";
@@ -88,7 +94,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedPosition() {
+            public void GoodDetail_ReturnsExpectedPosition()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = 7;
@@ -103,7 +110,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedCreatedUtc() {
+            public void GoodDetail_ReturnsExpectedCreatedUtc()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = new DateTime(2017, 7, 20, 10, 44, 0, DateTimeKind.Utc);
@@ -118,7 +126,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedModifiedUtc() {
+            public void GoodDetail_ReturnsExpectedModifiedUtc()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = new DateTime(2017, 7, 20, 10, 45, 0, DateTimeKind.Utc);
@@ -133,7 +142,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedEach() {
+            public void GoodDetail_ReturnsExpectedEach()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = true;
@@ -148,7 +158,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedCatalogId() {
+            public void GoodDetail_ReturnsExpectedCatalogId()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = "FUT";
@@ -163,7 +174,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedActive() {
+            public void GoodDetail_ReturnsExpectedActive()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = true;
@@ -178,7 +190,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedCustomInveotryItemId() {
+            public void GoodDetail_ReturnsExpectedCustomInveotryItemId()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = 0;
@@ -193,7 +206,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullPackSize() {
+            public void GoodDetail_ReturnsNullPackSize()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -207,7 +221,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullStorageTemp() {
+            public void GoodDetail_ReturnsNullStorageTemp()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -221,7 +236,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullCategory() {
+            public void GoodDetail_ReturnsNullCategory()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -235,7 +251,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullFromDate() {
+            public void GoodDetail_ReturnsNullFromDate()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -249,7 +266,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullToDate() {
+            public void GoodDetail_ReturnsNullToDate()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -263,7 +281,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullDelta() {
+            public void GoodDetail_ReturnsNullDelta()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -277,7 +296,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsQuantityOfZero() {
+            public void GoodDetail_ReturnsQuantityOfZero()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = 0;
@@ -292,7 +312,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsIsDeleteAsFalse() {
+            public void GoodDetail_ReturnsIsDeleteAsFalse()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = false;
@@ -307,7 +328,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullItemStatistics() {
+            public void GoodDetail_ReturnsNullItemStatistics()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -321,7 +343,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullProprietaryCustomers() {
+            public void GoodDetail_ReturnsNullProprietaryCustomers()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -335,7 +358,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullSupplier() {
+            public void GoodDetail_ReturnsNullSupplier()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -349,7 +373,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullLabel() {
+            public void GoodDetail_ReturnsNullLabel()
+            {
                 // arrange
                 var detail = MakeDetail();
 
@@ -363,7 +388,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsParLevelOfZero() {
+            public void GoodDetail_ReturnsParLevelOfZero()
+            {
                 // arrange
                 var detail = MakeDetail();
                 var expected = 0;
@@ -378,9 +404,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
         }
 
-        public class ToMandatoryItemsListDetail {
+        public class ToMandatoryItemsListDetail
+        {
             [Fact]
-            public void GoodModel_ReturnsExpectedActive() {
+            public void GoodModel_ReturnsExpectedActive()
+            {
                 // arrange
                 var expected = true;
                 var headerId = 1;
@@ -396,7 +424,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpectedCatalogId() {
+            public void GoodModel_ReturnsExpectedCatalogId()
+            {
                 // arrange
                 var expected = "FUT";
                 var headerId = 1;
@@ -412,7 +441,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpectedEach() {
+            public void GoodModel_ReturnsExpectedEach()
+            {
                 // arrange
                 var expected = true;
                 var headerId = 1;
@@ -428,7 +458,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpectedId() {
+            public void GoodModel_ReturnsExpectedId()
+            {
                 // arrange
                 var expected = 19;
                 var headerId = 1;
@@ -444,7 +475,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpectedItemNumber() {
+            public void GoodModel_ReturnsExpectedItemNumber()
+            {
                 // arrange
                 var expected = "123456";
                 var headerId = 1;
@@ -460,7 +492,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpectedLineNumber() {
+            public void GoodModel_ReturnsExpectedLineNumber()
+            {
                 // arrange
                 var expected = 23;
                 var headerId = 1;
@@ -476,7 +509,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpecteQuantity() {
+            public void GoodModel_ReturnsExpecteQuantity()
+            {
                 // arrange
                 var expected = 17;
                 var headerId = 1;
@@ -492,7 +526,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodModel_ReturnsExpectedHeaderId() {
+            public void GoodModel_ReturnsExpectedHeaderId()
+            {
                 // arrange
                 var expected = 1;
                 var headerId = 1;

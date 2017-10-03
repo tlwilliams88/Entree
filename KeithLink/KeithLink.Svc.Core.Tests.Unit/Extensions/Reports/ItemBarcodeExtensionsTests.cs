@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KeithLink.Svc.Core.Extensions.Reports;
+using KeithLink.Svc.Core.Models.Lists;
 
 using FluentAssertions;
-
-using KeithLink.Svc.Core.Extensions.Reports;
-
 using Xunit;
-
-using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Reports
 {

@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using FluentAssertions;
-using Xunit;
-
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.History;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
-    public class HistoryHeaderExtensionTests {
-        private static HistoryListHeader MakeHeader() {
-            return new HistoryListHeader() {
+using FluentAssertions;
+using Xunit;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists
+{
+    public class HistoryHeaderExtensionTests
+    {
+        private static HistoryListHeader MakeHeader()
+        {
+            return new HistoryListHeader()
+            {
                 BranchId = "FUT",
                 CustomerNumber = "123456",
                 CreatedUtc = new DateTime(2017, 7, 6, 14, 37, 0, DateTimeKind.Utc),
@@ -22,7 +25,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        private static List<HistoryListDetail> MakeListOfDetails() {
+        private static List<HistoryListDetail> MakeListOfDetails()
+        {
             return new List<HistoryListDetail>() {
                 new HistoryListDetail() {
                     Id = 1,
@@ -47,7 +51,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        private static List<ListItemModel> MakeListOfModels() {
+        private static List<ListItemModel> MakeListOfModels()
+        {
             return new List<ListItemModel>() {
                 new ListItemModel() {
                     ListItemId = 1,
@@ -72,9 +77,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        public class ToListModel {
+        public class ToListModel
+        {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ReturnsExpectedBranchId()
+            {
                 // arrange
                 var expected = "FUT";
                 var header = MakeHeader();
@@ -89,7 +96,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedIsContractList()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -104,7 +112,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsFavoriteList()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -119,7 +128,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+            public void GoodHeader_ReturnsExpectedIsWorksheet()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
@@ -134,7 +144,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
+            public void GoodHeader_ReturnsExpectedIsReminder()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -149,7 +160,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsMandatory() {
+            public void GoodHeader_ReturnsExpectedIsMandatory()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -164,7 +176,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsRecommended() {
+            public void GoodHeader_ReturnsExpectedIsRecommended()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -179,7 +192,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -194,7 +208,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
+            public void GoodHeader_ReturnsExpectedType()
+            {
                 // arrange
                 var expected = ListType.Worksheet;
                 var header = MakeHeader();
@@ -209,7 +224,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
+            public void GoodHeader_ReturnsExpectedListId()
+            {
                 // arrange
                 var expected = 15;
                 var header = MakeHeader();
@@ -224,7 +240,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
+            public void GoodHeader_ReturnsExpectedName()
+            {
                 // arrange
                 var expected = "History";
                 var header = MakeHeader();
@@ -239,7 +256,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
+            public void GoodHeader_ReturnsExpectedReadonly()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
@@ -254,7 +272,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
+            public void GoodHeader_ItemsIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
 
@@ -268,7 +287,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsHasZeroCount() {
+            public void GoodHeader_ItemsHasZeroCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -284,7 +304,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
+            public void GoodHeader_ReturnsExpectedHasContractItems()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -296,11 +317,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 results.HasContractItems
                        .Should()
                        .Be(expected);
-
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber()
+            {
                 // arrange
                 var expected = "123456";
                 var header = MakeHeader();
@@ -312,11 +333,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 results.CustomerNumber
                        .Should()
                        .Be(expected);
-
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+            public void GoodHeader_ReturnsExpectedSharedWithCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -332,7 +353,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
+            public void GoodHeader_SharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
 
@@ -346,7 +368,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsShared() {
+            public void GoodHeader_ReturnsExpectedIsShared()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -361,7 +384,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsSharing() {
+            public void GoodHeader_ReturnsExpectedIsSharing()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -376,9 +400,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
         }
 
-        public class ToListModel_WithListOfDetails {
+        public class ToListModel_WithListOfDetails
+        {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ReturnsExpectedBranchId()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = "FUT";
@@ -394,7 +420,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedIsContractList()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -410,7 +437,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsFavoriteList()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -426,7 +454,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+            public void GoodHeader_ReturnsExpectedIsWorksheet()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = true;
@@ -442,7 +471,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
+            public void GoodHeader_ReturnsExpectedIsReminder()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -458,7 +488,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsMandatory() {
+            public void GoodHeader_ReturnsExpectedIsMandatory()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -474,7 +505,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsRecommended() {
+            public void GoodHeader_ReturnsExpectedIsRecommended()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -490,7 +522,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -506,7 +539,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
+            public void GoodHeader_ReturnsExpectedType()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = ListType.Worksheet;
@@ -522,7 +556,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
+            public void GoodHeader_ReturnsExpectedListId()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = 15;
@@ -538,7 +573,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
+            public void GoodHeader_ReturnsExpectedName()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = "History";
@@ -554,7 +590,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
+            public void GoodHeader_ReturnsExpectedReadonly()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = true;
@@ -570,7 +607,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
+            public void GoodHeader_ItemsIsNotNull()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var header = MakeHeader();
@@ -585,7 +623,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsHasExpectedCount() {
+            public void GoodHeader_ItemsHasExpectedCount()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = 2;
@@ -602,7 +641,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
+            public void GoodHeader_ReturnsExpectedHasContractItems()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -618,7 +658,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = "123456";
@@ -634,7 +675,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+            public void GoodHeader_ReturnsExpectedSharedWithCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -651,7 +693,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
+            public void GoodHeader_SharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var details = MakeListOfDetails();
@@ -666,7 +709,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsShared() {
+            public void GoodHeader_ReturnsExpectedIsShared()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -682,7 +726,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsSharing() {
+            public void GoodHeader_ReturnsExpectedIsSharing()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -698,9 +743,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
         }
 
-        public class ToListModel_WithListOfModels {
+        public class ToListModel_WithListOfModels
+        {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ReturnsExpectedBranchId()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = "FUT";
@@ -716,7 +763,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedIsContractList()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -732,7 +780,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsFavoriteList()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -748,7 +797,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+            public void GoodHeader_ReturnsExpectedIsWorksheet()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = true;
@@ -764,7 +814,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
+            public void GoodHeader_ReturnsExpectedIsReminder()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -780,7 +831,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsMandatory() {
+            public void GoodHeader_ReturnsExpectedIsMandatory()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -796,7 +848,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsRecommended() {
+            public void GoodHeader_ReturnsExpectedIsRecommended()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -812,7 +865,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -828,7 +882,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
+            public void GoodHeader_ReturnsExpectedType()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = ListType.Worksheet;
@@ -844,7 +899,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
+            public void GoodHeader_ReturnsExpectedListId()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = 15;
@@ -860,7 +916,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
+            public void GoodHeader_ReturnsExpectedName()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = "History";
@@ -876,7 +933,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
+            public void GoodHeader_ReturnsExpectedReadonly()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = true;
@@ -892,7 +950,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
+            public void GoodHeader_ItemsIsNotNull()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var header = MakeHeader();
@@ -907,7 +966,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsHasExpectedCount() {
+            public void GoodHeader_ItemsHasExpectedCount()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = 2;
@@ -924,7 +984,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
+            public void GoodHeader_ReturnsExpectedHasContractItems()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -940,7 +1001,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = "123456";
@@ -956,7 +1018,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+            public void GoodHeader_ReturnsExpectedSharedWithCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -973,7 +1036,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
+            public void GoodHeader_SharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var details = MakeListOfModels();
@@ -988,7 +1052,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsShared() {
+            public void GoodHeader_ReturnsExpectedIsShared()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -1004,7 +1069,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsSharing() {
+            public void GoodHeader_ReturnsExpectedIsSharing()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();

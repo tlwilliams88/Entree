@@ -1,22 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using FluentAssertions;
-
-using Moq;
-
-using Xunit;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.Lists;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
-    public class ListModelTests {
-        private static ListModel MakeModel() {
-            return new ListModel() {
+using FluentAssertions;
+using Xunit;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
+{
+    public class ListModelTests
+    {
+        private static ListModel MakeModel()
+        {
+            return new ListModel()
+            {
                 BranchId = "FUT",
                 CustomerNumber = "123456",
                 ListId = 1,
@@ -42,9 +40,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
         }
 
         #region NewCopy
-        public class NewCopy {
+
+        public class NewCopy
+        {
             [Fact]
-            public void NewCopy_ResultHasExpectedBranch() {
+            public void NewCopy_ResultHasExpectedBranch()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = "FUT";
@@ -59,7 +60,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedCustomerNumber() {
+            public void NewCopy_ResultHasExpectedCustomerNumber()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = "123456";
@@ -74,7 +76,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedName() {
+            public void NewCopy_ResultHasExpectedName()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = "Fake Name copy";
@@ -89,7 +92,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedPosition() {
+            public void NewCopy_ResultHasExpectedPosition()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var itemNumber = "555555";
@@ -107,7 +111,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasExpectedType() {
+            public void NewCopy_ResultHasExpectedType()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = ListType.Custom;
@@ -122,7 +127,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasItemWithExpectedItemNumber() {
+            public void NewCopy_ResultHasItemWithExpectedItemNumber()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = "111111";
@@ -139,7 +145,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasItemWithExpectedEach() {
+            public void NewCopy_ResultHasItemWithExpectedEach()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = false;
@@ -156,7 +163,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasItemWithExpectedCatalogId() {
+            public void NewCopy_ResultHasItemWithExpectedCatalogId()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = "FUT";
@@ -173,7 +181,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void NewCopy_ResultHasItemWithExpectedCustomInventoryItemId() {
+            public void NewCopy_ResultHasItemWithExpectedCustomInventoryItemId()
+            {
                 // arrange
                 var testmodel = MakeModel();
                 var expected = 2;
@@ -189,6 +198,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
                       .Be(expected);
             }
         }
-        #endregion
+
+        #endregion NewCopy
     }
 }

@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KeithLink.Svc.Core.Models.Lists;
 
 using FluentAssertions;
 using Xunit;
 
-using KeithLink.Svc.Core.Models.Lists;
-
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
-    public class BaseListDetailTests {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists
+{
+    public class BaseListDetailTests
+    {
         private class StubDetail : BaseListDetail { }
 
-        private static StubDetail MakeDetail() {
-            return new StubDetail() {
+        private static StubDetail MakeDetail()
+        {
+            return new StubDetail()
+            {
                 CatalogId = "Fake CatalogId",
                 Each = true,
                 HeaderId = 15,
@@ -23,9 +21,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             };
         }
 
-        public class Get_CatalogId {
+        public class Get_CatalogId
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeDetail();
                 var expected = "Fake CatalogId";
@@ -39,7 +39,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new StubDetail();
 
@@ -52,9 +53,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
         }
 
-        public class Get_Each {
+        public class Get_Each
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeDetail();
                 var expected = true;
@@ -68,7 +71,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new StubDetail();
 
@@ -81,9 +85,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
         }
 
-        public class Get_HeaderId {
+        public class Get_HeaderId
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeDetail();
                 var expected = 15;
@@ -97,7 +103,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new StubDetail();
                 var expected = 0;
@@ -111,9 +118,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
         }
 
-        public class Get_ItemNumber {
+        public class Get_ItemNumber
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeDetail();
                 var expected = "Fake ItemNumber";
@@ -127,7 +136,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void InitalizedDetail_HasDefaultValue() {
+            public void InitalizedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new StubDetail();
 
@@ -140,9 +150,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
         }
 
-        public class Get_LineNumber {
+        public class Get_LineNumber
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeItem = MakeDetail();
                 var expected = 100;
@@ -156,7 +168,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
 
             [Fact]
-            public void InitializedDetail_HasDefaultValue() {
+            public void InitializedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new StubDetail();
 

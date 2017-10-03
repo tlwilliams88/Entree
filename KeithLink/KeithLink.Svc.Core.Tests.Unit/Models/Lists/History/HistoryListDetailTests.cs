@@ -1,19 +1,25 @@
-﻿using FluentAssertions;
+﻿using KeithLink.Svc.Core.Models.Lists.History;
+
+using FluentAssertions;
 using Xunit;
 
-using KeithLink.Svc.Core.Models.Lists.History;
-
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.History {
-    public class HistoryListDetailTests {
-        private static HistoryListDetail MakeDetail() {
-            return new HistoryListDetail() {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.History
+{
+    public class HistoryListDetailTests
+    {
+        private static HistoryListDetail MakeDetail()
+        {
+            return new HistoryListDetail()
+            {
                 LineNumber = 72
             };
         }
 
-        public class Get_LineNumber {
+        public class Get_LineNumber
+        {
             [Fact]
-            public void GoodDetail_ReturnsExpectedValue() {
+            public void GoodDetail_ReturnsExpectedValue()
+            {
                 // arrange
                 var fakeDetail = MakeDetail();
                 var expected = 72;
@@ -27,7 +33,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.History {
             }
 
             [Fact]
-            public void InitializedDetail_HasDefaultValue() {
+            public void InitializedDetail_HasDefaultValue()
+            {
                 // arrange
                 var test = new HistoryListDetail();
                 var expected = 0;

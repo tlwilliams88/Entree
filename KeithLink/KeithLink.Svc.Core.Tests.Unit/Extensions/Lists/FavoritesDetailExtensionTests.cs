@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using FluentAssertions;
-using Moq;
-using Xunit;
-
-using KeithLink.Common.Core.Seams;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 
+using FluentAssertions;
+using Xunit;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists
 {
@@ -49,8 +42,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists
             };
         }
 
-        public class ToWebModel {
-
+        public class ToWebModel
+        {
             [Fact]
             public void GoodDetail_ReturnsExpectedListItemId()
             {
@@ -418,12 +411,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists
                        .Should()
                        .BeNull();
             }
-
         }
 
         public class ToFavoritesListDetail
         {
-
             [Fact]
             public void GoodListItem_ReturnsExpectedId()
             {
@@ -503,7 +494,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists
                        .Should()
                        .Be(expected);
             }
-
         }
     }
 }

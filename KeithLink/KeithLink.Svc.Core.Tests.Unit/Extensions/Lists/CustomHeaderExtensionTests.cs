@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using FluentAssertions;
-using Xunit;
-
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Models.Lists;
@@ -12,17 +9,26 @@ using KeithLink.Svc.Core.Models.Lists.CustomList;
 using KeithLink.Svc.Core.Models.Lists.CustomListShares;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
-    public class CustomHeaderExtensionTests {
-        private static UserSelectedContext MakeCustomer() {
-            return new UserSelectedContext() {
+using FluentAssertions;
+using Xunit;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists
+{
+    public class CustomHeaderExtensionTests
+    {
+        private static UserSelectedContext MakeCustomer()
+        {
+            return new UserSelectedContext()
+            {
                 BranchId = "FUT",
                 CustomerId = "123456"
             };
         }
 
-        private static CustomListHeader MakeHeader() {
-            return new CustomListHeader() {
+        private static CustomListHeader MakeHeader()
+        {
+            return new CustomListHeader()
+            {
                 BranchId = "FUT",
                 CustomerNumber = "123456",
                 Name = "Fake List Name",
@@ -32,7 +38,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        private static List<CustomListDetail> MakeListOfDetails() {
+        private static List<CustomListDetail> MakeListOfDetails()
+        {
             return new List<CustomListDetail>() {
                 new CustomListDetail() {
                     Id = 1,
@@ -57,7 +64,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        private static List<ListItemModel> MakeListOfModels() {
+        private static List<ListItemModel> MakeListOfModels()
+        {
             return new List<ListItemModel>() {
                 new ListItemModel() {
                     ListItemId = 1,
@@ -82,7 +90,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        private static List<CustomListShare> MakeShares() {
+        private static List<CustomListShare> MakeShares()
+        {
             return new List<CustomListShare>() {
                 new CustomListShare() {
                     BranchId = "FDF",
@@ -95,9 +104,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             };
         }
 
-        public class ToListModel {
+        public class ToListModel
+        {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ReturnsExpectedBranchId()
+            {
                 // arrange
                 var expected = "FUT";
                 var header = MakeHeader();
@@ -113,7 +124,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedIsContractList()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -129,7 +141,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsFavoriteList()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -145,7 +158,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+            public void GoodHeader_ReturnsExpectedIsWorksheet()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -161,7 +175,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
+            public void GoodHeader_ReturnsExpectedIsReminder()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -177,7 +192,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsMandatory() {
+            public void GoodHeader_ReturnsExpectedIsMandatory()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -193,7 +209,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsRecommended() {
+            public void GoodHeader_ReturnsExpectedIsRecommended()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -209,7 +226,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -225,7 +243,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
+            public void GoodHeader_ReturnsExpectedType()
+            {
                 // arrange
                 var expected = ListType.Custom;
                 var header = MakeHeader();
@@ -241,7 +260,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
+            public void GoodHeader_ReturnsExpectedListId()
+            {
                 // arrange
                 var expected = 15;
                 var header = MakeHeader();
@@ -257,7 +277,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
+            public void GoodHeader_ReturnsExpectedName()
+            {
                 // arrange
                 var expected = "Fake List Name";
                 var header = MakeHeader();
@@ -273,7 +294,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
+            public void GoodHeader_ReturnsExpectedReadonly()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -289,7 +311,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
+            public void GoodHeader_ItemsIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var customer = MakeCustomer();
@@ -304,7 +327,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsHasZeroCount() {
+            public void GoodHeader_ItemsHasZeroCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -321,7 +345,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
+            public void GoodHeader_ReturnsExpectedHasContractItems()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -334,11 +359,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 results.HasContractItems
                        .Should()
                        .Be(expected);
-
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber()
+            {
                 // arrange
                 var expected = "123456";
                 var header = MakeHeader();
@@ -351,11 +376,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                 results.CustomerNumber
                        .Should()
                        .Be(expected);
-
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+            public void GoodHeader_ReturnsExpectedSharedWithCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -372,7 +397,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
+            public void GoodHeader_SharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var customer = MakeCustomer();
@@ -387,7 +413,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsShared() {
+            public void GoodHeader_ReturnsExpectedIsShared()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -403,7 +430,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsSharing() {
+            public void GoodHeader_ReturnsExpectedIsSharing()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -419,11 +447,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithDifferentCustomer_ReturnsReadOnlyIsTrue() {
+            public void GoodHeaderWithDifferentCustomer_ReturnsReadOnlyIsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
@@ -438,11 +468,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithDifferentCustomer_ReturnsIsSharedIsTrue() {
+            public void GoodHeaderWithDifferentCustomer_ReturnsIsSharedIsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
@@ -457,7 +489,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_ReturnsSharedWithHasExpectedCount() {
+            public void GoodHeaderWithSharedList_ReturnsSharedWithHasExpectedCount()
+            {
                 // arrange
                 var expected = 2;
                 var header = MakeHeader();
@@ -475,7 +508,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_ReturnsSharedWithIsNotNull() {
+            public void GoodHeaderWithSharedList_ReturnsSharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var customer = MakeCustomer();
@@ -491,7 +525,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_SharedWithContainsExpectedCustomerNumber() {
+            public void GoodHeaderWithSharedList_SharedWithContainsExpectedCustomerNumber()
+            {
                 // arrange
                 var expected = "234567";
                 var header = MakeHeader();
@@ -509,7 +544,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndGoodCustomerAndBranch_IsSharingReturnsTrue() {
+            public void GoodHeaderWithSharedListAndGoodCustomerAndBranch_IsSharingReturnsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
@@ -526,11 +562,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndBadBranch_IsSharingReturnsFalse() {
+            public void GoodHeaderWithSharedListAndBadBranch_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -546,11 +584,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndLowerCaseBranch_IsSharingReturnsTrue() {
+            public void GoodHeaderWithSharedListAndLowerCaseBranch_IsSharingReturnsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "fut",
                     CustomerId = "123456"
                 };
@@ -566,11 +606,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndBadCustomer_IsSharingReturnsFalse() {
+            public void GoodHeaderWithSharedListAndBadCustomer_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
@@ -586,7 +628,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithEmptySharedList_IsSharingReturnsFalse() {
+            public void GoodHeaderWithEmptySharedList_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -603,9 +646,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
         }
 
-        public class ToListModel_WithListOfDetails {
+        public class ToListModel_WithListOfDetails
+        {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ReturnsExpectedBranchId()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = "FUT";
@@ -622,7 +667,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedIsContractList()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -639,7 +685,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsFavoriteList()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -656,7 +703,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+            public void GoodHeader_ReturnsExpectedIsWorksheet()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -673,7 +721,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
+            public void GoodHeader_ReturnsExpectedIsReminder()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -690,7 +739,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsMandatory() {
+            public void GoodHeader_ReturnsExpectedIsMandatory()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -707,7 +757,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsRecommended() {
+            public void GoodHeader_ReturnsExpectedIsRecommended()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -724,7 +775,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -741,7 +793,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
+            public void GoodHeader_ReturnsExpectedType()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = ListType.Custom;
@@ -758,7 +811,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
+            public void GoodHeader_ReturnsExpectedListId()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = 15;
@@ -775,7 +829,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
+            public void GoodHeader_ReturnsExpectedName()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = "Fake List Name";
@@ -792,7 +847,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
+            public void GoodHeader_ReturnsExpectedReadonly()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -809,7 +865,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
+            public void GoodHeader_ItemsIsNotNull()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var header = MakeHeader();
@@ -825,7 +882,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsHasExpectedCount() {
+            public void GoodHeader_ItemsHasExpectedCount()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = 2;
@@ -843,7 +901,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
+            public void GoodHeader_ReturnsExpectedHasContractItems()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = false;
@@ -860,7 +919,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber()
+            {
                 // arrange
                 var details = MakeListOfDetails();
                 var expected = "123456";
@@ -877,7 +937,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+            public void GoodHeader_ReturnsExpectedSharedWithCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -895,7 +956,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
+            public void GoodHeader_SharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var customer = MakeCustomer();
@@ -911,7 +973,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsShared() {
+            public void GoodHeader_ReturnsExpectedIsShared()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -928,7 +991,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsSharing() {
+            public void GoodHeader_ReturnsExpectedIsSharing()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -945,11 +1009,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithDifferentCustomer_ReturnsReadOnlyIsTrue() {
+            public void GoodHeaderWithDifferentCustomer_ReturnsReadOnlyIsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
@@ -965,11 +1031,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithDifferentCustomer_ReturnsIsSharedIsTrue() {
+            public void GoodHeaderWithDifferentCustomer_ReturnsIsSharedIsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
@@ -985,7 +1053,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_ReturnsSharedWithHasExpectedCount() {
+            public void GoodHeaderWithSharedList_ReturnsSharedWithHasExpectedCount()
+            {
                 // arrange
                 var expected = 2;
                 var header = MakeHeader();
@@ -1004,7 +1073,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_ReturnsSharedWithIsNotNull() {
+            public void GoodHeaderWithSharedList_ReturnsSharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var customer = MakeCustomer();
@@ -1021,7 +1091,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_SharedWithContainsExpectedCustomerNumber() {
+            public void GoodHeaderWithSharedList_SharedWithContainsExpectedCustomerNumber()
+            {
                 // arrange
                 var expected = "234567";
                 var header = MakeHeader();
@@ -1040,7 +1111,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndGoodCustomerAndBranch_IsSharingReturnsTrue() {
+            public void GoodHeaderWithSharedListAndGoodCustomerAndBranch_IsSharingReturnsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
@@ -1058,11 +1130,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndBadBranch_IsSharingReturnsFalse() {
+            public void GoodHeaderWithSharedListAndBadBranch_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -1079,11 +1153,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndLowerCaseBranch_IsSharingReturnsTrue() {
+            public void GoodHeaderWithSharedListAndLowerCaseBranch_IsSharingReturnsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "fut",
                     CustomerId = "123456"
                 };
@@ -1100,11 +1176,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndBadCustomer_IsSharingReturnsFalse() {
+            public void GoodHeaderWithSharedListAndBadCustomer_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
+                var customer = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
@@ -1121,7 +1199,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithEmptySharedList_IsSharingReturnsFalse() {
+            public void GoodHeaderWithEmptySharedList_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -1139,9 +1218,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
         }
 
-        public class ToListModel_WithListOfModels {
+        public class ToListModel_WithListOfModels
+        {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ReturnsExpectedBranchId()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = "FUT";
@@ -1158,7 +1239,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedIsContractList()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1175,7 +1257,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsFavoriteList()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1192,7 +1275,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+            public void GoodHeader_ReturnsExpectedIsWorksheet()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1209,7 +1293,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
+            public void GoodHeader_ReturnsExpectedIsReminder()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1226,7 +1311,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsMandatory() {
+            public void GoodHeader_ReturnsExpectedIsMandatory()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1243,7 +1329,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsRecommended() {
+            public void GoodHeader_ReturnsExpectedIsRecommended()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1260,7 +1347,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1277,7 +1365,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
+            public void GoodHeader_ReturnsExpectedType()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = ListType.Custom;
@@ -1294,7 +1383,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
+            public void GoodHeader_ReturnsExpectedListId()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = 15;
@@ -1311,7 +1401,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
+            public void GoodHeader_ReturnsExpectedName()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = "Fake List Name";
@@ -1328,7 +1419,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
+            public void GoodHeader_ReturnsExpectedReadonly()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1345,7 +1437,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
+            public void GoodHeader_ItemsIsNotNull()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var header = MakeHeader();
@@ -1361,7 +1454,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ItemsHasExpectedCount() {
+            public void GoodHeader_ItemsHasExpectedCount()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = 2;
@@ -1379,7 +1473,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
+            public void GoodHeader_ReturnsExpectedHasContractItems()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = false;
@@ -1396,7 +1491,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber()
+            {
                 // arrange
                 var details = MakeListOfModels();
                 var expected = "123456";
@@ -1413,7 +1509,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+            public void GoodHeader_ReturnsExpectedSharedWithCount()
+            {
                 // arrange
                 var expected = 0;
                 var header = MakeHeader();
@@ -1431,7 +1528,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
+            public void GoodHeader_SharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var customer = MakeCustomer();
@@ -1447,7 +1545,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsShared() {
+            public void GoodHeader_ReturnsExpectedIsShared()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -1464,7 +1563,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsSharing() {
+            public void GoodHeader_ReturnsExpectedIsSharing()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
@@ -1481,14 +1581,16 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithDifferentCustomer_ReturnsReadOnlyIsTrue() {
+            public void GoodHeaderWithDifferentCustomer_ReturnsReadOnlyIsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
-                                                             BranchId = "FUT",
-                                                             CustomerId = "234567"
-                                                         };
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
                 var details = MakeListOfModels();
 
                 // act
@@ -1501,14 +1603,16 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithDifferentCustomer_ReturnsIsSharedIsTrue() {
+            public void GoodHeaderWithDifferentCustomer_ReturnsIsSharedIsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
-                                                             BranchId = "FUT",
-                                                             CustomerId = "234567"
-                                                         };
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
                 var details = MakeListOfModels();
 
                 // act
@@ -1521,7 +1625,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_ReturnsSharedWithHasExpectedCount() {
+            public void GoodHeaderWithSharedList_ReturnsSharedWithHasExpectedCount()
+            {
                 // arrange
                 var expected = 2;
                 var header = MakeHeader();
@@ -1540,7 +1645,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_ReturnsSharedWithIsNotNull() {
+            public void GoodHeaderWithSharedList_ReturnsSharedWithIsNotNull()
+            {
                 // arrange
                 var header = MakeHeader();
                 var customer = MakeCustomer();
@@ -1557,7 +1663,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedList_SharedWithContainsExpectedCustomerNumber() {
+            public void GoodHeaderWithSharedList_SharedWithContainsExpectedCustomerNumber()
+            {
                 // arrange
                 var expected = "234567";
                 var header = MakeHeader();
@@ -1576,7 +1683,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndGoodCustomerAndBranch_IsSharingReturnsTrue() {
+            public void GoodHeaderWithSharedListAndGoodCustomerAndBranch_IsSharingReturnsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
@@ -1594,14 +1702,16 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndBadBranch_IsSharingReturnsFalse() {
+            public void GoodHeaderWithSharedListAndBadBranch_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
-                                                             BranchId = "XXX",
-                                                             CustomerId = "123456"
-                                                         };
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
                 var shares = MakeShares();
                 var details = MakeListOfModels();
 
@@ -1615,14 +1725,16 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndLowerCaseBranch_IsSharingReturnsTrue() {
+            public void GoodHeaderWithSharedListAndLowerCaseBranch_IsSharingReturnsTrue()
+            {
                 // arrange
                 var expected = true;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
-                                                             BranchId = "fut",
-                                                             CustomerId = "123456"
-                                                         };
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "fut",
+                    CustomerId = "123456"
+                };
                 var shares = MakeShares();
                 var details = MakeListOfModels();
 
@@ -1636,14 +1748,16 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithSharedListAndBadCustomer_IsSharingReturnsFalse() {
+            public void GoodHeaderWithSharedListAndBadCustomer_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();
-                var customer = new UserSelectedContext() {
-                                                             BranchId = "FUT",
-                                                             CustomerId = "999999"
-                                                         };
+                var customer = new UserSelectedContext()
+                {
+                    BranchId = "FUT",
+                    CustomerId = "999999"
+                };
                 var shares = MakeShares();
                 var details = MakeListOfModels();
 
@@ -1657,7 +1771,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeaderWithEmptySharedList_IsSharingReturnsFalse() {
+            public void GoodHeaderWithEmptySharedList_IsSharingReturnsFalse()
+            {
                 // arrange
                 var expected = false;
                 var header = MakeHeader();

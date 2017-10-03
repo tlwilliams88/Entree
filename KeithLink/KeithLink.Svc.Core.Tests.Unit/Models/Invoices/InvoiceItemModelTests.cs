@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using FluentAssertions;
 using Xunit;
-
-using KeithLink.Svc.Core.Models.Invoices;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
 {
     public class InvoiceItemModelTests
     {
         #region setup
+
         private static InvoiceItemModel MakeTestData()
         {
             return new InvoiceItemModel()
@@ -57,9 +52,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                 CatalogId = "FUT"
             };
         }
-        #endregion
+
+        #endregion setup
 
         #region Get_ItemNumber
+
         public class Get_ItemNumber
         {
             [Fact]
@@ -91,9 +88,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ItemNumber
 
         #region Get_ItemPrice
+
         public class Get_ItemPrice
         {
             [Fact]
@@ -124,9 +123,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ItemPrice
 
         #region Get_QuantityOrdered
+
         public class Get_QuantityOrdered
         {
             [Fact]
@@ -157,9 +158,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_QuantityOrdered
 
         #region Get_QuantityShipped
+
         public class Get_QuantityShipped
         {
             [Fact]
@@ -190,9 +193,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_QuantityShipped
 
         #region Get_LineNumber
+
         public class Get_LineNumber
         {
             [Fact]
@@ -224,9 +229,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_LineNumber
 
         #region Get_IsValid
+
         public class Get_IsValid
         {
             [Fact]
@@ -258,9 +265,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeFalse();
             }
         }
-        #endregion
+
+        #endregion Get_IsValid
 
         #region Get_Name
+
         public class Get_Name
         {
             [Fact]
@@ -292,9 +301,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Name
 
         #region Get_Detail
+
         public class Get_Detail
         {
             [Fact]
@@ -326,9 +337,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Detail
 
         #region Get_Description
+
         public class Get_Description
         {
             [Fact]
@@ -360,9 +373,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Description
 
         #region Get_Pack
+
         public class Get_Pack
         {
             [Fact]
@@ -394,9 +409,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Pack
 
         #region Get_Size
+
         public class Get_Size
         {
             [Fact]
@@ -428,9 +445,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Size
 
         #region Get_Each
+
         public class Get_Each
         {
             [Fact]
@@ -462,9 +481,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeFalse();
             }
         }
-        #endregion
+
+        #endregion Get_Each
 
         #region Get_Brand
+
         public class Get_Brand
         {
             [Fact]
@@ -496,9 +517,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Brand
 
         #region Get_BrandExtendedDescription
+
         public class Get_BrandExtendedDescription
         {
             [Fact]
@@ -530,9 +553,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_BrandExtendedDescription
 
         #region Get_ReplacedItem
+
         public class Get_ReplacedItem
         {
             [Fact]
@@ -564,9 +589,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ReplacedItem
 
         #region Get_ReplacementItem
+
         public class Get_ReplacementItem
         {
             [Fact]
@@ -598,9 +625,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ReplacementItem
 
         #region Get_NonStock
+
         public class Get_NonStock
         {
             [Fact]
@@ -632,9 +661,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_NonStock
 
         #region Get_ChildNutrition
+
         public class Get_ChildNutrition
         {
             [Fact]
@@ -666,9 +697,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ChildNutrition
 
         #region Get_CatchWeight
+
         public class Get_CatchWeight
         {
             [Fact]
@@ -700,9 +733,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeFalse();
             }
         }
-        #endregion
+
+        #endregion Get_CatchWeight
 
         #region Get_TempZone
+
         public class Get_TempZone
         {
             [Fact]
@@ -734,9 +769,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_TempZone
 
         #region Get_ItemClass
+
         public class Get_ItemClass
         {
             [Fact]
@@ -768,9 +805,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ItemClass
 
         #region Get_CategoryCode
+
         public class Get_CategoryCode
         {
             [Fact]
@@ -802,9 +841,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_CategoryCode
 
         #region Get_SubCategoryCode
+
         public class Get_SubCategoryCode
         {
             [Fact]
@@ -836,9 +877,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_SubCategoryCode
 
         #region Get_CategoryName
+
         public class Get_CategoryName
         {
             [Fact]
@@ -870,9 +913,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_CategoryName
 
         #region Get_UPC
+
         public class Get_UPC
         {
             [Fact]
@@ -904,9 +949,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_UPC
 
         #region Get_VendorItemNumber
+
         public class Get_VendorItemNumber
         {
             [Fact]
@@ -938,9 +985,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_VendorItemNumber
 
         #region Get_Cases
+
         public class Get_Cases
         {
             [Fact]
@@ -972,9 +1021,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Cases
 
         #region Get_Kosher
+
         public class Get_Kosher
         {
             [Fact]
@@ -1006,9 +1057,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Kosher
 
         #region Get_ManufacturerName
+
         public class Get_ManufacturerName
         {
             [Fact]
@@ -1040,9 +1093,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ManufacturerName
 
         #region Get_ManufacturerNumber
+
         public class Get_ManufacturerNumber
         {
             [Fact]
@@ -1074,9 +1129,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ManufacturerNumber
 
         #region Get_Nutritional
+
         public class Get_Nutritional
         {
             [Fact]
@@ -1107,9 +1164,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_Nutritional
 
         #region Get_ExtCatchWeight
+
         public class Get_ExtCatchWeight
         {
             [Fact]
@@ -1141,9 +1200,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
+
+        #endregion Get_ExtCatchWeight
 
         #region Get_CatalogId
+
         public class Get_CatalogId
         {
             [Fact]
@@ -1175,7 +1236,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Invoices
                     .BeNull();
             }
         }
-        #endregion
 
+        #endregion Get_CatalogId
     }
 }
