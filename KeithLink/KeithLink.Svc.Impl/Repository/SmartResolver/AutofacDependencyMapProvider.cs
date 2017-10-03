@@ -213,7 +213,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
             builder.RegisterType<DBAppSettingsRepositoryImpl>().As<IDBAppSettingsRepository>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
-            builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
+            builder.Register(l => new EventLogQueueRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
             builder.RegisterType<ReportRepository>().As<IReportRepository>();

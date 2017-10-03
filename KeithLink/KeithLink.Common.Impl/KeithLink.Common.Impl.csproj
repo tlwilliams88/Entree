@@ -96,6 +96,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BEKlibrary, Version=2017.9.2.0, Culture=neutral, PublicKeyToken=30bbedabefbbbc7e, processorArchitecture=MSIL">
+      <HintPath>..\packages\BEK.Library.2017.9.2\lib\net45\BEKlibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RabbitMQ.Client, Version=3.3.5.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.3.3.5\lib\net30\RabbitMQ.Client.dll</HintPath>
       <Private>True</Private>
@@ -120,15 +124,10 @@
     <Compile Include="Email\ExceptionEmail.cs" />
     <Compile Include="Email\NewUserEmail.cs" />
     <Compile Include="Repository\Logging\EventLogRepositoryImpl.cs" />
+    <Compile Include="Repository\Logging\EventLogQueueRepositoryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Settings\AppSettingsDictionary.cs" />
     <Compile Include="Repository\Settings\DBAppSettingsRepositoryImpl.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CommonAPI\Sample Data\IN_BEK_FDF_20120809_064994.TXT" />
-    <Content Include="CommonAPI\Sample Data\IN_BEK_FSA_20120817_153678.TXT" />
-    <Content Include="CommonAPI\Sample Data\OC_BEK_FAM_G0139140.TXT" />
-    <Content Include="CommonAPI\Sample Data\OG_BEK_FLR_20120821_023005.TXT" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
@@ -143,7 +142,12 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="CommonAPI\Sample Data\IN_BEK_FDF_20120809_064994.TXT" />
+    <Content Include="CommonAPI\Sample Data\IN_BEK_FSA_20120817_153678.TXT" />
+    <Content Include="CommonAPI\Sample Data\OC_BEK_FAM_G0139140.TXT" />
+    <Content Include="CommonAPI\Sample Data\OG_BEK_FLR_20120821_023005.TXT" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,173 +1,183 @@
 ﻿using KeithLink.Common.Core.Interfaces.Logging;
 
 using System;
+using System.Configuration;
 using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Threading;
 
-namespace KeithLink.Common.Impl.Repository.Logging
-{
-    public class EventLogRepositoryImpl : IEventLogRepository
-    {
+using BEKlibrary.EventLog.BusinessLayer;
+
+namespace KeithLink.Common.Impl.Repository.Logging {
+    public class EventLogQueueRepositoryImpl : IEventLogRepository {
         #region attributes
-        private BEKlibrary.EventLog.BusinessLayer.LogEntry _log;
+        private BEKlibrary.EventLog.Datalayer.QueueRepository _log;
+
+        private const int SEVERITY_NOT_SET = -1;
+        private const int SEVERITY_DEBUG = 0;
+        private const int SEVERITY_INFORMATION = 1;
+        private const int SEVERITY_WARNING = 2;
+        private const int SEVERITY_ERROR = 3;
         #endregion
 
         #region ctor
-        public EventLogRepositoryImpl(string applicationName)
-        {
-            if (Configuration.LoggingConnectionString == null)
+        public EventLogQueueRepositoryImpl(string applicationName) {
+            if (Configuration.LoggingConnectionString == null) {
                 FailoverToWindowsEventLog("EventLog connection string was not found in the configuration file", null, EventLogEntryType.Warning);
-            else
-                _log = new BEKlibrary.EventLog.BusinessLayer.LogEntry(Environment.MachineName, applicationName);
+            } else {
+                _log = new BEKlibrary.EventLog.Datalayer.QueueRepository();
+            }
         }
         #endregion
 
         #region methods
-        private string GetLogMessage(string message, Exception ex)
-        {
-            StringBuilder msg = new StringBuilder();
-					
-			msg.Append(message);
-            msg.AppendLine(":");
+        private LogMessage GetLogMessage(string message, Exception ex, int severity) {
+            LogMessage newMessage = new LogMessage();
 
-			if (Configuration.LogSystemPerformance)
-			{
-				msg.AppendFormat("Current System CPU %: {0}%", GetCurrentCPU());
-				msg.AppendLine();
-				msg.AppendFormat("Current System RAM Usage: {0}MB", GetCurrentRAMUsage());
-				msg.AppendLine();
-			}
+            newMessage.Message = message;
+            newMessage.EntryType.Id = severity;
+            newMessage.Machine.Name = Environment.MachineName;
 
-            if(System.Web.HttpContext.Current != null)
-            {
-                msg.AppendLine("This is a web request.");
-                msg.AppendLine(string.Format("Request is: \"{0}\"", System.Web.HttpContext.Current.Request.RawUrl));
-                msg.AppendLine(string.Format("Request type is: \"{0}\"", System.Web.HttpContext.Current.Request.RequestType));
-                msg.AppendLine(string.Format("User Selected Context is: \"{0}\"", System.Web.HttpContext.Current.Request.Headers["userSelectedContext"]));
-                msg.AppendLine();
+            newMessage.Application.Environment = ConfigurationHelper.GetActiveConfiguration();
+            newMessage.Application.Name = ConfigurationManager.AppSettings["AppName"];
+
+            if (Configuration.LogSystemPerformance) {
+                newMessage.Machine.CpuUtilization = GetCurrentCPU();
+                newMessage.Machine.MemoryUsed = GetCurrentRAMUsage();
             }
 
-            if (ex.TargetSite != null)
-            {
-                msg.AppendLine(string.Format("Target Error Routine is: \"{0}\"", ex.TargetSite.Name));
-                msg.AppendLine();
+            if (System.Web.HttpContext.Current != null) {
+                if (System.Web.HttpContext.Current.Request.LogonUserIdentity.Name != null) {
+                    newMessage.UserName = System.Web.HttpContext.Current.Request.LogonUserIdentity.Name;
+                }
+                newMessage.Web.HttpVerb = System.Web.HttpContext.Current.Request.HttpMethod;
+                newMessage.Web.Url = System.Web.HttpContext.Current.Request.RawUrl;
+                newMessage.Web.ClientIpAddress = System.Web.HttpContext.Current.Request.UserHostAddress;
+                newMessage.Web.Status = System.Web.HttpContext.Current.Response.StatusCode.ToString();
+                newMessage.Method.Parameters.Add("UserSelectedContext", System.Web.HttpContext.Current.Request.Headers["userSelectedContext"]);
             }
 
-            msg.AppendLine(ex.Message);
-            msg.AppendLine();
-            msg.AppendLine("Exception Stack:");
-            msg.AppendLine("  Outer Stack:");
-            msg.AppendLine(ex.StackTrace);
-            msg.AppendLine();
+            StringBuilder stackTrace = new StringBuilder();
+            stackTrace.AppendLine(ex.Message);
+            stackTrace.AppendLine();
+            stackTrace.AppendLine("Exception Stack:");
+            stackTrace.AppendLine("  Outer Stack:");
+            stackTrace.AppendLine(ex.StackTrace);
+            stackTrace.AppendLine();
 
 
-            while (ex.InnerException != null)
-            {
-                ex = ex.InnerException;
-
-				msg.AppendLine(ex.Message);
-                msg.AppendLine("  Inner Stack:");
-                msg.AppendLine(ex.StackTrace);
-                msg.AppendLine();
+            while (ex.InnerException != null) {
+                stackTrace.AppendLine(ex.Message);
+                stackTrace.AppendLine("  Inner Stack:");
+                stackTrace.AppendLine(ex.StackTrace);
+                stackTrace.AppendLine();
             }
 
-            return msg.ToString();
+            newMessage.Exception.Message = ex.Message;
+            newMessage.Exception.StackTrace = stackTrace.ToString();
+
+            return newMessage;
         }
 
-		private string GetCurrentCPU()
-		{
-			var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
-			cpuCounter.NextValue();
-			//You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
-			//Because of this 1 secound delay, this method should only be called when troubleshooting a specific issue, turn off at other times
-			Thread.Sleep(1000);
-			return cpuCounter.NextValue().ToString();
-		}
+        private LogMessage GetSingleMessageLog(string message, int severity) {
+            LogMessage logMessage = new LogMessage();
 
-		private string GetCurrentRAMUsage()
-		{
-			var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
-			ramCounter.NextValue();
-			//You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
-			//Because of this 1 secound delay, this method should only be called when troubleshooting a specific issue, turn off at other times
-			Thread.Sleep(1000);
-			return ramCounter.NextValue().ToString();
-		}
+            logMessage.Message = message;
+            logMessage.EntryType.Id = severity;
+            logMessage.Machine.Name = Environment.MachineName;
+            logMessage.Application.Name = ConfigurationManager.AppSettings["AppName"];
+            logMessage.Application.Environment = ConfigurationHelper.GetActiveConfiguration();
 
-        public void WriteErrorLog(string logMessage)
-        {
-			try
-			{
-				_log.WriteErrorLog(logMessage);
-			}
-			catch { FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Error); }
+            return logMessage;
         }
 
-        public void WriteErrorLog(string logMessage, Exception ex)
-        {
-			try{
-				_log.WriteErrorLog(GetLogMessage(logMessage, ex));
-			}
-			catch { FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error); }
+        private string GetCurrentCPU() {
+            var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+            cpuCounter.NextValue();
+            //You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
+            //Because of this 1 secound delay, this method should only be called when troubleshooting a specific issue, turn off at other times
+            Thread.Sleep(1000);
+            return cpuCounter.NextValue()
+                             .ToString();
         }
 
-        public void WriteInformationLog(string logMessage)
-        {
-			try{
-				_log.WriteInformationLog(logMessage);
-			}
-			catch { FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Information); }
+        private string GetCurrentRAMUsage() {
+            var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            ramCounter.NextValue();
+            //You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
+            //Because of this 1 secound delay, this method should only be called when troubleshooting a specific issue, turn off at other times
+            Thread.Sleep(1000);
+            return ramCounter.NextValue()
+                             .ToString();
         }
 
-        public void WriteInformationLog(string logMessage, Exception ex)
-        {
-			try
-			{
-				_log.WriteInformationLog(GetLogMessage(logMessage, ex));
-			}
-			catch { FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error); }
+        public void WriteErrorLog(string logMessage) {
+            try {
+                _log.PublishLogMessage(logMessage);
+            } catch {
+                FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Error);
+            }
         }
 
-        public void WriteWarningLog(string logMessage)
-        {
-			try{
-				_log.WriteWarningLog(logMessage);
-			}
-			catch { FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Warning); }
+        public void WriteErrorLog(string logMessage, Exception ex) {
+            try {
+                _log.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_ERROR));
+            } catch {
+                FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error);
+            }
         }
 
-        public void WriteWarningLog(string logMessage, Exception ex)
-        {
-			try{
-				_log.WriteWarningLog(GetLogMessage(logMessage, ex));
-			}
-			catch { FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Warning); }
+        public void WriteInformationLog(string logMessage) {
+            try {
+                _log.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_INFORMATION));
+            } catch {
+                FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Information);
+            }
         }
 
-		private void FailoverToWindowsEventLog(string logMessage, Exception ex, EventLogEntryType type)
-		{
-			string sSource = "BEK_KeithLink";
-			string sLog = "Application";
+        public void WriteInformationLog(string logMessage, Exception ex) {
+            try {
+                _log.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_INFORMATION));
+            } catch {
+                FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error);
+            }
+        }
 
-			StringBuilder message = new StringBuilder(logMessage);
+        public void WriteWarningLog(string logMessage) {
+            try {
+                _log.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_WARNING));
+            } catch {
+                FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Warning);
+            }
+        }
 
-			if (ex != null)
-			{
-				message.AppendLine();
-				message.Append(ex.ToString());
-			}
+        public void WriteWarningLog(string logMessage, Exception ex) {
+            try {
+                _log.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_WARNING));
+            } catch {
+                FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Warning);
+            }
+        }
 
-			try
-			{
-				if (!EventLog.SourceExists(sSource))
-					EventLog.CreateEventSource(sSource, sLog);
+        private void FailoverToWindowsEventLog(string logMessage, Exception ex, EventLogEntryType type) {
+            string sSource = "BEK_KeithLink";
+            string sLog = "Application";
 
-				EventLog.WriteEntry(sSource, message.ToString(), type, 234);
-			}
-			catch { } //If this fails too, then just swallow the error. Logging should not be able to take down the entire site
-		}
+            StringBuilder message = new StringBuilder(logMessage);
 
+            if (ex != null) {
+                message.AppendLine();
+                message.Append(ex.ToString());
+            }
+
+            try {
+                if (!EventLog.SourceExists(sSource))
+                    EventLog.CreateEventSource(sSource, sLog);
+
+                EventLog.WriteEntry(sSource, message.ToString(), type, 234);
+            } catch { } //If this fails too, then just swallow the error. Logging should not be able to take down the entire site
+        }
         #endregion
     }
 }
