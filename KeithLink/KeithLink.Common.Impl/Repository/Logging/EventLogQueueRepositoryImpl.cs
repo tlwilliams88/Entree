@@ -66,13 +66,20 @@ namespace KeithLink.Common.Impl.Repository.Logging {
             stackTrace.AppendLine(ex.StackTrace);
             stackTrace.AppendLine();
 
+            // This will iterate through all the inner exceptions and add them to the stack trace
+            if (ex.InnerException != null) {
+                var exception = ex;
 
-            while (ex.InnerException != null) {
-                stackTrace.AppendLine(ex.Message);
-                stackTrace.AppendLine("  Inner Stack:");
-                stackTrace.AppendLine(ex.StackTrace);
-                stackTrace.AppendLine();
+                while (exception.InnerException != null) {
+                    exception = exception.InnerException;
+
+                    stackTrace.AppendLine(exception.Message);
+                    stackTrace.AppendLine("  Inner Stack:");
+                    stackTrace.AppendLine(exception.StackTrace);
+                    stackTrace.AppendLine();
+                }
             }
+
 
             newMessage.Exception.Message = ex.Message;
             newMessage.Exception.StackTrace = stackTrace.ToString();
