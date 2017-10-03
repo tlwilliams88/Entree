@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Helpers;
 
 using FluentAssertions;
 using Moq;
 using Xunit;
 
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Impl.Helpers;
-using KeithLink.Svc.Impl.Service.List;
-
-
-namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
-    public class FavoritesAndNotesHelperTests {
+namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
+{
+    public class FavoritesAndNotesHelperTests
+    {
         private static IListService TestListSvc = Mock.Of<IListService>
                 (s => s.MarkFavoritesAndAddNotes(It.IsAny<UserProfile>(), It.IsAny<List<Product>>(), It.IsAny<UserSelectedContext>()) ==
                       new List<Product>() { new Product() { ItemNumber = "111111", Favorite = true, Notes = "test note", InHistory = true } });
@@ -23,10 +21,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
         private static IListService TestListSvcNoFavoritesOrNotes = Mock.Of<IListService>
             ();
 
-        public class GetFavoritesAndNotesFromLists_PassedInProduct {
-
+        public class GetFavoritesAndNotesFromLists_PassedInProduct
+        {
             [Fact]
-            public void GoodFavoriteProduct_ReturnsFavoriteAsTrue() {
+            public void GoodFavoriteProduct_ReturnsFavoriteAsTrue()
+            {
                 // arrange
                 Product prod = new Product() { ItemNumber = "111111" };
 
@@ -40,7 +39,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void BadFavoriteProduct_ReturnsFavoriteAsFalse() {
+            public void BadFavoriteProduct_ReturnsFavoriteAsFalse()
+            {
                 // arrange
                 Product prod = new Product() { ItemNumber = "999999" };
 
@@ -54,7 +54,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void BadNotesProduct_ReturnsNullNotes() {
+            public void BadNotesProduct_ReturnsNullNotes()
+            {
                 // arrange
                 Product prod = new Product() { ItemNumber = "111111" };
 
@@ -68,7 +69,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
             }
 
             [Fact]
-            public void GoodNotesProduct_ReturnsExpectedNotes() {
+            public void GoodNotesProduct_ReturnsExpectedNotes()
+            {
                 // arrange
                 Product prod = new Product() { ItemNumber = "111111" };
                 var expected = "test note";
@@ -81,7 +83,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                     .Should()
                     .Be(expected);
             }
-
 
             [Fact]
             public void GoodInHistoryProduct_ReturnsInHistoryAsTrue()
@@ -112,6 +113,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                     .Should()
                     .BeFalse();
             }
+
             [Fact]
             public void NoFavoritesOrNotes_ReturnsNullNotes()
             {
@@ -135,8 +137,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
 
         public class GetFavoritesAndNotesFromLists_PassedInListOfProduct
         {
-
-
             [Fact]
             public void GoodFavoriteProductInList_ReturnsProductInListWithFavoriteAsTrue()
             {
@@ -204,7 +204,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers {
                      .Should()
                      .BeNullOrEmpty();
             }
-
 
             [Fact]
             public void GoodInHistoryProductInList_ReturnsProductInListWithInHistoryAsTrue()

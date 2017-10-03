@@ -1,9 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using Autofac;
-
-using FluentAssertions;
-
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.ReminderItems;
@@ -11,14 +7,19 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 
+using Autofac;
+using FluentAssertions;
 using Moq;
-
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
-    public class ReminderItemsListLogicTests : BaseDITests {
-        private static IRemindersListLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents) {
-            if (useAutoFac) {
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
+{
+    public class ReminderItemsListLogicTests : BaseDITests
+    {
+        private static IRemindersListLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
+        {
+            if (useAutoFac)
+            {
                 ContainerBuilder cb = GetTestsContainer();
 
                 // Register mocks
@@ -38,12 +39,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return testunit;
         }
 
-        private static IRemindersListHeadersRepository MakeMockHeaderRepo() {
+        private static IRemindersListHeadersRepository MakeMockHeaderRepo()
+        {
             Mock<IRemindersListHeadersRepository> mockHeaderRepo = new Mock<IRemindersListHeadersRepository>();
 
             mockHeaderRepo.Setup(h => h.GetReminderItemsHeader(It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
                                                                                                c.CustomerId == "123456")))
-                          .Returns(new ReminderItemsListHeader {
+                          .Returns(new ReminderItemsListHeader
+                          {
                               BranchId = "FUT",
                               CustomerNumber = "123456",
                               Id = 1
@@ -52,7 +55,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return mockHeaderRepo.Object;
         }
 
-        private static IRemindersListDetailsRepository MakeMockDetailsRepo() {
+        private static IRemindersListDetailsRepository MakeMockDetailsRepo()
+        {
             Mock<IRemindersListDetailsRepository> mockDetailsRepo = new Mock<IRemindersListDetailsRepository>();
 
             mockDetailsRepo.Setup(h => h.GetRemindersDetails(It.Is<long>(l => l == 1)))
@@ -69,19 +73,23 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return mockDetailsRepo.Object;
         }
 
-        public class MockDependents {
+        public class MockDependents
+        {
             public Mock<IRemindersListHeadersRepository> headersRepository { get; set; }
 
             public Mock<IRemindersListDetailsRepository> detailsRepository { get; set; }
         }
 
-        public class GetListModel {
+        public class GetListModel
+        {
             [Fact]
-            public void BadBranchId_ReturnsNull() {
+            public void BadBranchId_ReturnsNull()
+            {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext {
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -97,11 +105,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull() {
+            public void BadCustomerId_ReturnsNull()
+            {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext {
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
@@ -117,11 +127,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
+            {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext {
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -210,19 +222,23 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
-        public class SaveList {
-// works differently if you want to verify a mock is called; we can't go through autofac
+        public class SaveList
+        {
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsSaveHeader() {
+            public void AnyCustomerIdAndBranch_CallsSaveHeader()
+            {
                 // arrange
                 MockDependents mockDependants = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(false, ref mockDependants);
                 UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext {
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                ListModel testList = new ListModel {
+                ListModel testList = new ListModel
+                {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -241,18 +257,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void AnyCustomerIdAndBranch_IfIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse() {
+            public void AnyCustomerIdAndBranch_IfIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse()
+            {
                 // arrange
                 MockDependents mockDependants = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(false, ref mockDependants);
                 UserProfile fakeUser = new UserProfile();
 
-                UserSelectedContext testcontext = new UserSelectedContext {
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
-                ListModel testList = new ListModel {
+                ListModel testList = new ListModel
+                {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -272,20 +291,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 mockDependants.detailsRepository.Verify(x => x.SaveReminderListDetail(It.Is<ReminderItemsListDetail>(d => d.Active.Equals(false))), Times.Once(), "Error updating");
             }
 
-
             [Fact]
-            public void AnyCustomerIdAndBranch_IfIsDeleteIsFalseAndActiveIsFalseSetsActiveToTrue() {
+            public void AnyCustomerIdAndBranch_IfIsDeleteIsFalseAndActiveIsFalseSetsActiveToTrue()
+            {
                 // arrange
                 MockDependents mockDependants = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(false, ref mockDependants);
                 UserProfile fakeUser = new UserProfile();
 
-                UserSelectedContext testcontext = new UserSelectedContext {
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
-                ListModel testList = new ListModel {
+                ListModel testList = new ListModel
+                {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -335,7 +356,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             {
                 // arrange
                 MockDependents mockDependants = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac:true,mockDependents:ref mockDependants);
+                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependants);
                 var testcontext = new UserSelectedContext()
                 {
                     BranchId = "FUT",
@@ -356,20 +377,24 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
-        public class Save {
-// works differently if you want to verify a mock is called; we can't go through autofac
+        public class Save
+        {
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsSaveDetail() {
+            public void AnyCustomerIdAndBranch_CallsSaveDetail()
+            {
                 // arrange
                 MockDependents mockDependants = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(false, ref mockDependants);
                 UserProfile fakeUser = new UserProfile();
-                UserSelectedContext testcontext = new UserSelectedContext {
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 ReminderItemsListDetail testItem =
-                        new ReminderItemsListDetail {
+                        new ReminderItemsListDetail
+                        {
                             CatalogId = "FUT",
                             ItemNumber = "123456",
                             Each = false,

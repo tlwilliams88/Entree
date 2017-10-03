@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-using Autofac;
-using FluentAssertions;
-using Moq;
-using Xunit;
-
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
@@ -26,12 +21,17 @@ using KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Orders;
 
+using Autofac;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
 {
     public class OrderLogicTests : BaseDITests
     {
         #region Setup
+
         public class MockDependents
         {
             public Mock<ICacheRepository> ICacheRepository { get; set; }
@@ -94,14 +94,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 var mock = new Mock<IShipDateRepository>();
 
                 mock.Setup(m => m.GetShipDates(It.IsAny<UserSelectedContext>()))
-                    .Returns(new ShipDateReturn() {
-                                                      ShipDates = new List<ShipDate>() {
+                    .Returns(new ShipDateReturn()
+                    {
+                        ShipDates = new List<ShipDate>() {
                                                                                            new ShipDate() {
                                                                                                               CutOffDateTime = "1/1/1970 23:59",
                                                                                                               Date = "1/1/1970"
                                                                                                           }
                                                                                        }
-                                                  });
+                    });
 
                 return mock;
             }
@@ -134,19 +135,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 return mock;
             }
 
-            public static Mock<IGenericQueueRepository> MakeIGenericQueueRepository() {
+            public static Mock<IGenericQueueRepository> MakeIGenericQueueRepository()
+            {
                 var mock = new Mock<IGenericQueueRepository>();
 
                 return mock;
             }
 
-            public static Mock<IKPayPaymentTransactionRepository> MakeIKPayPaymentTransactionRepository() {
+            public static Mock<IKPayPaymentTransactionRepository> MakeIKPayPaymentTransactionRepository()
+            {
                 var mock = new Mock<IKPayPaymentTransactionRepository>();
 
                 return mock;
             }
 
-            public static Mock<IOrderHistoryHeaderRepsitory> MakeIOrderHistoryHeaderRepsitory() {
+            public static Mock<IOrderHistoryHeaderRepsitory> MakeIOrderHistoryHeaderRepsitory()
+            {
                 var mock = new Mock<IOrderHistoryHeaderRepsitory>();
 
                 mock.Setup(m => m.Read(It.IsAny<Expression<Func<OrderHistoryHeader, bool>>>(),
@@ -179,43 +183,50 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 return mock;
             }
 
-            public static Mock<IKPayLogRepository> MakeIKPayLogRepository() {
+            public static Mock<IKPayLogRepository> MakeIKPayLogRepository()
+            {
                 var mock = new Mock<IKPayLogRepository>();
 
                 return mock;
             }
 
-            public static Mock<IKPayInvoiceRepository> MakeIKPayInvoiceRepository() {
+            public static Mock<IKPayInvoiceRepository> MakeIKPayInvoiceRepository()
+            {
                 var mock = new Mock<IKPayInvoiceRepository>();
 
                 return mock;
             }
 
-            public static Mock<ICustomerRepository> MakeICustomerRepository() {
+            public static Mock<ICustomerRepository> MakeICustomerRepository()
+            {
                 var mock = new Mock<ICustomerRepository>();
 
                 return mock;
             }
 
-            public static Mock<ICustomerBankRepository> MakeICustomerBankRepository() {
+            public static Mock<ICustomerBankRepository> MakeICustomerBankRepository()
+            {
                 var mock = new Mock<ICustomerBankRepository>();
 
                 return mock;
             }
 
-            public static Mock<IInternalUserAccessRepository> MakeIInternalUserAccessRepository() {
+            public static Mock<IInternalUserAccessRepository> MakeIInternalUserAccessRepository()
+            {
                 var mock = new Mock<IInternalUserAccessRepository>();
 
                 return mock;
             }
 
-            public static Mock<IAuditLogRepository> MakeIAuditLogRepository() {
+            public static Mock<IAuditLogRepository> MakeIAuditLogRepository()
+            {
                 var mock = new Mock<IAuditLogRepository>();
 
                 return mock;
             }
 
-            public static Mock<IEventLogRepository> MakeIEventLogRepository() {
+            public static Mock<IEventLogRepository> MakeIEventLogRepository()
+            {
                 var mock = new Mock<IEventLogRepository>();
 
                 return mock;
@@ -227,7 +238,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
 
                 return mock;
             }
-
         }
 
         private static IOrderLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
@@ -266,12 +276,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 return testunit;
             }
         }
-        #endregion
 
-        #region attributes
-        #endregion
+        #endregion Setup
+
+
 
         #region GetOrder
+
         public class GetOrder
         {
             [Fact]
@@ -321,7 +332,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                 mockDependents.ICatalogLogic.Setup(m => m.GetProductsByIds("FUT", new List<string>() { "111111" }))
                     .Returns(new ProductsReturn()
                     {
-                        Products = new List<Product>() {}
+                        Products = new List<Product>() { }
                     });
 
                 var testBranch = "FUT";
@@ -337,8 +348,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Orders
                       .Should()
                       .BeNull();
             }
-
         }
-        #endregion
+
+        #endregion GetOrder
     }
 }

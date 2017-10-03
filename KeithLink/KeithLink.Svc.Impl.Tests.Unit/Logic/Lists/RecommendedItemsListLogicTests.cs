@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Autofac;
-using FluentAssertions;
-using Moq;
-using Xunit;
+﻿using System.Collections.Generic;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
+
+using Autofac;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
@@ -180,14 +179,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var testdetail = new RecommendedItemsListDetail() {
-                                                                      CatalogId = "FUT",
-                                                                      ItemNumber = "123456",
-                                                                      Each = false,
-                                                                      LineNumber = 1,
-                                                                      Id = 1
-                                                                  };
-
+                var testdetail = new RecommendedItemsListDetail()
+                {
+                    CatalogId = "FUT",
+                    ItemNumber = "123456",
+                    Each = false,
+                    LineNumber = 1,
+                    Id = 1
+                };
 
                 // act
                 testunit.SaveDetail(testcontext, testdetail);
@@ -221,7 +220,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                    CustomerNumber = "123456",
                                    Id = 1
                                });
-
 
                 // act
                 testunit.DeleteRecommendedItems(fakeUser, testcontext);

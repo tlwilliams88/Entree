@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Configurations;
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Impl.Logic.Configurations;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Autofac;
 using FluentAssertions;
-
-using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Svc.Core.Enumerations.List;
-using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Interface.Configurations;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Configuration.EF;
-using KeithLink.Svc.Core.Models.Orders;
-using KeithLink.Svc.Impl.Logic.Configurations;
-using KeithLink.Svc.Impl.Logic.Lists;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-
 using Moq;
 using Xunit;
 
@@ -27,6 +17,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
     public class ExportSettingLogicTests : BaseDITests
     {
         #region Setup
+
         public class MockDependents
         {
             public Mock<IExportSettingRepository> ExportSettingRepository { get; set; }
@@ -91,12 +82,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
                 return testunit;
             }
         }
-        #endregion
 
-        #region attributes
-        #endregion
+        #endregion Setup
 
         #region ReadCustomExportOptions
+
         public class ReadCustomExportOptions
         {
             [Fact]
@@ -605,6 +595,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Configuration
                        .BeFalse();
             }
         }
-        #endregion
+
+        #endregion ReadCustomExportOptions
     }
 }

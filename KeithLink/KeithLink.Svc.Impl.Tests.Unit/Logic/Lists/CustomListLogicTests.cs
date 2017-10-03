@@ -1114,8 +1114,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 // assert
                 detail.Verify(d => d.SaveCustomListDetail(It.IsAny<CustomListDetail>()), Times.Exactly(2));
             }
-
-
         }
     }
 }

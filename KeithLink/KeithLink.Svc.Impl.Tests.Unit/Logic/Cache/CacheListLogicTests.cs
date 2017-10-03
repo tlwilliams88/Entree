@@ -1,29 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Autofac;
-using FluentAssertions;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Cache;
 
+using Autofac;
 using Moq;
 using Xunit;
-using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
 {
     public class CacheListLogicTests : BaseDITests
     {
         #region Setup
+
         public class MockDependents
         {
             public Mock<ICacheRepository> CacheRepository { get; set; }
@@ -40,7 +34,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
 
                 return mock;
             }
-
         }
 
         private static ICacheListLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
@@ -65,12 +58,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 return testunit;
             }
         }
-        #endregion
 
-        #region attributes
-        #endregion
+        #endregion Setup
 
         #region GetCachedContractInformation
+
         public class GetCachedContractInformation
         {
             [Fact]
@@ -91,11 +83,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<Dictionary<string, string>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion GetCachedContractInformation
 
         #region GetCachedLabels
+
         public class GetCachedLabels
         {
             [Fact]
@@ -116,11 +109,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<List<string>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion GetCachedLabels
 
         #region AddCachedLabels
+
         public class AddCachedLabels
         {
             [Fact]
@@ -147,11 +141,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                                       It.IsAny<TimeSpan>(),
                                                                                       It.IsAny<List<string>>()), Times.Exactly(2), "not called");
             }
-
         }
-        #endregion
+
+        #endregion AddCachedLabels
 
         #region GetCachedTypedLists
+
         public class GetCachedTypedLists
         {
             [Fact]
@@ -174,11 +169,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<List<ListModel>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion GetCachedTypedLists
 
         #region AddCachedTypedLists
+
         public class AddCachedTypedLists
         {
             [Fact]
@@ -200,18 +196,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 testunit.AddCachedTypedLists(testContext, testtype, testHeaderOnly, lists);
 
                 // assert
-                mockDependents.CacheRepository.Verify(m => m.AddItem<List<ListModel>>(It.IsAny<string>(), 
-                                                                                      It.IsAny<string>(), 
-                                                                                      It.IsAny<string>(), 
+                mockDependents.CacheRepository.Verify(m => m.AddItem<List<ListModel>>(It.IsAny<string>(),
                                                                                       It.IsAny<string>(),
-                                                                                      It.IsAny<TimeSpan>(), 
+                                                                                      It.IsAny<string>(),
+                                                                                      It.IsAny<string>(),
+                                                                                      It.IsAny<TimeSpan>(),
                                                                                       It.IsAny<List<ListModel>>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion AddCachedTypedLists
 
         #region GetCachedCustomerLists
+
         public class GetCachedCustomerLists
         {
             [Fact]
@@ -232,11 +229,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<List<ListModel>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion GetCachedCustomerLists
 
         #region AddCachedCustomerLists
+
         public class AddCachedCustomerLists
         {
             [Fact]
@@ -263,11 +261,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                                       It.IsAny<TimeSpan>(),
                                                                                       It.IsAny<List<ListModel>>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion AddCachedCustomerLists
 
         #region GetCachedSpecificList
+
         public class GetCachedSpecificList
         {
             [Fact]
@@ -289,11 +288,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<ListModel>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion GetCachedSpecificList
 
         #region AddCachedSpecificList
+
         public class AddCachedSpecificList
         {
             [Fact]
@@ -321,11 +321,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                                 It.IsAny<TimeSpan>(),
                                                                                 It.IsAny<ListModel>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion AddCachedSpecificList
 
         #region ClearCustomersListCachesWithUserSelectedContext
+
         public class ClearCustomersListCachesWithUserSelectedContext
         {
             [Fact]
@@ -364,11 +365,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Exactly(10), "not called");
             }
-
         }
-        #endregion
+
+        #endregion ClearCustomersListCachesWithUserSelectedContext
 
         #region ClearCustomersListCachesWithCustomerNumberAndBranchId
+
         public class ClearCustomersListCachesWithCustomerNumberAndBranchId
         {
             [Fact]
@@ -407,11 +409,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Exactly(10), "not called");
             }
-
         }
-        #endregion
+
+        #endregion ClearCustomersListCachesWithCustomerNumberAndBranchId
 
         #region RemoveSpecificCachedList
+
         public class RemoveSpecificCachedList
         {
             [Fact]
@@ -420,12 +423,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                 // arrange
                 var mockDependents = new MockDependents();
                 var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testList = new ListModel() {
-                                        BranchId="FUT",
-                                        CustomerNumber = "123456",
-                                        Type = ListType.Contract,
-                                        ListId = 5
-                                    };
+                var testList = new ListModel()
+                {
+                    BranchId = "FUT",
+                    CustomerNumber = "123456",
+                    Type = ListType.Contract,
+                    ListId = 5
+                };
 
                 // act
                 testunit.RemoveSpecificCachedList(testList);
@@ -436,11 +440,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion RemoveSpecificCachedList
 
         #region RemoveTypeOfListsCache
+
         public class RemoveTypeOfListsCache
         {
             [Fact]
@@ -465,11 +470,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Exactly(2), "not called");
             }
-
         }
-        #endregion
+
+        #endregion RemoveTypeOfListsCache
 
         #region ClearCustomersLabelsCacheWithUserSelectedContext
+
         public class ClearCustomersLabelsCacheWithUserSelectedContext
         {
             [Fact]
@@ -493,11 +499,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+
+        #endregion ClearCustomersLabelsCacheWithUserSelectedContext
 
         #region ClearCustomersLabelsCacheWithCustomerNumberAndBranchId
+
         public class ClearCustomersLabelsCacheWithCustomerNumberAndBranchId
         {
             [Fact]
@@ -521,9 +528,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
 
+        #endregion ClearCustomersLabelsCacheWithCustomerNumberAndBranchId
     }
 }

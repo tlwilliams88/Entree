@@ -1,34 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
-
-using Autofac;
-using FluentAssertions;
 
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Email;
-
-using Moq;
-using Xunit;
-
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Lists.Contract;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.SmartResolver;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Seams;
+
+using Autofac;
+using Moq;
+using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
     public class ContractListChangesLogicTests : BaseDITests
     {
         #region Setup
+
         public class MockDependents
         {
             public Mock<ICatalogLogic> CatalogLogic { get; set; }
@@ -76,6 +71,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 
                 return mock;
             }
+
             public static Mock<ICustomerRepository> MakeMockCustomerRepository()
             {
                 var mock = new Mock<ICustomerRepository>();
@@ -100,7 +96,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 return mock;
             }
 
-            public static Mock<IContractChangesRepository> MakeMockContractChangesRepository() {
+            public static Mock<IContractChangesRepository> MakeMockContractChangesRepository()
+            {
                 var mock = new Mock<IContractChangesRepository>();
 
                 return mock;
@@ -132,14 +129,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 "</tr>" +
 "<tr>" +
 "<td> Branch: {BranchID}</td>" +
-"</tr></table></td></tr></table><hr/>"});
+"</tr></table></td></tr></table><hr/>"
+                    });
 
                 mock.Setup(f => f.ReadForKey("ContractChangeNotice"))
-                    .Returns(new MessageTemplateModel() {
-                                                            TemplateKey = "ContractChangeNotice",
-                                                            Subject = "Ben E. Keith: Contract Change Notice for {CustomerNumber}-{CustomerName}",
-                                                            IsBodyHtml = true,
-                                                            Body =  "{NotifHeader}<table style=\"width: 100 %; \">" +
+                    .Returns(new MessageTemplateModel()
+                    {
+                        TemplateKey = "ContractChangeNotice",
+                        Subject = "Ben E. Keith: Contract Change Notice for {CustomerNumber}-{CustomerName}",
+                        IsBodyHtml = true,
+                        Body = "{NotifHeader}<table style=\"width: 100 %; \">" +
                                                                     "<tr style = \"border-bottom:1px solid gray;\" >" +
                                                                     "<th style = \"text-align:left;\" > Change </ th >" +
                                                                     "<th style = \"text-align:left;\" > Item # </th>" +
@@ -149,7 +148,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                     "<th style = \"text-align:left;\" > Size </th>" +
                                                                     "</tr>" +
                                                                     "{ContractChangeItems}" +
-                                                                    "</table>"});
+                                                                    "</table>"
+                    });
 
                 mock.Setup(f => f.ReadForKey("ContractChangeItem"))
                     .Returns(new MessageTemplateModel()
@@ -163,11 +163,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 "<td style = \"text-align:left;font-size:small;\" >{Brand}</td>" +
 "<td style = \"text-align:left;font-size:small;\" >{Pack}</td>" +
 "<td style = \"text-align:left;font-size:small;\" >{Size}</td>" +
-"</tr>"});
+"</tr>"
+                    });
 
                 return mock;
             }
-
         }
 
         private static IContractListChangesLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
@@ -193,19 +193,23 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 mockDependents.ContractChangesRepository = MockDependents.MakeMockContractChangesRepository();
                 mockDependents.MessageTemplateLogic = MockDependents.MakeMockMessageTemplateLogic();
 
-                var testunit = new ContractListChangesLogicImpl(mockDependents.CatalogLogic.Object, mockDependents.CustomerRepository.Object, mockDependents.EventLogRepository.Object, 
+                var testunit = new ContractListChangesLogicImpl(mockDependents.CatalogLogic.Object, mockDependents.CustomerRepository.Object, mockDependents.EventLogRepository.Object,
                                                                 mockDependents.GenericQueueRepository.Object, mockDependents.ContractChangesRepository.Object, mockDependents.MessageTemplateLogic.Object);
                 return testunit;
             }
         }
-        #endregion
+
+        #endregion Setup
 
         #region attributes
+
         private const string MESSAGE_TEMPLATE_CONTRACTCHANGE = "ContractChangeNotice";
         private const string MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS = "ContractChangeItem";
-        #endregion
+
+        #endregion attributes
 
         #region ProcessContractChanges
+
         public class ProcessContractChanges
         {
             [Fact]
@@ -240,7 +244,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                                                                  }
                                                         })
                     .Returns(null);
-                
+
                 // act
                 testunit.ProcessContractChanges();
 
@@ -410,17 +414,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 BEKConfiguration.Reset();
 
                 // assert
-                mockDependents.GenericQueueRepository.Verify(m => m.PublishToDirectedExchange(  It.Is<string>(s => s.IndexOf(expected)>-1), 
-                                                                                                It.IsAny<string>(), 
-                                                                                                It.IsAny<string>(), 
-                                                                                                It.IsAny<string>(), 
-                                                                                                It.IsAny<string>(), 
-                                                                                                It.IsAny<string>(), 
-                                                                                                It.IsAny<string>()), 
-                                                                                                Times.Once, 
+                mockDependents.GenericQueueRepository.Verify(m => m.PublishToDirectedExchange(It.Is<string>(s => s.IndexOf(expected) > -1),
+                                                                                                It.IsAny<string>(),
+                                                                                                It.IsAny<string>(),
+                                                                                                It.IsAny<string>(),
+                                                                                                It.IsAny<string>(),
+                                                                                                It.IsAny<string>(),
+                                                                                                It.IsAny<string>()),
+                                                                                                Times.Once,
                                                                                                 "not called");
             }
         }
-        #endregion
+
+        #endregion ProcessContractChanges
     }
 }

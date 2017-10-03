@@ -20,6 +20,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Reports
     public class ReportLogicTests : BaseDITests
     {
         #region Setup
+
         public class MockDependents
         {
             public Mock<ICatalogRepository> ICatalogRepository { get; set; }
@@ -50,7 +51,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Reports
                                                                        }
                                                    });
 
-
                 return mock;
             }
 
@@ -68,12 +68,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Reports
                 return mock;
             }
 
-            public static Mock<IEventLogRepository> MakeIEventLogRepository() {
+            public static Mock<IEventLogRepository> MakeIEventLogRepository()
+            {
                 var mock = new Mock<IEventLogRepository>();
 
                 return mock;
             }
-
         }
 
         private static IReportLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
@@ -102,24 +102,31 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Reports
                 return testunit;
             }
         }
-        #endregion
+
+        #endregion Setup
 
         #region attributes
-        protected static ItemUsageReportQueryModel MakeQuery() {
-            return new ItemUsageReportQueryModel() {
-                                                       fromDate = DateTime.Parse("1/1/1970"),
-                                                       toDate = DateTime.Parse("1/10/1970"),
-                                                       sortField = "ItemNumber",
-                                                       sortDir = "asc",
-                                                       UserSelectedContext = new UserSelectedContext() {
-                                                                                                           CustomerId = "123456",
-                                                                                                           BranchId = "FUT"
-                                                                                                       }
-                                                   };
+
+        protected static ItemUsageReportQueryModel MakeQuery()
+        {
+            return new ItemUsageReportQueryModel()
+            {
+                fromDate = DateTime.Parse("1/1/1970"),
+                toDate = DateTime.Parse("1/10/1970"),
+                sortField = "ItemNumber",
+                sortDir = "asc",
+                UserSelectedContext = new UserSelectedContext()
+                {
+                    CustomerId = "123456",
+                    BranchId = "FUT"
+                }
+            };
         }
-        #endregion
+
+        #endregion attributes
 
         #region GetItemUsage
+
         public class GetItemUsage
         {
             [Fact]
@@ -167,7 +174,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Reports
                 mockDependents.ICatalogLogic.Setup(m => m.GetProductsByIds("FUT", new List<string>() { "111111" }))
                     .Returns(new ProductsReturn()
                     {
-                        Products = new List<Product>() {}
+                        Products = new List<Product>() { }
                     });
 
                 var testQuery = MakeQuery();
@@ -181,8 +188,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Reports
                       .Should()
                       .BeNull();
             }
-
         }
-        #endregion
+
+        #endregion GetItemUsage
     }
 }

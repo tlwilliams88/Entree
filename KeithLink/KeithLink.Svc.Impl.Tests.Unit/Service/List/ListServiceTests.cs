@@ -3,27 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
+using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Lists.ReminderItems;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Common.Core.Interfaces.Logging;
-using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.CustomList;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
 using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
 using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
+using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Service.List;
 
 using Autofac;
@@ -36,6 +36,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
     public class ListServiceTests : BaseDITests
     {
         #region Setup
+
         public class MockDependents
         {
             public Mock<ICacheListLogic> CacheListHelper { get; set; }
@@ -217,7 +218,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                         ListId = 1
                     });
 
-
                 return mock;
             }
 
@@ -299,7 +299,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                             }
                         }
                     });
-
 
                 return mock;
             }
@@ -491,9 +490,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 return testunit;
             }
         }
-        #endregion
+
+        #endregion Setup
 
         #region GetContractInformation
+
         public class GetContractInformation
         {
             [Fact]
@@ -607,9 +608,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                             It.IsAny<long>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion GetContractInformation
 
         #region GetItemsHistoryList
+
         public class GetItemsHistoryList
         {
             [Fact]
@@ -632,9 +635,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.ItemHistoryRepository.Verify(m => m.Read(It.IsAny<Expression<Func<ItemHistory, bool>>>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion GetItemsHistoryList
 
         #region GetNotesHash
+
         public class GetNotesHash
         {
             [Fact]
@@ -657,9 +662,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.NotesListLogic.Verify(m => m.GetList(It.IsAny<UserSelectedContext>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion GetNotesHash
 
         #region GetFavoritesHash
+
         public class GetFavoritesHash
         {
             [Fact]
@@ -693,9 +700,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion GetFavoritesHash
 
         #region ReadListByType
+
         public class ReadListByType
         {
             [Fact]
@@ -933,9 +942,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadListByType
 
         #region ReadUserList
+
         public class ReadUserList
         {
             [Fact]
@@ -1086,9 +1097,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.RecommendedItemsListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadUserList
 
         #region ReadLabels
+
         public class ReadLabels
         {
             [Fact]
@@ -1131,9 +1144,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.FavoritesListLogic.Verify(m => m.GetFavoritesList(It.IsAny<Guid>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadLabels
 
         #region ReadList
+
         public class ReadList
         {
             [Fact]
@@ -1383,9 +1398,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadList
 
         #region ReadPagedList
+
         public class ReadPagedList
         {
             [Fact]
@@ -1619,9 +1636,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadPagedList
 
         #region ReadRecent
+
         public class ReadRecent
         {
             [Fact]
@@ -1644,9 +1663,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.RecentlyViewedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadRecent
 
         #region ReadRecentOrder
+
         public class ReadRecentOrder
         {
             [Fact]
@@ -1670,9 +1691,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.RecentlyOrderedListLogic.Verify(m => m.ReadList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadRecentOrder
 
         #region UpdateList
+
         public class UpdateList
         {
             [Fact]
@@ -1840,9 +1863,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.InventoryValuationListLogic.Verify(m => m.SaveList(fakeUser, testcontext, testModel), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion UpdateList
 
         #region SaveItem
+
         public class SaveItem
         {
             [Fact]
@@ -2093,9 +2118,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                             .Be(expected);
             }
         }
-        #endregion
+
+        #endregion SaveItem
 
         #region SaveItems
+
         public class SaveItems
         {
             [Fact]
@@ -2386,9 +2413,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                              .Be(expected);
             }
         }
-        #endregion
+
+        #endregion SaveItems
 
         #region CreateList
+
         public class CreateList
         {
             [Fact]
@@ -2549,9 +2578,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.InventoryValuationListLogic.Verify(m => m.CreateOrUpdateList(fakeUser, testcontext, 0, testModel.Name, It.IsAny<bool>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion CreateList
 
         #region CopyList
+
         public class CopyList
         {
             [Fact]
@@ -2584,9 +2615,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Exactly(4), "not called");
             }
         }
-        #endregion
+
+        #endregion CopyList
 
         #region DeleteList
+
         public class DeleteList
         {
             [Fact]
@@ -2659,9 +2692,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                                             false), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion DeleteList
 
         #region ReadRecommendedItemsList
+
         public class ReadRecommendedItemsList
         {
             [Fact]
@@ -2684,9 +2719,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                 Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion ReadRecommendedItemsList
 
         #region MarkFavoritesAndAddNotes_ReturnsListModel
+
         public class MarkFavoritesAndAddNotes_ReturnsListModel
         {
             [Fact]
@@ -2755,9 +2792,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                                  false), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion MarkFavoritesAndAddNotes_ReturnsListModel
 
         #region MarkFavoritesAndAddNotes_ReturnsListOfProduct
+
         public class MarkFavoritesAndAddNotes_ReturnsListOfProduct
         {
             [Fact]
@@ -2818,9 +2857,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                                                  false), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion MarkFavoritesAndAddNotes_ReturnsListOfProduct
 
         #region GetBarcodeForList
+
         public class GetBarcodeForList
         {
             [Fact]
@@ -2845,9 +2886,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.ItemBarcodeRepository.Verify(m => m.GetBarcodeForList(It.IsAny<ListModel>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion GetBarcodeForList
 
         #region AddCustomInventory
+
         public class AddCustomInventory
         {
             [Fact]
@@ -2896,9 +2939,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.CustomListLogic.Verify(m => m.SaveList(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<ListModel>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion AddCustomInventory
 
         #region AddCustomInventoryItems
+
         public class AddCustomInventoryItems
         {
             [Fact]
@@ -2924,9 +2969,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                 mockDependents.CustomInventoryItemsRepository.Verify(m => m.GetItemsByItemIds(It.IsAny<List<long>>()), Times.Once, "not called");
             }
         }
-        #endregion
+
+        #endregion AddCustomInventoryItems
 
         #region DeleteItem
+
         public class DeleteItem
         {
             [Fact]
@@ -2987,9 +3034,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                          Times.Never);
             }
         }
-        #endregion
+
+        #endregion DeleteItem
 
         #region DeleteItems
+
         public class DeleteItems
         {
             [Fact]
@@ -3050,6 +3099,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                                          Times.Never);
             }
         }
-        #endregion
+
+        #endregion DeleteItems
     }
 }

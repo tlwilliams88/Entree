@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using KeithLink.Svc.Core.Interface.Reports;
+using KeithLink.Svc.Core.Models.Lists;
 
 using Autofac;
 using FluentAssertions;
-using Moq;
 using Xunit;
-
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Interface.Reports;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
 {
@@ -26,6 +20,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
 
             return testcontainer.Resolve<IItemBarcodeImageRepository>();
         }
+
         public class GetBarcodeForList
         {
             [Fact]
@@ -38,7 +33,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
                     BranchId = "XXX",
                     CustomerNumber = "123456",
                     Items = new List<ListItemModel>() {
-                                                          new ListItemModel() { ItemNumber = "123456"} 
+                                                          new ListItemModel() { ItemNumber = "123456"}
                                                       }
                 };
 
@@ -48,7 +43,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
                 // assert
                 results.Should()
                        .NotBeNull();
-
             }
 
             [Fact]

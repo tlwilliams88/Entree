@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Autofac;
-using FluentAssertions;
-using Moq;
-using Xunit;
+﻿using System.Collections.Generic;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
@@ -15,6 +6,11 @@ using KeithLink.Svc.Core.Models.Lists.Notes;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
+
+using Autofac;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
@@ -70,14 +66,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                            });
 
             mockDetailsRepo.Setup(h => h.Get(It.Is<long>(l => l == 1), "123456"))
-                           .Returns(new NotesListDetail() {
-                                                             CatalogId = "FUT",
-                                                             ItemNumber = "123456",
-                                                             Each = false,
-                                                             LineNumber = 1,
-                                                             Id = 1,
-                                                             Note = "test note"
-                                                      });
+                           .Returns(new NotesListDetail()
+                           {
+                               CatalogId = "FUT",
+                               ItemNumber = "123456",
+                               Each = false,
+                               LineNumber = 1,
+                               Id = 1,
+                               Note = "test note"
+                           });
 
             return mockDetailsRepo.Object;
         }
@@ -148,6 +145,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
         }
 
         #region GetNotes
+
         public class GetNotes
         {
             [Fact]
@@ -211,7 +209,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                        .Be(expectedCount);
             }
         }
-        #endregion
+
+        #endregion GetNotes
 
         public class GetList
         {
@@ -338,10 +337,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var testNotes = new ListItemModel() {
-                                                        ItemNumber = "123456",
-                                                        Notes = "test note"
-                                                    };
+                var testNotes = new ListItemModel()
+                {
+                    ItemNumber = "123456",
+                    Notes = "test note"
+                };
 
                 // act
                 testunit.SaveNote(testcontext, testNotes);

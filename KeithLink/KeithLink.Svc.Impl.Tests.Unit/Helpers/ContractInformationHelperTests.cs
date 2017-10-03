@@ -1,33 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Impl.Helpers;
-
-using Moq;
-using FluentAssertions;
-
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.ShoppingCart;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Helpers;
 
+using FluentAssertions;
+using Moq;
 using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
 {
-    public class ContractInformationHelperTests {
+    public class ContractInformationHelperTests
+    {
         #region setup
-        private static IListService TestListSvc() {
+
+        private static IListService TestListSvc()
+        {
             var dict = new Dictionary<string, string>();
             dict.Add("111111", "Category 1");
-            var lsvc = Mock.Of<IListService>(s => s.GetContractInformation(It.IsAny<UserSelectedContext>() ) ==
-              dict );
+            var lsvc = Mock.Of<IListService>(s => s.GetContractInformation(It.IsAny<UserSelectedContext>()) ==
+              dict);
             return lsvc;
         }
 
@@ -38,27 +34,30 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
             return nocontract;
         }
 
-        private static Product TestProd = new Product() {
-                                                            ItemNumber = "111111",
-                                                            Name = "Fake Name",
-                                                            BrandExtendedDescription = "Fake Brand",
-                                                            Size = "Fake Size",
-                                                            Pack = "Fake Pack"
-                                                        };
+        private static Product TestProd = new Product()
+        {
+            ItemNumber = "111111",
+            Name = "Fake Name",
+            BrandExtendedDescription = "Fake Brand",
+            Size = "Fake Size",
+            Pack = "Fake Pack"
+        };
 
-        private static Product TestOtherProd = new Product() {
-                                                                 ItemNumber = "999999",
-                                                                 Name = "Fake Name",
-                                                                 BrandExtendedDescription = "Fake Brand",
-                                                                 Size = "Fake Size",
-                                                                 Pack = "Fake Pack"
-                                                             };
-        #endregion
+        private static Product TestOtherProd = new Product()
+        {
+            ItemNumber = "999999",
+            Name = "Fake Name",
+            BrandExtendedDescription = "Fake Brand",
+            Size = "Fake Size",
+            Pack = "Fake Pack"
+        };
+
+        #endregion setup
 
         #region GetContractCategoriesFromLists_PassedInProduct
+
         public class GetContractCategoriesFromLists_PassedInProduct
         {
-
             [Fact]
             public void GoodProduct_ExpectCategory()
             {
@@ -136,12 +135,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                     .BeNullOrEmpty();
             }
         }
-        #endregion
+
+        #endregion GetContractCategoriesFromLists_PassedInProduct
 
         #region GetContractCategoriesFromLists_PassedInListOfProduct
+
         public class GetContractCategoriesFromLists_PassedInListOfProduct
         {
-
             private static List<Product> TestProducts = new List<Product> { TestProd, TestOtherProd };
 
             [Fact]
@@ -228,11 +228,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                      .NotBeNullOrEmpty();
             }
         }
-        #endregion
+
+        #endregion GetContractCategoriesFromLists_PassedInListOfProduct
 
         #region GetContractCategoriesFromLists_PassedInListOfShoppingCartItem
-        public class GetContractCategoriesFromLists_PassedInListOfShoppingCartItem {
 
+        public class GetContractCategoriesFromLists_PassedInListOfShoppingCartItem
+        {
             private static List<ShoppingCartItem> TestShoppingCartItems = new List<ShoppingCartItem> {
                                                                                                 new ShoppingCartItem() {
                                                                                                                            ItemNumber = "111111",
@@ -297,11 +299,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                      .NotBeNullOrEmpty();
             }
         }
-        #endregion
+
+        #endregion GetContractCategoriesFromLists_PassedInListOfShoppingCartItem
 
         #region GetContractCategoriesFromLists_PassedInListOfOrderLine
-        public class GetContractCategoriesFromLists_PassedInListOfOrderLine {
 
+        public class GetContractCategoriesFromLists_PassedInListOfOrderLine
+        {
             private static List<OrderLine> TestOrderLines = new List<OrderLine> {
                                                                                     new OrderLine() {
                                                                                                         ItemNumber = "111111",
@@ -370,11 +374,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                      .NotBeNullOrEmpty();
             }
         }
-        #endregion
+
+        #endregion GetContractCategoriesFromLists_PassedInListOfOrderLine
 
         #region GetContractCategoriesFromLists_PassedInListOfItemUsageReportItemModel
-        public class GetContractCategoriesFromLists_PassedInListOfItemUsageReportItemModel {
 
+        public class GetContractCategoriesFromLists_PassedInListOfItemUsageReportItemModel
+        {
             private static List<ItemUsageReportItemModel> TestItemUsageReportItemModels = new List<ItemUsageReportItemModel> {
                                                                                                                                  new ItemUsageReportItemModel() {
                                                                                                                                                                     ItemNumber = "111111",
@@ -443,6 +449,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                      .NotBeNullOrEmpty();
             }
         }
-        #endregion
+
+        #endregion GetContractCategoriesFromLists_PassedInListOfItemUsageReportItemModel
     }
 }

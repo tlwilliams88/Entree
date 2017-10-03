@@ -1,21 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Autofac;
-using FluentAssertions;
-
-using KeithLink.Svc.Core;
+﻿using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.List;
-
-using Moq;
-using Xunit;
-
-using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Extensions;
-using KeithLink.Svc.Impl.Logic.Lists;
+
+using FluentAssertions;
+using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
 {
@@ -25,12 +15,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
         public void UsingListAsSysAdmin_SetListReadOnlyAsExpected()
         {
             // arrange
-            ListModel list = new ListModel() {
-                                                 Type = ListType.Mandatory,
-                                                 ReadOnly = true
-                                             };
-            UserProfile user = new UserProfile() {
-                                                     RoleName = Constants.ROLE_NAME_SYSADMIN
+            ListModel list = new ListModel()
+            {
+                Type = ListType.Mandatory,
+                ReadOnly = true
+            };
+            UserProfile user = new UserProfile()
+            {
+                RoleName = Constants.ROLE_NAME_SYSADMIN
             };
             var expected = false;
 
@@ -40,7 +32,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
 
         [Fact]
@@ -64,7 +55,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
 
         [Fact]
@@ -88,7 +78,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
 
         [Fact]
@@ -112,7 +101,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
 
         [Fact]
@@ -136,7 +124,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
 
         [Fact]
@@ -160,7 +147,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
 
         [Fact]
@@ -184,7 +170,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
 
         [Fact]
@@ -208,7 +193,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Extensions
             list.SetUserSpecificProperties(user).ReadOnly
                                                 .Should()
                                                 .Be(expected);
-
         }
     }
 }

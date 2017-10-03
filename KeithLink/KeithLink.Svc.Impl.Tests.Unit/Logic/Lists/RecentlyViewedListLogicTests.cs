@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Autofac;
-using FluentAssertions;
-using Moq;
-using Xunit;
-
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists.RecentlyViewed;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
+
+using Autofac;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return testcontainer.Resolve<IRecentlyViewedListLogic>();
         }
 
-        private static IRecentlyViewedListLogic MakeTestObject(out Mock<IRecentlyViewedListHeadersRepository> mockHeadersRepository, 
+        private static IRecentlyViewedListLogic MakeTestObject(out Mock<IRecentlyViewedListHeadersRepository> mockHeadersRepository,
                                                                out Mock<IRecentlyViewedListDetailsRepository> mockDetailsRepository)
         {
             mockHeadersRepository = new Mock<IRecentlyViewedListHeadersRepository>();
@@ -77,6 +77,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
         }
 
         #region ReadList
+
         public class ReadList
         {
             [Fact]
@@ -144,9 +145,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                        .Be(expectedListId);
             }
         }
-        #endregion
+
+        #endregion ReadList
 
         #region PostRecentView
+
         public class PostRecentView
         { // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
@@ -193,9 +196,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 mockHeadersRepo.Verify(h => h.Save(It.Is<RecentlyViewedListHeader>(head => head.UserId == new Guid("dddddddddddddddddddddddddddddddd"))), Times.Once(), "Error updating");
             }
         }
-        #endregion
+
+        #endregion PostRecentView
 
         #region DeleteAll
+
         public class DeleteAll
         { // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
@@ -247,8 +252,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 
                 // assert - Always returns what is setup provided the mock is called
             }
-
         }
-        #endregion
+
+        #endregion DeleteAll
     }
 }

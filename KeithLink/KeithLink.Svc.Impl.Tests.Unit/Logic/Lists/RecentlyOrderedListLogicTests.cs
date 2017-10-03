@@ -1,13 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Autofac;
-using FluentAssertions;
-using Moq;
-using Xunit;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
@@ -15,6 +7,11 @@ using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
+
+using Autofac;
+using FluentAssertions;
+using Moq;
+using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 {
@@ -227,8 +224,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 // assert - Always returns what is setup provided the mock is called
                 mockDetailsRepo.Verify(h => h.DeleteOldRecentlyOrdered(It.IsAny<long>(), It.IsAny<int>()), Times.Never, "Error updating");
             }
-
         }
-
     }
 }

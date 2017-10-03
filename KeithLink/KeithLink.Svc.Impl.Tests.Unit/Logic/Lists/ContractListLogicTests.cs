@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Autofac;
-using FluentAssertions;
-using Moq;
-using Xunit;
-
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Contract;
@@ -13,9 +8,17 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
-    public class ContractListLogicTests {
-        private static IContractListLogic MakeMockLogic() {
+using Autofac;
+using FluentAssertions;
+using Moq;
+using Xunit;
+
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
+{
+    public class ContractListLogicTests
+    {
+        private static IContractListLogic MakeMockLogic()
+        {
             ContainerBuilder cb = DependencyMapFactory.GetTestsContainer();
 
             cb.RegisterInstance(MakeMockHeaderRepo())
@@ -28,7 +31,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return diMap.Resolve<IContractListLogic>();
         }
 
-        private static IContractListDetailsRepository MakeMockDetailRepo() {
+        private static IContractListDetailsRepository MakeMockDetailRepo()
+        {
             var mockRepo = new Mock<IContractListDetailsRepository>();
 
             mockRepo.Setup(d => d.GetContractListDetails(It.Is<long>(i => i == 1)))
@@ -65,40 +69,46 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             return mockRepo.Object;
         }
 
-        private static IContractListHeadersRepository MakeMockHeaderRepo() {
+        private static IContractListHeadersRepository MakeMockHeaderRepo()
+        {
             var mockHeaderRepo = new Mock<IContractListHeadersRepository>();
 
             mockHeaderRepo.Setup(h => h.GetListHeaderForCustomer(It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
                                                                                                  c.CustomerId == "123456")))
-                          .Returns(new ContractListHeader() {
-                                                                BranchId = "FIT",
-                                                                CustomerNumber = "123456",
-                                                                ContractId = "ABC12345",
-                                                                CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
-                                                                Id = 1,
-                                                                ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
-                                                            });
+                          .Returns(new ContractListHeader()
+                          {
+                              BranchId = "FIT",
+                              CustomerNumber = "123456",
+                              ContractId = "ABC12345",
+                              CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
+                              Id = 1,
+                              ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
+                          });
 
             mockHeaderRepo.Setup(h => h.GetListHeaderForCustomer(It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
                                                                                                  c.CustomerId == "234567")))
-                          .Returns(new ContractListHeader() {
-                                                                BranchId = "FIT",
-                                                                CustomerNumber = "123456",
-                                                                ContractId = "ABC12345",
-                                                                CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
-                                                                Id = 2,
-                                                                ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
-                                                            });
+                          .Returns(new ContractListHeader()
+                          {
+                              BranchId = "FIT",
+                              CustomerNumber = "123456",
+                              ContractId = "ABC12345",
+                              CreatedUtc = new DateTime(2017, 7, 5, 15, 13, 0, DateTimeKind.Utc),
+                              Id = 2,
+                              ModifiedUtc = new DateTime(2017, 7, 5, 15, 14, 0, DateTimeKind.Utc)
+                          });
 
             return mockHeaderRepo.Object;
         }
 
-        public class GetListModel {
+        public class GetListModel
+        {
             [Fact]
-            public void BadBranchId_ReturnsNull() {
+            public void BadBranchId_ReturnsNull()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var test = new UserSelectedContext() {
+                var test = new UserSelectedContext()
+                {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -114,10 +124,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull() {
+            public void BadCustomerId_ReturnsNull()
+            {
                 // arrange
                 var logic = MakeMockLogic();
-                var test = new UserSelectedContext() {
+                var test = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "999999"
                 };
@@ -133,13 +145,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomer_ReturnsExpectedHeaderId() {
+            public void GoodCustomer_ReturnsExpectedHeaderId()
+            {
                 // arrange
                 var expected = 1;
                 var fakeUser = new UserProfile();
                 var fakeId = 1;
                 var logic = MakeMockLogic();
-                var test = new UserSelectedContext() {
+                var test = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -155,13 +169,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomer_ReturnsExpectedItemCount() {
+            public void GoodCustomer_ReturnsExpectedItemCount()
+            {
                 // arrange
                 var expected = 2;
                 var fakeUser = new UserProfile();
                 var fakeId = 1;
                 var logic = MakeMockLogic();
-                var test = new UserSelectedContext() {
+                var test = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -178,13 +194,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void ContractWithNoItems_ReturnsZeroLengthItemList() {
+            public void ContractWithNoItems_ReturnsZeroLengthItemList()
+            {
                 // arrange
                 var expected = 0;
                 var fakeUser = new UserProfile();
                 var fakeId = 1;
                 var logic = MakeMockLogic();
-                var test = new UserSelectedContext() {
+                var test = new UserSelectedContext()
+                {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };

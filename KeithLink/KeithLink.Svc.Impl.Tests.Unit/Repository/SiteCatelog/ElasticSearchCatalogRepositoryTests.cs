@@ -1,40 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-
-using Autofac;
-
-using Castle.Components.DictionaryAdapter;
-
-using FluentAssertions;
+﻿using System.Dynamic;
 
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Seams;
 
-using Moq;
+using FluentAssertions;
 using Xunit;
-
-
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
 {
     public class ElasticSearchCatalogRepositoryTests : BaseDITests
     {
         #region Setup
+
         private static ICatalogRepository MakeTestsRepository()
         {
-
             BEKConfiguration.Add("ElasticSearchURL", "http://localhost/Test");
 
             var testunit = new ElasticSearchCatalogRepositoryImpl();
-                return testunit;
+            return testunit;
         }
+
         private static dynamic MakeTestProduct()
         {
             dynamic testProduct = new ExpandoObject();
@@ -135,16 +122,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
             testProduct._source.marketing_name_ngram_analyzed = null;
             return testProduct;
         }
-        #endregion
 
-        #region attributes
-        #endregion
+        #endregion Setup
+
+
 
         #region LoadProductFromElasticSearchProduct
+
         public class LoadProductFromElasticSearchProduct
         {
             [Fact]
-            public void GoodItem_DetailIsExpected() {
+            public void GoodItem_DetailIsExpected()
+            {
                 // arrange
                 var testunit = MakeTestsRepository();
                 dynamic testProduct = MakeTestProduct();
@@ -158,8 +147,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
                 result.Detail.Should()
                       .Be(expected);
             }
-
         }
-        #endregion
+
+        #endregion LoadProductFromElasticSearchProduct
     }
 }

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Cache;
@@ -18,26 +15,23 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Logic;
 using Product = KeithLink.Svc.Core.Models.SiteCatalog.Product;
 using UserProfile = KeithLink.Svc.Core.Models.Profile.UserProfile;
-using KeithLink.Svc.Impl.Logic;
 
 using Autofac;
 using FluentAssertions;
 using Moq;
 using Xunit;
 
-using CommerceServer.Foundation;
-
-using KeithLink.Svc.Core.Models.Orders;
-using KeithLink.Svc.Core.Models.ShoppingCart;
-
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic
 {
     public class ShoppingCartLogicTests : BaseDITests
     {
         #region Setup
+
         public class MockDependents
         {
             public Mock<ICacheRepository> CacheRepository { get; set; }
@@ -137,8 +131,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                 var mock = new Mock<ICatalogLogic>();
 
                 mock.Setup(f => f.GetProductsByIds("fut", It.IsAny<List<string>>()))
-                    .Returns(new ProductsReturn() {
-                                                      Products = new List<Product>() {
+                    .Returns(new ProductsReturn()
+                    {
+                        Products = new List<Product>() {
                                                                                          new Product() {
                                                                                                            ItemNumber = "123456",
                                                                                                            Name = "Fake Name",
@@ -148,7 +143,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                                                                                                            Pack = "Fake Pack"
                                                                                                        }
                                                                                      }
-                                                  });
+                    });
 
                 return mock;
             }
@@ -178,12 +173,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
             {
                 var mock = new Mock<IBasketLogic>();
 
-                var returnedBasket = new Basket() {
-                                                      Id = "dddddddddddddddddddddddddddddddd",
-                                                      DisplayName = "Fake Name",
-                                                      BranchId = "FUT",
-                                                      RequestedShipDate = "1/1/2017"
-                                                  };
+                var returnedBasket = new Basket()
+                {
+                    Id = "dddddddddddddddddddddddddddddddd",
+                    DisplayName = "Fake Name",
+                    BranchId = "FUT",
+                    RequestedShipDate = "1/1/2017"
+                };
                 mock.Setup(f => f.RetrieveSharedCustomerBasket(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
                     .Returns(returnedBasket);
 
@@ -245,7 +241,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
 
                 return mock;
             }
-
         }
 
         private static IShoppingCartLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
@@ -290,12 +285,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                 return testunit;
             }
         }
-        #endregion
 
-        #region attributes
-        #endregion
+        #endregion Setup
+
+
 
         #region CartReport
+
         public class CartReport
         {
             [Fact]
@@ -337,9 +333,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                     CustomerId = "234567"
                 };
                 var testCart = new Guid("dddddddddddddddddddddddddddddddd");
-                var testPagedListModel = new PagedListModel() {
-                                                                  Name="Fake Name"
-                                                              };
+                var testPagedListModel = new PagedListModel()
+                {
+                    Name = "Fake Name"
+                };
                 var testPrintModel = new PrintListModel();
 
                 // act
@@ -376,9 +373,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                        .NotBeNull();
             }
         }
-        #endregion
+
+        #endregion CartReport
 
         #region LookupProductDetails
+
         public class LookupProductDetails
         {
             [Fact]
@@ -393,12 +392,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var testCart = new ShoppingCart() {
-                                                      Active = true,
-                                                      BranchId = "FUT",
-                                                      CartId = new Guid("dddddddddddddddddddddddddddddddd"),
-                                                      Name = "Fake Cart Name",
-                                                      Items = new List<ShoppingCartItem>() {
+                var testCart = new ShoppingCart()
+                {
+                    Active = true,
+                    BranchId = "FUT",
+                    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+                    Name = "Fake Cart Name",
+                    Items = new List<ShoppingCartItem>() {
                                                                                                new ShoppingCartItem() {
                                                                                                                           ItemNumber="123456",
                                                                                                                           CatalogId = "FUT"
@@ -415,8 +415,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic
                         .Detail.Should()
                         .Be(expected);
             }
-
         }
-        #endregion
+
+        #endregion LookupProductDetails
     }
 }

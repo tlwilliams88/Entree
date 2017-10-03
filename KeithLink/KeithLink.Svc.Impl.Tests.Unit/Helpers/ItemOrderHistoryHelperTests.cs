@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using FluentAssertions;
 
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Invoices;
@@ -16,6 +11,7 @@ using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Helpers;
 
+using FluentAssertions;
 using Moq;
 using Xunit;
 
@@ -35,9 +31,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                                                                             } });
 
         #region GetItemOrderHistories_PassedInListOfItemUsageReportItemModel
+
         public class GetItemOrderHistories_PassedInListOfItemUsageReportItemModel
         {
-
             [Fact]
             public void GoodItemUsageReportItemModel_ReturnsOrderHistoriesAsExpected()
             {
@@ -88,12 +84,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                     .Be(expected);
             }
         }
-        #endregion
+
+        #endregion GetItemOrderHistories_PassedInListOfItemUsageReportItemModel
 
         #region GetItemOrderHistories_PassedInListOfOrderLine
+
         public class GetItemOrderHistories_PassedInListOfOrderLine
         {
-
             [Fact]
             public void GoodItemUsageReportItemModel_ReturnsOrderHistoriesAsExpected()
             {
@@ -144,12 +141,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                     .Be(expected);
             }
         }
-        #endregion
+
+        #endregion GetItemOrderHistories_PassedInListOfOrderLine
 
         #region GetItemOrderHistories_PassedInListOfShoppingCartItem
+
         public class GetItemOrderHistories_PassedInListOfShoppingCartItem
         {
-
             [Fact]
             public void GoodItemUsageReportItemModel_ReturnsOrderHistoriesAsExpected()
             {
@@ -200,12 +198,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                     .Be(expected);
             }
         }
-        #endregion
+
+        #endregion GetItemOrderHistories_PassedInListOfShoppingCartItem
 
         #region GetItemOrderHistories_PassedInListOfProduct
+
         public class GetItemOrderHistories_PassedInListOfProduct
         {
-
             [Fact]
             public void GoodItemUsageReportItemModel_ReturnsOrderHistoriesAsExpected()
             {
@@ -256,12 +255,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                     .Be(expected);
             }
         }
-        #endregion
+
+        #endregion GetItemOrderHistories_PassedInListOfProduct
 
         #region GetItemOrderHistories_PassedInListOfListItemModel
+
         public class GetItemOrderHistories_PassedInListOfListItemModel
         {
-
             [Fact]
             public void GoodItemUsageReportItemModel_ReturnsOrderHistoriesAsExpected()
             {
@@ -312,12 +312,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                     .Be(expected);
             }
         }
-        #endregion
+
+        #endregion GetItemOrderHistories_PassedInListOfListItemModel
 
         #region GetItemOrderHistories_PassedInListOfInvoiceItemModel
+
         public class GetItemOrderHistories_PassedInListOfInvoiceItemModel
         {
-
             [Fact]
             public void GoodItemUsageReportItemModel_ReturnsOrderHistoriesAsExpected()
             {
@@ -368,7 +369,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Helpers
                     .Be(expected);
             }
         }
-        #endregion
 
+        #endregion GetItemOrderHistories_PassedInListOfInvoiceItemModel
     }
 }

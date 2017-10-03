@@ -1,10 +1,5 @@
 ﻿using System.Collections.Generic;
 
-using Autofac;
-using FluentAssertions;
-using Moq;
-using Xunit;
-
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
@@ -19,12 +14,19 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Impl.Logic.OnlinePayments;
 
+using Autofac;
+using FluentAssertions;
+using Moq;
+using Xunit;
+
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments
 {
     public class OnlinePaymentLogicTests : BaseDITests
     {
         #region Setup
-        private static InvoiceItemModel MakeModel() {
+
+        private static InvoiceItemModel MakeModel()
+        {
             return new InvoiceItemModel()
             {
                 ItemNumber = "111111",
@@ -74,61 +76,71 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments
                   .As<IGenericQueueRepository>();
             }
 
-            public static Mock<IGenericQueueRepository> MakeIGenericQueueRepository() {
+            public static Mock<IGenericQueueRepository> MakeIGenericQueueRepository()
+            {
                 var mock = new Mock<IGenericQueueRepository>();
 
                 return mock;
             }
 
-            public static Mock<IKPayPaymentTransactionRepository> MakeIKPayPaymentTransactionRepository() {
+            public static Mock<IKPayPaymentTransactionRepository> MakeIKPayPaymentTransactionRepository()
+            {
                 var mock = new Mock<IKPayPaymentTransactionRepository>();
 
                 return mock;
             }
 
-            public static Mock<IOrderHistoryHeaderRepsitory> MakeIOrderHistoryHeaderRepsitory() {
+            public static Mock<IOrderHistoryHeaderRepsitory> MakeIOrderHistoryHeaderRepsitory()
+            {
                 var mock = new Mock<IOrderHistoryHeaderRepsitory>();
 
                 return mock;
             }
 
-            public static Mock<IKPayLogRepository> MakeIKPayLogRepository() {
+            public static Mock<IKPayLogRepository> MakeIKPayLogRepository()
+            {
                 var mock = new Mock<IKPayLogRepository>();
 
                 return mock;
             }
 
-            public static Mock<IKPayInvoiceRepository> MakeIKPayInvoiceRepository() {
+            public static Mock<IKPayInvoiceRepository> MakeIKPayInvoiceRepository()
+            {
                 var mock = new Mock<IKPayInvoiceRepository>();
 
                 return mock;
             }
 
-            public static Mock<ICustomerRepository> MakeICustomerRepository() {
+            public static Mock<ICustomerRepository> MakeICustomerRepository()
+            {
                 var mock = new Mock<ICustomerRepository>();
 
                 return mock;
             }
 
-            public static Mock<ICustomerBankRepository> MakeICustomerBankRepository() {
+            public static Mock<ICustomerBankRepository> MakeICustomerBankRepository()
+            {
                 var mock = new Mock<ICustomerBankRepository>();
 
                 return mock;
             }
 
-            public static Mock<IInternalUserAccessRepository> MakeIInternalUserAccessRepository() {
+            public static Mock<IInternalUserAccessRepository> MakeIInternalUserAccessRepository()
+            {
                 var mock = new Mock<IInternalUserAccessRepository>();
 
                 return mock;
             }
 
-            public static Mock<IAuditLogRepository> MakeIAuditLogRepository() {
+            public static Mock<IAuditLogRepository> MakeIAuditLogRepository()
+            {
                 var mock = new Mock<IAuditLogRepository>();
 
                 return mock;
             }
 
-            public static Mock<IEventLogRepository> MakeIEventLogRepository() {
+            public static Mock<IEventLogRepository> MakeIEventLogRepository()
+            {
                 var mock = new Mock<IEventLogRepository>();
 
                 return mock;
@@ -140,7 +152,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments
 
                 return mock;
             }
-
         }
 
         private static IOnlinePaymentsLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
@@ -178,12 +189,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments
                 return testunit;
             }
         }
-        #endregion
 
-        #region attributes
-        #endregion
+        #endregion Setup
+
+
 
         #region AssignContractCategory
+
         public class AssignContractCategory
         {
             [Fact]
@@ -192,7 +204,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments
                 // arrange
                 var mockDependents = new MockDependents();
                 var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
-                var testDict = new Dictionary<string,string>();
+                var testDict = new Dictionary<string, string>();
                 testDict.Add("111111", "Category 1");
                 var testItem = MakeModel();
                 var expected = "Category 1";
@@ -303,8 +315,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments
                         .Should()
                         .BeNull();
             }
-
         }
-        #endregion
+
+        #endregion AssignContractCategory
     }
 }
