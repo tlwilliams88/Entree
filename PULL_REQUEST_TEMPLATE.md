@@ -10,7 +10,10 @@ Changes
   -  
   
   
-Did the tests pass?
+Did the existing tests pass?
+--------
+
+Did new tests get added?
 --------
   
 @BEK1906/entree_reviewrs 
