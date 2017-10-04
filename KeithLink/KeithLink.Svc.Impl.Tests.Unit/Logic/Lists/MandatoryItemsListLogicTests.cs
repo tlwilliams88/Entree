@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Autofac;
+
+using FluentAssertions;
+
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
@@ -8,17 +12,13 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 
-using Autofac;
-using FluentAssertions;
 using Moq;
+
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
-{
-    public class MandatoryItemsListLogicTests : BaseDITests
-    {
-        private static IMandatoryItemsListLogic MakeTestsObject()
-        {
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
+    public class MandatoryItemsListLogicTests : BaseDITests {
+        private static IMandatoryItemsListLogic MakeTestsObject() {
             ContainerBuilder cb = GetTestsContainer();
 
             // Register mocks
@@ -32,15 +32,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return testcontainer.Resolve<IMandatoryItemsListLogic>();
         }
 
-        private static IMandatoryItemsListHeadersRepository MakeMockHeaderRepo()
-        {
+        private static IMandatoryItemsListHeadersRepository MakeMockHeaderRepo() {
             Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
 
             mockHeaderRepo.Setup(h => h.GetListHeaderForCustomer(
                                                                  It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
                                                                                                  c.CustomerId == "123456")))
-                          .Returns(new MandatoryItemsListHeader
-                          {
+                          .Returns(new MandatoryItemsListHeader {
                               BranchId = "FUT",
                               CustomerNumber = "123456",
                               Id = 1
@@ -49,8 +47,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return mockHeaderRepo.Object;
         }
 
-        private static IMandatoryItemsListDetailsRepository MakeMockDetailsRepo()
-        {
+        private static IMandatoryItemsListDetailsRepository MakeMockDetailsRepo() {
             Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
 
             mockDetailsRepo.Setup(h => h.GetAllByHeader(It.Is<long>(l => l == 1)))
@@ -67,24 +64,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return mockDetailsRepo.Object;
         }
 
-        public class GetMandatoryItemNumbers
-        {
+        public class GetMandatoryItemNumbers {
             [Fact]
-            public void BadBranchId_ReturnsEmptyList()
-            {
+            public void BadBranchId_ReturnsEmptyList() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
 
-                var emptylist = 0;
-                var fakeUser = new UserProfile();
+                int emptylist = 0;
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
+                List<string> results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.Count()
@@ -93,21 +87,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsEmptyList()
-            {
+            public void BadCustomerId_ReturnsEmptyList() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
 
-                var emptylist = 0;
-                var fakeUser = new UserProfile();
+                int emptylist = 0;
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
+                List<string> results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.Count()
@@ -116,21 +108,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
-                var expectedItem = "123456";
-                var fakeUser = new UserProfile();
+                string expectedItem = "123456";
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
+                List<string> results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.First()
@@ -139,15 +129,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class GetListModel
-        {
+        public class GetListModel {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -163,12 +150,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
@@ -184,12 +169,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -207,22 +190,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class ReadList
-        {
+        public class ReadList {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(fakeUser, testcontext, false);
+                ListModel results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -230,19 +210,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var fakeUser = new UserProfile();
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(fakeUser, testcontext, false);
+                ListModel results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -250,21 +228,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
                 IMandatoryItemsListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
 
-                var expected = 1;
-                var fakeUser = new UserProfile();
+                int expected = 1;
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(fakeUser, testcontext, false);
+                ListModel results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.ListId
@@ -273,23 +249,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class CreateOrUpdateList
-        {
+        public class CreateOrUpdateList {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime()
-            {
+            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime() {
                 // arrange
                 Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
                 Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
                 MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                MandatoryItemsListDetail testDetail = new MandatoryItemsListDetail
-                {
+                MandatoryItemsListDetail testDetail = new MandatoryItemsListDetail {
                     CatalogId = "FUT",
                     ItemNumber = "123456",
                     Each = false,
@@ -305,24 +277,20 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class DeleteMandatoryItems
-        {
+        public class DeleteMandatoryItems {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsDeleteDetail()
-            {
+            public void AnyCustomerIdAndBranch_CallsDeleteDetail() {
                 // arrange
                 Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
                 Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
                 MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 int testId = 1;
-                MandatoryItemsListDetail testDetail = new MandatoryItemsListDetail
-                {
+                MandatoryItemsListDetail testDetail = new MandatoryItemsListDetail {
                     CatalogId = "FUT",
                     ItemNumber = "123456",
                     Each = false,
@@ -338,61 +306,23 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class SaveList
-        {
+        public class SaveList {
             [Fact]
-            public void AnyCustomerIdAndBranch_WhenIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse()
-            {
+            public void AnyCustomerIdAndBranch_WhenIsDeleteIsFalseAndActiveIsFalseSetsActiveToTrue() {
                 // arrange
                 Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
                 Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
                 MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeProfile = new UserProfile();
-                ListModel testList = new ListModel()
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     BranchId = "FUT",
-                    Items = new List<ListItemModel>() {
-                        new ListItemModel() {
-                            ListItemId = 1,
-                            ItemNumber = "123456",
-                            Active = true,
-                            IsDelete = true
-                        }
-                    }
-                };
-
-                // act
-                testunit.SaveList(fakeProfile, testcontext, testList);
-
-                // assert - Always returns what is setup provided the mock is called
-                mockDetailsRepo.Verify(h => h.Save(It.Is<MandatoryItemsListDetail>(d => d.Active.Equals(false))), Times.Once(), "Error updating");
-            }
-
-            [Fact]
-            public void AnyCustomerIdAndBranch_WhenIsDeleteIsFalseAndActiveIsFalseSetsActiveToTrue()
-            {
-                // arrange
-                Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
-                Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
-                MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
-                    BranchId = "FUT",
-                    CustomerId = "123456"
-                };
-                UserProfile fakeProfile = new UserProfile();
-                ListModel testList = new ListModel()
-                {
-                    ListId = 1,
-                    BranchId = "FUT",
-                    Items = new List<ListItemModel>() {
-                        new ListItemModel() {
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {
                             ListItemId = 1,
                             ItemNumber = "123456",
                             Active = false,
@@ -407,20 +337,48 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 // assert - Always returns what is setup provided the mock is called
                 mockDetailsRepo.Verify(h => h.Save(It.Is<MandatoryItemsListDetail>(d => d.Active.Equals(true))), Times.Once(), "Error updating");
             }
-        }
 
-        public class CreateList
-        {
-            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_Completes()
-            {
+            public void AnyCustomerIdAndBranch_WhenIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse() {
                 // arrange
                 Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
                 Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
                 MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                UserProfile fakeProfile = new UserProfile();
+                ListModel testList = new ListModel {
+                    ListId = 1,
+                    BranchId = "FUT",
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {
+                            ListItemId = 1,
+                            ItemNumber = "123456",
+                            Active = true,
+                            IsDelete = true
+                        }
+                    }
+                };
+
+                // act
+                testunit.SaveList(fakeProfile, testcontext, testList);
+
+                // assert - Always returns what is setup provided the mock is called
+                mockDetailsRepo.Verify(h => h.Save(It.Is<MandatoryItemsListDetail>(d => d.Active.Equals(false))), Times.Once(), "Error updating");
+            }
+        }
+
+        public class CreateList {
+            // works differently if you want to verify a mock is called; we can't go through autofac
+            [Fact]
+            public void AnyCustomerIdAndBranch_Completes() {
+                // arrange
+                Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
+                Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
+                MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };

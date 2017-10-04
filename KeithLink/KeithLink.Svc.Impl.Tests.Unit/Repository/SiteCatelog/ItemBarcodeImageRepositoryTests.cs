@@ -1,81 +1,76 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
+using Autofac;
+
+using FluentAssertions;
+
 using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Reports;
 
-using Autofac;
-using FluentAssertions;
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
-{
-    public class ItemBarcodeImageRepositoryTests : BaseDITests
-    {
-        private static IItemBarcodeImageRepository MakeTestUnit()
-        {
+namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
+    public class ItemBarcodeImageRepositoryTests : BaseDITests {
+        private static IItemBarcodeImageRepository MakeTestUnit() {
             ContainerBuilder cb = GetTestsContainer();
 
-            var testcontainer = cb.Build();
+            IContainer testcontainer = cb.Build();
 
             return testcontainer.Resolve<IItemBarcodeImageRepository>();
         }
 
-        public class GetBarcodeForList
-        {
+        public class GetBarcodeForList {
             [Fact]
-            public void GoodListModel_ReturnsListOfBarcodes()
-            {
+            public void BadListModel_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestUnit();
-                var test = new ListModel()
-                {
-                    BranchId = "XXX",
-                    CustomerNumber = "123456",
-                    Items = new List<ListItemModel>() {
-                                                          new ListItemModel() { ItemNumber = "123456"}
-                                                      }
-                };
+                IItemBarcodeImageRepository testunit = MakeTestUnit();
 
                 // act
-                var results = testunit.GetBarcodeForList(test);
+                List<ItemBarcodeModel> results = testunit.GetBarcodeForList(null);
 
                 // assert
                 results.Should()
-                       .NotBeNull();
+                       .BeNull();
             }
 
             [Fact]
-            public void GoodEmptyListModel_ReturnsEmptyListOfBarcodes()
-            {
+            public void GoodEmptyListModel_ReturnsEmptyListOfBarcodes() {
                 // arrange
-                var testunit = MakeTestUnit();
-                var test = new ListModel()
-                {
+                IItemBarcodeImageRepository testunit = MakeTestUnit();
+                ListModel test = new ListModel {
                     BranchId = "XXX",
                     CustomerNumber = "123456"
                 };
 
                 // act
-                var results = testunit.GetBarcodeForList(test);
+                List<ItemBarcodeModel> results = testunit.GetBarcodeForList(test);
 
                 // assert
-                results.Count().Should()
+                results.Count()
+                       .Should()
                        .Be(0);
             }
 
             [Fact]
-            public void BadListModel_ReturnsNull()
-            {
+            public void GoodListModel_ReturnsListOfBarcodes() {
                 // arrange
-                var testunit = MakeTestUnit();
+                IItemBarcodeImageRepository testunit = MakeTestUnit();
+                ListModel test = new ListModel {
+                    BranchId = "XXX",
+                    CustomerNumber = "123456",
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {ItemNumber = "123456"}
+                    }
+                };
 
                 // act
-                var results = testunit.GetBarcodeForList(null);
+                List<ItemBarcodeModel> results = testunit.GetBarcodeForList(test);
 
                 // assert
                 results.Should()
-                       .BeNull();
+                       .NotBeNull();
             }
         }
     }

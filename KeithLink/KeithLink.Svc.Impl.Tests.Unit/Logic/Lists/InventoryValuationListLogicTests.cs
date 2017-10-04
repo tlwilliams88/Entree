@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Autofac;
+
+using FluentAssertions;
+
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
@@ -9,17 +13,13 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 
-using Autofac;
-using FluentAssertions;
 using Moq;
+
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
-{
-    public class InventoryValuationListLogicTests : BaseDITests
-    {
-        private static IInventoryValuationListLogic MakeTestsObject()
-        {
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
+    public class InventoryValuationListLogicTests : BaseDITests {
+        private static IInventoryValuationListLogic MakeTestsObject() {
             ContainerBuilder cb = GetTestsContainer();
 
             // Register mocks
@@ -33,8 +33,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return testcontainer.Resolve<IInventoryValuationListLogic>();
         }
 
-        private static IInventoryValuationListHeadersRepository MakeMockHeaderRepo()
-        {
+        private static IInventoryValuationListHeadersRepository MakeMockHeaderRepo() {
             Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
 
             mockHeaderRepo.Setup(h => h.GetInventoryValuationListHeaders(
@@ -51,8 +50,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                           });
 
             mockHeaderRepo.Setup(h => h.GetInventoryValuationListHeader(It.Is<long>(l => l == 1)))
-                          .Returns(new InventoryValuationListHeader
-                          {
+                          .Returns(new InventoryValuationListHeader {
                               BranchId = "FUT",
                               CustomerNumber = "123456",
                               CreatedUtc = It.IsAny<DateTime>(),
@@ -63,8 +61,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return mockHeaderRepo.Object;
         }
 
-        private static IInventoryValuationListDetailsRepository MakeMockDetailsRepo()
-        {
+        private static IInventoryValuationListDetailsRepository MakeMockDetailsRepo() {
             Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
 
             mockDetailsRepo.Setup(h => h.GetInventoryValuationDetails(It.Is<long>(l => l == 1)))
@@ -83,15 +80,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return mockDetailsRepo.Object;
         }
 
-        public class ReadLists
-        {
+        public class ReadLists {
             [Fact]
-            public void BadBranchId_ReturnsEmptyList()
-            {
+            public void BadBranchId_ReturnsEmptyList() {
                 // arrange
                 IInventoryValuationListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -108,12 +102,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsEmptyList()
-            {
+            public void BadCustomerId_ReturnsEmptyList() {
                 // arrange
                 IInventoryValuationListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
@@ -130,12 +122,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
                 IInventoryValuationListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -153,15 +143,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class ReadList
-        {
+        public class ReadList {
             [Fact]
-            public void BadBranchId_ReturnsExpectedListId()
-            {
+            public void BadBranchId_ReturnsExpectedListId() {
                 // arrange
                 IInventoryValuationListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -177,12 +164,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsExpectedList()
-            {
+            public void BadCustomerId_ReturnsExpectedList() {
                 // arrange
                 IInventoryValuationListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
@@ -198,12 +183,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
                 IInventoryValuationListLogic testunit = MakeTestsObject();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -219,18 +202,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class CreateOrUpdateList
-        {
+        public class CreateOrUpdateList {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsHeaderRepoSave()
-            {
+            public void AnyCustomerIdAndBranch_CallsHeaderRepoSave() {
                 // arrange
                 Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
                 Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
                 InventoryValuationListLogicImpl testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -248,26 +228,22 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class SaveItem
-        {
+        public class SaveItem {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsDetailsRepoSaveInventoryValuationDetail()
-            {
+            public void AnyCustomerIdAndBranch_CallsDetailsRepoSaveInventoryValuationDetail() {
                 // arrange
                 Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
                 Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
                 InventoryValuationListLogicImpl testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
                 long fakeId = 1;
                 InventoryValuationListDetail testItem =
-                        new InventoryValuationListDetail
-                        {
+                        new InventoryValuationListDetail {
                             CatalogId = "FUT",
                             ItemNumber = "123456",
                             Each = false,
@@ -283,23 +259,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class SaveList
-        {
+        public class SaveList {
             [Fact]
-            public void CallToSaveList_DoesCallDetailRepo()
-            {
+            public void CallToSaveList_DoesCallDetailRepo() {
                 // arrange
                 Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
                 Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
                 InventoryValuationListLogicImpl testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                ListModel testList = new ListModel
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -318,20 +290,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void CallToSaveList_DoesCallHeaderRepo()
-            {
+            public void CallToSaveList_DoesCallHeaderRepo() {
                 // arrange
                 Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
                 Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
                 InventoryValuationListLogicImpl testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                ListModel testList = new ListModel
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -350,20 +319,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void CallToSaveList_DoesSetActiveFlagToFalseProperly()
-            {
+            public void CallToSaveList_DoesSetActiveFlagToFalseProperly() {
                 // arrange
                 Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
                 Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
                 InventoryValuationListLogicImpl testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                ListModel testList = new ListModel
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -371,7 +337,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                         new ListItemModel {
                             ItemNumber = "123456",
                             Active = true,
-                            IsDelete =  true
+                            IsDelete = true
                         }
                     }
                 };
@@ -384,20 +350,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void CallToSaveList_DoesSetActiveFlagToTrueProperly()
-            {
+            public void CallToSaveList_DoesSetActiveFlagToTrueProperly() {
                 // arrange
                 Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
                 Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
                 InventoryValuationListLogicImpl testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                ListModel testList = new ListModel
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -405,7 +368,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                         new ListItemModel {
                             ItemNumber = "123456",
                             Active = true,
-                            IsDelete =  false
+                            IsDelete = false
                         }
                     }
                 };
@@ -418,20 +381,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void CallToSaveList_DoesSetActiveFlagToTrueWhenIsDeleteFalseAndActiveFalse()
-            {
+            public void CallToSaveList_DoesSetActiveFlagToTrueWhenIsDeleteFalseAndActiveFalse() {
                 // arrange
                 Mock<IInventoryValuationListHeadersRepository> mockHeaderRepo = new Mock<IInventoryValuationListHeadersRepository>();
                 Mock<IInventoryValuationListDetailsRepository> mockDetailsRepo = new Mock<IInventoryValuationListDetailsRepository>();
                 InventoryValuationListLogicImpl testunit = new InventoryValuationListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                ListModel testList = new ListModel
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -439,7 +399,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                         new ListItemModel {
                             ItemNumber = "123456",
                             Active = false,
-                            IsDelete =  false
+                            IsDelete = false
                         }
                     }
                 };

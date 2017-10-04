@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Autofac;
+
+using FluentAssertions;
+
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
@@ -9,17 +13,13 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 
-using Autofac;
-using FluentAssertions;
 using Moq;
+
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
-{
-    public class FavoritesListLogicTests : BaseDITests
-    {
-        private static IFavoritesListLogic MakeTestsUnit()
-        {
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
+    public class FavoritesListLogicTests : BaseDITests {
+        private static IFavoritesListLogic MakeTestsUnit() {
             ContainerBuilder cb = GetTestsContainer();
 
             // Register mocks
@@ -33,15 +33,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return testcontainer.Resolve<IFavoritesListLogic>();
         }
 
-        private static IFavoriteListHeadersRepository MakeMockHeaderRepo()
-        {
+        private static IFavoriteListHeadersRepository MakeMockHeaderRepo() {
             Mock<IFavoriteListHeadersRepository> mockHeaderRepo = new Mock<IFavoriteListHeadersRepository>();
 
             mockHeaderRepo.Setup(h => h.GetFavoritesList(It.IsAny<Guid>(),
                                                          It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
                                                                                          c.CustomerId == "123456")))
-                          .Returns(new FavoritesListHeader
-                          {
+                          .Returns(new FavoritesListHeader {
                               BranchId = "FUT",
                               CustomerNumber = "123456",
                               UserId = It.IsAny<Guid>(),
@@ -50,20 +48,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                               ModifiedUtc = It.IsAny<DateTime>()
                           });
 
-            mockHeaderRepo.Setup(h => h.SaveFavoriteListHeader(new FavoritesListHeader
-            {
-                BranchId = "FUT",
-                CustomerNumber = "123456",
-                CreatedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc),
-                ModifiedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc)
-            }))
+            mockHeaderRepo.Setup(h => h.SaveFavoriteListHeader(new FavoritesListHeader {
+                              BranchId = "FUT",
+                              CustomerNumber = "123456",
+                              CreatedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc),
+                              ModifiedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc)
+                          }))
                           .Returns(It.Is<long>(l => l == 1));
 
             return mockHeaderRepo.Object;
         }
 
-        private static IFavoriteListDetailsRepository MakeMockDetailsRepo()
-        {
+        private static IFavoriteListDetailsRepository MakeMockDetailsRepo() {
             Mock<IFavoriteListDetailsRepository> mockDetailsRepo = new Mock<IFavoriteListDetailsRepository>();
 
             mockDetailsRepo.Setup(h => h.GetFavoritesListDetails(It.Is<long>(l => l == 1)))
@@ -80,25 +76,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                                }
                            });
 
-            mockDetailsRepo.Setup(h => h.SaveFavoriteListDetail(new FavoritesListDetail
-            {
-                CatalogId = "FUT",
-                ItemNumber = "123456"
-            }))
+            mockDetailsRepo.Setup(h => h.SaveFavoriteListDetail(new FavoritesListDetail {
+                               CatalogId = "FUT",
+                               ItemNumber = "123456"
+                           }))
                            .Returns(It.Is<long>(l => l == 1));
 
             return mockDetailsRepo.Object;
         }
 
-        public class GetFavoritedItemNumbers
-        {
+        public class GetFavoritedItemNumbers {
             [Fact]
-            public void BadBranchId_ReturnsEmptyList()
-            {
+            public void BadBranchId_ReturnsEmptyList() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -115,12 +107,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsEmptyList()
-            {
+            public void BadCustomerId_ReturnsEmptyList() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
@@ -137,12 +127,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -159,15 +147,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class GetFavoritesList
-        {
+        public class GetFavoritesList {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -182,12 +167,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
@@ -202,12 +185,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsListExpectedItemNumber()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsListExpectedItemNumber() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -226,12 +207,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsListWithAnItem()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsListWithAnItem() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -249,12 +228,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranchHeaderOnly_ReturnsListWithExpectedId()
-            {
+            public void GoodCustomerIdAndBranchHeaderOnly_ReturnsListWithExpectedId() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -271,15 +248,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class GetListModel
-        {
+        public class GetListModel {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
@@ -295,12 +269,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
@@ -316,12 +288,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsListExpectedItemNumber()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsListExpectedItemNumber() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -341,12 +311,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsListWithAnItem()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsListWithAnItem() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -365,12 +333,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranchHeaderOnly_ReturnsListWithExpectedId()
-            {
+            public void GoodCustomerIdAndBranchHeaderOnly_ReturnsListWithExpectedId() {
                 // arrange
                 IFavoritesListLogic testunit = MakeTestsUnit();
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -388,24 +354,20 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class SaveList
-        {
+        public class SaveList {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime()
-            {
+            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime() {
                 // arrange
                 Mock<IFavoriteListHeadersRepository> mockHeaderRepo = new Mock<IFavoriteListHeadersRepository>();
                 Mock<IFavoriteListDetailsRepository> mockDetailsRepo = new Mock<IFavoriteListDetailsRepository>();
                 FavoritesListLogicImpl testunit = new FavoritesListLogicImpl(mockDetailsRepo.Object, mockHeaderRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                ListModel testList = new ListModel
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -423,20 +385,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void AnyCustomerIdAndBranch_WhenIsDeleteIsTrueDeleteIsCalledWithListItemId()
-            {
+            public void AnyCustomerIdAndBranch_WhenIsDeleteIsTrueDeleteIsCalledWithListItemId() {
                 // arrange
                 Mock<IFavoriteListHeadersRepository> mockHeaderRepo = new Mock<IFavoriteListHeadersRepository>();
                 Mock<IFavoriteListDetailsRepository> mockDetailsRepo = new Mock<IFavoriteListDetailsRepository>();
                 FavoritesListLogicImpl testunit = new FavoritesListLogicImpl(mockDetailsRepo.Object, mockHeaderRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                ListModel testList = new ListModel
-                {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     CustomerNumber = "123456",
                     BranchId = "FUT",
@@ -465,24 +424,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
 
                 // assert - Always returns what is setup provided the mock is called
                 mockDetailsRepo.Verify(
-                       x => x.SaveFavoriteListDetail(It.Is<FavoritesListDetail>(d => d.Active.Equals(false))),
-                       Times.Once(),
-                       "Error updating");
+                                       x => x.SaveFavoriteListDetail(It.Is<FavoritesListDetail>(d => d.Active.Equals(false))),
+                                       Times.Once(),
+                                       "Error updating");
             }
         }
 
-        public class CreateList
-        {
+        public class CreateList {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime()
-            {
+            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime() {
                 // arrange
                 Mock<IFavoriteListHeadersRepository> mockHeaderRepo = new Mock<IFavoriteListHeadersRepository>();
                 Mock<IFavoriteListDetailsRepository> mockDetailsRepo = new Mock<IFavoriteListDetailsRepository>();
                 FavoritesListLogicImpl testunit = new FavoritesListLogicImpl(mockDetailsRepo.Object, mockHeaderRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -496,33 +452,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class Save
-        {
+        public class Save {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsSaveDetailEveryTime()
-            {
+            public void AnyCustomerIdAndBranch_CallsSaveDetailEveryTime() {
                 // arrange
                 Mock<IFavoriteListHeadersRepository> mockHeaderRepo = new Mock<IFavoriteListHeadersRepository>();
                 Mock<IFavoriteListDetailsRepository> mockDetailsRepo = new Mock<IFavoriteListDetailsRepository>();
                 FavoritesListLogicImpl testunit = new FavoritesListLogicImpl(mockDetailsRepo.Object, mockHeaderRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                FavoritesListDetail testDetail = new FavoritesListDetail
-                {
-                    CatalogId = "FUT",
-                    ItemNumber = "123456",
-                    Each = false,
-                    LineNumber = 1,
-                    Active = true,
-                    CreatedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc),
-                    Id = 1,
-                    ModifiedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc)
-                }
+                FavoritesListDetail testDetail = new FavoritesListDetail {
+                            CatalogId = "FUT",
+                            ItemNumber = "123456",
+                            Each = false,
+                            LineNumber = 1,
+                            Active = true,
+                            CreatedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc),
+                            Id = 1,
+                            ModifiedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc)
+                        }
                         ;
                 // act
                 testunit.Save(fakeUser, testcontext, testDetail);
