@@ -8,7 +8,7 @@ using KeithLink.Svc.Core.Models.Lists.Favorites;
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
     public class FavoritesListHeaderTests {
         private static FavoritesListHeader MakeHeader() {
-            return new FavoritesListHeader() {
+            return new FavoritesListHeader {
                 UserId = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3")
             };
         }
@@ -17,8 +17,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
             [Fact]
             public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3");
+                FavoritesListHeader fakeHeader = MakeHeader();
+                Guid expected = new Guid("a08bb907-ab8e-4e56-9f22-b94b3d6a08e3");
 
                 // act
 
@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
             [Fact]
             public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new FavoritesListHeader();
+                FavoritesListHeader test = new FavoritesListHeader();
 
                 // act
 

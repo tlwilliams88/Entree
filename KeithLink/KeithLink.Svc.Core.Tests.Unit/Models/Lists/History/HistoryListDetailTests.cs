@@ -6,7 +6,7 @@ using KeithLink.Svc.Core.Models.Lists.History;
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.History {
     public class HistoryListDetailTests {
         private static HistoryListDetail MakeDetail() {
-            return new HistoryListDetail() {
+            return new HistoryListDetail {
                 LineNumber = 72
             };
         }
@@ -15,8 +15,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.History {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var fakeDetail = MakeDetail();
-                var expected = 72;
+                HistoryListDetail fakeDetail = MakeDetail();
+                int expected = 72;
 
                 // act
 
@@ -29,8 +29,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.History {
             [Fact]
             public void InitializedDetail_HasDefaultValue() {
                 // arrange
-                var test = new HistoryListDetail();
-                var expected = 0;
+                HistoryListDetail test = new HistoryListDetail();
+                int expected = 0;
 
                 // act
 
