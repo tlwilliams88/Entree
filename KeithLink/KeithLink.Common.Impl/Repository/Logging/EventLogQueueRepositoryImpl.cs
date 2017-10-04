@@ -86,7 +86,6 @@ namespace KeithLink.Common.Impl.Repository.Logging {
                 }
             }
 
-
             newMessage.Exception.Message = ex.Message;
             newMessage.Exception.StackTrace = stackTrace.ToString();
 
@@ -127,7 +126,7 @@ namespace KeithLink.Common.Impl.Repository.Logging {
 
         public void WriteErrorLog(string logMessage) {
             try {
-                _queue.PublishLogMessage(logMessage);
+                _queue.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_ERROR));
             } catch {
                 FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Error);
             }
