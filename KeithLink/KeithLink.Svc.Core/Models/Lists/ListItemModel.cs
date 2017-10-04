@@ -64,17 +64,22 @@ namespace KeithLink.Svc.Core.Models.Lists
         public DateTime? FromDate { get; set; }
 
         [DataMember(Name = "todate")]
-        [Description("To Date")]
+        [Description("Active To Date")]
         public DateTime? ToDate { get; set; }
 
         [DataMember(Name = "delta")]
         public string Delta { get; set; }
 
+        [Description("Last Changed Date")]
         [DataMember(Name = "quantity")]
         public decimal Quantity { get; set; }
 
+        [Description("Added Date")]
+        [DataMember(Name = "added")]
         public DateTime CreatedUtc { get; set; }
 
+        [Description("Last Modified Date")]
+        [DataMember(Name = "lastmodified")]
         public DateTime ModifiedUtc { get; set; }
 
         [DataMember(Name = "isdeleted")]
