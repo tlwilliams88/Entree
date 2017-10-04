@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Interface.ETL
     {
         void PurgeInternalUserAccessTable();
         DataTable ReadAllBranches();
+        DataTable ReadAllItemKeywords();
         DataTable ReadBrandControlLabels();
         DataTable ReadDepartmentCategories();
         DataTable ReadItems(string branchId);
