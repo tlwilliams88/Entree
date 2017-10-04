@@ -36,7 +36,7 @@
             <Component Id="ServiceFile" Guid="A61B19C7-F371-4765-A02A-0F9BA6D132F1">
               <File Id="AutoFac" Name="Autofac.dll" DiskId="1" Source="$(var.SourcePath)\Autofac.dll" KeyPath="no" Vital="yes"/>
               <File Id="Awssdk" Name="AWSSDK.dll" DiskId="1" Source="$(var.SourcePath)\AWSSDK.dll" KeyPath="no" Vital="yes"/>
-              <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
+              <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
               <File Id="Config" Name="KeithLink.Svc.Windows.OrderService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe.config" KeyPath="no" Vital="yes"/>
               <File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF" Name="EntityFramework.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.dll" KeyPath="no" Vital="yes"/>
