@@ -87,9 +87,9 @@ namespace KeithLink.Svc.WebApi.Controllers {
             try
             {
                 var list = _listService.ReadList(this.AuthenticatedUser, this.SelectedUserContext, type, listId, true);
-                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, list.Items);
 
                 ListModel exportListModel = list.ShallowCopy();
+                ItemOrderHistoryHelper.GetItemOrderHistories(_catalogLogic, SelectedUserContext, exportListModel.Items);
 
                 if (exportRequest.Filter != null)
                 {

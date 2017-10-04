@@ -13,6 +13,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
                 IsValid = true,
                 Name = "Fake Name",
                 Detail = "Fake Detail",
+                OrderHistoryString = "Fake OrderHistoryString",
                 Description = "Fake Description",
                 Pack = "Fake Pack",
                 Size = "Fake Size",
@@ -166,6 +167,40 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             }
         }
         #endregion Get_Detail
+
+        #region Get_OrderHistoryString
+        public class Get_OrderHistoryString
+        {
+            [Fact]
+            public void GoodTest_ReturnsExpectedValue()
+            {
+                // arrange
+                var fakeItem = MakeTestData();
+                var expected = "Fake OrderHistoryString";
+
+                // act
+
+                // assert
+                fakeItem.OrderHistoryString
+                        .Should()
+                        .Be(expected);
+            }
+
+            [Fact]
+            public void InitalizedTest_HasDefaultValue()
+            {
+                // arrange
+                var test = new ListItemModel();
+
+                // act
+
+                // assert
+                test.OrderHistoryString
+                    .Should()
+                    .BeNull();
+            }
+        }
+        #endregion
 
         #region Get_Description
         public class Get_Description {
