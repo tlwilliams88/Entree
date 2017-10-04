@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
+
 using FluentAssertions;
-using Moq;
-using Xunit;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
@@ -15,12 +12,13 @@ using KeithLink.Svc.Core.Models.Lists.History;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
-{
-    public class HistoryListLogicTests : BaseDITests
-    {
-        private static IHistoryListLogic MakeTestsObject()
-        {
+using Moq;
+
+using Xunit;
+
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
+    public class HistoryListLogicTests : BaseDITests {
+        private static IHistoryListLogic MakeTestsObject() {
             ContainerBuilder cb = GetTestsContainer();
 
             // Register mocks
@@ -29,20 +27,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             cb.RegisterInstance(MakeMockDetailsRepo())
               .As<IHistoryListDetailRepository>();
 
-            var testcontainer = cb.Build();
+            IContainer testcontainer = cb.Build();
 
             return testcontainer.Resolve<IHistoryListLogic>();
         }
 
-        private static IHistoryListHeaderRepository MakeMockHeaderRepo()
-        {
-            var mockHeaderRepo = new Mock<IHistoryListHeaderRepository>();
+        private static IHistoryListHeaderRepository MakeMockHeaderRepo() {
+            Mock<IHistoryListHeaderRepository> mockHeaderRepo = new Mock<IHistoryListHeaderRepository>();
 
             mockHeaderRepo.Setup(h => h.GetHistoryListHeader(
-                                                         It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
-                                                                                    c.CustomerId == "123456")))
-                          .Returns(new HistoryListHeader()
-                          {
+                                                             It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
+                                                                                             c.CustomerId == "123456")))
+                          .Returns(new HistoryListHeader {
                               BranchId = "FUT",
                               CustomerNumber = "123456",
                               CreatedUtc = It.IsAny<DateTime>(),
@@ -53,43 +49,38 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return mockHeaderRepo.Object;
         }
 
-        private static IHistoryListDetailRepository MakeMockDetailsRepo()
-        {
-            var mockDetailsRepo = new Mock<IHistoryListDetailRepository>();
+        private static IHistoryListDetailRepository MakeMockDetailsRepo() {
+            Mock<IHistoryListDetailRepository> mockDetailsRepo = new Mock<IHistoryListDetailRepository>();
 
             mockDetailsRepo.Setup(h => h.GetAllHistoryDetails(It.Is<long>(l => l == 1)))
-                           .Returns(new List<HistoryListDetail>()
-                           {
-                               new HistoryListDetail() {
-                                                             CatalogId = "FUT",
-                                                             ItemNumber = "123456",
-                                                             Each = false,
-                                                             LineNumber = 1,
-                                                             CreatedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc),
-                                                             Id = 1,
-                                                             ModifiedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc)
-                                                         }
+                           .Returns(new List<HistoryListDetail> {
+                               new HistoryListDetail {
+                                   CatalogId = "FUT",
+                                   ItemNumber = "123456",
+                                   Each = false,
+                                   LineNumber = 1,
+                                   CreatedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc),
+                                   Id = 1,
+                                   ModifiedUtc = new DateTime(2017, 7, 14, 16, 41, 0, DateTimeKind.Utc)
+                               }
                            });
 
             return mockDetailsRepo.Object;
         }
 
-        public class GetListModel
-        {
+        public class GetListModel {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetListModel(fakeUser, testcontext, 0);
+                ListModel results = testunit.GetListModel(fakeUser, testcontext, 0);
 
                 // assert
                 results.Should()
@@ -97,19 +88,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var fakeUser = new UserProfile();
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetListModel(fakeUser, testcontext, 0);
+                ListModel results = testunit.GetListModel(fakeUser, testcontext, 0);
 
                 // assert
                 results.Should()
@@ -117,20 +106,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
-                var expected = "123456";
+                UserProfile fakeUser = new UserProfile();
+                string expected = "123456";
 
                 // act
-                var results = testunit.GetListModel(fakeUser, testcontext, 0);
+                ListModel results = testunit.GetListModel(fakeUser, testcontext, 0);
 
                 // assert
                 results.CustomerNumber
@@ -139,20 +126,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class ReadList
-        {
+        public class ReadList {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
-                var headerOnly = false;
+                UserProfile fakeUser = new UserProfile();
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -163,17 +147,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var fakeUser = new UserProfile();
-                var headerOnly = false;
+                UserProfile fakeUser = new UserProfile();
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -184,18 +166,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
-                var expected = "123456";
-                var headerOnly = false;
+                UserProfile fakeUser = new UserProfile();
+                string expected = "123456";
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -207,18 +187,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranchHeaderOnlyFalse_ReturnsExpectedNumberOfItems()
-            {
+            public void GoodCustomerIdAndBranchHeaderOnlyFalse_ReturnsExpectedNumberOfItems() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
-                var expected = 1;
-                var headerOnly = false;
+                UserProfile fakeUser = new UserProfile();
+                int expected = 1;
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -231,18 +209,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranchHeaderOnlyTrue_ReturnsExpectedNumberOfItems()
-            {
+            public void GoodCustomerIdAndBranchHeaderOnlyTrue_ReturnsExpectedNumberOfItems() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
-                var expected = 0;
-                var headerOnly = true;
+                UserProfile fakeUser = new UserProfile();
+                int expected = 0;
+                bool headerOnly = true;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -255,23 +231,20 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class ItemsInHistoryList
-        {
+        public class ItemsInHistoryList {
             [Fact]
-            public void BadBranchId_ReturnsListWithInListItemsAndInHistoryFalse()
-            {
+            public void BadBranchId_ReturnsListWithInListItemsAndInHistoryFalse() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var InList = new List<string>() { "123456" };
-                var expected = false;
+                List<string> InList = new List<string> {"123456"};
+                bool expected = false;
 
                 // act
-                var results = testunit.ItemsInHistoryList(testcontext, InList);
+                List<InHistoryReturnModel> results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
                 results.First()
@@ -281,20 +254,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsListWithInListItemsAndInHistoryFalse()
-            {
+            public void BadCustomerId_ReturnsListWithInListItemsAndInHistoryFalse() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var InList = new List<string>() { "123456" };
-                var expected = false;
+                List<string> InList = new List<string> {"123456"};
+                bool expected = false;
 
                 // act
-                var results = testunit.ItemsInHistoryList(testcontext, InList);
+                List<InHistoryReturnModel> results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
                 results.First()
@@ -304,20 +275,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsListWithInListItemsAndInHistoryTrue()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsListWithInListItemsAndInHistoryTrue() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                IHistoryListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var InList = new List<string>() { "123456" };
-                var expected = true;
+                List<string> InList = new List<string> {"123456"};
+                bool expected = true;
 
                 // act
-                var results = testunit.ItemsInHistoryList(testcontext, InList);
+                List<InHistoryReturnModel> results = testunit.ItemsInHistoryList(testcontext, InList);
 
                 // assert
                 results.First()

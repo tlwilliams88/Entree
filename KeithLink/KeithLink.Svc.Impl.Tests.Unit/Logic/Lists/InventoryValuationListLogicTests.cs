@@ -203,7 +203,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class CreateOrUpdateList {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsHeaderRepoSave() {
                 // arrange
@@ -229,7 +229,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class SaveItem {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsDetailsRepoSaveInventoryValuationDetail() {
                 // arrange
@@ -337,7 +337,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                         new ListItemModel {
                             ItemNumber = "123456",
                             Active = true,
-                            IsDelete =  true
+                            IsDelete = true
                         }
                     }
                 };
@@ -368,7 +368,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                         new ListItemModel {
                             ItemNumber = "123456",
                             Active = true,
-                            IsDelete =  false
+                            IsDelete = false
                         }
                     }
                 };
@@ -399,7 +399,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                         new ListItemModel {
                             ItemNumber = "123456",
                             Active = false,
-                            IsDelete =  false
+                            IsDelete = false
                         }
                     }
                 };
@@ -410,7 +410,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // assert
                 mockDetailsRepo.Verify(h => h.SaveInventoryValuationDetail(It.Is<InventoryValuationListDetail>(d => d.Active.Equals(true))), Times.Once(), "Error updating");
             }
-
         }
     }
 }
