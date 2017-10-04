@@ -67,6 +67,15 @@ namespace KeithLink.Svc.WebApi.Helpers
             if (list == null)
                 return null;
 
+            ListModel printlist = list.ShallowCopy();
+
+            if (options.Filter != null)
+            {
+                printlist.Items = printlist.Items.AsQueryable()
+                                 .Filter(options.Filter, null)
+                                 .ToList();
+            }
+
             StringBuilder sortinfo = new StringBuilder();
             foreach (SortInfo si in options.Paging.Sort)
             {
@@ -76,14 +85,14 @@ namespace KeithLink.Svc.WebApi.Helpers
                 sortinfo.Append(",");
                 sortinfo.Append(si.Order);
             }
-            list.Items = SortOrderItems(sortinfo.ToString(), list.Items);
+            printlist.Items = SortOrderItems(sortinfo.ToString(), printlist.Items);
             int ind = 1;
-            foreach (ListItemModel item in list.Items)
+            foreach (ListItemModel item in printlist.Items)
             {
                 item.Position = ind++;
             }
 
-            ListReportModel printModel = list.ToReportModel();
+            ListReportModel printModel = printlist.ToReportModel();
 
             Customer customer = _profileLogic.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
 

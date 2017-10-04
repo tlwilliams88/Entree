@@ -1,1 +1,0 @@
-﻿DROP PROC [ETL].[ReadPDMData];

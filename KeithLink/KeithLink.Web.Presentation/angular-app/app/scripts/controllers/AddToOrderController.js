@@ -276,7 +276,14 @@ angular.module('bekApp')
     $scope.setRange();
 
     if(!visited.length){
-      listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, []);
+        if($scope.selectedList.type == 2) {
+            var filter = {
+                            field: 'delta',
+                            value: 'active'
+                         }
+        }
+
+      listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, [], filter);
     }
     else{
       var foundStartPoint = false;

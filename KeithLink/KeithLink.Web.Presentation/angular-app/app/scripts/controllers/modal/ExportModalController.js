@@ -67,7 +67,12 @@ angular.module('bekApp')
         isViewingAllCustomers: exportParams.isViewingAllCustomers,
         filter: $scope.exportParams
     };
-    exportMethod(config, params);
+    
+    if(exportParams.filter != null){
+        config.filter = exportParams.filter;
+    }
+    
+    exportMethod(config, exportParams);
   };
 
   $scope.customExport = function() {
@@ -89,7 +94,11 @@ angular.module('bekApp')
         filter: $scope.exportParams
     };
 
-    exportMethod(config, $scope.exportParams);
+    if(exportParams.filter != null){
+        config.filter = exportParams.filter;
+    }
+
+    exportMethod(config, exportParams);
   };
 
   $scope.cancel = function () {

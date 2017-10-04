@@ -79,7 +79,7 @@ angular.module('bekApp')
     ];
 
     $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter});
+    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
@@ -212,13 +212,13 @@ angular.module('bekApp')
       });
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);
+        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems, $scope.selectedFilter);
       } else {
         $scope.setStartAndEndPoints(visited[0]);
         if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
           $scope.selectedList.allSelected = true;
         }
-        updateItemPositions();
+        // updateItemPositions();
       }
     };
 
@@ -278,7 +278,7 @@ angular.module('bekApp')
       if(initialPageLoad){
         $scope.currentPage = 1;
         $scope.visitedPages.push({page: 1, items: $scope.selectedList.items, deletedCount: 0});
-        updateItemPositions();
+        // updateItemPositions();
       }
       $scope.setRange();
 
@@ -333,7 +333,7 @@ angular.module('bekApp')
       else{
        $scope.setStartAndEndPoints(list);
       }
-       updateItemPositions();
+    //    updateItemPositions();
       if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
         $scope.selectedList.allSelected = true;
       }
@@ -631,36 +631,36 @@ angular.module('bekApp')
     };
 
       // saves new item indexes in cached editPosition field after sorting or ordering the list items
-     function updateItemPositions() {
-
-      if($scope.selectedList.read_only){
-        return;
-      }
-      var deletedItemCount = 0;
-      var currentPageDeletes = 0;
-      var currentPageDeletedCount = 0;
-      $scope.itemCountOffset = 0;
-      $scope.visitedPages.forEach(function(page){
-      if($scope.currentPage > page.page){
-        deletedItemCount += page.deletedCount;
-      }
-      if($scope.currentPage === page.page){
-        currentPageDeletedCount = page.deletedCount;
-      }
-      $scope.itemCountOffset += page.deletedCount;
-      });
-
-      $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
-      $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
-      var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
-      angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
-        if(!item.isdeleted){
-            item.position = newPosition;
-            item.editPosition = newPosition;
-            newPosition += 1;
-        }
-      });
-    }
+    //  function updateItemPositions() {
+    // 
+    //   if($scope.selectedList.read_only){
+    //     return;
+    //   }
+    //   var deletedItemCount = 0;
+    //   var currentPageDeletes = 0;
+    //   var currentPageDeletedCount = 0;
+    //   $scope.itemCountOffset = 0;
+    //   $scope.visitedPages.forEach(function(page){
+    //   if($scope.currentPage > page.page){
+    //     deletedItemCount += page.deletedCount;
+    //   }
+    //   if($scope.currentPage === page.page){
+    //     currentPageDeletedCount = page.deletedCount;
+    //   }
+    //   $scope.itemCountOffset += page.deletedCount;
+    //   });
+    // 
+    //   $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
+    //   $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
+    //   var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
+    //   angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
+    //     if(!item.isdeleted){
+    //         item.position = newPosition;
+    //         item.editPosition = newPosition;
+    //         newPosition += 1;
+    //     }
+    //   });
+    // }
 
     /**********
     DELETE ITEMS
@@ -677,7 +677,7 @@ angular.module('bekApp')
       $scope.forms.listForm.$setDirty();
       item.isdeleted = true;
       updateDeletedCount();
-      updateItemPositions();
+    //   updateItemPositions();
     };
 
     $scope.deleteMultipleItems = function() {
@@ -699,7 +699,7 @@ angular.module('bekApp')
       }
 
       $scope.selectedList.allSelected = false;
-      updateItemPositions();
+    //   updateItemPositions();
       $scope.forms.listForm.$setDirty();
       $scope.isDeletingItem = false;
     };
@@ -1014,6 +1014,9 @@ angular.module('bekApp')
                 listId: $scope.selectedList.listid,
                 sort: $scope.sort[0]
             }
+            if($scope.selectedList.is_contract_list == true) {
+                params.filter = $scope.selectedFilter;
+            }
             return params;
           }
         }
@@ -1082,7 +1085,7 @@ angular.module('bekApp')
           },
           contractFilter: function() {
             return {
-              filter: $scope.selectedFilter[0].filter
+              filter: $scope.selectedFilter
             };
           }
         }

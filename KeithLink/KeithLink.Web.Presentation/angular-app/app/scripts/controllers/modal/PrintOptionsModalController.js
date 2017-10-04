@@ -45,15 +45,15 @@ angular.module('bekApp')
                 field: 'label',
                 order:  'desc'
               }],
-              terms: undefined,
-              filter: $scope.contractFilter
+              terms: undefined
             };
     } else {
      pagingModelOptions = $scope.originalPagingModel;
     }
     
-    if(list.is_contract_list = true) {
-      var contractFilter = $scope.contractFilter;
+    var contractFilter;
+    if(list.is_contract_list == true) {
+      contractFilter = $scope.contractFilter;
     }
     
     if(!$scope.printingOrder){

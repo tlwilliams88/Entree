@@ -111,6 +111,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Dependencies\BarcodeLib.dll</HintPath>
     </Reference>
+    <Reference Include="BEKlibrary, Version=2017.10.0.0, Culture=neutral, PublicKeyToken=30bbedabefbbbc7e, processorArchitecture=MSIL">
+      <HintPath>..\packages\BEK.Library.2017.10.0\lib\net45\BEKlibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="CommerceServer.Core.Catalog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
@@ -1468,6 +1472,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.FoundationService\FoundationService.disco" />
+    <Content Include="CommonAPI\Sample Data\IN_BEK_FDF_20120809_064994.TXT" />
+    <Content Include="CommonAPI\Sample Data\IN_BEK_FSA_20120817_153678.TXT" />
+    <Content Include="CommonAPI\Sample Data\OC_BEK_FAM_G0139140.TXT" />
+    <Content Include="CommonAPI\Sample Data\OG_BEK_FLR_20120821_023005.TXT" />
     <Content Include="Dependencies\BarcodeLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
