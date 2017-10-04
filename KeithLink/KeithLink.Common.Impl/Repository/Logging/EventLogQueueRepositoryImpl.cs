@@ -7,12 +7,14 @@ using System.IO;
 using System.Text;
 using System.Threading;
 
+using BEKlibrary;
 using BEKlibrary.EventLog.BusinessLayer;
+using BEKlibrary.EventLog.Datalayer;
 
 namespace KeithLink.Common.Impl.Repository.Logging {
     public class EventLogQueueRepositoryImpl : IEventLogRepository {
         #region attributes
-        private BEKlibrary.EventLog.Datalayer.QueueRepository _log;
+        private IQueueRepository _queue;
 
         private const int SEVERITY_NOT_SET = -1;
         private const int SEVERITY_DEBUG = 0;
@@ -22,11 +24,15 @@ namespace KeithLink.Common.Impl.Repository.Logging {
         #endregion
 
         #region ctor
+        public EventLogQueueRepositoryImpl(IQueueRepository queueRepository) {
+            _queue = queueRepository;
+        }
+
         public EventLogQueueRepositoryImpl(string applicationName) {
             if (Configuration.LoggingConnectionString == null) {
                 FailoverToWindowsEventLog("EventLog connection string was not found in the configuration file", null, EventLogEntryType.Warning);
             } else {
-                _log = new BEKlibrary.EventLog.Datalayer.QueueRepository();
+                _queue = new BEKlibrary.EventLog.Datalayer.QueueRepository();
             }
         }
         #endregion
@@ -121,7 +127,7 @@ namespace KeithLink.Common.Impl.Repository.Logging {
 
         public void WriteErrorLog(string logMessage) {
             try {
-                _log.PublishLogMessage(logMessage);
+                _queue.PublishLogMessage(logMessage);
             } catch {
                 FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Error);
             }
@@ -129,7 +135,7 @@ namespace KeithLink.Common.Impl.Repository.Logging {
 
         public void WriteErrorLog(string logMessage, Exception ex) {
             try {
-                _log.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_ERROR));
+                _queue.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_ERROR));
             } catch {
                 FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error);
             }
@@ -137,7 +143,7 @@ namespace KeithLink.Common.Impl.Repository.Logging {
 
         public void WriteInformationLog(string logMessage) {
             try {
-                _log.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_INFORMATION));
+                _queue.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_INFORMATION));
             } catch {
                 FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Information);
             }
@@ -145,7 +151,7 @@ namespace KeithLink.Common.Impl.Repository.Logging {
 
         public void WriteInformationLog(string logMessage, Exception ex) {
             try {
-                _log.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_INFORMATION));
+                _queue.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_INFORMATION));
             } catch {
                 FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Error);
             }
@@ -153,7 +159,7 @@ namespace KeithLink.Common.Impl.Repository.Logging {
 
         public void WriteWarningLog(string logMessage) {
             try {
-                _log.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_WARNING));
+                _queue.PublishLogMessage(GetSingleMessageLog(logMessage, SEVERITY_WARNING));
             } catch {
                 FailoverToWindowsEventLog(logMessage, null, EventLogEntryType.Warning);
             }
@@ -161,7 +167,7 @@ namespace KeithLink.Common.Impl.Repository.Logging {
 
         public void WriteWarningLog(string logMessage, Exception ex) {
             try {
-                _log.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_WARNING));
+                _queue.PublishLogMessage(GetLogMessage(logMessage, ex, SEVERITY_WARNING));
             } catch {
                 FailoverToWindowsEventLog(logMessage, ex, EventLogEntryType.Warning);
             }
