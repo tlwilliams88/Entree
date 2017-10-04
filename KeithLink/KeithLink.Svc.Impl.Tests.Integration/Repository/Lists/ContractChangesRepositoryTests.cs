@@ -25,9 +25,15 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 IContractChangesRepository repo = MakeRepo();
 
                 // act
-                repo.Purge(7);
-
+                try {
+                    repo.Purge(7);
                 // assert
+                    Assert.True(true); //no exception
+                }
+                catch
+                {
+                    Assert.True(false);//exception
+                }
             }
 
             [Fact]
@@ -52,9 +58,15 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 int testId = 1;
                 bool testSent = true;
                 // act
-                repo.Update(testId, testSent);
-
+                try {
+                    repo.Update(testId, testSent);
                 // assert
+                    Assert.True(true); //no exception
+                }
+                catch
+                {
+                    Assert.True(false);//exception
+                }
             }
         }
     }
