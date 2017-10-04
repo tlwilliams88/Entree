@@ -52,6 +52,7 @@
     <Compile Include="Migrations\Data\IntegrationTests\Configuration\AppSettings.cs" />
     <Compile Include="Migrations\Data\AppSettings.cs" />
     <Compile Include="Migrations\Data\Baseline_Data.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Lists\ListItemsDelta.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListDetails.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\CustomListHeaders.cs" />
