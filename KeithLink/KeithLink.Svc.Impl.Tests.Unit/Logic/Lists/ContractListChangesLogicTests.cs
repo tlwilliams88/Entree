@@ -2,6 +2,8 @@
 using System.Text;
 
 using Autofac;
+using Moq;
+using Xunit;
 
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Common;
@@ -15,10 +17,6 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Seams;
-
-using Moq;
-
-using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
     public class ContractListChangesLogicTests : BaseDITests {

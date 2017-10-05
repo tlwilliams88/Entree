@@ -79,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Migrator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Lists\ContractChangesRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ContractListDetailRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ContractListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\CustomListDetailRepositoryTests.cs" />
