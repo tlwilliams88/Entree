@@ -38,11 +38,11 @@ angular.module('bekApp')
   $scope.exportConfig = exportConfig;
   $scope.exportParams = exportParams ? exportParams : {};
   
-  if(($scope.exportParams && $scope.exportParams.params) != undefined) {
-      if($scope.exportParams.params.filter && $scope.exportParams.params.filter.filterFields) {
-          $scope.exportParamsFilter = $scope.exportParams.params.filter.filterFields[0];
-      } else if($scope.exportParams.params.filter && $scope.exportParams.params.filter.filterFields) {
+  if($scope.exportParams && $scope.exportParams.params != undefined && $scope.exportParams.params.filter != undefined) {
+      if($scope.exportParams.params.filter.filterFields == undefined) {
           $scope.exportParamsFilter = $scope.exportParams.params.filter[0];
+      } else {
+          $scope.exportParamsFilter = $scope.exportParams.params.filter.filterFields[0];
       }
   }
   
