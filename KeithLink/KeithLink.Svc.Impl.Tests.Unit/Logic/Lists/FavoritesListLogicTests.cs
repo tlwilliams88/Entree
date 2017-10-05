@@ -6,7 +6,6 @@ using Autofac;
 
 using FluentAssertions;
 
-using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.Favorites;
@@ -356,7 +355,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class SaveList {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime() {
                 // arrange
@@ -425,24 +424,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
 
                 // assert - Always returns what is setup provided the mock is called
                 mockDetailsRepo.Verify(
-                       x => x.SaveFavoriteListDetail(It.Is<FavoritesListDetail>(d => d.Active.Equals(false))),
-                       Times.Once(),
-                       "Error updating");
+                                       x => x.SaveFavoriteListDetail(It.Is<FavoritesListDetail>(d => d.Active.Equals(false))),
+                                       Times.Once(),
+                                       "Error updating");
             }
         }
 
-        public class CreateList
-        {
+        public class CreateList {
             // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime()
-            {
+            public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime() {
                 // arrange
                 Mock<IFavoriteListHeadersRepository> mockHeaderRepo = new Mock<IFavoriteListHeadersRepository>();
                 Mock<IFavoriteListDetailsRepository> mockDetailsRepo = new Mock<IFavoriteListDetailsRepository>();
                 FavoritesListLogicImpl testunit = new FavoritesListLogicImpl(mockDetailsRepo.Object, mockHeaderRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
@@ -457,7 +453,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class Save {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsSaveDetailEveryTime() {
                 // arrange

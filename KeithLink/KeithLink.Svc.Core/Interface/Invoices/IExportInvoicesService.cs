@@ -21,7 +21,11 @@ namespace KeithLink.Svc.Core.Interface.Invoices
         InvoiceModel GetExportableInvoice(UserProfile user,
                                           UserSelectedContext context,
                                           ExportRequestModel exportRequest,
-                                          string invoiceNumber,
-                                          Dictionary<string, string> contractdictionary);
+                                          string invoiceNumber);
+
+        List<InvoiceModel> GetExportableInvoiceModels(UserProfile user, 
+                                                      UserSelectedContext context, 
+                                                      InvoiceExportRequestModel request, 
+                                                      bool forAllCustomers);
     }
 }

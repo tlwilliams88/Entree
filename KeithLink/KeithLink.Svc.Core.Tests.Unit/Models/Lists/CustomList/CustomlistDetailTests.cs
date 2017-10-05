@@ -1,6 +1,4 @@
-﻿using System;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists.CustomList;
@@ -8,7 +6,7 @@ using KeithLink.Svc.Core.Models.Lists.CustomList;
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
     public class CustomListDetailTests {
         private static CustomListDetail MakeItem() {
-            return new CustomListDetail() {
+            return new CustomListDetail {
                 Active = true,
                 CustomInventoryItemId = 1592,
                 Label = "Fake Label",
@@ -20,8 +18,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = true;
+                CustomListDetail fakeItem = MakeItem();
+                bool expected = true;
 
                 // act
 
@@ -34,8 +32,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListDetail();
-                var expected = false;
+                CustomListDetail test = new CustomListDetail();
+                bool expected = false;
 
                 // act
 
@@ -50,8 +48,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = 1592;
+                CustomListDetail fakeItem = MakeItem();
+                int expected = 1592;
 
                 // act
 
@@ -64,7 +62,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListDetail();
+                CustomListDetail test = new CustomListDetail();
 
                 // act
 
@@ -79,8 +77,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = "Fake Label";
+                CustomListDetail fakeItem = MakeItem();
+                string expected = "Fake Label";
 
                 // act
 
@@ -93,7 +91,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListDetail();
+                CustomListDetail test = new CustomListDetail();
 
                 // act
 
@@ -108,8 +106,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = 19.5m;
+                CustomListDetail fakeItem = MakeItem();
+                decimal expected = 19.5m;
 
                 // act
 
@@ -122,8 +120,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListDetail();
-                var expected = 0;
+                CustomListDetail test = new CustomListDetail();
+                int expected = 0;
 
                 // act
 

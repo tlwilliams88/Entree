@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using FluentAssertions;
+using Xunit;
+
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
-using Xunit;
+
 
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
     public class RecentlyOrderedDetailsExtensionTests {
         private static RecentlyOrderedListDetail MakeDetail() {
-            return new RecentlyOrderedListDetail() {
+            return new RecentlyOrderedListDetail {
                 Id = 15,
                 ItemNumber = "123456",
                 HeaderId = 23,
@@ -27,7 +25,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
         }
 
         private static ListItemModel MakeModel() {
-            return new ListItemModel() {
+            return new ListItemModel {
                 Active = true,
                 CatalogId = "FUT",
                 Each = true,
@@ -41,133 +39,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
 
         public class ToWebModel {
             [Fact]
-            public void GoodDetail_ReturnsExpectedListItemId() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = 15;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.ListItemId
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedType() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = ListType.RecentlyOrdered;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Type
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedItemNumber() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = "123456";
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.ItemNumber
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedPosition() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = 7;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Position
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedCreatedUtc() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = new DateTime(2017, 7, 20, 10, 44, 0, DateTimeKind.Utc);
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.CreatedUtc
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedModifiedUtc() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = new DateTime(2017, 7, 20, 10, 45, 0, DateTimeKind.Utc);
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.ModifiedUtc
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedEach() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = true;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Each
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsExpectedCatalogId() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = "FUT";
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.CatalogId
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
             public void GoodDetail_ReturnsExpectedActive() {
                 // arrange
-                var detail = MakeDetail();
-                var expected = true;
+                RecentlyOrderedListDetail detail = MakeDetail();
+                bool expected = true;
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
                 results.Active
@@ -176,13 +54,43 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsExpectedCustomInveotryItemId() {
+            public void GoodDetail_ReturnsExpectedCatalogId() {
                 // arrange
-                var detail = MakeDetail();
-                var expected = 0;
+                RecentlyOrderedListDetail detail = MakeDetail();
+                string expected = "FUT";
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.CatalogId
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsExpectedCreatedUtc() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+                DateTime expected = new DateTime(2017, 7, 20, 10, 44, 0, DateTimeKind.Utc);
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.CreatedUtc
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsExpectedCustomInveotryItemId() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+                int expected = 0;
+
+                // act
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
                 results.CustomInventoryItemId
@@ -191,100 +99,91 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullPackSize() {
+            public void GoodDetail_ReturnsExpectedEach() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
+                bool expected = true;
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
-                results.PackSize
+                results.Each
                        .Should()
-                       .BeNull();
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullStorageTemp() {
+            public void GoodDetail_ReturnsExpectedItemNumber() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
+                string expected = "123456";
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
-                results.StorageTemp
+                results.ItemNumber
                        .Should()
-                       .BeNull();
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullCategory() {
+            public void GoodDetail_ReturnsExpectedListItemId() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
+                int expected = 15;
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
-                results.Category
+                results.ListItemId
                        .Should()
-                       .BeNull();
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullFromDate() {
+            public void GoodDetail_ReturnsExpectedModifiedUtc() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
+                DateTime expected = new DateTime(2017, 7, 20, 10, 45, 0, DateTimeKind.Utc);
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
-                results.FromDate
+                results.ModifiedUtc
                        .Should()
-                       .BeNull();
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullToDate() {
+            public void GoodDetail_ReturnsExpectedPosition() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
+                int expected = 7;
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
-                results.ToDate
+                results.Position
                        .Should()
-                       .BeNull();
+                       .Be(expected);
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullDelta() {
+            public void GoodDetail_ReturnsExpectedType() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
+                ListType expected = ListType.RecentlyOrdered;
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
-                results.Delta
-                       .Should()
-                       .BeNull();
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsQuantityOfZero() {
-                // arrange
-                var detail = MakeDetail();
-                var expected = 0;
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Quantity
+                results.Type
                        .Should()
                        .Be(expected);
             }
@@ -292,11 +191,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodDetail_ReturnsIsDeleteAsFalse() {
                 // arrange
-                var detail = MakeDetail();
-                var expected = false;
+                RecentlyOrderedListDetail detail = MakeDetail();
+                bool expected = false;
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
                 results.IsDelete
@@ -305,12 +204,54 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullItemStatistics() {
+            public void GoodDetail_ReturnsNullCategory() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.Category
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullDelta() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.Delta
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullFromDate() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.FromDate
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullItemStatistics() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+
+                // act
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
                 results.ItemStatistics
@@ -319,40 +260,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsNullProprietaryCustomers() {
-                // arrange
-                var detail = MakeDetail();
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.ProprietaryCustomers
-                       .Should()
-                       .BeNull();
-            }
-
-            [Fact]
-            public void GoodDetail_ReturnsNullSupplier() {
-                // arrange
-                var detail = MakeDetail();
-
-                // act
-                var results = detail.ToWebModel();
-
-                // assert
-                results.Supplier
-                       .Should()
-                       .BeNull();
-            }
-
-            [Fact]
             public void GoodDetail_ReturnsNullLabel() {
                 // arrange
-                var detail = MakeDetail();
+                RecentlyOrderedListDetail detail = MakeDetail();
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
                 results.Label
@@ -361,16 +274,101 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodDetail_ReturnsParLevelOfZero() {
+            public void GoodDetail_ReturnsNullPackSize() {
                 // arrange
-                var detail = MakeDetail();
-                var expected = 0;
+                RecentlyOrderedListDetail detail = MakeDetail();
 
                 // act
-                var results = detail.ToWebModel();
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.PackSize
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullProprietaryCustomers() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.ProprietaryCustomers
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullStorageTemp() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.StorageTemp
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullSupplier() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.Supplier
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsNullToDate() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.ToDate
+                       .Should()
+                       .BeNull();
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsParLevelOfZero() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+                int expected = 0;
+
+                // act
+                ListItemModel results = detail.ToWebModel();
 
                 // assert
                 results.ParLevel
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodDetail_ReturnsQuantityOfZero() {
+                // arrange
+                RecentlyOrderedListDetail detail = MakeDetail();
+                int expected = 0;
+
+                // act
+                ListItemModel results = detail.ToWebModel();
+
+                // assert
+                results.Quantity
                        .Should()
                        .Be(expected);
             }
@@ -380,12 +378,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodModel_ReturnsExpectedCatalogId() {
                 // arrange
-                var expected = "FUT";
-                var headerId = 1;
-                var model = MakeModel();
+                string expected = "FUT";
+                int headerId = 1;
+                ListItemModel model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                RecentlyOrderedListDetail results = model.ToRecentlyOrderedDetailList();
 
                 // assert
                 results.CatalogId
@@ -396,12 +394,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodModel_ReturnsExpectedEach() {
                 // arrange
-                var expected = true;
-                var headerId = 1;
-                var model = MakeModel();
+                bool expected = true;
+                int headerId = 1;
+                ListItemModel model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                RecentlyOrderedListDetail results = model.ToRecentlyOrderedDetailList();
 
                 // assert
                 results.Each
@@ -412,12 +410,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodModel_ReturnsExpectedId() {
                 // arrange
-                var expected = 19;
-                var headerId = 1;
-                var model = MakeModel();
+                int expected = 19;
+                int headerId = 1;
+                ListItemModel model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                RecentlyOrderedListDetail results = model.ToRecentlyOrderedDetailList();
 
                 // assert
                 results.Id
@@ -428,12 +426,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodModel_ReturnsExpectedItemNumber() {
                 // arrange
-                var expected = "123456";
-                var headerId = 1;
-                var model = MakeModel();
+                string expected = "123456";
+                int headerId = 1;
+                ListItemModel model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                RecentlyOrderedListDetail results = model.ToRecentlyOrderedDetailList();
 
                 // assert
                 results.ItemNumber
@@ -444,12 +442,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodModel_ReturnsExpectedLineNumber() {
                 // arrange
-                var expected = 23;
-                var headerId = 1;
-                var model = MakeModel();
+                int expected = 23;
+                int headerId = 1;
+                ListItemModel model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                RecentlyOrderedListDetail results = model.ToRecentlyOrderedDetailList();
 
                 // assert
                 results.LineNumber
@@ -460,12 +458,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodModelWithHeaderId_ReturnsExpectedHeaderId() {
                 // arrange
-                var expected = 1;
-                var headerId = 1;
-                var model = MakeModel();
+                int expected = 1;
+                int headerId = 1;
+                ListItemModel model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList(headerId);
+                RecentlyOrderedListDetail results = model.ToRecentlyOrderedDetailList(headerId);
 
                 // assert
                 results.HeaderId
@@ -476,12 +474,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodModelWithoutHeaderId_ReturnsDefaultHeaderId() {
                 // arrange
-                var expected = 0;
-                var headerId = 1;
-                var model = MakeModel();
+                int expected = 0;
+                int headerId = 1;
+                ListItemModel model = MakeModel();
 
                 // act
-                var results = model.ToRecentlyOrderedDetailList();
+                RecentlyOrderedListDetail results = model.ToRecentlyOrderedDetailList();
 
                 // assert
                 results.HeaderId

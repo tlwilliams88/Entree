@@ -6,7 +6,7 @@ using KeithLink.Svc.Core.Models.Lists.Favorites;
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
     public class FavoriteListDetailTests {
         private static FavoritesListDetail MakeItem() {
-            return new FavoritesListDetail() {
+            return new FavoritesListDetail {
                 Active = true,
                 Label = "Fake Label"
             };
@@ -16,8 +16,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = true;
+                FavoritesListDetail fakeItem = MakeItem();
+                bool expected = true;
 
                 // act
 
@@ -30,8 +30,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new FavoritesListDetail();
-                var expected = false;
+                FavoritesListDetail test = new FavoritesListDetail();
+                bool expected = false;
 
                 // act
 
@@ -46,8 +46,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = "Fake Label";
+                FavoritesListDetail fakeItem = MakeItem();
+                string expected = "Fake Label";
 
                 // act
 
@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Favorites {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new FavoritesListDetail();
+                FavoritesListDetail test = new FavoritesListDetail();
 
                 // act
 

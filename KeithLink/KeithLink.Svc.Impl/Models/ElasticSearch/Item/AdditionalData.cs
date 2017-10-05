@@ -246,6 +246,8 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         public string MarketingNameNotAnalyzed { get; set; }
         [JsonProperty("marketing_name_ngram_analyzed")]
         public string MarketingNameNgramAnalyzed { get; set; }
+        [JsonProperty("keywords")]
+        public string Keywords { get; set; }
 
     }
 }

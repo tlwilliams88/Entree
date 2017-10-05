@@ -18,7 +18,6 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Seams;
 
-
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
     public class ContractListChangesLogicTests : BaseDITests {
         #region ProcessContractChanges
@@ -228,7 +227,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                                                              "not called");
             }
         }
-        #endregion
+        #endregion ProcessContractChanges
 
         #region Setup
         public class MockDependents {
@@ -394,11 +393,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                                                                                      mockDependents.GenericQueueRepository.Object, mockDependents.ContractChangesRepository.Object, mockDependents.MessageTemplateLogic.Object);
             return testunit;
         }
-        #endregion
+        #endregion Setup
 
         #region attributes
         private const string MESSAGE_TEMPLATE_CONTRACTCHANGE = "ContractChangeNotice";
         private const string MESSAGE_TEMPLATE_CONTRACTCHANGEITEMS = "ContractChangeItem";
-        #endregion
+        #endregion attributes
     }
 }

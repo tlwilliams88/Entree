@@ -31,7 +31,7 @@
           <Directory Id="INSTALLFOLDER" Name="$(var.AppName)">
             <Component Id="ServiceFile" Guid="DF0B5F68-4788-4785-A76F-B43D1B4B4604">
               <File Id="AutoFac" Name="Autofac.dll" DiskId="1" Source="$(var.SourcePath)\Autofac.dll" KeyPath="no" Vital="yes"/>
-              <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
+              <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF" Name="EntityFramework.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF_SqlServer" Name="EntityFramework.SqlServer.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.SqlServer.dll" KeyPath="no" Vital="yes"/>
               <File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
@@ -43,7 +43,6 @@
               <File Id="KeithLink_Svc_Core_PDB" Name="KeithLink.Svc.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_DLL" Name="KeithLink.Svc.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_PDB" Name="KeithLink.Svc.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.pdb" KeyPath="no" Vital="yes"/>
-              <File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
               <File Id="NewRelic_Api_Client" Name="NewRelic.Api.Agent.dll" DiskId="1" Source="$(var.SourcePath)\NewRelic.Api.Agent.dll" KeyPath="no" Vital="yes"/>
               <File Id="NewRelic_Config" Name="newrelic.config" DiskId="1" Source="$(var.SourcePath)\newrelic.config" KeyPath="no" Vital="yes"/>
               <File Id="Nest" Name="Nest.dll" DiskId="1" Source="$(var.SourcePath)\Nest.dll" KeyPath="no" Vital="yes"/>

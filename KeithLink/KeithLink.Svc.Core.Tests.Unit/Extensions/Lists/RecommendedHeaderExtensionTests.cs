@@ -12,7 +12,7 @@ using KeithLink.Svc.Core.Models.Lists.RecommendedItems;
 namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
     public class RecommendedHeaderExtensionTests {
         private static RecommendedItemsListHeader MakeHeader() {
-            return new RecommendedItemsListHeader() {
+            return new RecommendedItemsListHeader {
                 BranchId = "FUT",
                 CustomerNumber = "123456",
                 CreatedUtc = new DateTime(2017, 7, 6, 14, 37, 0, DateTimeKind.Utc),
@@ -22,8 +22,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
         }
 
         private static List<RecommendedItemsListDetail> MakeListOfDetails() {
-            return new List<RecommendedItemsListDetail>() {
-                new RecommendedItemsListDetail() {
+            return new List<RecommendedItemsListDetail> {
+                new RecommendedItemsListDetail {
                     Id = 1,
                     CatalogId = "FUT",
                     Each = false,
@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                     CreatedUtc = new DateTime(2017, 7, 6, 15, 9, 0, DateTimeKind.Utc),
                     ModifiedUtc = new DateTime(2017, 7, 6, 15, 10, 0, DateTimeKind.Utc)
                 },
-                new RecommendedItemsListDetail() {
+                new RecommendedItemsListDetail {
                     Id = 2,
                     CatalogId = "FUT",
                     Each = false,
@@ -47,8 +47,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
         }
 
         private static List<ListItemModel> MakeListOfModels() {
-            return new List<ListItemModel>() {
-                new ListItemModel() {
+            return new List<ListItemModel> {
+                new ListItemModel {
                     ListItemId = 1,
                     CatalogId = "FUT",
                     Category = "Fake Category",
@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
                     CreatedUtc = new DateTime(2017, 7, 6, 15, 9, 0, DateTimeKind.Utc),
                     ModifiedUtc = new DateTime(2017, 7, 6, 15, 10, 0, DateTimeKind.Utc)
                 },
-                new ListItemModel() {
+                new ListItemModel {
                     ListItemId = 2,
                     CatalogId = "FUT",
                     Category = "Fake Category",
@@ -73,13 +73,43 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
 
         public class ToListModel {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ItemsHasZeroCount() {
                 // arrange
-                var expected = "FUT";
-                var header = MakeHeader();
+                int expected = 0;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ItemsIsNotNull() {
+                // arrange
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.Items
+                       .Should()
+                       .NotBeNull();
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedBranchId() {
+                // arrange
+                string expected = "FUT";
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
 
                 // assert
                 results.BranchId
@@ -88,13 +118,43 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
+                string expected = "123456";
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.CustomerNumber
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedHasContractItems() {
+                // arrange
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.HasContractItems
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsContractList() {
+                // arrange
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
 
                 // assert
                 results.IsContractList
@@ -103,13 +163,28 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.IsCustomInventory
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+                // arrange
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
 
                 // assert
                 results.IsFavorite
@@ -118,43 +193,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
-                // arrange
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.IsWorksheet
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
-                // arrange
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.IsReminder
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
             public void GoodHeader_ReturnsExpectedIsMandatory() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
 
                 // assert
                 results.IsMandatory
@@ -165,11 +210,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedIsRecommended() {
                 // arrange
-                var expected = true;
-                var header = MakeHeader();
+                bool expected = true;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
 
                 // assert
                 results.IsRecommended
@@ -178,180 +223,28 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsReminder() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
 
                 // assert
-                results.IsCustomInventory
+                results.IsReminder
                        .Should()
                        .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
-                // arrange
-                var expected = ListType.RecommendedItems;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.Type
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
-                // arrange
-                var expected = 15;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.ListId
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
-                // arrange
-                var expected = "Recommended";
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.Name
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
-                // arrange
-                var expected = true;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.ReadOnly
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
-                // arrange
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.Items
-                       .Should()
-                       .NotBeNull();
-            }
-
-            [Fact]
-            public void GoodHeader_ItemsHasZeroCount() {
-                // arrange
-                var expected = 0;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.Items
-                       .Count
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
-                // arrange
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.HasContractItems
-                       .Should()
-                       .Be(expected);
-
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
-                // arrange
-                var expected = "123456";
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.CustomerNumber
-                       .Should()
-                       .Be(expected);
-
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
-                // arrange
-                var expected = 0;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.SharedWith
-                       .Count
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
-                // arrange
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel();
-
-                // assert
-                results.SharedWith
-                       .Should()
-                       .NotBeNull();
             }
 
             [Fact]
             public void GoodHeader_ReturnsExpectedIsShared() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
 
                 // assert
                 results.IsShared
@@ -362,29 +255,166 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedIsSharing() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel();
+                ListModel results = header.ToListModel();
 
                 // assert
                 results.IsSharing
                        .Should()
                        .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+                // arrange
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.IsWorksheet
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedListId() {
+                // arrange
+                int expected = 15;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.ListId
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedName() {
+                // arrange
+                string expected = "Recommended";
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.Name
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedReadonly() {
+                // arrange
+                bool expected = true;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.ReadOnly
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+                // arrange
+                int expected = 0;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedType() {
+                // arrange
+                ListType expected = ListType.RecommendedItems;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.Type
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_SharedWithIsNotNull() {
+                // arrange
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel();
+
+                // assert
+                results.SharedWith
+                       .Should()
+                       .NotBeNull();
             }
         }
 
         public class ToListModel_WithListOfDetails {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ItemsHasExpectedCount() {
                 // arrange
-                var details = MakeListOfDetails();
-                var expected = "FUT";
-                var header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                int expected = 2;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ItemsIsNotNull() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Items
+                       .Should()
+                       .NotBeNull();
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedBranchId() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                string expected = "FUT";
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.BranchId
@@ -393,14 +423,46 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber() {
                 // arrange
-                var details = MakeListOfDetails();
-                var expected = false;
-                var header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                string expected = "123456";
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.CustomerNumber
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedHasContractItems() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.HasContractItems
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsContractList() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsContractList
@@ -409,14 +471,30 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
                 // arrange
-                var details = MakeListOfDetails();
-                var expected = false;
-                var header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.IsCustomInventory
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsFavorite
@@ -425,46 +503,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.IsWorksheet
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.IsReminder
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
             public void GoodHeader_ReturnsExpectedIsMandatory() {
                 // arrange
-                var details = MakeListOfDetails();
-                var expected = false;
-                var header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsMandatory
@@ -475,12 +521,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedIsRecommended() {
                 // arrange
-                var details = MakeListOfDetails();
-                var expected = true;
-                var header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = true;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsRecommended
@@ -489,190 +535,30 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsReminder() {
                 // arrange
-                var details = MakeListOfDetails();
-                var expected = false;
-                var header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
-                results.IsCustomInventory
+                results.IsReminder
                        .Should()
                        .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = ListType.RecommendedItems;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Type
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = 15;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.ListId
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = "Recommended";
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Name
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = true;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.ReadOnly
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
-                // arrange
-                var details = MakeListOfDetails();
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Items
-                       .Should()
-                       .NotBeNull();
-            }
-
-            [Fact]
-            public void GoodHeader_ItemsHasExpectedCount() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = 2;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Items
-                       .Count
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.HasContractItems
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
-                // arrange
-                var details = MakeListOfDetails();
-                var expected = "123456";
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.CustomerNumber
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
-                // arrange
-                var expected = 0;
-                var header = MakeHeader();
-                var details = MakeListOfDetails();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.SharedWith
-                       .Count
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
-                // arrange
-                var header = MakeHeader();
-                var details = MakeListOfDetails();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.SharedWith
-                       .Should()
-                       .NotBeNull();
             }
 
             [Fact]
             public void GoodHeader_ReturnsExpectedIsShared() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
-                var details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsShared
@@ -683,30 +569,174 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedIsSharing() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
-                var details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsSharing
                        .Should()
                        .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.IsWorksheet
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedListId() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                int expected = 15;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.ListId
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedName() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                string expected = "Recommended";
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Name
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedReadonly() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                bool expected = true;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.ReadOnly
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+                // arrange
+                int expected = 0;
+                RecommendedItemsListHeader header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedType() {
+                // arrange
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+                ListType expected = ListType.RecommendedItems;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Type
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_SharedWithIsNotNull() {
+                // arrange
+                RecommendedItemsListHeader header = MakeHeader();
+                List<RecommendedItemsListDetail> details = MakeListOfDetails();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.SharedWith
+                       .Should()
+                       .NotBeNull();
             }
         }
 
         public class ToListModel_WithListOfModels {
             [Fact]
-            public void GoodHeader_ReturnsExpectedBranchId() {
+            public void GoodHeader_ItemsHasExpectedCount() {
                 // arrange
-                var details = MakeListOfModels();
-                var expected = "FUT";
-                var header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+                int expected = 2;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Items
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ItemsIsNotNull() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Items
+                       .Should()
+                       .NotBeNull();
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedBranchId() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                string expected = "FUT";
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.BranchId
@@ -715,14 +745,46 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsContractList() {
+            public void GoodHeader_ReturnsExpectedCustomerNumber() {
                 // arrange
-                var details = MakeListOfModels();
-                var expected = false;
-                var header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+                string expected = "123456";
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.CustomerNumber
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedHasContractItems() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.HasContractItems
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsContractList() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsContractList
@@ -731,14 +793,30 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
                 // arrange
-                var details = MakeListOfModels();
-                var expected = false;
-                var header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.IsCustomInventory
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsFavoriteList() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsFavorite
@@ -747,46 +825,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsWorksheet() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.IsWorksheet
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedIsReminder() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.IsReminder
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
             public void GoodHeader_ReturnsExpectedIsMandatory() {
                 // arrange
-                var details = MakeListOfModels();
-                var expected = false;
-                var header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsMandatory
@@ -797,12 +843,12 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedIsRecommended() {
                 // arrange
-                var details = MakeListOfModels();
-                var expected = true;
-                var header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = true;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsRecommended
@@ -811,190 +857,30 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             }
 
             [Fact]
-            public void GoodHeader_ReturnsExpectedIsCustomInventory() {
+            public void GoodHeader_ReturnsExpectedIsReminder() {
                 // arrange
-                var details = MakeListOfModels();
-                var expected = false;
-                var header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
-                results.IsCustomInventory
+                results.IsReminder
                        .Should()
                        .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedType() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = ListType.RecommendedItems;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Type
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedListId() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = 15;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.ListId
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedName() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = "Recommended";
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Name
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedReadonly() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = true;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.ReadOnly
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ItemsIsNotNull() {
-                // arrange
-                var details = MakeListOfModels();
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Items
-                       .Should()
-                       .NotBeNull();
-            }
-
-            [Fact]
-            public void GoodHeader_ItemsHasExpectedCount() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = 2;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.Items
-                       .Count
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedHasContractItems() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = false;
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.HasContractItems
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedCustomerNumber() {
-                // arrange
-                var details = MakeListOfModels();
-                var expected = "123456";
-                var header = MakeHeader();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.CustomerNumber
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_ReturnsExpectedSharedWithCount() {
-                // arrange
-                var expected = 0;
-                var header = MakeHeader();
-                var details = MakeListOfModels();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.SharedWith
-                       .Count
-                       .Should()
-                       .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeader_SharedWithIsNotNull() {
-                // arrange
-                var header = MakeHeader();
-                var details = MakeListOfModels();
-
-                // act
-                var results = header.ToListModel(details);
-
-                // assert
-                results.SharedWith
-                       .Should()
-                       .NotBeNull();
             }
 
             [Fact]
             public void GoodHeader_ReturnsExpectedIsShared() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
-                var details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsShared
@@ -1005,17 +891,129 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedIsSharing() {
                 // arrange
-                var expected = false;
-                var header = MakeHeader();
-                var details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
 
                 // act
-                var results = header.ToListModel(details);
+                ListModel results = header.ToListModel(details);
 
                 // assert
                 results.IsSharing
                        .Should()
                        .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedIsWorksheet() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = false;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.IsWorksheet
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedListId() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                int expected = 15;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.ListId
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedName() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                string expected = "Recommended";
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Name
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedReadonly() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                bool expected = true;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.ReadOnly
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedSharedWithCount() {
+                // arrange
+                int expected = 0;
+                RecommendedItemsListHeader header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.SharedWith
+                       .Count
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedType() {
+                // arrange
+                List<ListItemModel> details = MakeListOfModels();
+                ListType expected = ListType.RecommendedItems;
+                RecommendedItemsListHeader header = MakeHeader();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.Type
+                       .Should()
+                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_SharedWithIsNotNull() {
+                // arrange
+                RecommendedItemsListHeader header = MakeHeader();
+                List<ListItemModel> details = MakeListOfModels();
+
+                // act
+                ListModel results = header.ToListModel(details);
+
+                // assert
+                results.SharedWith
+                       .Should()
+                       .NotBeNull();
             }
         }
     }

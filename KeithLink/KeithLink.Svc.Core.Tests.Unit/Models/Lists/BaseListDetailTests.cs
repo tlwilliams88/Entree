@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
     public class BaseListDetailTests {
-        private class StubDetail : BaseListDetail { }
-
         private static StubDetail MakeDetail() {
-            return new StubDetail() {
+            return new StubDetail {
                 CatalogId = "Fake CatalogId",
                 Each = true,
                 HeaderId = 15,
@@ -23,12 +15,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             };
         }
 
+        private class StubDetail : BaseListDetail {}
+
         public class Get_CatalogId {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeDetail();
-                var expected = "Fake CatalogId";
+                StubDetail fakeItem = MakeDetail();
+                string expected = "Fake CatalogId";
 
                 // act
 
@@ -41,7 +35,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void InitalizedDetail_HasDefaultValue() {
                 // arrange
-                var test = new StubDetail();
+                StubDetail test = new StubDetail();
 
                 // act
 
@@ -56,8 +50,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeDetail();
-                var expected = true;
+                StubDetail fakeItem = MakeDetail();
+                bool expected = true;
 
                 // act
 
@@ -70,7 +64,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void InitalizedDetail_HasDefaultValue() {
                 // arrange
-                var test = new StubDetail();
+                StubDetail test = new StubDetail();
 
                 // act
 
@@ -85,8 +79,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeDetail();
-                var expected = 15;
+                StubDetail fakeItem = MakeDetail();
+                int expected = 15;
 
                 // act
 
@@ -99,8 +93,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void InitalizedDetail_HasDefaultValue() {
                 // arrange
-                var test = new StubDetail();
-                var expected = 0;
+                StubDetail test = new StubDetail();
+                int expected = 0;
 
                 // act
 
@@ -115,8 +109,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeDetail();
-                var expected = "Fake ItemNumber";
+                StubDetail fakeItem = MakeDetail();
+                string expected = "Fake ItemNumber";
 
                 // act
 
@@ -129,7 +123,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void InitalizedDetail_HasDefaultValue() {
                 // arrange
-                var test = new StubDetail();
+                StubDetail test = new StubDetail();
 
                 // act
 
@@ -144,8 +138,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void GoodDetail_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeDetail();
-                var expected = 100;
+                StubDetail fakeItem = MakeDetail();
+                int expected = 100;
 
                 // act
 
@@ -158,7 +152,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void InitializedDetail_HasDefaultValue() {
                 // arrange
-                var test = new StubDetail();
+                StubDetail test = new StubDetail();
 
                 // act
 

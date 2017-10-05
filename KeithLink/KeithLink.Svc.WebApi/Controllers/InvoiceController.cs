@@ -164,19 +164,11 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [ApiKeyedRoute("invoice/export/")]
         public HttpResponseMessage ExportInvoices(InvoiceExportRequestModel request, bool forAllCustomers = false) {
             HttpResponseMessage ret;
-            try
-            {
-                var list = _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, request.paging, forAllCustomers);
-
-                if(request.export.Fields != null)
-                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
-
-                List<InvoiceModel> exportData = new List<InvoiceModel>();
-
-                foreach(var customer in list.CustomersWithInvoices.Results) {
-                    exportData.AddRange(customer.PagedResults.Results);
-                }
-
+            try {
+                List<InvoiceModel> exportData = _invService.GetExportableInvoiceModels(AuthenticatedUser, 
+                                                                                       SelectedUserContext,
+                                                                                       request, 
+                                                                                       forAllCustomers);
 
                 ret = ExportModel<InvoiceModel>(exportData, request.export, SelectedUserContext);
             }
@@ -187,6 +179,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             }
             return ret;
         }
+
 
         /// <summary>
         /// Retrieve export options for invoices
@@ -321,8 +314,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 InvoiceModel invoice = _invService.GetExportableInvoice(AuthenticatedUser,
                                                                         SelectedUserContext,
                                                                         exportRequest,
-                                                                        invoiceNumber,
-                                                                        _listService.GetContractInformation(SelectedUserContext));
+                                                                        invoiceNumber);
 
                 invoice.Items = _invService.GetExportableInvoiceItems(AuthenticatedUser,
                                                                       SelectedUserContext,

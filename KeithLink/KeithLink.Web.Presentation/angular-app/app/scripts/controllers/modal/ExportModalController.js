@@ -36,7 +36,8 @@ angular.module('bekApp')
   $scope.selectedFields = [];
   $scope.unselectedFields = [];
   $scope.exportConfig = exportConfig;
-
+  $scope.exportParams = exportParams && exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields[0] : exportParams.params.filter[0];
+  
   // build list of previously selected and unselected fields
   exportConfig.fields.forEach(function(field) {
     if (field.selected === true) {
@@ -61,6 +62,10 @@ angular.module('bekApp')
       selectedtype: $scope.exportConfig.selectedtype,
       sort: exportParams.sort
       // do not set fields for default export
+    },
+    params = {
+        isViewingAllCustomers: exportParams.isViewingAllCustomers,
+        filter: $scope.exportParams
     };
     
     if(exportParams.filter != null){
@@ -83,6 +88,10 @@ angular.module('bekApp')
       selectedtype: $scope.exportConfig.selectedtype,
       fields: $scope.selectedFields,
       sort: exportConfig.sort
+    },
+    params = {
+        isViewingAllCustomers: exportParams.isViewingAllCustomers,
+        filter: $scope.exportParams
     };
 
     if(exportParams.filter != null){

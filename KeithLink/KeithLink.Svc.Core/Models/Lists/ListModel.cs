@@ -90,6 +90,7 @@ namespace KeithLink.Svc.Core.Models.Lists {
                         ListItemId = item.ListItemId,
                         IsValid = item.IsValid,
                         Name = item.Name,
+                        Detail = item.Detail,
                         ItemNumber = item.ItemNumber,
                         Pack = item.Pack,
                         PackSize = item.PackSize,

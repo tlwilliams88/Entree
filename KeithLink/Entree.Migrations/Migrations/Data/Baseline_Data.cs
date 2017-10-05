@@ -13,8 +13,8 @@ namespace Entree.Migrations.Data {
         public override void Up() {
             // Only run this if the baseline needs scaffolded
             if (this.ApplicationContext != null && this.ApplicationContext.Equals("BaselineSetup")) {
-                this.Execute.Script(@"SQL\v1.11_Baseline\v1.11_BEK_Commerce_AppData_Seed.sql");
-                this.Execute.Script(@"SQL\Messaging\Configuration.MessageTemplates.Bootstrap.sql");
+                this.Execute.Script(@"Scripts\v1.11_Baseline\v1.11_BEK_Commerce_AppData_Seed.sql");
+                this.Execute.Script(@"Scripts\Messaging\Configuration.MessageTemplates.Bootstrap.sql");
             }
         }
 

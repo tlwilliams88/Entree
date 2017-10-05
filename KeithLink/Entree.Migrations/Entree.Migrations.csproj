@@ -116,7 +116,8 @@
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
     <Compile Include="Migrations\v2017.04.01\Migration0042.cs" />
-    <Compile Include="Migrations\v2017.04.04\Migration0044.cs" />
+    <Compile Include="Migrations\v2017.06.00\Migration0046.cs" />
+    <Compile Include="Migrations\v2017.06.00\Migration0044.cs" />
     <Compile Include="Migrations\v2017.04.04\Migration0043.cs" />
     <None Include="NuGet.config">
       <SubType>Designer</SubType>
@@ -405,6 +406,12 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadAllItemKeywords\ReadAllItemKeywords_0046_2017.06.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Stored Procedures\ReadAllItemKeywords\ReadAllItemKeywords_0046_2017.06.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessItemHistoryData\ProcessItemHistoryData_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -691,6 +698,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemData\Staging_ItemData_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemKeywords\Staging_ItemKeywords_0046_2017.06.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\ETL\Tables\Staging_ItemKeywords\Staging_ItemKeywords_0046_2017.06.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Tables\Staging_KNet_Invoice\Staging_KNet_Invoice_0001_0001.11.00_down.sql">
@@ -1873,7 +1886,25 @@
     <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\OrderedFromList_0034_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="SQL\**">
+    <Content Include="Scripts\Configs\Configuration.AppSettings.Bootstrap.Beta.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Configs\Configuration.AppSettings.Bootstrap.local.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Configs\Configuration.AppSettings.Bootstrap.Production.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Configs\Configuration.AppSettings.Bootstrap.QA.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\Messaging\Configuration.MessageTemplates.Bootstrap.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\v1.11_Baseline\v1.11_BEK_Commerce_AppData.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\v1.11_Baseline\v1.11_BEK_Commerce_AppData_Seed.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -1890,12 +1921,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /e /y $(ProjectDir)Scripts $(TargetDir)Scripts
-xcopy /e /y $(ProjectDir)SQL $(TargetDir)SQL</PostBuildEvent>
+    <PostBuildEvent>xcopy /e /y $(ProjectDir)Scripts $(TargetDir)Scripts</PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>rmdir /s /q $(TargetDir)Scripts
-rmdir /s /q $(TargetDir)SQL</PreBuildEvent>
+    <PreBuildEvent>rmdir /s /q $(TargetDir)Scripts</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

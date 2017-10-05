@@ -54,9 +54,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
             builder.RegisterInstance(new Mock<INoteLogic>().Object)
                    .As<INoteLogic>();
 
-
-
-
             IContainer dependencyMap = builder.Build();
 
             return dependencyMap.Resolve<ICatalogLogic>();
@@ -67,13 +64,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
 
             mockLogic.Setup(l => l.ReadExternalCatalogs())
                      .Returns(
-                                new List<ExportExternalCatalog>() {
-                                    new ExportExternalCatalog() {
-                                        CatalogId = "FRT",
-                                        Type = "FRTR",
-                                        BekBranchId = "FRT?"
-                                    }
-                                }
+                              new List<ExportExternalCatalog> {
+                                  new ExportExternalCatalog {
+                                      CatalogId = "FRT",
+                                      Type = "FRTR",
+                                      BekBranchId = "FRT?"
+                                  }
+                              }
                              );
 
             return mockLogic.Object;
@@ -88,17 +85,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
                                                   It.IsAny<DateTime>(),
                                                   It.IsAny<List<Product>>()))
                           .Returns(
-                                    new PriceReturn() {
-                                        Prices = new List<Price>() {
-                                            new Price() {
-                                                BranchId = "FUT",
-                                                CustomerNumber = "123456",
-                                                ItemNumber = "555555",
-                                                CasePrice = 99.99,
-                                                DeviatedCost = false
-                                            }
-                                        }
-                                    }
+                                   new PriceReturn {
+                                       Prices = new List<Price> {
+                                           new Price {
+                                               BranchId = "FUT",
+                                               CustomerNumber = "123456",
+                                               ItemNumber = "555555",
+                                               CasePrice = 99.99,
+                                               DeviatedCost = false
+                                           }
+                                       }
+                                   }
                                   );
 
             return mockPriceLogic.Object;
@@ -111,11 +108,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
                                                            It.Is<List<string>>(p => p.Contains("555555")),
                                                            It.IsAny<SearchInputModel>()))
                     .Returns(new ProductsReturn {
-                                 Count = 1,
-                                 TotalCount = 1,
-                                 Facets = MakeFacets(),
-                                 Products = MakeBekProducts()
-                             });
+                        Count = 1,
+                        TotalCount = 1,
+                        Facets = MakeFacets(),
+                        Products = MakeBekProducts()
+                    });
 
             return mockRepo.Object;
         }
@@ -125,29 +122,31 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
 
             mockRepo.Setup(d => d.GetImageList(It.Is<string>(i => i.Equals("555555")),
                                                It.Is<bool>(i => i.Equals(true))))
-                    .Returns(new ProductImageReturn() {
-                                ProductImages = new List<ProductImage>() {
-                                    new ProductImage() {
-                                        FileName = "TestFileName.png",
-                                        Height = "1080",
-                                        Width = "760"
-                                    }
-                                }
-                            });
+                    .Returns(new ProductImageReturn {
+                        ProductImages = new List<ProductImage> {
+                            new ProductImage {
+                                FileName = "TestFileName.png",
+                                Height = "1080",
+                                Width = "760"
+                            }
+                        }
+                    });
 
             return mockRepo.Object;
         }
 
         /// <summary>
-        /// Returns a facets ExpandoObject based on returned values
-        /// As tests are added sections need to be filled out to match
-        /// what is retuned from ElasticSearch
+        ///     Returns a facets ExpandoObject based on returned values
+        ///     As tests are added sections need to be filled out to match
+        ///     what is retuned from ElasticSearch
         /// </summary>
         /// <returns></returns>
         private static dynamic MakeFacets() {
             dynamic facets = new ExpandoObject();
 
-            facets.allergens = new[] { new {} };
+            facets.allergens = new[] {
+                new {}
+            };
 
             facets.brands = new[] {
                 new {
@@ -166,7 +165,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
                 }
             };
 
-            facets.dietary = new[] { new {} };
+            facets.dietary = new[] {
+                new {}
+            };
 
             facets.itemspecs = new[] {
                 new {
@@ -175,14 +176,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
                 }
             };
 
-            facets.mfname = new[] { new {} };
+            facets.mfname = new[] {
+                new {}
+            };
 
-            facets.nonstock = new[] { new {} };
+            facets.nonstock = new[] {
+                new {}
+            };
 
-            facets.parentcategories = new[] { new {} };
+            facets.parentcategories = new[] {
+                new {}
+            };
 
-            facets.specialfilters = new[] { new {} };
-
+            facets.specialfilters = new[] {
+                new {}
+            };
 
             return facets;
         }
@@ -190,7 +198,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
         private static List<Product> MakeBekProducts() {
             List<Product> products = new List<Product>();
 
-            products.Add(new Product() {
+            products.Add(new Product {
                 CatalogId = "FUT",
                 ItemNumber = "555555",
                 CategoryCode = "85",
@@ -215,32 +223,32 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
                 ReplacementItem = "000000",
                 ReplacedItem = "000000",
                 ChildNutrition = "N",
-                Nutritional = new Nutritional() {
-                    BrandOwner= "Carlisle Foodservice Products",
-                    CountryOfOrigin= "US",
-                    GrossWeight= "11.500",
-                    HandlingInstructions= "N/A",
-                    Ingredients= "",
-                    MarketingMessage= "Comfort Curve™ Universal Bus Box Lid 20\" x 15\" x 0.75\" - Black",
+                Nutritional = new Nutritional {
+                    BrandOwner = "Carlisle Foodservice Products",
+                    CountryOfOrigin = "US",
+                    GrossWeight = "11.500",
+                    HandlingInstructions = "N/A",
+                    Ingredients = "",
+                    MarketingMessage = "Comfort Curve™ Universal Bus Box Lid 20\" x 15\" x 0.75\" - Black",
                     MoreInformation = "",
-                    ServingSize= "0.000",
-                    ServingSizeUOM= "",
-                    ServingsPerPack= "0",
-                    ServingSugestion= "",
-                    Shelf= "999",
-                    StorageTemp= "32 FA / 212 FA",
-                    UnitMeasure= "12.000",
-                    UnitsPerCase= "0",
-                    Volume= "0.952",
-                    Height= "4.250",
-                    Length= "22.125",
-                    Width= "17.500",
-                    NutritionInfo= null,
-                    Diets= null,
-                    Allergens= new Allergen(){
-                        freefrom= new List<string>() {},
-                        maycontain= new List<string>() {},
-                        contains= new List<string>() {}
+                    ServingSize = "0.000",
+                    ServingSizeUOM = "",
+                    ServingsPerPack = "0",
+                    ServingSugestion = "",
+                    Shelf = "999",
+                    StorageTemp = "32 FA / 212 FA",
+                    UnitMeasure = "12.000",
+                    UnitsPerCase = "0",
+                    Volume = "0.952",
+                    Height = "4.250",
+                    Length = "22.125",
+                    Width = "17.500",
+                    NutritionInfo = null,
+                    Diets = null,
+                    Allergens = new Allergen {
+                        freefrom = new List<string>(),
+                        maycontain = new List<string>(),
+                        contains = new List<string>()
                     }
                 },
                 NonStock = "N",
@@ -259,17 +267,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
             [Fact]
             public void GoodItem_GetProductsByItemNumberReturnsProductImages() {
                 // arrange
-                var expected = 1;
+                int expected = 1;
                 ICatalogLogic testLogic = MakeMockLogic();
-                var testRepo = new Mock<ICatalogRepository>();
-                List<string> testItemNumbers = new List<string>() {
+                Mock<ICatalogRepository> testRepo = new Mock<ICatalogRepository>();
+                List<string> testItemNumbers = new List<string> {
                     "555555"
                 };
-                UserSelectedContext testContext = new UserSelectedContext() {
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                
+
                 // act
                 ProductsReturn results = testLogic.GetProductsByItemNumbers(testContext, testItemNumbers, new SearchInputModel(), new UserProfile());
 
@@ -281,13 +289,5 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog {
                        .Be(expected);
             }
         }
-
-
-
-
-
-
-
-
     }
 }
