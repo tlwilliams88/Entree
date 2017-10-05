@@ -310,13 +310,6 @@ angular.module('bekApp')
             listToBeUsed.listType = last.listType;
           }
 
-          if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
-            ListService.getParamsObject(params, 'lists').then(function(storedParams){
-              $stateParams.sortingParams = storedParams;
-              params = storedParams;
-            });
-          }
-
           listToBeUsed.listId = listToBeUsed.listId != 'nonbeklist' ? parseInt(listToBeUsed.listId, 10) : listToBeUsed.listId;
           listToBeUsed.listType = listHeader ? listHeader.type : listToBeUsed.listType;
 
@@ -361,7 +354,7 @@ angular.module('bekApp')
             return ListService.getCustomInventoryList();
           } else {
             LocalStorage.setLastList(listToBeUsed);
-            if($stateParams.listType == 2 && !params.filter) {
+            if($stateParams.listType == Constants.listType.Contract) {
                 params.filter = {
                           field: 'delta',
                           value: 'active'
@@ -541,7 +534,7 @@ angular.module('bekApp')
           }
 
           LocalStorage.setLastOrderList(listToBeUsed);
-          if($stateParams.listType == 2) {
+          if($stateParams.listType == Constants.listType.Contract) {
               params.filter = {
                         field: 'delta',
                         value: 'active'
