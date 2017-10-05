@@ -81,7 +81,7 @@ angular.module('bekApp')
       exportInvoice: function(config, params) {
         var exportParams = {
           export: config,
-          paging: params.filter
+          paging: params
         };
         
         // exportParams = angular.extend(exportParams, params);
