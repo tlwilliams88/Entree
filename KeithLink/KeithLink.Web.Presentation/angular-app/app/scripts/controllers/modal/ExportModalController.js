@@ -36,7 +36,15 @@ angular.module('bekApp')
   $scope.selectedFields = [];
   $scope.unselectedFields = [];
   $scope.exportConfig = exportConfig;
-  $scope.exportParams = exportParams && exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields[0] : exportParams.params.filter[0];
+  $scope.exportParams = exportParams ? exportParams : {};
+  
+  if($scope.exportParams && $scope.exportParams.params != undefined && $scope.exportParams.params.filter != undefined) {
+      if($scope.exportParams.params.filter.filterFields == undefined) {
+          $scope.exportParamsFilter = $scope.exportParams.params.filter[0];
+      } else {
+          $scope.exportParamsFilter = $scope.exportParams.params.filter.filterFields[0];
+      }
+  }
   
   // build list of previously selected and unselected fields
   exportConfig.fields.forEach(function(field) {
@@ -60,16 +68,16 @@ angular.module('bekApp')
     $analytics.eventTrack(location.action, {  category: location.category, label: 'Default Export' });
     var config = {
       selectedtype: $scope.exportConfig.selectedtype,
-      sort: exportParams.sort
+      sort: $scope.exportParams.sort
       // do not set fields for default export
     },
     params = {
-        isViewingAllCustomers: exportParams.isViewingAllCustomers,
+        isViewingAllCustomers: $scope.exportParams.isViewingAllCustomers,
         filter: $scope.exportParams
     };
     
-    if(exportParams.filter != null){
-        config.filter = exportParams.filter;
+    if($scope.exportParams && $scope.exportParams.filter != null){
+        config.filter = $scope.exportParamsFilter;
     }
     
     exportMethod(config, exportParams);
@@ -91,7 +99,7 @@ angular.module('bekApp')
     },
     params = {
         isViewingAllCustomers: exportParams.isViewingAllCustomers,
-        filter: $scope.exportParams
+        filter: $scope.exportParamsFilter
     };
 
     if(exportParams.filter != null){
