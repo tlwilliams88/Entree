@@ -76,24 +76,33 @@ angular.module('bekApp')
     }
 
     $scope.promoItems = [
-      {
-        imageurl: {
-          desktop: 'images/KeithKitchenEssentials.png',
-          mobile: 'images/KKE_Mobile.png'
+        {
+            imageurl: {
+              desktop: 'images/Marketing Campaigns/Basic American/basic-web.jpg',
+              mobile: 'images/Marketing Campaigns/Basic American/basic-mobile.jpg'
+            },
+            targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'basic-american' })",
+            targetType: "campaign",
+            targeturltext: "basic-american"
         },
-        targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'keith-kitchen-essentials' })",
-        targetType: "campaign",
-        targeturltext: "keith-kitchen-essentials"
-    },
-    {
-      imageurl: {
-        desktop: 'images/MenuMaxBanner_Desktop.png',
-        mobile: 'images/MenuMaxBanner_Mobile.png'
-      },
-      targeturl: "https://www.menumax.com/",
-      targetType: "external",
-      targeturltext: "menu-max"
-    }
+        {
+          imageurl: {
+            desktop: 'images/Marketing Campaigns/Georgia Pacific/georgia-pacific-web.jpg',
+            mobile: 'images/Marketing Campaigns/Georgia Pacific/georgia-pacific-mobile.jpg'
+          },
+          targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'georgia-pacific' })",
+          targetType: "campaign",
+          targeturltext: "georgia-pacific"
+        },
+        {
+          imageurl: {
+            desktop: 'images/Marketing Campaigns/Escalon/escalon-web.jpg',
+            mobile: 'images/Marketing Campaigns/Escalon/escalon-mobile.jpg'
+          },
+          targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'escalon' })",
+          targetType: "campaign",
+          targeturltext: "escalon"
+        }
     ];
 
     // get promo/marketing items
