@@ -39,7 +39,13 @@ angular.module('bekApp')
       RecentlyOrdered: 12,  
       RecentlyViewed: 13,  
       CustomInventory: 14
-  },
+    },
+    
+    exportType: {
+      invoiceExport: 'invoiceExport',
+      listExport: 'listExport',
+      searchExport: 'searchExport'
+    },
 
     offlineLocalStorage: {
       labels: 'labels',

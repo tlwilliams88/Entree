@@ -78,16 +78,9 @@ angular.module('bekApp')
         });
       },
 
-      exportInvoice: function(config, params) {
-        var exportParams = {
-          export: config,
-          paging: params
-        };
-        
-        // exportParams = angular.extend(exportParams, params);
-
+      exportInvoice: function(exportParams) {
         var filter = '';
-        if (params.isViewingAllCustomers) {
+        if (exportParams.isViewingAllCustomers == true) {
           filter = '?forAllCustomers=true';
         }
 

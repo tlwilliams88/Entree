@@ -116,6 +116,9 @@ angular.module('bekApp')
               // filter: getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView)
             }
           };
+        },
+        exportType: function() {
+           return Constants.exportType.listExport;
         }
       }
     });

@@ -1018,6 +1018,9 @@ angular.module('bekApp')
                 params.filter = $scope.selectedFilter;
             }
             return params;
+          },
+          exportType: function() {
+             return Constants.exportType.listExport;
           }
         }
       });

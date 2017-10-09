@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MarketingController', ['$scope', '$modal', 'MarketingService', 'DateService', 'CartService', 'ReportService',
-    function($scope, $modal, MarketingService, DateService, CartService, ReportService) {
+  .controller('MarketingController', ['$scope', '$modal', 'MarketingService', 'DateService', 'CartService', 'ReportService', 'Constants',
+    function($scope, $modal, MarketingService, DateService, CartService, ReportService, Constants) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -81,6 +81,9 @@ angular.module('bekApp')
                 to: DateService.formatJavascriptDate($scope.toDate)
               };
               return '/profile/export/marketinginfo?' + jQuery.param(params);
+            },
+            exportType: function() {
+               return Constants.exportType.listExport;
             }
           }
         });
