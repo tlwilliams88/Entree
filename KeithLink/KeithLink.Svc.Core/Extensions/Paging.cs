@@ -297,7 +297,8 @@ namespace KeithLink.Svc.Core.Extensions
         public static bool IsNotNullAndHasDateRange(this PagingModel paging)
         {
             if ((paging != null) &&
-                (paging.DateRange != null))
+                (paging.DateRange != null) &&
+                (paging.DateRange.Field != null && paging.DateRange.Value != null))
             {
                 return true;
             }
