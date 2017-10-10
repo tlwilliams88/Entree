@@ -6,6 +6,7 @@ using System.Linq;
 
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Common.Impl.Email;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Models.SiteCatalog.Products.External;
@@ -26,6 +27,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External {
             _log.WriteInformationLog(" Total Unique UNFI products we have in staging is " + list.Count);
 
             try {
+
                 IxOneReturn received = IxOneReturn.GetIXOneList(list);
                 _log.WriteInformationLog(string.Format(" Of our UNFI products they have {0} on file", received.ProductCount));
                 _log.WriteInformationLog(string.Format(" For their UNFI products they have {0} images on file", received.ProductImageCount));
@@ -33,8 +35,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog.Images.External {
                 // given our list of items get the list of products they have on file
                 received.DownloadImagesForProducts(_log);
                 _log.WriteInformationLog(" Download Complete");
+
             } catch (Exception ex) {
+
                 _log.WriteErrorLog(string.Format("Download from IX-One failed: {0}", ex.Message), ex);
+                ExceptionEmail.Send(ex, string.Format("Download from IX-One failed: {0}", ex.Message));
+
             }
         }
 
