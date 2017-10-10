@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Autofac;
 
@@ -16,7 +18,12 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.OnlinePayments;
+using KeithLink.Svc.Impl.Seams;
 
 using Moq;
 
@@ -24,6 +31,7 @@ using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
     public class OnlinePaymentLogicTests : BaseDITests {
+
         #region AssignContractCategory
         public class AssignContractCategory {
             [Fact]
@@ -140,6 +148,167 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
         }
         #endregion AssignContractCategory
 
+        #region GetInvoiceHeaders
+        public class GetInvoiceHeaders
+        {
+            [Fact] 
+            public void WhenGettingInvoiceHeadersForCustomerAndSortingByInvoiceAmountDescending_ResultingInvoiceNumbersAreInExpectedOrder()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac:true, mockDependents:ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel() {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "invoiceamount",
+                            Order = "desc"
+                        }
+                    }
+                };
+                var testAllCustomers = false;
+                var expected = "3,1,2";
+                BEKConfiguration.Add(
+                    "WebNowUrl", 
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
+
+                // act
+                var result = testunit.GetInvoiceHeaders(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
+
+                // assert
+                var invoiceNumbers = string.Join(",",result.PagedResults
+                                                           .Results
+                                                           .Select(im => im.InvoiceNumber));
+                invoiceNumbers.Should()
+                              .Be(expected);
+            }
+
+            [Fact]
+            public void WhenGettingInvoiceHeadersForCustomerAndSortingByInvoiceAmountAscending_ResultingInvoiceNumbersAreInExpectedOrder()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel()
+                {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "invoiceamount",
+                            Order = "asc"
+                        }
+                    }
+                };
+                var testAllCustomers = false;
+                var expected = "2,1,3";
+                BEKConfiguration.Add(
+                    "WebNowUrl",
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
+
+                // act
+                var result = testunit.GetInvoiceHeaders(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
+
+                // assert
+                var invoiceNumbers = string.Join(",", result.PagedResults
+                                                           .Results
+                                                           .Select(im => im.InvoiceNumber));
+                invoiceNumbers.Should()
+                              .Be(expected);
+            }
+
+            [Fact]
+            public void WhenGettingInvoiceHeadersForCustomerAndSortingByAmountDescending_ResultingInvoiceNumbersAreInExpectedOrder()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel()
+                {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "amount",
+                            Order = "desc"
+                        }
+                    }
+                };
+                var testAllCustomers = false;
+                var expected = "3,1,2";
+                BEKConfiguration.Add(
+                    "WebNowUrl",
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
+
+                // act
+                var result = testunit.GetInvoiceHeaders(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
+
+                // assert
+                var invoiceNumbers = string.Join(",", result.PagedResults
+                                                           .Results
+                                                           .Select(im => im.InvoiceNumber));
+                invoiceNumbers.Should()
+                              .Be(expected);
+            }
+
+            [Fact]
+            public void WhenGettingInvoiceHeadersForCustomerAndSortingByAmountAscending_ResultingInvoiceNumbersAreInExpectedOrder()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel()
+                {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "amount",
+                            Order = "asc"
+                        }
+                    }
+                };
+                var testAllCustomers = false;
+                var expected = "2,1,3";
+                BEKConfiguration.Add(
+                    "WebNowUrl",
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
+
+                // act
+                var result = testunit.GetInvoiceHeaders(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
+
+                // assert
+                var invoiceNumbers = string.Join(",", result.PagedResults
+                                                           .Results
+                                                           .Select(im => im.InvoiceNumber));
+                invoiceNumbers.Should()
+                              .Be(expected);
+            }
+
+        }
+        #endregion GetInvoiceHeaders
+
         #region Setup
         private static InvoiceItemModel MakeModel() {
             return new InvoiceItemModel {
@@ -236,11 +405,99 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
             public static Mock<IKPayInvoiceRepository> MakeIKPayInvoiceRepository() {
                 Mock<IKPayInvoiceRepository> mock = new Mock<IKPayInvoiceRepository>();
 
+                mock.Setup(f => f.ReadFilteredHeaders(It.Is<FilterInfo>(s => s.Filters.First()
+                                                                              .Filters.Skip(1)
+                                                                              .First()
+                                                                              .Value == "111111"),
+                                                      It.IsAny<FilterInfo>()))
+                    .Returns(new List<InvoiceHeader>() {
+                                 new InvoiceHeader() {
+                                     CustomerNumber = "111111",
+                                     Division = "XXX",
+                                     InvoiceNumber = "1",
+                                     InvoiceType = "I",
+                                     AmountDue = 2,
+                                     DueDate = DateTime.Today,
+                                     InvoiceDate = DateTime.Today,
+                                     InvoiceStatus = "O",
+                                     TransactionCount = 0
+                                 },
+                                 new InvoiceHeader() {
+                                     CustomerNumber = "111111",
+                                     Division = "XXX",
+                                     InvoiceNumber = "2",
+                                     InvoiceType = "I",
+                                     AmountDue = 1,
+                                     DueDate = DateTime.Today,
+                                     InvoiceDate = DateTime.Today,
+                                     InvoiceStatus = "O",
+                                     TransactionCount = 0
+                                 },
+                                 new InvoiceHeader() {
+                                     CustomerNumber = "111111",
+                                     Division = "XXX",
+                                     InvoiceNumber = "3",
+                                     InvoiceType = "I",
+                                     AmountDue = 3,
+                                     DueDate = DateTime.Today,
+                                     InvoiceDate = DateTime.Today,
+                                     InvoiceStatus = "O",
+                                     TransactionCount = 0
+                                 }
+                             }
+                            );
+
+                mock.Setup(f => f.GetInvoiceTransactoin(It.IsAny<string>(),
+                                                        It.Is<string>(s => s == "111111"),
+                                                        It.Is<string>(s => s == "1")))
+                    .Returns(new List<Invoice>() {
+                                 new Invoice() {
+                                     InvoiceType = KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE,
+                                     AmountDue = 2
+                                 }
+                             }
+                            );
+
+                mock.Setup(f => f.GetInvoiceTransactoin(It.IsAny<string>(),
+                                                        It.Is<string>(s => s == "111111"),
+                                                        It.Is<string>(s => s == "2")))
+                    .Returns(new List<Invoice>() {
+                                 new Invoice() {
+                                     InvoiceType = KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE,
+                                     AmountDue = 1
+                                 }
+                             }
+                            );
+
+                mock.Setup(f => f.GetInvoiceTransactoin(It.IsAny<string>(),
+                                                        It.Is<string>(s => s == "111111"),
+                                                        It.Is<string>(s => s == "3")))
+                    .Returns(new List<Invoice>() {
+                                 new Invoice() {
+                                     InvoiceType = KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE,
+                                     AmountDue = 3
+                                 }
+                             }
+                            );
+
                 return mock;
             }
 
             public static Mock<ICustomerRepository> MakeICustomerRepository() {
                 Mock<ICustomerRepository> mock = new Mock<ICustomerRepository>();
+
+                mock.Setup(f => f.GetCustomerByCustomerNumber(It.Is<string>(s => s == "111111"), It.IsAny<string>()))
+                    .Returns(new Customer() {
+                        CustomerNumber="111111",
+                        CustomerName="Test Customer 1",
+                        CustomerBranch="XXXXX",
+                        Address = new Address() {
+                            City="Test City",
+                            StreetAddress = "Test Street",
+                            PostalCode = "Test Post",
+                            RegionCode = "Test Region"
+                        }
+                    });
 
                 return mock;
             }
