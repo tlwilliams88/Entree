@@ -60,17 +60,17 @@ angular.module('bekApp')
 
     function invoiceExport() {
         var exportRequestModel = {
-            fields: [],
+            fields: null,
             selectedtype: null,
-            sort: []
+            sort: null
         };
         
         var pagingExportModel = {
             size: null,
             from: null,
-            sort: [],
-            filter: [],
-            daterange: [],
+            sort: null,
+            filter: null,
+            daterange: null,
             search: null,
             terms: null,
             type: null
@@ -79,11 +79,10 @@ angular.module('bekApp')
             pagingExport = pagingExportModel;
       
       exportRequest.selectedtype = exportConfig.selectedtype;
-      exportRequest.fields = $scope.selectedFields;
-      exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : [];
+      exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : null;
       
       pagingExport.filter = exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields : exportParams.params.filter[0].filter;
-      pagingExport.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : {};
+      pagingExport.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : null;
       pagingExport.isViewingAllCustomers = exportParams.isViewingAllCustomers;
       pagingExport.size = exportParams.params.size;
       pagingExport.from = exportParams.params.from;
@@ -98,7 +97,7 @@ angular.module('bekApp')
     function listExport() {
       // This model is used for all list exports
       var exportRequestModel = {
-          fields: [],
+          fields: null,
           selectedtype: null,
           sort: null, 
           filter: null
@@ -107,8 +106,8 @@ angular.module('bekApp')
       $scope.exportRequest = exportRequestModel;
       
       $scope.exportRequest.selectedtype = exportConfig.selectedtype;
-      $scope.exportRequest.fields = $scope.selectedFields;
-      $scope.exportRequest.sort = exportParams && exportParams.sort ? exportParams.sort : [];
+      $scope.exportRequest.sort = exportParams && exportParams.sort ? exportParams.sort : null;
+      $scope.exportRequest.filter = exportParams && exportParams.filter ? exportParams.filter : null;
       
       return $scope.exportRequest;
     }
@@ -155,7 +154,7 @@ angular.module('bekApp')
         $analytics.eventTrack(location.action, {  category: location.category, label: 'Default Export' });
         switch ($scope.exportType) {
             case Constants.exportType.invoiceExport:
-                $scope.invoiceExportRequest.export.fields = [];
+                $scope.invoiceExportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.invoiceExportRequest);
             break;
             case Constants.exportType.listExport:
@@ -165,11 +164,11 @@ angular.module('bekApp')
             case Constants.exportType.itemUsageExport:
             case Constants.exportType.cartItemsExport:
             case Constants.exportType.invoiceItemsExport:
-                $scope.exportRequest.fields = [];
+                $scope.exportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.staticParam, $scope.exportRequest);
             break;
             case Constants.exportType.ordersExport:
-                $scope.exportRequest.fields = [];
+                $scope.exportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.exportRequest);
             break;
         }
@@ -186,6 +185,7 @@ angular.module('bekApp')
         switch ($scope.exportType) {
             case Constants.exportType.invoiceExport:
                 $scope.invoiceExportRequest.export.fields = $scope.selectedFields;
+                $scope.invoiceExportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.invoiceExportRequest);
             break;
             case Constants.exportType.listExport:
@@ -196,10 +196,12 @@ angular.module('bekApp')
             case Constants.exportType.cartItemsExport:
             case Constants.exportType.invoiceItemsExport:
                 $scope.exportRequest.fields = $scope.selectedFields;
+                $scope.exportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.staticParam, $scope.exportRequest);
             break;
             case Constants.exportType.ordersExport:
                 $scope.exportRequest.fields = $scope.selectedFields;
+                $scope.exportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.exportRequest);
             break;
         }
