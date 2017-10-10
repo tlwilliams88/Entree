@@ -204,7 +204,7 @@ angular.module('bekApp')
         });
       },
 
-      exportOrderDetails: function(config, orderNumber) {
+      exportOrderDetails: function(orderNumber, config) {
         ExportService.export('/order/export/' + orderNumber, config);
       },
 

@@ -258,7 +258,7 @@ angular.module('bekApp')
         });
       },
 
-      exportCart: function(config, cartid) {
+      exportCart: function(cartid, config) {
         ExportService.export('/cart/export/' + cartid, config);
       },
 

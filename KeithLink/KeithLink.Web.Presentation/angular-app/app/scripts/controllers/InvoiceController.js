@@ -948,6 +948,9 @@ angular.module('bekApp')
             }
             
           };
+        },
+        exportType: function() {
+           return Constants.exportType.invoiceExport;
         }
       }
     });
