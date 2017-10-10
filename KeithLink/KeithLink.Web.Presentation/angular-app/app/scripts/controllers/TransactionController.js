@@ -118,7 +118,7 @@ angular.module('bekApp')
           };
         },
         exportType: function() {
-           return Constants.exportType.listExport;
+           return Constants.exportType.standardExport;
         }
       }
     });

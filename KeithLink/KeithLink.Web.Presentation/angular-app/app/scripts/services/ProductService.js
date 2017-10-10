@@ -237,7 +237,7 @@ angular.module('bekApp')
           });
         },
 
-        exportProducts: function(config, url) {
+        exportProducts: function(url, config) {
           url = url.replace('search', 'export');
           ExportService.export(url, config);
         }

@@ -44,7 +44,13 @@ angular.module('bekApp')
     exportType: {
       invoiceExport: 'invoiceExport',
       listExport: 'listExport',
-      searchExport: 'searchExport'
+      orderItemsExport: 'orderItemsExport',
+      ordersExport: 'ordersExport',
+      searchExport: 'searchExport',
+      marketingExport: 'marketingExport',
+      itemUsageExport: 'itemUsageExport',
+      cartItemsExport: 'cartItemsExport',
+      invoiceItemsExport: 'invoiceItemsExport'
     },
 
     offlineLocalStorage: {

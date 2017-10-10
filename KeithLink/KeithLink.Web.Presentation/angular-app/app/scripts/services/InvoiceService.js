@@ -109,7 +109,7 @@ angular.module('bekApp')
         });
       },
 
-      exportInvoiceDetails: function(config, invoiceNumber) {
+      exportInvoiceDetails: function(invoiceNumber, config) {
         ExportService.export('/invoice/export/' + invoiceNumber, config);
       }
 

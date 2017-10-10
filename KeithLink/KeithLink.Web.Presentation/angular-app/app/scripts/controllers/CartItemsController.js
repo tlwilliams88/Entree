@@ -507,7 +507,7 @@ angular.module('bekApp')
             return cartid;
           },
           exportType: function() {
-             return Constants.exportType.listExport;
+             return Constants.exportType.cartItemsExport;
           }
         }
       });

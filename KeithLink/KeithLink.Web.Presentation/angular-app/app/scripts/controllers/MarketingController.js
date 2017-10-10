@@ -83,7 +83,7 @@ angular.module('bekApp')
               return '/profile/export/marketinginfo?' + jQuery.param(params);
             },
             exportType: function() {
-               return Constants.exportType.listExport;
+               return Constants.exportType.marketingExport;
             }
           }
         });

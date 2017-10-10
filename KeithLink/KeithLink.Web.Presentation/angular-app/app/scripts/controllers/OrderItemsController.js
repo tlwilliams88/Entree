@@ -69,7 +69,7 @@ angular.module('bekApp')
           return order.ordernumber;
         },
         exportType: function() {
-           return Constants.exportType.listExport;
+           return Constants.exportType.orderItemsExport;
         }
       }
     });

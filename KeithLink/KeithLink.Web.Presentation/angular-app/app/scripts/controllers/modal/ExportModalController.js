@@ -29,8 +29,8 @@ headerText    : text - value displayed at the top of the export window ('Invoice
 ******/
 
 angular.module('bekApp')
-.controller('ExportModalController', ['$scope', '$filter', '$modalInstance', '$analytics', 'exportConfig', 'exportMethod', 'exportParams', 'headerText', 'location', 'exportType',
-  function ($scope, $filter, $modalInstance, $analytics, exportConfig, exportMethod, exportParams, headerText, location, exportType) {
+.controller('ExportModalController', ['$scope', '$filter', '$modalInstance', '$analytics', 'exportConfig', 'exportMethod', 'exportParams', 'headerText', 'location', 'exportType', 'Constants',
+  function ($scope, $filter, $modalInstance, $analytics, exportConfig, exportMethod, exportParams, headerText, location, exportType, Constants) {
 
     $scope.headerText = headerText;
     $scope.selectedFields = [];
@@ -47,9 +47,9 @@ angular.module('bekApp')
     function selectFields() {
       exportConfig.fields.forEach(function(field) {
         if (field.selected === true) {
-          $scope.selectedFields.push(field);
+            $scope.selectedFields.push(field);
         } else {
-          $scope.unselectedFields.push(field);
+            $scope.unselectedFields.push(field);
         }
       });
 
@@ -62,7 +62,7 @@ angular.module('bekApp')
         var exportRequestModel = {
             fields: [],
             selectedtype: null,
-            sort: null
+            sort: []
         };
         
         var pagingExportModel = {
@@ -80,15 +80,14 @@ angular.module('bekApp')
       
       exportRequest.selectedtype = exportConfig.selectedtype;
       exportRequest.fields = $scope.selectedFields;
-      exportRequest.size = exportParams.params.size;
-      exportRequest.from = exportParams.params.from;
-      exportRequest.sort = exportParams.params.sort;
+      exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : [];
       
-      pagingExport.filter = exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields[0] : exportParams.params.filter[0].filter;
+      pagingExport.filter = exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields : exportParams.params.filter[0].filter;
       pagingExport.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : {};
       pagingExport.isViewingAllCustomers = exportParams.isViewingAllCustomers;
       pagingExport.size = exportParams.params.size;
       pagingExport.from = exportParams.params.from;
+      
       // This model is used for invoice exports
       $scope.invoiceExportRequest = {
           paging: pagingExport,
@@ -98,32 +97,54 @@ angular.module('bekApp')
   
     function listExport() {
       // This model is used for all list exports
-      $scope.exportRequestModel = {
+      var exportRequestModel = {
           fields: [],
           selectedtype: null,
           sort: null, 
           filter: null
       };
       
-      $scope.exportRequestModel.selectedtype = exportConfig.selectedtype;
-      $scope.exportRequestModel.fields = $scope.selectedFields;
-      $scope.exportRequestModel.size = exportParams.params.size;
-      $scope.exportRequestModel.from = exportParams.params.from;
+      $scope.exportRequest = exportRequestModel;
+      
+      $scope.exportRequest.selectedtype = exportConfig.selectedtype;
+      $scope.exportRequest.fields = $scope.selectedFields;
+      $scope.exportRequest.sort = exportParams && exportParams.sort ? exportParams.sort : [];
+      
+      return $scope.exportRequest;
     }
-
+    
     function standardExport() {
-        $scope.standardExport = exportParams;
+        $scope.staticParam = exportParams;
+        listExport();
     }
     
     function createExportModel() {
         switch ($scope.exportType) {
-            case 'invoiceExport':
+            case Constants.exportType.invoiceExport:
                 invoiceExport();
             break;
-            case 'listExport':
-                listExport();
+            case Constants.exportType.listExport:
+                standardExport();
             break;
-            case 'standardExport':
+            case Constants.exportType.orderItemsExport:
+                standardExport();
+            break;
+            case Constants.exportType.ordersExport:
+                standardExport();
+            break;
+            case Constants.exportType.searchExport:
+                standardExport();
+            break;
+            case Constants.exportType.marketingExport:
+                standardExport();
+            break;
+            case Constants.exportType.itemUsageExport:
+                standardExport();
+            break;
+            case Constants.exportType.cartItemsExport:
+                standardExport();
+            break;
+            case Constants.exportType.invoiceItemsExport:
                 standardExport();
             break;
         }
@@ -133,17 +154,23 @@ angular.module('bekApp')
     $scope.defaultExport = function() {
         $analytics.eventTrack(location.action, {  category: location.category, label: 'Default Export' });
         switch ($scope.exportType) {
-            case 'invoiceExport':
-                delete $scope.invoiceExportRequest.export.fields;
+            case Constants.exportType.invoiceExport:
+                $scope.invoiceExportRequest.export.fields = [];
                 exportMethod($scope.invoiceExportRequest);
             break;
-            case 'listExport':
-                delete $scope.exportRequest.fields;
-                exportMethod($scope.exportRequest);
+            case Constants.exportType.listExport:
+            case Constants.exportType.orderItemsExport:
+            case Constants.exportType.searchExport:
+            case Constants.exportType.marketingExport:
+            case Constants.exportType.itemUsageExport:
+            case Constants.exportType.cartItemsExport:
+            case Constants.exportType.invoiceItemsExport:
+                $scope.exportRequest.fields = [];
+                exportMethod($scope.staticParam, $scope.exportRequest);
             break;
-            case 'standardExport':
-                delete $scope.standardExport.fields;
-                exportMethod($scope.standardExport);
+            case Constants.exportType.ordersExport:
+                $scope.exportRequest.fields = [];
+                exportMethod($scope.exportRequest);
             break;
         }
     };
@@ -155,22 +182,27 @@ angular.module('bekApp')
             field.selected = true;
             field.order = index + 1;
         });
-
-        var config = {
-            selectedtype: $scope.exportConfig.selectedtype,
-            fields: $scope.selectedFields,
-            sort: exportConfig.sort
-        },
-        params = {
-            isViewingAllCustomers: exportParams.isViewingAllCustomers,
-            filter: $scope.exportParamsFilter
-        };
-
-        if(exportParams.filter != null){
-            config.filter = exportParams.filter;
+        
+        switch ($scope.exportType) {
+            case Constants.exportType.invoiceExport:
+                $scope.invoiceExportRequest.export.fields = $scope.selectedFields;
+                exportMethod($scope.invoiceExportRequest);
+            break;
+            case Constants.exportType.listExport:
+            case Constants.exportType.orderItemsExport:
+            case Constants.exportType.searchExport:
+            case Constants.exportType.marketingExport:
+            case Constants.exportType.itemUsageExport:
+            case Constants.exportType.cartItemsExport:
+            case Constants.exportType.invoiceItemsExport:
+                $scope.exportRequest.fields = $scope.selectedFields;
+                exportMethod($scope.staticParam, $scope.exportRequest);
+            break;
+            case Constants.exportType.ordersExport:
+                $scope.exportRequest.fields = $scope.selectedFields;
+                exportMethod($scope.exportRequest);
+            break;
         }
-
-        exportMethod(config, exportParams);
     };
 
     $scope.cancel = function () {

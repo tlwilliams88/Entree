@@ -156,7 +156,7 @@ angular.module('bekApp')
           return null;
         },
         exportType: function() {
-           return Constants.exportType.listExport;
+           return Constants.exportType.ordersExport;
         }
       }
     });

@@ -30,7 +30,7 @@ angular.module('bekApp')
           return invoice.invoicenumber;
         },
         exportType: function() {
-           return Constants.exportType.listExport;
+           return Constants.exportType.invoiceItemsExport;
         }
       }
     });

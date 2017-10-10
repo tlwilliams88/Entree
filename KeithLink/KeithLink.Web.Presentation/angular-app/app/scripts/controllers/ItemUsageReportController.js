@@ -130,7 +130,7 @@ angular.module('bekApp')
           return '/report/itemusage/export?' + jQuery.param(params);
         },
         exportType: function() {
-           return Constants.exportType.listExport;
+           return Constants.exportType.itemUsageExport;
         }
       }
     });
