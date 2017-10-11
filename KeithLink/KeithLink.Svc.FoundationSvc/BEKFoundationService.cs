@@ -39,7 +39,7 @@ namespace KeithLink.Svc.FoundationSvc
                 po.Save();
                 return po.TrackingNumber;
             } catch (Exception ex) {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in CancelPurchaseOrder: ", ex);
 
                 throw ex;
@@ -65,7 +65,7 @@ namespace KeithLink.Svc.FoundationSvc
 
                 po.Save();
             } catch (Exception ex) {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in CleanUpChangeOrder: ", ex);
 
                 throw ex;
@@ -89,7 +89,7 @@ namespace KeithLink.Svc.FoundationSvc
                 }
                 return controlNumber;
             } catch (Exception ex) {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in GetNextControlNumber: ", ex);
 
                 throw ex;
@@ -101,7 +101,7 @@ namespace KeithLink.Svc.FoundationSvc
                 CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();
                 return context.GetPurchaseOrder(userId, cartId);
             } catch (Exception ex) {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in GetPurchaseOrder: ", ex);
 
                 throw ex;
@@ -150,7 +150,7 @@ namespace KeithLink.Svc.FoundationSvc
             }
             catch (Exception ex)
             {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in SaveOrderAsChangeOrder: ", ex);
 
                 throw ex;
@@ -173,7 +173,7 @@ namespace KeithLink.Svc.FoundationSvc
                 }
                 if (reorder)
                 {
-                    EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                    EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                     eventLog.WriteInformationLog("SaveCartAsOrder : reorder");
                     int startIndex = 1; // main frame needs lineposition to not be null
                     foreach (LineItem lineItem in basket.OrderForms[0].LineItems)
@@ -200,7 +200,7 @@ namespace KeithLink.Svc.FoundationSvc
             }
             catch (Exception ex)
             {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in SaveCartAsOrder: ", ex);
 
                 throw ex;
@@ -270,7 +270,7 @@ namespace KeithLink.Svc.FoundationSvc
             }
             catch (Exception ex)
             {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in UpdatePurchaseOrder: ", ex);
 
                 throw ex;
@@ -285,7 +285,7 @@ namespace KeithLink.Svc.FoundationSvc
                 po.Status = status;
                 po.Save();
             } catch (Exception ex) {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error Updating Purchase Order Status: ", ex);
 
                 throw;
