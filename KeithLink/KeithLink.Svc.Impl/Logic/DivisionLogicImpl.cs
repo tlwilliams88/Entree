@@ -33,8 +33,9 @@ namespace KeithLink.Svc.Impl.Logic {
                 foreach (Division division in divisions) {
                     string branchId = division.Id.ToLower();
 
-                    if (branchDict.ContainsKey(branchId))
+                    if (branchDict.ContainsKey(branchId)) {
                         division.BranchSupport = branchDict[branchId];
+                    }
                 }
             }
 
