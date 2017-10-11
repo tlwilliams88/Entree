@@ -21,7 +21,7 @@ namespace KeithLink.Svc.FoundationSvc
         {
             try
             {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl("KeithLink.FoundationSvc");
+                EventLogQueueRepositoryImpl eventLog = new EventLogQueueRepositoryImpl("KeithLink.FoundationSvc");
                 eventLog.WriteInformationLog("Foundation Service Starting Up");
             }
             catch (Exception ex)
