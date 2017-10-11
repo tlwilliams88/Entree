@@ -333,7 +333,8 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ4 = "10/1";
         public const string INVOICEREQUESTFILTER_DATERANGE_YEARMONTHKEY = "yearmonth";
         public const string INVOICEREQUESTSORT_INVOICEAMOUNT = "invoiceamount";
-        public const string INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING = "asc";
+        public const string INVOICEREQUESTSORT_AMOUNTDUE = "amount";
+        public const string INVOICEREQUESTSORT_ASCENDING = "asc";
 
         // item history unit of measure
         public const string ITEMHISTORY_AVERAGEUSE_CASE = "C";

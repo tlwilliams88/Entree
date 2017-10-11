@@ -1,8 +1,8 @@
 'use strict';
  
 angular.module('bekApp')
-.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'CartService', 'OrderService', 'PagingModel',
-  function ($scope, $state, $timeout, $modal, CartService, OrderService, PagingModel) {
+.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'CartService', 'OrderService', 'PagingModel', 'Constants',
+  function ($scope, $state, $timeout, $modal, CartService, OrderService, PagingModel, Constants) {
  
   var currentCustomer = $scope.selectedUserContext.customer;
 
@@ -154,6 +154,9 @@ angular.module('bekApp')
         },
         exportParams: function() {
           return null;
+        },
+        exportType: function() {
+           return Constants.exportType.ordersExport;
         }
       }
     });

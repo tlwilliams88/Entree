@@ -457,7 +457,7 @@ angular.module('bekApp')
           });
         },
 
-        exportList: function(config, list) {
+        exportList: function(list, config) {
           ExportService.export('/list/export/' + list.listType + '/' + list.listId, config);
         },
 

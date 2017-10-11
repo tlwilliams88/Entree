@@ -128,6 +128,9 @@ angular.module('bekApp')
             sortdir: $scope.sortReverse === true ? 'desc' : 'asc'
           };
           return '/report/itemusage/export?' + jQuery.param(params);
+        },
+        exportType: function() {
+           return Constants.exportType.itemUsageExport;
         }
       }
     });
