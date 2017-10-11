@@ -119,6 +119,7 @@
     <None Include="NuGet.config">
       <SubType>Designer</SubType>
     </None>
+    <Compile Include="Migrations\v2017.05.05\Migration0041.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -159,6 +160,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\Branchsupport_NewBranchNames_0035_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\Branchsupport_NewBranchNamesUpdate_0041_2017.05.05_down.sql" />
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\BranchSupport_NewBranchNamesUpdate_0041_2017.05.05_up.sql" />
     <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\Branchsupport_NewBranchNames_0035_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\BranchSupport\Tables\DsrAliases\DsrAliases_0001_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -385,13 +388,7 @@
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0015_2017-02-00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0041_2017.04-01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04-00_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04.00_up.sql">
@@ -1027,13 +1024,7 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0019_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0041_2017.04.01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0039_2017.04.00_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\ReadNextContractListChange\ReadNextContractListChange_0039_2017.04.00_up.sql">
@@ -1198,19 +1189,7 @@
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveReminderHeaders\SaveReminderHeaders_0028_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\UpdateSentOnContractListChangeByCustomerNumberBranch_0041_2017.04.01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\UpdateSentOnContractListChangeByCustomerNumberBranch_0041_2017.04.01_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0041_2017.04.01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0019_2017.04.00_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeById\UpdateSentOnContractListChangeById_0019_2017.04.00_up.sql">
@@ -1402,19 +1381,10 @@
     <Content Include="Scripts\AppData\List\Tables\InventoryValuationListHeaders\PostDeployment\MigrateInventoryValuationList_0030_2017.04.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0041_2017.04.01_down.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0019_2017.04.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0041_2017.04.01_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\ListItemsDelta_0019_2017.04.00_up.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\PostDeployment\MigrateListItemsDelta_0041_2017.04.01_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Tables\ListItemsDelta\PostDeployment\MigrateListItemsDelta_0034_2017.04.00_up.sql">
@@ -1903,6 +1873,7 @@
     <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
     <Folder Include="Migrations\Data\IntegrationTests\Orders\" />
     <Folder Include="Migrations\Data\IntegrationTests\Profile\" />
+    <Folder Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
