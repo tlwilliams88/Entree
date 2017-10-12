@@ -62,16 +62,12 @@ angular.module('bekApp')
             closeModal();
           });
         } else {
+          item.favorite = true;
+          closeModal();
           $q.all([
             ListService.addItem(list, newItem),
             ListService.addItemToFavorites(newItem)
-          ]).then(function(data) {
-            item.favorite = true;
-            closeModal();
-            $scope.displayMessage('success', 'Successfully added item to list ' + list.name + '.');
-          }, function() {
-            $scope.displayMessage('error', 'Error adding item to list ' + list.name + '.');
-          });
+          ])
         }
       };
 
