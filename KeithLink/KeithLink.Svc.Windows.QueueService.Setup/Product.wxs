@@ -35,7 +35,7 @@
 						<Component Id="ServiceFile" Guid="DF0B5F68-4788-4785-A76F-B43D1B4B4604">
 							<File Id="AutoFac" Name="Autofac.dll" DiskId="1" Source="$(var.SourcePath)\Autofac.dll" KeyPath="no" Vital="yes"/>
 							<File Id="Awssdk" Name="AWSSDK.dll" DiskId="1" Source="$(var.SourcePath)\AWSSDK.dll" KeyPath="no" Vital="yes"/>
-							<File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
+							<File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
 							<File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
 							<File Id="EF" Name="EntityFramework.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.dll" KeyPath="no" Vital="yes"/>
 							<File Id="EF_SqlServer" Name="EntityFramework.SqlServer.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.SqlServer.dll" KeyPath="no" Vital="yes"/>

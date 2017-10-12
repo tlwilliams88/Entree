@@ -85,6 +85,13 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                 DataTable branches = _stagingRepository.ReadAllBranches();
 
+                DataTable itemKeywordsTable = _stagingRepository.ReadAllItemKeywords();
+
+                Dictionary<string, string> itemKeywords = new Dictionary<string, string>();
+                foreach (DataRow row in itemKeywordsTable.Rows) {
+                    itemKeywords.Add(row.GetString("ItemNumber"), row.GetString("Keywords"));
+                }
+
                 foreach (DataRow row in branches.Rows)
                 {
                     _eventLog.WriteInformationLog(String.Format("ETL: Import Item Process :  Start Import items to ES branch {0}", row.GetString("BranchId").ToLower()));
@@ -101,6 +108,9 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                     catch (Exception ex1)
                     {
                         _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error updating indexes or synonyms.  {0} -- {1}", ex1.Message, ex1.StackTrace));
+
+                        KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex1,
+                            "ETL: Error Importing items to ES -- error updating indexes or synonyms.");
                     }
 
                     try
@@ -128,7 +138,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
                                 products.Add(PopulateElasticSearchItem(rowItem, itemNutritions, itemDiet,
                                                                        itemAllergens, proprietaryItems, pdmItem, 
-                                                                       ESItems));
+                                                                       ESItems, itemKeywords));
 
                                 ESItems.Remove(rowItem.GetString("ItemId"));
                             }
@@ -158,12 +168,18 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                             catch (Exception ex2)
                             {
                                 _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error importing individual item to ES.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+
+                                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex2, 
+                                    "ETL: Error Importing items to ES -- error importing individual item to ES.");
                             }
                         }
                     }
                     catch (Exception ex1)
                     {
                         _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error updating indexes or synonyms.  {0} -- {1}", ex1.Message, ex1.StackTrace));
+
+                        KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex1, 
+                            "ETL: Error Importing items to ES -- error updating indexes or synonyms.");
                     }
                     _eventLog.WriteInformationLog(String.Format("ETL: Import Item Process :  End Import items to ES branch {0}", row.GetString("BranchId").ToLower()));
                 }
@@ -176,6 +192,9 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             catch (Exception e)
             {
                 _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, 
+                    "ETL: Error Importing items to ES -- whole process failed.");
             }
 
         }
@@ -240,8 +259,11 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 					catch (Exception ex2)
 					{
 						_eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error importing individual item to ES.  {0} -- {1}", ex2.Message, ex2.StackTrace));
-					}
-				}
+
+                        KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex2, 
+                            "ETL: Error Importing items to ES -- error importing individual item to ES.");
+                    }
+                }
 
 
 				TimeSpan took = DateTime.Now - start;
@@ -250,8 +272,11 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			catch (Exception e)
 			{
 				_eventLog.WriteErrorLog(String.Format("ETL: Error Importing UNFI items to ES -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
-			}
-		}
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, 
+                    "ETL: Error Importing UNFI items to ES -- whole process failed.");
+            }
+        }
 
         #endregion
 
@@ -396,6 +421,21 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                         brand_not_analyzed = new { type = "string", index = "not_analyzed" },
                         marketingbrand_not_analyzed = new { type = "string", index = "not_analyzed" },
                         brand_description_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        keywords = new {
+                            type = "string",
+                            analyzer = "keyword",
+                            fields = new {
+                                english = new {
+                                    type = "string",
+                                    analyzer = "english"
+                                },
+                                whitespace = new {
+                                    type = "string",
+                                    analyzer = "whitespace_analyzer",
+                                    search_analyzer = "whitespace_analyzer"
+                                }
+                            }
+                        },
                         description = new {
                             type = "string",
                             fields = new {
@@ -565,7 +605,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                                                      Dictionary<string, List<Diet>> diets, 
                                                      Dictionary<string, Allergen> allergens, 
                                                      Dictionary<string, List<string>> proprietaryItems, 
-                                                     PdmEnrichedItem pdmData, List<string> existingItems) {
+                                                     PdmEnrichedItem pdmData, List<string> existingItems,
+                                                     Dictionary<string, string> itemKeywords) {
             NutritionalInformation nutInfo = new NutritionalInformation();
             nutInfo.BrandOwner = row.GetString("BrandOwner");
             nutInfo.CountryOfOrigin = row.GetString("CountryOfOrigin");
@@ -657,10 +698,15 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.AverageWeight = (row.GetDouble("FPNetWt") > 0 ? row.GetDouble("FPNetWt") / 100 : (row.GetDouble("GrossWt") > 0 ? row.GetDouble("GrossWt") / 100 : 0));
             data.Nutritional = nutInfo;
 
+            if (itemKeywords.ContainsKey(row.GetString("ItemId"))) {
+                data.Keywords = itemKeywords[row.GetString("ItemId")];
+            }
+           
             RootData index = new RootData();
             index._id = row.GetString("ItemId");
             index._index = row.GetString("BranchId").ToLower();
             index.data = data;
+
 
             if (existingItems.Contains(row.GetString("ItemId")))
             {

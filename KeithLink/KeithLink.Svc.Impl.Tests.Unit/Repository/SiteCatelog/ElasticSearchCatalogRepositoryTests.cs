@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-
-using Autofac;
-
-using Castle.Components.DictionaryAdapter;
+﻿using System.Dynamic;
 
 using FluentAssertions;
 
@@ -17,26 +7,39 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Seams;
 
-using Moq;
 using Xunit;
 
+namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
+    public class ElasticSearchCatalogRepositoryTests : BaseDITests {
+        #region LoadProductFromElasticSearchProduct
+        public class LoadProductFromElasticSearchProduct {
+            [Fact]
+            public void GoodItem_DetailIsExpected() {
+                // arrange
+                ICatalogRepository testunit = MakeTestsRepository();
+                dynamic testProduct = MakeTestProduct();
+                bool testListOnly = false;
+                string expected = "Slush Flavor Watermelon / 102438 / DRAFT - METRO SWEET / Grocery / 6 / 64 OZ";
 
+                // act
+                Product result = testunit.LoadProductFromElasticSearchProduct(testListOnly, testProduct);
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
-{
-    public class ElasticSearchCatalogRepositoryTests : BaseDITests
-    {
+                // assert
+                result.Detail.Should()
+                      .Be(expected);
+            }
+        }
+        #endregion LoadProductFromElasticSearchProduct
+
         #region Setup
-        private static ICatalogRepository MakeTestsRepository()
-        {
-
+        private static ICatalogRepository MakeTestsRepository() {
             BEKConfiguration.Add("ElasticSearchURL", "http://localhost/Test");
 
-            var testunit = new ElasticSearchCatalogRepositoryImpl();
-                return testunit;
+            ElasticSearchCatalogRepositoryImpl testunit = new ElasticSearchCatalogRepositoryImpl();
+            return testunit;
         }
-        private static dynamic MakeTestProduct()
-        {
+
+        private static dynamic MakeTestProduct() {
             dynamic testProduct = new ExpandoObject();
             testProduct._index = "fsa";
             testProduct._type = "product";
@@ -135,31 +138,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
             testProduct._source.marketing_name_ngram_analyzed = null;
             return testProduct;
         }
-        #endregion
-
-        #region attributes
-        #endregion
-
-        #region LoadProductFromElasticSearchProduct
-        public class LoadProductFromElasticSearchProduct
-        {
-            [Fact]
-            public void GoodItem_DetailIsExpected() {
-                // arrange
-                var testunit = MakeTestsRepository();
-                dynamic testProduct = MakeTestProduct();
-                bool testListOnly = false;
-                var expected = "Slush Flavor Watermelon / 102438 / DRAFT - METRO SWEET / Grocery / 6 / 64 OZ";
-
-                // act
-                Product result = testunit.LoadProductFromElasticSearchProduct(testListOnly, testProduct);
-
-                // assert
-                result.Detail.Should()
-                      .Be(expected);
-            }
-
-        }
-        #endregion
+        #endregion Setup
     }
 }

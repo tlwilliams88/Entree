@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
+using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists.MandatoryItem;
-
-using Xunit;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.MandatoryItems {
     public class MandatoryItemsListDetailTests {
@@ -14,10 +13,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.MandatoryItems {
 
         public class Get_Active {
             [Fact]
-            public void GoodItem_ReturnsValue() {
+            public void GoodItem_HasDefaultValue() {
                 // arrange
-                MandatoryItemsListDetail test = MakeDetail();
-                bool expected = true;
+                MandatoryItemsListDetail test = new MandatoryItemsListDetail();
+                bool expected = false;
+
                 // act
 
                 // assert
@@ -27,11 +27,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.MandatoryItems {
             }
 
             [Fact]
-            public void GoodItem_HasDefaultValue() {
+            public void GoodItem_ReturnsValue() {
                 // arrange
-                MandatoryItemsListDetail test = new MandatoryItemsListDetail();
-                var expected = false;
-
+                MandatoryItemsListDetail test = MakeDetail();
+                bool expected = true;
                 // act
 
                 // assert

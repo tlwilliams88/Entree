@@ -166,8 +166,8 @@ namespace KeithLink.Svc.Core
 
         public static readonly List<string> MARKETING_ROLES = new List<string>(){
             ROLE_INTERNAL_MARKETING_FAQ, ROLE_INTERNAL_MARKETING_FAM, ROLE_INTERNAL_MARKETING_FDF,
-			ROLE_INTERNAL_MARKETING_FHS,ROLE_INTERNAL_MARKETING_FLR,ROLE_INTERNAL_MARKETING_FAR,
-			ROLE_INTERNAL_MARKETING_FSA,ROLE_INTERNAL_MARKETING_FOK,ROLE_INTERNAL_MARKETING_GOF,
+            ROLE_INTERNAL_MARKETING_FHS,ROLE_INTERNAL_MARKETING_FLR,ROLE_INTERNAL_MARKETING_FAR,
+            ROLE_INTERNAL_MARKETING_FSA,ROLE_INTERNAL_MARKETING_FOK,ROLE_INTERNAL_MARKETING_GOF,
             ROLE_INTERNAL_MARKETING_FEL
         };
 
@@ -333,7 +333,8 @@ namespace KeithLink.Svc.Core
         public const string INVOICEREQUESTFILTER_DATERANGE_STARTQ4 = "10/1";
         public const string INVOICEREQUESTFILTER_DATERANGE_YEARMONTHKEY = "yearmonth";
         public const string INVOICEREQUESTSORT_INVOICEAMOUNT = "invoiceamount";
-        public const string INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING = "asc";
+        public const string INVOICEREQUESTSORT_AMOUNTDUE = "amount";
+        public const string INVOICEREQUESTSORT_ASCENDING = "asc";
 
         // item history unit of measure
         public const string ITEMHISTORY_AVERAGEUSE_CASE = "C";
@@ -418,5 +419,41 @@ namespace KeithLink.Svc.Core
 
         // string formats
         public const string NUMERICFORMAT_FIXED_2DECIMALS = "F2";
+
+        // OpenXml
+        public const UInt32 OPENXML_DEFAULT_CELL = 0;
+        public const UInt32 OPENXML_RIGHT_ALIGNED_CELL = 1;
+        public const UInt32 OPENXML_TEXT_WRAP_CELL = 2;
+        public const UInt32 OPENXML_RIGHT_ALIGNED_TEXT_WRAP_CELL = 3;
+        public const UInt32 OPENXML_TEXT_WRAP_BOLD_CELL = 4;
+        public const UInt32 OPENXML_RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL = 5;
+        public const UInt32 OPENXML_BOLD_CELL = 6;
+        public const UInt32 OPENXML_ITALIC_CELL = 7;
+        public const UInt32 OPENXML_NUMBER_F2_CELL = 12;
+        public const UInt32 OPENXML_SHORTDATE_CELL = 14;
+
+        // OpenXml
+        public const int PLACEHOLDER_ORDER_01ST = 5;
+        public const int PLACEHOLDER_ORDER_02ND = 10;
+        public const int PLACEHOLDER_ORDER_03RD = 15;
+        public const int PLACEHOLDER_ORDER_04TH = 20;
+        public const int PLACEHOLDER_ORDER_05TH = 25;
+        public const int PLACEHOLDER_ORDER_06TH = 30;
+        public const int PLACEHOLDER_ORDER_07TH = 35;
+        public const int PLACEHOLDER_ORDER_08TH = 40;
+        public const int PLACEHOLDER_ORDER_09TH = 45;
+        public const int PLACEHOLDER_ORDER_10TH = 50;
+        public const int PLACEHOLDER_ORDER_11TH = 55;
+        public const int PLACEHOLDER_ORDER_12TH = 60;
+        public const int PLACEHOLDER_ORDER_13TH = 65;
+        public const int PLACEHOLDER_ORDER_14TH = 70;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_08 = 8;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_10 = 10;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_12 = 12;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_14 = 14;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_16 = 16;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_20 = 20;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_25 = 25;
+        public const int OPENXML_EXPORT_WIDTH_PIXELS_80 = 80;
     }
 }

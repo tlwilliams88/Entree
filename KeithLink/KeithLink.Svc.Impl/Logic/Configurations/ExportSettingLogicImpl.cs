@@ -46,6 +46,11 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
 
             switch (type) {
                 case ExportType.List:
+                    if (listType == ListType.Contract) {
+                        options.Fields.Add(new ExportModelConfiguration() { Field = "ToDate", Label = "Active To Date" });
+                        options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedUTC", Label = "Added Date" });
+                        options.Fields.Add(new ExportModelConfiguration() { Field = "ModifiedUTC", Label = "Last Changed Date" });
+                    }
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Position", Label = "Line #" });
                     break;
                 case ExportType.CartDetail:
@@ -68,6 +73,7 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     options.Fields.Add(new ExportModelConfiguration() { Field = "TypeDescription", Label = "Type" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "StatusDescription", Label = "Status" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceDate", Label = "Invoice Date" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceAmount", Label = "Invoice Amount" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "DueDate", Label = "Due Date" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Amount", Label = "Amount" });
                     return options;

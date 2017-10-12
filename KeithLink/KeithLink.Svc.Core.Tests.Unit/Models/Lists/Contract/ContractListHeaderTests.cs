@@ -3,11 +3,10 @@ using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists.Contract;
 
-
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
     public class ContractListHeaderTests {
         private static ContractListHeader MakeHeader() {
-            return new ContractListHeader() {
+            return new ContractListHeader {
                 ContractId = "Fake ContractId"
             };
         }
@@ -16,8 +15,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             [Fact]
             public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = "Fake ContractId";
+                ContractListHeader fakeHeader = MakeHeader();
+                string expected = "Fake ContractId";
 
                 // act
 
@@ -30,7 +29,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Contract {
             [Fact]
             public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new ContractListHeader();
+                ContractListHeader test = new ContractListHeader();
 
                 // act
 

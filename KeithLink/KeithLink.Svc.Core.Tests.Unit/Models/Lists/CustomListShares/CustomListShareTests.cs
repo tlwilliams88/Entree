@@ -5,8 +5,8 @@ using KeithLink.Svc.Core.Models.Lists.CustomListShares;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
     public class CustomListShareTests {
-        private  static CustomListShare MakeShare() {
-            return new CustomListShare() {
+        private static CustomListShare MakeShare() {
+            return new CustomListShare {
                 Active = true,
                 HeaderId = 899
             };
@@ -16,8 +16,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeShare();
-                var expected = true;
+                CustomListShare fakeItem = MakeShare();
+                bool expected = true;
 
                 // act
 
@@ -30,8 +30,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListShare();
-                var expected = false;
+                CustomListShare test = new CustomListShare();
+                bool expected = false;
 
                 // act
 
@@ -46,8 +46,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeShare();
-                var expected = 899;
+                CustomListShare fakeItem = MakeShare();
+                int expected = 899;
 
                 // act
 
@@ -60,8 +60,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.CustomListShares {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new CustomListShare();
-                var expected = 0;
+                CustomListShare test = new CustomListShare();
+                int expected = 0;
 
                 // act
 

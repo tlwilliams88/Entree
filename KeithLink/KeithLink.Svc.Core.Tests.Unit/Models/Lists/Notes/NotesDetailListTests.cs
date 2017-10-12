@@ -1,8 +1,7 @@
 ﻿using FluentAssertions;
+using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists.Notes;
-
-using Xunit;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Notes {
     public class NotesDetailListTests {
@@ -14,10 +13,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Notes {
 
         public class Get_Note {
             [Fact]
-            public void GoodItem_ReturnsValue() {
+            public void GoodItem_HasDefaultValue() {
                 // arrange
-                NotesListDetail detail = MakeDetail();
-                string expected = "Scooby Dooby Doo";
+                NotesListDetail detail = new NotesListDetail();
+                string expected = null;
 
                 // act
 
@@ -28,10 +27,10 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.Notes {
             }
 
             [Fact]
-            public void GoodItem_HasDefaultValue() {
+            public void GoodItem_ReturnsValue() {
                 // arrange
-                NotesListDetail detail = new NotesListDetail();
-                string expected = null;
+                NotesListDetail detail = MakeDetail();
+                string expected = "Scooby Dooby Doo";
 
                 // act
 

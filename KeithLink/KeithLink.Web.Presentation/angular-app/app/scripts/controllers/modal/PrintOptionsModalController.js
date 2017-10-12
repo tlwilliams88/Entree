@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('PrintOptionsModalController', ['$scope', '$analytics', '$modalInstance', 'PrintService', 'ListService', 'CartService', 'list', 'cart', 'pagingModelOptions',
-  function ($scope, $analytics, $modalInstance, PrintService, ListService, CartService, list, cart, pagingModelOptions) {
+.controller('PrintOptionsModalController', ['$scope', '$analytics', '$modalInstance', 'PrintService', 'ListService', 'CartService', 'list', 'cart', 'pagingModelOptions', 'contractFilter',
+  function ($scope, $analytics, $modalInstance, PrintService, ListService, CartService, list, cart, pagingModelOptions, contractFilter) {
 
   $scope.list = list;
   if(cart){
@@ -10,6 +10,8 @@ angular.module('bekApp')
     $scope.printingOrder = true;
   }
   $scope.originalPagingModel = pagingModelOptions;
+  
+  $scope.contractFilter = contractFilter.filter;
 
   if($scope.list.isfavorite || $scope.list.read_only || $scope.list.ismandatory || $scope.list.isreminder){
     $scope.defaultList = true;
@@ -45,13 +47,18 @@ angular.module('bekApp')
               }],
               terms: undefined
             };
-    }
-    else{
+    } else {
      pagingModelOptions = $scope.originalPagingModel;
     }
+    
+    var contractFilter;
+    if(list.is_contract_list == true) {
+      contractFilter = $scope.contractFilter;
+    }
+    
     if(!$scope.printingOrder){
       $analytics.eventTrack('Print List', {  category: 'Lists', label: 'Print Page' });
-      ListService.printList(list, landscape, showparvalues, pagingModelOptions, shownotes, prices);
+      ListService.printList(list, landscape, showparvalues, pagingModelOptions, shownotes, prices, contractFilter);
     }
     else{
       $analytics.eventTrack('Print Order', {  category: 'Add To Order'});

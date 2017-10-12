@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InvoiceItemsController', ['$scope', '$stateParams', '$modal', 'invoice', 'InvoiceService',
-  function ($scope, $stateParams, $modal, invoice, InvoiceService) {
+.controller('InvoiceItemsController', ['$scope', '$stateParams', '$modal', 'invoice', 'InvoiceService', 'Constants',
+  function ($scope, $stateParams, $modal, invoice, InvoiceService, Constants) {
 
   $scope.sortOrder = false;
   $scope.sortBy = 'linenumber';
@@ -28,6 +28,9 @@ angular.module('bekApp')
         },
         exportParams: function() {
           return invoice.invoicenumber;
+        },
+        exportType: function() {
+           return Constants.exportType.invoiceItemsExport;
         }
       }
     });

@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         List<ContractChange> ReadNextSet();
 
-        void Update(string CustomerNumber, string BranchId, bool Sent);
+        void Update(long Id, bool Sent);
 
         void Purge(int PurgeDays);
     }

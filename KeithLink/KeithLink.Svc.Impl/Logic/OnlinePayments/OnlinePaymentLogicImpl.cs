@@ -33,6 +33,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core.Interface.Customers;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Impl.Seams;
 
 using Newtonsoft.Json;
 
@@ -235,14 +236,16 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
             List<CustomerBank> banks = new List<CustomerBank>();
 
-            foreach (EFCustomer.CustomerBank entity in bankEntities)
-            {
-                if (entity != null)
+            if (bankEntities != null) {
+                foreach (EFCustomer.CustomerBank entity in bankEntities)
                 {
-                    CustomerBank bank = new CustomerBank();
-                    bank.Parse(entity);
+                    if (entity != null)
+                    {
+                        CustomerBank bank = new CustomerBank();
+                        bank.Parse(entity);
 
-                    banks.Add(bank);
+                        banks.Add(bank);
+                    }
                 }
             }
 
@@ -443,7 +446,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             DecorateInvoiceModels(customers, pagedInvoices);
             stopWatch.Read(_log, "GetInvoicesForCustomer - DecorateInvoiceModels");
 
-            ApplyAfterMarketFiltersToPagedInvoicesAndCounts(paging, pagedInvoices);
+            ApplyAfterMarketPagingToPagedInvoicesAndCounts(paging, pagedInvoices);
             stopWatch.Read(_log, "GetInvoicesForCustomer - ApplyAfterMarketFiltersToPagedInvoicesAndCounts");
 
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count();
@@ -452,29 +455,39 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             return pagedInvoices;
         }
 
-        private void ApplySortingToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
-        {
-            if ((paging.IsNotNullAndHasSort()) &&
-                (paging.Sort[0].Field.Equals
-                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase)))
-            {
-                if (paging.Sort[0].Order.Equals
-                    (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT_ASCENDING, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    pagedInvoices.Results = pagedInvoices.Results
-                                                         .OrderBy(i => i.InvoiceAmount)
-                                                         .ToList();
-                }
-                else
-                {
-                    pagedInvoices.Results = pagedInvoices.Results
-                                                         .OrderByDescending(i => i.InvoiceAmount)
-                                                         .ToList();
-                }
+        private void ApplySortingInvoiceAmountToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices) {
+            if (paging.Sort.First()
+                      .Order.Equals
+                      (Constants.INVOICEREQUESTSORT_ASCENDING, StringComparison.CurrentCultureIgnoreCase)) {
+                pagedInvoices.Results = pagedInvoices.Results
+                                                     .OrderBy(i => i.InvoiceAmount)
+                                                     .ToList();
+            } else {
+                pagedInvoices.Results = pagedInvoices.Results
+                                                     .OrderByDescending(i => i.InvoiceAmount)
+                                                     .ToList();
             }
         }
 
-        private void ApplyAfterMarketFiltersToPagedInvoicesAndCounts(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        private void ApplySortingAmountDueToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
+        {
+            if (paging.Sort.First()
+                      .Order.Equals
+                      (Constants.INVOICEREQUESTSORT_ASCENDING, StringComparison.CurrentCultureIgnoreCase))
+            {
+                pagedInvoices.Results = pagedInvoices.Results
+                                                     .OrderBy(i => i.Amount)
+                                                     .ToList();
+            }
+            else
+            {
+                pagedInvoices.Results = pagedInvoices.Results
+                                                     .OrderByDescending(i => i.Amount)
+                                                     .ToList();
+            }
+        }
+
+        private void ApplyAfterMarketPagingToPagedInvoicesAndCounts(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices)
         {
             if (paging.IsNotNullAndHasSearch())
             {
@@ -491,6 +504,23 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     ApplyCreditMemoFilter(paging, pagedInvoices);
                 }
                 pagedInvoices.TotalResults = pagedInvoices.Results.Count;
+            }
+
+            if (paging.IsNotNullAndHasSort())
+            {
+                if (paging.Sort.Count > 0)
+                {
+                    if (paging.Sort.First().Field.Equals
+                            (Constants.INVOICEREQUESTSORT_INVOICEAMOUNT, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        ApplySortingInvoiceAmountToPagedInvoices(paging, pagedInvoices);
+                    }
+                    else if (paging.Sort.First().Field.Equals
+                            (Constants.INVOICEREQUESTSORT_AMOUNTDUE, StringComparison.CurrentCultureIgnoreCase))
+                    {
+                        ApplySortingAmountDueToPagedInvoices(paging, pagedInvoices);
+                    }
+                }
             }
 
             pagedInvoices.TotalInvoices = pagedInvoices.Results.Count;
@@ -616,7 +646,7 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
 
         private void AddInvoiceLink(InvoiceModel invoice)
         {
-            invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new
+            invoice.InvoiceLink = new Uri(BEKConfiguration.Get("WebNowUrl").Inject(new
             {
                 branch = invoice.BranchId,
                 customer = invoice.CustomerNumber,
@@ -658,18 +688,20 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
         private void GetInvoiceTransactions(InvoiceModel invoice)
         {
             var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId), invoice.CustomerNumber, invoice.InvoiceNumber);
-            invoice.InvoiceAmount = transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
-                                                .Select(x => x.AmountDue)
-                                                .FirstOrDefault();
+            if (transactions != null) {
+                invoice.InvoiceAmount = transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
+                                                    .Select(x => x.AmountDue)
+                                                    .FirstOrDefault();
 
-            if (transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
-                           .Count() > 0)
-            {
-                invoice.HasCreditMemos = true;
-            }
-            else
-            {
-                invoice.HasCreditMemos = false;
+                if (transactions.Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
+                               .Count() > 0)
+                {
+                    invoice.HasCreditMemos = true;
+                }
+                else
+                {
+                    invoice.HasCreditMemos = false;
+                }
             }
         }
 

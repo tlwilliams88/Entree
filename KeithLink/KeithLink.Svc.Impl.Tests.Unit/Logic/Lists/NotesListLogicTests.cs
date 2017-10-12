@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 using Autofac;
+
 using FluentAssertions;
-using Moq;
-using Xunit;
 
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
@@ -16,12 +11,13 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Lists;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
-{
-    public class NotesListLogicTests : BaseDITests
-    {
-        private static INotesListLogic MakeTestsObject()
-        {
+using Moq;
+
+using Xunit;
+
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
+    public class NotesListLogicTests : BaseDITests {
+        private static INotesListLogic MakeTestsObject() {
             ContainerBuilder cb = GetTestsContainer();
 
             // Register mocks
@@ -30,20 +26,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             cb.RegisterInstance(MakeMockDetailsRepo())
               .As<INotesDetailsListRepository>();
 
-            var testcontainer = cb.Build();
+            IContainer testcontainer = cb.Build();
 
             return testcontainer.Resolve<INotesListLogic>();
         }
 
-        private static INotesHeadersListRepository MakeMockHeaderRepo()
-        {
-            var mockHeaderRepo = new Mock<INotesHeadersListRepository>();
+        private static INotesHeadersListRepository MakeMockHeaderRepo() {
+            Mock<INotesHeadersListRepository> mockHeaderRepo = new Mock<INotesHeadersListRepository>();
 
             mockHeaderRepo.Setup(h => h.GetHeadersForCustomer(
-                                                         It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
-                                                                                    c.CustomerId == "123456")))
-                          .Returns(new NotesListHeader()
-                          {
+                                                              It.Is<UserSelectedContext>(c => c.BranchId == "FUT" &&
+                                                                                              c.CustomerId == "123456")))
+                          .Returns(new NotesListHeader {
                               BranchId = "FUT",
                               CustomerNumber = "123456",
                               Id = 1
@@ -52,52 +46,47 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             return mockHeaderRepo.Object;
         }
 
-        private static INotesDetailsListRepository MakeMockDetailsRepo()
-        {
-            var mockDetailsRepo = new Mock<INotesDetailsListRepository>();
+        private static INotesDetailsListRepository MakeMockDetailsRepo() {
+            Mock<INotesDetailsListRepository> mockDetailsRepo = new Mock<INotesDetailsListRepository>();
 
             mockDetailsRepo.Setup(h => h.GetAll(It.Is<long>(l => l == 1)))
-                           .Returns(new List<NotesListDetail>()
-                           {
-                               new NotesListDetail() {
-                                                             CatalogId = "FUT",
-                                                             ItemNumber = "123456",
-                                                             Each = false,
-                                                             LineNumber = 1,
-                                                             Id = 1,
-                                                             Note = "test note"
-                                                      }
+                           .Returns(new List<NotesListDetail> {
+                               new NotesListDetail {
+                                   CatalogId = "FUT",
+                                   ItemNumber = "123456",
+                                   Each = false,
+                                   LineNumber = 1,
+                                   Id = 1,
+                                   Note = "test note"
+                               }
                            });
 
             mockDetailsRepo.Setup(h => h.Get(It.Is<long>(l => l == 1), "123456"))
-                           .Returns(new NotesListDetail() {
-                                                             CatalogId = "FUT",
-                                                             ItemNumber = "123456",
-                                                             Each = false,
-                                                             LineNumber = 1,
-                                                             Id = 1,
-                                                             Note = "test note"
-                                                      });
+                           .Returns(new NotesListDetail {
+                               CatalogId = "FUT",
+                               ItemNumber = "123456",
+                               Each = false,
+                               LineNumber = 1,
+                               Id = 1,
+                               Note = "test note"
+                           });
 
             return mockDetailsRepo.Object;
         }
 
-        public class GetNote
-        {
+        public class GetNote {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var testItemNumber = "123456";
+                string testItemNumber = "123456";
 
                 // act
-                var results = testunit.GetNote(testcontext, testItemNumber);
+                ListItemModel results = testunit.GetNote(testcontext, testItemNumber);
 
                 // assert
                 results.Should()
@@ -105,19 +94,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var testItemNumber = "123456";
+                string testItemNumber = "123456";
 
                 // act
-                var results = testunit.GetNote(testcontext, testItemNumber);
+                ListItemModel results = testunit.GetNote(testcontext, testItemNumber);
 
                 // assert
                 results.Should()
@@ -125,20 +112,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var testItemNumber = "123456";
-                var expectedNote = "test note";
+                string testItemNumber = "123456";
+                string expectedNote = "test note";
 
                 // act
-                var results = testunit.GetNote(testcontext, testItemNumber);
+                ListItemModel results = testunit.GetNote(testcontext, testItemNumber);
 
                 // assert
                 results.Notes
@@ -148,22 +133,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
         }
 
         #region GetNotes
-        public class GetNotes
-        {
+        public class GetNotes {
             [Fact]
-            public void BadBranchId_ReturnsEmptyList()
-            {
+            public void BadBranchId_ReturnsEmptyList() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testuser = new UserProfile();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserProfile testuser = new UserProfile();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = testunit.GetNotes(testuser, testcontext);
+                List<ListItemModel> results = testunit.GetNotes(testuser, testcontext);
 
                 // assert
                 results.Count.Should()
@@ -171,19 +153,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsEmptyList()
-            {
+            public void BadCustomerId_ReturnsEmptyList() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testuser = new UserProfile();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserProfile testuser = new UserProfile();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = testunit.GetNotes(testuser, testcontext);
+                List<ListItemModel> results = testunit.GetNotes(testuser, testcontext);
 
                 // assert
                 results.Count.Should()
@@ -191,43 +171,38 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testuser = new UserProfile();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserProfile testuser = new UserProfile();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var expectedCount = 1;
+                int expectedCount = 1;
 
                 // act
-                var results = testunit.GetNotes(testuser, testcontext);
+                List<ListItemModel> results = testunit.GetNotes(testuser, testcontext);
 
                 // assert
                 results.Count.Should()
                        .Be(expectedCount);
             }
         }
-        #endregion
+        #endregion GetNotes
 
-        public class GetList
-        {
+        public class GetList {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
 
                 // act
-                var results = testunit.GetList(testcontext);
+                ListModel results = testunit.GetList(testcontext);
 
                 // assert
                 results.Should()
@@ -235,18 +210,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
 
                 // act
-                var results = testunit.GetList(testcontext);
+                ListModel results = testunit.GetList(testcontext);
 
                 // assert
                 results.Should()
@@ -254,18 +227,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
-                var testunit = MakeTestsObject();
-                var testcontext = new UserSelectedContext()
-                {
+                INotesListLogic testunit = MakeTestsObject();
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var expectedListId = 1;
+                int expectedListId = 1;
                 // act
-                var results = testunit.GetList(testcontext);
+                ListModel results = testunit.GetList(testcontext);
 
                 // assert
                 results.ListId
@@ -274,22 +245,19 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
             }
         }
 
-        public class SaveNote
-        { // works differently if you want to verify a mock is called; we can't go through autofac
+        public class SaveNote {
+// works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
-            public void AnyCall_CallsGetHeader()
-            {
+            public void AnyCall_CallsGetHeader() {
                 // arrange
-                var mockHeaderRepo = new Mock<INotesHeadersListRepository>();
-                var mockDetailsRepo = new Mock<INotesDetailsListRepository>();
-                var testunit = new NotesListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                var testcontext = new UserSelectedContext()
-                {
+                Mock<INotesHeadersListRepository> mockHeaderRepo = new Mock<INotesHeadersListRepository>();
+                Mock<INotesDetailsListRepository> mockDetailsRepo = new Mock<INotesDetailsListRepository>();
+                NotesListLogicImpl testunit = new NotesListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var testNotes = new ListItemModel()
-                {
+                ListItemModel testNotes = new ListItemModel {
                     ItemNumber = "123456",
                     Notes = "test note"
                 };
@@ -298,23 +266,20 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 testunit.SaveNote(testcontext, testNotes);
 
                 // assert - Always returns what is setup provided the mock is called
-                mockHeaderRepo.Verify<NotesListHeader>(h => h.GetHeadersForCustomer(testcontext), Times.Once(), "Error updating");
+                mockHeaderRepo.Verify(h => h.GetHeadersForCustomer(testcontext), Times.Once(), "Error updating");
             }
 
             [Fact]
-            public void CallsWhereCustomerHasNoExistingHeader_CallsSaveHeader()
-            {
+            public void AnyCall_CallsSaveDetail() {
                 // arrange
-                var mockHeaderRepo = new Mock<INotesHeadersListRepository>();
-                var mockDetailsRepo = new Mock<INotesDetailsListRepository>();
-                var testunit = new NotesListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                var testcontext = new UserSelectedContext()
-                {
+                Mock<INotesHeadersListRepository> mockHeaderRepo = new Mock<INotesHeadersListRepository>();
+                Mock<INotesDetailsListRepository> mockDetailsRepo = new Mock<INotesDetailsListRepository>();
+                NotesListLogicImpl testunit = new NotesListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var testNotes = new ListItemModel()
-                {
+                ListItemModel testNotes = new ListItemModel {
                     ItemNumber = "123456",
                     Notes = "test note"
                 };
@@ -323,31 +288,29 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists
                 testunit.SaveNote(testcontext, testNotes);
 
                 // assert - Always returns what is setup provided the mock is called
-                mockHeaderRepo.Verify<long>(h => h.Save(It.IsAny<NotesListHeader>()), Times.Once(), "Error updating");
+                mockDetailsRepo.Verify(h => h.Save(It.IsAny<NotesListDetail>()), Times.Once(), "Error updating");
             }
 
             [Fact]
-            public void AnyCall_CallsSaveDetail()
-            {
+            public void CallsWhereCustomerHasNoExistingHeader_CallsSaveHeader() {
                 // arrange
-                var mockHeaderRepo = new Mock<INotesHeadersListRepository>();
-                var mockDetailsRepo = new Mock<INotesDetailsListRepository>();
-                var testunit = new NotesListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                var testcontext = new UserSelectedContext()
-                {
+                Mock<INotesHeadersListRepository> mockHeaderRepo = new Mock<INotesHeadersListRepository>();
+                Mock<INotesDetailsListRepository> mockDetailsRepo = new Mock<INotesDetailsListRepository>();
+                NotesListLogicImpl testunit = new NotesListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var testNotes = new ListItemModel() {
-                                                        ItemNumber = "123456",
-                                                        Notes = "test note"
-                                                    };
+                ListItemModel testNotes = new ListItemModel {
+                    ItemNumber = "123456",
+                    Notes = "test note"
+                };
 
                 // act
                 testunit.SaveNote(testcontext, testNotes);
 
                 // assert - Always returns what is setup provided the mock is called
-                mockDetailsRepo.Verify<long>(h => h.Save(It.IsAny<NotesListDetail>()), Times.Once(), "Error updating");
+                mockHeaderRepo.Verify(h => h.Save(It.IsAny<NotesListHeader>()), Times.Once(), "Error updating");
             }
         }
     }

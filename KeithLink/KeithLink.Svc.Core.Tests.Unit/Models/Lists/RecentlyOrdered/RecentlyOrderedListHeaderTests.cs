@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-using Xunit;
 using FluentAssertions;
+using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists.RecentlyOrdered;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.RecentlyOrdered
-{
-    public class RecentlyOrderedListHeaderTests
-    {
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.RecentlyOrdered {
+    public class RecentlyOrderedListHeaderTests {
         public static RecentlyOrderedListHeader MakeHeader() {
-            return new RecentlyOrderedListHeader() {
+            return new RecentlyOrderedListHeader {
                 UserId = Guid.Parse("12345678-1234-1234-1234-123456789012")
             };
         }
@@ -24,14 +18,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.RecentlyOrdered
             public void GoodItem_ReturnsValue() {
                 // arrange
                 RecentlyOrderedListHeader test = MakeHeader();
-                var expected = Guid.Parse("12345678-1234-1234-1234-123456789012");
+                Guid expected = Guid.Parse("12345678-1234-1234-1234-123456789012");
                 // act
 
                 // assert
                 test.UserId
                     .Should()
                     .Be(expected);
-            } 
+            }
 
             [Fact]
             public void NewItem_UserIdHasDefaultValue() {

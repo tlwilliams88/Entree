@@ -183,6 +183,19 @@ namespace KeithLink.Svc.Impl.Helpers
             return worksheet;
         }
 
+        public static uint AddHeaderRows(uint rowIndex, string modelName, string[] excelColumnNames, List<string> contents, SheetData sheetData)
+        {
+            foreach (string content in contents)
+            {
+                var titleRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet
+                OpenXmlSpreadsheetUtilities.AppendTextCell
+                    (excelColumnNames[0] + rowIndex.ToString(), content, titleRow, CellValues.String, OpenXmlSpreadsheetUtilities.BOLD_CELL);
+                sheetData.Append(titleRow);
+                rowIndex++;
+            }
+            return rowIndex;
+        }
+
         public static uint AddTitleRow(uint rowIndex, string modelName, string[] excelColumnNames, string reportTitle, SheetData sheetData)
         {
             var titleRow = new Row { RowIndex = rowIndex };  // add a row at the to name the fields of spreadsheet

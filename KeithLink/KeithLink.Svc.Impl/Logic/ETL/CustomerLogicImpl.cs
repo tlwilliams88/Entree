@@ -474,6 +474,9 @@ namespace KeithLink.Svc.Impl.ETL
             catch (Exception ex)
             {
                 _log.WriteErrorLog(String.Format("ETL: Error Importing customer item history -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, 
+                    "ETL: Error Importing customer item history -- whole process failed.");
             }
         }
 
@@ -512,6 +515,9 @@ namespace KeithLink.Svc.Impl.ETL
             catch (Exception ex)
             {
                 _log.WriteErrorLog(String.Format("ETL: Error importing organizations to CS -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex,
+                    "ETL: Error importing organizations to CS -- whole process failed.");
             }
 
             ImportUsersWithAccess();
@@ -546,6 +552,9 @@ namespace KeithLink.Svc.Impl.ETL
                     catch (Exception ex1)
                     {
                         _log.WriteErrorLog(String.Format("ETL: Error importing dsr to CS.  {0} -- {1}", ex1.Message, ex1.StackTrace));
+
+                        KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex1,
+                            "ETL: Error importing dsr to CS.");
                     }
                 }
 
@@ -564,6 +573,9 @@ namespace KeithLink.Svc.Impl.ETL
                     catch (Exception ex2)
                     {
                         _log.WriteErrorLog(String.Format("ETL: Error sending dsr image to multi-docs.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+
+                        KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex2,
+                            "ETL: Error sending dsr image to multi-docs.");
                     }
                 }
 
@@ -573,6 +585,9 @@ namespace KeithLink.Svc.Impl.ETL
             catch (Exception e)
             {
                 _log.WriteErrorLog(String.Format("ETL: Error Importing dsrs -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
+                    "ETL: Error Importing dsrs -- whole process failed.");
             }
         }
 
@@ -620,6 +635,9 @@ namespace KeithLink.Svc.Impl.ETL
                 _log.WriteInformationLog( string.Format( "ETL: Import Process Finished: Internal User Access reference. Process took {0}", took.ToString() ) );
             } catch (Exception e) {
                 _log.WriteErrorLog( "ETL: Error importing internal users.", e );
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(e,
+                    "ETL: Error importing internal users.");
             }
         }
 

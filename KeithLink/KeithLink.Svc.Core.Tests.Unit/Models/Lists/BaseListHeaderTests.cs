@@ -5,21 +5,21 @@ using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
     public class BaseListHeaderTests {
-        private class StubHeader : BaseListHeader { }
-
         private static StubHeader MakeHeader() {
-            return new StubHeader() {
+            return new StubHeader {
                 BranchId = "Fake BranchId",
-                CustomerNumber =  "Fake CustomerNumber"
+                CustomerNumber = "Fake CustomerNumber"
             };
         }
+
+        private class StubHeader : BaseListHeader {}
 
         public class Get_BranchId {
             [Fact]
             public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = "Fake BranchId";
+                StubHeader fakeHeader = MakeHeader();
+                string expected = "Fake BranchId";
 
                 // act
 
@@ -32,7 +32,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new StubHeader();
+                StubHeader test = new StubHeader();
 
                 // act
 
@@ -47,8 +47,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void GoodHeader_ReturnsExpectedValue() {
                 // arrange
-                var fakeHeader = MakeHeader();
-                var expected = "Fake CustomerNumber";
+                StubHeader fakeHeader = MakeHeader();
+                string expected = "Fake CustomerNumber";
 
                 // act
 
@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
             [Fact]
             public void InitializedHeader_HasDefaultValue() {
                 // arrange
-                var test = new StubHeader();
+                StubHeader test = new StubHeader();
 
                 // act
 
@@ -71,6 +71,5 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
                     .BeNull();
             }
         }
-
     }
 }

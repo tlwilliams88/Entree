@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderItemsController', ['$scope', '$modal', '$filter', 'order', 'OrderService', 'ListService',
-  function ($scope, $modal, $filter, order, OrderService, ListService) {
+.controller('OrderItemsController', ['$scope', '$modal', '$filter', 'order', 'OrderService', 'ListService', 'Constants',
+  function ($scope, $modal, $filter, order, OrderService, ListService, Constants) {
 
   $scope.sortOrder = false;
   $scope.sortBy = 'linenumber';
@@ -67,6 +67,9 @@ angular.module('bekApp')
         },
         exportParams: function() {
           return order.ordernumber;
+        },
+        exportType: function() {
+           return Constants.exportType.orderItemsExport;
         }
       }
     });

@@ -9,22 +9,21 @@ using System.Web;
 
 namespace KeithLink.Svc.InternalSvc
 {
-	public class ErrorHandler: IErrorHandler
-	{
-		private IEventLogRepository eventLogRepository;
+    public class ErrorHandler : IErrorHandler {
+        private IEventLogRepository eventLogRepository;
 
-		public bool HandleError(Exception error)
-		{
-			eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
+        public bool HandleError(Exception error) {
+            eventLogRepository = ((IContainer) AutofacHostFactory.Container).Resolve<IEventLogRepository>();
 
-			eventLogRepository.WriteErrorLog("Unhandled Service Exception", error);
+            eventLogRepository.WriteErrorLog("Unhandled Service Exception", error);
 
-			return false;
-		}
+            KeithLink.Common.Impl.Email.ExceptionEmail.Send(error);
 
-		public void ProvideFault(Exception error, System.ServiceModel.Channels.MessageVersion version, ref System.ServiceModel.Channels.Message fault)
-		{
-			//Do Nothing
-		}
-	}
+            return false;
+        }
+
+        public void ProvideFault(Exception error, System.ServiceModel.Channels.MessageVersion version, ref System.ServiceModel.Channels.Message fault) {
+            //Do Nothing
+        }
+    }
 }

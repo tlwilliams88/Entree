@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists.ReminderItems;
@@ -12,7 +6,7 @@ using KeithLink.Svc.Core.Models.Lists.ReminderItems;
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.ReminderItems {
     public class ReminderItemsListDetailTests {
         private static ReminderItemsListDetail MakeItem() {
-            return new ReminderItemsListDetail() {
+            return new ReminderItemsListDetail {
                 Active = true
             };
         }
@@ -21,8 +15,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.ReminderItems {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = true;
+                ReminderItemsListDetail fakeItem = MakeItem();
+                bool expected = true;
 
                 // act
 
@@ -35,8 +29,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.ReminderItems {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new ReminderItemsListDetail();
-                var expected = false;
+                ReminderItemsListDetail test = new ReminderItemsListDetail();
+                bool expected = false;
 
                 // act
 
@@ -46,6 +40,5 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.ReminderItems {
                     .Be(expected);
             }
         }
-
     }
 }
