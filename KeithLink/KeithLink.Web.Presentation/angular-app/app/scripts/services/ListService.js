@@ -698,8 +698,10 @@ angular.module('bekApp')
                 })
                 item.listitemid = response.successResponse.listitemid;
                 item.editPosition = 0;
+                toaster.pop('success', null, 'Successfully added item to ' + list.name + ' list.');
                 return item;
               }, function(error) {
+                toaster.pop('error', null, 'Error adding item to ' + list.name + ' list.');
                 return $q.reject(error);
               });
             }
