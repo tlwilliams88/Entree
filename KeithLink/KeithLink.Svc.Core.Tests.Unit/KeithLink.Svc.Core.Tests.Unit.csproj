@@ -127,6 +127,7 @@
     <Compile Include="Models\Orders\OrderLineTests.cs" />
     <Compile Include="Models\Reports\ItemUsageReportItemModelTests.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItemTests.cs" />
+    <Compile Include="Models\SiteCatalog\BranchSupportModelTests.cs" />
     <Compile Include="Models\SiteCatalog\ProductTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

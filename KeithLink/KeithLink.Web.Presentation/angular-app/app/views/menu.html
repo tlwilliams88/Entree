@@ -364,7 +364,7 @@
 
       </div>
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print">
-      <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
+      <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.branchsupport.branchname for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
       <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
       </div>
     </div>
@@ -387,7 +387,7 @@
 
 
         <div class="col-xs-2 hidden-xs hidden-sm padding-left-5 margin-top-5" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
-          <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
+          <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.branchsupport.branchname for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
           <div ui-select2="customerSelectOptions" ng-if="::isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
           </div>
         </div>
