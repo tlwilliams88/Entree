@@ -109,6 +109,11 @@ namespace KeithLink.Svc.Impl.Service {
                     .Where(x => !string.IsNullOrEmpty(x.ItemNumber))
                     .ToList();
 
+            int ind = 0;
+            foreach (var item in returnValue) {
+                item.Position = ++ind;
+            }
+
             return returnValue;
         }
 
