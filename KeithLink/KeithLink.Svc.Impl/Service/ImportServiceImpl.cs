@@ -48,6 +48,8 @@ namespace KeithLink.Svc.Impl.Service
             _warnings = new StringBuilder();
         }
         #endregion
+
+
         public ListModel BuildList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file) {
             ListModel newList = new ListModel() {Name = string.Format("Imported List - {0}", DateTime.Now.ToShortDateString()), BranchId = catalogInfo.BranchId};
 
