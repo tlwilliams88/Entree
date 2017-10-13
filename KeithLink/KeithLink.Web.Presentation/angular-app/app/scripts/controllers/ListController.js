@@ -78,12 +78,16 @@ angular.module('bekApp')
       }
     ];
 
-    $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-    $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
+    if(originalList.is_contract_list == true) {
+        $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
+        $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;    
+    };
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
       $scope.selectedFilter = filterparameter.filter;
+      
+      $scope.currentPage = 1;
 
       $scope.filterItems();
     };
@@ -369,13 +373,20 @@ angular.module('bekApp')
     );
 
     // LIST INTERACTIONS
-    $scope.goToList = function(listid, listtype) {
+    $scope.goToList = function(id, listtype) {
       if($scope.selectedList.iscustominventory){
         $scope.isCustomInventoryList = false;
       }
+      
+      var isContractList = $filter('filter')($scope.lists, {listid: id})[0].is_contract_list;
+      
+      if(isContractList == true){
+          $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
+          $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
+      }
 
       var lastlist = {
-          listid: listid,
+          listid: id,
           type: listtype
       };
 
@@ -385,7 +396,7 @@ angular.module('bekApp')
           $scope.forms.listForm.$setPristine();
         }
         blockUI.start('Loading List...').then(function(){
-          return $state.transitionTo('menu.lists.items', {listId: listid, listType: listtype}, {location: true, reload: true, notify: true});
+          return $state.transitionTo('menu.lists.items', {listId: id, listType: listtype}, {location: true, reload: true, notify: true});
         });
       }
     };
@@ -1057,7 +1068,7 @@ angular.module('bekApp')
         }
 
         $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-        $scope.selectedFilter = '';
+        $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
         $scope.filterItems( $scope.listSearchTerm );
       }
     };
