@@ -109,9 +109,9 @@ namespace KeithLink.Svc.Impl.Service {
                     .Where(x => !string.IsNullOrEmpty(x.ItemNumber))
                     .ToList();
 
-            int ind = 0;
+            int itemPositionIndex = 0;
             foreach (var item in returnValue) {
-                item.Position = ++ind;
+                item.Position = ++itemPositionIndex;
             }
 
             return returnValue;
@@ -144,7 +144,7 @@ namespace KeithLink.Svc.Impl.Service {
                 }
             }
 
-            int ind = 0;
+            int itemPositionIndex = 0;
             while (rdr.Read()) {
                 if (rdr.GetString(itemNumberColumn) != null) {
                     returnValue.Add(new ListItemModel {
@@ -152,7 +152,7 @@ namespace KeithLink.Svc.Impl.Service {
                                         .PadLeft(6, '0'),
                         Label = labelColumn == -1 ? string.Empty : rdr.GetString(labelColumn),
                         CatalogId = catalogInfo.BranchId,
-                        Position = ++ind
+                        Position = ++itemPositionIndex
                     });
                 }
             }
