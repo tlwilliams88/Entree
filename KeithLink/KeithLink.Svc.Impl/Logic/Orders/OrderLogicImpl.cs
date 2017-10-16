@@ -301,8 +301,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     .AsQueryable();
             stopWatch.Read(_log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
 
-            paging.From = 0;
-            PagedResults<Order> pagedData = data.GetPage(paging);
+            PagingModel myPaging = new PagingModel() { // from is not set in this copy to avoid skip in the following paging
+                Size = paging.Size,
+                Filter = paging.Filter,
+                Sort = paging.Sort
+            };
+            PagedResults<Order> pagedData = data.GetPage(myPaging);
             stopWatch.Read(_log, "GetPagedOrders - Total time to get page");
 
             pagedData.TotalResults = _historyHeaderRepo.GetCustomerOrderHistoryHeaders(customerInfo.BranchId, customerInfo.CustomerId)
