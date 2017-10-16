@@ -391,7 +391,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                         headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
                         break;
                 }
-                //headersQry = headersQry.Skip(paging.From.Value); // Skip can only be done with a sort
             } else {
                 headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
             }
