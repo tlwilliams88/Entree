@@ -293,27 +293,44 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                                                                                 d => d.OrderDetails);
             headersQry = ApplyPagingToQuery(paging, headersQry);
             stopWatch.Read(_log, "GetPagedOrders - Total time to get history headers and details query");
+
             List<OrderHistoryHeader> headers = headersQry.ToList();
             stopWatch.Read(_log, "GetPagedOrders - Total time to get history headers and details list");
+
             IQueryable<Order> data = LookupControlNumberAndStatus(customerInfo, headers)
                     .AsQueryable();
             stopWatch.Read(_log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
-            PagedResults<Order> pagedData = data.GetPage(paging);
+
+            PagingModel myPaging = new PagingModel() { // from is not set in this copy to avoid skip in the following paging
+                Size = paging.Size,
+                Filter = paging.Filter,
+                Sort = paging.Sort
+            };
+            PagedResults<Order> pagedData = data.GetPage(myPaging);
             stopWatch.Read(_log, "GetPagedOrders - Total time to get page");
+
             pagedData.TotalResults = _historyHeaderRepo.GetCustomerOrderHistoryHeaders(customerInfo.BranchId, customerInfo.CustomerId)
-                                                        .Count();
+                                                       .Count();
             stopWatch.Read(_log, "GetPagedOrders - Total time total count");
+
             return pagedData;
         }
 
         private IQueryable<OrderHistoryHeader> ApplyPagingToQuery(PagingModel paging, IQueryable<OrderHistoryHeader> headersQry) {
             if (paging != null) {
                 headersQry = AddSortToPagedQuery(paging, headersQry);
+
+                if (paging.Sort != null && paging.From != null)
+                {
+                    headersQry = headersQry.Skip(paging.From.Value);
+                }
+
                 if (paging.Size != null) {
                     headersQry = headersQry.Take(paging.Size.Value);
                 } else {
                     headersQry = headersQry.Take(10);
                 }
+
             } else {
                 headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
                 headersQry = headersQry.Take(6);
@@ -378,7 +395,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                         headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
                         break;
                 }
-                headersQry = headersQry.Skip(paging.From.Value); // Skip can only be done with a sort
             } else {
                 headersQry = headersQry.OrderByDescending(h => h.CreatedUtc);
             }
