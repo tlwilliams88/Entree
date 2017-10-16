@@ -300,7 +300,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             stopWatch.Read(_log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
             PagedResults<Order> pagedData = data.GetPage(paging);
             stopWatch.Read(_log, "GetPagedOrders - Total time to get page");
-            pagedData.TotalInvoices = _historyHeaderRepo.GetCustomerOrderHistoryHeaders(customerInfo.BranchId, customerInfo.CustomerId)
+            pagedData.TotalResults = _historyHeaderRepo.GetCustomerOrderHistoryHeaders(customerInfo.BranchId, customerInfo.CustomerId)
                                                         .Count();
             stopWatch.Read(_log, "GetPagedOrders - Total time total count");
             return pagedData;
