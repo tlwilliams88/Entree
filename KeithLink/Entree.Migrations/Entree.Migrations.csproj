@@ -122,6 +122,7 @@
     <None Include="NuGet.config">
       <SubType>Designer</SubType>
     </None>
+    <Compile Include="Migrations\v2017.05.05\Migration0041.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\Branchsupport_NewBranchNames_0035_2017.04.00_down.sql" />
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\Branchsupport_NewBranchNamesUpdate_0041_2017.05.05_down.sql" />
+    <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\BranchSupport_NewBranchNamesUpdate_0041_2017.05.05_up.sql" />
     <Content Include="Scripts\AppData\BranchSupport\Tables\BranchSupports\PostDeployment\Branchsupport_NewBranchNames_0035_2017.04.00_up.sql" />
     <Content Include="Scripts\AppData\BranchSupport\Tables\DsrAliases\DsrAliases_0001_0001_0001.11.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -395,6 +398,8 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0023_2017.04-00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\ETL\Stored Procedures\ProcessContractItemList\ProcessContractItemList_0044_2017.06.00_up.sql">
@@ -1918,6 +1923,7 @@
     <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
     <Folder Include="Migrations\Data\IntegrationTests\Orders\" />
     <Folder Include="Migrations\Data\IntegrationTests\Profile\" />
+    <Folder Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
