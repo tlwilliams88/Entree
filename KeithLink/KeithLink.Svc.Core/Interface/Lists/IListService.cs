@@ -10,10 +10,16 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists {
     public interface IListService {
-        ListModel CreateList(UserProfile user, 
-                             UserSelectedContext catalogInfo, 
+        ListModel CreateList(UserProfile user,
+                             UserSelectedContext catalogInfo,
                              ListType type,
                              ListModel list);
+
+        void AddItem(UserProfile user,
+                     UserSelectedContext catalogInfo,
+                     ListType type,
+                     long headerId,
+                     ListItemModel item);
 
         ListModel UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type, ListModel list);
 
@@ -57,17 +63,17 @@ namespace KeithLink.Svc.Core.Interface.Lists {
         List<Product> MarkFavoritesAndAddNotes(UserProfile user, List<Product> list, UserSelectedContext catalogInfo);
 
         ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
-      
+
         List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long Id);
 
         long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, long customInventoryItemId);
 
         List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, List<long> customInventoryItemIds);
 
-        void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+        void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                         long headerId, string itemNumber);
 
-        void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
+        void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                          long headerId, List<string> itemNumbers);
     }
 }
