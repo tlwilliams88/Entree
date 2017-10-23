@@ -44,8 +44,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             createUser.Model.LastName = lastName;
             createUser.Model.Email = emailAddress;
             createUser.Model.Telephone = phoneNumber;
+            createUser.Model.DefaultBranch = branchId;
 
-            Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
+            Svc.Impl.Seams.FoundationService.ExecuteRequest(createUser.ToRequest());
 
 			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserCreated, createdBy, Newtonsoft.Json.JsonConvert.SerializeObject(createUser.Model));
         }
