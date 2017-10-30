@@ -5,6 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
 	<script type="text/javascript" src="newrelic/newrelic.js" ></script>
+    
+    <!-- Begin Inspectlet Embed Code -->
+    <script type="text/javascript" src="inspectlet/inspectlet.js"></script>
+    <!-- End Inspectlet Embed Code -->
 
     <title>Entree</title>
     <meta name="description" content="">
@@ -34,7 +38,7 @@
 Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
     <![endif]-->
 
-    <toaster-container toaster-options="{'time-out': 3000, 'error-time-out': 3000, 'position-class': 'toast-bottom-right'}"></toaster-container>
+    <toaster-container toaster-options="{'time-out': 3000, 'position-class': 'toast-bottom-right'}"></toaster-container>
 
     <div ui-view="" class="container-fluid"></div>
 
@@ -182,6 +186,7 @@ Internet Explorer 10 and higher, Google Chrome, Safari, Mozilla Firefox.</p>
 
 
     <!-- DIRECTIVES -->
+    <script type="text/javascript" src="scripts/directives/BlockPageScroll.js"></script>
     <script type="text/javascript" src="scripts/directives/ConfirmClick.js"></script>
     <script type="text/javascript" src="scripts/directives/ContextMenu.js"></script>
     <script type="text/javascript" src="scripts/directives/ContextMenuTemplate.js"></script>
