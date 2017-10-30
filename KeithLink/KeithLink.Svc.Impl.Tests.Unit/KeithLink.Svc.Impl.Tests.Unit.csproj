@@ -60,19 +60,19 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="xunit.abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.abstractions.2.0.0\lib\net35\xunit.abstractions.dll</HintPath>
+      <HintPath>..\packages\xunit.abstractions.2.0.1\lib\net35\xunit.abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="xunit.assert, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.assert.2.1.0\lib\dotnet\xunit.assert.dll</HintPath>
+    <Reference Include="xunit.assert, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.assert.2.2.0\lib\netstandard1.1\xunit.assert.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="xunit.core, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.extensibility.core.2.1.0\lib\dotnet\xunit.core.dll</HintPath>
+    <Reference Include="xunit.core, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.core.2.2.0\lib\netstandard1.1\xunit.core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="xunit.execution.desktop, Version=2.1.0.3179, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
-      <HintPath>..\packages\xunit.extensibility.execution.2.1.0\lib\net45\xunit.execution.desktop.dll</HintPath>
+    <Reference Include="xunit.execution.desktop, Version=2.2.0.3545, Culture=neutral, PublicKeyToken=8d05b1bb7a6fdb6c, processorArchitecture=MSIL">
+      <HintPath>..\packages\xunit.extensibility.execution.2.2.0\lib\net452\xunit.execution.desktop.dll</HintPath>
       <Private>True</Private>
     </Reference>
   </ItemGroup>
@@ -82,6 +82,7 @@
     <Compile Include="Helpers\ItemOrderHistoryHelperTests.cs" />
     <Compile Include="Logic\Cache\CacheListLogicTests.cs" />
     <Compile Include="Logic\Configuration\ExportSettingLogicTests.cs" />
+    <Compile Include="Logic\DivisionLogicImplTests.cs" />
     <Compile Include="Logic\Lists\ContractListChangesLogicTests.cs" />
     <Compile Include="Logic\Lists\ContractListLogicTests.cs" />
     <Compile Include="Logic\Lists\CustomListLogicTests.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SiteCatelog\ElasticSearchCatalogRepositoryTests.cs" />
     <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
+    <Compile Include="Service\Invoices\ExportInvoicesServiceTests.cs" />
     <Compile Include="Service\List\ListServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>

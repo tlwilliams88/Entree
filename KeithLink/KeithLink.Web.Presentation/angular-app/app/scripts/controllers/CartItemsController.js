@@ -505,6 +505,9 @@ angular.module('bekApp')
           },
           exportParams: function() {
             return cartid;
+          },
+          exportType: function() {
+             return Constants.exportType.cartItemsExport;
           }
         }
       });

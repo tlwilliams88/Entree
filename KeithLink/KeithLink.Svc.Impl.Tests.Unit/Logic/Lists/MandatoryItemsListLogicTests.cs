@@ -74,12 +74,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     CustomerId = "123456"
                 };
 
-                var emptylist = 0;
-                var fakeUser = new UserProfile();
+                int emptylist = 0;
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
-
+                List<string> results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.Count()
@@ -96,11 +95,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     CustomerId = "223456"
                 };
 
-                var emptylist = 0;
-                var fakeUser = new UserProfile();
+                int emptylist = 0;
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
+                List<string> results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.Count()
@@ -117,11 +116,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     CustomerId = "123456"
                 };
 
-                var expectedItem = "123456";
-                var fakeUser = new UserProfile();
+                string expectedItem = "123456";
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
+                List<string> results = testunit.GetMandatoryItemNumbers(fakeUser, testcontext);
 
                 // assert
                 results.First()
@@ -200,10 +199,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(fakeUser, testcontext, false);
+                ListModel results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -218,10 +217,10 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
-                var fakeUser = new UserProfile();
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(fakeUser, testcontext, false);
+                ListModel results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.Should()
@@ -237,12 +236,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     CustomerId = "123456"
                 };
 
-                var expected = 1;
-                var fakeUser = new UserProfile();
+                int expected = 1;
+                UserProfile fakeUser = new UserProfile();
 
                 // act
-                var results = testunit.ReadList(fakeUser, testcontext, false);
-
+                ListModel results = testunit.ReadList(fakeUser, testcontext, false);
 
                 // assert
                 results.ListId
@@ -252,7 +250,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class CreateOrUpdateList {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsSaveHeaderEveryTime() {
                 // arrange
@@ -280,7 +278,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class DeleteMandatoryItems {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsDeleteDetail() {
                 // arrange
@@ -310,37 +308,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
 
         public class SaveList {
             [Fact]
-            public void AnyCustomerIdAndBranch_WhenIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse() {
-                // arrange
-                Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
-                Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
-                MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
-                UserSelectedContext testcontext = new UserSelectedContext {
-                    BranchId = "FUT",
-                    CustomerId = "123456"
-                };
-                UserProfile fakeProfile = new UserProfile();
-                ListModel testList = new ListModel() {
-                    ListId = 1,
-                    BranchId = "FUT",
-                    Items = new List<ListItemModel>() {
-                        new ListItemModel() {
-                            ListItemId = 1,
-                            ItemNumber = "123456",
-                            Active = true,
-                            IsDelete = true
-                        }
-                    }
-                };
-
-                // act
-                testunit.SaveList(fakeProfile, testcontext, testList);
-
-                // assert - Always returns what is setup provided the mock is called
-                mockDetailsRepo.Verify(h => h.Save(It.Is<MandatoryItemsListDetail>(d => d.Active.Equals(false))), Times.Once(), "Error updating");
-            }
-
-            [Fact]
             public void AnyCustomerIdAndBranch_WhenIsDeleteIsFalseAndActiveIsFalseSetsActiveToTrue() {
                 // arrange
                 Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
@@ -351,11 +318,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                     CustomerId = "123456"
                 };
                 UserProfile fakeProfile = new UserProfile();
-                ListModel testList = new ListModel() {
+                ListModel testList = new ListModel {
                     ListId = 1,
                     BranchId = "FUT",
-                    Items = new List<ListItemModel>() {
-                        new ListItemModel() {
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {
                             ListItemId = 1,
                             ItemNumber = "123456",
                             Active = false,
@@ -370,10 +337,41 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // assert - Always returns what is setup provided the mock is called
                 mockDetailsRepo.Verify(h => h.Save(It.Is<MandatoryItemsListDetail>(d => d.Active.Equals(true))), Times.Once(), "Error updating");
             }
+
+            [Fact]
+            public void AnyCustomerIdAndBranch_WhenIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse() {
+                // arrange
+                Mock<IMandatoryItemsListHeadersRepository> mockHeaderRepo = new Mock<IMandatoryItemsListHeadersRepository>();
+                Mock<IMandatoryItemsListDetailsRepository> mockDetailsRepo = new Mock<IMandatoryItemsListDetailsRepository>();
+                MandatoryItemsListLogicImpl testunit = new MandatoryItemsListLogicImpl(mockHeaderRepo.Object, mockDetailsRepo.Object);
+                UserSelectedContext testcontext = new UserSelectedContext {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                UserProfile fakeProfile = new UserProfile();
+                ListModel testList = new ListModel {
+                    ListId = 1,
+                    BranchId = "FUT",
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {
+                            ListItemId = 1,
+                            ItemNumber = "123456",
+                            Active = true,
+                            IsDelete = true
+                        }
+                    }
+                };
+
+                // act
+                testunit.SaveList(fakeProfile, testcontext, testList);
+
+                // assert - Always returns what is setup provided the mock is called
+                mockDetailsRepo.Verify(h => h.Save(It.Is<MandatoryItemsListDetail>(d => d.Active.Equals(false))), Times.Once(), "Error updating");
+            }
         }
 
         public class CreateList {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_Completes() {
                 // arrange

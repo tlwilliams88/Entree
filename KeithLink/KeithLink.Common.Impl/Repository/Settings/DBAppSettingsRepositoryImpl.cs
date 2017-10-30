@@ -35,7 +35,7 @@ namespace KeithLink.Common.Impl.Repository.Settings
 
         #region ctor
         public DBAppSettingsRepositoryImpl() {
-            _log = new EventLogRepositoryImpl(Configuration.ApplicationName);
+            _log = new EventLogQueueRepositoryImpl(Configuration.ApplicationName);
             
             if(AppSettingsDictionary.UniqueValue == null)
             {

@@ -38,6 +38,10 @@ namespace KeithLink.Svc.Core.Interface.Cache
 
         void ClearCustomersListCaches(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> lists);
 
+        void ClearCustomersListCaches(UserProfile user, string customerNumber, string branchId, List<ListModel> lists);
+
         void ClearCustomersLabelsCache(UserSelectedContext catalogInfo);
+
+        void ClearCustomersLabelsCache(string customerNumber, string branchId);
     }
 }

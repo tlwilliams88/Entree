@@ -457,7 +457,7 @@ angular.module('bekApp')
           });
         },
 
-        exportList: function(config, list) {
+        exportList: function(list, config) {
           ExportService.export('/list/export/' + list.listType + '/' + list.listId, config);
         },
 
@@ -468,14 +468,15 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(list, landscape, showparvalues, options, shownotes, prices) {
+        printList: function(list, landscape, showparvalues, options, shownotes, prices, contractFilter) {
 
             var printparams = {
               landscape: landscape,
               showparvalues: showparvalues,
               shownotes: shownotes,
               paging: options,
-              showprices: prices
+              showprices: prices,
+              filter: contractFilter
             };
 
 
@@ -697,8 +698,10 @@ angular.module('bekApp')
                 })
                 item.listitemid = response.successResponse.listitemid;
                 item.editPosition = 0;
+                toaster.pop('success', null, 'Successfully added item to ' + list.name + ' list.');
                 return item;
               }, function(error) {
+                toaster.pop('error', null, 'Error adding item to ' + list.name + ' list.');
                 return $q.reject(error);
               });
             }

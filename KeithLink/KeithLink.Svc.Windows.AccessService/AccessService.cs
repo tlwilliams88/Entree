@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Windows.AccessService {
 
             //_kbitLogic = new KbitRequestLogicImpl();
             //_pmLogic = new PowerMenuLogicImpl();
-            //_log = new EventLogRepositoryImpl(this.ServiceName);
+            //_log = new EventLogQueueRepositoryImpl(this.ServiceName);
             //_requestLogic = new AccessRequestLogicImpl(new GenericQueueRepositoryImpl(), _kbitLogic, _log, _pmLogic);
         }
         #endregion

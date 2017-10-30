@@ -32,6 +32,10 @@ namespace KeithLink.Svc.Impl.ETL
                 }
         }
 
+	    public DataTable ReadAllItemKeywords() {
+	        throw new Exception("Stop!");
+	    }
+
         public void PurgeInternalUserAccessTable() {
             throw new NotImplementedException("Not implemented in demo");
         }

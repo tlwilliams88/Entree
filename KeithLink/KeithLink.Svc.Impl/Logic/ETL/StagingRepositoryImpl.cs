@@ -218,6 +218,10 @@ namespace KeithLink.Svc.Impl.ETL
             return PopulateDataTable("[ETL].[ReadBranches]");
         }
 
+        public DataTable ReadAllItemKeywords() {
+            return PopulateDataTable("[ETL].[ReadAllItemKeywords]");
+        }
+
         /// <summary>
         /// Read brand control labels
         /// </summary>

@@ -139,21 +139,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
         }
 
-        public class ReadList
-        {
+        public class ReadList {
             [Fact]
-            public void BadBranchId_ReturnsNull()
-            {
+            public void BadBranchId_ReturnsNull() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                var headerOnly = false;
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -164,18 +161,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void BadCustomerId_ReturnsNull()
-            {
+            public void BadCustomerId_ReturnsNull() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "223456"
                 };
                 UserProfile fakeUser = new UserProfile();
-                var headerOnly = false;
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -186,19 +181,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranch_ReturnsExpectedList()
-            {
+            public void GoodCustomerIdAndBranch_ReturnsExpectedList() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependents);
-                UserSelectedContext testcontext = new UserSelectedContext
-                {
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
                 int expectedListId = 1;
                 UserProfile fakeUser = new UserProfile();
-                var headerOnly = false;
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -211,7 +204,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class SaveList {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsSaveHeader() {
                 // arrange
@@ -239,39 +232,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
                 // assert - Always returns what is setup provided the mock is called
                 mockDependants.headersRepository.Verify(h => h.SaveReminderListHeader(It.IsAny<ReminderItemsListHeader>()), Times.Once(), "Error updating");
             }
-
-            [Fact]
-            public void AnyCustomerIdAndBranch_IfIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse() {
-                // arrange
-                MockDependents mockDependants = new MockDependents();
-                IRemindersListLogic testunit = MakeTestsLogic(false, ref mockDependants);
-                UserProfile fakeUser = new UserProfile();
-
-                UserSelectedContext testcontext = new UserSelectedContext {
-                    BranchId = "FUT",
-                    CustomerId = "123456"
-                };
-
-                ListModel testList = new ListModel {
-                    ListId = 1,
-                    CustomerNumber = "123456",
-                    BranchId = "FUT",
-                    Items = new List<ListItemModel> {
-                        new ListItemModel {
-                            ItemNumber = "123456",
-                            Active = false,
-                            IsDelete = true
-                        }
-                    }
-                };
-
-                // act
-                testunit.SaveList(fakeUser, testcontext, testList);
-
-                // assert - Always returns what is setup provided the mock is called
-                mockDependants.detailsRepository.Verify(x => x.SaveReminderListDetail(It.Is<ReminderItemsListDetail>(d => d.Active.Equals(false))), Times.Once(), "Error updating");
-            }
-
 
             [Fact]
             public void AnyCustomerIdAndBranch_IfIsDeleteIsFalseAndActiveIsFalseSetsActiveToTrue() {
@@ -306,19 +266,49 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranchHeaderOnlyFalse_ReturnsExpectedNumberOfItems()
-            {
+            public void AnyCustomerIdAndBranch_IfIsDeleteIsTrueAndActiveIsTrueSetsActiveToFalse() {
                 // arrange
                 MockDependents mockDependants = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependants);
-                var testcontext = new UserSelectedContext()
-                {
+                IRemindersListLogic testunit = MakeTestsLogic(false, ref mockDependants);
+                UserProfile fakeUser = new UserProfile();
+
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
-                var expected = 1;
-                var headerOnly = false;
+
+                ListModel testList = new ListModel {
+                    ListId = 1,
+                    CustomerNumber = "123456",
+                    BranchId = "FUT",
+                    Items = new List<ListItemModel> {
+                        new ListItemModel {
+                            ItemNumber = "123456",
+                            Active = false,
+                            IsDelete = true
+                        }
+                    }
+                };
+
+                // act
+                testunit.SaveList(fakeUser, testcontext, testList);
+
+                // assert - Always returns what is setup provided the mock is called
+                mockDependants.detailsRepository.Verify(x => x.SaveReminderListDetail(It.Is<ReminderItemsListDetail>(d => d.Active.Equals(false))), Times.Once(), "Error updating");
+            }
+
+            [Fact]
+            public void GoodCustomerIdAndBranchHeaderOnlyFalse_ReturnsExpectedNumberOfItems() {
+                // arrange
+                MockDependents mockDependants = new MockDependents();
+                IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependants);
+                UserSelectedContext testcontext = new UserSelectedContext {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                UserProfile fakeUser = new UserProfile();
+                int expected = 1;
+                bool headerOnly = false;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -331,19 +321,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
             }
 
             [Fact]
-            public void GoodCustomerIdAndBranchHeaderOnlyTrue_ReturnsExpectedNumberOfItems()
-            {
+            public void GoodCustomerIdAndBranchHeaderOnlyTrue_ReturnsExpectedNumberOfItems() {
                 // arrange
                 MockDependents mockDependants = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac:true,mockDependents:ref mockDependants);
-                var testcontext = new UserSelectedContext()
-                {
+                IRemindersListLogic testunit = MakeTestsLogic(true, ref mockDependants);
+                UserSelectedContext testcontext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "123456"
                 };
-                var fakeUser = new UserProfile();
-                var expected = 0;
-                var headerOnly = true;
+                UserProfile fakeUser = new UserProfile();
+                int expected = 0;
+                bool headerOnly = true;
 
                 // act
                 ListModel results = testunit.ReadList(fakeUser, testcontext, headerOnly);
@@ -357,7 +345,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Lists {
         }
 
         public class Save {
-// works differently if you want to verify a mock is called; we can't go through autofac
+            // works differently if you want to verify a mock is called; we can't go through autofac
             [Fact]
             public void AnyCustomerIdAndBranch_CallsSaveDetail() {
                 // arrange

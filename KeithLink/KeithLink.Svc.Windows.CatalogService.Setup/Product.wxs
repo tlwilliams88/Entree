@@ -42,14 +42,15 @@
               <File Id="KeithLink_Svc_Core_PDB" Name="KeithLink.Svc.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_DLL" Name="KeithLink.Svc.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_PDB" Name="KeithLink.Svc.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.pdb" KeyPath="no" Vital="yes"/>
-              <File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
               <File Id="RabbitMQ_Client" Name="RabbitMQ.Client.dll" DiskId="1" Source="$(var.SourcePath)\RabbitMQ.Client.dll" KeyPath="no" Vital="yes"/>
               <File Id="Service_EXE" Name="KeithLink.Svc.Windows.CatalogService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.CatalogService.exe" KeyPath="yes" Vital="yes"/>
               <File Id="Service_PDB" Name="KeithLink.Svc.Windows.CatalogService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.CatalogService.pdb" KeyPath="no" Vital="yes"/>
               <File Id="Config" Name="KeithLink.Svc.Windows.CatalogService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.CatalogService.exe.config" KeyPath="no" Vital="yes"/>
               <File Id="Linq" Name="System.Linq.Dynamic.dll" DiskId="1" Source="$(var.SourcePath)\System.Linq.Dynamic.dll" KeyPath="no" Vital="yes"/>
+                <File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
+                <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
 
-              <ServiceInstall Id="InstallService" Name="$(var.AppName)" Type="ownProcess" ErrorControl="normal" Start="auto"
+                <ServiceInstall Id="InstallService" Name="$(var.AppName)" Type="ownProcess" ErrorControl="normal" Start="auto"
                               DisplayName="$(var.AppName)" Description="$(var.AppDescription)">
                 <ServiceConfig OnInstall="yes" DelayedAutoStart="yes" />
               </ServiceInstall>

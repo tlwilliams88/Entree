@@ -94,7 +94,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
       this.loadList();
     },
 
-    loadMoreData: function(results, total, loading, deletedItems) {
+    loadMoreData: function(results, total, loading, deletedItems, filter) {
       if ( (!results || (results + deletedItems.length) < total) && !loading ) {
 
         var pageSize =  parseInt(LocalStorage.getPageSize());
@@ -104,6 +104,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
           this.pageSize = pageSize;
         }
         this.pageIndex = results;
+        this.filter = filter;
         this.loadList(true);
       }
     },

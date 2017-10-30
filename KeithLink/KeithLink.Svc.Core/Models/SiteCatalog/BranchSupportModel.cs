@@ -12,6 +12,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 	{
 		[DataMember(Name = "branchid")]
 		public string BranchId { get; set; }
+		[DataMember(Name = "branchname")]
+		public string BranchName { get; set; }
 		[DataMember(Name = "supportphonenumber")]
 		public string SupportPhoneNumber { get; set; }
 		[DataMember(Name = "tollfreenumber")]

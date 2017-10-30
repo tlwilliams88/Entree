@@ -96,9 +96,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BEKlibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd9c094739479d18, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>Lib\BEKlibrary.dll</HintPath>
+    <Reference Include="BEKlibrary, Version=2017.10.1.0, Culture=neutral, PublicKeyToken=30bbedabefbbbc7e, processorArchitecture=MSIL">
+      <HintPath>..\packages\BEK.Library.2017.10.1\lib\net45\BEKlibrary.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=3.3.5.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.3.3.5\lib\net30\RabbitMQ.Client.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -121,14 +124,10 @@
     <Compile Include="Email\ExceptionEmail.cs" />
     <Compile Include="Email\NewUserEmail.cs" />
     <Compile Include="Repository\Logging\EventLogRepositoryImpl.cs" />
+    <Compile Include="Repository\Logging\EventLogQueueRepositoryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Settings\AppSettingsDictionary.cs" />
     <Compile Include="Repository\Settings\DBAppSettingsRepositoryImpl.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Lib\BEKlibrary.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
@@ -138,8 +137,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="KeithLink.Svc.FoundationSvc.snk" />
+    <None Include="NuGet.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -67,6 +67,10 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             }
             catch (Exception ex) {
                 _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Importing contract lists -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex,
+                    "ETL: Error Importing contract lists -- whole process failed.");
+
             }
         }
 
@@ -88,6 +92,9 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             } 
             catch (Exception ex) {
                 _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Importing history lists -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex,
+                    "ETL: Error Importing history lists -- whole process failed.");
             }
 
             try
@@ -104,6 +111,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             catch (Exception ex)
             {
                 _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Purge cart/order to list associations -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+                KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex,
+                    "ETL: Error Purge cart/order to list associations -- whole process failed.");
             }
         }
 

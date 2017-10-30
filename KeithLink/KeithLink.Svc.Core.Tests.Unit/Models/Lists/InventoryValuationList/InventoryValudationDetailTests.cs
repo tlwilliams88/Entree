@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using FluentAssertions;
+﻿using FluentAssertions;
 using Xunit;
 
 using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
@@ -12,7 +6,7 @@ using KeithLink.Svc.Core.Models.Lists.InventoryValuationList;
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
     public class InventoryValudationDetailTests {
         private static InventoryValuationListDetail MakeItem() {
-            return new InventoryValuationListDetail() {
+            return new InventoryValuationListDetail {
                 Active = true,
                 CustomInventoryItemId = 15,
                 Quantity = 7.37m,
@@ -24,8 +18,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = true;
+                InventoryValuationListDetail fakeItem = MakeItem();
+                bool expected = true;
 
                 // act
 
@@ -38,8 +32,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new InventoryValuationListDetail();
-                var expected = false;
+                InventoryValuationListDetail test = new InventoryValuationListDetail();
+                bool expected = false;
 
                 // act
 
@@ -54,8 +48,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = 15;
+                InventoryValuationListDetail fakeItem = MakeItem();
+                int expected = 15;
 
                 // act
 
@@ -68,7 +62,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new InventoryValuationListDetail();
+                InventoryValuationListDetail test = new InventoryValuationListDetail();
 
                 // act
 
@@ -83,8 +77,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void GoodItem_ReturnsDefaultValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = 7.37m;
+                InventoryValuationListDetail fakeItem = MakeItem();
+                decimal expected = 7.37m;
 
                 // act
 
@@ -97,8 +91,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void IniatlizedItem_HasDefaultValue() {
                 // arrange
-                var test = new InventoryValuationListDetail();
-                var expected = 0;
+                InventoryValuationListDetail test = new InventoryValuationListDetail();
+                int expected = 0;
 
                 // act
 
@@ -113,8 +107,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void GoodItem_ReturnsGoodValue() {
                 // arrange
-                var fakeItem = MakeItem();
-                var expected = "Test Label";
+                InventoryValuationListDetail fakeItem = MakeItem();
+                string expected = "Test Label";
 
                 // act
 
@@ -127,7 +121,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
             [Fact]
             public void InitializedItem_HasDefaultValue() {
                 // arrange
-                var test = new InventoryValuationListDetail();
+                InventoryValuationListDetail test = new InventoryValuationListDetail();
 
                 // act
 
@@ -135,7 +129,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists.InventoryValuationList {
                 test.Label
                     .Should()
                     .BeNull();
-
             }
         }
     }

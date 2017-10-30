@@ -281,6 +281,8 @@ angular.module('bekApp')
     invoicePagingModel.filter = filter;
     invoicePagingModel.pageIndex = 0;
 
+    $scope.invoicesFilters = filter ? filter : filterView;
+
     return filter;
   }
   
@@ -553,8 +555,8 @@ angular.module('bekApp')
 
   //toggles state between all customer invoices and single customer invoices
   $scope.setViewingAllCustomers = function (invoiceContext) {
-    $scope.viewingAllCustomers = true;
-    $scope.selectedInvoiceContext = invoiceContext;
+    $scope.viewingAllCustomers = $scope.selectedInvoiceContext.isViewingAllCustomers;
+    // $scope.selectedInvoiceContext = invoiceContext;
      $scope.errorMessage = '';
     
     // clear values to reset page
@@ -562,19 +564,14 @@ angular.module('bekApp')
     $scope.totalInvoices = 0;
     $scope.filterRowFields = {};
 
-    if ($scope.viewingAllCustomers) {
+    // if ($scope.viewingAllCustomers) {
 
       $scope.selectedFilterView = $scope.filterViews[0]; // default to Open Invoices filter view
       setTempContextForViewingAllCustomers();
       blockUI.start('Loading Invoices...').then(function(){
         invoicePagingModel.getData = InvoiceService.getAllOpenInvoices;
       });
-    } else {
-  
-      //restore previously selected user context
-      $scope.setSelectedUserContext(currentUserSelectedContext);
-      invoicePagingModel.getData = InvoiceService.getInvoices;
-    }
+
 
     getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
     invoicePagingModel.loadData();
@@ -943,10 +940,17 @@ angular.module('bekApp')
         exportParams: function () {
           return {
             isViewingAllCustomers: $scope.viewingAllCustomers,
-            paging: {
-              filter: getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView)
+            params: {
+                size: Constants.infiniteScrollPageSize,
+                from: 0,
+                sort: $scope.sort,
+                filter: $scope.selectedFilterView
             }
+            
           };
+        },
+        exportType: function() {
+           return Constants.exportType.invoiceExport;
         }
       }
     });

@@ -1,21 +1,15 @@
-﻿using FluentAssertions;
-
-using KeithLink.Svc.Core.Models.Reports;
-
-using Xunit;
-
+﻿using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
-namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
-{
-    public class ItemUsageReportItemModelTests
-    {
+using FluentAssertions;
+using Xunit;
+
+namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports {
+    public class ItemUsageReportItemModelTests {
         #region setup
-        private static ItemUsageReportItemModel MakeTestData()
-        {
-            return new ItemUsageReportItemModel()
-            {
+        private static ItemUsageReportItemModel MakeTestData() {
+            return new ItemUsageReportItemModel {
                 ItemNumber = "123456",
                 IsValid = true,
                 Name = "Fake Name",
@@ -41,24 +35,21 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                 Kosher = "Fake Kosher",
                 ManufacturerName = "Fake ManufacturerName",
                 ManufacturerNumber = "Fake ManufacturerNumber",
-                Nutritional = new Nutritional()
-                {
+                Nutritional = new Nutritional {
                     BrandOwner = "Fake BrandOwner"
                 },
                 CatalogId = "FUT"
             };
         }
-        #endregion
+        #endregion setup
 
         #region Get_ItemNumber
-        public class Get_ItemNumber
-        {
+        public class Get_ItemNumber {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "123456";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "123456";
 
                 // act
 
@@ -69,10 +60,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -82,17 +72,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_ItemNumber
 
         #region Get_IsValid
-        public class Get_IsValid
-        {
+        public class Get_IsValid {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = true;
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                bool expected = true;
 
                 // act
 
@@ -103,10 +91,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -116,17 +103,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeFalse();
             }
         }
-        #endregion
+        #endregion Get_IsValid
 
         #region Get_Name
-        public class Get_Name
-        {
+        public class Get_Name {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Name";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Name";
 
                 // act
 
@@ -137,10 +122,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -150,17 +134,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Name
 
         #region Get_Detail
-        public class Get_Detail
-        {
+        public class Get_Detail {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Detail";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Detail";
 
                 // act
 
@@ -171,10 +153,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -184,17 +165,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Detail
 
         #region Get_Description
-        public class Get_Description
-        {
+        public class Get_Description {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Description";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Description";
 
                 // act
 
@@ -205,10 +184,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -218,17 +196,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Description
 
         #region Get_Pack
-        public class Get_Pack
-        {
+        public class Get_Pack {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Pack";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Pack";
 
                 // act
 
@@ -239,10 +215,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -252,17 +227,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Pack
 
         #region Get_Size
-        public class Get_Size
-        {
+        public class Get_Size {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Size";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Size";
 
                 // act
 
@@ -273,10 +246,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -286,17 +258,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Size
 
         #region Get_Brand
-        public class Get_Brand
-        {
+        public class Get_Brand {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Brand";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Brand";
 
                 // act
 
@@ -307,10 +277,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -320,17 +289,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Brand
 
         #region Get_BrandExtendedDescription
-        public class Get_BrandExtendedDescription
-        {
+        public class Get_BrandExtendedDescription {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Brand";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Brand";
 
                 // act
 
@@ -341,10 +308,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -354,17 +320,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_BrandExtendedDescription
 
         #region Get_ReplacedItem
-        public class Get_ReplacedItem
-        {
+        public class Get_ReplacedItem {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake ReplacedItem";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake ReplacedItem";
 
                 // act
 
@@ -375,10 +339,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -388,17 +351,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_ReplacedItem
 
         #region Get_ReplacementItem
-        public class Get_ReplacementItem
-        {
+        public class Get_ReplacementItem {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake ReplacementItem";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake ReplacementItem";
 
                 // act
 
@@ -409,10 +370,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -422,17 +382,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_ReplacementItem
 
         #region Get_NonStock
-        public class Get_NonStock
-        {
+        public class Get_NonStock {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake NonStock";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake NonStock";
 
                 // act
 
@@ -443,10 +401,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -456,17 +413,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_NonStock
 
         #region Get_ChildNutrition
-        public class Get_ChildNutrition
-        {
+        public class Get_ChildNutrition {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake ChildNutrition";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake ChildNutrition";
 
                 // act
 
@@ -477,10 +432,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -490,17 +444,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_ChildNutrition
 
         #region Get_CatchWeight
-        public class Get_CatchWeight
-        {
+        public class Get_CatchWeight {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = true;
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                bool expected = true;
 
                 // act
 
@@ -511,10 +463,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -524,17 +475,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeFalse();
             }
         }
-        #endregion
+        #endregion Get_CatchWeight
 
         #region Get_TempZone
-        public class Get_TempZone
-        {
+        public class Get_TempZone {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake TempZone";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake TempZone";
 
                 // act
 
@@ -545,10 +494,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -558,17 +506,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_TempZone
 
         #region Get_ItemClass
-        public class Get_ItemClass
-        {
+        public class Get_ItemClass {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake ItemClass";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake ItemClass";
 
                 // act
 
@@ -579,10 +525,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -592,17 +537,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_ItemClass
 
         #region Get_CategoryCode
-        public class Get_CategoryCode
-        {
+        public class Get_CategoryCode {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake CategoryCode";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake CategoryCode";
 
                 // act
 
@@ -613,10 +556,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -626,17 +568,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_CategoryCode
 
         #region Get_SubCategoryCode
-        public class Get_SubCategoryCode
-        {
+        public class Get_SubCategoryCode {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake SubCategoryCode";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake SubCategoryCode";
 
                 // act
 
@@ -647,10 +587,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -660,17 +599,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_SubCategoryCode
 
         #region Get_CategoryName
-        public class Get_CategoryName
-        {
+        public class Get_CategoryName {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake CategoryName";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake CategoryName";
 
                 // act
 
@@ -681,10 +618,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -694,17 +630,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_CategoryName
 
         #region Get_UPC
-        public class Get_UPC
-        {
+        public class Get_UPC {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake UPC";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake UPC";
 
                 // act
 
@@ -715,10 +649,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -728,17 +661,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_UPC
 
         #region Get_VendorItemNumber
-        public class Get_VendorItemNumber
-        {
+        public class Get_VendorItemNumber {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake VendorItemNumber";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake VendorItemNumber";
 
                 // act
 
@@ -749,10 +680,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -762,17 +692,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_VendorItemNumber
 
         #region Get_Cases
-        public class Get_Cases
-        {
+        public class Get_Cases {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Cases";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Cases";
 
                 // act
 
@@ -783,10 +711,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -796,17 +723,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Cases
 
         #region Get_Kosher
-        public class Get_Kosher
-        {
+        public class Get_Kosher {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake Kosher";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake Kosher";
 
                 // act
 
@@ -817,10 +742,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -830,17 +754,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Kosher
 
         #region Get_ManufacturerName
-        public class Get_ManufacturerName
-        {
+        public class Get_ManufacturerName {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake ManufacturerName";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake ManufacturerName";
 
                 // act
 
@@ -851,10 +773,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -864,17 +785,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_ManufacturerName
 
         #region Get_ManufacturerNumber
-        public class Get_ManufacturerNumber
-        {
+        public class Get_ManufacturerNumber {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "Fake ManufacturerNumber";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "Fake ManufacturerNumber";
 
                 // act
 
@@ -885,10 +804,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -898,16 +816,14 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_ManufacturerNumber
 
         #region Get_Nutritional
-        public class Get_Nutritional
-        {
+        public class Get_Nutritional {
             [Fact]
-            public void GoodTest_NotNull()
-            {
+            public void GoodTest_NotNull() {
                 // arrange
-                var fakeItem = MakeTestData();
+                ItemUsageReportItemModel fakeItem = MakeTestData();
 
                 // act
 
@@ -918,10 +834,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -931,17 +846,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
+        #endregion Get_Nutritional
 
         #region Get_CatalogId
-        public class Get_CatalogId
-        {
+        public class Get_CatalogId {
             [Fact]
-            public void GoodTest_ReturnsExpectedValue()
-            {
+            public void GoodTest_ReturnsExpectedValue() {
                 // arrange
-                var fakeItem = MakeTestData();
-                var expected = "FUT";
+                ItemUsageReportItemModel fakeItem = MakeTestData();
+                string expected = "FUT";
 
                 // act
 
@@ -952,10 +865,9 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
             }
 
             [Fact]
-            public void InitalizedTest_HasDefaultValue()
-            {
+            public void InitalizedTest_HasDefaultValue() {
                 // arrange
-                var test = new ShoppingCartItem();
+                ShoppingCartItem test = new ShoppingCartItem();
 
                 // act
 
@@ -965,7 +877,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Reports
                     .BeNull();
             }
         }
-        #endregion
-
+        #endregion Get_CatalogId
     }
 }

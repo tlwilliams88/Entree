@@ -1,359 +1,266 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
-using FluentAssertions;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Cache;
 
 using Moq;
+
 using Xunit;
-using KeithLink.Svc.Core.Models.Profile;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
-{
-    public class CacheListLogicTests : BaseDITests
-    {
-        #region Setup
-        public class MockDependents
-        {
-            public Mock<ICacheRepository> CacheRepository { get; set; }
-
-            public static void RegisterInContainer(ref ContainerBuilder cb)
-            {
-                cb.RegisterInstance(MakeICacheRepository().Object)
-                  .As<ICacheRepository>();
-            }
-
-            public static Mock<ICacheRepository> MakeICacheRepository()
-            {
-                var mock = new Mock<ICacheRepository>();
-
-                return mock;
-            }
-
-        }
-
-        private static ICacheListLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents)
-        {
-            if (useAutoFac)
-            {
-                ContainerBuilder cb = GetTestsContainer();
-
-                // Register mocks
-                MockDependents.RegisterInContainer(ref cb);
-
-                var testcontainer = cb.Build();
-
-                return testcontainer.Resolve<ICacheListLogic>();
-            }
-            else
-            {
-                mockDependents = new MockDependents();
-                mockDependents.CacheRepository = MockDependents.MakeICacheRepository();
-
-                var testunit = new CacheListLogicImpl(mockDependents.CacheRepository.Object);
-                return testunit;
-            }
-        }
-        #endregion
-
-        #region attributes
-        #endregion
-
+namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache {
+    public class CacheListLogicTests : BaseDITests {
         #region GetCachedContractInformation
-        public class GetCachedContractInformation
-        {
+        public class GetCachedContractInformation {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryGetItem()
-            {
+            public void AnyCall_CallsCacheRepositoryGetItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
 
                 // act
-                var results = testunit.GetCachedContractInformation(testContext);
+                Dictionary<string, string> results = testunit.GetCachedContractInformation(testContext);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<Dictionary<string, string>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion GetCachedContractInformation
 
         #region GetCachedLabels
-        public class GetCachedLabels
-        {
+        public class GetCachedLabels {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryGetItem()
-            {
+            public void AnyCall_CallsCacheRepositoryGetItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
 
                 // act
-                var results = testunit.GetCachedLabels(testContext);
+                List<string> results = testunit.GetCachedLabels(testContext);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<List<string>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion GetCachedLabels
 
         #region AddCachedLabels
-        public class AddCachedLabels
-        {
+        public class AddCachedLabels {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryAddItem()
-            {
+            public void AnyCall_CallsCacheRepositoryAddItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var lists = new List<string>();
+                List<string> lists = new List<string>();
 
                 // act
                 testunit.AddCachedLabels(testContext, lists);
 
                 // assert
-                mockDependents.CacheRepository.Verify(m => m.AddItem<List<string>>(It.IsAny<string>(),
-                                                                                      It.IsAny<string>(),
-                                                                                      It.IsAny<string>(),
-                                                                                      It.IsAny<string>(),
-                                                                                      It.IsAny<TimeSpan>(),
-                                                                                      It.IsAny<List<string>>()), Times.Exactly(2), "not called");
+                mockDependents.CacheRepository.Verify(m => m.AddItem(It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<TimeSpan>(),
+                                                                     It.IsAny<List<string>>()), Times.Exactly(2), "not called");
             }
-
         }
-        #endregion
+        #endregion AddCachedLabels
 
         #region GetCachedTypedLists
-        public class GetCachedTypedLists
-        {
+        public class GetCachedTypedLists {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryGetItem()
-            {
+            public void AnyCall_CallsCacheRepositoryGetItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var testtype = ListType.Contract;
-                var testHeaderOnly = false;
+                ListType testtype = ListType.Contract;
+                bool testHeaderOnly = false;
 
                 // act
-                var results = testunit.GetCachedTypedLists(testContext, testtype, testHeaderOnly);
+                List<ListModel> results = testunit.GetCachedTypedLists(testContext, testtype, testHeaderOnly);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<List<ListModel>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion GetCachedTypedLists
 
         #region AddCachedTypedLists
-        public class AddCachedTypedLists
-        {
+        public class AddCachedTypedLists {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryAddItem()
-            {
+            public void AnyCall_CallsCacheRepositoryAddItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var testtype = ListType.Contract;
-                var lists = new List<ListModel>();
-                var testHeaderOnly = false;
+                ListType testtype = ListType.Contract;
+                List<ListModel> lists = new List<ListModel>();
+                bool testHeaderOnly = false;
 
                 // act
                 testunit.AddCachedTypedLists(testContext, testtype, testHeaderOnly, lists);
 
                 // assert
-                mockDependents.CacheRepository.Verify(m => m.AddItem<List<ListModel>>(It.IsAny<string>(), 
-                                                                                      It.IsAny<string>(), 
-                                                                                      It.IsAny<string>(), 
-                                                                                      It.IsAny<string>(),
-                                                                                      It.IsAny<TimeSpan>(), 
-                                                                                      It.IsAny<List<ListModel>>()), Times.Once, "not called");
+                mockDependents.CacheRepository.Verify(m => m.AddItem(It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<TimeSpan>(),
+                                                                     It.IsAny<List<ListModel>>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion AddCachedTypedLists
 
         #region GetCachedCustomerLists
-        public class GetCachedCustomerLists
-        {
+        public class GetCachedCustomerLists {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryGetItem()
-            {
+            public void AnyCall_CallsCacheRepositoryGetItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
 
                 // act
-                var results = testunit.GetCachedCustomerLists(testContext);
+                List<ListModel> results = testunit.GetCachedCustomerLists(testContext);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<List<ListModel>>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion GetCachedCustomerLists
 
         #region AddCachedCustomerLists
-        public class AddCachedCustomerLists
-        {
+        public class AddCachedCustomerLists {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryAddItem()
-            {
+            public void AnyCall_CallsCacheRepositoryAddItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var lists = new List<ListModel>();
+                List<ListModel> lists = new List<ListModel>();
 
                 // act
                 testunit.AddCachedCustomerLists(testContext, lists);
 
                 // assert
-                mockDependents.CacheRepository.Verify(m => m.AddItem<List<ListModel>>(It.IsAny<string>(),
-                                                                                      It.IsAny<string>(),
-                                                                                      It.IsAny<string>(),
-                                                                                      It.IsAny<string>(),
-                                                                                      It.IsAny<TimeSpan>(),
-                                                                                      It.IsAny<List<ListModel>>()), Times.Once, "not called");
+                mockDependents.CacheRepository.Verify(m => m.AddItem(It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<TimeSpan>(),
+                                                                     It.IsAny<List<ListModel>>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion AddCachedCustomerLists
 
         #region GetCachedSpecificList
-        public class GetCachedSpecificList
-        {
+        public class GetCachedSpecificList {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryGetItem()
-            {
+            public void AnyCall_CallsCacheRepositoryGetItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var testtype = ListType.Contract;
+                ListType testtype = ListType.Contract;
 
                 // act
-                var results = testunit.GetCachedSpecificList(testContext, testtype, 4);
+                ListModel results = testunit.GetCachedSpecificList(testContext, testtype, 4);
 
                 // assert
                 mockDependents.CacheRepository.Verify(m => m.GetItem<ListModel>(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion GetCachedSpecificList
 
         #region AddCachedSpecificList
-        public class AddCachedSpecificList
-        {
+        public class AddCachedSpecificList {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryAddItem()
-            {
+            public void AnyCall_CallsCacheRepositoryAddItem() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var testtype = ListType.Contract;
-                var list = new ListModel();
+                ListType testtype = ListType.Contract;
+                ListModel list = new ListModel();
 
                 // act
                 testunit.AddCachedSpecificList(testContext, testtype, 5, list);
 
                 // assert
-                mockDependents.CacheRepository.Verify(m => m.AddItem<ListModel>(It.IsAny<string>(),
-                                                                                It.IsAny<string>(),
-                                                                                It.IsAny<string>(),
-                                                                                It.IsAny<string>(),
-                                                                                It.IsAny<TimeSpan>(),
-                                                                                It.IsAny<ListModel>()), Times.Once, "not called");
+                mockDependents.CacheRepository.Verify(m => m.AddItem(It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<string>(),
+                                                                     It.IsAny<TimeSpan>(),
+                                                                     It.IsAny<ListModel>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion AddCachedSpecificList
 
-        #region ClearCustomersListCaches
-        public class ClearCustomersListCaches
-        {
+        #region ClearCustomersListCachesWithUserSelectedContext
+        public class ClearCustomersListCachesWithUserSelectedContext {
             [Fact]
-            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem6Times()
-            {
+            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem10Times() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var fakeUser = new UserProfile();
-                var testLists = new List<ListModel> {
-                    new ListModel() {
-                                        BranchId="FUT",
-                                        CustomerNumber = "123456",
-                                        Type = ListType.Contract,
-                                        ListId = 5
-                                    },
-                    new ListModel() {
-                                        BranchId="FUT",
-                                        CustomerNumber = "123456",
-                                        Type = ListType.Favorite,
-                                        ListId = 5
-                                    }
-                    };
+                UserProfile fakeUser = new UserProfile();
+                List<ListModel> testLists = new List<ListModel> {
+                    new ListModel {
+                        BranchId = "FUT",
+                        CustomerNumber = "123456",
+                        Type = ListType.Contract,
+                        ListId = 5
+                    },
+                    new ListModel {
+                        BranchId = "FUT",
+                        CustomerNumber = "123456",
+                        Type = ListType.Favorite,
+                        ListId = 5
+                    }
+                };
 
                 // act
                 testunit.ClearCustomersListCaches(fakeUser, testContext, testLists);
@@ -364,25 +271,61 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Exactly(10), "not called");
             }
-
         }
-        #endregion
+        #endregion ClearCustomersListCachesWithUserSelectedContext
+
+        #region ClearCustomersListCachesWithCustomerNumberAndBranchId
+        public class ClearCustomersListCachesWithCustomerNumberAndBranchId {
+            [Fact]
+            public void CallWith2ListsInCollection_CallsCacheRepositoryRemoveItem10Times() {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                UserProfile fakeUser = new UserProfile();
+                List<ListModel> testLists = new List<ListModel> {
+                    new ListModel {
+                        BranchId = "FUT",
+                        CustomerNumber = "123456",
+                        Type = ListType.Contract,
+                        ListId = 5
+                    },
+                    new ListModel {
+                        BranchId = "FUT",
+                        CustomerNumber = "123456",
+                        Type = ListType.Favorite,
+                        ListId = 5
+                    }
+                };
+
+                // act
+                testunit.ClearCustomersListCaches(fakeUser, testContext.CustomerId, testContext.BranchId, testLists);
+
+                // assert
+                mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>()), Times.Exactly(10), "not called");
+            }
+        }
+        #endregion ClearCustomersListCachesWithCustomerNumberAndBranchId
 
         #region RemoveSpecificCachedList
-        public class RemoveSpecificCachedList
-        {
+        public class RemoveSpecificCachedList {
             [Fact]
-            public void CallWithGoodList_CallsCacheRepositoryRemoveItemOnce()
-            {
+            public void CallWithGoodList_CallsCacheRepositoryRemoveItemOnce() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testList = new ListModel() {
-                                        BranchId="FUT",
-                                        CustomerNumber = "123456",
-                                        Type = ListType.Contract,
-                                        ListId = 5
-                                    };
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                ListModel testList = new ListModel {
+                    BranchId = "FUT",
+                    CustomerNumber = "123456",
+                    Type = ListType.Contract,
+                    ListId = 5
+                };
 
                 // act
                 testunit.RemoveSpecificCachedList(testList);
@@ -393,25 +336,21 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion RemoveSpecificCachedList
 
         #region RemoveTypeOfListsCache
-        public class RemoveTypeOfListsCache
-        {
+        public class RemoveTypeOfListsCache {
             [Fact]
-            public void CallWithGoodType_CallsCacheRepositoryRemoveItemOnce()
-            {
+            public void CallWithGoodType_CallsCacheRepositoryRemoveItemTwice() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
-                var testListType = ListType.Custom;
+                ListType testListType = ListType.Custom;
 
                 // act
                 testunit.RemoveTypeOfListsCache(testContext, testListType);
@@ -422,21 +361,17 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Exactly(2), "not called");
             }
-
         }
-        #endregion
+        #endregion RemoveTypeOfListsCache
 
-        #region ClearCustomersLabelsCache
-        public class ClearCustomersLabelsCache
-        {
+        #region ClearCustomersLabelsCacheWithUserSelectedContext
+        public class ClearCustomersLabelsCacheWithUserSelectedContext {
             [Fact]
-            public void AnyCall_CallsCacheRepositoryRemoveTimes()
-            {
+            public void AnyCall_CallsCacheRepositoryRemoveTimes() {
                 // arrange
-                var mockDependents = new MockDependents();
-                var testunit = MakeTestsLogic(useAutoFac: false, mockDependents: ref mockDependents);
-                var testContext = new UserSelectedContext()
-                {
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
                     BranchId = "FUT",
                     CustomerId = "234567"
                 };
@@ -450,9 +385,67 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.Cache
                                                                         It.IsAny<string>(),
                                                                         It.IsAny<string>()), Times.Once, "not called");
             }
-
         }
-        #endregion
+        #endregion ClearCustomersLabelsCacheWithUserSelectedContext
 
+        #region ClearCustomersLabelsCacheWithCustomerNumberAndBranchId
+        public class ClearCustomersLabelsCacheWithCustomerNumberAndBranchId {
+            [Fact]
+            public void AnyCall_CallsCacheRepositoryRemoveTimes() {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                ICacheListLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserSelectedContext testContext = new UserSelectedContext {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+
+                // act
+                testunit.ClearCustomersLabelsCache(testContext.CustomerId, testContext.BranchId);
+
+                // assert
+                mockDependents.CacheRepository.Verify(m => m.RemoveItem(It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>(),
+                                                                        It.IsAny<string>()), Times.Once, "not called");
+            }
+        }
+        #endregion ClearCustomersLabelsCacheWithCustomerNumberAndBranchId
+
+        #region Setup
+        public class MockDependents {
+            public Mock<ICacheRepository> CacheRepository { get; set; }
+
+            public static void RegisterInContainer(ref ContainerBuilder cb) {
+                cb.RegisterInstance(MakeICacheRepository()
+                                            .Object)
+                  .As<ICacheRepository>();
+            }
+
+            public static Mock<ICacheRepository> MakeICacheRepository() {
+                Mock<ICacheRepository> mock = new Mock<ICacheRepository>();
+
+                return mock;
+            }
+        }
+
+        private static ICacheListLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents) {
+            if (useAutoFac) {
+                ContainerBuilder cb = GetTestsContainer();
+
+                // Register mocks
+                MockDependents.RegisterInContainer(ref cb);
+
+                IContainer testcontainer = cb.Build();
+
+                return testcontainer.Resolve<ICacheListLogic>();
+            }
+            mockDependents = new MockDependents();
+            mockDependents.CacheRepository = MockDependents.MakeICacheRepository();
+
+            CacheListLogicImpl testunit = new CacheListLogicImpl(mockDependents.CacheRepository.Object);
+            return testunit;
+        }
+        #endregion Setup
     }
 }

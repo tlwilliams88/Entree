@@ -227,7 +227,6 @@
                 ng-if="parentcategories.available.length > 1"
                 value="categoryValue_{{parentcategory.name}}"
                 id="categoryId_{{parentcategory.name}}"
-                ng-disabled="tutorialRunning"
                 ng-checked="  parentcategories.selected.indexOf(parentcategory.name) > -1 || parentcategory.name === featuredBreadcrumb.displayText"
                 ng-click="toggleSelection(true, parentcategories.selected, parentcategory.name, '', $index); $event.stopPropagation();">
               <label
@@ -244,21 +243,11 @@
                 <div>
                   <input
                     type="checkbox"
-                    ng-disabled="tutorialRunning"
                     ng-click="toggleSelection(false, subcategories.selected, category.name, parentcategory.name)"
                     ng-checked="  subcategories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText || category.isSelected"
                     class="input-margin-5px">
                   <label
-                    ng-if="!tutorialRunning"
                     ng-click="toggleSelection(false, subcategories.selected, category.name, parentcategory.name)"
-                    ng-class="{active:  subcategories.selected.indexOf(category.name) > -1}">
-                    <span class="category-description-md">
-                      {{::category.name}}
-                    </span>
-                    <span ng-show="category.count > 0">({{category.count}})</span>
-                  </label>
-                  <label
-                    ng-if="tutorialRunning"
                     ng-class="{active:  subcategories.selected.indexOf(category.name) > -1}">
                     <span class="category-description-md">
                       {{::category.name}}

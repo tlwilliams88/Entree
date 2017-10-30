@@ -6,7 +6,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Configuration {
     [Profile("IntegrationTests")]
     public class TestAppSettings : Migration {
         public override void Up() {
-            this.Execute.Script(@"SQL\Configs\Configuration.AppSettings.Bootstrap.local.sql");
+            this.Execute.Script(@"Scripts\Configs\Configuration.AppSettings.Bootstrap.local.sql");
         }
 
         public override void Down() {
