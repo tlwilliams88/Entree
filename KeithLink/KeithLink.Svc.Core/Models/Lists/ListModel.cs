@@ -93,6 +93,7 @@ namespace KeithLink.Svc.Core.Models.Lists {
                         Detail = item.Detail,
                         ItemNumber = item.ItemNumber,
                         Pack = item.Pack,
+                        Size = item.Size,
                         PackSize = item.PackSize,
                         Label = item.Label,
                         Quantity = item.Quantity,
