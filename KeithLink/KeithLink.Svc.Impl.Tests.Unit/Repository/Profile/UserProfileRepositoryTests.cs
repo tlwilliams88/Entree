@@ -2,23 +2,72 @@
 using System.Linq;
 
 using Autofac;
-
 using CommerceServer.Foundation;
-
 using FluentAssertions;
+using Moq;
+using Xunit;
 
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Seams;
 
-using Moq;
-
-using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Repository.Profile {
     public class UserProfileRepositoryTests : BaseDITests {
         public class CreateUserProfile {
+            [Fact]
+            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasBranchPassedIn() {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IUserProfileRepository testunit = MakeTestsLogic(true, ref mockDependents);
+                string testCreatedBy = "Test Created By";
+                string testEmail = "Test Email Address";
+                string testFirstName = "Test First Name";
+                string testLastName = "Test Last Name";
+                string testPhonenumber = "Test Phone Number";
+                string testBranch = "Test Branch";
+                FoundationService.Requests = new List<CommerceRequest>();
+
+                // act
+                testunit.CreateUserProfile(testCreatedBy, testEmail, testFirstName, testLastName, testPhonenumber, testBranch);
+                CommerceEntity testCSRequestModel =
+                        FoundationService.Requests.First()
+                                         .Operations.First()
+                                         .Model;
+
+                // assert
+                testCSRequestModel.Properties["DefaultBranch"]
+                                  .Should()
+                                  .Be(testBranch);
+            }
+
+            [Fact]
+            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasEmailPassedIn() {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IUserProfileRepository testunit = MakeTestsLogic(true, ref mockDependents);
+                string testCreatedBy = "Test Created By";
+                string testEmail = "Test Email Address";
+                string testFirstName = "Test First Name";
+                string testLastName = "Test Last Name";
+                string testPhonenumber = "Test Phone Number";
+                string testBranch = "Test Branch";
+                FoundationService.Requests = new List<CommerceRequest>();
+
+                // act
+                testunit.CreateUserProfile(testCreatedBy, testEmail, testFirstName, testLastName, testPhonenumber, testBranch);
+                CommerceEntity testCSRequestModel =
+                        FoundationService.Requests.First()
+                                         .Operations.First()
+                                         .Model;
+
+                // assert
+                testCSRequestModel.Properties["Email"]
+                                  .Should()
+                                  .Be(testEmail);
+            }
+
             [Fact]
             public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasFirstNamePassedIn() {
                 // arrange
@@ -46,8 +95,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.Profile {
             }
 
             [Fact]
-            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasLastNamePassedIn()
-            {
+            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasLastNamePassedIn() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IUserProfileRepository testunit = MakeTestsLogic(true, ref mockDependents);
@@ -73,35 +121,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.Profile {
             }
 
             [Fact]
-            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasEmailPassedIn()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IUserProfileRepository testunit = MakeTestsLogic(true, ref mockDependents);
-                string testCreatedBy = "Test Created By";
-                string testEmail = "Test Email Address";
-                string testFirstName = "Test First Name";
-                string testLastName = "Test Last Name";
-                string testPhonenumber = "Test Phone Number";
-                string testBranch = "Test Branch";
-                FoundationService.Requests = new List<CommerceRequest>();
-
-                // act
-                testunit.CreateUserProfile(testCreatedBy, testEmail, testFirstName, testLastName, testPhonenumber, testBranch);
-                CommerceEntity testCSRequestModel =
-                        FoundationService.Requests.First()
-                                         .Operations.First()
-                                         .Model;
-
-                // assert
-                testCSRequestModel.Properties["Email"]
-                                  .Should()
-                                  .Be(testEmail);
-            }
-
-            [Fact]
-            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasTelephonePassedIn()
-            {
+            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasTelephonePassedIn() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IUserProfileRepository testunit = MakeTestsLogic(true, ref mockDependents);
@@ -124,33 +144,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.Profile {
                 testCSRequestModel.Properties["Telephone"]
                                   .Should()
                                   .Be(testPhonenumber);
-            }
-
-            [Fact]
-            public void WhenCreateUserProfileCalledFor_ResultingRequestToCommerceServerHasBranchPassedIn()
-            {
-                // arrange
-                MockDependents mockDependents = new MockDependents();
-                IUserProfileRepository testunit = MakeTestsLogic(true, ref mockDependents);
-                string testCreatedBy = "Test Created By";
-                string testEmail = "Test Email Address";
-                string testFirstName = "Test First Name";
-                string testLastName = "Test Last Name";
-                string testPhonenumber = "Test Phone Number";
-                string testBranch = "Test Branch";
-                FoundationService.Requests = new List<CommerceRequest>();
-
-                // act
-                testunit.CreateUserProfile(testCreatedBy, testEmail, testFirstName, testLastName, testPhonenumber, testBranch);
-                CommerceEntity testCSRequestModel =
-                        FoundationService.Requests.First()
-                                         .Operations.First()
-                                         .Model;
-
-                // assert
-                testCSRequestModel.Properties["DefaultBranch"]
-                                  .Should()
-                                  .Be(testBranch);
             }
         }
 
