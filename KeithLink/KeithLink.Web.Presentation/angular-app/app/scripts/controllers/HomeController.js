@@ -78,30 +78,39 @@ angular.module('bekApp')
     $scope.promoItems = [
         {
             imageurl: {
-              desktop: 'images/Marketing Campaigns/Basic American/basic-web.jpg',
-              mobile: 'images/Marketing Campaigns/Basic American/basic-mobile.jpg'
+              desktop: 'images/Marketing Campaigns/Mondelez/mondelez-web.jpg',
+              mobile: 'images/Marketing Campaigns/Mondelez/mondelez-mobile.jpg'
             },
-            targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'basic-american' })",
+            targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'mondelez' })",
             targetType: "campaign",
-            targeturltext: "basic-american"
+            targeturltext: "mondelez"
         },
         {
           imageurl: {
-            desktop: 'images/Marketing Campaigns/Georgia Pacific/georgia-pacific-web.jpg',
-            mobile: 'images/Marketing Campaigns/Georgia Pacific/georgia-pacific-mobile.jpg'
+            desktop: 'images/Marketing Campaigns/Master of the Plate Company Promotion/advancepierre-web.jpg',
+            mobile: 'images/Marketing Campaigns/Master of the Plate Company Promotion/advancepierre-mobile.jpg'
           },
-          targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'georgia-pacific' })",
+          targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'master-advance' })",
           targetType: "campaign",
-          targeturltext: "georgia-pacific"
+          targeturltext: "master-advance"
         },
         {
           imageurl: {
-            desktop: 'images/Marketing Campaigns/Escalon/escalon-web.jpg',
-            mobile: 'images/Marketing Campaigns/Escalon/escalon-mobile.jpg'
+            desktop: 'images/Marketing Campaigns/Master of the Plate Company Promotion/jimmydean-web.jpg',
+            mobile: 'images/Marketing Campaigns/Master of the Plate Company Promotion/jimmydean-mobile.jpg'
           },
-          targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'escalon' })",
+          targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'master-hillshire' })",
           targetType: "campaign",
-          targeturltext: "escalon"
+          targeturltext: "master-hillshire"
+        },
+        {
+          imageurl: {
+            desktop: 'images/Marketing Campaigns/Master of the Plate Company Promotion/tyson-web.jpg',
+            mobile: 'images/Marketing Campaigns/Master of the Plate Company Promotion/tyson-mobile.jpg'
+          },
+          targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'master-tyson' })",
+          targetType: "campaign",
+          targeturltext: "master-tyson"
         }
     ];
 
