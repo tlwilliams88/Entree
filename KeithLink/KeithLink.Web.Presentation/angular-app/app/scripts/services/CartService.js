@@ -160,14 +160,21 @@ angular.module('bekApp')
         newCart.listid = listid;
         newCart.listtype = listtype;
         return Cart.save({}, newCart).$promise.then(function(response) {
-
-          newCart.id = response.successResponse.listitemid;
-          newCart.createddate = new Date();
-          newCart.itemcount = newCart.items.length;
-          newCart.items = [];
-          Service.cartHeaders.push(newCart);
-          Service.getCartHeaders();
-          return newCart;
+          if(response.successResponse){
+            newCart.id = response.successResponse.listitemid;
+            newCart.createddate = new Date();
+            newCart.itemcount = newCart.items.length;
+            newCart.items = [];
+            Service.cartHeaders.push(newCart);
+            Service.getCartHeaders();
+            newCart.valid = true;
+            return newCart;
+          }
+          else{
+             toaster.pop('error', null, 'There was an error creating your cart.');
+            newCart.valid = false;
+             return newCart;
+          }
         });
       },
 

@@ -10,7 +10,8 @@ angular.module('bekApp')
       isDisabled: '='
     },
     templateUrl: 'views/directives/orderdropdown.html',
-    controller: ['$scope', '$stateParams', '$modal', '$state', 'ApplicationSettingsService', 'UtilityService', 'LocalStorage', 'ListService', 'CartService', function($scope, $stateParams, $modal, $state, ApplicationSettingsService, UtilityService, LocalStorage, ListService, CartService){
+    controller: ['$scope', '$stateParams', '$modal', 'OrderService', '$state', 'ApplicationSettingsService', 'UtilityService', 'LocalStorage', 'ListService', 'CartService',
+     function($scope, $stateParams, $modal, OrderService, $state, ApplicationSettingsService, UtilityService, LocalStorage, ListService, CartService){
 
       $scope.isHomePage = $stateParams.isHomePage;
       $scope.isMobile = UtilityService.isMobileDevice();
@@ -52,6 +53,16 @@ angular.module('bekApp')
             Lists: function() {
               return ListService.getListHeaders();
             },
+            Orders: function() {
+              return OrderService.getOrders({
+                      from: 0,
+                      size: 6,
+                      sort:  [{
+                        field: 'createddate',
+                        order: 'desc'
+                      }]
+                    });
+            },
             CustomListHeaders: function() {
               return customListHeaders;
             },
@@ -68,12 +79,14 @@ angular.module('bekApp')
         });
 
         modalInstance.result.then(function(cart) {
-          if(cart.type && cart.type == 'QuickAdd'){
-            $state.go('menu.cart.items', {cartId: cart.id});
-          } else if(cart.type && cart.type == 'Import') {
-            $state.go('menu.cart.items', { cartId: cart.listid });
-          } else {
-            $state.go('menu.addtoorder.items', { listId: cart.listId, listType: cart.listType, cartId: cart.id});
+          if(cart.valid){
+            if(cart.type && cart.type == 'QuickAdd'){
+              $state.go('menu.cart.items', {cartId: cart.id});
+            } else if(cart.type && cart.type == 'Import') {
+              $state.go('menu.cart.items', { cartId: cart.listid });
+            } else {
+              $state.go('menu.addtoorder.items', { listId: cart.listId, listType: cart.listType, cartId: cart.id});
+            }
           }
         });
       };

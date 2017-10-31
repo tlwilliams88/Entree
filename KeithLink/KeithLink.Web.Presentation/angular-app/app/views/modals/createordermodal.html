@@ -16,6 +16,17 @@
     <li 
     role="presentation">
       <a 
+        aria-controls="order" 
+        role="tab" 
+        data-toggle="tab" 
+        data-target=".previousOrder" 
+        ng-click="toggleOpenTab('Order')">
+      Order
+      </a>
+    </li>
+    <li 
+    role="presentation">
+      <a 
       aria-controls="quickadd" 
       role="tab" 
       data-toggle="tab" 
@@ -40,7 +51,7 @@
 <div class="modal-body">
   <div class="tab-content">
 
-    <div class="style-validation-errors form-group listOrder quickAddOrder importOrder">
+        <div class="style-validation-errors form-group listOrder previousOrder quickAddOrder importOrder">
       <!-- ORDER BY LIST -->
       <form name="OrderFromListForm">
         <div style="border-bottom: 1px solid #c3bc9c">
@@ -114,6 +125,31 @@
             </div>
           </div>
         </div>
+      </form>
+    </div>
+
+    <div id="order" class="tab-pane previousOrder">
+      <!-- ORDER BY Previous Order -->
+      <form name="OrderFromOrderForm">
+
+        <div class="form-group row" style="padding-top:25px;">
+          <label class="col-xs-2 col-form-label">Order:</label>        
+          <div class="no-border-right-sm select-nav btn-group dropdown-toggle hand form-control orderFromListDropdown" dropdown ng-disabled="orders.length === 0">
+            <span class="nav-title" ng-show="selectedOrder != null" >{{"Order :  "+selectedOrder.ordernumber+", "+selectedOrder.itemcount+" items, Total: "+selectedOrder.ordertotal}}</span>
+            <span class="nav-title" ng-show="selectedOrder == null" >Select an order</span>
+            <span class="pull-right caret text-dark margin-top-5"></span>
+
+
+            <ul class="dropdown-menu col-xs-12 dropdown-menu-scroll" role="menu">
+              <li ng-repeat="order in orders">
+                <a ng-click="setSelectedOrder(order)">
+                  {{"Order : "+order.ordernumber+", "+order.itemcount+" items, Total: "+order.ordertotal}}
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
       </form>
     </div>
 
@@ -290,9 +326,23 @@
   analytics-category="Orders"
   analytics-event="Create Order" 
   analytics-label="From List"
-  ng-if="!quickAddIsOpen && !importIsOpen"
+  ng-if="!quickAddIsOpen && !importIsOpen && !orderIsOpen"
   ng-disabled="!enableSubmit && quickAddItems[0].itemnumber"
   ng-click="createCart(selectedCart)">
+  Create Cart
+  </button>
+
+<!-- FOR Order -->
+  <button
+  type="submit"
+  class="btn-lg btn btn-primary pull-right block-display margin-left-10"
+  analytics-on
+  analytics-category="Orders"
+  analytics-event="Create Order" 
+  analytics-label="From Order"
+  ng-if="orderIsOpen"
+  ng-disabled="(!enableSubmit && quickAddItems[0].itemnumber) || orders.length == 0 || selectedOrder == null"
+  ng-click="createCartFromOrder(selectedCart, selectedOrder)">
   Create Cart
   </button>
 
