@@ -8,6 +8,7 @@
 .page-header-bar {
   @include header-bar($color-white, 10px);
   position: relative;
+  border-bottom: 0px;
 
   .page-header-bar__message {
     font-size: 25px;
@@ -17,7 +18,7 @@
     display: inline-block;
     vertical-align: middle;
     padding-left: $gutter-size;
-    padding-right: $gutter-size;
+    padding-right: 10px;
 
     form {
       input {
