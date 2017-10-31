@@ -224,7 +224,7 @@
         </div>
       </form>
 
-  <div style="text-align: center; background-color: #fff;" fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="55" media-query="min-width: 1024px">
+  <div style="text-align: center; background-color: #fff;" fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="55" scroll-offset="20" media-query="min-width: 1024px">
    <pagination
     total-items="selectedList.itemCount"
     ng-model="currentPage"
@@ -238,7 +238,7 @@
   </div>
 
   <div class="row" ng-class="{ 'sub-content' : selectedList.itemCount < pagingPageSize }" style="left: 19px;">
-    <div list-management-elements fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="125" media-query="min-width: 1024px" style="background-color: #fff; z-index: 996;">
+    <div list-management-elements fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="125" scroll-offset="20" media-query="min-width: 1024px" style="background-color: #fff; z-index: 996;">
         <div class="col-xs-12" style="display: table;">
             <div>
                 <div class="btn-group" style="display: inline-flex; padding-left: 10px; padding-bottom: 10px;">
