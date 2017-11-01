@@ -6,7 +6,7 @@ using Xunit;
 
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.Lists;
-
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
     public class ListModelTests {
@@ -21,6 +21,15 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
                     new ListItemModel {
                         ItemNumber = "111111",
                         Position = 99,
+                        Description = "Fake Description",
+                        Cases = "10",
+                        Notes = "Fake Note",
+                        UPC = "111111111",
+                        VendorItemNumber = "VIN1",
+                        CasePriceNumeric = 1.1111,
+                        Kosher = "N",
+                        ManufacturerName = "Fake Manufacturer",
+                        ManufacturerNumber = "Manu1",
                         Each = false,
                         Pack = "1",
                         Size = "2 OZ",
@@ -377,6 +386,187 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Lists {
                 result.Items
                       .First()
                       .Size
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedDescription()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "Fake Description";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .Description
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedCases()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "10";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .Cases
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedNotes()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "Fake Note";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .Notes
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedUPC()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "111111111";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .UPC
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedVendorItemNumber()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "VIN1";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .VendorItemNumber
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedCasePrice()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "1.11";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .CasePrice
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedKosher()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "N";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .Kosher
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedManufacturerName()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "Fake Manufacturer";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .ManufacturerName
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithExpectedManufacturerNumber()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                string expected = "Manu1";
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .ManufacturerNumber
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void ShallowCopy_ResultHasItemWithTheSameNutritional()
+            {
+                // arrange
+                ListModel testmodel = MakeModel();
+                var expected = new Nutritional();
+                testmodel.Items.First().Nutritional = expected;
+
+                // act
+                ListModel result = testmodel.ShallowCopy();
+
+                // assert - Always returns what is setup provided the mock is called
+                result.Items
+                      .First()
+                      .Nutritional
                       .Should()
                       .Be(expected);
             }

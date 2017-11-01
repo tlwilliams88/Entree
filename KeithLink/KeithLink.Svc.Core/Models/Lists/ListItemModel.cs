@@ -130,7 +130,7 @@ namespace KeithLink.Svc.Core.Models.Lists
                                                                  Label = "Name"
                                                              });
             defaultConfig.Add(new ExportModelConfiguration() {
-                                                                 Field = "Brand",
+                                                                 Field = "BrandExtendedDescription",
                                                                  Order = Constants.PLACEHOLDER_ORDER_03RD,
                                                                  Label = "Brand"
                                                              });
