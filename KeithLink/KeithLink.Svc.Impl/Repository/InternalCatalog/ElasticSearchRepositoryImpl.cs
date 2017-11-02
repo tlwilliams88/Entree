@@ -154,7 +154,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             var request = new RestRequest(string.Format("{0}/product/_search?scroll={1}", branchId, scroll), Method.POST);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
             var res = client.Execute(request);
-            DynamicDictionary dd = JsonConvert.DeserializeObject<DynamicDictionary>(res.Content);
+            DynamicResponse dd = JsonConvert.DeserializeObject<DynamicResponse>(res.Content);
 
             int totalproducts = dd["hits"]["total"];
 
@@ -178,7 +178,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
                 request = new RestRequest("_search/scroll", Method.POST);
                 request.AddParameter("application/json", json, ParameterType.RequestBody);
                 res = client.Execute(request);
-                dd = JsonConvert.DeserializeObject<DynamicDictionary>(res.Content);
+                dd = JsonConvert.DeserializeObject<DynamicResponse>(res.Content);
 
                 Ids = dd["hits"]["hits"];
 

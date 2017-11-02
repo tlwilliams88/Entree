@@ -676,7 +676,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         public Product GetProductById(string branch, string id) {
             branch = branch.ToLower();
 
-            ElasticsearchResponse<DynamicDictionary> res = _client.Get(branch, "product", id);
+            ElasticsearchResponse<DynamicResponse> res = _client.Get(branch, "product", id);
 
 			if (res.Response == null)
 				return null;
@@ -911,7 +911,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBodyD);
             }
 
-            ElasticsearchResponse<DynamicDictionary> res = null;
+            ElasticsearchResponse<DynamicResponse> res = null;
             
             if (searchBodyD == null)
                 res = _client.Search(branch.ToLower(), "product", searchBody);
@@ -941,7 +941,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBodyD);
             }
 
-            ElasticsearchResponse<DynamicDictionary> res = null;
+            ElasticsearchResponse<DynamicResponse> res = null;
 
             if (searchBodyD == null)
                 res = _client.Search(branch.ToLower(), "product", searchBody);
@@ -971,7 +971,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 requestToJSON = Newtonsoft.Json.JsonConvert.SerializeObject(searchBodyD);
             }
 
-            ElasticsearchResponse<DynamicDictionary> res = null;
+            ElasticsearchResponse<DynamicResponse> res = null;
 
             if (searchBodyD == null)
                 res = _client.Search(branch.ToLower(), "product", searchBody);
@@ -1037,7 +1037,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         //private delegate TResult Func<in T, out TResult>();
 
-        private ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
+        private ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicResponse> res) {
             ExpandoObject facets = new ExpandoObject();
 
             if (res.Response.Contains("aggregations"))
@@ -1292,7 +1292,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             }
         }
 
-        private void BuildFacetsObjectFromResponse(ElasticsearchResponse<DynamicDictionary> res, ExpandoObject facets)
+        private void BuildFacetsObjectFromResponse(ElasticsearchResponse<DynamicResponse> res, ExpandoObject facets)
         {
             foreach (var oFacet in res.Response["aggregations"])
             {
