@@ -616,19 +616,35 @@
                 <div
                   id="optionsdropdown"
                   ng-if="!item.activeElement && item.isvalid"
-                  class="context-menu-template context-menu__in-list hidden-print"
+                  class="context-menu__in-list hidden-print hidden-xs hidden-sm"
                   ng-mouseenter="item.activeElement = true"
                   ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
                   <a class="icon-arrow-down5"></a>
                 </div>
                 <div
                   id="optionsdropdown"
+                  ng-if="!item.activeElement && item.isvalid"
+                  class="context-menu__in-list hidden-print hidden-md hidden-lg"
+                  ng-mouseenter="item.activeElement = true"
+                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
+                  <a class="icon-plus2"></a>
+                </div>
+                <div
+                  id="optionsdropdown"
                   ng-if="item.activeElement && item.isvalid"
-                  class="context-menu-template context-menu__in-list hidden-print"
+                  class="context-menu__in-list hidden-print hidden-xs hidden-sm"
                   ng-click="item.displayQuickAdd = !item.displayQuickAdd"
                   ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}"
                   ng-disabled="displayQuickAdd == false;">
-                    <a ng-class="{'icon-arrow-up4' : item.displayQuickAdd, 'icon-arrow-down5' : !item.displayQuickAdd}"></a>
+                  <a ng-class="{'icon-arrow-up4' : item.displayQuickAdd, 'icon-arrow-down5' : !item.displayQuickAdd}"></a>
+                </div>
+                <div
+                  id="optionsdropdown"
+                  ng-if="item.activeElement && item.isvalid"
+                  class="context-menu__in-list hidden-print hidden-md hidden-lg"
+                  context-menu-template
+                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
+                  <a class="icon-plus2"></a>
                 </div>
                 <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
               </td>
@@ -1027,22 +1043,39 @@
                 </span>
               </td>
               <td class="nowrap hidden-print large-icon icon-col" ng-click="$event.stopPropagation()">
-                <div
-                id="optionsdropdown"
-                ng-if="!item.activeElement && isCustomInventoryList"
-                class="context-menu-template context-menu__in-list hidden-print margin-top-10"
-                ng-mouseenter="item.activeElement = true"
-                ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
-                  <a class="icon-arrow-down4"></a>
-                </div>
-                <div
-                id="optionsdropdown"
-                ng-if="item.activeElement && isCustomInventoryList"
-                class="context-menu-template context-menu__in-list hidden-print margin-top-10"
-                ng-click="toggleDetails($index);"
-                ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
-                  <a class="icon-arrow-down4"></a>
-                </div>
+                  <div
+                    id="optionsdropdown"
+                    ng-if="!item.activeElement && isCustomInventoryList"
+                    class="context-menu__in-list hidden-print hidden-xs hidden-sm inline-block-display"
+                    ng-mouseenter="item.activeElement = true"
+                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
+                    <a class="icon-arrow-down5"></a>
+                  </div>
+                  <div
+                    id="optionsdropdown"
+                    ng-if="!item.activeElement && isCustomInventoryList"
+                    class="context-menu__in-list hidden-print hidden-md hidden-lg inline-block-display"
+                    ng-mouseenter="item.activeElement = true"
+                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
+                    <a class="icon-plus2"></a>
+                  </div>
+                  <div
+                    id="optionsdropdown"
+                    ng-if="item.activeElement && isCustomInventoryList"
+                    class="context-menu__in-list hidden-print hidden-xs hidden-sm inline-block-display"
+                    ng-click="item.displayQuickAdd = !item.displayQuickAdd"
+                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}"
+                    ng-disabled="displayQuickAdd == false;">
+                    <a ng-class="{'icon-arrow-up4' : item.displayQuickAdd, 'icon-arrow-down5' : !item.displayQuickAdd}"></a>
+                  </div>
+                  <div
+                    id="optionsdropdown"
+                    ng-if="item.activeElement && isCustomInventoryList"
+                    class="context-menu__in-list hidden-print hidden-md hidden-lg inline-block-display"
+                    context-menu-template
+                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
+                    <a class="icon-plus2"></a>
+                  </div>
                 <a
                 class="bek-no-drag hidden-xs hidden-sm margin-top-10">
                   <span
@@ -1058,6 +1091,31 @@
                   </span>
                 </a>
               </td>
+            </tr>
+            <tr ng-if="item.displayQuickAdd == true" style="width: 100%;" ng-click="$event.stopPropagation()">
+                <td colspan="14">
+                    <table style="width: 100%;">
+                        <tbody>
+                            <tr>
+                                <td style="padding-top: 18px; position: relative; width: 25%;">
+                                    <div style="margin-top: -5px; height: 50px;">
+                                        <select 
+                                            ui-select2
+                                            data-placeholder="Add To List"
+                                            ng-options="list.name disable when (selectedList.name == list.name) for list in quickAddLists | filter: sortLists" 
+                                            ng-model="lists.selectedList" 
+                                            style="width: 50%;"
+                                            ng-change="addItemToList(lists.selectedList, item, selectedList)"
+                                            no-dirty-check>
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                    
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
             </tr>
 
             <tr ng-if="item.showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
