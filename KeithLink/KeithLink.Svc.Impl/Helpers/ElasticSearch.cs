@@ -35,9 +35,9 @@ namespace KeithLink.Svc.Impl.Helpers
 
         #region " methods / functions "
 
-        public ElasticsearchResponse<DynamicDictionary> RawSearch(string index, string type, object filter)
+        public ElasticsearchResponse<DynamicResponse> RawSearch(string index, string type, object filter)
         {
-            ElasticsearchResponse<DynamicDictionary> response = _client.Raw.Search(index, type, filter);
+            ElasticsearchResponse<DynamicResponse> response = _client.Raw.Search(index, type, filter);
             return response;
         }
 
