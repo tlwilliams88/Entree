@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
     public class ElasticSearchCatalogRepositoryImpl : ICatalogRepository {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
-        private ElasticsearchClient _client;
+        private ElasticClient _client;
         // In the request to ElasticSearch, there are different fields that are search for category/subcategory codes for BEK vs nonBEK 
         // products
         private string _catalog = null;
@@ -640,10 +640,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return size;
         }
         
-        private ElasticsearchClient GetElasticsearchClient(string elasticSearchUrl) {
-            var node = new Uri(elasticSearchUrl);
-            var config = new Elasticsearch.Net.Connection.ConnectionConfiguration(node);
-            var client = new ElasticsearchClient(config);
+        private ElasticClient GetElasticsearchClient(string elasticSearchUrl) {
+            Uri node = new Uri(elasticSearchUrl);
+            ConnectionSettings config = new ConnectionSettings(node);
+            ElasticClient client = new ElasticClient(config);
+
             return client;
         }
         
@@ -676,7 +677,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         public Product GetProductById(string branch, string id) {
             branch = branch.ToLower();
 
-            ElasticsearchResponse<DynamicResponse> res = _client.Get(branch, "product", id);
+            ElasticsearchResponse<DynamicResponse> res = _client. .Get(branch, "product", id);
 
 			if (res.Response == null)
 				return null;
