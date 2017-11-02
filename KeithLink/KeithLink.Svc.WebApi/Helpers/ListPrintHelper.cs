@@ -67,7 +67,7 @@ namespace KeithLink.Svc.WebApi.Helpers
             if (list == null)
                 return null;
 
-            ListModel printlist = list.ShallowCopy();
+            ListModel printlist = list.Clone();
 
             if (options.Filter != null)
             {
