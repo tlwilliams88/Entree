@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
     public class ElasticSearchCatalogRepositoryImpl : ICatalogRepository {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
-        private ElasticClient _client;
+        private ElasticLowLevelClient _client;
         // In the request to ElasticSearch, there are different fields that are search for category/subcategory codes for BEK vs nonBEK 
         // products
         private string _catalog = null;
@@ -640,10 +640,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return size;
         }
         
-        private ElasticClient GetElasticsearchClient(string elasticSearchUrl) {
+        private ElasticLowLevelClient GetElasticsearchClient(string elasticSearchUrl) {
             Uri node = new Uri(elasticSearchUrl);
             ConnectionSettings config = new ConnectionSettings(node);
-            ElasticClient client = new ElasticClient(config);
+            ElasticLowLevelClient client = new ElasticLowLevelClient(config);
 
             return client;
         }
@@ -677,7 +677,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         public Product GetProductById(string branch, string id) {
             branch = branch.ToLower();
 
-            ElasticsearchResponse<DynamicResponse> res = _client. .Get(branch, "product", id);
+            ElasticsearchResponse<DynamicResponse> res = _client.Get(branch, "product", id);
 
 			if (res.Response == null)
 				return null;
@@ -915,17 +915,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             ElasticsearchResponse<DynamicResponse> res = null;
             
             if (searchBodyD == null)
-                res = _client.Search(branch.ToLower(), "product", searchBody);
+                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-				res = _client.Search(branch.ToLower(), "product", searchBodyD);
+				res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
             List<Product> products = new List<Product>();
-            foreach (var oProd in res.Response["hits"]["hits"]) {
+            foreach (var oProd in res.Body["hits"]["hits"]) {
                 Product p = LoadProductFromElasticSearchProduct(listonly, oProd);
                 products.Add(p);
             }
             ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
-            int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
+            int totalCount = Convert.ToInt32(res.Body["hits"]["total"].Value);
 
             return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
@@ -945,17 +945,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             ElasticsearchResponse<DynamicResponse> res = null;
 
             if (searchBodyD == null)
-                res = _client.Search(branch.ToLower(), "product", searchBody);
+                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-                res = _client.Search(branch.ToLower(), "product", searchBodyD);
+                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
             List<Product> products = new List<Product>();
-            foreach (var oProd in res.Response["hits"]["hits"])
+            foreach (var oProd in res.Body["hits"]["hits"])
             {
                 products.Add(new Product() { ItemNumber = oProd._id, CatalogId = oProd._index });
             }
             ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
-            int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
+            int totalCount = Convert.ToInt32(res.Body["hits"]["total"].Value);
 
             return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
@@ -975,11 +975,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             ElasticsearchResponse<DynamicResponse> res = null;
 
             if (searchBodyD == null)
-                res = _client.Search(branch.ToLower(), "product", searchBody);
+                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-                res = _client.Search(branch.ToLower(), "product", searchBodyD);
+                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
-            int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
+            int totalCount = Convert.ToInt32(res.Body["hits"]["total"].Value);
 
             return totalCount;
         }
@@ -1025,7 +1025,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             string branch = catalogInfo.BranchId.ToLower();
 
             try {
-                var res = _client.Search(branch.ToLower(), "product", termSearchExpression);
+                var res = _client.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
                 if (res.Response["hits"]["total"] != null)
                     return Convert.ToInt32(res.Response["hits"]["total"].Value);
                 else
@@ -1041,7 +1041,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         private ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicResponse> res) {
             ExpandoObject facets = new ExpandoObject();
 
-            if (res.Response.Contains("aggregations"))
+            if (res.Body.Contains("aggregations"))
             {
                 BuildFacetsObjectFromResponse(res, facets);
 
@@ -1295,7 +1295,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         private void BuildFacetsObjectFromResponse(ElasticsearchResponse<DynamicResponse> res, ExpandoObject facets)
         {
-            foreach (var oFacet in res.Response["aggregations"])
+            foreach (var oFacet in res.Body["aggregations"])
             {
                 var facet = new List<ExpandoObject>();
                 foreach (var oFacetValue in oFacet.Value["buckets"])
