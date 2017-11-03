@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
     public class ElasticSearchCatalogRepositoryImpl : ICatalogRepository {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
-        private ElasticLowLevelClient _client;
+        //private ElasticLowLevelClient _client;
         // In the request to ElasticSearch, there are different fields that are search for category/subcategory codes for BEK vs nonBEK 
         // products
         private string _catalog = null;
@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         #region constructor
         public ElasticSearchCatalogRepositoryImpl() {
             _eshelper = new Helpers.ElasticSearch();
-            _client = GetElasticsearchClient(BEKConfiguration.Get("ElasticSearchURL"));
+           // _client = GetElasticsearchClient(BEKConfiguration.Get("ElasticSearchURL"));
             _catalog = "bek";
         }
         #endregion
@@ -608,13 +608,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     index = Constants.ES_INDEX_CATEGORIES;
                     break;
             }
-            var response = _eshelper.Client.Search<Category>(s => s
+            
+          var response = _eshelper.ElasticClient.Search<Category>(s => s
+
                 .From(from)
                 .Size(GetCategoryPagingSize(size))
                 .Type(Constants.ES_TYPE_CATEGORY)
                 .Index(index)
                 );
-
+                
             var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
 
             // Have to do this because it won't infer from the ID up one level in the structure. Need to revisit.
@@ -677,12 +679,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         public Product GetProductById(string branch, string id) {
             branch = branch.ToLower();
 
-            ElasticsearchResponse<DynamicResponse> res = _client.Get(branch, "product", id);
-
-			if (res.Response == null)
+            var getRequest = new GetRequest(branch, "product", id);
+            IGetResponse<DynamicResponse> res = _eshelper.ElasticClient.Get<DynamicResponse>(getRequest);
+            //ElasticsearchResponse<DynamicResponse> res = _eshelper.ElasticClient.Get<DynamicResponse>(branch, "product", id);
+            
+			if (res == null || !res.IsValid || !res.Found)
 				return null;
 
-            return LoadProductFromElasticSearchProduct(false, res.Response);
+            return LoadProductFromElasticSearchProduct(false, res.Source);
         }
         
         private int GetProductPagingSize(int size) {
@@ -915,9 +919,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             ElasticsearchResponse<DynamicResponse> res = null;
             
             if (searchBodyD == null)
-                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
+                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-				res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
+				res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
             List<Product> products = new List<Product>();
             foreach (var oProd in res.Body["hits"]["hits"]) {
@@ -945,9 +949,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             ElasticsearchResponse<DynamicResponse> res = null;
 
             if (searchBodyD == null)
-                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
+                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
+                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
             List<Product> products = new List<Product>();
             foreach (var oProd in res.Body["hits"]["hits"])
@@ -975,9 +979,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             ElasticsearchResponse<DynamicResponse> res = null;
 
             if (searchBodyD == null)
-                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
+                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBody);
             else
-                res = _client.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
+                res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", searchBodyD);
 
             int totalCount = Convert.ToInt32(res.Body["hits"]["total"].Value);
 
@@ -1025,7 +1029,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             string branch = catalogInfo.BranchId.ToLower();
 
             try {
-                var res = _client.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
+                var res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
                 if (res.Response["hits"]["total"] != null)
                     return Convert.ToInt32(res.Response["hits"]["total"].Value);
                 else
