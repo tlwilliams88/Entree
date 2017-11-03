@@ -129,14 +129,18 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             };
         }
 
+        //TODO - there is zero usage of this method
+/*
         private ElasticsearchClient GetElasticsearchClient()
         {
             var node = new Uri(Configuration.ElasticSearchURL);
-            var config = new Elasticsearch.Net.Connection.ConnectionConfiguration(node);
-            var client = new ElasticsearchClient(config);
+            var pool = new StaticConnectionPool(node);
+            var settings = new ConnectionSettings(pool);
+            var transport = new Transport(pool);
+            var client = new ElasticClient(pool);
             return client;
         }
-
+        */
         /// <summary>
         /// Method for reading all the meta information from the documents within product type within the specified branch
         /// and return a list of the string ids of those documents
