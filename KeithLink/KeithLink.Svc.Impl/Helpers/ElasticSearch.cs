@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Impl.Helpers
     {
         #region " attributes "
 
-        private ElasticLowLevelClient _client;
+        private ElasticClient _client;
         private Uri _elasticSearchUri;
         private ConnectionSettings _connectionConfig;
 
@@ -27,26 +27,31 @@ namespace KeithLink.Svc.Impl.Helpers
         {
             _elasticSearchUri = new Uri(BEKConfiguration.Get("ElasticSearchURL"));
             _connectionConfig = new ConnectionSettings(_elasticSearchUri);
-            _client = new ElasticLowLevelClient(_connectionConfig);
-
+            _client = new ElasticClient(_connectionConfig);
         }
 
         #endregion
 
         #region " methods / functions "
-
-        public ElasticsearchResponse<DynamicResponse> RawSearch(string index, string type, object filter)
+        //TODO - the RawSearch appears to be unused
+        /*
+        public ISearchResponse<DynamicResponse> RawSearch(string index, string type, object filter)
         {
-            ElasticsearchResponse<DynamicResponse> response = _client.Search<DynamicResponse>(index, type, filter);
+            var response = _client.Search<DynamicResponse>(s => s
+                .Index(index)
+                .Type(type)
+                .Query( q => q.Bool( b => b.Filter( f => f.Terms( tm => tm.Field()))
+                    
+                ))
+            );
             return response;
         }
-
+        */ 
         #endregion
 
         #region " properties "
 
-            public ElasticClient Client
-            {
+            public ElasticClient ElasticClient {
                 get { return _client; }
             }
 
