@@ -1029,9 +1029,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             string branch = catalogInfo.BranchId.ToLower();
 
             try {
-                var res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
-                if (res.Response["hits"]["total"] != null)
-                    return Convert.ToInt32(res.Response["hits"]["total"].Value);
+                ElasticsearchResponse<DynamicResponse> res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
+                if (res.Body["hits"]["total"] != null)
+                    return Convert.ToInt32(res.Body["hits"]["total"].Value);
                 else
                     return 0;
             } catch (Exception) {
@@ -1306,28 +1306,30 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 {
                     BuildBaseFacets(oFacet, facet, oFacetValue);
                 }
-                (facets as IDictionary<string, object>).Add(oFacet.Key, facet);
+                (facets as IDictionary<string, object>).Add(oFacet.Path, facet);
             }
         }
 
         private void BuildBaseFacets(dynamic oFacet, List<ExpandoObject> facet, dynamic oFacetValue)
         {
             var facetValue = new ExpandoObject() as IDictionary<string, object>;
-            facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
-            facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
-            if (oFacet.Key == "categories")
+            string key = oFacetValue["key"].ToString();
+            int count = oFacetValue["doc_count"];
+            facetValue.Add(new KeyValuePair<string, object>("name", key));
+            facetValue.Add(new KeyValuePair<string, object>("count", count));
+            if (oFacet.Path == "categories")
             {
                 BuildCategoryFacet(oFacetValue, facetValue);
             }
-            else if (oFacet.Key == "parentcategories")
+            else if (oFacet.Path == "parentcategories")
             {
                 BuildParentCategoryFacet(oFacetValue, facetValue);
             }
-            else if (oFacet.Key == "brands")
+            else if (oFacet.Path == "brands")
             {
                 BuildBrandsFacet(oFacetValue, facetValue);
             }
-            else if (oFacet.Key == "temp_zone")
+            else if (oFacet.Path == "temp_zone")
             {
                 BuildTempZoneFacet(oFacetValue, facetValue);
             }
@@ -1577,7 +1579,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     var diets = oProd._source.nutritional.diet;
                     foreach (var diet in diets)
                     {
-                        nutritional.Diets.Add(diet["diettype"]);
+                        String type = diet["diettype"];
+                        nutritional.Diets.Add(type);
                     }
                 }
                 nutritional.ServingSize = oProd._source.nutritional.servingsize;
@@ -1591,7 +1594,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CatalogId = oProd._index;
             p.ManufacturerName = oProd._source.mfrname;
             p.ItemNumber = oProd._id;
-            p.Kosher = string.IsNullOrEmpty(oProd._source.kosher) ? "Unknown" : oProd._source.kosher;
+            String isKosher = oProd._source.kosher;
+            p.Kosher = string.IsNullOrEmpty(isKosher) ? "Unknown" : isKosher;
             p.Brand = oProd._source.brand;
             p.BrandExtendedDescription = oProd._source.brand_description;
             p.Description = oProd._source.description;
