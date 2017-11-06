@@ -26,6 +26,7 @@ namespace KeithLink.Svc.Impl.Helpers
         public ElasticSearch()
         {
             _elasticSearchUri = new Uri(BEKConfiguration.Get("ElasticSearchURL"));
+            _elasticSearchUri = new Uri("http://qaes.benekeith.com:9200");
             _connectionConfig = new ConnectionSettings(_elasticSearchUri);
             _client = new ElasticClient(_connectionConfig);
         }

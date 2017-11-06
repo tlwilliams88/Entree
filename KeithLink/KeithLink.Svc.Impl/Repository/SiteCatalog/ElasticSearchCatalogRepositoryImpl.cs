@@ -609,16 +609,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     break;
             }
             
-          var response = _eshelper.ElasticClient.Search<Category>(s => s
-
+            var response = _eshelper.ElasticClient.Search<Category>(s => s
                 .From(from)
                 .Size(GetCategoryPagingSize(size))
-                .Type(Constants.ES_TYPE_CATEGORY)
                 .Index(index)
+                .Type(Constants.ES_TYPE_CATEGORY)
                 );
                 
             var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
-
+            
             // Have to do this because it won't infer from the ID up one level in the structure. Need to revisit.
             foreach (var r in response.Hits)
             {
@@ -630,7 +629,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                                               && (s.SubCategories != null && !s.Id.Equals(0))
                                               orderby s.Id
                                               select s).ToList<Category>();
-
+ 
             CategoriesReturn results = new CategoriesReturn { Categories = filteredResults };
 
             return results;
