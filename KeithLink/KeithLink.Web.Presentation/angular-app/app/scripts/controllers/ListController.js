@@ -1050,13 +1050,16 @@ angular.module('bekApp')
 
     $scope.clearFilter = function(clearSearch){
       if($scope.unsavedChangesConfirmation()){
-        if(clearSearch){
+        if(clearSearch == true){
           $scope.listSearchTerm = '';
         }
 
-        $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-        $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
-        $scope.filterItems( $scope.listSearchTerm );
+        if($scope.selectedList.is_contract_list == true) {
+            $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
+            $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
+        }
+
+        $scope.filterItems();
       }
     };
 
