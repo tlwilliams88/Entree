@@ -694,7 +694,7 @@
                                     </div>
                                     <button class="btn btn-primary btn-sm" ng-click="createListWithItem(item)" > Create New List </button>
                                 </td>
-                                <td style="padding-top: 18px; position: relative; width: 25%;" ng-if=="changeOrders.length > 0 && item.nonstock != 'Y' && (item.canOrder || canOrderItemInd) || !isCustomInventoryList">
+                                <td style="padding-top: 18px; position: relative; width: 25%;" ng-if="changeOrders.length > 0 && item.nonstock != 'Y' && (item.canOrder || canOrderItemInd) && !isCustomInventoryList">
                                     <div style="margin-top: -5px; height: 45px;">
                                         <select 
                                             ui-select2 
