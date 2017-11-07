@@ -786,18 +786,17 @@ angular.module('bekApp')
             ProductService.getProductDetails(itemNumber, 'BEK').then(function(item) {
                 var list = {
                     listid: $scope.selectedList.listid,
-                    type: $scope.selectedList.type
+                    type: $scope.selectedList.type,
+                    name: $scope.selectedList.name
                 }
                 $scope.selectedList.items.push(item);
                 ListService.addItem(list, item).then(function(data){
                     $scope.addedItem = true;
-                    listPagingModel.loadList();
+                    $scope.goToList(list.listid, list.type);
                     $scope.listItemNumber = '';
                     blockUI.stop();
-                    $scope.displayMessage('success', 'Successfully added item to list.');
-                }, function() {
+                }, function(error) {
                     blockUI.stop();
-                    $scope.displayMessage('error', 'Error adding item to list.');
                 });
             });
         });

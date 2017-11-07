@@ -62,12 +62,18 @@ angular.module('bekApp')
             closeModal();
           });
         } else {
-          item.favorite = true;
           closeModal();
-          $q.all([
-            ListService.addItem(list, newItem),
-            ListService.addItemToFavorites(newItem)
-          ])
+          if(item.favorite == false) {
+              item.favorite = true;
+              
+              $q.all([
+                ListService.addItem(list, newItem),
+                ListService.addItemToFavorites(newItem)
+              ])
+          } else {
+              ListService.addItem(list, newItem)
+          }
+
         }
       };
 

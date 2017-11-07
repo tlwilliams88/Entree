@@ -23,7 +23,7 @@
             <a class="btn btn-lg btn-default dropdown-toggle" 
                style="width: 250px; text-align: left;"
                ng-if="selectedList.isRenaming == false;">
-                {{selectedList.name}} <span class="caret text-dark pull-right" style="margin-top: 7px;"></span>
+                {{selectedList.name}} <span class="caret text-dark pull-right margin-top-firefox margin-top-7"></span>
             </a>
             <ul class="dropdown-menu" style="max-height: 300px; overflow: auto; width: 100%;">
                 <li> 
@@ -235,15 +235,15 @@
   </div>
 
   <div class="row" ng-class="{ 'sub-content' : selectedList.itemCount < pagingPageSize }" style="left: 19px;">
-    <div list-management-elements fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="125" scroll-offset="20" media-query="min-width: 1024px" style="background-color: #fff; z-index: 996;">
+    <div list-management-elements fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="125" scroll-offset="100" media-query="min-width: 1024px" style="background-color: #fff; z-index: 996;">
         <div class="col-xs-12" style="display: table;">
             <div>
                 <div class="btn-group" style="display: inline-flex; padding-left: 10px; padding-bottom: 10px;">
                     <!-- Add to List -->
                     <div  dropdown is-open="multiSelect.showLists">
-                      <button type="button" class="multi-action-btn dropdown-toggle btn btn-secondary" ng-disabled="(selectedList.items | filter:{isSelected:'true'}).length == 0">
+                      <button type="button" class="multi-action-btn dropdown-toggle btn btn-primary" ng-disabled="(selectedList.items | filter:{isSelected:'true'}).length == 0">
                         Add To List
-                        <span class="icon-arrow-down6 text-light"></span>
+                        <span class="icon-arrow-down6 text-dark"></span>
                       </button>
                       <ul class="dropdown-menu" role="menu" style="max-height: 250px; overflow-y: auto; left: 15px;">
                         <li
@@ -684,7 +684,7 @@
                                             ui-select2
                                             class="addToList"
                                             data-placeholder="Add To List"
-                                            ng-options="list.name disable when (selectedList.name == list.name || selectedList.permissions.canAddItems == false || selectedList.permissions.specialDisplay == true) for list in quickAddLists | filter: sortLists" 
+                                            ng-options="list.name disable when (selectedList.name == list.name || list.permissions.canAddItems == false || list.permissions.specialDisplay == true) for list in quickAddLists | filter: sortLists" 
                                             ng-model="lists.selectedList" 
                                             style="width: 50%;"
                                             ng-change="addItemToList(lists.selectedList, item, selectedList)"
