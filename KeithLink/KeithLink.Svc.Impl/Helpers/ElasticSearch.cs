@@ -33,20 +33,6 @@ namespace KeithLink.Svc.Impl.Helpers
         #endregion
 
         #region " methods / functions "
-        //TODO - the RawSearch appears to be unused
-        /*
-        public ISearchResponse<DynamicResponse> RawSearch(string index, string type, object filter)
-        {
-            var response = _client.Search<DynamicResponse>(s => s
-                .Index(index)
-                .Type(type)
-                .Query( q => q.Bool( b => b.Filter( f => f.Terms( tm => tm.Field()))
-                    
-                ))
-            );
-            return response;
-        }
-        */ 
         #endregion
 
         #region " properties "

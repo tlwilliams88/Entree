@@ -20,7 +20,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
     public class ElasticSearchCatalogRepositoryImpl : ICatalogRepository {
         #region attributes
         private Helpers.ElasticSearch _eshelper;
-        //private ElasticLowLevelClient _client;
         // In the request to ElasticSearch, there are different fields that are search for category/subcategory codes for BEK vs nonBEK 
         // products
         private string _catalog = null;
@@ -29,7 +28,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         #region constructor
         public ElasticSearchCatalogRepositoryImpl() {
             _eshelper = new Helpers.ElasticSearch();
-           // _client = GetElasticsearchClient(BEKConfiguration.Get("ElasticSearchURL"));
             _catalog = "bek";
         }
         #endregion
@@ -151,86 +149,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             };
 
         }
-
-        private dynamic BuildBoolMultiMatchQueryForDigits(SearchInputModel searchModel, List<dynamic> filterTerms, List<string> fieldsToSearch, string searchExpression) {
-            List<dynamic> statusFields = BuildStatusFilter();
-            string wildcardText = string.Format("*{0}*", searchExpression);
-            List<dynamic> shoulds = new List<dynamic>();
-            shoulds.Add(new {
-                match = new {
-                    itemnumber = new {
-                        query = searchExpression,
-                        boost = 5
-                    }
-                }
-            });
-            shoulds.Add(new {
-                wildcard = new {
-                    itemnumber = new {
-                        value = wildcardText,
-                        boost = 5
-                    }
-                }
-            });
-            shoulds.Add(new {
-                match = new {
-                    mfrnumber = new {
-                        query = searchExpression,
-                        boost = 3
-                    }
-                }
-            });
-            shoulds.Add(new {
-                wildcard = new {
-                    mfrnumber = new {
-                        value = wildcardText,
-                        boost = 3
-                    }
-                }
-            });
-            shoulds.Add(new {
-                match = new {
-                    gtin = new {
-                        query = searchExpression
-                    }
-                }
-            });
-            shoulds.Add(new {
-                wildcard = new {
-                    gtin = new {
-                        value = wildcardText
-                    }
-                }
-            });
-            shoulds.Add(new {
-                match = new {
-                    upc = new {
-                        query = searchExpression
-                    }
-                }
-            });
-            shoulds.Add(new {
-                wildcard = new {
-                    upc = new {
-                        value = wildcardText
-                    }
-                }
-            });
-            shoulds.AddRange(filterTerms);
-
-            return new {
-                from = searchModel.From,
-                size = searchModel.Size,
-                query = new {
-                    @bool = new {
-                        should = shoulds,
-                        must_not = statusFields
-                    }
-                },
-                sort = BuildSort(searchModel.SField, searchModel.SDir),
-                aggregations = ElasticSearchAggregations
-            };
-        }
 		
         /// <summary>
         /// filter out items with unwanted statuses
@@ -246,81 +164,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
         }
 
-        private dynamic BuildDigitMatchQuery(string fieldName, string searchText, int? fieldBoost) {
-            dynamic query = null;
-
-            if (fieldBoost.HasValue) {
-                query = new {
-                    match = new {
-                        fieldName = new {
-                            query = searchText,
-                            boost = fieldBoost
-                        }
-                    }
-                };
-            } else {
-                query = new {
-                    match = new {
-                        fieldName = new {
-                            query = searchText
-                        }
-                    }
-                };
-            }
-
-            return query;
-        }
-
-        private List<dynamic> BuildDigitQuery(List<string> searchFields, string searchTerms) {
-            const char SPLIT_CHAR = '^';
-            const Int16 INDEX_FIELDNAME = 0;
-            const Int16 INDEX_BOOST = 1;
-            const Int16 INDEX_NOTFOUND = -1;
-
-            List<dynamic> searchClauses = new List<dynamic>();
-
-            foreach (string searchField in searchFields) {
-                if (searchField.IndexOf(SPLIT_CHAR) == INDEX_NOTFOUND) {
-                    searchClauses.Add(BuildDigitMatchQuery(searchField, searchTerms, null));
-                    searchClauses.Add(BuildDigitWildcardQuery(searchField, searchTerms, null));
-                } else {
-                    string[] fieldBoost = searchField.Split(SPLIT_CHAR);
-                    int boost = int.Parse(fieldBoost[INDEX_BOOST]);
-
-                    searchClauses.Add(BuildDigitMatchQuery(fieldBoost[INDEX_FIELDNAME], searchTerms, boost));
-                    searchClauses.Add(BuildDigitWildcardQuery(fieldBoost[INDEX_FIELDNAME], searchTerms, boost));
-                }
-            }
-
-            return searchClauses;
-        }
-
-        private dynamic BuildDigitWildcardQuery(string fieldName, string searchText, int? fieldBoost) {
-            dynamic query = null;
-            string text = string.Format("*{0}*", searchText);
-
-            if (fieldBoost.HasValue) {
-                query = new {
-                    wildcard = new {
-                        fieldName = new {
-                            value = text,
-                            boost = fieldBoost
-                        }
-                    }
-                };
-            } else {
-                query = new {
-                    wildcard = new {
-                        value = new {
-                            query = text
-                        }
-                    }
-                };
-            }
-
-            return query;
-        }
-
+        
         private dynamic BuildProprietaryItemFilter( UserSelectedContext catalogInfo, string department ) {
             List<dynamic> proprietaryItems = new List<dynamic>();
 
@@ -452,54 +296,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return prcFilters;
         }
 
-        private dynamic BuildFunctionScoreQuery(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
-            List<dynamic> shouldQueries = new List<dynamic>();
-            shouldQueries.Add(
-                new {
-                    query_string = new {
-                        fields = fieldsToSearch,
-                        query = searchExpression,
-                        use_dis_max = true
-                    }
-                }
-            );
-
-            shouldQueries.Add(
-                new {
-                    match = new {
-                        name_ngram_analyzed = new {
-                            query = searchExpression,
-                            @operator = "and",
-                            minimum_should_match = "75%"
-                        }
-                    }
-                }
-            );
-            return new {
-                from = searchModel.From,
-                size = searchModel.Size,
-                query = new {
-                    function_score = new {
-                        query = new {
-                            filtered = new {
-                                query = new {
-                                    @bool = new {
-                                        should = shouldQueries
-                                    }
-                                },
-                                filter = new { query = filterTerms }
-                            }
-                        },
-                        functions = BuildItemBoostFunctions(searchExpression),
-                        score_mode = "sum",
-                        boost_mode = "replace"
-                    }
-                },
-                sort = BuildSort(searchModel.SField, searchModel.SDir),
-                aggregations = ElasticSearchAggregations
-            };
-        }
-        
         private List<dynamic> BuildItemBoostFunctions(string searchTerms = null) {
             List<dynamic> boosts = new List<dynamic>();
 
@@ -639,14 +435,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (size <= 0)
                 return Configuration.DefaultCategoryReturnSize;
             return size;
-        }
-        
-        private ElasticLowLevelClient GetElasticsearchClient(string elasticSearchUrl) {
-            Uri node = new Uri(elasticSearchUrl);
-            ConnectionSettings config = new ConnectionSettings(node);
-            ElasticLowLevelClient client = new ElasticLowLevelClient(config);
-
-            return client;
         }
         
         public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel) {
