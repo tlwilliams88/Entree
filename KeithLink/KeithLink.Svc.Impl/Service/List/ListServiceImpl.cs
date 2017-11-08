@@ -1,69 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
 using KeithLink.Common.Core.Interfaces.Logging;
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Lists;
 using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Models.Customers.EF;
-using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Configurations;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Reports;
-using KeithLink.Svc.Core.Models.Reports;
-using KeithLink.Svc.Impl.Helpers;
-using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Customers;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.EF;
-using Microsoft.Practices.ObjectBuilder2;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Reports;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Service.List
 {
     public class ListServiceImpl : IListService
     {
-        #region attributes
-        private readonly ICacheListLogic _cacheListLogic;
-        private readonly IContractListLogic _contractListLogic;
-        private readonly IHistoryListLogic _historyListLogic;
-        private readonly IFavoritesListLogic _favoritesLogic;
-        private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
-        private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
-        private readonly IRecommendedItemsListLogic _recommendedItemsLogic;
-        private readonly IMandatoryItemsListLogic _mandatoryItemsLogic;
-        private readonly IInventoryValuationListLogic _inventoryValuationLogic;
-        private readonly IRemindersListLogic _reminderItemsLogic;
-        private readonly ICustomListLogic _customListLogic;
-        private readonly INotesListLogic _notesLogic;
-        private readonly ICatalogLogic _catalogLogic;
-        private readonly IExternalCatalogRepository _externalCatalogRepo;
-        private readonly IItemHistoryRepository _itemHistoryRepo;
-        private readonly IPriceLogic _priceLogic;
-        private readonly IProductImageRepository _productImageRepo;
-        private readonly IItemBarcodeImageRepository _barcodeImageRepo;
-        private readonly ICustomInventoryItemsRepository _customInventoryRepo;
-        private readonly IEventLogRepository _log;
-
-        private Dictionary<string, string> _contractdictionary;
-
-        private const bool CACHELISTS = true;
-
-        #endregion
-
         #region ctor
-        public ListServiceImpl( IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
-                                IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
-                                IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic, 
-                                IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
-                                IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
-                                IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
-                                IContractListLogic contractListLogic, ICustomListLogic customListLogic,
-                                IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo, ICacheListLogic cacheHelper)
+        public ListServiceImpl(IHistoryListLogic historyListLogic, ICatalogLogic catalogLogic, INotesListLogic notesLogic,
+                               IItemHistoryRepository itemHistoryRepo, IFavoritesListLogic favoritesLogic, IPriceLogic priceLogic,
+                               IRecentlyViewedListLogic recentlyViewedLogic, IRecentlyOrderedListLogic recentlyOrderedLogic,
+                               IRecommendedItemsListLogic recommendedItemsLogic, IRemindersListLogic reminderItemsLogic,
+                               IProductImageRepository productImageRepo, IExternalCatalogRepository externalCatalogRepo, IItemBarcodeImageRepository barcodeImageRepo,
+                               IMandatoryItemsListLogic mandatoryItemsLogic, IInventoryValuationListLogic inventoryValuationLogic,
+                               IContractListLogic contractListLogic, ICustomListLogic customListLogic,
+                               IEventLogRepository log, ICustomInventoryItemsRepository customInventoryRepo, ICacheListLogic cacheHelper)
         {
             _cacheListLogic = cacheHelper;
             // specific lists -
@@ -89,6 +63,33 @@ namespace KeithLink.Svc.Impl.Service.List
         }
         #endregion
 
+        #region attributes
+        private readonly ICacheListLogic _cacheListLogic;
+        private readonly IContractListLogic _contractListLogic;
+        private readonly IHistoryListLogic _historyListLogic;
+        private readonly IFavoritesListLogic _favoritesLogic;
+        private readonly IRecentlyViewedListLogic _recentlyViewedLogic;
+        private readonly IRecentlyOrderedListLogic _recentlyOrderedLogic;
+        private readonly IRecommendedItemsListLogic _recommendedItemsLogic;
+        private readonly IMandatoryItemsListLogic _mandatoryItemsLogic;
+        private readonly IInventoryValuationListLogic _inventoryValuationLogic;
+        private readonly IRemindersListLogic _reminderItemsLogic;
+        private readonly ICustomListLogic _customListLogic;
+        private readonly INotesListLogic _notesLogic;
+        private readonly ICatalogLogic _catalogLogic;
+        private readonly IExternalCatalogRepository _externalCatalogRepo;
+        private readonly IItemHistoryRepository _itemHistoryRepo;
+        private readonly IPriceLogic _priceLogic;
+        private readonly IProductImageRepository _productImageRepo;
+        private readonly IItemBarcodeImageRepository _barcodeImageRepo;
+        private readonly ICustomInventoryItemsRepository _customInventoryRepo;
+        private readonly IEventLogRepository _log;
+
+        private Dictionary<string, string> _contractdictionary;
+
+        private const bool CACHELISTS = true;
+        #endregion
+
         #region methods
         public Dictionary<string, string> GetContractInformation(UserSelectedContext catalogInfo)
         {
@@ -110,7 +111,8 @@ namespace KeithLink.Svc.Impl.Service.List
                     contractdictionary = contract.Items
                                                  .GroupBy(li => li.ItemNumber, StringComparer.CurrentCultureIgnoreCase)
                                                  .ToDictionary(g => g.Key,
-                                                               g => g.First().Category.Trim());
+                                                               g => g.First()
+                                                                     .Category.Trim());
                 }
                 _cacheListLogic.AddCachedContractInformation(catalogInfo, contractdictionary);
             }
@@ -137,8 +139,10 @@ namespace KeithLink.Svc.Impl.Service.List
 
             List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedTypedLists(catalogInfo, type, headerOnly) : null;
 
-            if (cachedList == null) {
-                switch (type) {
+            if (cachedList == null)
+            {
+                switch (type)
+                {
                     case ListType.Custom:
                         returnList.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, headerOnly));
                         break;
@@ -147,64 +151,67 @@ namespace KeithLink.Svc.Impl.Service.List
                         returnList.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, headerOnly));
                         break;
 
-                  case ListType.Contract:
-                      returnList.TryAdd(_contractListLogic.ReadList(user, catalogInfo, headerOnly));
-                      break;
+                    case ListType.Contract:
+                        returnList.TryAdd(_contractListLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
-                  // we get notes through GetNotesHash to avoid the full product load
-                  //case ListType.Notes: 
-                  //    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
-                  //    break;
+                    // we get notes through GetNotesHash to avoid the full product load
+                    //case ListType.Notes: 
+                    //    returnList.TryAdd(_notesLogic.GetList(catalogInfo));
+                    //    break;
 
-                  case ListType.Worksheet:
-                      returnList.TryAdd(_historyListLogic.ReadList(user, catalogInfo, headerOnly));
-                      break;
+                    case ListType.Worksheet:
+                        returnList.TryAdd(_historyListLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
                     // no contract items added lists
                     // no contract items deleted lists
 
-                  case ListType.Reminder:
-                      returnList.TryAdd(_reminderItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                      break;
-                      
-                  case ListType.Mandatory:
-                      returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                      break;
+                    case ListType.Reminder:
+                        returnList.TryAdd(_reminderItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
-                  case ListType.RecommendedItems:
-                      returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
-                      break;
+                    case ListType.Mandatory:
+                        returnList.TryAdd(_mandatoryItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
-                  case ListType.InventoryValuation:
-                      returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
-                      break;
+                    case ListType.RecommendedItems:
+                        returnList.TryAdd(_recommendedItemsLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
-                  case ListType.RecentlyOrdered:
-                      returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
-                      break;
+                    case ListType.InventoryValuation:
+                        returnList.TryAddRange(_inventoryValuationLogic.ReadLists(user, catalogInfo, headerOnly));
+                        break;
 
-                  case ListType.RecentlyViewed:
-                      returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
-                      break;
+                    case ListType.RecentlyOrdered:
+                        returnList.TryAdd(_recentlyOrderedLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
 
-                    //case ListType.CustomInventory: //uses its own controller and works a little differently
-                    //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
-                    //    break;
+                    case ListType.RecentlyViewed:
+                        returnList.TryAdd(_recentlyViewedLogic.ReadList(user, catalogInfo, headerOnly));
+                        break;
+
+                        //case ListType.CustomInventory: //uses its own controller and works a little differently
+                        //    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
+                        //    break;
                 }
 
                 if (returnList.Count > 0 &&
-                    headerOnly == false) {
-                    FillOutProducts(user: user,
-                                    catalogInfo: catalogInfo,
-                                    returnList: returnList,
-                                    getprices: true);
+                    headerOnly == false)
+                {
+                    FillOutProducts(user,
+                                    catalogInfo,
+                                    returnList,
+                                    true);
                 }
 
-                if (CACHELISTS) {
+                if (CACHELISTS)
+                {
                     _cacheListLogic.AddCachedTypedLists(catalogInfo, type, headerOnly, returnList);
                 }
             }
-            else {
+            else
+            {
                 returnList = cachedList;
             }
 
@@ -217,8 +224,10 @@ namespace KeithLink.Svc.Impl.Service.List
 
             ListModel cachedList = CACHELISTS ? _cacheListLogic.GetCachedSpecificList(catalogInfo, type, Id) : null;
 
-            if (cachedList == null) {
-                switch (type) {
+            if (cachedList == null)
+            {
+                switch (type)
+                {
                     case ListType.Custom:
                         tempList = _customListLogic.GetListModel(user, catalogInfo, Id);
                         break;
@@ -272,24 +281,26 @@ namespace KeithLink.Svc.Impl.Service.List
                         ////    returnList.Add(_recentlyOrderedLogic.GetListModel(user, catalogInfo, 0));
                         break;
 
-                    ////case ListType.CustomInventory: //uses its own controller and works a little differently
-                    ////    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
-                    ////    break;
-
+                        ////case ListType.CustomInventory: //uses its own controller and works a little differently
+                        ////    returnList.Add(_customListLogic.GetListModel(user, catalogInfo, 0));
+                        ////    break;
                 }
 
                 if (tempList != null &&
                     tempList.Items != null &&
-                    tempList.Items.Count > 0 && 
-                    type != ListType.Notes) {
-                    FillOutProducts(user, catalogInfo, new List<ListModel>() {tempList}, true);
+                    tempList.Items.Count > 0 &&
+                    type != ListType.Notes)
+                {
+                    FillOutProducts(user, catalogInfo, new List<ListModel> { tempList }, true);
                 }
 
-                if (CACHELISTS) {
+                if (CACHELISTS)
+                {
                     _cacheListLogic.AddCachedSpecificList(catalogInfo, type, Id, tempList);
                 }
             }
-            else {
+            else
+            {
                 tempList = cachedList;
             }
 
@@ -302,8 +313,10 @@ namespace KeithLink.Svc.Impl.Service.List
 
             List<ListModel> cachedList = CACHELISTS ? _cacheListLogic.GetCachedCustomerLists(catalogInfo) : null;
 
-            if (cachedList == null) {
-                if (_contractdictionary == null) {
+            if (cachedList == null)
+            {
+                if (_contractdictionary == null)
+                {
                     _contractdictionary = GetContractInformation(catalogInfo);
                 }
 
@@ -315,19 +328,25 @@ namespace KeithLink.Svc.Impl.Service.List
                 AddListsIfNotNull(user, catalogInfo, ListType.Mandatory, list, headerOnly);
                 AddListsIfNotNull(user, catalogInfo, ListType.Custom, list, headerOnly);
 
-                if (CACHELISTS) {
+                if (CACHELISTS)
+                {
                     _cacheListLogic.AddCachedCustomerLists(catalogInfo, list);
                 }
-            } else {
+            }
+            else
+            {
                 list = cachedList;
             }
 
             return list;
         }
 
-        private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly) {
+        private void AddListsIfNotNull(UserProfile user, UserSelectedContext catalogInfo, ListType type, List<ListModel> list, bool headerOnly)
+        {
             List<ListModel> tmpList = ReadListByType(user, catalogInfo, type, headerOnly);
-            if (tmpList != null && tmpList.Count > 0) {
+            if (tmpList != null &&
+                tmpList.Count > 0)
+            {
                 list.AddRange(tmpList);
             }
         }
@@ -338,17 +357,19 @@ namespace KeithLink.Svc.Impl.Service.List
 
             List<string> cachedList = CACHELISTS ? _cacheListLogic.GetCachedLabels(catalogInfo) : null;
 
-            if (cachedList == null) {
-
+            if (cachedList == null)
+            {
                 List<ListModel> list = new List<ListModel>();
 
                 list.TryAdd(_favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false));
                 list.TryAddRange(_customListLogic.ReadLists(user, catalogInfo, false));
 
                 List<ListItemModel> items = new List<ListItemModel>();
-                foreach (ListModel lst in list) {
+                foreach (ListModel lst in list)
+                {
                     if (lst.Items != null &&
-                        lst.Items.Count > 0) {
+                        lst.Items.Count > 0)
+                    {
                         items.AddRange(lst.Items);
                     }
                 }
@@ -364,13 +385,15 @@ namespace KeithLink.Svc.Impl.Service.List
                 {
                     _cacheListLogic.AddCachedLabels(catalogInfo, labels);
                 }
-
-            } else {
+            }
+            else
+            {
                 labels = cachedList;
             }
 
             // Insert blank at the start if there is none; to blank the existing label on an item
-            if (labels.Contains(string.Empty) == false) {
+            if (labels.Contains(string.Empty) == false)
+            {
                 labels.Insert(0, string.Empty);
             }
 
@@ -386,16 +409,17 @@ namespace KeithLink.Svc.Impl.Service.List
                                             UserSelectedContext catalogInfo,
                                             ListType type,
                                             long Id,
-                                            Core.Models.Paging.PagingModel paging)
+                                            PagingModel paging)
         {
-            System.Diagnostics.Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(gettiming: false);
+            Stopwatch stopWatch = EntreeStopWatchHelper.GetStopWatch(false);
             ListModel returnList = null;
 
             returnList = ReadListById(user, catalogInfo, Id, type);
             stopWatch.Read(_log, "ReadPagedList - GetListModel");
 
             PagedListModel pagedList = null;
-            if (returnList != null && returnList.Items != null)
+            if (returnList != null &&
+                returnList.Items != null)
             {
                 pagedList = returnList.ToPagedList(paging);
             }
@@ -410,18 +434,18 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
         {
-            var list = ReadListByType(user, catalogInfo, ListType.RecentlyViewed, false);
+            List<ListModel> list = ReadListByType(user, catalogInfo, ListType.RecentlyViewed, false);
 
             if (list != null)
             {
-                var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
-                                      .ToList();
+                List<RecentItem> returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc }))
+                                                   .ToList();
 
                 LookupProductDetails(user, catalogInfo, returnItems);
 
-                returnItems.ForEach(delegate (RecentItem item)
-                {
-                    item.Images = _productImageRepo.GetImageList(item.ItemNumber).ProductImages;
+                returnItems.ForEach(delegate (RecentItem item) {
+                    item.Images = _productImageRepo.GetImageList(item.ItemNumber)
+                                                   .ProductImages;
                 });
 
                 return returnItems.OrderByDescending(l => l.ModifiedOn)
@@ -433,46 +457,50 @@ namespace KeithLink.Svc.Impl.Service.List
         public RecentNonBEKList ReadRecentOrder(UserProfile user, UserSelectedContext catalogInfo, string catalog)
         {
             ListModel recentOrders = _recentlyOrderedLogic.ReadList(user,
-                new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = catalog }, false);
+                                                                    new UserSelectedContext { CustomerId = catalogInfo.CustomerId, BranchId = catalog }, false);
 
             // Identify specific warehouse - needed for product lookup
             Dictionary<string, string> externalCatalogDict =
-                _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
+                    _externalCatalogRepo.ReadAll()
+                                        .ToDictionary(e => e.BekBranchId.ToLower(), e => e.ExternalBranchId);
 
             List<RecentNonBEKItem> returnItems = new List<RecentNonBEKItem>();
             if (recentOrders != null &&
-                externalCatalogDict != null) {
+                externalCatalogDict != null)
+            {
                 returnItems = recentOrders.Items
-                    .Select(l => new RecentNonBEKItem()
-                    {
-                        ItemNumber = l.ItemNumber,
-                        CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
-                        ModifiedOn = l.ModifiedUtc
-                    })
-                    .ToList();
+                                          .Select(l => new RecentNonBEKItem
+                                          {
+                                              ItemNumber = l.ItemNumber,
+                                              CatalogId = externalCatalogDict[catalogInfo.BranchId.ToLower()],
+                                              ModifiedOn = l.ModifiedUtc
+                                          })
+                                          .ToList();
             }
 
             if (returnItems.Count > 0)
             {
                 PopulateProductDetails(returnItems);
 
-                returnItems.ForEach(delegate (RecentNonBEKItem item)
-                {
+                returnItems.ForEach(delegate (RecentNonBEKItem item) {
                     if (item.Upc != null)
                     {
-                        item.Images = _productImageRepo.GetImageList(item.Upc, false).ProductImages;
+                        item.Images = _productImageRepo.GetImageList(item.Upc, false)
+                                                       .ProductImages;
                     }
                 });
             }
 
-            return new RecentNonBEKList() { Catalog = catalog, Items = returnItems };
+            return new RecentNonBEKList { Catalog = catalog, Items = returnItems };
         }
 
         public ListModel UpdateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                                    ListModel list) {
+                                    ListModel list)
+        {
             ListModel retVal = null;
 
-            switch (type) {
+            switch (type)
+            {
                 case ListType.Worksheet:
                 case ListType.Contract:
                     // cannot add items to contracts or worksheets
@@ -502,29 +530,35 @@ namespace KeithLink.Svc.Impl.Service.List
                     FillOutProducts(user, catalogInfo, retVal, true);
 
                     break;
-                //case ListType.RecentlyOrdered:
-                //    break;
+                    //case ListType.RecentlyOrdered:
+                    //    break;
             }
 
             return retVal;
         }
 
         public void SaveItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                             long headerId, ListItemModel item) {
+                             long headerId, ListItemModel item)
+        {
             if (item.Position == 0)
             {
                 ListModel list = ReadListById(user, catalogInfo, headerId, type);
-                if (list != null) {
+                if (list != null)
+                {
                     if (list.Items != null &&
-                        list.Items.Count > 0) {
+                        list.Items.Count > 0)
+                    {
                         item.Position = list.Items.Max(i => i.Position) + 1;
-                    } else {
+                    }
+                    else
+                    {
                         item.Position = 1;
                     }
                 }
             }
 
-            switch (type) {
+            switch (type)
+            {
                 case ListType.Worksheet:
                 case ListType.Contract:
                     // cannot add items to contracts or worksheets
@@ -555,19 +589,49 @@ namespace KeithLink.Svc.Impl.Service.List
                 case ListType.RecentlyOrdered:
                     break;
             }
-
         }
 
         public void SaveItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
                               long headerId, List<ListItemModel> items)
         {
-            foreach (var item in items) {
+            foreach (ListItemModel item in items)
+            {
                 SaveItem(user, catalogInfo, type, headerId, item);
             }
         }
 
+        public void AddItem(UserProfile user,
+                            UserSelectedContext catalogInfo,
+                            ListType type,
+                            long headerId,
+                            ListItemModel item)
+        {
+            ListModel updatedlist = ReadListById(user, catalogInfo, headerId, type);
+            if (updatedlist != null)
+            {
+                if (updatedlist.Items != null)
+                {
+                    int itemIndex = 2;
+                    foreach (ListItemModel existingItem in updatedlist.Items)
+                    {
+                        existingItem.Position = itemIndex++;
+                    }
+                    item.Position = 1;
+                    updatedlist.Items.Add(item);
+                }
+                else
+                {
+                    updatedlist.Items = new List<ListItemModel>();
+                    updatedlist.Items.Add(item);
+                }
+            }
+
+            UpdateList(user, catalogInfo, type, updatedlist);
+        }
+
         public ListModel CreateList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                                      ListModel list) {
+                                    ListModel list)
+        {
             long id = 0;
             switch (type)
             {
@@ -575,7 +639,8 @@ namespace KeithLink.Svc.Impl.Service.List
                     _recommendedItemsLogic.CreateList(catalogInfo);
                     break;
                 case ListType.Reminder:
-                    id = _reminderItemsLogic.SaveList(user, catalogInfo, list).ListId;
+                    id = _reminderItemsLogic.SaveList(user, catalogInfo, list)
+                                            .ListId;
                     break;
                 case ListType.Mandatory:
                     _mandatoryItemsLogic.CreateList(user, catalogInfo);
@@ -592,21 +657,23 @@ namespace KeithLink.Svc.Impl.Service.List
             }
 
             if (list.Items != null &&
-                list.Items.Count > 0) {
-                SaveItems(user,catalogInfo, type, id, list.Items);
+                list.Items.Count > 0)
+            {
+                SaveItems(user, catalogInfo, type, id, list.Items);
             }
 
             return ReadList(user, catalogInfo, type, id, true);
         }
 
-        public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel) {
-
+        public List<ListModel> CopyList(UserProfile user, UserSelectedContext catalogInfo, ListCopyShareModel copyListModel)
+        {
             ListModel list = ReadList(user, catalogInfo, copyListModel.Type, copyListModel.ListId);
 
             List<ListModel> results = new List<ListModel>();
 
-            foreach (var customer in copyListModel.Customers) {
-                results.Add(CopyList(user, new UserSelectedContext()
+            foreach (Customer customer in copyListModel.Customers)
+            {
+                results.Add(CopyList(user, new UserSelectedContext
                 {
                     BranchId = customer.CustomerBranch,
                     CustomerId = customer.CustomerNumber
@@ -614,32 +681,32 @@ namespace KeithLink.Svc.Impl.Service.List
 
                 if (CACHELISTS)
                 {
-                    _cacheListLogic.ClearCustomersLabelsCache(new UserSelectedContext() {
-                                                                                         CustomerId = customer.CustomerNumber,
-                                                                                         BranchId = customer.CustomerBranch
-                                                                                     });
+                    _cacheListLogic.ClearCustomersLabelsCache(new UserSelectedContext
+                    {
+                        CustomerId = customer.CustomerNumber,
+                        BranchId = customer.CustomerBranch
+                    });
                 }
             }
 
             return results;
         }
 
-        private ListModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list) {
+        private ListModel CopyList(UserProfile user, UserSelectedContext catalogInfo, ListModel list)
+        {
+            ListModel copyList = list.NewCopy();
 
-            var copyList = list.NewCopy();
-            
-            var newList = CreateList(user,
-                                     catalogInfo,
-                                     ListType.Custom,
-                                     copyList);
+            ListModel newList = CreateList(user,
+                                           catalogInfo,
+                                           ListType.Custom,
+                                           copyList);
 
             return ReadListById(user, catalogInfo, newList.ListId, newList.Type);
         }
 
         public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, ListType type,
-                                      ListModel list)
+                               ListModel list)
         {
-
             switch (type)
             {
                 case ListType.Custom:
@@ -657,15 +724,17 @@ namespace KeithLink.Svc.Impl.Service.List
         private void PopulateProductDetails(List<RecentNonBEKItem> returnList)
         {
             if (returnList == null)
+            {
                 return;
+            }
 
-            var products = _catalogLogic.GetProductsByIds(returnList[0].CatalogId,
-                                                          returnList.Select(i => i.ItemNumber)
-                                                                    .Distinct()
-                                                                    .ToList());
+            ProductsReturn products = _catalogLogic.GetProductsByIds(returnList[0].CatalogId,
+                                                                     returnList.Select(i => i.ItemNumber)
+                                                                               .Distinct()
+                                                                               .ToList());
             returnList.ForEach(delegate (RecentNonBEKItem item) {
-                var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber))
-                                               .FirstOrDefault();
+                Product product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber))
+                                          .FirstOrDefault();
                 if (product != null)
                 {
                     item.Name = product.Name;
@@ -674,17 +743,19 @@ namespace KeithLink.Svc.Impl.Service.List
             });
         }
 
-        private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, ListModel returnList, bool getprices) {
-            List<ListModel> tempList = new List<ListModel>() { returnList };
+        private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, ListModel returnList, bool getprices)
+        {
+            List<ListModel> tempList = new List<ListModel> { returnList };
 
             FillOutProducts(user, catalogInfo, tempList, getprices);
         }
 
         private void FillOutProducts(UserProfile user, UserSelectedContext catalogInfo, List<ListModel> returnList, bool getprices)
         {
-//Lookup product details for each item
-            returnList.ForEach(delegate(ListModel listItem) {
-                if (listItem != null) {
+            //Lookup product details for each item
+            returnList.ForEach(delegate (ListModel listItem) {
+                if (listItem != null)
+                {
                     LookupProductDetails(user, listItem, catalogInfo);
                 }
             });
@@ -692,10 +763,11 @@ namespace KeithLink.Svc.Impl.Service.List
             if (getprices)
             {
                 //Lookup prices for each item
-                foreach (var tempList in returnList)
+                foreach (ListModel tempList in returnList)
                 {
                     if (tempList != null &&
-                        tempList.Items != null) {
+                        tempList.Items != null)
+                    {
                         LookupPrices(user, tempList.Items, catalogInfo);
                     }
                 }
@@ -704,27 +776,29 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, List<RecentItem> list)
         {
-            if (list == null || list.Count == 0)
+            if (list == null ||
+                list.Count == 0)
+            {
                 return;
+            }
 
-            ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
+            ProductsReturn products = new ProductsReturn { Products = new List<Product>() };
 
             {
-                var batch = list.Select(i => i.ItemNumber)
-                                .ToList();
+                List<string> batch = list.Select(i => i.ItemNumber)
+                                         .ToList();
 
-                var tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
+                ProductsReturn tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
                 products.Products.AddRange(tempProducts.Products);
             }
 
-            var productHash = products.Products.GroupBy(p => p.ItemNumber)
-                                               .Select(i => i.First())
-                                               .ToDictionary(p => p.ItemNumber);
+            Dictionary<string, Product> productHash = products.Products.GroupBy(p => p.ItemNumber)
+                                                              .Select(i => i.First())
+                                                              .ToDictionary(p => p.ItemNumber);
 
-            Parallel.ForEach(list, listItem =>
-            {
-                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+            Parallel.ForEach(list, listItem => {
+                Product prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
                 if (prod != null)
                 {
@@ -735,39 +809,46 @@ namespace KeithLink.Svc.Impl.Service.List
 
         private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
         {
-            if (list.Items == null || list.Items.Count == 0)
+            if (list.Items == null ||
+                list.Items.Count == 0)
+            {
                 return;
+            }
 
-            if (_contractdictionary == null) { _contractdictionary = GetContractInformation(catalogInfo); }
+            if (_contractdictionary == null)
+            {
+                _contractdictionary = GetContractInformation(catalogInfo);
+            }
 
-
-            ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
+            ProductsReturn products = new ProductsReturn { Products = new List<Product>() };
 
             {
-                var batch = list.Items.Select(i => i.ItemNumber)
-                                      .ToList();
+                List<string> batch = list.Items.Select(i => i.ItemNumber)
+                                         .ToList();
 
-                var tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
+                ProductsReturn tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
-                if (tempProducts != null) {
+                if (tempProducts != null)
+                {
                     products.Products.AddRange(tempProducts.Products);
                 }
             }
 
-            var productHash = products.Products.GroupBy(p => p.ItemNumber)
-                                               .Select(i => i.First())
-                                               .ToDictionary(p => p.ItemNumber);
+            Dictionary<string, Product> productHash = products.Products.GroupBy(p => p.ItemNumber)
+                                                              .Select(i => i.First())
+                                                              .ToDictionary(p => p.ItemNumber);
             Dictionary<long, CustomInventoryItem> customItemHash = GetCustomItemHash(catalogInfo);
 
             List<ItemHistory> itemStatistics = _itemHistoryRepo.Read(f => f.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                           f.CustomerNumber.Equals(catalogInfo.CustomerId))
                                                                .ToList();
 
-            Parallel.ForEach(list.Items, listItem =>
-            {
-
-                if (listItem.CustomInventoryItemId > 0) {
-                    if(customItemHash != null && customItemHash.ContainsKey(listItem.CustomInventoryItemId)) {
+            Parallel.ForEach(list.Items, listItem => {
+                if (listItem.CustomInventoryItemId > 0)
+                {
+                    if (customItemHash != null &&
+                        customItemHash.ContainsKey(listItem.CustomInventoryItemId))
+                    {
                         CustomInventoryItem item = customItemHash[listItem.CustomInventoryItemId];
                         listItem.IsValid = true;
                         listItem.Name = item.Name;
@@ -782,10 +863,13 @@ namespace KeithLink.Svc.Impl.Service.List
                         listItem.PackagePriceNumeric = (double)item.PackagePrice;
                         listItem.Each = item.Each;
                     }
-                } else {
-                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+                }
+                else
+                {
+                    Product prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
-                    if (prod != null) {
+                    if (prod != null)
+                    {
                         listItem.IsValid = true;
                         listItem.Name = prod.Name;
                         listItem.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
@@ -825,7 +909,7 @@ namespace KeithLink.Svc.Impl.Service.List
                         if (prod.Nutritional != null)
                         {
                             listItem.StorageTemp = prod.Nutritional.StorageTemp;
-                            listItem.Nutritional = new Nutritional()
+                            listItem.Nutritional = new Nutritional
                             {
                                 CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
                                 GrossWeight = prod.Nutritional.GrossWeight,
@@ -836,7 +920,7 @@ namespace KeithLink.Svc.Impl.Service.List
                                 Width = prod.Nutritional.Width
                             };
                         }
-                        listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel()
+                        listItem.ItemStatistics = new ItemHistoryModel
                         {
                             CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) &&
                                                                     f.UnitOfMeasure.Equals("C"))
@@ -855,48 +939,64 @@ namespace KeithLink.Svc.Impl.Service.List
             MarkFavoritesAndAddNotes(user, list, catalogInfo);
         }
 
-        private Dictionary<long, CustomInventoryItem> GetCustomItemHash(UserSelectedContext catalogInfo) {
-            var custominv = _customInventoryRepo.GetItemsByBranchAndCustomer(catalogInfo.BranchId, catalogInfo.CustomerId);
+        private Dictionary<long, CustomInventoryItem> GetCustomItemHash(UserSelectedContext catalogInfo)
+        {
+            List<CustomInventoryItem> custominv = _customInventoryRepo.GetItemsByBranchAndCustomer(catalogInfo.BranchId, catalogInfo.CustomerId);
             Dictionary<long, CustomInventoryItem> customItemHash = null;
             if (custominv != null)
+            {
                 customItemHash = custominv.ToDictionary(i => i.Id);
+            }
             return customItemHash;
         }
 
         private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
         {
-            if (listItems == null || listItems.Count == 0 || user == null)
+            if (listItems == null ||
+                listItems.Count == 0 ||
+                user == null)
+            {
                 return;
+            }
 
-            var prices = new PriceReturn() { Prices = new List<Price>() };
+            PriceReturn prices = new PriceReturn { Prices = new List<Price>() };
 
-            if (_priceLogic != null) {
+            if (_priceLogic != null)
+            {
                 prices.AddRange(_priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
-                                                      listItems.Where(x => x.CustomInventoryItemId < 1).GroupBy(g => g.ItemNumber)
-                                                               .Select(i => new Product()
+                                                      listItems.Where(x => x.CustomInventoryItemId < 1)
+                                                               .GroupBy(g => g.ItemNumber)
+                                                               .Select(i => new Product
                                                                {
-                                                                   ItemNumber = i.First().ItemNumber,
-                                                                   CatchWeight = i.First().CatchWeight,
-                                                                   PackagePriceNumeric = i.First().PackagePriceNumeric,
-                                                                   CasePriceNumeric = i.First().CasePriceNumeric,
-                                                                   CategoryName = i.First().CategoryName,
-                                                                   CatalogId = i.First().CatalogId,
-                                                                   Unfi = i.First().Unfi
+                                                                   ItemNumber = i.First()
+                                                                                 .ItemNumber,
+                                                                   CatchWeight = i.First()
+                                                                                  .CatchWeight,
+                                                                   PackagePriceNumeric = i.First()
+                                                                                          .PackagePriceNumeric,
+                                                                   CasePriceNumeric = i.First()
+                                                                                       .CasePriceNumeric,
+                                                                   CategoryName = i.First()
+                                                                                   .CategoryName,
+                                                                   CatalogId = i.First()
+                                                                                .CatalogId,
+                                                                   Unfi = i.First()
+                                                                           .Unfi
                                                                })
                                                                .Distinct()
                                                                .ToList()
-                                                      )
+                                                     )
                                );
             }
 
             Dictionary<string, Price> priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
 
-            Parallel.ForEach(listItems, listItem =>
-            {
-                var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
-                if (price != null && (listItem.ProprietaryCustomers == null |
-                                      (listItem.ProprietaryCustomers != null &&
-                                       listItem.ProprietaryCustomers.IndexOf(catalogInfo.CustomerId) > -1)))
+            Parallel.ForEach(listItems, listItem => {
+                Price price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
+                if (price != null &&
+                    (listItem.ProprietaryCustomers == null) |
+                    (listItem.ProprietaryCustomers != null &&
+                     listItem.ProprietaryCustomers.IndexOf(catalogInfo.CustomerId) > -1))
                 {
                     listItem.PackagePrice = price.PackagePrice.ToString();
                     listItem.CasePrice = price.CasePrice.ToString();
@@ -911,37 +1011,38 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
         {
-            List<RecommendedItemModel> recommendedItemsList = null;
             ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
 
             if (list != null &&
                 list.Items != null &&
                 list.Items.Count > 0)
             {
-                recommendedItemsList = list.Items.Select(i => new RecommendedItemModel()
+                List<RecommendedItemModel> recommended = list.Items.Select(i => new RecommendedItemModel
                 {
                     ItemNumber = i.ItemNumber,
                     Name = i.Name,
-                    Images = (_productImageRepo.GetImageList(i.ItemNumber, true) != null) ?
-                        _productImageRepo.GetImageList(i.ItemNumber, true).ProductImages : null
-                }).ToList();
-
+                    Images = _productImageRepo.GetImageList(i.ItemNumber, true) != null ?
+                                                                              _productImageRepo.GetImageList(i.ItemNumber, true)
+                                                                                               .ProductImages : null
+                })
+                                                             .ToList();
             }
-            return recommendedItemsList;
+            return new List<RecommendedItemModel>();
         }
-
 
         public ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
         {
-            if (list.Items == null || list.Items.Count == 0)
+            if (list.Items == null ||
+                list.Items.Count == 0)
+            {
                 return null;
+            }
 
             Dictionary<string, ListItemModel> notesHash = GetNotesHash(catalogInfo);
 
             Dictionary<string, ListItemModel> favHash = GetFavoritesHash(user, catalogInfo);
 
-            Parallel.ForEach(list.Items, listItem =>
-            {
+            Parallel.ForEach(list.Items, listItem => {
                 listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);
                 listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Notes : null;
             });
@@ -951,20 +1052,24 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public List<Product> MarkFavoritesAndAddNotes(UserProfile user, List<Product> list, UserSelectedContext catalogInfo)
         {
-            if (list == null || list.Count == 0)
+            if (list == null ||
+                list.Count == 0)
+            {
                 return null;
+            }
 
             Dictionary<string, ListItemModel> notesHash = GetNotesHash(catalogInfo);
 
             Dictionary<string, ListItemModel> favHash = GetFavoritesHash(user, catalogInfo);
 
-            var history = _historyListLogic.ItemsInHistoryList(catalogInfo, list.Select(p => p.ItemNumber).ToList());
+            List<InHistoryReturnModel> history = _historyListLogic.ItemsInHistoryList(catalogInfo, list.Select(p => p.ItemNumber)
+                                                                                                       .ToList());
 
-            Parallel.ForEach(list, prod =>
-            {
+            Parallel.ForEach(list, prod => {
                 prod.Favorite = favHash.ContainsKey(prod.ItemNumber);
                 prod.Notes = notesHash.ContainsKey(prod.ItemNumber) ? notesHash[prod.ItemNumber].Notes : null;
-                if (history != null) {
+                if (history != null)
+                {
                     prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
                                             .FirstOrDefault()
                                             .InHistory;
@@ -974,32 +1079,39 @@ namespace KeithLink.Svc.Impl.Service.List
             return list;
         }
 
-        public Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo) {
+        public Dictionary<string, ListItemModel> GetFavoritesHash(UserProfile user, UserSelectedContext catalogInfo)
+        {
             ListModel favorites = _favoritesLogic.GetFavoritesList(user.UserId, catalogInfo, false);
-            var favHash = new Dictionary<string, ListItemModel>();
+            Dictionary<string, ListItemModel> favHash = new Dictionary<string, ListItemModel>();
             if (favorites != null &&
                 favorites.Items != null)
+            {
                 favHash = favorites.Items
                                    .GroupBy(i => i.ItemNumber)
                                    .ToDictionary(f => f.Key, f => f.First());
+            }
             return favHash;
         }
 
-        public Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo) {
+        public Dictionary<string, ListItemModel> GetNotesHash(UserSelectedContext catalogInfo)
+        {
             ListModel notes = _notesLogic.GetList(catalogInfo);
-            var notesHash = new Dictionary<string, ListItemModel>();
+            Dictionary<string, ListItemModel> notesHash = new Dictionary<string, ListItemModel>();
             if (notes != null &&
                 notes.Items != null)
+            {
                 notesHash = notes.Items
                                  .GroupBy(i => i.ItemNumber)
                                  .ToDictionary(n => n.Key, n => n.First());
+            }
             return notesHash;
         }
 
         private void AddContractInformationIfInContract
-            (Dictionary<string, string> contractdictionary, ListItemModel item)
+                (Dictionary<string, string> contractdictionary, ListItemModel item)
         {
-            if (contractdictionary != null && contractdictionary.Count > 0)
+            if (contractdictionary != null &&
+                contractdictionary.Count > 0)
             {
                 if (contractdictionary.ContainsKey(item.ItemNumber))
                 {
@@ -1014,8 +1126,6 @@ namespace KeithLink.Svc.Impl.Service.List
             }
         }
 
-
-
         public List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId)
         {
             ListModel list = ReadList(user, catalogInfo, type, listId);
@@ -1025,28 +1135,30 @@ namespace KeithLink.Svc.Impl.Service.List
 
         public long? AddCustomInventory(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, long customInventoryItemId)
         {
-            var list = ReadListById(user, catalogInfo, listId, type);
+            ListModel list = ReadListById(user, catalogInfo, listId, type);
             CustomInventoryItem customInventoryItem = _customInventoryRepo.Get(customInventoryItemId);
 
             int position = SetPosition(ref list);
 
             // If the list type is favorite or reminder, don't allow duplicates
-            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder)
+            if (list.Type == ListType.Favorite ||
+                list.Type == ListType.Reminder)
             {
-                ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(customInventoryItem.Id)).FirstOrDefault();
+                ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(customInventoryItem.Id))
+                                                  .FirstOrDefault();
                 if (duplicateItem != null)
                 {
                     return duplicateItem.ListItemId;
                 }
             }
 
-            if (customInventoryItem != null) {
-                ListItemModel item = new ListItemModel()
+            if (customInventoryItem != null)
+            {
+                ListItemModel item = new ListItemModel
                 {
                     ItemNumber = customInventoryItem.ItemNumber.Trim(),
                     CatalogId = Constants.CATALOG_CUSTOMINVENTORY,
                     CustomInventoryItemId = customInventoryItemId
-
                 };
 
                 list.Items.Add(item);
@@ -1060,20 +1172,24 @@ namespace KeithLink.Svc.Impl.Service.List
         public List<long?> AddCustomInventoryItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, long listId, List<long> customInventoryItemIds)
         {
             List<long?> returnValue = new List<long?>();
-            var list = ReadListById(user, catalogInfo, listId, type);
+            ListModel list = ReadListById(user, catalogInfo, listId, type);
             List<CustomInventoryItem> customInventoryItems = _customInventoryRepo.GetItemsByItemIds(customInventoryItemIds);
 
-            if (customInventoryItems == null) {
+            if (customInventoryItems == null)
+            {
                 customInventoryItems = new List<CustomInventoryItem>();
             }
 
             int position = SetPosition(ref list);
 
             // If the list type is favorite or reminder, don't allow duplicates
-            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder)
+            if (list.Type == ListType.Favorite ||
+                list.Type == ListType.Reminder)
             {
-                foreach (CustomInventoryItem item in customInventoryItems) {
-                    ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(item.Id)).FirstOrDefault();
+                foreach (CustomInventoryItem item in customInventoryItems)
+                {
+                    ListItemModel duplicateItem = list.Items.Where(x => x.CustomInventoryItemId.Equals(item.Id))
+                                                      .FirstOrDefault();
                     if (duplicateItem != null)
                     {
                         returnValue.Add(duplicateItem.CustomInventoryItemId);
@@ -1120,31 +1236,33 @@ namespace KeithLink.Svc.Impl.Service.List
             return position;
         }
 
-        public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
-                               long headerId, string itemNumber) {
-            ListModel list      = ReadListById(user, catalogInfo, headerId, type);
-            ListItemModel item  = list?.Items
-                                      .FirstOrDefault(i => i.ItemNumber == itemNumber);
+        public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                               long headerId, string itemNumber)
+        {
+            ListModel list = ReadListById(user, catalogInfo, headerId, type);
+            ListItemModel item = list?.Items
+                                     .FirstOrDefault(i => i.ItemNumber == itemNumber);
 
-            if(item != null) {
+            if (item != null)
+            {
                 item.Active = false;
 
                 SaveItem(user, catalogInfo, type, headerId, item);
             }
         }
 
-        public void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, ListType type, 
-                                long headerId, List<string> itemNumbers) {
-            ListModel list                      = ReadListById(user, catalogInfo, headerId, type);
-            IEnumerable<ListItemModel> items    = list.Items
-                                                      .Where(i => itemNumbers.Contains(i.ItemNumber));
+        public void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, ListType type,
+                                long headerId, List<string> itemNumbers)
+        {
+            ListModel list = ReadListById(user, catalogInfo, headerId, type);
+            IEnumerable<ListItemModel> items = list.Items
+                                                   .Where(i => itemNumbers.Contains(i.ItemNumber));
 
-            if(items != null) {
-                Parallel.ForEach(items, i => {
-                                            i.Active = false;
-                                        });
-                
-                SaveItems(user, catalogInfo, type, headerId, 
+            if (items != null)
+            {
+                Parallel.ForEach(items, i => { i.Active = false; });
+
+                SaveItems(user, catalogInfo, type, headerId,
                           items.ToList());
             }
         }
