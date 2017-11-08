@@ -302,8 +302,8 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Lists {
                 var expected = 0;
 
                 // act
+                detail.Active = false;
                 var id = repo.SaveCustomListDetail(detail);
-                repo.DeleteCustomListDetails(id);
                 var results = repo.GetCustomListDetails(detail.HeaderId);
 
                 // assert
