@@ -710,7 +710,7 @@ namespace KeithLink.Svc.Impl.Service.List
             ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
             {
-                var batch = list.Select(i => i.ItemNumber)
+                var batch = list.Select(i => i.ItemNumber.Trim())
                                 .ToList();
 
                 var tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
@@ -783,7 +783,7 @@ namespace KeithLink.Svc.Impl.Service.List
                         listItem.Each = item.Each;
                     }
                 } else {
-                    var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+                    var prod = productHash.ContainsKey(listItem.ItemNumber.Trim()) ? productHash[listItem.ItemNumber.Trim()] : null;
 
                     if (prod != null) {
                         listItem.IsValid = true;
