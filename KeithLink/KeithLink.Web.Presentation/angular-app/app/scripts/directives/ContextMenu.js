@@ -71,7 +71,7 @@ angular.module('bekApp')
                 ListService.addItemToFavorites(newItem)
               ]);
           } else {
-              ListService.addItemToFavorites(newItem);
+              ListService.addItem(selectedList, newItem);
           }
         }
       };
