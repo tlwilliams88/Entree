@@ -1,6 +1,6 @@
 var fsm = angular.module('fsm', []);
 
-fsm.directive('fsmStickyHeader', function(){
+fsm.directive('fsmStickyHeader', ['$window', function($window){
     return {
         restrict: 'EA',
         replace: false,
@@ -37,11 +37,24 @@ fsm.directive('fsmStickyHeader', function(){
                 header = clonedHeader.clone();
                 clonedHeader.after(header);
                 clonedHeader.addClass('fsm-sticky-header');
-                clonedHeader.css({
-                    position: 'fixed',
-                    'z-index': 999,
-                    visibility: 'hidden'
-                });                
+                if(clonedHeader[0].attributes[0].name == 'page-header-bar') {
+                    clonedHeader.css({
+                        position: 'fixed',
+                        'z-index': 999,
+                        visibility: 'hidden'
+                    });
+                } else if(clonedHeader[0].attributes[0].name == 'list-management-elements') {
+                    clonedHeader.css({
+                        position: 'fixed',
+                        visibility: 'hidden'
+                    });
+                } else {
+                    clonedHeader.css({
+                        position: 'fixed',
+                        'z-index': 997,
+                        visibility: 'hidden'
+                    });
+                }      
                 calculateSize();
             }
 
@@ -63,55 +76,63 @@ fsm.directive('fsmStickyHeader', function(){
                         clonedColumn.css( 'width', column.offsetWidth + 'px');
                     });
                 }
-            }            
+            }
+            
+            function checkIfSmallScreen() {
+                var mediaQuery = attributes.mediaQuery || false;
+                var matchMedia = $window.matchMedia;
+
+                return mediaQuery && !(matchMedia ('(' + mediaQuery + ')').matches || matchMedia (mediaQuery).matches);
+            }  
 
             function determineVisibility(){
-                var scrollTop = scrollableContainer.scrollTop() + scope.scrollStop;
-                var contentTop = content.position().top;
-                var contentBottom = contentTop + content.outerHeight(false);
+                if(checkIfSmallScreen() == false) {
+                    var scrollTop = scrollableContainer.scrollTop() + scope.scrollStop;
+                    var contentTop = content.position().top;
+                    var contentBottom = contentTop + content.outerHeight(false);
 
-                contentTop += scrollOffset;
+                    contentTop += scrollOffset;
 
-                if ( (scrollTop > contentTop) && (scrollTop < contentBottom) && !(clonedHeader && header && (scope.currentPage !== scope.thispage) )) {
-                    if (!clonedHeader){
-                        scope.thispage = scope.currentPage;
-                        createClone();    
-                        clonedHeader.css({ "visibility": "visible"});
-                    }
-                    
-                    if ( scrollTop < contentBottom && scrollTop > contentBottom - clonedHeader.outerHeight(false) ){
-                        var top = contentBottom - scrollTop + scope.scrollStop - clonedHeader.outerHeight(false);
-                        clonedHeader.css('top', top + 'px');
+                    if ( (scrollTop > contentTop) && (scrollTop < contentBottom) && !(clonedHeader && header && (scope.currentPage !== scope.thispage) )) {
+                        if (!clonedHeader){
+                            scope.thispage = scope.currentPage;
+                            createClone();    
+                            clonedHeader.css({ "visibility": "visible"});
+                        }
+                        
+                        if ( scrollTop < contentBottom && scrollTop > contentBottom - clonedHeader.outerHeight(false) ){
+                            var top = contentBottom - scrollTop + scope.scrollStop - clonedHeader.outerHeight(false);
+                            clonedHeader.css('top', top + 'px');
+                        } else {
+                            calculateSize();
+                        }
                     } else {
-                        calculateSize();
-                    }
-                } else {
-                    if (clonedHeader){
-                        /*
-                         * remove cloned element (switched places with original on creation)
-                         */
-                        header.remove();
-                        header = clonedHeader;
-                        clonedHeader = null;
+                        if (clonedHeader){
+                            /*
+                             * remove cloned element (switched places with original on creation)
+                             */
+                            header.remove();
+                            header = clonedHeader;
+                            clonedHeader = null;
 
-                        header.removeClass('fsm-sticky-header');
-                        header.css({
-                            position: 'relative',
-                            left: 0,
-                            top: 0,
-                            width: 'auto',
-                            'z-index': 0,
-                            visibility: 'visible'
-                        });
-                    }
-                };
+                            header.removeClass('fsm-sticky-header');
+                            header.css({
+                                position: 'relative',
+                                left: 0,
+                                top: 0,
+                                width: 'auto',
+                                visibility: 'visible'
+                            });
+                        }
+                    };
+                }
             };
 
             scrollableContainer.scroll(determineVisibility).trigger( "scroll" );
             scrollableContainer.resize(determineVisibility);
         }
     }
-});
+}]);
 
 fsm.directive('fsmMenuButton', function(){
     return {

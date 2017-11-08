@@ -19,7 +19,7 @@
   <div class="menu-overlay" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:100005;">
+  <div class="sidebar hidden-print mobile-menu-overlay" ng-class="{'open': isSidebarOpen}" style="z-index:10005;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
@@ -379,8 +379,8 @@
 
 
         <div id="menuIcon" class="col-md-1 col-lg-2 sidebar-logo hidden-xs hidden-sm" style="height:50px; width: 150px; display: inline-flex; margin-right: 35px; margin-left: -15px">
-          <a ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
-          <!-- <a ng-show="tutorialRunning" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a> -->
+          <a ng-hide="tutorialRunning" ng-click="isSidebarOpen = !isSidebarOpen" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
+          <a ng-show="tutorialRunning" class="margin-top-5 margin-right-10" style="font-size: 28px; z-index:1;"><span class="icon-list2 user-bar-buttons "></span></a>
           <img ng-if="userProfile.rolename != 'guest'" class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.home" />
           <img ng-if="userProfile.rolename == 'guest'" class="hand-pointer max-width-100Percent height-100Percent" src="images/bek-logo.png" alt="logo" ui-sref="menu.catalog.home({catalogType: 'BEK'})" />
         </div>
