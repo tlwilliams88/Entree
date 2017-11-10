@@ -951,6 +951,33 @@
     <EmbeddedResource Include="Reports\InventoryValuationByContractCategoryThenLabel.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByLabel.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuationByContractCategory.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport_LandscapeNoParYesPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitNoParYesPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitNoParYesPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitYesParYesPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitYesParYesPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitYesParNoPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitYesParNoPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitNoParNoPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_PortraitNoParNoPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">
       <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
     </EmbeddedResource>
@@ -1194,28 +1221,25 @@
     <EmbeddedResource Include="Reports\CartReport.rdlc" />
     <EmbeddedResource Include="Reports\CartReport_Landscape.rdlc" />
     <EmbeddedResource Include="Reports\ListReport.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_YesParYesPriceYesNotes.rdlc">
+    <EmbeddedResource Include="Reports\ListReport_LandscapeYesParYesPriceYesNotes.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_YesParYesPriceNoNotes.rdlc">
+    <EmbeddedResource Include="Reports\ListReport_LandscapeYesParYesPriceNoNotes.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_YesParNoPriceYesNotes.rdlc">
+    <EmbeddedResource Include="Reports\ListReport_LandscapeYesParNoPriceYesNotes.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_YesParNoPriceNoNotes.rdlc">
+    <EmbeddedResource Include="Reports\ListReport_LandscapeYesParNoPriceNoNotes.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_NoParYesPriceYesNotes.rdlc">
+    <EmbeddedResource Include="Reports\ListReport_LandscapeNoParYesPriceYesNotes.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_NoParYesPriceNoNotes.rdlc">
+    <EmbeddedResource Include="Reports\ListReport_LandscapeNoParNoPriceYesNotes.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_NoParNoPriceYesNotes.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_NoParNoPriceNoNotes.rdlc">
+    <EmbeddedResource Include="Reports\ListReport_LandscapeNoParNoPriceNoNotes.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />

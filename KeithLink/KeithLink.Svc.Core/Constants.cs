@@ -342,15 +342,28 @@ namespace KeithLink.Svc.Core
 
         // reportnames
         public const string SET_REPORT_SIZE_LANDSCAPE = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
+        public const string SET_REPORT_SIZE_PORTRAIT = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
+
         public const string REPORT_PRINTLIST = "KeithLink.Svc.Impl.Reports.ListReport.rdlc";
-        public const string REPORT_PRINTLIST_YesParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_YesParYesPriceYesNotes.rdlc";
-        public const string REPORT_PRINTLIST_YesParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_YesParYesPriceNoNotes.rdlc";
-        public const string REPORT_PRINTLIST_YesParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_YesParNoPriceYesNotes.rdlc";
-        public const string REPORT_PRINTLIST_YesParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_YesParNoPriceNoNotes.rdlc";
-        public const string REPORT_PRINTLIST_NoParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParYesPriceYesNotes.rdlc";
-        public const string REPORT_PRINTLIST_NoParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParYesPriceNoNotes.rdlc";
-        public const string REPORT_PRINTLIST_NoParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceYesNotes.rdlc";
-        public const string REPORT_PRINTLIST_NoParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceNoNotes.rdlc";
+
+        public const string REPORT_PRINTLIST_PortraitYesParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitYesParYesPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_PortraitYesParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitYesParYesPriceNoNotes.rdlc";
+        public const string REPORT_PRINTLIST_PortraitYesParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitYesParNoPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_PortraitYesParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitYesParNoPriceNoNotes.rdlc";
+        public const string REPORT_PRINTLIST_PortraitNoParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitNoParYesPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_PortraitNoParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitNoParYesPriceNoNotes.rdlc";
+        public const string REPORT_PRINTLIST_PortraitNoParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitNoParNoPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_PortraitNoParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_PortraitNoParNoPriceNoNotes.rdlc";
+
+        public const string REPORT_PRINTLIST_LandscapeYesParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeYesParYesPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_LandscapeYesParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeYesParYesPriceNoNotes.rdlc";
+        public const string REPORT_PRINTLIST_LandscapeYesParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeYesParNoPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_LandscapeYesParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeYesParNoPriceNoNotes.rdlc";
+        public const string REPORT_PRINTLIST_LandscapeNoParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeNoParYesPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_LandscapeNoParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeNoParYesPriceNoNotes.rdlc";
+        public const string REPORT_PRINTLIST_LandscapeNoParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeNoParNoPriceYesNotes.rdlc";
+        public const string REPORT_PRINTLIST_LandscapeNoParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_LandscapeNoParNoPriceNoNotes.rdlc";
+
         public const string REPORT_NULL_Placeholder = "<BLANK>";
 
         // system alerts
