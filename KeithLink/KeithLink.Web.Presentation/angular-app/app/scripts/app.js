@@ -48,7 +48,6 @@ angular
 
   AnalyticsProvider.setAccount(ENV.googleAnalytics);
   AnalyticsProvider.useECommerce(true, true);
-  AnalyticsProvider.enterDebugMode(true);
 
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
