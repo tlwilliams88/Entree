@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants', 'LocalStorage', '$rootScope',
-    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants, LocalStorage, $rootScope) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants', 'LocalStorage', '$rootScope', 'AnalyticsService',
+    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants, LocalStorage, $rootScope, AnalyticsService) {
 
     var Service = {
 
@@ -160,14 +160,15 @@ angular.module('bekApp')
         newCart.listid = listid;
         newCart.listtype = listtype;
         return Cart.save({}, newCart).$promise.then(function(response) {
+            AnalyticsService.recordAddToCart(newCart);
 
-          newCart.id = response.successResponse.listitemid;
-          newCart.createddate = new Date();
-          newCart.itemcount = newCart.items.length;
-          newCart.items = [];
-          Service.cartHeaders.push(newCart);
-          Service.getCartHeaders();
-          return newCart;
+            newCart.id = response.successResponse.listitemid;
+            newCart.createddate = new Date();
+            newCart.itemcount = newCart.items.length;
+            newCart.items = [];
+            Service.cartHeaders.push(newCart);
+            Service.getCartHeaders();
+            return newCart;
         });
       },
 

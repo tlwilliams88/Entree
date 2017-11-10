@@ -501,7 +501,7 @@ angular.module('bekApp')
                   listId: $stateParams.listId,
                   listType: $stateParams.listType
               }
-            } else if (list.length > 0) {
+          } else if (lists.length > 0) {
               var contractList = $filter('filter')(lists, { type: 2 }),
                   historyList = $filter('filter')(lists, { type: 5 }),
                   favoritesList = $filter('filter')(lists, { type: 1 }),
