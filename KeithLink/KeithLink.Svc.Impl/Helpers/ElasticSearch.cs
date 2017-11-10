@@ -37,9 +37,9 @@ namespace KeithLink.Svc.Impl.Helpers
 
         #region " properties "
 
-            public ElasticClient ElasticClient {
-                get { return _client; }
-            }
+        public ElasticClient ElasticClient {
+            get { return _client; }
+        }
 
         #endregion
 

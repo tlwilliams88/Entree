@@ -11,11 +11,14 @@ using KeithLink.Svc.Impl.Seams;
 
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
-    public class ElasticSearchCatalogRepositoryTests : BaseDITests {
+namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
+{
+    public class ElasticSearchCatalogRepositoryTests : BaseDITests
+    {
 
         #region Setup
-        private static ICatalogRepository MakeTestsRepository() {
+        private static ICatalogRepository MakeTestsRepository()
+        {
             BEKConfiguration.Reset();
             BEKConfiguration.Add("ElasticSearchURL", "http://localhost/Test");
 
@@ -23,7 +26,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
             return testunit;
         }
 
-        private static dynamic MakeTestProduct() {
+        private static dynamic MakeTestProduct()
+        {
             dynamic testProduct = new ExpandoObject();
             testProduct._index = "fsa";
             testProduct._type = "product";
@@ -132,7 +136,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
         public class LoadProductFromElasticSearchProduct
         {
             [Fact]
-            public void GoodItem_DetailIsExpected() {
+            public void GoodItem_DetailIsExpected()
+            {
                 // arrange
                 var testunit = MakeTestsRepository();
                 dynamic testProduct = MakeTestProduct();
@@ -154,7 +159,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
         public class SeekSpecialFilter
         {
             [Fact]
-            public void ContainsSpecialFilter_ReturnsOneItem() {
+            public void ContainsSpecialFilter_ReturnsOneItem()
+            {
                 // arrange
                 var testunit2 = MakeTestsRepository();
                 dynamic testFacet = "mfrname: PACKER___itemspecs: sellsheet___temp_zone: c___specialfilters: test";
@@ -168,7 +174,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
             }
 
             [Fact]
-            public void ContainsSpecialFilter_ReturnsValue() {
+            public void ContainsSpecialFilter_ReturnsValue()
+            {
                 // arrange
                 var testunit2 = MakeTestsRepository();
                 dynamic testFacet = "mfrname: PACKER___itemspecs: sellsheet___temp_zone: c___specialfilters:test";
@@ -182,7 +189,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
             }
 
             [Fact]
-            public void NoSpecialFilter_ReturnsZeroItems() {
+            public void NoSpecialFilter_ReturnsZeroItems()
+            {
                 // arrange
                 var testunit = MakeTestsRepository();
                 dynamic testFacet = "mfrname: PACKER___itemspecs: sellsheet___temp_zone: c";

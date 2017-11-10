@@ -115,8 +115,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                     It.Is<string>(p => p == "FUT"),
                     It.Is<List<string>>(p => p.Contains("555555")),
                     It.IsAny<SearchInputModel>()))
-                .Returns(new ProductsReturn
-                {
+                .Returns(new ProductsReturn {
                     Count = 1,
                     TotalCount = 1,
                     Facets = MakeFacets(),
@@ -133,8 +132,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                     It.IsAny<int>(),
                     It.IsAny<int>(),
                     It.IsAny<string>()))
-                .Returns(new CategoriesReturn
-                {
+                .Returns(new CategoriesReturn {
                     Categories = new List<Category>()
                     {
                         new Category()
@@ -212,8 +210,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                     It.IsAny<UserSelectedContext>(),
                     It.IsAny<string>(),
                     It.IsAny<SearchInputModel>()))
-                .Returns(new ProductsReturn()
-                {
+                .Returns(new ProductsReturn() {
                     Count = 1,
                     TotalCount = 1,
                     Facets = MakeFacets(),
@@ -241,8 +238,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             mockRepo.Setup(d => d.GetImageList(
                     It.Is<string>(i => i.Equals("555555")),
                     It.Is<bool>(i => i.Equals(true))))
-                .Returns(new ProductImageReturn()
-                {
+                .Returns(new ProductImageReturn() {
                     ProductImages = new List<ProductImage>()
                     {
                         new ProductImage()
@@ -266,8 +262,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
-                .Returns(new CategoriesReturn
-                {
+                .Returns(new CategoriesReturn {
                     Categories = new List<Category>()
                     {
                         new Category()
@@ -329,7 +324,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                     It.IsAny<string>(),
                     It.IsAny<string>(),
                     It.IsAny<string>()))
-                .Returns((CategoriesReturn) null);
+                .Returns((CategoriesReturn)null);
 
             mockCacheRepo.Setup(func => func.AddItem(
                 It.IsAny<string>(),
@@ -347,10 +342,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             Mock<ICategoryImageRepository> mockImageRepo = new Mock<ICategoryImageRepository>();
 
             mockImageRepo.Setup(func => func.GetImageByCategory(It.IsAny<string>()))
-                .Returns(new CategoryImageReturn()
-                {
-                    CategoryImage = new CategoryImage()
-                    {
+                .Returns(new CategoryImageReturn() {
+                    CategoryImage = new CategoryImage() {
                         FileName = "category.test",
                         Url = "category.test.com",
                         Width = "100px",
@@ -432,8 +425,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
         {
             List<Product> products = new List<Product>();
 
-            products.Add(new Product 
-            {
+            products.Add(new Product {
                 CatalogId = "FUT",
                 ItemNumber = "555555",
                 CategoryCode = "85",
@@ -459,8 +451,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                 ReplacedItem = "000000",
                 ChildNutrition = "N",
 
-                Nutritional = new Nutritional()
-                {
+                Nutritional = new Nutritional() {
                     BrandOwner = "Carlisle Foodservice Products",
                     CountryOfOrigin = "US",
                     GrossWeight = "11.500",
@@ -483,8 +474,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                     NutritionInfo = null,
                     Diets = null,
 
-                    Allergens = new Allergen()
-                    {
+                    Allergens = new Allergen() {
                         freefrom = new List<string>() { },
                         maycontain = new List<string>() { },
                         contains = new List<string>() { }
@@ -514,8 +504,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                 List<string> testItemNumbers = new List<string> {
                     "555555"
                 };
-                UserSelectedContext testContext = new UserSelectedContext 
-                {
+                UserSelectedContext testContext = new UserSelectedContext {
 
                     BranchId = "FUT",
                     CustomerId = "123456"
@@ -616,14 +605,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             {
                 // arrange
                 ICatalogLogic testLogic = MakeMockLogic();
-                UserSelectedContext catalogInfo = new UserSelectedContext()
-                {
+                UserSelectedContext catalogInfo = new UserSelectedContext() {
                     BranchId = "FRT?",
                     CustomerId = "123456"
                 };
                 string search = "hotdog";
-                SearchInputModel searchModel = new SearchInputModel
-                {
+                SearchInputModel searchModel = new SearchInputModel {
                     From = 1,
                     Size = 1,
                     Facets = "testfacet",
@@ -717,7 +704,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             {
 
                 [Fact]
-                public void GoodCatalogId_ReturnsTrue() {
+                public void GoodCatalogId_ReturnsTrue()
+                {
                     // arrange
                     ICatalogLogic testLogic = MakeMockLogic();
                     String catalogId = "FRT?";
@@ -730,7 +718,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                 }
 
                 [Fact]
-                public void BadCatalogId_ReturnsFalse() {
+                public void BadCatalogId_ReturnsFalse()
+                {
                     // arrange
                     ICatalogLogic testLogic = MakeMockLogic();
                     String catalogId = "bek";
@@ -747,7 +736,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             {
 
                 [Fact]
-                public void GoodBranch_ReturnsProducts() {
+                public void GoodBranch_ReturnsProducts()
+                {
                     // arrange
                     ICatalogLogic testLogic = MakeMockLogic();
                     String branch = "FRT?";
@@ -766,7 +756,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                 }
 
                 [Fact]
-                public void EmptyIds_ReturnsNoProducts() {
+                public void EmptyIds_ReturnsNoProducts()
+                {
                     // arrange
                     ICatalogLogic testLogic = MakeMockLogic();
                     String branch = "FRT?";
@@ -784,7 +775,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             {
 
                 [Fact]
-                public void GoodUserContext_ReturnsProducts() {
+                public void GoodUserContext_ReturnsProducts()
+                {
                     // arrange
                     ICatalogLogic testLogic = MakeMockLogic();
                     UserSelectedContext testContext = new UserSelectedContext() {
@@ -806,7 +798,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                 }
 
                 [Fact]
-                public void EmptyIds_ReturnsNoProducts() {
+                public void EmptyIds_ReturnsNoProducts()
+                {
                     // arrange
                     ICatalogLogic testLogic = MakeMockLogic();
                     UserSelectedContext testContext = new UserSelectedContext() {
@@ -827,7 +820,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             {
 
                 [Fact]
-                public void GoodParams_ReturnsProducts() {
+                public void GoodParams_ReturnsProducts()
+                {
                     // arrange
                     ICatalogLogic testLogic = MakeMockLogic();
                     UserSelectedContext testContext = new UserSelectedContext() {
@@ -835,8 +829,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
                         CustomerId = "123456"
                     };
                     String search = "hotdog";
-                    SearchInputModel searchModel = new SearchInputModel()
-                    {
+                    SearchInputModel searchModel = new SearchInputModel() {
                         From = 0,
                         Size = 1,
                         Facets = "",
