@@ -312,7 +312,7 @@ module.exports = function (grunt) {
               files: [{
                 expand: true,
                 cwd: '<%= yeoman.app %>/newrelic/newrelic-dev',
-                dest: '<%= yeoman.dev %>/newrelic',
+                dest: '<%= yeoman.app %>/newrelic',
                 src: '**/newrelic.js'
               }]
           },
@@ -332,7 +332,15 @@ module.exports = function (grunt) {
                 src: '**/newrelic.js'
               }]
           },
-          inspectlet: {
+          inspectletDebug: {
+              files: [{
+                expand: true,
+                cwd: '<%= yeoman.app %>/inspectlet/inspectlet',
+                dest: '<%= yeoman.app %>/inspectlet',
+                src: '**/inspectlet.js'
+              }]
+          },
+          inspectletTest: {
               files: [{
                 expand: true,
                 cwd: '<%= yeoman.app %>/inspectlet/inspectlet',
@@ -601,7 +609,7 @@ module.exports = function (grunt) {
       'compass:server',
       'copy:dev',
       'copy:newRelicDebug',
-      'copy:inspectlet',
+      'copy:inspectletDebug',
       'karma'
     ]);
 
@@ -611,7 +619,7 @@ module.exports = function (grunt) {
     'compass:server',
     'copy:dev',
     'copy:newRelicDebug',
-    'copy:inspectlet',
+    'copy:inspectletDebug',
     'karma'
   ]);
 
@@ -626,7 +634,7 @@ module.exports = function (grunt) {
     'ngmin',
     'copy:dist',
     'copy:newRelicTest',
-    'copy:inspectlet',
+    'copy:inspectletTest',
     'cssmin',
     'uglify',
     'filerev',
@@ -645,7 +653,7 @@ module.exports = function (grunt) {
     'ngmin',
     'copy:dist',
     'copy:newRelic',
-    'copy:inspectlet',
+    'copy:inspectletTest',
     'cssmin',
     'uglify',
     'filerev',

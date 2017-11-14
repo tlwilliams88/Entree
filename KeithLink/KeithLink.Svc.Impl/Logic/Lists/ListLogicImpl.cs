@@ -1195,13 +1195,13 @@ namespace KeithLink.Svc.Impl.Logic.Lists
 
             if (cachedList != null)
             {
-                ListModel cachedReturnList = cachedList.ShallowCopy();
+                ListModel cachedReturnList = cachedList.Clone();
                 stopWatch.Read(_log, "GetListModel - ShallowCopy");
 
                 RefreshSharingProps(catalogInfo, Id, cachedReturnList);
                 stopWatch.Read(_log, "GetListModel - RefreshSharingProps");
 
-                returnList = cachedReturnList.ShallowCopy();
+                returnList = cachedReturnList.Clone();
                 stopWatch.Read(_log, "GetListModel - ShallowCopy");
             }
             else
@@ -1226,7 +1226,7 @@ namespace KeithLink.Svc.Impl.Logic.Lists
                                           tempList);
                 stopWatch.Read(_log, "GetListModel - AddItem");
 
-                returnList = tempList.ShallowCopy();
+                returnList = tempList.Clone();
             }
             return returnList;
         }

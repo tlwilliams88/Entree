@@ -378,7 +378,9 @@ angular.module('bekApp')
         $scope.isCustomInventoryList = false;
       }
       
-      var isContractList = $filter('filter')($scope.lists, {listid: id})[0].is_contract_list;
+      var list = $filter('filter')($scope.lists, {listid: id})[0];
+      
+      var isContractList = list && list.is_contract_list == true ? true : false;
       
       if(isContractList == true){
           $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
