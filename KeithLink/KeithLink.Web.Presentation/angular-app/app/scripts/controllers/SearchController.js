@@ -627,17 +627,6 @@ angular.module('bekApp')
 
         delete $scope.searchMessage;
 
-        $timeout(function() {
-            $('.nav').on( 'mousewheel DOMMouseScroll', function (e) { 
-
-                var d = e.originalEvent.wheelDelta || -e.originalEvent.detail,
-                    dir = d > 0 ? 'up' : 'down',
-                    stop = (dir == 'up' && this.scrollTop == 0) || 
-                           (dir == 'down' && this.scrollTop >= this.scrollHeight-this.offsetHeight);
-                stop && e.preventDefault();
-            });
-        }, 100);
-
         return data.facets;
         });
       }, function(error) {
