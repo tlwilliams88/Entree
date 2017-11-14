@@ -87,10 +87,8 @@ angular
     }
   };
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService', '$analytics',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService, $analytics) {
-
-      $analytics.setUserProperties({dimension2: localStorageService.get('roleName')});
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService', 'localStorageService', 'Analytics', 'OrderService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService, localStorageService, Analytics, OrderService) {
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
