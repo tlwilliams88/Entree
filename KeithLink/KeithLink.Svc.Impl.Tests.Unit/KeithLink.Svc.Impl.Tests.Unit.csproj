@@ -81,6 +81,7 @@
     <Compile Include="Extensions\ListModelExtensionsTests.cs" />
     <Compile Include="Helpers\ItemOrderHistoryHelperTests.cs" />
     <Compile Include="Logic\Cache\CacheListLogicTests.cs" />
+    <Compile Include="Logic\CatalogCampaignLogicTests.cs" />
     <Compile Include="Logic\Configuration\ExportSettingLogicTests.cs" />
     <Compile Include="Logic\DivisionLogicImplTests.cs" />
     <Compile Include="Logic\Lists\ContractListChangesLogicTests.cs" />

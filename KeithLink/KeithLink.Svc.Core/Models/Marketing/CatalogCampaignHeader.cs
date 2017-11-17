@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Models.Marketing
     [DataContract]
     public class CatalogCampaignHeader
     {
-        public Int64 Id { get; set; }
+        public long Id { get; set; }
         [DataMember(Name = "uri")]
         public string Uri { get; set; }
         [DataMember(Name = "name")]

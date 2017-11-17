@@ -124,6 +124,11 @@
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetailTests.cs" />
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListHeaderTests.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetailTests.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignAddOrUpdateRequestModelTests.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignHeaderTests.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignItemTests.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignReturnModelTests.cs" />
+    <Compile Include="Models\Marketing\CatalogCampaignsReturnModelTests.cs" />
     <Compile Include="Models\Orders\OrderLineTests.cs" />
     <Compile Include="Models\Reports\ItemUsageReportItemModelTests.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItemTests.cs" />
@@ -155,7 +160,6 @@
     <Folder Include="Models\EF\" />
     <Folder Include="Models\ElasticSearch\" />
     <Folder Include="Models\ImportFiles\" />
-    <Folder Include="Models\Marketing\" />
     <Folder Include="Models\Messaging\" />
     <Folder Include="Models\ModelExport\" />
     <Folder Include="Models\OnlinePayments\" />
