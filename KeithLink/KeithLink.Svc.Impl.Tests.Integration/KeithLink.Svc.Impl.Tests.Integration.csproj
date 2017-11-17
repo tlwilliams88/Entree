@@ -104,6 +104,7 @@
     <Compile Include="Repository\Lists\RecommendedListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Marketing\CampaignCustomerRepositoryTests.cs" />
+    <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
   </ItemGroup>
   <ItemGroup>
