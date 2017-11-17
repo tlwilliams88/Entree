@@ -8,6 +8,6 @@ namespace KeithLink.Svc.Core.Models.Marketing
 {
     public class CatalogCampaignsReturnModel
     {
-        public List<CatalogCampaignHeader> campaigns { get; set; }
+        public List<CatalogCampaignReturnModel> campaigns { get; set; }
     }
 }

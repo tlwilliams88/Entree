@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Impl.Logic
         public CatalogCampaignReturnModel GetCampaign(int id, bool includeItems = true)
         {
             CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
-            returnValue = _campaignHeaderRepo.GetHeader(id).ToModel();
+            returnValue = _campaignHeaderRepo.GetHeader(id).ToModel(Configuration.PresentationUrl, Configuration.CatalogCampaignImagesUrl);
 
             if (includeItems)
             {
@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Logic
         public CatalogCampaignReturnModel GetCampaignByUri(string uri, bool includeItems = true)
         {
             CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
-            returnValue = _campaignHeaderRepo.GetByUri(uri).ToModel();
+            returnValue = _campaignHeaderRepo.GetByUri(uri).ToModel(Configuration.PresentationUrl, Configuration.CatalogCampaignImagesUrl);
 
             if (includeItems)
             {
@@ -57,7 +57,9 @@ namespace KeithLink.Svc.Impl.Logic
         public CatalogCampaignsReturnModel GetAllCampaigns(bool includeItems = true)
         {
             CatalogCampaignsReturnModel returnValue = new CatalogCampaignsReturnModel();
-            returnValue.campaigns = _campaignHeaderRepo.GetAll();
+            returnValue.campaigns = _campaignHeaderRepo.GetAll()
+                                                       .Select(i => i.ToModel(Configuration.PresentationUrl, Configuration.CatalogCampaignImagesUrl))
+                                                       .ToList();
 
             if (includeItems)
             {

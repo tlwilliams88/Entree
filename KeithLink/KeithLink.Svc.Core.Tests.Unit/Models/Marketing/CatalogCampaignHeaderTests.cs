@@ -24,7 +24,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Marketing {
                 Name = "Fake Name",
                 StartDate = new DateTime(2017, 11, 16, 12, 5, 0, DateTimeKind.Local),
                 Uri = "Fake Uri",
-                HasFilter = true
+                HasFilter = true,
+                LinkToUrl = "http://shazbot.org",
             };
         }
 
@@ -236,6 +237,39 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Marketing {
                     .BeNull();
             }
         }
+
+        public class LinkToUrl
+        {
+            [Fact]
+            public void GoodHeader_HasExpectedValue()
+            {
+                // arrange
+                var header = MakeHeader();
+                var expected = "http://shazbot.org";
+
+                // act
+
+                // assert
+                header.LinkToUrl
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void InitializedHeader_HasDefaultValue()
+            {
+                // arrange
+                var test = new CatalogCampaignHeader();
+
+                // act
+
+                // assert
+                test.LinkToUrl
+                    .Should()
+                    .BeNull();
+            }
+        }
+
 
         public class Name {
             [Fact]

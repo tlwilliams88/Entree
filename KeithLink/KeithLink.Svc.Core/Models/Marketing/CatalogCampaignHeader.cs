@@ -24,6 +24,8 @@ namespace KeithLink.Svc.Core.Models.Marketing
         [DataMember(Name = "enddate")]
         public DateTime EndDate { get; set; }
         public bool HasFilter { get; set; }
+        [DataMember(Name = "link_to_url")]
+        public string LinkToUrl { get; set; }
         [DataMember(Name = "items")]
         public List<CatalogCampaignItem> Items { get; set; }
     }

@@ -24,9 +24,13 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                 Name = "Fake Name",
                 StartDate = new DateTime(2017, 11, 16, 12, 5, 0, DateTimeKind.Local),
                 Uri = "Fake Uri",
-                HasFilter = true
+                HasFilter = true,
+                LinkToUrl = "http://shazbot.org"
             };
         }
+
+        private static string PresentationUrl = "http://shop.benekeith.com";
+        private static string ImageUrl = "http://images.com";
 
         public class ToModel {
             public class Active {
@@ -37,7 +41,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = true;
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Active
@@ -52,7 +56,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = false;
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Active
@@ -69,7 +73,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = "Fake Description";
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Description
@@ -83,7 +87,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var fakeHeader = new CatalogCampaignHeader();
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Description
@@ -100,7 +104,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = new DateTime(2017, 11, 16, 12, 3, 0, DateTimeKind.Local);
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.EndDate
@@ -115,7 +119,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = new DateTime();
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.EndDate
@@ -132,7 +136,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = true;
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.HasFilter
@@ -147,7 +151,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = false;
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.HasFilter
@@ -164,7 +168,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = 17;
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Id
@@ -179,10 +183,112 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = 0;
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Id
+                        .Should()
+                        .Be(expected);
+                }
+            }
+
+            public class ImageDesktop
+            {
+                [Fact]
+                public void GoodHeader_HasExpectedValue()
+                {
+                    // arrange
+                    var fakeHeader = MakeHeader();
+                    var expected = "http://images.com/Fake Uri_desktop.jpg";
+
+                    // act
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
+
+                    // assert
+                    test.ImageDesktop
+                        .Should()
+                        .Be(expected);
+                }
+
+                [Fact]
+                public void InitializedHeader_HasDefaultValue()
+                {
+                    // arrange
+                    var fakeHeader = new CatalogCampaignHeader();
+
+                    // act
+                    var test = fakeHeader.ToModel(PresentationUrl, string.Empty);
+
+                    // assert
+                    test.ImageDesktop
+                        .Should()
+                        .BeNullOrEmpty();
+                }
+            }
+
+            public class ImageMobile
+            {
+                [Fact]
+                public void GoodHeader_HasExpectedValue()
+                {
+                    // arrange
+                    var fakeHeader = MakeHeader();
+                    var expected = "http://images.com/Fake Uri_mobile.jpg";
+
+                    // act
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
+
+                    // assert
+                    test.ImageMobile
+                        .Should()
+                        .Be(expected);
+                }
+
+                [Fact]
+                public void InitializedHeader_HasDefaultValue()
+                {
+                    // arrange
+                    var fakeHeader = new CatalogCampaignHeader();
+
+                    // act
+                    var test = fakeHeader.ToModel(PresentationUrl, string.Empty);
+
+                    // assert
+                    test.ImageMobile
+                        .Should()
+                        .BeNullOrEmpty();
+                }
+            }
+
+
+            public class LinkToUrl {
+                [Fact]
+                public void GoodHeader_HasExpectedValue() {
+                    // arrange
+                    var fakeHeader = MakeHeader();
+                    var expected = "http://shazbot.org";
+
+                    // act
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
+
+                    // assert
+                    test.LinkToUrl
+                        .Should()
+                        .Be(expected);
+                }
+
+                [Fact]
+                public void InitializedHeader_HasDefaultValue() {
+                    // arrange
+                    var fakeHeader = new CatalogCampaignHeader();
+                    var expected = "http://shop.benekeith.com/#/catalog/campaign/";
+
+
+                    // act
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
+
+                    // assert
+                    test.LinkToUrl
                         .Should()
                         .Be(expected);
                 }
@@ -196,7 +302,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = "Fake Name";
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Name
@@ -210,7 +316,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var fakeHeader = new CatalogCampaignHeader();
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Name
@@ -227,7 +333,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = new DateTime(2017, 11, 16, 12, 5, 0, DateTimeKind.Local);
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.StartDate
@@ -242,7 +348,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = new DateTime();
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.StartDate
@@ -259,7 +365,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var expected = "Fake Uri";
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Uri
@@ -273,7 +379,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Extensions.Marketing {
                     var fakeHeader = new CatalogCampaignHeader();
 
                     // act
-                    var test = fakeHeader.ToModel();
+                    var test = fakeHeader.ToModel(PresentationUrl, ImageUrl);
 
                     // assert
                     test.Uri
