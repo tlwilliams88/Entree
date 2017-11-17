@@ -162,15 +162,16 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("invoice/export/")]
-        public HttpResponseMessage ExportInvoices(InvoiceExportRequestModel request, bool forAllCustomers = true) {
+        public HttpResponseMessage ExportInvoices(ExportRequestModel request, bool forAllCustomers = true) {
             HttpResponseMessage ret;
             try {
+
                 List<InvoiceModel> exportData = _invService.GetExportableInvoiceModels(AuthenticatedUser, 
                                                                                        SelectedUserContext,
                                                                                        request, 
                                                                                        forAllCustomers);
 
-                ret = ExportModel<InvoiceModel>(exportData, request.export, SelectedUserContext);
+                ret = ExportModel<InvoiceModel>(exportData, request, SelectedUserContext);
             }
             catch (Exception ex)
             {

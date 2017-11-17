@@ -20,5 +20,7 @@ namespace KeithLink.Svc.Core.Models.ModelExport
         public SortInfo Sort { get; set; }
         [DataMember(Name = "filter")]
         public FilterInfo Filter { get; set; }
+        [DataMember(Name = "daterange")]
+        public FilterInfo DateRange { get; set; }
     }
 }

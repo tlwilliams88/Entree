@@ -60,38 +60,27 @@ angular.module('bekApp')
 
     function invoiceExport() {
         var exportRequestModel = {
-            fields: null,
-            selectedtype: null,
-            sort: null
-        };
-        
-        var pagingExportModel = {
-            size: null,
-            from: null,
-            sort: null,
             filter: null,
             daterange: null,
-            search: null,
-            terms: null,
-            type: null
-        };
-        var exportRequest = exportRequestModel,
-            pagingExport = pagingExportModel;
-      
-      exportRequest.selectedtype = exportConfig.selectedtype;
-      exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : null;
-      
-      pagingExport.filter = exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields : exportParams.params.filter[0].filter;
-      pagingExport.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : null;
-      pagingExport.isViewingAllCustomers = exportParams.isViewingAllCustomers;
-      pagingExport.size = exportParams.params.size;
-      pagingExport.from = exportParams.params.from;
-      
-      // This model is used for invoice exports
-      $scope.invoiceExportRequest = {
-          paging: pagingExport,
-          export: exportRequest
+            sort: null,
+            selectedtype: null,
+        },
+        exportRequest = exportRequestModel;
+
+      if(exportParams.params.filter.name) {
+          if(exportParams.params.filter.name == "Open Invoices") {
+              exportRequest.filter = exportParams.params.filter.filterFields;
+          } else {
+              exportRequest.filter = exportParams.params.filter.filterFields[0];
+          }
+      } else {
+          exportRequest.filter = exportParams.params.filter[0].filter;
       }
+      exportRequest.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : null;
+      exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : null;
+            
+      // This model is used for invoice exports
+      $scope.invoiceExportRequest = exportRequest;
     }
   
     function listExport() {
