@@ -14,7 +14,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Marketing {
                     Description = "Description1",
                     Uri = "uri-1",
                     StartDate = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified),
-                    EndDate = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified),
+                    EndDate = new DateTime(2030, 7, 3, 16, 9, 0, DateTimeKind.Unspecified),
                     Active = true
                   });
             Insert.IntoTable("CatalogCampaignHeader")
@@ -24,7 +24,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Marketing {
                     Description = "Active False",
                     Uri = "active-false",
                     StartDate = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified),
-                    EndDate = new DateTime(2017, 7, 3, 16, 9, 0, DateTimeKind.Unspecified),
+                    EndDate = new DateTime(2030, 7, 3, 16, 9, 0, DateTimeKind.Unspecified),
                     Active = false
                   });
             Insert.IntoTable("CatalogCampaignHeader")

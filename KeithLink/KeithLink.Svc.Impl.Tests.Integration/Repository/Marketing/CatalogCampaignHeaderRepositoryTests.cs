@@ -81,7 +81,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             [Fact]
             public void GoodHeaderId_ReturnsExpectedEndDate() {
                 // arrange
-                DateTime expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
+                DateTime expected = new DateTime(2030, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
                 int headerId = 1;
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
@@ -195,7 +195,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             [Fact]
             public void GoodUri_ReturnsExpectedEndDate() {
                 // arrange
-                DateTime expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
+                DateTime expected = new DateTime(2030, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
                 string uri = "uri-1";
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
@@ -326,7 +326,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             [Fact]
             public void GoodHeader_ReturnsExpectedEndDate() {
                 // arrange
-                DateTime expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
+                DateTime expected = new DateTime(2030, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
                 int headerId = 1;
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
@@ -405,6 +405,36 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
                       .Uri
                       .Should()
                       .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_DoesNotReturnExpiredCampaigns() {
+                // arrange
+                int headerId = 3;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.Where(x => x.Id.Equals(headerId))
+                      .Should()
+                      .BeEmpty();
+            }
+
+
+            [Fact]
+            public void GoodHeader_DoesNotReturnInActiveCampaigns() {
+                // arrange
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.Where(x => x.Active.Equals(false))
+                      .Should()
+                      .BeEmpty();
             }
         }
     }
