@@ -26,6 +26,15 @@ angular.module('bekApp')
 
       var Service = {
         selectedProduct: {},
+        
+        getCampaigns: function() {
+            var campaigns;
+            
+            return $http.get('/catalog/campaign').then(function(resp) {
+                campaigns = resp.data.successResponse.campaigns;
+                return campaigns;
+            })
+        },
 
         getCampaignDetails: function(campaignId) {
           var campaignDetails;
