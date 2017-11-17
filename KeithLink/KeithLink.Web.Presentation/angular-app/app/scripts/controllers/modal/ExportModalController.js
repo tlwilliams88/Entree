@@ -64,13 +64,21 @@ angular.module('bekApp')
             daterange: null,
             sort: null,
             selectedtype: null,
-        };
-        var exportRequest = exportRequestModel;
+        },
+        exportRequest = exportRequestModel;
 
-      exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : null;
-      exportRequest.filter = exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields : exportParams.params.filter[0].filter;
+      if(exportParams.params.filter.name) {
+          if(exportParams.params.filter.name == "Open Invoices") {
+              exportRequest.filter = exportParams.params.filter.filterFields;
+          } else {
+              exportRequest.filter = exportParams.params.filter.filterFields[0];
+          }
+      } else {
+          exportRequest.filter = exportParams.params.filter[0].filter;
+      }
       exportRequest.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : null;
-      
+      exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : null;
+            
       // This model is used for invoice exports
       $scope.invoiceExportRequest = exportRequest;
     }
