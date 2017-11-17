@@ -26,19 +26,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service {
             return logic;
         }
 
-        private static Mock<ICampaignCustomerRepository> MockCustomerRepo() {
-            Mock<ICampaignCustomerRepository> repo = new Mock<ICampaignCustomerRepository>();
-
-            return repo;
-        }
 
         private static CatalogCampaignServiceImpl MakeService(ICatalogLogic catalogLogic = null, ICatalogCampaignLogic campaignLogic = null, 
                                                               ICampaignCustomerRepository campaignCustomerRepository = null) { 
             if(catalogLogic == null) { catalogLogic = MockCatalogLogic().Object; }
             if(campaignLogic == null) { campaignLogic = MockCampaignLogic().Object; }
-            if(campaignCustomerRepository == null) { campaignCustomerRepository = MockCustomerRepo().Object;}
 
-            return new CatalogCampaignServiceImpl(catalogLogic, campaignLogic, campaignCustomerRepository);
+            return new CatalogCampaignServiceImpl(catalogLogic, campaignLogic);
         }
 
         public class GetCatalogCampaignProducts { }

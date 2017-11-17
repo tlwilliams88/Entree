@@ -7,6 +7,6 @@ using KeithLink.Svc.Core.Models.Marketing;
 
 namespace KeithLink.Svc.Core.Interface.Marketing {
     public interface ICampaignCustomerRepository {
-        List<CampaignCustomer> GetAllCustomersByCampaign(int campaignId);
+        List<CampaignCustomer> GetAllCustomersByCampaign(long campaignId);
     }
 }

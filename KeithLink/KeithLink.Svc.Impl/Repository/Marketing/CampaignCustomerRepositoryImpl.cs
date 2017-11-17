@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.Repository.Marketing {
         #endregion
 
         #region methods        
-        public List<CampaignCustomer> GetAllCustomersByCampaign(int campaignId) {
+        public List<CampaignCustomer> GetAllCustomersByCampaign(long campaignId) {
             return base.Read<CampaignCustomer>(SPNAME_GETALLCUSTOMES, PARMNAME_CAMPAIGNID, campaignId);
         }
         #endregion

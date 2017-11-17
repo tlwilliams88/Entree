@@ -13,11 +13,11 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Marketing {
     public class CatalogCampaignsReturnModelTests {
         private static CatalogCampaignsReturnModel MakeModel() {
             return new CatalogCampaignsReturnModel() {
-                campaigns = new List<CatalogCampaignHeader>() {
-                    new CatalogCampaignHeader() {
+                campaigns = new List<CatalogCampaignReturnModel>() {
+                    new CatalogCampaignReturnModel() {
                         Id = 23
                     },
-                    new CatalogCampaignHeader() {
+                    new CatalogCampaignReturnModel() {
                         Id = 46
                     }
                 }
@@ -80,7 +80,7 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Marketing {
                 // assert
                 model.campaigns
                      .Should()
-                     .BeNull();
+                     .BeEmpty();
             }
         }
     }
