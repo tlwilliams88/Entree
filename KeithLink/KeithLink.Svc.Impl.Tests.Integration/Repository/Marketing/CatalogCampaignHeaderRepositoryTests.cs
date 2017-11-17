@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Autofac;
+
 using FluentAssertions;
+
 using KeithLink.Svc.Core.Interface.Marketing;
 using KeithLink.Svc.Core.Models.Marketing;
-using KeithLink.Svc.Impl.Repository.Marketing;
 using KeithLink.Svc.Impl.Repository.SmartResolver;
+
 using Xunit;
 
 namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
         }
 
         private static CatalogCampaignHeader MakeSampleHeader() {
-            return new CatalogCampaignHeader() {
+            return new CatalogCampaignHeader {
                 Name = "Name2",
                 Description = "Description2",
                 Uri = "uri-2",
@@ -32,6 +32,68 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
         }
 
         public class GetHeader : MigratedDatabaseTest {
+            [Fact]
+            public void BadHeaderId_ReturnsNothing() {
+                // arrange
+                int headerId = 5;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                CatalogCampaignHeader header = repo.GetHeader(headerId);
+
+                // assert
+                header.Should()
+                      .BeNull();
+            }
+
+            [Fact]
+            public void GoodHeaderId_ReturnsExpectedActive() {
+                // arrange
+                bool expected = true;
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                CatalogCampaignHeader header = repo.GetHeader(headerId);
+
+                // assert
+                header.Active
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeaderId_ReturnsExpectedDescription() {
+                // arrange
+                string expected = "Description1";
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                CatalogCampaignHeader header = repo.GetHeader(headerId);
+
+                // assert
+                header.Description
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeaderId_ReturnsExpectedEndDate() {
+                // arrange
+                DateTime expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                CatalogCampaignHeader header = repo.GetHeader(headerId);
+
+                // assert
+                header.EndDate
+                      .Should()
+                      .Be(expected);
+            }
+
             [Fact]
             public void GoodHeaderId_ReturnsExpectedId() {
                 // arrange
@@ -49,11 +111,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             }
 
             [Fact]
-            public void GoodHeaderId_ReturnsExpectedName()
-            {
+            public void GoodHeaderId_ReturnsExpectedName() {
                 // arrange
-                var expected = "Name1";
-                var headerId = 1;
+                string expected = "Name1";
+                int headerId = 1;
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
                 // act
@@ -66,45 +127,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             }
 
             [Fact]
-            public void GoodHeaderId_ReturnsExpectedDescription()
-            {
+            public void GoodHeaderId_ReturnsExpectedStartDate() {
                 // arrange
-                var expected = "Description1";
-                var headerId = 1;
-                ICatalogCampaignHeaderRepository repo = MakeRepo();
-
-                // act
-                CatalogCampaignHeader header = repo.GetHeader(headerId);
-
-                // assert
-                header.Description
-                      .Should()
-                      .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeaderId_ReturnsExpectedUri()
-            {
-                // arrange
-                var expected = "uri-1";
-                var headerId = 1;
-                ICatalogCampaignHeaderRepository repo = MakeRepo();
-
-                // act
-                CatalogCampaignHeader header = repo.GetHeader(headerId);
-
-                // assert
-                header.Uri
-                      .Should()
-                      .Be(expected);
-            }
-
-            [Fact]
-            public void GoodHeaderId_ReturnsExpectedStartDate()
-            {
-                // arrange
-                var expected = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified);
-                var headerId = 1;
+                DateTime expected = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified);
+                int headerId = 1;
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
                 // act
@@ -117,15 +143,64 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             }
 
             [Fact]
-            public void GoodHeaderId_ReturnsExpectedEndDate()
-            {
+            public void GoodHeaderId_ReturnsExpectedUri() {
                 // arrange
-                var expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
-                var headerId = 1;
+                string expected = "uri-1";
+                int headerId = 1;
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
                 // act
                 CatalogCampaignHeader header = repo.GetHeader(headerId);
+
+                // assert
+                header.Uri
+                      .Should()
+                      .Be(expected);
+            }
+        }
+
+        public class GetHeaderByUri : MigratedDatabaseTest {
+            [Fact]
+            public void GoodUri_ReturnsExpectedActive() {
+                // arrange
+                bool expected = true;
+                string uri = "uri-1";
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                CatalogCampaignHeader header = repo.GetByUri(uri);
+
+                // assert
+                header.Active
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodUri_ReturnsExpectedDescription() {
+                // arrange
+                string expected = "Description1";
+                string uri = "uri-1";
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                CatalogCampaignHeader header = repo.GetByUri(uri);
+
+                // assert
+                header.Description
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodUri_ReturnsExpectedEndDate() {
+                // arrange
+                DateTime expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
+                string uri = "uri-1";
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                CatalogCampaignHeader header = repo.GetByUri(uri);
 
                 // assert
                 header.EndDate
@@ -134,45 +209,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             }
 
             [Fact]
-            public void GoodHeaderId_ReturnsExpectedActive()
-            {
+            public void GoodUri_ReturnsExpectedId() {
                 // arrange
-                var expected = true;
-                var headerId = 1;
-                ICatalogCampaignHeaderRepository repo = MakeRepo();
-
-                // act
-                CatalogCampaignHeader header = repo.GetHeader(headerId);
-
-                // assert
-                header.Active
-                      .Should()
-                      .Be(expected);
-        }
-
-            [Fact]
-            public void BadHeaderId_ReturnsNothing() {
-                // arrange
-                var headerId = 5;
-                ICatalogCampaignHeaderRepository repo = MakeRepo();
-
-                // act
-                CatalogCampaignHeader header = repo.GetHeader(headerId);
-
-                // assert
-                header.Should()
-                      .BeNull();
-            }
-        }
-
-        public class GetHeaderByUri : MigratedDatabaseTest
-        {
-            [Fact]
-            public void GoodUri_ReturnsExpectedId()
-            {
-                // arrange
-                var expected = 1;
-                var uri = "uri-1";
+                int expected = 1;
+                string uri = "uri-1";
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
                 // act
@@ -185,11 +225,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             }
 
             [Fact]
-            public void GoodUri_ReturnsExpectedName()
-            {
+            public void GoodUri_ReturnsExpectedName() {
                 // arrange
-                var expected = "Name1";
-                var uri = "uri-1";
+                string expected = "Name1";
+                string uri = "uri-1";
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
                 // act
@@ -202,45 +241,10 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             }
 
             [Fact]
-            public void GoodUri_ReturnsExpectedDescription()
-            {
+            public void GoodUri_ReturnsExpectedStartDate() {
                 // arrange
-                var expected = "Description1";
-                var uri = "uri-1";
-                ICatalogCampaignHeaderRepository repo = MakeRepo();
-
-                // act
-                CatalogCampaignHeader header = repo.GetByUri(uri);
-
-                // assert
-                header.Description
-                      .Should()
-                      .Be(expected);
-            }
-
-            [Fact]
-            public void GoodUri_ReturnsExpectedUri()
-            {
-                // arrange
-                var expected = "uri-1";
-                var uri = "uri-1";
-                ICatalogCampaignHeaderRepository repo = MakeRepo();
-
-                // act
-                CatalogCampaignHeader header = repo.GetByUri(expected);
-
-                // assert
-                header.Uri
-                      .Should()
-                      .Be(expected);
-            }
-
-            [Fact]
-            public void GoodUri_ReturnsExpectedStartDate()
-            {
-                // arrange
-                var expected = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified);
-                var uri = "uri-1";
+                DateTime expected = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified);
+                string uri = "uri-1";
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
                 // act
@@ -253,39 +257,155 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
             }
 
             [Fact]
-            public void GoodUri_ReturnsExpectedEndDate()
-            {
+            public void GoodUri_ReturnsExpectedUri() {
                 // arrange
-                var expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
-                var uri = "uri-1";
+                string expected = "uri-1";
+                string uri = "uri-1";
                 ICatalogCampaignHeaderRepository repo = MakeRepo();
 
                 // act
-                CatalogCampaignHeader header = repo.GetByUri(uri);
+                CatalogCampaignHeader header = repo.GetByUri(expected);
 
                 // assert
-                header.EndDate
-                      .Should()
-                      .Be(expected);
-            }
-
-            [Fact]
-            public void GoodUri_ReturnsExpectedActive()
-            {
-                // arrange
-                var expected = true;
-                var uri = "uri-1";
-                ICatalogCampaignHeaderRepository repo = MakeRepo();
-
-                // act
-                CatalogCampaignHeader header = repo.GetByUri(uri);
-
-                // assert
-                header.Active
+                header.Uri
                       .Should()
                       .Be(expected);
             }
         }
 
+        public class GetAll : MigratedDatabaseTest {
+            [Fact]
+            public void GoodHeader_ReturnsExpectedActive() {
+                // arrange
+                bool expected = true;
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First(x => x.Id.Equals(headerId))
+                      .Active
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedCount() {
+                // arrange
+                int expected = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.Count()
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedDescription() {
+                // arrange
+                string expected = "Description1";
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First(x => x.Id.Equals(headerId))
+                      .Description
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedEndDate() {
+                // arrange
+                DateTime expected = new DateTime(2018, 7, 3, 16, 9, 0, DateTimeKind.Unspecified);
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First(x => x.Id.Equals(headerId))
+                      .EndDate
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedId() {
+                // arrange
+                int expected = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First()
+                      .Id
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedName() {
+                // arrange
+                string expected = "Name1";
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First(x => x.Id.Equals(headerId))
+                      .Name
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedStartDate() {
+                // arrange
+                DateTime expected = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified);
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First(x => x.Id.Equals(headerId))
+                      .StartDate
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedUri() {
+                // arrange
+                string expected = "uri-1";
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First(x => x.Id.Equals(headerId))
+                      .Uri
+                      .Should()
+                      .Be(expected);
+            }
+        }
     }
 }

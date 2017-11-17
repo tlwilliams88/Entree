@@ -117,6 +117,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
     <Compile Include="Migrations\v2017.04.01\Migration0042.cs" />
+    <Compile Include="Migrations\v2017.06.00\Migration0061.cs" />
     <Compile Include="Migrations\v2017.06.00\Migration0060.cs" />
     <Compile Include="Migrations\v2017.06.00\Migration0046.cs" />
     <Compile Include="Migrations\v2017.06.00\Migration0044.cs" />
@@ -1665,6 +1666,12 @@
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.02.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0061_2017.06.03_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0061_2017.06.03_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignHeader\GetAllCatalogCampaignHeader_0018_2017.02.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1677,6 +1684,12 @@
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\GetCatalogCampaignHeaderbyUri_0010_0001.12.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\GetCatalogCampaignHeaderByUri_0061_2017.06.03_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\GetCatalogCampaignHeaderByUri_0061_2017.06.03_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\GetCatalogCampaignHeaderByUri_0010_0001.12.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1686,7 +1699,13 @@
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\GetCatalogCampaignHeader_0009_0001.12.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\GetCatalogCampaignHeader_0061_2017.06.03_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\GetCatalogCampaignHeader_0010_0001.12.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\GetCatalogCampaignHeader_0061_2017.06.03_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeader\GetCatalogCampaignHeader_0010_0001.12.00_up.sql">
