@@ -106,6 +106,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SiteCatelog\ElasticSearchCatalogRepositoryTests.cs" />
     <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
+    <Compile Include="Service\CatalogCampaignServiceTests.cs" />
     <Compile Include="Service\Invoices\ExportInvoicesServiceTests.cs" />
     <Compile Include="Service\List\ListServiceTests.cs" />
   </ItemGroup>

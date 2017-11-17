@@ -124,6 +124,7 @@
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListDetailTests.cs" />
     <Compile Include="Models\Lists\RecommendedItems\RecommendedItemsListHeaderTests.cs" />
     <Compile Include="Models\Lists\ReminderItems\ReminderItemsListDetailTests.cs" />
+    <Compile Include="Models\Marketing\CampaignCustomerTests.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignAddOrUpdateRequestModelTests.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignHeaderTests.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignItemTests.cs" />

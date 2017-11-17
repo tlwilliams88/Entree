@@ -75,6 +75,7 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RecentlyOrderedHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RecommendedHeader.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Marketing\CampaignCustomers.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
@@ -124,6 +125,7 @@
       <SubType>Designer</SubType>
     </None>
     <Compile Include="Migrations\v2017.05.05\Migration0041.cs" />
+    <Compile Include="Migrations\v2017.06.03\Migration0062.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1673,6 +1675,12 @@
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCatalogCampaignItemsByHeader\GetAllCatalogCampaignItemsByHeader_0009_0001.12.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCustomersByCampaign\GetAllCustomersByCampaign_0062_2017.06.03_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetAllCustomersByCampaign\GetAllCustomersByCampaign_0062_2017.06.03_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\GetCatalogCampaignHeaderByUri\GetCatalogCampaignHeaderbyUri_0010_0001.12.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -1701,6 +1709,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Marketing\Stored Procedures\UpdateCatalogCampaignItemByHeader\UpdateCatalogCampaignItemByHeader_0018_2017.02.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Tables\CampaignCustomers\CampaignCustomers_0062_2017.06.03_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Marketing\Tables\CampaignCustomers\CampaignCustomers_0062_2017.06.03_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Marketing\Tables\CatalogCampaignHeader\CatalogCampaignHeader_0009_0001.12.00_down.sql">
@@ -1924,7 +1938,6 @@
     <Folder Include="Migrations\Data\IntegrationTests\dbo\" />
     <Folder Include="Migrations\Data\IntegrationTests\ETL\" />
     <Folder Include="Migrations\Data\IntegrationTests\Invoice\" />
-    <Folder Include="Migrations\Data\IntegrationTests\Marketing\" />
     <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
     <Folder Include="Migrations\Data\IntegrationTests\Orders\" />
     <Folder Include="Migrations\Data\IntegrationTests\Profile\" />

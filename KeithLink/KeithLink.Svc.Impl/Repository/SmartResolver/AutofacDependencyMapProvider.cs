@@ -185,6 +185,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // marketing
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
+            builder.RegisterType<CampaignCustomerRepositoryImpl>()
+                   .AsImplementedInterfaces();
 
             // messaging
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
