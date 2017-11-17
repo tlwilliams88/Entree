@@ -23,7 +23,8 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Marketing {
                 },
                 Name = "Fake Name",
                 StartDate = new DateTime(2017, 11, 16, 12, 5, 0, DateTimeKind.Local),
-                Uri = "Fake Uri"
+                Uri = "Fake Uri",
+                HasFilter = true
             };
         }
 
@@ -111,6 +112,36 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Marketing {
 
                 // assert
                 test.EndDate
+                    .Should()
+                    .Be(expected);
+            }
+        }
+
+        public class HasFilter {
+            [Fact]
+            public void GoodHeader_HasExpectedValue() {
+                // arrange
+                var header = MakeHeader();
+                var expected = true;
+
+                // act
+
+                // assert
+                header.HasFilter
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void InitializedHeader_HasDefaultValue() {
+                // arrange
+                var test = new CatalogCampaignHeader();
+                var expected = false;
+
+                // act
+
+                // assert
+                test.HasFilter
                     .Should()
                     .Be(expected);
             }
@@ -293,5 +324,6 @@ namespace KeithLink.Svc.Core.Tests.Unit.Models.Marketing {
                     .BeNull();
             }
         }
+
     }
 }

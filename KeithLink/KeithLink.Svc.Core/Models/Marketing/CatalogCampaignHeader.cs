@@ -23,6 +23,7 @@ namespace KeithLink.Svc.Core.Models.Marketing
         public DateTime StartDate { get; set; }
         [DataMember(Name = "enddate")]
         public DateTime EndDate { get; set; }
+        public bool HasFilter { get; set; }
         [DataMember(Name = "items")]
         public List<CatalogCampaignItem> Items { get; set; }
     }

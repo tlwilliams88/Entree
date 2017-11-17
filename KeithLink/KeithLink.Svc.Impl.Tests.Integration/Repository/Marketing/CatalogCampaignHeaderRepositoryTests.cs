@@ -157,6 +157,22 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
                       .Should()
                       .Be(expected);
             }
+
+            [Fact]
+            public void GoodHeaderId_ReturnsExpectedHasFilter() {
+                // arrange
+                var repo = MakeRepo();
+                var id = 1;
+                var expected = true;
+
+                // act
+                var test = repo.GetHeader(id);
+
+                // assert
+                test.HasFilter
+                    .Should()
+                    .Be(expected);
+            }
         }
 
         public class GetHeaderByUri : MigratedDatabaseTest {
@@ -268,6 +284,22 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
 
                 // assert
                 header.Uri
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodUri_ReturnsExpectedHasFilter() {
+                // arrange
+                string uri = "uri-1";
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+                var expected = true;
+
+                // act
+                CatalogCampaignHeader header = repo.GetByUri(uri);
+                
+                // assert
+                header.HasFilter
                       .Should()
                       .Be(expected);
             }
@@ -403,6 +435,23 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Marketing {
                 // assert
                 header.First(x => x.Id.Equals(headerId))
                       .Uri
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void GoodHeader_ReturnsExpectedHasFilter() {
+                // arrange
+                var expected = true;
+                int headerId = 1;
+                ICatalogCampaignHeaderRepository repo = MakeRepo();
+
+                // act
+                List<CatalogCampaignHeader> header = repo.GetAll();
+
+                // assert
+                header.First(x => x.Id.Equals(headerId))
+                      .HasFilter
                       .Should()
                       .Be(expected);
             }

@@ -94,6 +94,7 @@
     <Compile Include="Extensions\Lists\RecommendedHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Lists\ReminderDetailExtensionTests.cs" />
     <Compile Include="Extensions\Lists\ReminderHeaderExtensionTests.cs" />
+    <Compile Include="Extensions\Marketing\CatalogCampaignHeaderExtensionTests.cs" />
     <Compile Include="Extensions\Orders\OrderLineExtensionTests.cs" />
     <Compile Include="Extensions\Reports\ItemBarcodeExtensionsTests.cs" />
     <Compile Include="Models\AuditableEntityTests.cs" />
@@ -144,7 +145,6 @@
     <Folder Include="Extensions\ContentManagement\" />
     <Folder Include="Extensions\CustomInventoryItems\" />
     <Folder Include="Extensions\Enumerations\" />
-    <Folder Include="Extensions\Marketing\" />
     <Folder Include="Extensions\Messaging\" />
     <Folder Include="Extensions\OnlinePayments\" />
     <Folder Include="Extensions\PowerMenu\" />
