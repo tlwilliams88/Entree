@@ -16,6 +16,7 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Marketing {
                     StartDate = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified),
                     EndDate = new DateTime(2030, 7, 3, 16, 9, 0, DateTimeKind.Unspecified),
                     Active = true
+                    HasFilter = true,
                   });
             Insert.IntoTable("CatalogCampaignHeader")
                   .InSchema("Marketing")
@@ -25,7 +26,8 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Marketing {
                     Uri = "active-false",
                     StartDate = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified),
                     EndDate = new DateTime(2030, 7, 3, 16, 9, 0, DateTimeKind.Unspecified),
-                    Active = false
+                    Active = false,
+                    HasFilter = false,
                   });
             Insert.IntoTable("CatalogCampaignHeader")
                   .InSchema("Marketing")
@@ -35,7 +37,8 @@ namespace Entree.Migrations.Migrations.Data.IntegrationTests.Marketing {
                     Uri = "expired-dates",
                     StartDate = new DateTime(2017, 7, 3, 16, 8, 0, DateTimeKind.Unspecified),
                     EndDate = new DateTime(2017, 7, 4, 16, 9, 0, DateTimeKind.Unspecified),
-                    Active = true
+                    Active = true,
+                    HasFilter = false
                   });
         }
 

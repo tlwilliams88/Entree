@@ -28,8 +28,6 @@ namespace KeithLink.Svc.Impl.Logic
         #endregion
 
         #region functions
-
-        #region get
         public CatalogCampaignReturnModel GetCampaign(int id, bool includeItems = true)
         {
             CatalogCampaignReturnModel returnValue = new CatalogCampaignReturnModel();
@@ -83,8 +81,6 @@ namespace KeithLink.Svc.Impl.Logic
 
             return true;
         }
-
-        #endregion
 
         #endregion
     }
