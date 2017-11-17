@@ -81,6 +81,7 @@
     <Compile Include="Extensions\ListModelExtensionsTests.cs" />
     <Compile Include="Helpers\ItemOrderHistoryHelperTests.cs" />
     <Compile Include="Logic\Cache\CacheListLogicTests.cs" />
+    <Compile Include="Logic\CatalogCampaignLogicTests.cs" />
     <Compile Include="Logic\Configuration\ExportSettingLogicTests.cs" />
     <Compile Include="Logic\DivisionLogicImplTests.cs" />
     <Compile Include="Logic\Lists\ContractListChangesLogicTests.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\SiteCatelog\ElasticSearchCatalogRepositoryTests.cs" />
     <Compile Include="Repository\SiteCatelog\ItemBarcodeImageRepositoryTests.cs" />
+    <Compile Include="Service\CatalogCampaignServiceTests.cs" />
     <Compile Include="Service\Invoices\ExportInvoicesServiceTests.cs" />
     <Compile Include="Service\List\ListServiceTests.cs" />
   </ItemGroup>
