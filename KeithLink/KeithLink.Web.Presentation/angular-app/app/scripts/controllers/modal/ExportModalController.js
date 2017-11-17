@@ -60,38 +60,19 @@ angular.module('bekApp')
 
     function invoiceExport() {
         var exportRequestModel = {
-            fields: null,
-            selectedtype: null,
-            sort: null
-        };
-        
-        var pagingExportModel = {
-            size: null,
-            from: null,
-            sort: null,
             filter: null,
             daterange: null,
-            search: null,
-            terms: null,
-            type: null
+            sort: null,
+            selectedtype: null,
         };
-        var exportRequest = exportRequestModel,
-            pagingExport = pagingExportModel;
-      
-      exportRequest.selectedtype = exportConfig.selectedtype;
+        var exportRequest = exportRequestModel;
+
       exportRequest.sort = exportParams.params.sort ? exportParams.params.sort : null;
-      
-      pagingExport.filter = exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields : exportParams.params.filter[0].filter;
-      pagingExport.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : null;
-      pagingExport.isViewingAllCustomers = exportParams.isViewingAllCustomers;
-      pagingExport.size = exportParams.params.size;
-      pagingExport.from = exportParams.params.from;
+      exportRequest.filter = exportParams.params.filter.filterFields ? exportParams.params.filter.filterFields : exportParams.params.filter[0].filter;
+      exportRequest.daterange = exportParams.params.filter[0] && exportParams.params.filter[0].daterange ? exportParams.params.filter[0].daterange : null;
       
       // This model is used for invoice exports
-      $scope.invoiceExportRequest = {
-          paging: pagingExport,
-          export: exportRequest
-      }
+      $scope.invoiceExportRequest = exportRequest;
     }
   
     function listExport() {
