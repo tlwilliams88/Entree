@@ -77,45 +77,7 @@ angular.module('bekApp')
 
     ProductService.getCampaigns().then(function(resp) {
         $scope.promoItems = resp;
-    }); 
-    // [
-    //     {
-    //         imageurl: {
-    //           desktop: 'images/Marketing Campaigns/Mondelez/mondelez-web.jpg',
-    //           mobile: 'images/Marketing Campaigns/Mondelez/mondelez-mobile.jpg'
-    //         },
-    //         targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'mondelez' })",
-    //         targetType: "campaign",
-    //         targeturltext: "mondelez"
-    //     },
-    //     {
-    //       imageurl: {
-    //         desktop: 'images/Marketing Campaigns/Master of the Plate Company Promotion/advancepierre-web.jpg',
-    //         mobile: 'images/Marketing Campaigns/Master of the Plate Company Promotion/advancepierre-mobile.jpg'
-    //       },
-    //       targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'master-advance' })",
-    //       targetType: "campaign",
-    //       targeturltext: "master-advance"
-    //     },
-    //     {
-    //       imageurl: {
-    //         desktop: 'images/Marketing Campaigns/Master of the Plate Company Promotion/jimmydean-web.jpg',
-    //         mobile: 'images/Marketing Campaigns/Master of the Plate Company Promotion/jimmydean-mobile.jpg'
-    //       },
-    //       targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'master-hillshire' })",
-    //       targetType: "campaign",
-    //       targeturltext: "master-hillshire"
-    //     },
-    //     {
-    //       imageurl: {
-    //         desktop: 'images/Marketing Campaigns/Master of the Plate Company Promotion/tyson-web.jpg',
-    //         mobile: 'images/Marketing Campaigns/Master of the Plate Company Promotion/tyson-mobile.jpg'
-    //       },
-    //       targeturl: "menu.campaign({ type: 'campaign', campaign_id: 'master-tyson' })",
-    //       targetType: "campaign",
-    //       targeturltext: "master-tyson"
-    //     }
-    // ];
+    });
 
     // get promo/marketing items
     $scope.loadingPromoItems = true;
