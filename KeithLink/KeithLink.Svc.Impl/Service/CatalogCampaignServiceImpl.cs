@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 using KeithLink.Svc.Core.Interface.Marketing;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -15,29 +11,19 @@ namespace KeithLink.Svc.Impl.Service
     public class CatalogCampaignServiceImpl : ICatalogCampaignService
     {
         #region attributes
-        private readonly ICampaignCustomerRepository _customerRepo;
         private readonly ICatalogLogic _catalogLogic;
         private readonly ICatalogCampaignLogic _campaignLogic;
         #endregion
 
         #region constructor
-        public CatalogCampaignServiceImpl(ICatalogLogic catalogLogic, ICatalogCampaignLogic campaignLogic, ICampaignCustomerRepository campaignCustomerRepository) {
-            _customerRepo  = campaignCustomerRepository;
+        public CatalogCampaignServiceImpl(ICatalogLogic catalogLogic, ICatalogCampaignLogic campaignLogic) {
             _catalogLogic  = catalogLogic;
             _campaignLogic = campaignLogic;
         }
         #endregion
 
         #region functions
-        public CatalogCampaignsReturnModel GetAllAvailableCampaigns(UserSelectedContext context) {
-            CatalogCampaignsReturnModel allCampaigns = _campaignLogic.GetAllCampaigns(false);
-
-
-            return allCampaigns;
-        }
-
-        public ProductsReturn GetCatalogCampaignProducts(string campaignUri, UserSelectedContext context, SearchInputModel model, UserProfile profile)
-        {
+        public ProductsReturn GetCatalogCampaignProducts(string campaignUri, UserSelectedContext context, SearchInputModel model, UserProfile profile){
             CatalogCampaignReturnModel campaign = _campaignLogic.GetCampaignByUri(campaignUri);
 
             return _catalogLogic.GetProductsByItemNumbers(context, campaign.Items.Select(x => x.ItemNumber).ToList(), model, profile);
