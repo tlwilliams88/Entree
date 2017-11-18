@@ -173,7 +173,7 @@ angular.module('bekApp')
         
         switch ($scope.exportType) {
             case Constants.exportType.invoiceExport:
-                $scope.invoiceExportRequest.export.fields = $scope.selectedFields;
+                $scope.invoiceExportRequest.fields = $scope.selectedFields;
                 $scope.invoiceExportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.invoiceExportRequest);
             break;
