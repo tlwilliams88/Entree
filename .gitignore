@@ -196,7 +196,8 @@ node_modules/
 /KeithLink/packages/
 /KeithLink/KeithLink.Web.Presentation/app/
 /KeithLink/KeithLink.Web.Presentation/angular-app/config.json
-/KeithLink/KeithLink.Web.Presentation/angular-app/app/newrelic/newrelic.js
+/KeithLink/KeithLink.Web.Presentation/angular-app/app/newrelic
+/KeithLink/KeithLink.Web.Presentation/angular-app/app/inspectlet
 /KeithLink/KeithLink.Web.Presentation/angular-app/app/scripts/configenv.js
 /KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap/build
 /KeithLink/KeithLink.Web.Presentation/phonegap-app/BEKPhoneGap/www

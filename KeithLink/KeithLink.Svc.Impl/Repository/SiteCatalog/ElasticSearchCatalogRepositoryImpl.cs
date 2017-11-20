@@ -1589,6 +1589,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.Kosher = string.IsNullOrEmpty(oProd._source.kosher) ? "Unknown" : oProd._source.kosher;
             p.Brand = oProd._source.brand;
             p.BrandExtendedDescription = oProd._source.brand_description;
+            if (oProd._source.cases != null) {
+                p.Cases = oProd._source.cases.ToString();
+            }
             p.Description = oProd._source.description;
             p.CategoryCode = oProd._source.categoryid;
             p.ReplacedItem = oProd._source.replaceditem;
