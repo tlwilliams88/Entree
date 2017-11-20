@@ -8,10 +8,22 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('AnalyticsService', ['$state', 'Analytics', function($state, Analytics) {
+  .factory('AnalyticsService', ['$window', '$state', 'Analytics', function($window, $state, Analytics) {
 
     var Service = {
 
+        setUserProperties: function(userName, roleName, isInternalUser, isKbitCustomer, isPowerMenuCustomer){
+            //Angulartics Google Analytics provider doesn't support custom dimensions
+            //so we have to inject our settings in the main pipe and send that way
+            $window.ga('set', 'dimension2', roleName);
+            $window.ga('set', 'dimension3', isInternalUser);
+            $window.ga('set', 'dimension4', isKbitCustomer);
+            $window.ga('set', 'dimension5', isPowerMenuCustomer);
+            $window.ga('set', 'userId', roleName + '.' + userName);
+            //we also have to "light a beacon" and send our settings in with it
+            $window.ga('send', 'event', 'Process', 'Set user properties');
+        },
+        
         recordTransaction: function(customerName, orderNumber, cart){
             cart.items.forEach(function(item){
                 item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
