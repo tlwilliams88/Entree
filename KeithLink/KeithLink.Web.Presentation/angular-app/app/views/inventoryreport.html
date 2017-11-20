@@ -37,8 +37,6 @@
       <span class="form-error-message" ng-if="renameReportForm.reportName.$error.required">Report name is required</span>
       <span class="form-error-message" ng-if="renameReportForm.reportName.$error.noDuplicates">Duplicate report name</span>
     </form>
-  <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6 hidden-print" ng-click="clearReport(report.listid)" type="button">Clear</button>
- <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right hidden-print" ng-click="saveReport(report)" type="button">Save</button>
   </div>
   <div class="pull-right margin-right-10 hidden-xs hidden-sm">
   <button class="btn btn-lg btn-primary"
@@ -97,11 +95,33 @@
 
 </div>
 
+<div class="page-content inventory-report hidden-xs hidden-sm" style="margin-bottom: 20px;" fsm-sticky-header scroll-body="'.table-inventory-valuation'" scroll-stop="40" scroll-offset="150">
+    <form name="listSearchForm" class="hidden-print pull-right">
+      <div class="col-xs-3 firefox-margin-right" style="z-index: 998; float: right; margin-right: 15px; margin-bottom: 20px;">
+          <div class="input-group input-group-lg">
+
+              <input
+              type="search"
+              placeholder="Find Item By Name"
+              ng-model="itemName"
+              class="form-control input-lg firefox-input-width"
+              id="findInput" />
+
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-primary btn-lg"  ng-disabled="!itemName"  ng-click="goToPreviousFoundElement()"><span class="icon-arrow-up4"></span></button>
+                <button type="submit" class="btn btn-primary btn-lg"  ng-disabled="!itemName"  ng-click="goToNextFoundElement()"><span class="icon-arrow-down5"></span></button>
+            </span>
+          </div>
+      </div>
+    </form>
+</div>
+
 <div class="page-content inventory-report">
   <div class="row margin-bottom-none">
+
     <a class="col-xs-12 hidden-print text-large btn-link max-width-100px" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
 
-    <form class="hidden-print col-md-12 col-lg-10 form-inline" name="addItemByNumberForm">
+    <form class="hidden-print col-md-12 col-lg-10 form-inline" name="addItemByNumberForm" style="float: right;">
       <div class="form-group pull-right text-right">
 
         <p class="text-green margin-right-25" ng-show="successMessage">{{successMessage}}</p>

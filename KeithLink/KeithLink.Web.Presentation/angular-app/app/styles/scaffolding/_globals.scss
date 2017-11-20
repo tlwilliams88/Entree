@@ -117,7 +117,7 @@ td {
 }
 
 .highlightRows:nth-of-type(even) {
-  background-color: #F3F1EB !important;
+  background-color: #F3F1EB;
 }
 
 .block-display {
@@ -161,4 +161,26 @@ td {
     .padding-bottom-10 {
         padding-bottom: 10px;
     }
+}
+
+.foundItem {
+    background-color: $color-yellow !important;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+ /*Bootstrap 4 override*/
+ -webkit-appearance: searchfield-cancel-button;
+}
+
+@-moz-document url-prefix() {
+
+    .firefox-margin-right {
+        margin-right: 195px !important;
+    }
+
+
+    .firefox-input-width {
+        width: 200px !important;
+    }
+
 }
