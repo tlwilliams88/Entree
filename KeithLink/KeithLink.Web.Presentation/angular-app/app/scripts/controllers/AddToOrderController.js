@@ -451,7 +451,7 @@ angular.module('bekApp')
           if($stateParams.createdFromPrint){
             $stateParams.createdFromPrint = false;
             $scope.createdFromPrint = false;
-            $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+            openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
           }
           blockUI.stop();
         }
@@ -1080,7 +1080,7 @@ angular.module('bekApp')
 
     $scope.saveBeforePrint = function(){
       if($scope.addToOrderForm.$pristine && $scope.selectedCart.id !== 'New'){
-        $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+        openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
       }
       else{
         if($scope.selectedCart.id === 'New'){
@@ -1092,13 +1092,13 @@ angular.module('bekApp')
           //do nothing
         }
         else{
-          $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+          openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
         }
       });
       }
     };
 
-    $scope.openPrintOptionsModal = function(list, cart) {
+    function openPrintOptionsModal(list, cart) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/printoptionsmodal.html',
         controller: 'PrintOptionsModalController',
@@ -1114,6 +1114,11 @@ angular.module('bekApp')
             return {
               sort: $scope.sort,
               terms: $scope.orderSearchTerm
+            };
+          },
+          contractFilter: function() {
+            return {
+              filter: null
             };
           }
         }

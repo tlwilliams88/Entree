@@ -116,6 +116,7 @@
     <Compile Include="Migrations\v2017.04.00\Migration0033.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Lists\ContractHeaders.cs" />
     <Compile Include="Migrations\v2017.04.01\Migration0042.cs" />
+    <Compile Include="Migrations\v2017.06.00\Migration0060.cs" />
     <Compile Include="Migrations\v2017.06.00\Migration0046.cs" />
     <Compile Include="Migrations\v2017.06.00\Migration0044.cs" />
     <Compile Include="Migrations\v2017.04.04\Migration0043.cs" />
@@ -1124,6 +1125,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveInventoryValuationItem\SaveInventoryValuationItem_0043_2017.04.04_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveMandatoryItemsDetails\SaveMandatoryItemsDetails_0060_2017.06.02_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\List\Stored Procedures\SaveMandatoryItemsDetails\SaveMandatoryItemsDetails_0060_2017.06.02_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\List\Stored Procedures\SaveNoteHeader\SaveNotesHeaders_0038_2017.04.00_down.sql">
