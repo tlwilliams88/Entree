@@ -2,9 +2,9 @@
 
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI',
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'AnalyticsService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV) {
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, AnalyticsService) {
 
          $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
              var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
@@ -769,7 +769,8 @@ angular.module('bekApp')
         }).finally(function() {
           processingUpdateCart = false;
           if($scope.continueToCart){
-          $state.go('menu.cart.items', {cartId: basketId});
+              AnalyticsService.recordCheckout(cart);
+              $state.go('menu.cart.items', {cartId: basketId});
           }
         });
       }

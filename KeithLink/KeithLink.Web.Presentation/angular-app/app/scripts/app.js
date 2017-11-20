@@ -47,7 +47,7 @@ angular
   //googleAnalyticsCordovaProvider.debug = true; // default: false
 
   AnalyticsProvider.setAccount(ENV.googleAnalytics);
-  AnalyticsProvider.useECommerce(true, false);
+  AnalyticsProvider.useECommerce(true, true);
 
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;

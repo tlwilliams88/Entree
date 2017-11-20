@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants', 'LocalStorage', '$rootScope',
-    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants, LocalStorage, $rootScope) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart', 'DateService', 'SessionService', 'Constants', 'LocalStorage', '$rootScope', 'AnalyticsService',
+    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart, DateService, SessionService, Constants, LocalStorage, $rootScope, AnalyticsService) {
 
     var Service = {
 
@@ -160,6 +160,7 @@ angular.module('bekApp')
         newCart.listid = listid;
         newCart.listtype = listtype;
         return Cart.save({}, newCart).$promise.then(function(response) {
+          AnalyticsService.recordAddToCart(newCart);
           if(response.successResponse){
             newCart.id = response.successResponse.listitemid;
             newCart.createddate = new Date();
@@ -169,11 +170,9 @@ angular.module('bekApp')
             Service.getCartHeaders();
             newCart.valid = true;
             return newCart;
-          }
-          else{
-             toaster.pop('error', null, 'There was an error creating your cart.');
+          } else {
             newCart.valid = false;
-             return newCart;
+            return newCart;
           }
         });
       },
