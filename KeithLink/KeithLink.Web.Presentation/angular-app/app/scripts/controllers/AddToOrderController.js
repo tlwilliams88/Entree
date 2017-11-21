@@ -420,6 +420,11 @@ angular.module('bekApp')
 
     function init() {
       $scope.lists = lists;
+
+      AnalyticsService.recordCheckout(null, 
+                                      1, // step
+                                      "Init ATO"); //option
+
       CartService.getShipDates().then(function(shipdates){
 
         if(shipdates && shipdates.length > 0){
@@ -769,7 +774,9 @@ angular.module('bekApp')
         }).finally(function() {
           processingUpdateCart = false;
           if($scope.continueToCart){
-              AnalyticsService.recordCheckout(cart);
+              AnalyticsService.recordCheckout(cart, 
+                                              2, // step
+                                              "Leave ATO"); //option
               $state.go('menu.cart.items', {cartId: basketId});
           }
         });

@@ -44,16 +44,18 @@ angular.module('bekApp')
                                        '');
         },
         
-        recordCheckout: function(cart){
-            cart.items.forEach(function(item){
-                item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
+        recordCheckout: function(cart, step, option){
+            if (cart != null){
+                cart.items.forEach(function(item){
+                    item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
 
-                // Add item to cart
-                Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
-            });
+                    // Add item to cart
+                    Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
+                });
+            }
 
             // Create Checkout Record
-            Analytics.trackCheckout(1, cart.requestedshipdate);
+            Analytics.trackCheckout(step, option);
         },
 
         recordAddToCart: function(item){

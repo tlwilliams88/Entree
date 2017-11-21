@@ -256,6 +256,10 @@ angular.module('bekApp')
         return;
         }
 
+        AnalyticsService.recordCheckout(cart, 
+                                        3, // step
+                                        "Submit Cart"); //option
+
          CartService.isSubmitted(cart.id).then(function(hasBeenSubmitted){
           if(!hasBeenSubmitted){
             $scope.saveCart(cart)
