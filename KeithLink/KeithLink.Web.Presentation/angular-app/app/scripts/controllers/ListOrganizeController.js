@@ -164,5 +164,85 @@ angular.module('bekApp')
       })
     }
   };
+  
+  $scope.findElementByIndex = function(query) {
+      $('tbody > tr').removeClass('foundItem');
+      
+      if(query.length > 0) {
+          var foundItemsByName = $filter('filter')($scope.list.items, {name: query}),
+              foundItemsById = $filter('filter')($scope.list.items, {itemnumber: query}),
+              foundItemsByBrand = $filter('filter')($scope.list.items, {brand: query}),
+              foundItemsByClass = $filter('filter')($scope.list.items, {class: query});
+          
+          $scope.foundItems = [];
+          
+          foundItemsByName.forEach(function(item) {
+              $scope.foundItems.push(item);
+          })
+          
+          foundItemsById.forEach(function(item) {
+              $scope.foundItems.push(item);
+          })
+          
+          foundItemsByBrand.forEach(function(item) {
+              $scope.foundItems.push(item)
+          })
+          
+          foundItemsByClass.forEach(function(item) {
+              $scope.foundItems.push(item);
+          })
+          
+          $scope.foundItems.sort(function(a, b) {
+              return a.position - b.position;
+          })
+          
+          $scope.foundItemIdx = $scope.list.items.indexOf($scope.foundItems[0]);
+          $scope.initialIndex = 0;
+          $('tbody > tr').get(($scope.foundItemIdx-1)).classList += ' foundItem';
+          
+          var w = $(window);
+          
+          $('html,body').animate({scrollTop: $('.foundItem').offset().top - (w.height()/7)}, 50 );
+      }
+  }
+        
+  $scope.goToNextFoundElement = function() {
+    
+    if($scope.initialIndex == ($scope.foundItems.length - 1)) {
+        return false;
+    }
+    
+    if($scope.initialIndex < ($scope.foundItems.length - 1)) {
+        $('tbody > tr').removeClass('foundItem');
+        $scope.initialIndex = $scope.initialIndex+1;
+        $scope.foundItemIdx = $scope.list.items.indexOf($scope.foundItems[$scope.initialIndex]);
+        $('tbody > tr').get(($scope.foundItemIdx-1)).classList += ' foundItem';
+        
+        var w = $(window);
+        $('html,body').animate({scrollTop: $('.foundItem').offset().top - (w.height()/7)}, 50 );
+    }
+  }
+
+  $scope.goToPreviousFoundElement = function() {
+    
+    if($scope.initialIndex == 0) {
+        return false;
+    } else {
+        $('tbody > tr').removeClass('foundItem');
+        
+        $scope.initialIndex = $scope.initialIndex-1;
+        $scope.foundItemIdx = $scope.list.items.indexOf($scope.foundItems[$scope.initialIndex]);
+        $('tbody > tr').get(($scope.foundItemIdx-1)).classList += ' foundItem';
+        
+        var w = $(window);
+        $('html,body').animate({scrollTop: $('.foundItem').offset().top - (w.height()/7)}, 50 );
+    }
+  }
+
+  $timeout(function() {
+    $('#findInput').on("input", function() { 
+        $scope.findElementByIndex(this.value);
+    })
+  }, 100);
 
 }]);

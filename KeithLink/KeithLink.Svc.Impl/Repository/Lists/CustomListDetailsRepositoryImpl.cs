@@ -25,7 +25,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
         private const string PARMNAME_RETVAL = "ReturnValue";
 
-        private const string SPNAME_DELETE = "[List].[DeleteCustomListDetails]";
         private const string SPNAME_GETBYHEADER = "[List].[ReadCustomListDetailsByParentId]";
         private const string SPNAME_SAVE= "[List].[SaveCustomListDetails]";
         #endregion
@@ -37,13 +36,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         #region methods
         public List<CustomListDetail> GetCustomListDetails(long headerId) {
             return Read<CustomListDetail>(SPNAME_GETBYHEADER, PARMNAME_HEADERID, headerId);
-        }
-
-        public void DeleteCustomListDetails(long id) {
-            DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_ID, id);
-
-            ExecuteCommand(SPNAME_DELETE, parms);
         }
 
         public long SaveCustomListDetail(CustomListDetail model) {

@@ -785,7 +785,7 @@ namespace KeithLink.Svc.Impl.Service.List
             ProductsReturn products = new ProductsReturn { Products = new List<Product>() };
 
             {
-                List<string> batch = list.Select(i => i.ItemNumber)
+                List<string> batch = list.Select(i => i.ItemNumber.Trim())
                                          .ToList();
 
                 ProductsReturn tempProducts = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
@@ -866,7 +866,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 }
                 else
                 {
-                    Product prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+                    Product prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber.Trim()] : null;
 
                     if (prod != null)
                     {

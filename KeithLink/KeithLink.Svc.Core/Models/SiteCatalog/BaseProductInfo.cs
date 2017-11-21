@@ -86,6 +86,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
             }
         }
 
+        [Description("Pack Price")]
         [DataMember(Name = "packageprice", EmitDefaultValue = false)]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string PackagePrice

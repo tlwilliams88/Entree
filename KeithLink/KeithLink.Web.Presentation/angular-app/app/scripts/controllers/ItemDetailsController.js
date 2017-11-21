@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService',
-    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService) {
+  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService', 'AnalyticsService',
+    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService, AnalyticsService) {
     
     if(!item){
       $state.go('menu.home');
@@ -19,16 +19,13 @@ angular.module('bekApp')
     $scope.item = item;
     $scope.item.quantity = 1;
 
+    $scope.item.orderHistoryKeys = Object.keys(item.orderhistory);
+
     $scope.canOrderItemInd = PricingService.canOrderItem(item);
     $scope.casePriceInd = PricingService.hasCasePrice(item);
     $scope.packagePriceInd = PricingService.hasPackagePrice(item);
-    ProductService.getProductDetails(item.itemnumber, $scope.$state.params.catalogType).then(function(item) {
-      $scope.item = item;
-      $scope.item.quantity = 1;
-
-       // used to determine if the item has order history in the view
-      $scope.item.orderHistoryKeys = Object.keys(item.orderhistory);
-    });
+    
+    AnalyticsService.recordViewDetail($scope.item);
 
     if(!(item.is_specialty_catalog || item.isvalid === false)){
       ProductService.saveRecentlyViewedItem(item.itemnumber);

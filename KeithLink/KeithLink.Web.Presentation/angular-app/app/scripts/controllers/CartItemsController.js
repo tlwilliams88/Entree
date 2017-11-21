@@ -9,9 +9,9 @@
  */
 angular.module('bekApp')
   .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants',
-   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'Analytics',
+   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService',
     function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService,
-     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, Analytics) {
+     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService) {
 
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -299,8 +299,9 @@ angular.module('bekApp')
                   message  = 'Successfully submitted order.';
                 }
               }
-
-            analyticsRecordTransaction(orderNumber, cart);
+            
+            var customerName = $scope.selectedUserContext.customer.customerName;
+            AnalyticsService.recordTransaction(customerName, orderNumber, cart);
 
             $state.go('menu.orderitems', { invoiceNumber: orderNumber });
             $scope.displayMessage(status, message);
@@ -365,10 +366,12 @@ angular.module('bekApp')
     };
 
     $scope.deleteItem = function(item) {
-      var idx = $scope.currentCart.items.indexOf(item);
-      $scope.currentCart.items.splice(idx, 1);
-      $scope.resetSubmitDisableFlag(true);
-      $scope.cartForm.$setDirty();
+        AnalyticsService.recordRemoveItem(item);
+
+        var idx = $scope.currentCart.items.indexOf(item);
+        $scope.currentCart.items.splice(idx, 1);
+        $scope.resetSubmitDisableFlag(true);
+        $scope.cartForm.$setDirty();
     };
 
     /************
@@ -589,24 +592,6 @@ angular.module('bekApp')
             $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
           }
       }
-
-    function analyticsRecordTransaction(orderNumber, cart){
-      // Create transaction
-      Analytics.addTrans(orderNumber, '', cart.subtotal, '', '', cart.createddate, cart.requestedshipdate, '');
-
-      cart.items.forEach(function(item){
-        item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
-
-        // Add item to transaction
-        Analytics.addItem(orderNumber, item.itemnumber, item.name, item.class, item.price, item.quantity);
-    });
-
-      // Complete transaction
-      Analytics.trackTrans();
-
-      // Clear transaction
-      Analytics.clearTrans();
-    }
 
     // on page load
     // if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
