@@ -24,7 +24,7 @@ angular.module('bekApp')
             $window.ga('send', 'event', 'Process', 'Set user properties');
         },
         
-        recordTransaction: function(customerName, orderNumber, cart){
+        recordTransaction: function(customerName, orderNumber, cart, customerNumber, customerBranch){
             cart.items.forEach(function(item){
                 item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
 
@@ -33,7 +33,15 @@ angular.module('bekApp')
             });
 
             // Create transaction
-            Analytics.trackTransaction(orderNumber, customerName, cart.subtotal, '', '', '', cart.listid, 'Cart Submission', '');
+            Analytics.trackTransaction(orderNumber, 
+                                       customerBranch + '.' + customerNumber + '.' + customerName, 
+                                       cart.subtotal, 
+                                       '', 
+                                       '', 
+                                       '', 
+                                       cart.listid, 
+                                       'Cart Submission', 
+                                       '');
         },
         
         recordCheckout: function(cart){

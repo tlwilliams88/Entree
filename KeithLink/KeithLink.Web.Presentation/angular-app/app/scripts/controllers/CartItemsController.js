@@ -301,7 +301,11 @@ angular.module('bekApp')
               }
             
             var customerName = $scope.selectedUserContext.customer.customerName;
-            AnalyticsService.recordTransaction(customerName, orderNumber, cart);
+            AnalyticsService.recordTransaction(customerName, 
+                                               orderNumber, 
+                                               cart,
+                                               $scope.selectedUserContext.customer.customerNumber,
+                                               $scope.selectedUserContext.customer.customerBranch);
 
             $state.go('menu.orderitems', { invoiceNumber: orderNumber });
             $scope.displayMessage(status, message);
