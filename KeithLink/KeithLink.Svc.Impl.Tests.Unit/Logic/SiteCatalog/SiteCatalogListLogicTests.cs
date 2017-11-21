@@ -550,7 +550,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.SiteCatalog
             {
                 // arrange
                 ICatalogLogic testLogic = MakeMockLogic();
-                String branchId = "bek";
+                String branchId = "fdf";
                 String catalogType = "FRTR";
 
                 // act
