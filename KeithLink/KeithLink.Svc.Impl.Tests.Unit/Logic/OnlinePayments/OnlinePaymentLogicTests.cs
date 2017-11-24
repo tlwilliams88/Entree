@@ -32,7 +32,6 @@ using Xunit;
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
     public class OnlinePaymentLogicTests : BaseDITests {
 
-        #region AssignContractCategory
         public class AssignContractCategory {
             [Fact]
             public void WhenBadItemWithContractNotMatchingItem_ResultingCategoryIsNull() {
@@ -146,9 +145,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
                         .Be(expected);
             }
         }
-        #endregion AssignContractCategory
 
-        #region GetInvoiceHeaders
         public class GetInvoiceHeaders
         {
             [Fact] 
@@ -307,7 +304,142 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
             }
 
         }
-        #endregion GetInvoiceHeaders
+
+        public class GetInvoiceCustomers
+        {
+            [Fact]
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsFalse_ResultingInvoiceCustomersCountIsOne()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel()
+                {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "invoiceamount",
+                            Order = "desc"
+                        }
+                    }
+                };
+                var testAllCustomers = false;
+                var expected = 1;
+
+                // act
+                var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+
+                // assert
+                result.customers.Count
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingInvoiceCustomersCountIsTwo()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel()
+                {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "invoiceamount",
+                            Order = "desc"
+                        }
+                    }
+                };
+                var testAllCustomers = true;
+                var expected = 2;
+
+                // act
+                var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+
+                // assert
+                result.customers.Count
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingFirstInvoiceCustomerTotalAmountDueIsSix()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel()
+                {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "invoiceamount",
+                            Order = "desc"
+                        }
+                    }
+                };
+                var testAllCustomers = true;
+                var expected = 6;
+
+                // act
+                var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+
+                // assert
+                result.customers.First().TotalAmountDue
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingFirstInvoiceCustomerNumberInvoicesIsThree()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
+                var testUser = new UserProfile();
+                var testContext = new UserSelectedContext
+                {
+                    BranchId = "XXXXX",
+                    CustomerId = "111111"
+                };
+                var testPaging = new PagingModel()
+                {
+                    Sort = new List<SortInfo>() {
+                        new SortInfo() {
+                            Field = "invoiceamount",
+                            Order = "desc"
+                        }
+                    }
+                };
+                var testAllCustomers = true;
+                var expected = 3;
+
+                // act
+                var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+
+                // assert
+                result.customers.First().NumberInvoices
+                      .Should()
+                      .Be(expected);
+            }
+
+        }
 
         #region Setup
         private static InvoiceItemModel MakeModel() {
@@ -496,6 +628,32 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
                             StreetAddress = "Test Street",
                             PostalCode = "Test Post",
                             RegionCode = "Test Region"
+                        }
+                    });
+
+                mock.Setup(f => f.GetCustomersForUser(It.IsAny<Guid>()))
+                    .Returns(new List<Customer>() {
+                        new Customer() {
+                            CustomerNumber = "111111",
+                            CustomerName = "Test Customer 1",
+                            CustomerBranch = "XXXXX",
+                            Address = new Address() {
+                                City = "Test City",
+                                StreetAddress = "Test Street",
+                                PostalCode = "Test Post",
+                                RegionCode = "Test Region"
+                            }
+                        },
+                        new Customer() {
+                            CustomerNumber = "222222",
+                            CustomerName = "Test Customer 2",
+                            CustomerBranch = "XXXXX",
+                            Address = new Address() {
+                                City = "Test City",
+                                StreetAddress = "Test Street",
+                                PostalCode = "Test Post",
+                                RegionCode = "Test Region"
+                            }
                         }
                     });
 

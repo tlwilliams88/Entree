@@ -360,8 +360,13 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                         var kpayInvoices = GetKPayInvoicesForCustomer(customer, statusFilter);
                         var icustomer = customer.ToInvoiceCustomer();
 
-                        icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
-                        icustomer.NumberInvoices = kpayInvoices.Count;
+                        if (kpayInvoices != null) {
+                            icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
+                            icustomer.NumberInvoices = kpayInvoices.Count;
+                        } else {
+                            icustomer.TotalAmountDue = 0;
+                            icustomer.NumberInvoices = 0;
+                        }
 
                         invcustomers.customers.Add(icustomer);
                         invcustomers.TotalAmountDue += icustomer.TotalAmountDue;
@@ -375,8 +380,16 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 var kpayInvoices = GetKPayInvoicesForCustomer(customer, statusFilter);
                 var icustomer = customer.ToInvoiceCustomer();
 
-                icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
-                icustomer.NumberInvoices = kpayInvoices.Count;
+                if (kpayInvoices != null)
+                {
+                    icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
+                    icustomer.NumberInvoices = kpayInvoices.Count;
+                }
+                else
+                {
+                    icustomer.TotalAmountDue = 0;
+                    icustomer.NumberInvoices = 0;
+                }
 
                 invcustomers.customers.Add(icustomer);
                 invcustomers.TotalAmountDue = icustomer.TotalAmountDue;
