@@ -317,6 +317,76 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             return transactions;
         }
 
+        public InvoiceCustomers GetInvoiceCustomers(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers)
+        {
+            var invcustomers = new InvoiceCustomers();
+                        invcustomers.customers = new List<InvoiceCustomer>();
+
+            FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
+
+            if (paging.IsNotNullAndHasDateRange())
+            {
+                if (statusFilter != null)
+                { // if there is a statusFilter append the daterange to it, it was working before but pulling back all
+                  // the invoices for the month and later filtering just the ones with a certain status
+                  // this just optimizes it so we pull back the right ones at the start
+                    statusFilter.Condition = "&&";
+                    statusFilter.Filters = new List<FilterInfo>();
+                    statusFilter.Filters.Add(BuildStatusFilter(paging.DateRange));
+                }
+                else
+                {
+                    statusFilter = BuildStatusFilter(paging.DateRange);
+                }
+            }
+
+            InvoiceHeaderReturnModel retInvoiceHeaders = new InvoiceHeaderReturnModel();
+            if (forAllCustomers)
+            {
+                var customers = _customerRepository.GetCustomersForUser(user.UserId);
+                if (customers.Count == 0) // in the case of internal users, the relation of customers to users is different, so the above doesn't work for some
+                                          // in that case we work with the selected customer
+                {
+                    customers = new List<Core.Models.Profile.Customer>()
+                                            { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
+                }
+                retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomerWithInvoices>();
+                retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomerWithInvoices>();
+
+                foreach (var customer in customers)
+                {
+                    if (customer != null)
+                    {
+                        var kpayInvoices = GetKPayInvoicesForCustomer(customer, statusFilter);
+                        var icustomer = customer.ToInvoiceCustomer();
+
+                        icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
+                        icustomer.NumberInvoices = kpayInvoices.Count;
+
+                        invcustomers.customers.Add(icustomer);
+                        invcustomers.TotalAmountDue += icustomer.TotalAmountDue;
+                        invcustomers.TotalNumberInvoices += icustomer.NumberInvoices;
+                    }
+                }
+            }
+            else
+            {
+                var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
+                var kpayInvoices = GetKPayInvoicesForCustomer(customer, statusFilter);
+                var icustomer = customer.ToInvoiceCustomer();
+
+                icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
+                icustomer.NumberInvoices = kpayInvoices.Count;
+
+                invcustomers.customers.Add(icustomer);
+                invcustomers.TotalAmountDue = icustomer.TotalAmountDue;
+                invcustomers.TotalNumberInvoices = icustomer.NumberInvoices;
+            }
+
+            invcustomers.NumberCustomers = invcustomers.customers.Count;
+            return invcustomers;
+        }
+
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers)
         {
             var customers = new List<Core.Models.Profile.Customer>();
@@ -453,6 +523,15 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
             stopWatch.Read(_log, "GetInvoicesForCustomer - Count Total Invoices");
 
             return pagedInvoices;
+        }
+
+        private List<EFInvoice.InvoiceHeader> GetKPayInvoicesForCustomer(
+            Core.Models.Profile.Customer customer,
+            FilterInfo statusFilter)
+        {
+            FilterInfo customerFilter = BuildCustomerFilter(new List<Core.Models.Profile.Customer> { customer });
+
+            return _invoiceRepo.ReadFilteredHeaders(customerFilter, statusFilter);
         }
 
         private void ApplySortingInvoiceAmountToPagedInvoices(PagingModel paging, PagedResults<InvoiceModel> pagedInvoices) {
