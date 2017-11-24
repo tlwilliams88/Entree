@@ -423,7 +423,7 @@ angular.module('bekApp')
 
       AnalyticsService.recordCheckout(null, 
                                       1, // step
-                                      "Init ATO"); //option
+                                      "Enter ATO"); //option
 
       CartService.getShipDates().then(function(shipdates){
 
