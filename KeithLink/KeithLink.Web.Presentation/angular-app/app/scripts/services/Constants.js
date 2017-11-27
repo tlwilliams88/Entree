@@ -6,6 +6,7 @@ angular.module('bekApp')
     localStorage : {
       userProfile: 'userProfile',
       userToken: 'userToken',
+      userId: 'userId',
       branchId: 'branchId',
       customerNumber: 'customerNumber',
       leadGenInfo: 'leadGenInfo',
@@ -18,6 +19,10 @@ angular.module('bekApp')
       defaultSort: 'defaultSort',
       defaultView: 'defaultView',
       userName: 'userName',
+      roleName: 'roleName',
+      isInternalUser: 'isInternalUser',
+      isKbitCustomer: 'isKbitCustomer',
+      isPowerMenuCustomer: 'isPowerMenuCustomer',
       hideTutorialHome: 'hideTutorialHome',
       hideTutorialSearch: 'hideTutorialSearch',
       hideTutorialAddToOrder: 'hideTutorialAddToOrder'
