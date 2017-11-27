@@ -136,12 +136,38 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="forAllCustomers">Invoices for all customers?</param>
         /// <returns></returns>
         [HttpPost]
-        [ApiKeyedRoute("invoice/")]
-        public OperationReturnModel<InvoiceHeaderReturnModel> Invoice(PagingModel paging, [FromUri]bool forAllCustomers = false) {
+        [ApiKeyedRoute("invoice/{customerBranch}/{customerNumber}")]
+        public OperationReturnModel<InvoiceHeaderReturnModel> Invoice(PagingModel paging, [FromUri] string customerBranch, [FromUri] string customerNumber) {
             OperationReturnModel<InvoiceHeaderReturnModel> retVal = new OperationReturnModel<InvoiceHeaderReturnModel>();
             try
             {
-                retVal.SuccessResponse = _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
+                retVal.SuccessResponse = _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, 
+                                                                     new UserSelectedContext() {
+                                                                         BranchId = customerBranch,
+                                                                         CustomerId = customerNumber
+                                                                     },  
+                                                                     paging, 
+                                                                     false);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetInvoiceHeaders", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("invoice/mycustomers")]
+        public OperationReturnModel<InvoiceCustomers> MyCustomers(PagingModel paging, [FromUri]bool forAllCustomers = false)
+        {
+            OperationReturnModel<InvoiceCustomers> retVal = new OperationReturnModel<InvoiceCustomers>();
+            try
+            {
+                retVal.SuccessResponse = _invLogic.GetInvoiceCustomers(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
