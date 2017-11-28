@@ -350,6 +350,8 @@ angular.module('bekApp')
 
   $scope.filterInvoices = function(filter, input) {      
     var invoicesFilter;
+    
+    $scope.invoices = [];
     $scope.searchFilter = {
         field: filter,
         value: input
@@ -462,6 +464,7 @@ angular.module('bekApp')
     var invoiceFilterInput = document.getElementById('invoiceFilterInput');
     if(invoiceFilterInput){
       invoiceFilterInput.value = '';
+      $scope.selectedFilterView = $scope.filterViews[0];
     }
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
     getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
