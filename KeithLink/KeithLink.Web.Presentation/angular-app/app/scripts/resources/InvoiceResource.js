@@ -21,6 +21,11 @@ angular.module('bekApp')
         url: '/invoice/:invoiceNumber',
         method: 'GET'
       },
+      
+      getAllCustomerInvoices: {
+        url: '/invoice/:branch/:customerNumber',
+        method: 'POST'
+      },
 
       getInvoiceTransactions: {
         url: '/invoice/transactions/:branchId/:customerNumber/:invoiceNumber',
@@ -37,8 +42,8 @@ angular.module('bekApp')
         method: 'GET'
       },
 
-      getAllOpen: {
-        url: '/invoice?forAllCustomers=true',
+      getAllCustomers: {
+        url: '/invoice/mycustomers?forAllCustomers=true',
         method: 'POST'
       },
 

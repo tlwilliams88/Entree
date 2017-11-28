@@ -43,11 +43,19 @@ angular.module('bekApp')
       },
 
       // for all customers
-      getAllOpenInvoices: function(params){
+      getAllCustomersWithInvoices: function(params){
         params.size = '';
-        return Invoice.getAllOpen(params).$promise.then(function(resp){
+        return Invoice.getAllCustomers(params).$promise.then(function(resp){
           return resp.successResponse;
         });
+      },
+      
+      getCustomerInvoices: function(branch, customerNumber, params){
+        params.size = '';
+
+        return Invoice.getAllCustomerInvoices({ branch: branch, customerNumber: customerNumber }, params).$promise.then(function(resp){
+            return resp.successResponse.pagedresults.results;
+        })
       },
 
       payInvoices: function(payments) {
