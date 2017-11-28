@@ -350,50 +350,45 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                     customers = new List<Core.Models.Profile.Customer>()
                                             { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
                 }
-                retInvoiceHeaders.CustomersWithInvoices = new PagedResults<CustomerWithInvoices>();
-                retInvoiceHeaders.CustomersWithInvoices.Results = new List<CustomerWithInvoices>();
 
                 foreach (var customer in customers)
                 {
                     if (customer != null)
                     {
-                        var kpayInvoices = GetKPayInvoicesForCustomer(customer, statusFilter);
-                        var icustomer = customer.ToInvoiceCustomer();
-
-                        if (kpayInvoices != null) {
-                            icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
-                            icustomer.NumberInvoices = kpayInvoices.Count;
-                        } else {
-                            icustomer.TotalAmountDue = 0;
-                            icustomer.NumberInvoices = 0;
+                        CustomerWithInvoices ci = customer.ToCustomerWithInvoices();
+                        MapInvoicesToCustomer(paging, statusFilter, customer, ci);
+                        if (ci.HasPayableInvoices) // we want to "bubble up" if there are payable invoices
+                        {
+                            retInvoiceHeaders.HasPayableInvoices = ci.HasPayableInvoices;
                         }
 
-                        invcustomers.customers.Add(icustomer);
-                        invcustomers.TotalAmountDue += icustomer.TotalAmountDue;
-                        invcustomers.TotalNumberInvoices += icustomer.NumberInvoices;
+                        if (ci.PagedResults != null &&
+                            ci.PagedResults.TotalInvoices > 0) {
+                            if (ci.TotalAmountDue != null) {
+                                invcustomers.TotalAmountDue += ci.TotalAmountDue.Value;
+                                invcustomers.TotalNumberInvoices += ci.PagedResults.TotalInvoices;
+                            }
+                            invcustomers.customers.Add(ci.ToInvoiceCustomer());
+                        }
                     }
                 }
             }
             else
             {
                 var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
-                var kpayInvoices = GetKPayInvoicesForCustomer(customer, statusFilter);
-                var icustomer = customer.ToInvoiceCustomer();
+                CustomerWithInvoices ci = customer.ToCustomerWithInvoices();
+                MapInvoicesToCustomer(paging, statusFilter, customer, ci);
 
-                if (kpayInvoices != null)
+                if (ci.PagedResults != null &&
+                    ci.PagedResults.TotalInvoices > 0)
                 {
-                    icustomer.TotalAmountDue = kpayInvoices.Sum(i => i.AmountDue);
-                    icustomer.NumberInvoices = kpayInvoices.Count;
+                    if (ci.TotalAmountDue != null)
+                    {
+                        invcustomers.TotalAmountDue += ci.TotalAmountDue.Value;
+                        invcustomers.TotalNumberInvoices += ci.PagedResults.TotalInvoices;
+                    }
+                    invcustomers.customers.Add(ci.ToInvoiceCustomer());
                 }
-                else
-                {
-                    icustomer.TotalAmountDue = 0;
-                    icustomer.NumberInvoices = 0;
-                }
-
-                invcustomers.customers.Add(icustomer);
-                invcustomers.TotalAmountDue = icustomer.TotalAmountDue;
-                invcustomers.TotalNumberInvoices = icustomer.NumberInvoices;
             }
 
             invcustomers.NumberCustomers = invcustomers.customers.Count;
