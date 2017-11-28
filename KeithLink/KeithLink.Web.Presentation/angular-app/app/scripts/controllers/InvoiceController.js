@@ -464,7 +464,13 @@ angular.module('bekApp')
     var invoiceFilterInput = document.getElementById('invoiceFilterInput');
     if(invoiceFilterInput){
       invoiceFilterInput.value = '';
+      $scope.invoices = [];
       $scope.selectedFilterView = $scope.filterViews[0];
+      
+      invoicePagingModel.setCustomerNumber(null);
+      invoicePagingModel.setCustomerBranch(null);
+      invoicePagingModel.getData = InvoiceService.getAllCustomersWithInvoices;
+      invoicePagingModel.setData = setCustomers;
     }
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
     getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
