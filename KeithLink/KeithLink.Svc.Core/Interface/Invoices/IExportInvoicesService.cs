@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Interface.Invoices
 
         List<InvoiceModel> GetExportableInvoiceModels(UserProfile user, 
                                                       UserSelectedContext context, 
-                                                      InvoiceExportRequestModel request, 
+                                                      ExportRequestModel request, 
                                                       bool forAllCustomers);
     }
 }

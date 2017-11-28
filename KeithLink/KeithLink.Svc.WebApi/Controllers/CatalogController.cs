@@ -445,13 +445,10 @@ namespace KeithLink.Svc.WebApi.Controllers {
         public OperationReturnModel<CatalogCampaignsReturnModel> GetCampaignHeaders()
         {
             OperationReturnModel<CatalogCampaignsReturnModel> returnValue = new OperationReturnModel<CatalogCampaignsReturnModel>();
-            try
-            {
-                returnValue.SuccessResponse = _campaignLogic.GetAllCampaigns(true);
+            try {
+                returnValue.SuccessResponse = _campaignLogic.GetAllAvailableCampaigns(SelectedUserContext);
                 returnValue.IsSuccess = true;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 returnValue.IsSuccess = false;
                 returnValue.ErrorMessage = ex.Message;
                 _elRepo.WriteErrorLog("GetAllCampaigns", ex);
