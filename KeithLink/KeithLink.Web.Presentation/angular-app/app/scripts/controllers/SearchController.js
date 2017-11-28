@@ -66,7 +66,16 @@ angular.module('bekApp')
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
     $scope.displayText = $stateParams.brand ? $stateParams.brand : $stateParams.category;
-    LocalStorage.setSearchTerms($scope.paramId);
+    if($scope.paramType != null &&
+       $scope.paramId != null){
+      LocalStorage.setSearchTerms($scope.paramType + ": " + $scope.paramId);
+    }
+    else{
+      if($scope.$resolve != null &&
+         $scope.$resolve.campaignInfo != null){
+        LocalStorage.setSearchTerms("Campaign: " + $scope.$resolve.campaignInfo.description);
+      }
+    }
 
     $scope.selectedSortParameter = 'Relevance';
     $scope.sortParametervalue = '';
