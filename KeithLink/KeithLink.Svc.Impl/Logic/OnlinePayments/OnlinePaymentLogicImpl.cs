@@ -362,7 +362,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                             retInvoiceHeaders.HasPayableInvoices = ci.HasPayableInvoices;
                         }
 
-                        if (ci.PagedResults.TotalInvoices > 0) {
+                        if (ci.PagedResults != null &&
+                            ci.PagedResults.TotalInvoices > 0) {
                             if (ci.TotalAmountDue != null) {
                                 invcustomers.TotalAmountDue += ci.TotalAmountDue.Value;
                                 invcustomers.TotalNumberInvoices += ci.PagedResults.TotalInvoices;
@@ -378,7 +379,8 @@ namespace KeithLink.Svc.Impl.Logic.OnlinePayments
                 CustomerWithInvoices ci = customer.ToCustomerWithInvoices();
                 MapInvoicesToCustomer(paging, statusFilter, customer, ci);
 
-                if (ci.PagedResults.TotalInvoices > 0)
+                if (ci.PagedResults != null &&
+                    ci.PagedResults.TotalInvoices > 0)
                 {
                     if (ci.TotalAmountDue != null)
                     {

@@ -305,22 +305,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
 
         }
 
-        public class GetInvoiceCustomers
-        {
+        public class GetInvoiceCustomers {
             [Fact]
-            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsFalse_ResultingInvoiceCustomersCountIsOne()
-            {
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsFalse_ResultingInvoiceCustomersCountIsOne() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
                 var testUser = new UserProfile();
-                var testContext = new UserSelectedContext
-                {
+                var testContext = new UserSelectedContext {
                     BranchId = "XXXXX",
                     CustomerId = "111111"
                 };
-                var testPaging = new PagingModel()
-                {
+                var testPaging = new PagingModel() {
                     Sort = new List<SortInfo>() {
                         new SortInfo() {
                             Field = "invoiceamount",
@@ -329,10 +325,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
                     }
                 };
                 var testAllCustomers = false;
+                BEKConfiguration.Add(
+                    "WebNowUrl",
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
                 var expected = 1;
 
                 // act
                 var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
 
                 // assert
                 result.customers.Count
@@ -341,19 +341,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
             }
 
             [Fact]
-            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingInvoiceCustomersCountIsTwo()
-            {
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingInvoiceCustomersCountIsOne() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
                 var testUser = new UserProfile();
-                var testContext = new UserSelectedContext
-                {
+                var testContext = new UserSelectedContext {
                     BranchId = "XXXXX",
                     CustomerId = "111111"
                 };
-                var testPaging = new PagingModel()
-                {
+                var testPaging = new PagingModel() {
                     Sort = new List<SortInfo>() {
                         new SortInfo() {
                             Field = "invoiceamount",
@@ -362,10 +359,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
                     }
                 };
                 var testAllCustomers = true;
-                var expected = 2;
+                BEKConfiguration.Add(
+                    "WebNowUrl",
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
+                var expected = 1;
 
                 // act
                 var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
 
                 // assert
                 result.customers.Count
@@ -374,19 +375,16 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
             }
 
             [Fact]
-            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingFirstInvoiceCustomerTotalAmountDueIsSix()
-            {
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingFirstInvoiceCustomerTotalAmountDueIsSix() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
                 var testUser = new UserProfile();
-                var testContext = new UserSelectedContext
-                {
+                var testContext = new UserSelectedContext {
                     BranchId = "XXXXX",
                     CustomerId = "111111"
                 };
-                var testPaging = new PagingModel()
-                {
+                var testPaging = new PagingModel() {
                     Sort = new List<SortInfo>() {
                         new SortInfo() {
                             Field = "invoiceamount",
@@ -395,31 +393,33 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
                     }
                 };
                 var testAllCustomers = true;
+                BEKConfiguration.Add(
+                    "WebNowUrl",
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
                 var expected = 6;
 
                 // act
                 var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
 
                 // assert
-                result.customers.First().TotalAmountDue
+                result.customers.First()
+                      .TotalAmountDue
                       .Should()
                       .Be(expected);
             }
 
             [Fact]
-            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingFirstInvoiceCustomerNumberInvoicesIsThree()
-            {
+            public void WhenGettingInvoiceCustomersWhenForAllCustomersIsTrue_ResultingFirstInvoiceCustomerNumberInvoicesIsThree() {
                 // arrange
                 MockDependents mockDependents = new MockDependents();
                 IOnlinePaymentsLogic testunit = MakeTestsLogic(useAutoFac: true, mockDependents: ref mockDependents);
                 var testUser = new UserProfile();
-                var testContext = new UserSelectedContext
-                {
+                var testContext = new UserSelectedContext {
                     BranchId = "XXXXX",
                     CustomerId = "111111"
                 };
-                var testPaging = new PagingModel()
-                {
+                var testPaging = new PagingModel() {
                     Sort = new List<SortInfo>() {
                         new SortInfo() {
                             Field = "invoiceamount",
@@ -428,13 +428,18 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic.OnlinePayments {
                     }
                 };
                 var testAllCustomers = true;
+                BEKConfiguration.Add(
+                    "WebNowUrl",
+                    "http://invoice.benekeith.com/webnow/index.jsp?action=filter&amp;username=anonymous&amp;drawer={branch}AR501&amp;tab={customer}&amp;field4={invoice}");
                 var expected = 3;
 
                 // act
                 var result = testunit.GetInvoiceCustomers(testUser, testContext, testPaging, testAllCustomers);
+                BEKConfiguration.Reset();
 
                 // assert
-                result.customers.First().NumberInvoices
+                result.customers.First()
+                      .NumberInvoices
                       .Should()
                       .Be(expected);
             }
