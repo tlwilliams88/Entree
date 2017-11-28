@@ -39,7 +39,7 @@ angular.module('bekApp')
                                        '', 
                                        '', 
                                        '', 
-                                       cart.listid, 
+                                       'ListId: ' + cart.listid, 
                                        'Cart Submission', 
                                        '');
         },
