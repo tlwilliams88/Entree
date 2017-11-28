@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService', 'AnalyticsService',
-    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService, AnalyticsService) {
+  .controller('ItemDetailsController', ['$scope', '$state', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService', 'LocalStorage', 'AnalyticsService',
+    function ($scope, $state, $modal, item, ProductService, AccessService, PricingService, LocalStorage, AnalyticsService) {
     
     if(!item){
       $state.go('menu.home');
@@ -25,7 +25,9 @@ angular.module('bekApp')
     $scope.casePriceInd = PricingService.hasCasePrice(item);
     $scope.packagePriceInd = PricingService.hasPackagePrice(item);
     
-    AnalyticsService.recordViewDetail($scope.item);
+    AnalyticsService.recordViewDetail(LocalStorage.getCustomerNumber(), 
+                                      LocalStorage.getBranchId(),
+                                      $scope.item);
 
     if(!(item.is_specialty_catalog || item.isvalid === false)){
       ProductService.saveRecentlyViewedItem(item.itemnumber);

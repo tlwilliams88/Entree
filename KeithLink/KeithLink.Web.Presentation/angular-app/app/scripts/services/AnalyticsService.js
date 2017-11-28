@@ -76,12 +76,61 @@ angular.module('bekApp')
             Analytics.trackCart('remove', removedFrom);
         },
         
-        recordViewDetail: function(item){
+        recordViewDetail: function(customerNumber, branchId, item){
             // Add Item Viewed
             Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
 
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
+            
             Analytics.trackDetail();
-        }
+        },
+
+        setSelectedCustomer: function(customerNumber, branchId){
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
+        },
+
+        recordSearchImpressions: function(products, customerNumber, branchId, listName){
+          var renderedIndex = 0;
+          var pageIndex = 0;
+          products.forEach(function(item){
+            pageIndex++;
+            // Add Viewable Item
+            Analytics.addImpression(item.itemnumber, 
+                                    item.name, 
+                                    listName, 
+                                    item.brand, 
+                                    item.class, 
+                                    item.packsize, 
+                                    pageIndex, 
+                                    item.caseprice.toString());
+            renderedIndex++;
+            if(renderedIndex>20){
+                  Analytics.trackEvent('Search', 
+                                       'Listing', 
+                                       '', 
+                                       0, 
+                                       true, 
+                                       {
+                                          dimension6: branchId,
+                                          dimension7: customerNumber
+                                       })
+                  renderedIndex=0;
+            }
+          });
+          Analytics.trackEvent('Search', 
+                               'Listing', 
+                               '', 
+                               0, 
+                               true, 
+                               {
+                                  dimension6: branchId,
+                                  dimension7: customerNumber
+                               })
+        },
 
     };
     return Service;

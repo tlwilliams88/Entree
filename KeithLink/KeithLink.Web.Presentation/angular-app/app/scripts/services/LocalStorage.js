@@ -141,6 +141,14 @@ angular.module('bekApp')
         localStorageService.set(Constants.localStorage.defaultView, view);
       },
 
+      setSearchTerms: function(searchTerms) { 
+        localStorageService.set(Constants.localStorage.searchTerms, searchTerms);
+      },
+
+      getSearchTerms: function() {
+        return localStorageService.get(Constants.localStorage.searchTerms);
+      },
+      
       setDefaultUserName: function(username) {
         localStorageService.set(Constants.localStorage.userName, username);
       },

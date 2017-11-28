@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV', 'AnalyticsService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
@@ -19,7 +19,9 @@ angular.module('bekApp')
       blockUI,
       LocalStorage,
       SessionService,
-      campaignInfo, ENV
+      campaignInfo, 
+      ENV,
+      AnalyticsService
     ) {
 
     // $scope.$on('$stateChangeStart',
@@ -64,6 +66,7 @@ angular.module('bekApp')
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
     $scope.displayText = $stateParams.brand ? $stateParams.brand : $stateParams.category;
+    LocalStorage.setSearchTerms($scope.paramId);
 
     $scope.selectedSortParameter = 'Relevance';
     $scope.sortParametervalue = '';
@@ -293,6 +296,12 @@ angular.module('bekApp')
         if($scope.toggleView){
           resetPage($scope.products, true);
         }
+
+      AnalyticsService.recordSearchImpressions($scope.products, 
+                                               LocalStorage.getCustomerNumber(),
+                                               LocalStorage.getBranchId(),
+                                               LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+
       blockUI.stop();
       blockUI.stop();
       });
@@ -591,6 +600,11 @@ angular.module('bekApp')
         //   $scope.tutorialRunning = true;
         //   guiders.show('searchpage_tutorial');
         // }
+
+        AnalyticsService.recordSearchImpressions($scope.products, 
+                                                 LocalStorage.getCustomerNumber(),
+                                                 LocalStorage.getBranchId(),
+                                                 LocalStorage.getSearchTerms() + '-1');
 
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
