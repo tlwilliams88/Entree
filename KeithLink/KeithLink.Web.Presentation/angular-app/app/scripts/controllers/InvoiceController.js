@@ -226,7 +226,6 @@ angular.module('bekApp')
   $scope.getInvoicesForCustomer = function(customer){
       var customerInvoices = $filter('filter')($scope.invoices, {customernumber: customer.customerNumber});
       if(customer.isOpen == true && customerInvoices.length == 0) {
-          $scope.selectedFilterView = $scope.filterViews[0]; // default to Open Invoices filter view
           $scope.customerNumber = customer.customerNumber;
           setTempContextForViewingAllCustomers();
           blockUI.start('Loading Invoices...').then(function(){
@@ -472,6 +471,7 @@ angular.module('bekApp')
   };
 
   $scope.selectFilterView = function (filterView, rangeYear, rangeMonth) {
+    $scope.invoices = [];
     var hasCreditMemos = document.getElementById('invoiceHasCreditMemos');
     if(hasCreditMemos){
       hasCreditMemos.checked = false;
