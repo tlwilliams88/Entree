@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
         public decimal TotalAmountDue { get; set; }
 
         [DataMember(Name = "numberInvoices")]
-        public int NumberInvoices { get; set; }
+        public long NumberInvoices { get; set; }
 
         [DataMember(Name = "customerNumber")]
         public string CustomerNumber { get; set; }

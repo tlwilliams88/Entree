@@ -150,7 +150,7 @@ namespace KeithLink.Svc.Core.Extensions {
             };
         }
 
-        public static InvoiceCustomer ToInvoiceCustomer(this Models.Profile.Customer customer)
+        public static InvoiceCustomer ToInvoiceCustomer(this CustomerWithInvoices customer)
         {
             return new InvoiceCustomer()
             {
@@ -173,7 +173,10 @@ namespace KeithLink.Svc.Core.Extensions {
                 RegionalId = customer.RegionalId,
                 RegionalIdDesc = customer.RegionalIdDesc,
                 RegionalNumber = customer.RegionalNumber,
-                RegionalNumberDesc = customer.RegionalNumberDesc
+                RegionalNumberDesc = customer.RegionalNumberDesc,
+                HasPayableInvoices = customer.HasPayableInvoices,
+                NumberInvoices = customer.PagedResults.TotalInvoices,
+                TotalAmountDue = (customer.TotalAmountDue != null) ? customer.TotalAmountDue.Value : 0
             };
         }
 
