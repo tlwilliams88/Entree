@@ -6,7 +6,7 @@
             class="featured-item-height" 
             ng-if="item.image_mobile && item.link_to_url == null" 
             ng-src="{{item.image_mobile}}" 
-            ui-sref="{{item.uri}}" 
+            ui-sref="menu.campaign({ type: 'campaign', campaign_id: item.uri})" 
             alt="image" 
             analytics-on 
             analytics-category="Homepage-Marketing-Content-Banner-Mobile" 
@@ -27,7 +27,7 @@
         </a>
         <img
             class="featured-item-height product-placeholder-image"
-            ng-if="!item.image_mobile"
+            ng-if="!item.imageurl"
             src="images/bek-logo.png"
             alt="default product image" />
         
