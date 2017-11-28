@@ -316,6 +316,7 @@
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Lists\INotesListLogic.cs" />
     <Compile Include="Interface\Lists\INotesHeadersListRepository.cs" />
+    <Compile Include="Interface\Marketing\ICampaignCustomerRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignHeaderRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignItemRepository.cs" />
     <Compile Include="Interface\Marketing\ICatalogCampaignLogic.cs" />
@@ -444,6 +445,7 @@
     <Compile Include="Models\Lists\RecentlyViewed\RecentlyViewedListHeader.cs" />
     <Compile Include="Models\Lists\RecentNonBEKList.cs" />
     <Compile Include="Models\Lists\RecentNonBEKItem.cs" />
+    <Compile Include="Models\Marketing\CampaignCustomer.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignAddOrUpdateRequestModelcs.cs" />
     <Compile Include="Models\Marketing\CatalogCampaignsReturnModel.cs" />
     <Compile Include="Models\Messaging\ForwardUserMessageModel.cs" />

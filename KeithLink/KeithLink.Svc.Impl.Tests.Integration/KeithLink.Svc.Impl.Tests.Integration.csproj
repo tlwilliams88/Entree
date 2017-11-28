@@ -103,6 +103,8 @@
     <Compile Include="Repository\Lists\RecentlyOrderedHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\RecommendedListHeaderRepositoryTests.cs" />
     <Compile Include="Repository\Lists\ReminderListHeaderRepositoryTests.cs" />
+    <Compile Include="Repository\Marketing\CampaignCustomerRepositoryTests.cs" />
+    <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +122,6 @@
     <Folder Include="Repository\Email\" />
     <Folder Include="Repository\InternalCatalog\" />
     <Folder Include="Repository\Invoices\" />
-    <Folder Include="Repository\Marketing\" />
     <Folder Include="Repository\Messaging\" />
     <Folder Include="Repository\Network\" />
     <Folder Include="Repository\OnlinePayments\" />

@@ -363,14 +363,12 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.Invoices
                 var testunit = MakeTestsService(useAutoFac: false, mockDependents: ref mockDependents);
                 var testuser = new UserProfile();
                 var testcontext = new UserSelectedContext() {
-                                                                BranchId = "XXX",
-                                                                CustomerId = "123456"
-                                                            };
-                var testrequest = new InvoiceExportRequestModel() {
-                                                                      export = new ExportRequestModel() {
-                                                                                                            Fields = new List<ExportModelConfiguration>()
-                                                                                                        }
-                                                                  };
+                    BranchId = "XXX",
+                    CustomerId = "123456"
+                };
+                var testrequest = new ExportRequestModel() {
+                    Fields = new List<ExportModelConfiguration>()
+                };
                 var testAllCustomers = false;
 
                 // act
@@ -400,12 +398,9 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.Invoices
                     BranchId = "XXX",
                     CustomerId = "123456"
                 };
-                var testrequest = new InvoiceExportRequestModel()
+                var testrequest = new ExportRequestModel()
                 {
-                    export = new ExportRequestModel()
-                    {
-                        Fields = new List<ExportModelConfiguration>()
-                    }
+                    Fields = new List<ExportModelConfiguration>()
                 };
                 var testAllCustomers = false;
 
