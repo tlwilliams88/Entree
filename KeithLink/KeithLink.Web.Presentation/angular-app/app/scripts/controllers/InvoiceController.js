@@ -414,7 +414,7 @@ angular.module('bekApp')
         filterFields: statusfilter,
         search: $scope.searchFilter
       }];
-    } else if(searchfilter && datefilter && statusfilter.filter != undefined){
+  } else if(searchfilter && datefilter && statusfilter && statusfilter.filter != undefined){
       invoicesFilter = [{
         daterange: statusfilter.daterange,
         filter: statusfilter.filter,
