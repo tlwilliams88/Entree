@@ -221,7 +221,7 @@
                 <div>
                   <div>
                     <label>
-                      <input type="checkbox" class="margin-top-10 margin-left-10" ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser && userCanPayInvoice" ng-model="invoice.isSelected" ng-hide="selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending'" ng-change="selectInvoice(invoice, invoice.isSelected); $event.stopPropagation()">
+                      <input type="checkbox" class="margin-top-10 margin-left-10" no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser && userCanPayInvoice" ng-model="invoice.isSelected" ng-hide="selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending'" ng-change="selectInvoice(invoice, invoice.isSelected); $event.stopPropagation()">
                     </label>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display margin-bottom-10">

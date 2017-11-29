@@ -793,30 +793,26 @@ angular.module('bekApp')
     var deferredPromises = [];
     if(Object.keys($scope.invoices).length > 0){
         Object.keys($scope.invoices).forEach(function(key) {
-            for (var key in $scope.invoices) {
-                if ($scope.invoices.hasOwnProperty(key)) {
-                    $scope.invoices[key].forEach(function(record){
-                      if(record.isSelected){
-                          var deferred = $q.defer();
-                          selectedInvoices.push(record);
-                          
-                          deferred.resolve(record);
-                          deferredPromises.push(deferred.promise);
-                      }
-                    });
-                }
+            if ($scope.invoices.hasOwnProperty(key)) {
+                $scope.invoices[key].forEach(function(record){
+                  if(record.isSelected){
+                      var deferred = $q.defer();
+                      selectedInvoices.push(record);
+                      
+                      deferred.resolve(record);
+                      deferredPromises.push(deferred.promise);
+                  }
+                });
             }
       });
     } else {
         Object.keys($scope.invoices).forEach(function(key) {
-            for (var key in $scope.invoices) {
-                if ($scope.invoices.hasOwnProperty(key)) {
-                    $scope.invoices[key].forEach(function(record){
-                          if(record.isSelected){
-                            selectedInvoices.push(record);
-                          }
-                    });
-                }
+            if ($scope.invoices.hasOwnProperty(key)) {
+                $scope.invoices[key].forEach(function(record){
+                      if(record.isSelected){
+                        selectedInvoices.push(record);
+                      }
+                });
             }
       });
       return selectedInvoices;
@@ -902,12 +898,10 @@ angular.module('bekApp')
           if(resp.successResponse.isvalid){  
             $scope.errorMessage = '';
             Object.keys($scope.invoices).forEach(function(key) {
-                for (var key in $scope.invoices) {
                     if ($scope.invoices.hasOwnProperty(key)) {
                         $scope.invoices[key].forEach(function(record){
                                 record.failedBatchValidation = false;
                         })
-                    }
                     }
                 });
             payments.forEach(function(payment){  
@@ -956,12 +950,10 @@ angular.module('bekApp')
   $scope.clearValidationErrors = function(){
     $scope.errorMessage = '';
     Object.keys($scope.invoices).forEach(function(key) {
-        for (var key in $scope.invoices) {
-            if ($scope.invoices.hasOwnProperty(key)) {
-                $scope.invoices[key].forEach(function(record){
-                    record.failedBatchValidation = false;
-                })
-            }
+        if ($scope.invoices.hasOwnProperty(key)) {
+            $scope.invoices[key].forEach(function(record){
+                record.failedBatchValidation = false;
+            })
         }
     });
   };
@@ -969,47 +961,39 @@ angular.module('bekApp')
   $scope.displayValidationError = function(resp){
     $scope.errorMessage = resp.errorMessage || 'There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.';
     Object.keys($scope.invoices).forEach(function(key) {
-        for (var key in $scope.invoices) {
-            if ($scope.invoices.hasOwnProperty(key)) {
-                $scope.invoices[key].forEach(function(record){
-                    record.failedBatchValidation = false;
-                })
-            }
+        if ($scope.invoices.hasOwnProperty(key)) {
+            $scope.invoices[key].forEach(function(record){
+                record.failedBatchValidation = false;
+            })
         }
-      
      });
     resp.successResponse.transactions.forEach(function(transaction){
         Object.keys($scope.invoices).forEach(function(key) {
-            for (var key in $scope.invoices) {
-                if ($scope.invoices.hasOwnProperty(key)) {
-                    $scope.invoices[key].forEach(function(record){
-                        var invoiceDate = record.date || $scope.tomorrow;
-                        if(record.pendingtransaction || record.date){
-                          invoiceDate = record.date || record.pendingtransaction.date;
-                        }
-                        
-                        if(transaction.account === record.account && 
-                          transaction.customernumber === record.customernumber && 
-                          transaction.branchid === record.branchid && 
-                          DateService.momentObject(resp.successResponse.transactions[0].date,Constants.dateFormat.yearMonthDayHourMinuteSecondDashes).format(Constants.dateFormat.yearMonthDay) === DateService.momentObject(invoiceDate.substr(0,10)).format(Constants.dateFormat.yearMonthDay) && 
-                          (record.isSelected || record.statusdescription === 'Payment Pending')){
-                          record.failedBatchValidation = true;
-                        }
-                    })
-                }
-                }
-            })
-
-      });
-    Object.keys($scope.invoices).forEach(function(key) {
-        for (var key in $scope.invoices) {
             if ($scope.invoices.hasOwnProperty(key)) {
                 $scope.invoices[key].forEach(function(record){
-                    if(!record.failedBatchValidation){
-                      record.failedBatchValidation = false;
+                    var invoiceDate = record.date || $scope.tomorrow;
+                    if(record.pendingtransaction || record.date){
+                      invoiceDate = record.date || record.pendingtransaction.date;
                     }
-                });
+                    
+                    if(transaction.account === record.account && 
+                      transaction.customernumber === record.customernumber && 
+                      transaction.branchid === record.branchid && 
+                      DateService.momentObject(resp.successResponse.transactions[0].date,Constants.dateFormat.yearMonthDayHourMinuteSecondDashes).format(Constants.dateFormat.yearMonthDay) === DateService.momentObject(invoiceDate.substr(0,10)).format(Constants.dateFormat.yearMonthDay) && 
+                      (record.isSelected || record.statusdescription === 'Payment Pending')){
+                      record.failedBatchValidation = true;
+                    }
+                })
             }
+        })
+      });
+    Object.keys($scope.invoices).forEach(function(key) {
+        if ($scope.invoices.hasOwnProperty(key)) {
+            $scope.invoices[key].forEach(function(record){
+                if(!record.failedBatchValidation){
+                  record.failedBatchValidation = false;
+                }
+            });
         }
     });
   };
