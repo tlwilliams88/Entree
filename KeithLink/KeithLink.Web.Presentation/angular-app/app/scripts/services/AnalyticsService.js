@@ -131,6 +131,17 @@ angular.module('bekApp')
                                   dimension7: customerNumber
                                })
         },
+        
+        recordPromotion: function(id, name, creative, position, customerNumber, branchId){
+            // Add promotion
+            Analytics.addPromo(id, name, creative, position);
+
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
+            
+            Analytics.promoClick(name);
+        }
 
     };
     return Service;

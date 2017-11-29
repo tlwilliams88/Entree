@@ -74,6 +74,12 @@ angular.module('bekApp')
       if($scope.$resolve != null &&
          $scope.$resolve.campaignInfo != null){
         LocalStorage.setSearchTerms("Campaign: " + $scope.$resolve.campaignInfo.description);
+        AnalyticsService.recordPromotion($scope.$resolve.campaignInfo.uri,
+                                         $scope.$resolve.campaignInfo.name,
+                                         $scope.$resolve.campaignInfo.enddate.toString(),
+                                         '',
+                                         LocalStorage.getCustomerNumber(),
+                                         LocalStorage.getBranchId());
       }
     }
 
