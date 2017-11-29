@@ -193,9 +193,10 @@ angular.module('bekApp')
       
       $scope.customers.forEach(function(customer) {
           var isOpen = false,
-              currentCustomer = customer;
+              currentCustomer = customer,
+              customerDetails = currentCustomer.customerNumber + '_' + currentCustomer.customerBranch;
               
-          $scope.customerTotalToPay[customer.customerNumber + '_' + customer.customerBranch] = 0;
+          $scope.customerTotalToPay[customerDetails] = 0;
               
           Object.defineProperties(customer, {
               'isOpen': {
@@ -213,7 +214,7 @@ angular.module('bekApp')
                   value: currentCustomer
               },
               'customerDetails': {
-                  value: currentCustomer.customerNumber + '_' + currentCustomer.customerBranch
+                  value: customerDetails
               }
           });
         });
