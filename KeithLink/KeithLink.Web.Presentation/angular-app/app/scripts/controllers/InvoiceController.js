@@ -194,7 +194,7 @@ angular.module('bekApp')
       $scope.customers.forEach(function(customer) {
           var isOpen = false,
               currentCustomer = customer,
-              customerDetails = currentCustomer.customerNumber + '_' + currentCustomer.customerBranch;
+              customerDetails = getCustomerDetails(currentCustomer.customerNumber, currentCustomer.customerBranch);
               
           $scope.customerTotalToPay[customerDetails] = 0;
               
@@ -226,13 +226,15 @@ angular.module('bekApp')
       blockUI.stop();
   }
   
+  var customerDetails;
   function getCustomerDetails(customerNumber, customerBranch) {
-      return customerNumber + '_' + customerBranch;
+      var customerDetails = customerNumber + '_' + customerBranch
+      return customerDetails;
   }
   
   $scope.getInvoicesForCustomer = function(customer){
       var customerInvoices = $scope.invoices[getCustomerDetails(customer.customerNumber, customer.customerBranch)] || [];
-      $scope.customerDetails = getCustomerDetails(customer.customerNumber, customer.customerBranch);
+      customerDetails = getCustomerDetails(customer.customerNumber, customer.customerBranch);
       if(customer.isOpen == true && customerInvoices && customerInvoices.length == 0) {
           $scope.customerNumberAndBranch = {
               customerNumber: customer.customerNumber,
@@ -255,9 +257,9 @@ angular.module('bekApp')
   };
 
   function setInvoices(invoices) {
-    $scope.invoices[$scope.customerDetails] = invoices;
+    $scope.invoices[customerDetails] = invoices;
 
-    $scope.invoices[$scope.customerDetails].forEach(function(invoice){
+    $scope.invoices[customerDetails].forEach(function(invoice){
         defaultAccount(invoice);
         
         invoice.amountdue = invoice.amount;
@@ -265,7 +267,7 @@ angular.module('bekApp')
         invoice.failedBatchValidation = false;  
     });
 
-    calculateInvoiceFields($scope.invoices[$scope.customerDetails]);
+    calculateInvoiceFields($scope.invoices[customerDetails]);
     $scope.loadingResults = false;
     
     blockUI.stop();
@@ -748,7 +750,7 @@ angular.module('bekApp')
   };
   
   function calculateTotalForCustomer(invoice) {
-      var customerInvoices = $scope.invoices[$scope.customerDetails] || [],
+      var customerInvoices = $scope.invoices[customerDetails] || [],
           total = 0;
           
       customerInvoices.forEach(function(invoice) {
@@ -757,7 +759,7 @@ angular.module('bekApp')
           }
       });
       
-      $scope.customerTotalToPay[$scope.customerDetails] = total;
+      $scope.customerTotalToPay[customerDetails] = total;
   }
 
   $scope.selectAll = function (customer, $event) {    
