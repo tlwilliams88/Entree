@@ -93,7 +93,7 @@ angular.module('bekApp')
             $window.ga('set', 'dimension6', branchId);
         },
 
-        recordSearchImpressions: function(products, customerNumber, branchId, listName, campaignInfo){
+        recordSearchImpressions: function(products, customerNumber, branchId, listName){
           var renderedIndex = 0;
           var pageIndex = 0;
           products.forEach(function(item){
