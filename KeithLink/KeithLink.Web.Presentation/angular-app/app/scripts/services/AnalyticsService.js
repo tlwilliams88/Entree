@@ -93,7 +93,7 @@ angular.module('bekApp')
             $window.ga('set', 'dimension6', branchId);
         },
 
-        recordSearchImpressions: function(products, customerNumber, branchId, listName){
+        recordSearchImpressions: function(products, customerNumber, branchId, listName, campaignInfo){
           var renderedIndex = 0;
           var pageIndex = 0;
           products.forEach(function(item){
@@ -136,13 +136,26 @@ angular.module('bekApp')
             // Add promotion
             Analytics.addPromo(id, name, creative, position);
 
+            Analytics.trackEvent('Internal Promotions', 
+                               'impressions', 
+                               '', 
+                               0, 
+                               true, 
+                               {
+                                  'nonInteraction': 1,
+                                  dimension6: branchId,
+                                  dimension7: customerNumber
+                               });
+
+            // Add promotion
+            Analytics.addPromo(id, name, creative, position);
+
             // inject customernumber and branch into detail hit
             $window.ga('set', 'dimension7', customerNumber);
             $window.ga('set', 'dimension6', branchId);
             
             Analytics.promoClick(name);
         }
-
     };
     return Service;
 

@@ -315,7 +315,8 @@ angular.module('bekApp')
       AnalyticsService.recordSearchImpressions($scope.products, 
                                                LocalStorage.getCustomerNumber(),
                                                LocalStorage.getBranchId(),
-                                               LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+                                               LocalStorage.getSearchTerms() + '-' + $scope.currentPage,
+                                               $scope.campaignInfo);
 
       blockUI.stop();
       blockUI.stop();
@@ -619,7 +620,8 @@ angular.module('bekApp')
         AnalyticsService.recordSearchImpressions($scope.products, 
                                                  LocalStorage.getCustomerNumber(),
                                                  LocalStorage.getBranchId(),
-                                                 LocalStorage.getSearchTerms() + '-1');
+                                                 LocalStorage.getSearchTerms() + '-1',
+                                                 $scope.campaignInfo);
 
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
