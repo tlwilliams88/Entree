@@ -188,15 +188,17 @@ angular.module('bekApp')
     });
   }
   
+  var customerDetailsKey;
   function setCustomers(data) {
       $scope.customers = data.customers;
       
       $scope.customers.forEach(function(customer) {
           var isOpen = false,
-              currentCustomer = customer,
-              customerDetails = getCustomerDetails(currentCustomer.customerNumber, currentCustomer.customerBranch);
+              currentCustomer = customer;
+          
+          customerDetailsKey = getCustomerDetailsKey(currentCustomer.customerNumber, currentCustomer.customerBranch);
               
-          $scope.customerTotalToPay[customerDetails] = 0;
+          $scope.customerTotalToPay[customerDetailsKey] = 0;
               
           Object.defineProperties(customer, {
               'isOpen': {
@@ -214,7 +216,7 @@ angular.module('bekApp')
                   value: currentCustomer
               },
               'customerDetails': {
-                  value: customerDetails
+                  value: customerDetailsKey
               }
           });
         });
@@ -226,15 +228,15 @@ angular.module('bekApp')
       blockUI.stop();
   }
   
-  var customerDetails;
-  function getCustomerDetails(customerNumber, customerBranch) {
-      var customerDetails = customerNumber + '_' + customerBranch
-      return customerDetails;
+  function getCustomerDetailsKey(customerNumber, customerBranch) {
+      var customerDetailsString = customerNumber + '_' + customerBranch;
+      return customerDetailsString;
   }
   
   $scope.getInvoicesForCustomer = function(customer){
-      var customerInvoices = $scope.invoices[getCustomerDetails(customer.customerNumber, customer.customerBranch)] || [];
-      customerDetails = getCustomerDetails(customer.customerNumber, customer.customerBranch);
+      customerDetailsKey = getCustomerDetailsKey(customer.customerNumber, customer.customerBranch);
+      var customerInvoices = $scope.invoices[customerDetailsKey] || [];
+      
       if(customer.isOpen == true && customerInvoices && customerInvoices.length == 0) {
           $scope.customerNumberAndBranch = {
               customerNumber: customer.customerNumber,
@@ -257,9 +259,9 @@ angular.module('bekApp')
   };
 
   function setInvoices(invoices) {
-    $scope.invoices[customerDetails] = invoices;
+    $scope.invoices[customerDetailsKey] = invoices;
 
-    $scope.invoices[customerDetails].forEach(function(invoice){
+    $scope.invoices[customerDetailsKey].forEach(function(invoice){
         defaultAccount(invoice);
         
         invoice.amountdue = invoice.amount;
@@ -267,7 +269,7 @@ angular.module('bekApp')
         invoice.failedBatchValidation = false;  
     });
 
-    calculateInvoiceFields($scope.invoices[customerDetails]);
+    calculateInvoiceFields($scope.invoices[customerDetailsKey]);
     $scope.loadingResults = false;
     
     blockUI.stop();
@@ -650,7 +652,7 @@ angular.module('bekApp')
 
   function changeUserContext(stateName, stateParams, customerNumber, customerBranch) {
     //generate and set customer context to customerNumber that user selected
-    CustomerService.getCustomerDetails(customerNumber, customerBranch).then(function (customer) {
+    CustomerService.getCustomerDetailsKey(customerNumber, customerBranch).then(function (customer) {
       var generatedUserContext = {
         id: customer.customerNumber,
         text: customer.displayname,
@@ -750,7 +752,7 @@ angular.module('bekApp')
   };
   
   function calculateTotalForCustomer(invoice) {
-      var customerInvoices = $scope.invoices[customerDetails] || [],
+      var customerInvoices = $scope.invoices[getCustomerDetailsKey(invoice.customernumber, invoice.branchid)] || [],
           total = 0;
           
       customerInvoices.forEach(function(invoice) {
@@ -759,12 +761,12 @@ angular.module('bekApp')
           }
       });
       
-      $scope.customerTotalToPay[customerDetails] = total;
+      $scope.customerTotalToPay[getCustomerDetailsKey(invoice.customernumber, invoice.branchid)] = total;
   }
 
   $scope.selectAll = function (customer, $event) {    
     $event.stopPropagation();
-    var customerInvoices = $scope.invoices[getCustomerDetails(customer.customerNumber, customer.customerBranch)];
+    var customerInvoices = $scope.invoices[getCustomerDetailsKey(customer.customerNumber, customer.customerBranch)];
     customerInvoices.forEach(function(invoice){
     if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
       invoice.isSelected = customer.selected;
@@ -780,11 +782,10 @@ angular.module('bekApp')
     $scope.customerTotal = [];
     
     $scope.customers.forEach(function(customer) {
-        if($scope.customerTotalToPay[getCustomerDetails(customer.customerNumber, customer.customerBranch)]) {
-            total += parseFloat($scope.customerTotalToPay[getCustomerDetails(customer.customerNumber, customer.customerBranch)] || 0);
+        if($scope.customerTotalToPay[getCustomerDetailsKey(customer.customerNumber, customer.customerBranch)]) {
+            total += parseFloat($scope.customerTotalToPay[getCustomerDetailsKey(customer.customerNumber, customer.customerBranch)] || 0);
         }
-    })
-    
+    });
     
     if($scope.total !== total && (total !==0 || $scope.total)){
       $scope.validateBatch();
