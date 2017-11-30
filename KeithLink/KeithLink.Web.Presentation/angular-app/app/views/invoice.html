@@ -337,7 +337,7 @@
                     <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{::customer.address.street}} {{::customer.address.city}}<span ng-if="customer.address.regioncode">,</span> {{::customer.address.regioncode}} {{::customer.address.postalcode}}</span>
                   </div>
                 </accordion-heading>
-                <div ng-repeat="invoice in invoices[customer.customerNumber]" class="panel panel-body panel-default">
+                <div ng-repeat="invoice in invoices[customer.customerDetails]" class="panel panel-body panel-default">
                 <div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
