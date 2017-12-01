@@ -22,6 +22,9 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
         private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
 
+        // Catalog Camapign
+        private const string KEY_CAMPAIGN_IMAGES_URL = "CampaignImagesUrl";
+
         private const string KEY_PURCHASEORDERS_GETLATESTHOWMANY = "PurchaseOrdersGetLatestHowManyDays";
 
         // Item History
@@ -280,6 +283,12 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+        public static string CatalogCampaignImagesUrl {
+            get {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_CAMPAIGN_IMAGES_URL, string.Empty);
+            }
+        }
+
         public static bool ContractListDeleteBlockPrices
         {
             get

@@ -1,18 +1,13 @@
 ﻿using KeithLink.Svc.Core.Models.Marketing;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Marketing
 {
-    public interface ICatalogCampaignLogic
-    {
-        CatalogCampaignReturnModel GetCampaign(int id, bool includeItems = true);
-        CatalogCampaignReturnModel GetCampaignByUri(string uri, bool includeItems = true);
-        CatalogCampaignsReturnModel GetAllCampaigns(bool includeItems = true);
+    public interface ICatalogCampaignLogic {
         bool AddOrUpdateCampaign(CatalogCampaignAddOrUpdateRequestModel campaign);
+        CatalogCampaignsReturnModel GetAllAvailableCampaigns(UserSelectedContext context);
+        CatalogCampaignsReturnModel GetAllCampaigns(bool includeItems = true);
+        CatalogCampaignReturnModel GetCampaignByUri(string uri, bool includeItems = true);
+        CatalogCampaignReturnModel GetCampaign(int id, bool includeItems = true);
     }
 }

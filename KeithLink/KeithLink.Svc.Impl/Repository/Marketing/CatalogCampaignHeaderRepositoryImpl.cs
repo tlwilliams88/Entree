@@ -63,7 +63,7 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
         #endregion
 
         #region save
-        public Int64 CreateOrUpdate(CatalogCampaignHeader header)
+        public long CreateOrUpdate(CatalogCampaignHeader header)
         {
             CatalogCampaignHeader oldheader = ReadOne<CatalogCampaignHeader>(new CommandDefinition(
                                                 COMMAND_GET_BY_URI,
@@ -71,7 +71,7 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
                                                 commandType: CommandType.StoredProcedure
                                               ));
 
-            Int64 Id = 0;
+            long Id = 0;
 
             if (oldheader == null)
             {
@@ -79,11 +79,12 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
                     COMMAND_ADD,
                     new
                     {
-                        @Name = header.Name,
+                        @Name        = header.Name,
                         @Description = header.Description,
-                        @StartDate = header.StartDate,
-                        @EndDate = header.EndDate,
-                        @Uri = header.Uri
+                        @StartDate   = header.StartDate,
+                        @EndDate     = header.EndDate,
+                        @Uri         = header.Uri,
+                        @HasFilter   = header.HasFilter
                     },
                     commandType: CommandType.StoredProcedure
                 ));
@@ -94,12 +95,13 @@ namespace KeithLink.Svc.Impl.Repository.Marketing
                     COMMAND_UPDATE,
                     new
                     {
-                        @Name = header.Name,
+                        @Name        = header.Name,
                         @Description = header.Description,
-                        @Active = header.Active,
-                        @StartDate = header.StartDate,
-                        @EndDate = header.EndDate,
-                        @Uri = header.Uri
+                        @Active      = header.Active,
+                        @StartDate   = header.StartDate,
+                        @EndDate     = header.EndDate,
+                        @Uri         = header.Uri,
+                        @HasFilter   = header.HasFilter
                     },
                     commandType: CommandType.StoredProcedure
                 ));

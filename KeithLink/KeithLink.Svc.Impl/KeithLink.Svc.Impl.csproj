@@ -454,6 +454,7 @@
     <Compile Include="Repository\Lists\RecentlyOrderedListHeadersRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\RecentlyOrderedListDetailsRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NotesHeadersRepositoryImpl.cs" />
+    <Compile Include="Repository\Marketing\CampaignCustomerRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignItemsRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderedFromListRepositoryImpl.cs" />
