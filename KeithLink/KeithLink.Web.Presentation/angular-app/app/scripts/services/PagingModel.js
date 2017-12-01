@@ -29,13 +29,15 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
   // };
 
   // Define the constructor function.
-  function PagingModel( getData, setData, appendData, startLoading, stopLoading, sort, secondarySort, filter, additionalParams, errorHandler  ) {
+  function PagingModel( getData, setData, appendData, startLoading, stopLoading, sort, secondarySort, filter, additionalParams, errorHandler, customerNumber, customerBranch ) {
     this.pageSize = Constants.infiniteScrollPageSize;
     this.pageIndex = 0;
     this.sort = sort;
     this.secondarySort = secondarySort;
     this.filter = filter;
     this.additionalParams = additionalParams;
+    this.customerNumber = customerNumber;
+    this.customerBranch = customerBranch;
 
     this.getData = getData;
     this.setData = setData;
@@ -55,6 +57,12 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
     setAdditionalParams: function(params) {
       this.additionalParams = params;
     },
+    setCustomerNumber: function(customer) {
+      this.customerNumber = customer;
+    },
+    setCustomerBranch: function(branch) {
+      this.customerBranch = branch;
+  },
 
     getSortObject: function(sort) {
       return {
@@ -121,9 +129,16 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
         params = angular.extend(params, this.additionalParams);
       }
 
-      return this.getData(params)
-        .then(setData, this.errorHandler)
-        .finally(this.stopLoading);
+      if(this.customerNumber && this.customerBranch) {
+          return this.getData(this.customerBranch, this.customerNumber, params)
+            .then(setData, this.errorHandler)
+            .finally(this.stopLoading);
+      } else {
+          return this.getData(params)
+            .then(setData, this.errorHandler)
+            .finally(this.stopLoading);
+      }
+
     },
 
     filterData: function(filterFields, baseFilterList) {

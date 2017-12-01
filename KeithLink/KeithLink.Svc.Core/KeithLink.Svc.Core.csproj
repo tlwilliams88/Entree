@@ -395,6 +395,8 @@
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\ElasticSearch\ESItem.cs" />
     <Compile Include="Models\Entity.cs" />
+    <Compile Include="Models\Invoices\InvoiceCustomers.cs" />
+    <Compile Include="Models\Invoices\InvoiceCustomer.cs" />
     <Compile Include="Models\Invoices\CustomerWithInvoices.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\Base64Image.cs" />
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowPageReturnModel.cs" />

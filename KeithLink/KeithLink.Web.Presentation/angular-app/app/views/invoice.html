@@ -178,17 +178,11 @@
             <span ng-if="totalInvoices > 0" class="pull-left credit-memo-toggle hidden-print">
               <input type="checkbox" id="invoiceHasCreditMemos" ng-click="filterInvoices('hascreditmemos', toggleCreditMemos)" ng-model="toggleCreditMemos" ng-disabled="hasCreditMemosDisabled"> Invoices with Credit Memos
             </span>
-            <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="pull-left selectallinvoices credit-memo-toggle hidden-print">
-              <input type="checkbox" class="invoiceSelectAll" ng-model="invoices.allSelected" ng-click="selectAll('selectAllInvoices', null, $event)"> Select All Invoices
-            </span>
             <div>
               <span ng-if="totalInvoices > 0 && !isInternalUser && userCanPayInvoice" class="total-amt total-line text-green currency-value pull-right-lg pull-right-md pull-right-sm pull-right-xs pull-left-xxs">Total to Pay: {{totalPaymentAmount() | currency}}</span>
             </div>
           </div>
           <div ng-if="totalInvoices > 0" class="pull-right">
-            <span class="btn-group pull-right-lg pull-right-md pull-right-sm pull-left-xs xs-right-5" ng-if="totalInvoices > 0 && !isInternalUser">
-              <button class="btn btn-default hidden-print" ng-click="expandCollapseAll('expandCollapse')">Expand/Collapse All</button>
-            </span>
             <div class="input-group hidden-print">
               <div class="input-group-btn">
                 <div class="pull-right-sm pull-right-lg pull-right-md pull-left-xs btn-group dropdown" ng-class="{'sm-right-5' : !isInternalUser}">
@@ -210,24 +204,24 @@
       <div class="row topPadded hidden-print">
         <div class="col-sm-12">
           <accordion close-others="false">
-            <accordion-group ng-if="customer.invoices.results.length" class="panel-title" ng-show="true" ng-init="customer.isOpen = (invoices.length == 1)" is-open="customer.isOpen" ng-repeat="customer in invoices | orderBy:'customerName'">
+            <accordion-group ng-if="customer.numberInvoices > 0" class="panel-title" ng-show="true" ng-init="customer.isOpen = (invoices.length == 1)" is-open="customer.isOpen" ng-repeat="customer in customers | orderBy:'customerName'">
               <accordion-heading>
                 <div class="white-space: normal;">
-                  <span style="padding-left:10px;"> {{customer.customerNumber}} - {{customer.customerName}} ({{customer.invoices.totalinvoices}})</span>
-                  <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.address.street}} {{customer.address.city}}<span ng-if="customer.address.regioncode">,</span> {{customer.address.regioncode}} {{customer.address.postalcode}}</span>
-                  <i class="margin-left-10 pull-right" ng-class="{'icon-arrow-up6': customer.isOpen, 'icon-arrow-down7': !customer.isOpen}"></i>
-                  <span class="pull-right"><span ng-if="userCanPayInvoice && !isInternalAccountAdminUser && customer.haspayableinvoices"><span class="hidden-xs">Balance: {{customer.totaldue | currency}} <span style="margin-right: 10px; margin-left: 10px;">|</span></span>Total<span class="hidden-xs"> to Pay:</span> {{customer.total | currency}}</span>
-                  </span>
+                    <span style="padding-left:10px;"> {{::customer.customerNumber}} - {{::customer.customerName}} ({{::customer.numberInvoices}})</span>
+                    <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{::customer.address.street}} {{::customer.address.city}}<span ng-if="customer.address.regioncode">,</span> {{::customer.address.regioncode}} {{::customer.address.postalcode}}</span>
+                    <i class="margin-left-10 pull-right" ng-class="{'icon-arrow-up6': customer.isOpen, 'icon-arrow-down7': !customer.isOpen}"></i>
+                    <span class="pull-right"><span ng-if="userCanPayInvoice && !isInternalAccountAdminUser && hasPayableInvoices"><span class="hidden-xs">Balance: {{::customer.totaldue | currency}} <span style="margin-right: 10px; margin-left: 10px;">|</span></span>Total<span class="hidden-xs"> to Pay:</span> {{customerTotalToPay[customer.customerDetails] | currency}}</span>
+                    </span>
                 </div>
               </accordion-heading>
-              <div class="col-sm-12 background-white" ng-show="!isInternalAccountAdminUser && customer.haspayableinvoices && selectedFilterView.name !== 'Paid Invoices' && userCanPayInvoice">
-                <button class="btn btn-default btn-sm" style="margin:10px -5px;" ng-click="customer.selected = !customer.selected; selectAll(selectCustomerInvoices, customer, $event);">Select All Invoices For Customer</button>
+              <div class="col-sm-12 background-white" ng-show="customer.haspayableinvoices && !isInternalAccountAdminUser && selectedFilterView.name !== 'Paid Invoices' && userCanPayInvoice">
+                <button class="btn btn-default btn-sm" style="margin:10px -5px;" ng-click="customer.selected = !customer.selected; selectAll(customer, $event);">Select All Invoices For Customer</button>
               </div>
-              <div ng-repeat="invoice in customer.invoices.results" class="panel panel-body panel-default">
+              <div ng-repeat="invoice in invoices[customer.customerDetails]" ng-show="invoices[customer.customerDetails].length" class="panel panel-body panel-default">
                 <div>
                   <div>
                     <label>
-                      <input type="checkbox" class="margin-top-10 margin-left-10" no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser && userCanPayInvoice" ng-model="invoice.isSelected" ng-hide="selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending'" ng-change="selectInvoice(invoice, invoice.isSelected)">
+                      <input type="checkbox" class="margin-top-10 margin-left-10" no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser && userCanPayInvoice" ng-model="invoice.isSelected" ng-hide="selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending'" ng-change="selectInvoice(invoice, invoice.isSelected); $event.stopPropagation()">
                     </label>
                   </div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display margin-bottom-10">
@@ -333,17 +327,17 @@
       </div>
 
       <!-- Print Accordion Only -->
-      <div class="row topPadded visible-print">
+      <div class="row visible-print">
         <div class="col-sm-12">
           <accordion close-others="false">
-            <accordion-group class="panel-title" ng-show="(customer.isOpen || customer.selected) && customer.invoices.results.length" is-open="true" ng-repeat="customer in invoices | orderBy:'customerName'">
-              <accordion-heading>
-                <div class="white-space: normal;">
-                  <span style="padding-left:10px;"> {{customer.customerNumber}} - {{customer.customerName}} ({{customer.invoices.totalResults}})</span>
-                  <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{customer.address.street}} {{customer.address.city}}<span ng-if="customer.address.regioncode">,</span> {{customer.address.regioncode}} {{customer.address.postalcode}}</span>
-                </div>
-              </accordion-heading>
-              <div ng-repeat="invoice in customer.invoices.results" class="panel panel-body panel-default">
+              <accordion-group class="panel-title" ng-show="(customer.isOpen || customer.selected) && customer.numberInvoices > 0" is-open="true" ng-repeat="customer in customers | orderBy:'customerName'">
+                <accordion-heading>
+                  <div class="white-space: normal;">
+                    <span style="padding-left:10px;"> {{::customer.customerNumber}} - {{::customer.customerName}} ({{::customer.invoices.totalResults}})</span>
+                    <span class="hidden-sm hidden-xs" style="margin-left:20px;"> {{::customer.address.street}} {{::customer.address.city}}<span ng-if="customer.address.regioncode">,</span> {{::customer.address.regioncode}} {{::customer.address.postalcode}}</span>
+                  </div>
+                </accordion-heading>
+                <div ng-repeat="invoice in invoices[customer.customerDetails]" class="panel panel-body panel-default">
                 <div>
                   <div class="col-md-3 col-xs-6 row-fluid inline-block-display">
                     <span></span><a ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)"><strong><span style="text-decoration:none" class="text-black" ></span>{{::invoice.invoicenumber}}</a></strong>
