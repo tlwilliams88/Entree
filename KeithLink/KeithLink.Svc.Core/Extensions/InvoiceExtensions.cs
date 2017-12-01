@@ -150,6 +150,36 @@ namespace KeithLink.Svc.Core.Extensions {
             };
         }
 
+        public static InvoiceCustomer ToInvoiceCustomer(this CustomerWithInvoices customer)
+        {
+            return new InvoiceCustomer()
+            {
+                CustomerNumber = customer.CustomerNumber,
+                CustomerName = customer.CustomerName,
+                DisplayName = customer.DisplayName,
+                CustomerBranch = customer.CustomerBranch,
+                NationalOrRegionalAccountNumber = customer.NationalOrRegionalAccountNumber,
+                ContractId = customer.ContractId,
+                CustomerId = customer.CustomerId,
+                AccountId = customer.AccountId,
+                Phone = customer.Phone,
+                Email = customer.Email,
+                Address = customer.Address,
+                NationalId = customer.NationalId,
+                NationalNumber = customer.NationalNumber,
+                NationalSubNumber = customer.NationalSubNumber,
+                NationalIdDesc = customer.NationalIdDesc,
+                NationalNumberSubDesc = customer.NationalNumberSubDesc,
+                RegionalId = customer.RegionalId,
+                RegionalIdDesc = customer.RegionalIdDesc,
+                RegionalNumber = customer.RegionalNumber,
+                RegionalNumberDesc = customer.RegionalNumberDesc,
+                HasPayableInvoices = customer.HasPayableInvoices,
+                NumberInvoices = customer.PagedResults.TotalInvoices,
+                TotalAmountDue = (customer.TotalAmountDue != null) ? customer.TotalAmountDue.Value : 0
+            };
+        }
+
         public static Invoice ToEFInvoice(this InvoiceModel invoice) {
             return new KeithLink.Svc.Core.Models.EF.Invoice() {
                 CustomerNumber = invoice.CustomerNumber,

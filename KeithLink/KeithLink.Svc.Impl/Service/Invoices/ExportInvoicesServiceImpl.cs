@@ -23,6 +23,7 @@ using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Impl.Service.Invoices
 {
@@ -136,12 +137,20 @@ namespace KeithLink.Svc.Impl.Service.Invoices
         /// <param name="request"></param>
         /// <param name="forAllCustomers"></param>
         /// <returns></returns>
-        public List<InvoiceModel> GetExportableInvoiceModels(UserProfile user, UserSelectedContext context, InvoiceExportRequestModel request, bool forAllCustomers)
+        public List<InvoiceModel> GetExportableInvoiceModels(UserProfile user, UserSelectedContext context, ExportRequestModel request, bool forAllCustomers)
         {
-            var list = _invLogic.GetInvoiceHeaders(user, context, request.paging, forAllCustomers);
+            PagingModel myPaging = new PagingModel() {
+                Filter = request.Filter,
+                DateRange = request.DateRange
+            };
+            if (request.Sort != null) {
+                myPaging.Sort.Add(request.Sort);
+            }
 
-            if (request.export.Fields != null)
-                _exportLogic.SaveUserExportSettings(user.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
+            var list = _invLogic.GetInvoiceHeaders(user, context, myPaging, forAllCustomers);
+
+            if (request.Fields != null)
+                _exportLogic.SaveUserExportSettings(user.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.Fields, request.SelectedType);
 
             List<InvoiceModel> exportData = new List<InvoiceModel>();
 
