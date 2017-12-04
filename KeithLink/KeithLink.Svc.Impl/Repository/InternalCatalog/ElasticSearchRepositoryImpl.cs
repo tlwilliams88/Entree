@@ -11,11 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
+namespace KeithLink.Svc.Impl.Repository.InternalCatalog
+{
     /// <summary>
     /// Specific implementation for dealing with the elasticsearch api
     /// </summary>
-    public class ElasticSearchRepositoryImpl: IElasticSearchRepository {
+    public class ElasticSearchRepositoryImpl : IElasticSearchRepository
+    {
         #region attributes
         private RestClient client;
         #endregion
@@ -28,12 +30,12 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
         #endregion
 
         #region methods
-		public bool CheckIfIndexExist(string branchId)
-		{
-			var request = new RestRequest(branchId.ToLower(), Method.HEAD);
-			var response = client.Execute(request);
-			return response == null ? false : response.StatusCode == System.Net.HttpStatusCode.OK;
-		}
+        public bool CheckIfIndexExist(string branchId)
+        {
+            var request = new RestRequest(branchId.ToLower(), Method.HEAD);
+            var response = client.Execute(request);
+            return response == null ? false : response.StatusCode == System.Net.HttpStatusCode.OK;
+        }
 
         public void Create(string json)
         {
@@ -42,7 +44,8 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             var response = client.Execute(request);
         }
 
-        public void CreateEmptyIndex(string branchId) {
+        public void CreateEmptyIndex(string branchId)
+        {
             dynamic filters = new {
                 my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt", ignore_case = "true" },
                 ngram_filter = new { type = "ngram", min_gram = 2, max_gram = 20, token_chars = new[] { "letter", "digit" } }
@@ -51,31 +54,32 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             // trying to convert this to a dynamic object fails. It causes the name_ngram_analyzed column
             // to lose its index_analyzer and search_analyzer settings.
             System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
+
             (dynamicAnalyzer as IDictionary<string, object>).Add("default", new {
-                                                                                type = "custom",
-                                                                                filter = new List<string>() {
-                                                                                        "standard", 
-                                                                                        "lowercase",
-                                                                                        "my_synonym_filter", 
-                                                                                    },
-                                                                                    tokenizer = "whitespace"
-                                                                                }
-                                                                            );
+                type = "custom",
+                filter = new List<string>() {
+                    "standard",
+                    "lowercase",
+                    "my_synonym_filter",
+                },
+                tokenizer = "whitespace"
+            });
+
             (dynamicAnalyzer as IDictionary<string, object>).Add("whitespace_analyzer", new {
-                                                                                    type = "custom",
-                                                                                    filter = new List<string>() { "lowercase", "my_synonym_filter" },
-                                                                                    tokenizer = "whitespace"
-                                                                                }
-                                                                            );
+                type = "custom",
+                filter = new List<string>() { "lowercase", "my_synonym_filter" },
+                tokenizer = "whitespace"
+            });
+
             (dynamicAnalyzer as IDictionary<string, object>).Add("ngram_analyzer", new {
-                                                                                    type = "custom",
-                                                                                    filter = new List<string>() {
-                                                                                        "lowercase",
-                                                                                        "ngram_filter",
-                                                                                        "my_synonym_filter"
-                                                                                    },
-                                                                                    tokenizer = "whitespace"
-                                                                                }
+                type = "custom",
+                filter = new List<string>() {
+                    "lowercase",
+                    "ngram_filter",
+                    "my_synonym_filter"
+                },
+                tokenizer = "whitespace"
+            }
                                                                             );
             dynamic indexSettings =
                 new {
@@ -100,20 +104,18 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             request.AddBody(indexSettings);
             IRestResponse res = client.Execute(request);
         }
- 
+
         public void DeleteBranch(string branchId)
-		{
-			var request = new RestRequest(branchId, Method.DELETE);
-			client.Execute(request);
-		}
+        {
+            var request = new RestRequest(branchId, Method.DELETE);
+            client.Execute(request);
+        }
 
         private dynamic BuildBranchMetaQuery(int size)
         {
-            return new
-            {
+            return new {
                 size = size,
-                query = new
-                {
+                query = new {
                     match_all = new { }
                 },
                 fields = new string[0]
@@ -122,19 +124,10 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 
         private dynamic BuildScrollQuery(string scrollName, string scrollId)
         {
-            return new
-            {
+            return new {
                 scroll = scrollName,
                 scroll_id = scrollId
             };
-        }
-
-        private ElasticsearchClient GetElasticsearchClient()
-        {
-            var node = new Uri(Configuration.ElasticSearchURL);
-            var config = new Elasticsearch.Net.Connection.ConnectionConfiguration(node);
-            var client = new ElasticsearchClient(config);
-            return client;
         }
 
         /// <summary>
@@ -154,7 +147,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             var request = new RestRequest(string.Format("{0}/product/_search?scroll={1}", branchId, scroll), Method.POST);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
             var res = client.Execute(request);
-            DynamicDictionary dd = JsonConvert.DeserializeObject<DynamicDictionary>(res.Content);
+            DynamicResponse dd = JsonConvert.DeserializeObject<DynamicResponse>(res.Content);
 
             int totalproducts = dd["hits"]["total"];
 
@@ -164,7 +157,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 
             List<string> existing = new List<string>();
 
-            foreach(var Id in Ids)
+            foreach (var Id in Ids)
             {
                 existing.Add(Id._id.ToString());
             }
@@ -178,11 +171,11 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
                 request = new RestRequest("_search/scroll", Method.POST);
                 request.AddParameter("application/json", json, ParameterType.RequestBody);
                 res = client.Execute(request);
-                dd = JsonConvert.DeserializeObject<DynamicDictionary>(res.Content);
+                dd = JsonConvert.DeserializeObject<DynamicResponse>(res.Content);
 
                 Ids = dd["hits"]["hits"];
 
-                if(Ids != null)
+                if (Ids != null)
                 {
                     foreach (var Id in Ids)
                     {
@@ -200,21 +193,21 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
         }
 
         public void MapProductProperties(string branchId, string json)
-		{
-			var request = new RestRequest(string.Format("{0}/product/_mapping", branchId), Method.POST);
-			request.AddParameter("application/json", json, ParameterType.RequestBody);
-			client.Execute(request);
-		}
-		
-		public void RefreshSynonyms(string branchId)
-		{
-			//Close then open the index. This will cause it to see any changes made to the synonyms file
-			var requestClose = new RestRequest(string.Format("{0}/_close",branchId.ToLower()), Method.POST);
-			client.Execute(requestClose);
+        {
+            var request = new RestRequest(string.Format("{0}/product/_mapping", branchId), Method.POST);
+            request.AddParameter("application/json", json, ParameterType.RequestBody);
+            client.Execute(request);
+        }
 
-			var requestOpen = new RestRequest(string.Format("{0}/_open", branchId.ToLower()), Method.POST);
-			client.Execute(requestOpen);
-		}
+        public void RefreshSynonyms(string branchId)
+        {
+            //Close then open the index. This will cause it to see any changes made to the synonyms file
+            var requestClose = new RestRequest(string.Format("{0}/_close", branchId.ToLower()), Method.POST);
+            client.Execute(requestClose);
+
+            var requestOpen = new RestRequest(string.Format("{0}/_open", branchId.ToLower()), Method.POST);
+            client.Execute(requestOpen);
+        }
         #endregion
-	}
+    }
 }

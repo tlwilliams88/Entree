@@ -164,9 +164,9 @@
       <HintPath>..\packages\DocumentFormat.OpenXml.2.7.2\lib\net40\DocumentFormat.OpenXml.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Elasticsearch.Net.1.0.1\lib\Elasticsearch.Net.dll</HintPath>
+    <Reference Include="Elasticsearch.Net, Version=5.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elasticsearch.Net.5.5.0\lib\net45\Elasticsearch.Net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -224,15 +224,16 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.SqlServer.Types.11.0.2\lib\net20\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
-    <Reference Include="Nest">
-      <HintPath>..\packages\NEST.1.0.1\lib\Nest.dll</HintPath>
+    <Reference Include="Nest, Version=5.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <HintPath>..\packages\NEST.5.5.0\lib\net45\Nest.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NewRelic.Api.Agent">
       <HintPath>.\NewRelic.Api.Agent.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="RabbitMQ.Client">
       <HintPath>..\packages\RabbitMQ.Client.3.3.5\lib\net30\RabbitMQ.Client.dll</HintPath>
