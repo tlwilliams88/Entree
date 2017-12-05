@@ -83,12 +83,6 @@ angular.module('bekApp')
           profile.displayRole = AccessService.getRoleDisplayString(profile.rolename);
           Service.updateDisplayName(profile);
 
-          LocalStorage.setUserId(profile.userid);
-          LocalStorage.setRoleName(profile.rolename);
-          LocalStorage.setIsInternalUser(profile.emailaddress.indexOf('@benekeith.com') > -1);
-          LocalStorage.setIsKbitCustomer(profile.iskbitcustomer);
-          LocalStorage.setIsPowerMenuCustomer(profile.ispowermenucustomer);
-
           return profile;
         });
       },

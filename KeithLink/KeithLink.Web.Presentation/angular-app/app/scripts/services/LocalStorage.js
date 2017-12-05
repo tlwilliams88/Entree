@@ -149,46 +149,6 @@ angular.module('bekApp')
         return localStorageService.get(Constants.localStorage.userName);
       },
 
-      setUserId: function(userId) {
-        localStorageService.set(Constants.localStorage.userId, userId);
-      },
-
-      getUserId: function() {
-        return localStorageService.get(Constants.localStorage.userId);
-      },
-
-      setRoleName: function(roleName) {
-        localStorageService.set(Constants.localStorage.roleName, roleName);
-      },
-
-      getRoleName: function() {
-        return localStorageService.get(Constants.localStorage.roleName);
-      },
-
-      setIsInternalUser: function(isInternalUser) {
-        localStorageService.set(Constants.localStorage.isInternalUser, isInternalUser);
-      },
-
-      getIsInternalUser: function() {
-        return localStorageService.get(Constants.localStorage.isInternalUser);
-      },
-
-      setIsKbitCustomer: function(isKbitCustomer) {
-        localStorageService.set(Constants.localStorage.isKbitCustomer, isKbitCustomer);
-      },
-
-      getIsKbitCustomer: function() {
-        return localStorageService.get(Constants.localStorage.isKbitCustomer);
-      },
-
-      setIsPowerMenuCustomer: function(isPowerMenuCustomer) {
-        localStorageService.set(Constants.localStorage.isPowerMenuCustomer, isPowerMenuCustomer);
-      },
-
-      getIsPowerMenuCustomer: function() {
-        return localStorageService.get(Constants.localStorage.isPowerMenuCustomer);
-      },
-
       setHideTutorialHomePage: function(hideTutorial){
         localStorageService.set(Constants.localStorage.hideTutorialHome, hideTutorial);
       },
