@@ -117,8 +117,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
                 size = size,
                 query = new {
                     match_all = new { }
-                },
-                fields = new string[0]
+                }
             };
         }
 
