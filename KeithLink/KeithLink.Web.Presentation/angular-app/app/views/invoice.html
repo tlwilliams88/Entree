@@ -204,7 +204,7 @@
       <div class="row topPadded hidden-print">
         <div class="col-sm-12">
           <accordion close-others="false">
-            <accordion-group ng-if="customer.numberInvoices > 0" class="panel-title" ng-show="true" ng-init="customer.isOpen = (invoices.length == 1)" is-open="customer.isOpen" ng-repeat="customer in customers | orderBy:'customerName'">
+            <accordion-group ng-if="customer.numberInvoices > 0" class="panel-title" ng-show="true" ng-init="customer.isOpen = (customers.length == 1)" is-open="customer.isOpen" ng-repeat="customer in customers | orderBy:'customerName'">
               <accordion-heading>
                 <div class="white-space: normal;">
                     <span style="padding-left:10px;"> {{::customer.customerNumber}} - {{::customer.customerName}} ({{::customer.numberInvoices}})</span>
