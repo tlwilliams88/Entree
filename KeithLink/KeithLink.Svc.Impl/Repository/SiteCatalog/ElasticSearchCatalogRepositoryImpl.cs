@@ -837,17 +837,21 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             string branch = catalogInfo.BranchId.ToLower();
 
-            try
-            {
+            try {
                 ElasticsearchResponse<DynamicResponse> res = _eshelper.ElasticClient.LowLevel.Search<DynamicResponse>(branch.ToLower(), "product", termSearchExpression);
-                if (res.Body["hits"]["total"] != null)
-                    return Convert.ToInt32(res.Body["hits"]["total"].Value);
-                else
+                if (res.Body["hits"]["total"] != null) {
+                    if (res.Success) {
+                        return Convert.ToInt32(res.Body["hits"]["total"]
+                                                  .Value);
+                    } else {
+                        throw new Exception(string.Format("Error executing ES Query: {0} : {1}", res.ServerError.Error, res.ServerError.Status));
+                    }
+                } else {
                     return 0;
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
@@ -1151,14 +1155,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         private void BuildTempZoneFacet(dynamic oFacetValue, IDictionary<string, object> facetValue)
         {
-            facetValue.Add(new KeyValuePair<string, object>("description", GetTemperatureZoneDescription(oFacetValue["key"])));
+            facetValue.Add(new KeyValuePair<string, object>("description", GetTemperatureZoneDescription(oFacetValue["key"].Value)));
         }
 
         private void BuildBrandsFacet(dynamic oFacetValue, IDictionary<string, object> facetValue)
         {
             if (oFacetValue["brand_meta"]["buckets"].Count > 0)
             {
-                facetValue.Add(new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].ToString()));
+                facetValue.Add(new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].Value.ToString()));
             }
             else
             {
@@ -1172,18 +1176,18 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 oFacetValue["parentcategory_code"]["buckets"] != null &&
                 (oFacetValue["parentcategory_code"]["buckets"]).Count > 0)
             {
-                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["parentcategory_code"]["buckets"][0]["key"].ToString()));
+                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["parentcategory_code"]["buckets"][0]["key"].Value.ToString()));
             }
         }
 
         private void BuildCategoryFacet(dynamic oFacetValue, IDictionary<string, object> facetValue)
         {
-            facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
+            facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].Value.ToString()));
             if (oFacetValue["category_code"] != null &&
                oFacetValue["category_code"]["buckets"] != null &&
                (oFacetValue["category_code"]["buckets"]).Count > 0)
             {
-                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["category_code"]["buckets"][0]["key"].ToString()));
+                facetValue.Add(new KeyValuePair<string, object>("code", oFacetValue["category_code"]["buckets"][0]["key"].Value.ToString()));
             }
         }
 
