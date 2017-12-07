@@ -415,12 +415,12 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         private string GetProductMapping(){
             dynamic mapping = new {
                 product = new {
-                    Properties = new {
-                        categoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        parentcategoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        brand_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        marketingbrand_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        brand_description_not_analyzed = new { type = "string", index = "not_analyzed" },
+                    properties = new {
+                        categoryname_not_analyzed = new { type = "keyword", index = "true" },
+                        parentcategoryname_not_analyzed = new { type = "keyword", index = "not_analyzed" },
+                        brand_not_analyzed = new { type = "keyword", index = "not_analyzed" },
+                        marketingbrand_not_analyzed = new { type = "keyword", index = "not_analyzed" },
+                        brand_description_not_analyzed = new { type = "keyword", index = "not_analyzed" },
                         keywords = new {
                             type = "string",
                             analyzer = "keyword",
@@ -520,19 +520,19 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                                 }
                             }
                         },
-                        name_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        name_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
-                        marketingname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        name_not_analyzed = new { type = "keyword", index = "not_analyzed" },
+                        name_ngram_analyzed = new { type = "text", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
+                        marketingname_not_analyzed = new { type = "keyword", index = "not_analyzed" },
                         marketingname_ngram_analyzed = new { type = "string", analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
-                        mfrname_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        marketingmanufacturer_not_analyzed = new { type = "string", index = "not_analyzed" },
-                        preferreditemcode = new { type = "string", index = "not_analyzed" },
-                        status1_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        mfrname_not_analyzed = new { type = "keyword", index = "not_analyzed" },
+                        marketingmanufacturer_not_analyzed = new { type = "keyword", index = "not_analyzed" },
+                        preferreditemcode = new { type = "keyword", index = "not_analyzed" },
+                        status1_not_analyzed = new { type = "keyword", index = "not_analyzed" },
                         nutritional = new {
                             @properties = new {
                                 diet = new {
                                     @properties = new {
-                                        diettype = new { type = "string", index = "not_analyzed" }
+                                        diettype = new { type = "keyword", index = "not_analyzed" }
                                     }
                                 }
                             }
