@@ -368,14 +368,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             {
                 ExpandoObject sortObject = new ExpandoObject();
                 (sortObject as IDictionary<string, object>).Add(sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
-                (sortObject as IDictionary<string, object>).Add("cases", "desc");
+                (sortObject as IDictionary<string, object>).Add("cases.keyword", "desc");
                 return sortObject;
             }
             else
             {
                 ExpandoObject sortObject = new ExpandoObject();
                 (sortObject as IDictionary<string, object>).Add("_score", "desc");
-                (sortObject as IDictionary<string, object>).Add("cases", "desc");
+                (sortObject as IDictionary<string, object>).Add("cases.keyword", "desc");
                 return sortObject;
             }
         }
@@ -1250,7 +1250,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 foreach (var diet in oProd._source.nutritional.diet)
                 {
                     Diet d = new Diet() { DietType = diet.diettype, Value = diet.value };
-                    nutritional.Diets.Add(diet.diettype);
+                    nutritional.Diets.Add(diet.diettype.Value);
                     nutritional.DietInfo.Add(d);
                 }
             }
@@ -1277,21 +1277,21 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             {
                 nutritional.Allergens.freefrom = new List<string>();
                 foreach (var ff in oProd._source.nutritional.allergen.freefrom)
-                    nutritional.Allergens.freefrom.Add(((string)ff).ToLower());
+                    nutritional.Allergens.freefrom.Add(((string)ff.Value).ToLower());
             }
 
             if (oProd._source.nutritional.allergen.contains != null)
             {
                 nutritional.Allergens.contains = new List<string>();
                 foreach (var ff in oProd._source.nutritional.allergen.contains)
-                    nutritional.Allergens.contains.Add(ff);
+                    nutritional.Allergens.contains.Add(ff.Value);
             }
 
             if (oProd._source.nutritional.allergen.maycontain != null)
             {
                 nutritional.Allergens.maycontain = new List<string>();
                 foreach (var ff in oProd._source.nutritional.allergen.maycontain)
-                    nutritional.Allergens.maycontain.Add(ff);
+                    nutritional.Allergens.maycontain.Add(ff.Value);
             }
         }
 
@@ -1485,7 +1485,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                                         category_code = new {
                                             terms = new {
                                                 field =
-                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "tcscode" : "categoryid"),
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "tcscode" : "categoryid.keyword"),
                                                 size = 500
                                             }
                                         }
@@ -1501,7 +1501,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                                         parentcategory_code = new {
                                             terms = new {
                                                 field =
-                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "catalogdept" : "parentcategoryid"),
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "catalogdept" : "parentcategoryid.keyword"),
                                                 size = 500
                                             }
                                         }
@@ -1510,7 +1510,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         }
                         else if (aggregationParams[0] == "brands")
                         {
-                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { brand_meta = new { terms = new { field = "brand_control_label", size = 500 } } } });
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { brand_meta = new { terms = new { field = "brand_control_label.keyword", size = 500 } } } });
                         }
                         else
                         {
