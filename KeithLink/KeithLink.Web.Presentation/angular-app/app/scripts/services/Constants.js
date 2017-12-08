@@ -20,7 +20,8 @@ angular.module('bekApp')
       userName: 'userName',
       hideTutorialHome: 'hideTutorialHome',
       hideTutorialSearch: 'hideTutorialSearch',
-      hideTutorialAddToOrder: 'hideTutorialAddToOrder'
+      hideTutorialAddToOrder: 'hideTutorialAddToOrder',
+      searchTerms: 'searchTerms'
     },
     
     listType: {
