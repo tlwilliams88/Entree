@@ -1,69 +1,9 @@
-<div page-header-bar fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" style="z-index: 1000;" media-query="min-width: 1024px">
-  <div header-message style="border-bottom: 0px !important; width: 100%; display: inline-flex;" class="padding-bottom-10">
-      <button
-        ng-if="!isCustomInventoryList"
-        type="submit"
-        class="btn btn-primary page-subheader-bar__button hidden-xs hidden-sm"
-        style="border-radius: 4px;"
-        ng-disabled="listForm.$invalid || selectedList.isworksheet || !selectedList.permissions.canEditList"
-        ng-click="saveList(selectedList)">
-        <span class="icon-floppy-disk padding-right-8"></span> Save List
-      </button>
-      <button
-        ng-if="isCustomInventoryList"
-        type="submit"
-        class="btn btn-primary hidden-xs hidden-sm"
-        style="border-radius: 4px;"
-        ng-disabled="listForm.$invalid"
-        ng-click="saveCustomInventoryList(selectedList.items)">
-        <span class="icon-floppy-disk padding-right-8"></span> Save List
-      </button>
-      <div class="padding-right-8" style="text-align: center;" ng-class="{'width-87Percent' : selectedList.listid == 'nonbeklist' , 'width-100Percent' : selectedList.listid !== 'nonbeklist'}">
-         <div class="btn-group list-name" dropdown is-open="status.listactions">
-            <a class="btn btn-lg btn-default dropdown-toggle" 
-               style="width: 250px; text-align: left;"
-               ng-if="selectedList.isRenaming == false;">
-                {{selectedList.name}} <span class="caret text-dark pull-right margin-top-firefox margin-top-7"></span>
-            </a>
-            <ul class="dropdown-menu" style="max-height: 300px; overflow: auto; width: 100%;">
-                <li> 
-                    <a ng-click="goToList('nonbeklist', '13')" ng-if="(selectedList.listid != 'nonbeklist')" ng-class="{'inactive-option': selectedList.listid == 'nonbeklist'}">
-                        Non-BEK Items
-                    </a>
-                </li>
-                <li ng-repeat="list in lists">
-                    <a ng-click="goToList(list.listid, list.type)" 
-                       ng-class="{'inactive-option': selectedList.listid == list.listid}">
-                        {{list.name}}
-                    </a>
-                </li>
-            </ul>
-            <form name="renameListForm" class="style-validation-errors inline-header-form nowrap padding-right-8" ng-if="selectedList.isRenaming" style="text-align: center;" ng-class="{'width-87Percent' : selectedList.listid == 'nonbeklist' , 'width-100Percent' : selectedList.listid !== 'nonbeklist'}">
-              <input
-                no-duplicates="name"
-                collection="lists"
-                type="text"
-                focus-me="selectedList.isRenaming"
-                required
-                ng-model-options="{ debounce: 1000 }" ng-model="selectedList.name"
-                name="listName"
-                id="listName"
-                class="input-lg form-control" />
-
-              <button
-                ng-disabled="renameListForm.$invalid"
-                class="btn-no-style"
-                type="submit"
-                ng-click="renameList(selectedList.listid, selectedList.name); renameListForm.$setPristine();">
-                <span class="large-icon text-green icon-checkmark"></span>
-              </button>
-
-              <a ng-click="cancelRenameList()"><span class="large-icon text-red icon-cross"></span></a>
-
-              <span class="form-error-message" ng-if="renameListForm.listName.$error.required">List name is required</span>
-              <span class="form-error-message" ng-if="renameListForm.listName.$error.noDuplicates">Duplicate list name</span>
-            </form>
-        </div>
+<div page-header-bar>
+  <div header-message>
+    <div ng-if="!selectedList.isRenaming">
+      <div class="list-name">
+        {{selectedList.name}}
+      </div>
       <span ng-if="!isCustomInventoryList">
         <div class="inline-block-display">
           <span ng-if="selectedList.issharing" class="large-icon icon-user-add" tooltip="You are sharing this list."></span>
@@ -72,81 +12,102 @@
 
         <div
           class="inline-block-display"
-          ng-if="selectedList && selectedList.permissions.canDeleteList || selectedList.permissions.canRenameList">
+          ng-if="selectedList"
+          ng-if="selectedList.permissions.canDeleteList || selectedList.permissions.canRenameList">
 
           <a
-            ng-if="selectedList.permissions.canRenameList && selectedList.isRenaming == false"
+            ng-if="selectedList.permissions.canRenameList"
             ng-click="selectedList.isRenaming = true">
             <span class="hidden-print large-icon text-light icon-pencil"></span>
           </a>
-        </div>
-        
-        <button 
-            type="button"
-            class="btn btn-primary page-subheader-bar__button"
-            ng-if="!isCustomInventoryList && selectedList.permissions.canReorderItems && selectedList.items.length > 0" 
-            ui-sref="menu.organizelist({listId: selectedList.listid, listType: selectedList.type})">
-            Organize this list
-        </button>
 
-        <button
-          type="button"
-          class="btn btn-primary page-subheader-bar__button"
-          ng-click="createList()">
-          Create New List
-        </button>
-        
-        <button
-          type="button"
-          class="btn btn-primary page-subheader-bar__button"
-          ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"
-          ng-click="createMandatoryList()">
-          Create Mandatory List
-        </button>
-        
-        <button
-          type="button"
-          class="btn btn-primary page-subheader-bar__button"
-          ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"
-          ng-click="createRecommendedList()">
-          Create Recommended List
-        </button>
-        
-        <button
-          ng-if="selectedList.permissions.canDeleteList"
-          confirmed-click="deleteList(selectedList)"
-          class="hidden-print btn btn-danger"
-          ng-confirm-click="{{'This will delete the list ' + selectedList.name + ' and all items within. Are you sure you want to delete this list?'}}">
-          <span class="icon-trash padding-right-8"></span> Delete List
-        </button>
+          <a
+            ng-if="selectedList.permissions.canDeleteList"
+            confirmed-click="deleteList(selectedList)"
+            class="hidden-print"
+            ng-confirm-click="{{'This will delete the list ' + selectedList.name + ' and all items within. Are you sure you want to delete this list?'}}">
+            <span class="large-icon text-light icon-trash"></span>
+          </a>
+        </div>
       </span>
 
-    </div>
-
-    <div class="pull-right hidden-xs hidden-sm" style="display: inline-flex;">
-
-      <button title="Print" class="btn btn-default btn-icon" ng-click="openPrintOptionsModal(selectedList)" ng-if="!isCustomInventoryList">
-        <span class="icon-printer"></span>
-      </button>
-      <button title="Export" class="btn btn-default btn-icon" ng-click="openExportModal()" ng-if="!isCustomInventoryList">
-        <span class="icon-export"></span>
-      </button>
-      <button title="Import" class="btn btn-default btn-icon" ng-click="openListImportModal()" ng-if="!isCustomInventoryList">
-        <span class="icon-install"></span>
-      </button>
-      <button title="Copy" class="btn btn-default btn-icon" ng-click="copyList(selectedList)" ng-if="!isCustomInventoryList">
-        <span class="icon-copy"></span>
-      </button>
+      <div class="hidden-md" style="font-size: .5em">
+        <span ng-if="isCustomInventoryList">Enter non-Ben E. Keith items here if you'd like to include them in your Inventory report</span>
+      </div>
 
     </div>
-  </div>
-  <div class="hidden-xs hidden-sm hidden-md" style="text-align: center; padding-top: 10px;" ng-if="isCustomInventoryList">
-    <span>Enter non-Ben E. Keith items here if you'd like to include them in your Inventory report</span>
-  </div>
 
+    <form name="renameListForm" class="style-validation-errors inline-header-form nowrap" ng-if="selectedList.isRenaming">
+      <input
+        no-duplicates="name"
+        collection="lists"
+        type="text"
+        focus-me="selectedList.isRenaming"
+        required
+        ng-model-options="{ debounce: 1000 }" ng-model="selectedList.name"
+        name="listName"
+        id="listName"
+        class="input-lg form-control" />
+
+      <button
+        ng-disabled="renameListForm.$invalid"
+        class="btn-no-style"
+        type="submit"
+        ng-click="renameList(selectedList.listid, selectedList.name); renameListForm.$setPristine();">
+        <span class="large-icon text-green icon-checkmark"></span>
+      </button>
+
+      <a ng-click="cancelRenameList()"><span class="large-icon text-red icon-cross"></span></a>
+
+      <span class="form-error-message" ng-if="renameListForm.listName.$error.required">List name is required</span>
+      <span class="form-error-message" ng-if="renameListForm.listName.$error.noDuplicates">Duplicate list name</span>
+    </form>
+
+  </div>
+  <div class="pull-right margin-right-10 hidden-xs hidden-sm">
+    <button
+      ng-if="selectedList.permissions.canEditList && !isCustomInventoryList"
+      type="submit"
+      class="btn-lg btn btn-primary"
+      ng-disabled="listForm.$invalid"
+      ng-click="saveList(selectedList)">
+      Save
+    </button>
+    <button
+      ng-if="selectedList.permissions.canEditList && isCustomInventoryList"
+      type="submit"
+      class="btn-lg btn btn-primary"
+      ng-disabled="listForm.$invalid"
+      ng-click="saveCustomInventoryList(selectedList.items)">
+      Save
+    </button>
+    <button
+      ng-if="selectedList.permissions.canEditList"
+      class="btn-lg btn btn-default"
+      type="button"
+      ng-click="undoChanges()"
+      ng-disabled="listForm.$pristine">
+      Cancel
+    </button>
+
+    <div class="btn-group" dropdown is-open="status.listactions">
+      <a class="btn btn-lg btn-default dropdown-toggle">
+        List Actions <span class="caret text-dark"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a ng-click="openPrintOptionsModal(selectedList)" ng-if="!isCustomInventoryList">Print</a></li>
+        <li><a ng-click="openExportModal()" ng-if="!isCustomInventoryList">Export</a></li>
+        <li><a ng-click="openListImportModal()">Import</a></li>
+        <li><a ng-if="(selectedList.permissions.canShareList || selectedList.permissions.canCopyList) && !isCustomInventoryList" ng-click="openReplicateListModal(selectedList)">Give list</a></li>
+        <li><a ng-click="copyList(selectedList)" ng-if="!isCustomInventoryList">Duplicate list</a></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
 
 <!-- Mobile subheader bar -->
-<div class="visible-xs visible-sm hidden-print row page-subheader-bar" style="border-top: 1px solid #c3bc9c;">
+<div class="visible-xs visible-sm hidden-print row page-subheader-bar">
 
   <button
     ng-if="selectedList.permissions.canEditList && !isCustomInventoryList"
@@ -176,7 +137,7 @@
   </button>
 
   <div class="btn-group pull-right" dropdown is-open="status.listsisopen">
-    <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-right text-regular" style="padding-top: 5px;">Lists <span class="icon-arrow-down5"></span></a>
+    <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-right text-regular">Lists <span class="icon-arrow-down5"></span></a>
     <ul class="dropdown-menu dropdown-menu-scroll" role="menu">
       <li ng-repeat="list in lists | sortLists track by list.listid + '.' + list.name + '.' + list.type" ng-if="(list.listid !== selectedList.listid)">
         <a ng-click="goToList(list.listid, list.type)">
@@ -192,36 +153,238 @@
     </ul>
   </div>
 </div>
-</div>
+
 <div class="page-content">
-  <div>
+  <div class="row">
+    <!-- Available Lists -->
+    <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists" ng-if="resized">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="custom-lists" sticky>
+            <button
+              ng-if="selectedList.permissions.canEditList && !isCustomInventoryList"
+              type="submit"
+              class="btn-lg btn btn-primary back-to-top-desktop margin-top-10"
+              ng-disabled="listForm.$invalid"
+              ng-click="saveList(selectedList)">
+              Save
+            </button>
+
+            <button
+              ng-if="selectedList.permissions.canEditList && isCustomInventoryList"
+              type="submit"
+              class="btn-lg btn btn-primary back-to-top-desktop margin-top-10"
+              ng-disabled="listForm.$invalid"
+              ng-click="saveCustomInventoryList(selectedList.items)">
+              Save
+            </button>
+
+            <h3>Your Lists</h3>
+
+            <div class="btn-group-vertical list-names text-blue">
+              <button
+                type="button"
+                ng-repeat="list in lists | sortLists | limitTo: showMoreListNames ? numberListNamesToShow : lists.length track by list.listid + '.' + list.name + '.' + list.type"
+                ng-click="goToList(list.listid, list.type)"
+                ng-class="{'current-list' : list.listid == selectedList.listid && list.type == selectedList.type}"
+                class="btn-lg custom-lists__name btn btn-default btn-list"
+                data-drop="isDragging && list.permissions.canAddItems"
+                data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}"
+                jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}"
+                ng-disabled="selectedList.listid == list.listid">
+                {{list.name}}
+              </button>
+            </div>
+            <h5>
+              <a
+                ng-show="lists.length > numberListNamesToShow"
+                ng-click="showMoreListNames = !showMoreListNames">
+                {{showMoreListNames ? '+ Show More' : '- Show Less'}}
+              </a>
+            </h5>
+
+            <div class="btn-group-vertical">
+              <button
+                type="button"
+                ng-click="goToList('nonbeklist', '13')"
+                class="btn btn-default btn-list text-light btn-lg"
+                ng-disabled="selectedList.listid == 'nonbeklist'"
+                ng-class="{'current-list' : list.listid == selectedList.listid && list.type == selectedList.type}">
+                Non-BEK Items
+              </button>
+
+              <button
+                type="button"
+                ng-click="createList()"
+                data-drop="isDragging"
+                data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}"
+                jqyoui-droppable="{onDrop: 'createListFromDrag()'}"
+                class="btn btn-default btn-list text-light btn-lg">
+                Create A List...
+              </button>
+
+              <button
+                type="button"
+                ng-click="createMandatoryList()"
+                data-drop="isDragging"
+                data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}"
+                jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}"
+                class="btn btn-default btn-list text-left text-light btn-lg"
+                ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"
+                title="Create Mandatory Items List for Customer">
+                Create <br>Mandatory...
+              </button>
+
+              <button
+                type="button"
+                ng-click="createRecommendedList()"
+                data-drop="isDragging"
+                data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}"
+                jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}"
+                class="btn btn-default btn-list text-left text-light btn-lg"
+                ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"
+                title="Create Recommended Items List for Customer">
+                Create <br>Recommended...
+              </button>
+              
+              
+              <button
+                type="button"
+                ng-click="createReminderList()"
+                data-drop="isDragging"
+                data-jqyoui-options="{hoverClass:'bek-drag-hover', tolerance:'pointer, activeClass:'bek-drag-active'}"
+                jqyoui-droppable="{onDrop: 'createReminderListFromDrag()'}"
+                class="btn btn-default btn-list text-left text-light btn-lg"
+                ng-if="!hideReminderListCreateButton"
+                title="Create Reminder Items List for Customer">
+                Create <br>Reminder...
+              </button>
+              </div>
+
+              <button
+                ng-if="selectedList.permissions.canDeleteItems && !isCustomInventoryList"
+                type="button"
+                class="btn btn-icon btn-default large-icon btn-trash"
+                ng-disabled="!isDragging"
+                data-drop="isDragging"
+                data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}"
+                jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}">
+                <span class="icon-trash"></span>
+              </button>
+
+            <p style="margin-top: 10px; font-size: 14px;" ng-if="!isCustomInventoryList">
+              <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid, listType: selectedList.type})">Organize this list<span class="icon-arrow-right6"></span></a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Items in List -->
-    <div class="padding-top-sm padding-top-xs col-xs-12" style="padding-left: 0;">
+    <div class="padding-top-sm padding-top-xs items col-md-10 col-xs-12">
 
       <div class="hidden-print">
         <p class="text-red" ng-if="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
       </div>
 
-      <form name="listSearchForm" class="hidden-print">
-        <div class="col-xs-12" style="z-index: 998;">
-            <div class="input-group input-group-lg">
-              <input 
-              type="text" 
-              class="form-control"
-              ng-model="listSearchTerm"
-              placeholder="Search List by keyword, item #, or label" 
-              aria-label="Search List..."
-              style="font-size: 14px;">
-              <span class="input-group-btn">
-                  <button type="submit" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-                  <button type="button"  ng-click="clearFilter(true)" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-              </span>
-            </div>
+      <form name="listSearchForm" class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+        <div class="input-group input-group-lg">
+          <input
+            ng-model="listSearchTerm"
+            type="text"
+            class="form-control"
+            placeholder="Search current list by keyword, item # or label" />
+          <span class="input-group-btn">
+            <button type="submit" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+            <button type="button"  ng-click="clearFilter(true)" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+
+          </span>
+          <input
+            type="text"
+            class="form-control pull-right hidden-sm hidden-xs"
+            style="max-width:200px; border-radius: 4px;"
+            ng-show="selectedList.permissions.canAddItems"
+            ng-model="listItemNumber"
+            placeholder="Item Number"
+            integer
+            allowleadingzeroes='true'/>
+          <span class="input-group-btn">
+            <button
+              type="submit"
+              class="btn btn-primary hidden-sm hidden-xs"
+              ng-show="selectedList.permissions.canAddItems"
+              ng-disabled="!listItemNumber"
+              ng-click="addItemByItemNumber(listItemNumber)">
+              Add Item
+            </button>
+          </span>
         </div>
       </form>
 
-  <div style="text-align: center; background-color: #fff;" fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="55" scroll-offset="20" media-query="min-width: 1024px">
+      <!-- Multi-select menu -->
+      <div class="hidden-print row" ng-show="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+        <div class="col-xs-12 col-sm-6">
+          <div class="btn-group custom-lists__multi-actions">
+            <!-- Add to List -->
+            <div class="btn-group" dropdown is-open="multiSelect.showLists">
+              <button type="button" class="multi-action-btn btn btn-default btn-lg dropdown-toggle">
+                <span class="icon-folder large-icon text-light"></span>
+                <span class="icon-arrow-down6 text-light"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li
+                  ng-click="addItemsToList(list)"
+                  ng-repeat="list in lists | sortLists track by list.listid + '.' + list.name + '.' + list.type"
+                  ng-if="(list.permissions.canAddItems && selectedList.listid !== list.listid && !list.permissions.specialDisplay)"
+                  ng-hide="!list.permissions.canAddNonBEKItems && isCustomInventoryList">
+                  <a href="">{{list.name}}</a>
+                </li>
+                <li ng-click="createListFromMultiSelect()"><a>Create New List...</a></li>
+              </ul>
+            </div>
+            <!-- Edit Labels -->
+            <div class="btn-group" dropdown is-open="multiSelect.showLabels" ng-if="selectedList.permissions.canEditLabels">
+              <button type="button" class="multi-action-btn btn btn-default btn-lg dropdown-toggle">
+                <span class="icon-tag large-icon text-light"></span>
+                <span class="icon-arrow-down6 text-light"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="label in labels track by label" ng-click="addLabels(label)"><a>{{label}}</a></li>
+                <li ng-click="multiSelect.addingNewLabel=true; multiSelect.showLabels=false;"><a>Add New Label...</a></li>
+              </ul>
+            </div>
+            <!-- Delete items -->
+            <button
+              type="button"
+              class="multi-action-btn btn btn-default btn-lg"
+              ng-click="deleteMultipleItems(selectedList)"
+              ng-if="selectedList.permissions.canDeleteItems">
+              <span class="icon-trash large-icon text-light"></span>
+            </button>
+          </div>
+        </div>
+        <div class="col-xs-8 col-sm-4" ng-if="multiSelect.addingNewLabel">
+          <input
+            type="text"
+            class="input-lg form-control"
+            ng-model="multiSelect.newLabel"
+            focus-me="multiSelect.addingNewLabel"
+            placeholder="Add New Label..." />
+        </div>
+        <div class="col-xs-4 col-sm-2" ng-if="multiSelect.addingNewLabel">
+          <button
+            type="button"
+            class="btn-lg btn btn-primary"
+            ng-disabled="!multiSelect.newLabel"
+            ng-click="applyNewLabel(multiSelect.newLabel)">
+            Apply
+          </button>
+        </div>
+      </div><!-- end Multi-select menu -->
+
+
+
+  <div ng-show="selectedList.itemCount > pagingPageSize">
    <pagination
     total-items="selectedList.itemCount"
     ng-model="currentPage"
@@ -234,117 +397,32 @@
    </pagination>
   </div>
 
-  <div class="row" ng-class="{ 'sub-content' : selectedList.itemCount < pagingPageSize }" style="left: 19px;">
-    <div list-management-elements fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="125" scroll-offset="100" media-query="min-width: 1024px" style="background-color: #fff; z-index: 996;">
-        <div class="col-xs-12" style="display: table;">
-            <div>
-                <div class="btn-group" style="display: inline-flex; padding-left: 10px; padding-bottom: 10px;">
-                    <!-- Add to List -->
-                    <div  dropdown is-open="multiSelect.showLists">
-                      <button type="button" class="multi-action-btn dropdown-toggle btn btn-primary" ng-disabled="(selectedList.items | filter:{isSelected:'true'}).length == 0">
-                        Add To List
-                        <span class="icon-arrow-down6 text-dark"></span>
-                      </button>
-                      <ul class="dropdown-menu" role="menu" style="max-height: 250px; overflow-y: auto; left: 15px;">
-                        <li
-                          ng-click="addItemsToList(list)"
-                          ng-repeat="list in lists | sortLists track by list.listid + '.' + list.name + '.' + list.type"
-                          ng-if="(list.permissions.canAddItems && selectedList.listid !== list.listid && !list.permissions.specialDisplay)"
-                          ng-hide="!list.permissions.canAddNonBEKItems && isCustomInventoryList">
-                          <a href="">{{list.name}}</a>
-                        </li>
-                        <li ng-click="createListFromMultiSelect()"><a>Create New List...</a></li>
-                      </ul>
-                    </div>
-                    <div class="row" ng-if="selectedList.is_contract_list" style="display: flex; margin-left: 10px;">
-                        <div class="btn-group padding-right-5" dropdown is-open="status.sortParams">
-                          <a class="btn btn-md btn-default dropdown-toggle">
-                            {{selectedFilterParameter}} <span class="caret text-dark"></span>
-                          </a>
-                          <ul class=dropdown-menu>
-                            <li ng-repeat="filterParameter in availableFilterParameters">
-                              <a ng-click="selectFilterParameter(filterParameter)">{{filterParameter.name}}</a>
-                            </li>
-                          </ul>
-                        </div>
-                        <button class="btn btn-sm btn-danger padding-left-5" ng-click="clearFilter(false)">Clear Filter</button>
-                    </div>
-                    <!-- Edit Labels -->
-                    <div class="hidden-xs" dropdown is-open="multiSelect.showLabels" ng-if="selectedList.permissions.canEditLabels" ng-hide="multiSelect.addingNewLabel">
-                      <button type="button" class="multi-action-btn dropdown-toggle btn" style="margin-left: 8px; color: #fff; background-color: #17a2b8; border-color: #17a2b8;">
-                        Add Label
-                        <span class="icon-arrow-down6 text-light"></span>
-                      </button>
-                      <ul class="dropdown-menu" role="menu" style="max-height: 250px; overflow-y: auto; left: 143px;">
-                        <li ng-repeat="label in labels track by label" ng-click="addLabels(label)"><a>{{label}}</a></li>
-                        <li ng-click="multiSelect.addingNewLabel=true; multiSelect.showLabels=false;"><a>Add New Label...</a></li>
-                      </ul>
-                    </div>
-                    <div ng-if="multiSelect.addingNewLabel" style="margin-left: 8px; display: inline-flex;">
-                      <input
-                        type="text"
-                        class="form-control"
-                        ng-model="multiSelect.newLabel"
-                        focus-me="multiSelect.addingNewLabel"
-                        placeholder="Add New Label..." />
-                      <button
-                        type="button"
-                        class="btn btn-primary"
-                        ng-if="multiSelect.addingNewLabel"
-                        ng-disabled="!multiSelect.newLabel"
-                        ng-click="applyNewLabel(multiSelect.newLabel)">
-                        Apply
-                      </button>
-                      <button
-                        type="button"
-                        class="btn btn-danger"
-                        ng-if="multiSelect.addingNewLabel"
-                        ng-click="multiSelect.addingNewLabel=false;">
-                        Cancel
-                      </button>
-                    </div>
-                    <!-- Delete items -->
-                    <button
-                      type="button"
-                      class="multi-action-btn btn btn-danger"
-                      ng-click="deleteMultipleItems(selectedList)"
-                      ng-if="selectedList.permissions.canDeleteItems"
-                      ng-hide="multiSelect.addingNewLabel"
-                      style="margin-left: 8px; border-radius: 4px;">
-                      Delete Item
-                    </button>
-                    <span class="input-group hidden-xs hidden-sm" style="width: 50%; padding-left: 8px;">
-                        <input 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Enter Item Number..." 
-                            aria-label="Enter Item..."
-                            integer
-                            allowleadingzeroes='true'
-                            ng-show="selectedList.permissions.canAddItems"
-                            ng-model="listItemNumber">
-                        <span class="input-group-btn">
-                            <button 
-                                type="submit"
-                                class="btn btn-primary hidden-sm hidden-xs"
-                                ng-show="selectedList.permissions.canAddItems"
-                                ng-disabled="!listItemNumber"
-                                ng-click="addItemByItemNumber(listItemNumber)">
-                                Add Item
-                            </button>
-                        </span>
-                    </span>
-                </div>
+  <div class="row" ng-if="selectedList.is_contract_list" ng-class="{ 'sub-content' : selectedList.itemCount < pagingPageSize }">
+    <div class="col-xs-5">
+      <div class="btn-group" dropdown is-open="status.sortParams">
+        <a class="btn btn-md btn-default dropdown-toggle">
+          {{selectedFilterParameter}} <span class="caret text-dark"></span>
+        </a>
+        <ul class=dropdown-menu>
+          <li ng-repeat="filterParameter in availableFilterParameters">
+            <a ng-click="selectFilterParameter(filterParameter)">{{filterParameter.name}}</a>
+          </li>
+        </ul>
+      </div>
+      <button class="btn btn-sm btn-danger" ng-click="clearFilter(false)" ng-hide="selectedFilterParameter == 'Active Items'">Clear Filter</button>
+    </div>
+  </div>
 
-                <span class="pull-left" style="margin-top: 13px;">{{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected</span>
-                
-                <div class="pull-right" style="margin-top: 15px;" ng-if="(selectedList.itemCount - itemCountOffset) > 0 && (rangeStart - rangeStartOffset) <= (rangeEnd - rangeEndOffset)">
-                 Showing {{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{selectedList.itemCount - itemCountOffset}} Items
-                </div>
-            </div>
-        </div>
+  <div class="row sub-content">
+    <div class="col-xs-5 " >
+      <span>{{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected</span>
     </div>
 
+
+
+    <div class="col-xs-7 col-md-5 col-lg-5 text-right" style="float:right;" ng-if="(selectedList.itemCount - itemCountOffset) > 0 && (rangeStart - rangeStartOffset) <= (rangeEnd - rangeEndOffset)">
+     Showing {{rangeStart - rangeStartOffset}} - {{rangeEnd}} of {{selectedList.itemCount - itemCountOffset}} Items
+    </div>
     </div>
 
      <form
@@ -360,7 +438,7 @@
           navigate-table="lists"
           class="custom-lists__table table table-border table-striped-rows">
           <thead ng-show="!isCustomInventoryList">
-            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="165" scroll-offset="163" media-query="min-width: 1024px">
+            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 250 }" ng-model="selectedList.allSelected" ng-click="allSelected = true; changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort[0].order)">
@@ -432,7 +510,7 @@
                 onStop: 'setIsDragging(false)'}"
               id="listsTableRows"
               class="highlightRows"
-              ng-click="shiftSelectOtherRows($event, item, $index);"
+              ng-click="shiftSelectOtherRows($event, item, $index)"
               ng-show="!isCustomInventoryList">
 
             <tr>
@@ -613,15 +691,7 @@
                 <div
                   id="optionsdropdown"
                   ng-if="!item.activeElement && item.isvalid"
-                  class="context-menu__in-list hidden-print hidden-xs hidden-sm"
-                  ng-mouseenter="item.activeElement = true"
-                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
-                  <a class="icon-arrow-down5"></a>
-                </div>
-                <div
-                  id="optionsdropdown"
-                  ng-if="!item.activeElement && item.isvalid"
-                  class="context-menu__in-list hidden-print hidden-md hidden-lg"
+                  class="context-menu-template context-menu__in-list hidden-print"
                   ng-mouseenter="item.activeElement = true"
                   ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
                   <a class="icon-plus2"></a>
@@ -629,16 +699,7 @@
                 <div
                   id="optionsdropdown"
                   ng-if="item.activeElement && item.isvalid"
-                  class="context-menu__in-list hidden-print hidden-xs hidden-sm"
-                  ng-click="item.displayQuickAdd = !item.displayQuickAdd"
-                  ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}"
-                  ng-disabled="displayQuickAdd == false;">
-                  <a ng-class="{'icon-arrow-up4' : item.displayQuickAdd, 'icon-arrow-down5' : !item.displayQuickAdd}"></a>
-                </div>
-                <div
-                  id="optionsdropdown"
-                  ng-if="item.activeElement && item.isvalid"
-                  class="context-menu__in-list hidden-print hidden-md hidden-lg"
+                  class="context-menu-template context-menu__in-list hidden-print"
                   context-menu-template
                   ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
                   <a class="icon-plus2"></a>
@@ -646,75 +707,9 @@
                 <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
               </td>
             </tr>
-            
-            <tr class="hidden-xs hidden-sm" ng-if="item.displayQuickAdd == true" style="width: 100%;" ng-click="$event.stopPropagation()">
-                <td colspan="14">
-                    <table style="width: 100%;">
-                        <tbody>
-                            <tr>
-                                <td style="text-align: center; width: 25%;">
-                                    <button class="btn btn-primary btn-sm" ng-click="addItemToFavorites(item)" ng-disabled="item.favorite"><span class="icon-star2"></span> Add To Favorites </button>
-                                </td>
-                                <td style="padding-top: 18px; position: relative; width: 25%;">
-                                    <form no-dirty-check>
-                                        <div class="counter-container counter-container-sm" style="float:left; margin-right: 10px;">
-                                            <input type="tel" class="input-number text-right" integer no-dirty-check ng-model="item.quantity" ng-init="item.quantity = 1" ng-if="item.nonstock !== 'Y' && (item.canOrder || canOrderItemInd) && canCreateOrders && !isCustomInventoryList"/>
-                                        </div>
-                                    </form>
-                                    <div style="margin-top: -5px; height: 45px;">
-                                        <select 
-                                            ui-select2
-                                            class="addToCart"
-                                            ng-options="cart.name for cart in cartHeaders" 
-                                            ng-model="cartHeaders.selectedCart" 
-                                            style="width: 50%;" 
-                                            data-placeholder="Add To Cart"
-                                            ng-change="addItemToCart(cartHeaders.selectedCart.name, cartHeaders.selectedCart.id, item)"
-                                            no-dirty-check
-                                            ng-disabled="item.nonstock == 'Y' && (item.canOrder == false || canOrderItemInd == false) || isCustomInventoryList">
-                                            <option value=""></option>
-                                            <option value="one">Create Cart</option>
-                                        </select>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" ng-click="createCartWithItem(item)" ng-if="item.nonstock !== 'Y' && (item.canOrder || canOrderItemInd) && canCreateOrders && !isCustomInventoryList"> Create New Cart </button>
-                                </td>
-                                <td style="padding-top: 18px; position: relative; width: 25%;">
-                                    <div style="margin-top: -5px; height: 45px;">
-                                        <select 
-                                            ui-select2
-                                            class="addToList"
-                                            data-placeholder="Add To List"
-                                            ng-options="list.name disable when (selectedList.name == list.name || list.permissions.canAddItems == false || list.permissions.specialDisplay == true) for list in quickAddLists | filter: sortLists" 
-                                            ng-model="lists.selectedList" 
-                                            style="width: 50%;"
-                                            ng-change="addItemToList(lists.selectedList, item, selectedList)"
-                                            no-dirty-check>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                    <button class="btn btn-primary btn-sm" ng-click="createListWithItem(item)" > Create New List </button>
-                                </td>
-                                <td style="padding-top: 18px; position: relative; width: 25%;" ng-if="changeOrders.length > 0 && item.nonstock != 'Y' && (item.canOrder || canOrderItemInd) && !isCustomInventoryList">
-                                    <div style="margin-top: -5px; height: 45px;">
-                                        <select 
-                                            ui-select2 
-                                            ng-options="changeOrder.name for changeOrder in changeOrders | orderBy: ['name']" 
-                                            ng-model="changeOrders.selectedChangeOrder" 
-                                            style="width: 50%;" 
-                                            data-placeholder="Add To Change Order"
-                                            no-dirty-check>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
 
             <tr ng-if="item.showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
-              <td colspan="12">
+              <td colspan="10">
                 <table>
                   <colgroup>
                     <col width="25%" />
@@ -858,7 +853,7 @@
           </tbody>
 
           <thead ng-show="isCustomInventoryList">
-            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="250">
+            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 250 }" ng-model="selectedList.allSelected" ng-click="allSelected = true; changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
 <!--                 <span class="sort-col-header" ng-click="sortList('position',sort[0].order)">
@@ -1044,39 +1039,22 @@
                 </span>
               </td>
               <td class="nowrap hidden-print large-icon icon-col" ng-click="$event.stopPropagation()">
-                  <div
-                    id="optionsdropdown"
-                    ng-if="!item.activeElement && isCustomInventoryList"
-                    class="hidden-print hidden-xs hidden-sm inline-block-display"
-                    ng-mouseenter="item.activeElement = true"
-                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
-                    <a class="icon-arrow-down5"></a>
-                  </div>
-                  <div
-                    id="optionsdropdown"
-                    ng-if="!item.activeElement && isCustomInventoryList"
-                    class="context-menu__in-list hidden-print hidden-md hidden-lg inline-block-display"
-                    ng-mouseenter="item.activeElement = true"
-                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
-                    <a class="icon-plus2"></a>
-                  </div>
-                  <div
-                    id="optionsdropdown"
-                    ng-if="item.activeElement && isCustomInventoryList"
-                    class="hidden-print hidden-xs hidden-sm inline-block-display"
-                    ng-click="item.displayQuickAdd = !item.displayQuickAdd"
-                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}"
-                    ng-disabled="displayQuickAdd == false;">
-                    <a ng-class="{'icon-arrow-up4' : item.displayQuickAdd, 'icon-arrow-down5' : !item.displayQuickAdd}"></a>
-                  </div>
-                  <div
-                    id="optionsdropdown"
-                    ng-if="item.activeElement && isCustomInventoryList"
-                    class="context-menu__in-list hidden-print hidden-md hidden-lg inline-block-display"
-                    context-menu-template
-                    ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
-                    <a class="icon-plus2"></a>
-                  </div>
+                <div
+                id="optionsdropdown"
+                ng-if="!item.activeElement && isCustomInventoryList"
+                class="context-menu-template context-menu__in-list hidden-print margin-top-10"
+                ng-mouseenter="item.activeElement = true"
+                ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
+                  <a class="icon-plus2"></a>
+                </div>
+                <div
+                id="optionsdropdown"
+                ng-if="item.activeElement && isCustomInventoryList"
+                class="context-menu-template context-menu__in-list hidden-print margin-top-10"
+                context-menu-template
+                ng-style="!(showRowOptionsDropdown) && {'visibility': 'hidden'}">
+                  <a class="icon-plus2"></a>
+                </div>
                 <a
                 class="bek-no-drag hidden-xs hidden-sm margin-top-10">
                   <span
@@ -1092,31 +1070,6 @@
                   </span>
                 </a>
               </td>
-            </tr>
-            <tr ng-if="item.displayQuickAdd == true" style="width: 100%;" ng-click="$event.stopPropagation()">
-                <td colspan="14">
-                    <table style="width: 100%;">
-                        <tbody>
-                            <tr>
-                                <td style="padding-top: 18px; position: relative; width: 25%;">
-                                    <div style="margin-top: -5px; height: 50px;">
-                                        <select 
-                                            ui-select2
-                                            data-placeholder="Add To List"
-                                            ng-options="list.name disable when (selectedList.name == list.name) for list in quickAddLists | filter: sortLists" 
-                                            ng-model="lists.selectedList" 
-                                            style="width: 50%;"
-                                            ng-change="addItemToList(lists.selectedList, item, selectedList)"
-                                            no-dirty-check>
-                                            <option value=""></option>
-                                        </select>
-                                    </div>
-                                    
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </td>
             </tr>
 
             <tr ng-if="item.showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
@@ -1246,7 +1199,7 @@
       </form>
 
 
-  <div ng-show="selectedList.itemCount > pagingPageSize" style="text-align: center;">
+  <div ng-show="selectedList.itemCount > pagingPageSize">
    <pagination
     total-items="selectedList.itemCount"
     ng-model="currentPage"
