@@ -14,14 +14,19 @@ angular.module('bekApp')
 
         setUserProperties: function(userName, roleName, isInternalUser, isKbitCustomer, isPowerMenuCustomer){
             //Angulartics Google Analytics provider doesn't support custom dimensions
-            //so we have to inject our settings in the main pipe and send that way
-            $window.ga('set', 'dimension2', roleName);
-            $window.ga('set', 'dimension3', isInternalUser);
-            $window.ga('set', 'dimension4', isKbitCustomer);
-            $window.ga('set', 'dimension5', isPowerMenuCustomer);
-            $window.ga('set', 'userId', roleName + '.' + userName);
-            //we also have to "light a beacon" and send our settings in with it
-            $window.ga('send', 'event', 'Process', 'Set user properties');
+            //so we have to use our other Analytics tracker to set these values
+            Analytics.trackEvent('Process', 
+                                 'Set User Properties', 
+                                 '', 
+                                 0, 
+                                 true, 
+                                 {
+                                    userId: roleName + '.' + userName,
+                                    dimension2: roleName,
+                                    dimension3: isInternalUser,
+                                    dimension4: isKbitCustomer,
+                                    dimension5: isPowerMenuCustomer
+                                 })
         },
         
         recordTransaction: function(customerName, orderNumber, cart, customerNumber, customerBranch){
