@@ -1489,7 +1489,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                                         category_code = new {
                                             terms = new {
                                                 field =
-                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "tcscode" : "categoryid.keyword"),
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "tcscode.keyword" : "categoryid.keyword"),
                                                 size = 500
                                             }
                                         }
@@ -1505,7 +1505,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                                         parentcategory_code = new {
                                             terms = new {
                                                 field =
-                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "catalogdept" : "parentcategoryid.keyword"),
+                                        ((_catalog.StartsWith("unfi", StringComparison.CurrentCultureIgnoreCase)) ? "catalogdept.keyword" : "parentcategoryid.keyword"),
                                                 size = 500
                                             }
                                         }
