@@ -112,27 +112,13 @@ angular.module('bekApp')
                 invoiceExport();
             break;
             case Constants.exportType.listExport:
-                standardExport();
-            break;
             case Constants.exportType.orderItemsExport:
-                standardExport();
-            break;
-            case Constants.exportType.ordersExport:
-                standardExport();
-            break;
             case Constants.exportType.searchExport:
-                standardExport();
-            break;
             case Constants.exportType.marketingExport:
-                standardExport();
-            break;
             case Constants.exportType.itemUsageExport:
-                standardExport();
-            break;
             case Constants.exportType.cartItemsExport:
-                standardExport();
-            break;
             case Constants.exportType.invoiceItemsExport:
+            case Constants.exportType.ordersExport:
                 standardExport();
             break;
         }
@@ -143,6 +129,9 @@ angular.module('bekApp')
         $analytics.eventTrack(location.action, {  category: location.category, label: 'Default Export' });
         switch ($scope.exportType) {
             case Constants.exportType.invoiceExport:
+                if($scope.invoiceExportRequest.fields && $scope.invoiceExportRequest.fields.length > 0) {
+                    delete $scope.invoiceExportRequest.fields;
+                };
                 $scope.invoiceExportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.invoiceExportRequest);
             break;
@@ -153,10 +142,16 @@ angular.module('bekApp')
             case Constants.exportType.itemUsageExport:
             case Constants.exportType.cartItemsExport:
             case Constants.exportType.invoiceItemsExport:
+                if($scope.exportRequest.fields && $scope.exportRequest.fields.length > 0) {
+                    delete $scope.exportRequest.fields;
+                };
                 $scope.exportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.staticParam, $scope.exportRequest);
             break;
             case Constants.exportType.ordersExport:
+                if($scope.exportRequest.fields && $scope.exportRequest.fields.length > 0) {
+                    delete $scope.exportRequest.fields;
+                };
                 $scope.exportRequest.selectedtype = $scope.exportConfig.selectedtype;
                 exportMethod($scope.exportRequest);
             break;
