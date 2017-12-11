@@ -1013,11 +1013,13 @@ namespace KeithLink.Svc.Impl.Service.List
         {
             ListModel list = _recommendedItemsLogic.ReadList(new UserProfile(), catalogInfo, false);
 
+            List<RecommendedItemModel> recommended = new List<RecommendedItemModel>();
+
             if (list != null &&
                 list.Items != null &&
                 list.Items.Count > 0)
             {
-                List<RecommendedItemModel> recommended = list.Items.Select(i => new RecommendedItemModel
+                recommended = list.Items.Select(i => new RecommendedItemModel
                 {
                     ItemNumber = i.ItemNumber,
                     Name = i.Name,
@@ -1027,7 +1029,7 @@ namespace KeithLink.Svc.Impl.Service.List
                 })
                                                              .ToList();
             }
-            return new List<RecommendedItemModel>();
+            return recommended;
         }
 
         public ListModel MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
