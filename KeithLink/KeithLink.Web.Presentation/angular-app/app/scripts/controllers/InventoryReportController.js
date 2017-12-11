@@ -202,7 +202,7 @@ angular.module('bekApp')
         $scope.successMessage = '';
         $scope.errorMessage = '';
 
-        ProductService.getProductDetails(itemNumber)
+        ProductService.getProductDetails(itemNumber, 'BEK')
           .then(function(item) {
             $scope.successMessage = 'Added Item # ' + itemNumber + ' to the report.';
             $scope.inventoryForm.$setDirty();
