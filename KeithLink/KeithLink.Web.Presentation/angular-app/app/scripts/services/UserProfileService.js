@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService', 'AnalyticsService',
-    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService, AnalyticsService) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService', 
+    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService) {
 
     var Service = {
 
@@ -82,12 +82,6 @@ angular.module('bekApp')
           $log.debug(profile);
           profile.displayRole = AccessService.getRoleDisplayString(profile.rolename);
           Service.updateDisplayName(profile);
-
-          AnalyticsService.setUserProperties(profile.userid, 
-                                             profile.rolename, 
-                                             (profile.emailaddress.indexOf('@benekeith.com') > -1).toString(), 
-                                             profile.iskbitcustomer.toString(), 
-                                             profile.ispowermenucustomer.toString());
 
           return profile;
         });

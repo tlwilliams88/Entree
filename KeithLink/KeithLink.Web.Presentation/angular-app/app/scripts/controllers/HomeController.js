@@ -8,8 +8,15 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', 'ListService', 'ProductService', 'CategoryService', 'BrandService',
-    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, ListService, ProductService, CategoryService, BrandService) {
+  .controller('HomeController', [ '$scope', '$rootScope', '$state', '$stateParams', '$modal', '$filter', 'Constants', 'CartService', 'OrderService', 'MarketingService', 'DateService', 'NotificationService', 'CustomerService', 'isHomePage', 'LocalStorage', 'UtilityService', 'ENV', 'ListService', 'ProductService', 'CategoryService', 'BrandService', 'SessionService', 'AnalyticsService',
+    function($scope, $rootScope, $state, $stateParams, $modal, $filter, Constants, CartService, OrderService, MarketingService, DateService, NotificationService, CustomerService, isHomePage, LocalStorage, UtilityService, ENV, ListService, ProductService, CategoryService, BrandService, SessionService, AnalyticsService) {
+
+    AnalyticsService.setUserProperties(SessionService.userProfile.userid, 
+                                       SessionService.userProfile.displayRole, 
+                                       (SessionService.userProfile.emailaddress.indexOf('@benekeith.com') > -1).toString(), 
+                                       SessionService.userProfile.iskbitcustomer.toString(), 
+                                       SessionService.userProfile.ispowermenucustomer.toString());
+
 
     $scope.isHomePage = isHomePage;
 

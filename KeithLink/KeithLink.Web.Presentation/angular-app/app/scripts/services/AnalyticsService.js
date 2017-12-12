@@ -14,14 +14,19 @@ angular.module('bekApp')
 
         setUserProperties: function(userName, roleName, isInternalUser, isKbitCustomer, isPowerMenuCustomer){
             //Angulartics Google Analytics provider doesn't support custom dimensions
-            //so we have to inject our settings in the main pipe and send that way
-            $window.ga('set', 'dimension2', roleName);
-            $window.ga('set', 'dimension3', isInternalUser);
-            $window.ga('set', 'dimension4', isKbitCustomer);
-            $window.ga('set', 'dimension5', isPowerMenuCustomer);
-            $window.ga('set', 'userId', roleName + '.' + userName);
-            //we also have to "light a beacon" and send our settings in with it
-            $window.ga('send', 'event', 'Process', 'Set user properties');
+            //so we have to use our other Analytics tracker to set these values
+            Analytics.trackEvent('Process', 
+                                 'Set User Properties', 
+                                 '', 
+                                 0, 
+                                 true, 
+                                 {
+                                    userId: roleName + '.' + userName,
+                                    dimension2: roleName,
+                                    dimension3: isInternalUser,
+                                    dimension4: isKbitCustomer,
+                                    dimension5: isPowerMenuCustomer
+                                 })
         },
         
         recordTransaction: function(customerName, orderNumber, cart, customerNumber, customerBranch){
@@ -39,7 +44,7 @@ angular.module('bekApp')
                                        '', 
                                        '', 
                                        '', 
-                                       cart.listid, 
+                                       'ListId: ' + cart.listid, 
                                        'Cart Submission', 
                                        '');
         },
@@ -78,13 +83,86 @@ angular.module('bekApp')
             Analytics.trackCart('remove', removedFrom);
         },
         
-        recordViewDetail: function(item){
+        recordViewDetail: function(customerNumber, branchId, item){
             // Add Item Viewed
             Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
 
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
+            
             Analytics.trackDetail();
-        }
+        },
 
+        setSelectedCustomer: function(customerNumber, branchId){
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
+        },
+
+        recordSearchImpressions: function(products, customerNumber, branchId, listName){
+          var renderedIndex = 0;
+          var pageIndex = 0;
+          products.forEach(function(item){
+            pageIndex++;
+            // Add Viewable Item
+            Analytics.addImpression(item.itemnumber, 
+                                    item.name, 
+                                    listName, 
+                                    item.brand, 
+                                    item.class, 
+                                    item.packsize, 
+                                    pageIndex, 
+                                    item.caseprice.toString());
+            renderedIndex++;
+            if(renderedIndex>20){
+                  Analytics.trackEvent('Search', 
+                                       'Listing', 
+                                       '', 
+                                       0, 
+                                       true, 
+                                       {
+                                          dimension6: branchId,
+                                          dimension7: customerNumber
+                                       })
+                  renderedIndex=0;
+            }
+          });
+          Analytics.trackEvent('Search', 
+                               'Listing', 
+                               '', 
+                               0, 
+                               true, 
+                               {
+                                  dimension6: branchId,
+                                  dimension7: customerNumber
+                               })
+        },
+        
+        recordPromotion: function(id, name, creative, position, customerNumber, branchId){
+            // Add promotion
+            Analytics.addPromo(id, name, creative, position);
+
+            Analytics.trackEvent('Internal Promotions', 
+                               'impressions', 
+                               '', 
+                               0, 
+                               true, 
+                               {
+                                  'nonInteraction': 1,
+                                  dimension6: branchId,
+                                  dimension7: customerNumber
+                               });
+
+            // Add promotion
+            Analytics.addPromo(id, name, creative, position);
+
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
+            
+            Analytics.promoClick(name);
+        }
     };
     return Service;
 
