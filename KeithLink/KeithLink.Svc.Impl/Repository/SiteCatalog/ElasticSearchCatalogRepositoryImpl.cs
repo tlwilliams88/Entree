@@ -135,7 +135,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         must_not = statusFields
                     }
                 },
-                fields = new string[0],
                 sort = BuildSort(searchModel.SField, searchModel.SDir),
                 aggregations = ElasticSearchAggregations
             };
