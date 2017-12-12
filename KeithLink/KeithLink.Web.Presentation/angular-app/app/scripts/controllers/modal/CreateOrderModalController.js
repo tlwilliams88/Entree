@@ -51,7 +51,7 @@ angular.module('bekApp')
       $scope.listIsOpen = (tab == 'List') ? true : false;
       $scope.quickAddIsOpen = (tab == 'Quick Add') ? true : false;
       $scope.importIsOpen = (tab == 'Import') ? true : false;
-      $scope.orderIsOpen =  (tab == 'Order') ? true : false;
+      $scope.orderIsOpen =  (tab == 'Previous Order') ? true : false;
   };
 
   /*******************
