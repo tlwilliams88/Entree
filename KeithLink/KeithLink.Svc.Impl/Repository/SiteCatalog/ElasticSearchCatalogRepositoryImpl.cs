@@ -1129,7 +1129,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         private void BuildBaseFacets(dynamic oFacet, List<ExpandoObject> facet, dynamic oFacetValue)
         {
             var facetValue = new ExpandoObject() as IDictionary<string, object>;
-            string key = oFacetValue["key"].ToString();
+            string key = oFacetValue["key"].ToString().ToLower();
             int count = oFacetValue["doc_count"];
             facetValue.Add(new KeyValuePair<string, object>("name", key));
             facetValue.Add(new KeyValuePair<string, object>("count", count));
