@@ -476,14 +476,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             branch = branch.ToLower();
 
-            var getRequest = new GetRequest(branch, "product", id);
-            IGetResponse<DynamicResponse> res = _eshelper.ElasticClient.Get<DynamicResponse>(getRequest);
+            //var getRequest = new GetRequest(branch, "product", id);
+            var res = _eshelper.ElasticClient.LowLevel.Get<DynamicResponse>(branch, "product", id);
             //ElasticsearchResponse<DynamicResponse> res = _eshelper.ElasticClient.Get<DynamicResponse>(branch, "product", id);
 
-            if (res == null || !res.IsValid || !res.Found)
+            if (res == null || !res.Success || !(res.Body.Count > 0))
                 return null;
 
-            return LoadProductFromElasticSearchProduct(false, res.Source);
+            return LoadProductFromElasticSearchProduct(false, res.Body);
         }
 
         private int GetProductPagingSize(int size)
@@ -1129,7 +1129,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         private void BuildBaseFacets(dynamic oFacet, List<ExpandoObject> facet, dynamic oFacetValue)
         {
             var facetValue = new ExpandoObject() as IDictionary<string, object>;
-            string key = oFacetValue["key"].ToString();
+            string key = oFacetValue["key"].ToString().ToLower();
             int count = oFacetValue["doc_count"];
             facetValue.Add(new KeyValuePair<string, object>("name", key));
             facetValue.Add(new KeyValuePair<string, object>("count", count));
@@ -1238,17 +1238,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             nutritional.DietInfo = new List<Diet>();
             nutritional.Allergens = new Allergen();
             nutritional.Diets = new List<string>();
-            if (oProd._source.nutritional.allergen != null)
+            if (oProd._source.nutritional.allergen.Value != null)
             {
                 GetFullNutritionalAllergenProperties(oProd, nutritional);
             }
 
             nutritional.NutritionInfo = new List<Nutrition>();
-            if (oProd._source.nutritional.nutrition != null)
+            if (oProd._source.nutritional.nutrition.Value != null)
             {
                 GetFullNutritionalNutritionInfo(oProd, nutritional);
             }
-            if (oProd._source.nutritional.diet != null)
+            if (oProd._source.nutritional.diet.Value != null)
             {
                 foreach (var diet in oProd._source.nutritional.diet)
                 {
@@ -1438,9 +1438,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.ProprietaryCustomers = oProd._source.proprietarycustomers;
             p.CatchWeight = oProd._source.catchweight;
             p.AverageWeight = oProd._source.averageweight;
-            p.CasePriceNumeric = oProd._source.caseprice != null ? oProd._source.caseprice : 0.00;
+            p.CasePriceNumeric = oProd._source.caseprice.Value != null ? oProd._source.caseprice : 0.00;
             p.CasePrice = p.CasePriceNumeric.ToString();
-            p.PackagePriceNumeric = oProd._source.packageprice != null ? oProd._source.packageprice : 0.00;
+            p.PackagePriceNumeric = oProd._source.packageprice.Value != null ? oProd._source.packageprice : 0.00;
             p.PackagePrice = p.PackagePriceNumeric.ToString();
             p.SellSheet = oProd._source.sellsheet;
             p.ChildNutrition = oProd._source.childnutrition;
