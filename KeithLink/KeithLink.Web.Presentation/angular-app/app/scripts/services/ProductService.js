@@ -169,21 +169,17 @@ angular.module('bekApp')
         },
 
         getProductDetails: function(itemNumber, catalogType) {
-          var returnProduct;
-          if (!Service.selectedProduct.name) {
+            var returnProduct;
+            
             returnProduct = $http.get('/catalog/' + catalogType + '/product/' + itemNumber).then(function(response) {
-              if(response.data.successResponse){
-                return response.data.successResponse;
-              }
-              else{
-                return null;
-              }
+                if(response.data.successResponse){
+                    return response.data.successResponse;
+                } else {
+                    return null;
+                }
             });
-          } else {
-            returnProduct = Service.selectedProduct;
-            Service.selectedProduct = {};
-          }
-          return returnProduct;
+            
+            return returnProduct;
         },
 
         scanProduct: function(itemNumber) {
