@@ -1243,11 +1243,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
             nutritional.NutritionInfo = new List<Nutrition>();
-            if (oProd._source.nutritional.nutrition.Value != null)
+            if (oProd._source.nutritional.nutrition != null)
             {
                 GetFullNutritionalNutritionInfo(oProd, nutritional);
             }
-            if (oProd._source.nutritional.diet.Value != null)
+            if (oProd._source.nutritional.diet != null)
             {
                 foreach (var diet in oProd._source.nutritional.diet)
                 {
@@ -1479,7 +1479,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     GetFullUnfiPropertiesFromHighLevelCall(oProd, p);
                 }
 
-                if (oProd.Source.nutritional != null)
+                if (oProd.Source.nutritional.Value != null)
                 {
                     GetFullNutritionalPropertiesFromHighLevelCall(oProd, p);
                 }
@@ -1511,7 +1511,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             nutritional.DietInfo = new List<Diet>();
             nutritional.Allergens = new Allergen();
             nutritional.Diets = new List<string>();
-            if (oProd.Source.nutritional.allergen != null)
+            if (oProd.Source.nutritional.allergen.Value != null)
             {
                 GetFullNutritionalAllergenPropertiesFromHighLevelCall(oProd, nutritional);
             }
