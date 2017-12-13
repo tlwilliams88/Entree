@@ -476,14 +476,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             branch = branch.ToLower();
 
-            //var getRequest = new GetRequest(branch, "product", id);
-            var res = _eshelper.ElasticClient.LowLevel.Get<DynamicResponse>(branch, "product", id);
-            //ElasticsearchResponse<DynamicResponse> res = _eshelper.ElasticClient.Get<DynamicResponse>(branch, "product", id);
+            var getRequest = new GetRequest(branch, "product", id);
+            IGetResponse<DynamicResponse> res = _eshelper.ElasticClient.Get<DynamicResponse>(getRequest);
 
-            if (res == null || !res.Success || !(res.Body.Count > 0))
+            if (res == null || !res.IsValid || !res.Found)
                 return null;
 
-            return LoadProductFromElasticSearchProduct(false, res.Body);
+            return LoadProductFromElasticSearchProductFromHighLevelCall(false, res);
         }
 
         private int GetProductPagingSize(int size)
@@ -1463,6 +1462,271 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 _catalog = "bek";
             }
         }
+
+        public Product LoadProductFromElasticSearchProductFromHighLevelCall(bool listonly, dynamic oProd)
+        {
+            Product p = new Product();
+            GetBaseProductPropertiesFromHighLevelCall(oProd, p);
+            GetBaseNutritionalPropertiesFromHighLevelCall(oProd, p);
+            GetBaseUnfiPropertiesFromHighLevelCall(oProd, p);
+            p.IsValid = true;
+            //            if(true)
+            if (listonly == false)
+            {
+                GetFullProductPropertiesFromHighLevelCall(oProd, p);
+                if (p.CatalogId.ToLower().StartsWith("unfi"))
+                {
+                    GetFullUnfiPropertiesFromHighLevelCall(oProd, p);
+                }
+
+                if (oProd.Source.nutritional != null)
+                {
+                    GetFullNutritionalPropertiesFromHighLevelCall(oProd, p);
+                }
+            }
+
+            return p;
+        }
+
+        private void GetFullNutritionalPropertiesFromHighLevelCall(dynamic oProd, Product p)
+        {
+            Nutritional nutritional = p.Nutritional;
+            nutritional.BrandOwner = oProd.Source.nutritional.brandowner;
+            nutritional.CountryOfOrigin = oProd.Source.nutritional.countryoforigin;
+            nutritional.GrossWeight = oProd.Source.nutritional.grossweight;
+            nutritional.HandlingInstructions = oProd.Source.nutritional.handlinginstruction;
+            nutritional.Ingredients = oProd.Source.nutritional.ingredients;
+            nutritional.MarketingMessage = oProd.Source.nutritional.marketingmessage;
+            nutritional.MoreInformation = oProd.Source.nutritional.moreinformation;
+            nutritional.ServingSizeUOM = oProd.Source.nutritional.servingsizeuom;
+            nutritional.ServingSugestion = oProd.Source.nutritional.servingsuggestions;
+            nutritional.Shelf = oProd.Source.nutritional.shelf;
+            nutritional.StorageTemp = oProd.Source.nutritional.storagetemp;
+            nutritional.UnitMeasure = oProd.Source.nutritional.unitmeasure;
+            nutritional.UnitsPerCase = oProd.Source.nutritional.unitspercase;
+            nutritional.Volume = oProd.Source.nutritional.volume;
+            nutritional.Height = oProd.Source.nutritional.height;
+            nutritional.Length = oProd.Source.nutritional.length;
+            nutritional.Width = oProd.Source.nutritional.width;
+            nutritional.DietInfo = new List<Diet>();
+            nutritional.Allergens = new Allergen();
+            nutritional.Diets = new List<string>();
+            if (oProd.Source.nutritional.allergen != null)
+            {
+                GetFullNutritionalAllergenPropertiesFromHighLevelCall(oProd, nutritional);
+            }
+
+            nutritional.NutritionInfo = new List<Nutrition>();
+            if (oProd.Source.nutritional.nutrition != null)
+            {
+                GetFullNutritionalNutritionInfoFromHighLevelCall(oProd, nutritional);
+            }
+            if (oProd.Source.nutritional.diet != null)
+            {
+                foreach (var diet in oProd.Source.nutritional.diet)
+                {
+                    Diet d = new Diet() { DietType = diet.diettype, Value = diet.value };
+                    nutritional.Diets.Add(diet.diettype.Value);
+                    nutritional.DietInfo.Add(d);
+                }
+            }
+        }
+
+        private void GetFullNutritionalNutritionInfoFromHighLevelCall(dynamic oProd, Nutritional nutritional)
+        {
+            foreach (var nutrition in oProd.Source.nutritional.nutrition)
+            {
+                Nutrition n = new Nutrition()
+                {
+                    DailyValue = nutrition.dailyvalue,
+                    MeasurementTypeId = nutrition.measurementtypeid,
+                    MeasurementValue = nutrition.measurementvalue,
+                    NutrientType = nutrition.nutrienttype,
+                    NutrientTypeCode = nutrition.nutrienttypecode
+                };
+                nutritional.NutritionInfo.Add(n);
+            }
+        }
+
+        private void GetFullNutritionalAllergenPropertiesFromHighLevelCall(dynamic oProd, Nutritional nutritional)
+        {
+            if (oProd.Source.nutritional.allergen.freefrom != null)
+            {
+                nutritional.Allergens.freefrom = new List<string>();
+                foreach (var ff in oProd.Source.nutritional.allergen.freefrom)
+                    nutritional.Allergens.freefrom.Add(((string)ff.Value).ToLower());
+            }
+
+            if (oProd.Source.nutritional.allergen.contains != null)
+            {
+                nutritional.Allergens.contains = new List<string>();
+                foreach (var ff in oProd.Source.nutritional.allergen.contains)
+                    nutritional.Allergens.contains.Add(ff.Value);
+            }
+
+            if (oProd.Source.nutritional.allergen.maycontain != null)
+            {
+                nutritional.Allergens.maycontain = new List<string>();
+                foreach (var ff in oProd.Source.nutritional.allergen.maycontain)
+                    nutritional.Allergens.maycontain.Add(ff.Value);
+            }
+        }
+
+        private void GetFullUnfiPropertiesFromHighLevelCall(dynamic oProd, Product p)
+        {
+            //make vendor into description
+            p.Description = oProd.Source.vendor1;
+            p.IsSpecialtyCatalog = true;
+
+            UNFI unfi = p.Unfi;
+
+            unfi.CaseHeight = oProd.Source.cheight.ToString();
+            unfi.CaseLength = oProd.Source.clength.ToString();
+            unfi.CaseWidth = oProd.Source.cwidth.ToString();
+            unfi.Weight = oProd.Source.averageweight.ToString();
+            unfi.UnitOfSale = oProd.Source.unitofsale.ToString();
+            unfi.CatalogDept = oProd.Source.catalogdept.ToString();
+            unfi.ShipMinExpire = oProd.Source.shipminexpire.ToString();
+            unfi.MinOrder = oProd.Source.minorder.ToString();
+            unfi.CaseQuantity = oProd.Source.casequantity.ToString();
+            unfi.PutUp = oProd.Source.putup.ToString();
+            unfi.ContUnit = oProd.Source.contunit.ToString();
+            unfi.TCSCode = oProd.Source.tcscode.ToString();
+            unfi.CaseUPC = oProd.Source.caseupc.ToString();
+            unfi.PackageLength = oProd.Source.plength.ToString();
+            unfi.PackageHeight = oProd.Source.pheight.ToString();
+            unfi.PackageWidth = oProd.Source.pwidth.ToString();
+            unfi.Status = oProd.Source.status.ToString();
+            unfi.PackagePrice = oProd.Source.packageprice.ToString();
+            unfi.CasePrice = oProd.Source.caseprice.ToString();
+            unfi.Flag1 = oProd.Source.flag1.ToString();
+            unfi.Flag2 = oProd.Source.flag2.ToString();
+            unfi.Flag3 = oProd.Source.flag3.ToString();
+            unfi.Flag4 = oProd.Source.flag4.ToString();
+            unfi.OnHandQty = oProd.Source.onhandqty.ToString();
+            unfi.Vendor = oProd.Source.vendor1.ToString();
+            unfi.StockedInBranches = oProd.Source.stockedinbranches.ToString();
+
+            p.Unfi = unfi;
+        }
+
+        private void GetFullProductPropertiesFromHighLevelCall(dynamic oProd, Product p)
+        {
+            p.ManufacturerNumber = oProd.Source.mfrnumber;
+            p.BrandControlLabel = oProd.Source.brand_control_label;
+            p.ExtendedDescription = string.Empty;
+            p.SubCategoryCode = oProd.Source.categoryid;
+            p.VendorItemNumber = oProd.Source.vendor1;
+            try
+            {
+                p.CaseCube = oProd.Source.icube;
+            }
+            catch// (Exception e)
+            {
+                p.CaseCube = "";
+            }
+        }
+
+        private void GetBaseUnfiPropertiesFromHighLevelCall(dynamic oProd, Product p)
+        {
+            if (p.CatalogId.ToLower().StartsWith("unfi"))
+            {
+                //make vendor into description
+                p.Description = oProd.Source.vendor1;
+                p.Pack = oProd.Source.casequantity.ToString();
+                p.Size = oProd.Source.contsize.ToString() + oProd.Source.contunit;
+                p.IsSpecialtyCatalog = true;
+                p.Cases = oProd.Source.onhandqty.ToString();
+                p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
+                p.CasePrice = oProd.Source.caseprice.ToString();
+                if (oProd.Source.tcscode != null)
+                    p.SubCategoryCode = oProd.Source.tcscode.ToString();
+                if (oProd.Source.packageprice != null)
+                    p.PackagePrice = oProd.Source.packageprice.ToString();
+                if (oProd.Source.caseprice != null)
+                    p.CasePrice = oProd.Source.caseprice.ToString();
+                UNFI unfi = new UNFI();
+
+                if (oProd.Source.cheight != null)
+                    unfi.CaseHeight = oProd.Source.cheight.ToString();
+                if (oProd.Source.packageprice != null)
+                    unfi.PackagePrice = oProd.Source.packageprice.ToString();
+                if (oProd.Source.caseprice != null)
+                    unfi.CasePrice = oProd.Source.caseprice.ToString();
+                p.Unfi = unfi;
+            }
+        }
+
+        private void GetBaseNutritionalPropertiesFromHighLevelCall(dynamic oProd, Product p)
+        {
+            if (oProd.Source.nutritional != null)
+            {
+                Nutritional nutritional = new Nutritional();
+                nutritional.Diets = new List<string>();
+                if (oProd.Source.nutritional.diet != null)
+                {
+                    var diets = oProd.Source.nutritional.diet;
+                    foreach (var diet in diets)
+                    {
+                        String type = diet["diettype"];
+                        nutritional.Diets.Add(type);
+                    }
+                }
+                nutritional.ServingSize = oProd.Source.nutritional.servingsize;
+                nutritional.ServingsPerPack = oProd.Source.nutritional.servingsperpack;
+                p.Nutritional = nutritional;
+            }
+        }
+
+        private void GetBaseProductPropertiesFromHighLevelCall(dynamic oProd, Product p)
+        {
+            p.CatalogId = oProd.Index;
+            p.ManufacturerName = oProd.Source.mfrname;
+            p.ItemNumber = oProd.Id;
+            String isKosher = oProd.Source.kosher;
+            p.Kosher = string.IsNullOrEmpty(isKosher) ? "Unknown" : isKosher;
+            p.Brand = oProd.Source.brand;
+            p.BrandExtendedDescription = oProd.Source.brand_description;
+            if (oProd.Source.cases != null)
+            {
+                p.Cases = oProd.Source.cases.ToString();
+            }
+            p.Description = oProd.Source.description;
+            p.CategoryCode = oProd.Source.categoryid;
+            p.ReplacedItem = oProd.Source.replaceditem;
+            p.ReplacementItem = oProd.Source.replacementitem;
+            p.UPC = oProd.Source.upc;
+            p.Name = oProd.Source.name;
+            p.CategoryName = oProd.Source.categoryname;
+            p.ItemClass = oProd.Source.parentcategoryname;
+            p.Pack = oProd.Source.pack;
+            p.Size = oProd.Source.size;
+            p.Detail = string.Format("{0} / {1} / {2} / {3} / {4}",
+                                     p.Name,
+                                     p.ItemNumber,
+                                     p.BrandExtendedDescription,
+                                     p.ItemClass,
+                                     p.PackSize);
+            p.CaseOnly = oProd.Source.caseonly == "Y";
+            p.TempZone = oProd.Source.temp_zone;
+            p.IsProprietary = oProd.Source.isproprietary;
+            p.ProprietaryCustomers = oProd.Source.proprietarycustomers;
+            p.CatchWeight = oProd.Source.catchweight;
+            p.AverageWeight = oProd.Source.averageweight;
+            p.CasePriceNumeric = oProd.Source.caseprice != null ? oProd.Source.caseprice : 0.00;
+            p.CasePrice = p.CasePriceNumeric.ToString();
+            p.PackagePriceNumeric = oProd.Source.packageprice != null ? oProd.Source.packageprice : 0.00;
+            p.PackagePrice = p.PackagePriceNumeric.ToString();
+            p.SellSheet = oProd.Source.sellsheet;
+            p.ChildNutrition = oProd.Source.childnutrition;
+            p.NonStock = oProd.Source.nonstock;
+            p.MarketingBrand = oProd.Source.marketing_brand;
+            p.MarketingDescription = oProd.Source.marketing_description;
+            p.MarketingManufacturer = oProd.Source.marketing_manufacturer;
+            p.MarketingName = oProd.Source.marketing_name;
+            p.Status1 = oProd.Source.status1;
+        }
+
         #endregion
 
         #region properties
