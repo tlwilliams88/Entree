@@ -27,8 +27,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #region attributes
         private const string Language = "en-US";
-		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
-		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
+		private readonly string ItemSpec_ReplacementItem = "replacementitem";
+		private readonly string ItemSpec_Replaced = "itembeingreplaced";
 		private readonly string ItemSpec_CNDoc = "CNDoc";
         private readonly string ItemSpec_CNDoc_FriendlyName = "childnutrition";
         private readonly string ItemSpec_SellSheet = "FDAProductFlag";
