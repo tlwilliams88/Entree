@@ -1511,7 +1511,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             nutritional.DietInfo = new List<Diet>();
             nutritional.Allergens = new Allergen();
             nutritional.Diets = new List<string>();
-            if (oProd.Source.nutritional.allergen != null)
+            if (oProd.Source.nutritional.allergen.Value != null)
             {
                 GetFullNutritionalAllergenPropertiesFromHighLevelCall(oProd, nutritional);
             }
