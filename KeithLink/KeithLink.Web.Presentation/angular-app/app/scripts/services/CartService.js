@@ -160,7 +160,7 @@ angular.module('bekApp')
         newCart.listid = listid;
         newCart.listtype = listtype;
         return Cart.save({}, newCart).$promise.then(function(response) {
-          AnalyticsService.recordAddToCart(
+          AnalyticsService.recordNewCartWithItems(
             newCart,
             LocalStorage.getCustomerNumber(),
             LocalStorage.getBranchId());
@@ -369,6 +369,11 @@ angular.module('bekApp')
         if (!item.quantity || item.quantity === 0) {
           item.quantity = 1;
         }
+
+        AnalyticsService.recordAddToCart(
+          item,
+          LocalStorage.getCustomerNumber(),
+          LocalStorage.getBranchId());
 
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
           Service.getCartHeaders();

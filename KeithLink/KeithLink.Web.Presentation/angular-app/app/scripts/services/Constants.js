@@ -95,6 +95,16 @@ angular.module('bekApp')
       MARKETING: 'marketing'
     },
 
+    checkoutSteps: {
+      EnterAddToOrder: 1,
+      LeaveAddToOrder: 2,
+      SubmitCart: 3,
+      CheckStatus: 4,
+      GetConfirmation: 5,
+      StartChangeOrder: 6,
+      SubmitChangeOrder: 7
+    },
+
     jskeycodes: {
       backspace: 8,
       tab: 9,

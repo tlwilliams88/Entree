@@ -63,6 +63,34 @@ angular.module('bekApp')
             Analytics.trackCheckout(step, option);
         },
 
+        recordNewCartWithItems: function(cart, customerNumber, branchId){
+            var addedFrom = SessionService.sourceProductList.pop();
+            SessionService.sourceProductList.push(addedFrom);
+
+             if (cart != null){
+                cart.items.forEach(function(item){
+                  Analytics.addProduct(item.itemnumber +
+                                       "_" +
+                                       addedFrom, 
+                                       item.name, 
+                                       item.class, 
+                                       item.brand, 
+                                       '', 
+                                       item.price, 
+                                       item.quantity, 
+                                       '', 
+                                       item.position);
+                });
+            }
+            // Add item being added
+           // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
+
+            // Create Cart Record
+            Analytics.trackCart('add', addedFrom);
+         },
+        
         recordAddToCart: function(item, customerNumber, branchId){
             var addedFrom = SessionService.sourceProductList.pop();
             SessionService.sourceProductList.push(addedFrom);
@@ -106,11 +134,35 @@ angular.module('bekApp')
                                  item.position);
 
             // inject customernumber and branch into detail hit
-            $window.ga('set', 'dimension7', customerNumber);
-            $window.ga('set', 'dimension6', branchId);
+            Analytics.set('dimension7', customerNumber);
+            Analytics.set('dimension6', branchId);
 
             // Create Cart Record
             Analytics.trackCart('remove', removedFrom);
+        },
+        
+        recordProductListClick: function(customerNumber, branchId, item){
+            var whatList = SessionService.sourceProductList.pop();
+            SessionService.sourceProductList.push(whatList);
+
+            // Add Item Viewed
+            Analytics.addProduct(item.itemnumber +
+                                 "_" +
+                                 whatList, 
+                                 item.name, 
+                                 item.class, 
+                                 item.brand, 
+                                 '', 
+                                 item.price, 
+                                 item.quantity, 
+                                 '', 
+                                 item.position);
+
+            // inject customernumber and branch into detail hit
+            Analytics.set('dimension7', customerNumber);
+            Analytics.set('dimension6', branchId);
+            
+            Analytics.productClick(whatList);
         },
         
         recordViewDetail: function(customerNumber, branchId, item){

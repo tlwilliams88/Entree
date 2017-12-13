@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI',
+  .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 
    'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'AnalyticsService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
      CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, AnalyticsService) {
@@ -422,8 +422,8 @@ angular.module('bekApp')
       $scope.lists = lists;
 
       AnalyticsService.recordCheckout(null, 
-                                      1, // step
-                                      "Enter ATO"); //option
+                                      Constants.EnterAddToOrder, // step
+                                      ""); //option
 
       CartService.getShipDates().then(function(shipdates){
 
@@ -775,8 +775,8 @@ angular.module('bekApp')
           processingUpdateCart = false;
           if($scope.continueToCart){
               AnalyticsService.recordCheckout(cart, 
-                                              2, // step
-                                              "Leave ATO"); //option
+                                              Constants.LeaveAddToOrder, // step
+                                              ''); //option
               $state.go('menu.cart.items', {cartId: basketId});
           }
         });

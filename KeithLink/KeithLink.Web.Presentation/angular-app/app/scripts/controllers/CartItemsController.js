@@ -257,8 +257,8 @@ angular.module('bekApp')
         }
 
         AnalyticsService.recordCheckout(cart, 
-                                        3, // step
-                                        "Submit Cart"); //option
+                                        Constants.SubmitCart, // step
+                                        ''); //option
 
          CartService.isSubmitted(cart.id).then(function(hasBeenSubmitted){
           if(!hasBeenSubmitted){
@@ -395,6 +395,10 @@ angular.module('bekApp')
       if (!processingSaveChangeOrder && !invalidItemFound) {
         processingSaveChangeOrder = true;
 
+        AnalyticsService.recordCheckout(cart, 
+                                        Constants.StartChangeOrder, // step
+                                        ''); //option
+
         var changeOrder = angular.copy(order);
 
         changeOrder.items.forEach(function(item) {
@@ -446,6 +450,11 @@ angular.module('bekApp')
             .then(function(invoiceNumber) {
               $scope.setRecentlyOrderedUNFIItems(order);
               $scope.displayMessage('success', 'Successfully submitted change order.');
+
+              AnalyticsService.recordCheckout(cart, 
+                                              Constants.SubmitChangeOrder, // step
+                                              ''); //option
+
               $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
             }, function(error) {
               $scope.displayMessage('error', 'Error re-submitting order.');
