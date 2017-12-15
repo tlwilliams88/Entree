@@ -487,6 +487,9 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                                     type = "string",
                                     analyzer = "ngram_analyzer",
                                     search_analyzer = "whitespace_analyzer"
+                                },
+                                keyword = new {
+                                    type = "keyword"
                                 }
                             }
                         },

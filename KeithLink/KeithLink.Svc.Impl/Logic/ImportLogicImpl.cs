@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net.Mail;
@@ -60,6 +61,10 @@ namespace KeithLink.Svc.Impl.Logic {
 
         private const int ITEM_NUMBER_INDEX = 0;
         private const int ITEM_QUANTITY_INDEX = 1;
+
+        private int _itemNumberColumn = 0;
+        private int _quantityColumn = 1;
+        private int _eachColumn = 2;
         #endregion
 
         #region methods
@@ -361,48 +366,40 @@ namespace KeithLink.Svc.Impl.Logic {
                 rdr = ExcelReaderFactory.CreateOpenXmlReader(file.Stream);
             }
 
-            int itemNumberColumn = 0;
-            int quantityColumn = 1;
-            int eachColumn = 2;
-
             rdr.Read();
             if (file.Options.IgnoreFirstLine.Equals(false)) {
+                bool itemNumberHeaderFound = false;
+                bool quantityHeaderFound = false;
+                bool eachHeaderFound = false;
+
                 if (rdr.FieldCount > 0) {
                     for (int i = 0; i < rdr.FieldCount - 1; i++) {
                         if (rdr.GetString(i)
                                .Equals("item", StringComparison.CurrentCultureIgnoreCase)) {
-                            itemNumberColumn = i;
+                            _itemNumberColumn = i;
+                            itemNumberHeaderFound = true;
                         } else if (rdr.GetString(i)
                                       .Equals("# Ordered", StringComparison.CurrentCultureIgnoreCase)) {
-                            quantityColumn = i;
+                            _quantityColumn = i;
+                            quantityHeaderFound = true;
                         } else if (rdr.GetString(i)
                                       .Equals("each", StringComparison.CurrentCultureIgnoreCase)) {
-                            quantityColumn = i;
-                        }
+                            _eachColumn = i;
+                            eachHeaderFound = true;
+                        } 
                     }
+                }
+
+                if (itemNumberHeaderFound.Equals(false) &&
+                    quantityHeaderFound.Equals(false) &&
+                    eachHeaderFound.Equals(false)) {
+                    ProcessRow(file, catalogInfo, user, parList, rdr, returnValue);
                 }
             }
 
             try {
                 while (rdr.Read()) {
-                    string itmNum = DetermineItemNumber(rdr.GetString(itemNumberColumn)
-                                                           .PadLeft(6, '0'), file.Options, user, catalogInfo);
-                    decimal qty = 1;
-                    if (file.Options.Contents.Equals(FileContentType.ItemQty) |
-                        file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase)) {
-                        qty = DetermineQuantity(rdr.GetString(itemNumberColumn)
-                                                   .PadLeft(6, '0'), rdr.GetString(quantityColumn), file.Options, parList);
-                    }
-                    bool each = false;
-                    if (file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase)) {
-                        each = DetermineBrokenCaseItem(rdr.GetString(eachColumn), file.Options);
-                    }
-                    returnValue.Add(new ShoppingCartItem {
-                        ItemNumber = itmNum,
-                        CatalogId = catalogInfo.BranchId,
-                        Quantity = qty,
-                        Each = each
-                    });
+                    ProcessRow(file, catalogInfo, user, parList, rdr, returnValue);
                 }
             } catch (Exception ex) {
                 eventLogRepository.WriteErrorLog("Bad parse of file", ex);
@@ -413,6 +410,30 @@ namespace KeithLink.Svc.Impl.Logic {
             }
 
             return returnValue;
+        }
+
+        private void ProcessRow(OrderImportFileModel file, UserSelectedContext catalogInfo, UserProfile user, ListModel parList, IExcelDataReader rdr, List<ShoppingCartItem> returnValue)
+        {
+            string itmNum = DetermineItemNumber(rdr.GetString(_itemNumberColumn)
+                                                   .PadLeft(6, '0'), file.Options, user, catalogInfo);
+            decimal qty = 1;
+            if (file.Options.Contents.Equals(FileContentType.ItemQty) |
+                file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase))
+            {
+                qty = DetermineQuantity(rdr.GetString(_itemNumberColumn)
+                                           .PadLeft(6, '0'), rdr.GetString(_quantityColumn), file.Options, parList);
+            }
+            bool each = false;
+            if (file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase))
+            {
+                each = DetermineBrokenCaseItem(rdr.GetString(_eachColumn), file.Options);
+            }
+            returnValue.Add(new ShoppingCartItem {
+                ItemNumber = itmNum,
+                CatalogId = catalogInfo.BranchId,
+                Quantity = qty,
+                Each = each
+            });
         }
 
         private string DetermineItemNumber(string itemNumber, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo) {
