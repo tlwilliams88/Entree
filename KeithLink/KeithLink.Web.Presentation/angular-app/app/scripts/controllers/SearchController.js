@@ -864,7 +864,7 @@ angular.module('bekApp')
       name: 'Relevance',
     }, {
       name: 'Item #',
-      value: 'itemnumber'
+      value: 'keyword'
     }, {
       name: 'Name',
       value: 'name_not_analyzed'
