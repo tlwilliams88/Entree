@@ -374,7 +374,10 @@ angular.module('bekApp')
     };
 
     $scope.deleteItem = function(item) {
-        AnalyticsService.recordRemoveItem(item);
+        AnalyticsService.recordRemoveItem(
+          item,
+          LocalStorage.getCustomerNumber(),
+          LocalStorage.getBranchId());
 
         var idx = $scope.currentCart.items.indexOf(item);
         $scope.currentCart.items.splice(idx, 1);

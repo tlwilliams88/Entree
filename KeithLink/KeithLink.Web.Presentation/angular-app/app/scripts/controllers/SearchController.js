@@ -73,13 +73,16 @@ angular.module('bekApp')
     else{
       if($scope.$resolve != null &&
          $scope.$resolve.campaignInfo != null){
-        LocalStorage.setSearchTerms("Campaign: " + $scope.$resolve.campaignInfo.description);
-        AnalyticsService.recordPromotion($scope.$resolve.campaignInfo.uri,
-                                         $scope.$resolve.campaignInfo.name,
-                                         $scope.$resolve.campaignInfo.enddate.toString(),
-                                         '',
-                                         LocalStorage.getCustomerNumber(),
-                                         LocalStorage.getBranchId());
+        LocalStorage.setSearchTerms("campaign: " + 
+          $scope.$resolve.campaignInfo.description);
+        
+        AnalyticsService.recordPromotionClick(
+          $scope.$resolve.campaignInfo.uri,
+          $scope.$resolve.campaignInfo.name,
+          $scope.$resolve.campaignInfo.enddate.toString(),
+          '',
+          LocalStorage.getCustomerNumber(),
+          LocalStorage.getBranchId());
       }
     }
 
@@ -316,6 +319,8 @@ angular.module('bekApp')
                                                LocalStorage.getCustomerNumber(),
                                                LocalStorage.getBranchId(),
                                                LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+
+        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
 
       blockUI.stop();
       blockUI.stop();
@@ -621,6 +626,7 @@ angular.module('bekApp')
                                                  LocalStorage.getBranchId(),
                                                  LocalStorage.getSearchTerms() + '-1');
 
+        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-1');
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
         }

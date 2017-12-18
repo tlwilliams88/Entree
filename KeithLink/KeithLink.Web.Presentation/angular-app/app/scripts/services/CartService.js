@@ -160,7 +160,10 @@ angular.module('bekApp')
         newCart.listid = listid;
         newCart.listtype = listtype;
         return Cart.save({}, newCart).$promise.then(function(response) {
-          AnalyticsService.recordAddToCart(newCart);
+          AnalyticsService.recordAddToCart(
+            newCart,
+            LocalStorage.getCustomerNumber(),
+            LocalStorage.getBranchId());
           if(response.successResponse){
             newCart.id = response.successResponse.listitemid;
             newCart.createddate = new Date();

@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('AnalyticsService', ['$window', '$state', 'Analytics', function($window, $state, Analytics) {
+  .factory('AnalyticsService', ['$window', '$state', 'Analytics', 'SessionService', function($window, $state, Analytics, SessionService) {
 
     var Service = {
 
@@ -63,29 +63,72 @@ angular.module('bekApp')
             Analytics.trackCheckout(step, option);
         },
 
-        recordAddToCart: function(item){
-            var addedFrom = $state.current.name;
+        recordAddToCart: function(item, customerNumber, branchId){
+            var addedFrom = SessionService.sourceProductList.pop();
+            SessionService.sourceProductList.push(addedFrom);
 
             // Add item being added
-            Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
+            Analytics.addProduct(item.itemnumber +
+                                 "_" +
+                                 addedFrom, 
+                                 item.name, 
+                                 item.class, 
+                                 item.brand, 
+                                 '', 
+                                 item.price, 
+                                 item.quantity, 
+                                 '', 
+                                 item.position);
+
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
 
             // Create Cart Record
             Analytics.trackCart('add', addedFrom);
         },
         
-        recordRemoveItem: function(item){
-            var removedFrom = $state.current.name;
+        recordRemoveItem: function(item, customerNumber, branchId){
+            var removedFrom = SessionService.sourceProductList.pop();
+            SessionService.sourceProductList.push(removedFrom);
 
             // Add item being removed
-            Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
+            Analytics.addProduct(item.itemnumber +
+                                 "_" +
+                                 removedFrom, 
+                                 item.name, 
+                                 item.class, 
+                                 item.brand, 
+                                 '', 
+                                 item.price, 
+                                 item.quantity, 
+                                 '', 
+                                 item.position);
+
+            // inject customernumber and branch into detail hit
+            $window.ga('set', 'dimension7', customerNumber);
+            $window.ga('set', 'dimension6', branchId);
 
             // Create Cart Record
             Analytics.trackCart('remove', removedFrom);
         },
         
         recordViewDetail: function(customerNumber, branchId, item){
+            var whatList = SessionService.sourceProductList.pop();
+            SessionService.sourceProductList.push(whatList);
+
             // Add Item Viewed
-            Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
+            Analytics.addProduct(item.itemnumber +
+                                 "_" +
+                                 whatList, 
+                                 item.name, 
+                                 item.class, 
+                                 item.brand, 
+                                 '', 
+                                 item.price, 
+                                 item.quantity, 
+                                 '', 
+                                 item.position);
 
             // inject customernumber and branch into detail hit
             $window.ga('set', 'dimension7', customerNumber);
@@ -139,9 +182,14 @@ angular.module('bekApp')
                                })
         },
         
-        recordPromotion: function(id, name, creative, position, customerNumber, branchId){
+        recordPromotion: function(promoItems, customerNumber, branchId){
+          promoItems.forEach(function(promoItem){
             // Add promotion
-            Analytics.addPromo(id, name, creative, position);
+            Analytics.addPromo(promoItem.uri, 
+                               promoItem.name, 
+                               promoItem.enddate.toString(), 
+                               '');
+          });
 
             Analytics.trackEvent('Internal Promotions', 
                                'impressions', 
@@ -153,6 +201,9 @@ angular.module('bekApp')
                                   dimension6: branchId,
                                   dimension7: customerNumber
                                });
+        },
+        
+        recordPromotionClick: function(id, name, creative, position, customerNumber, branchId){
 
             // Add promotion
             Analytics.addPromo(id, name, creative, position);
