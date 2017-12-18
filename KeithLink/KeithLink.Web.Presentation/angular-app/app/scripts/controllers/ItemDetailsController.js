@@ -25,9 +25,9 @@ angular.module('bekApp')
     $scope.casePriceInd = PricingService.hasCasePrice(item);
     $scope.packagePriceInd = PricingService.hasPackagePrice(item);
     
-    AnalyticsService.recordProductListClick(LocalStorage.getCustomerNumber(), 
-                                            LocalStorage.getBranchId(),
-                                            $scope.item);
+    AnalyticsService.recordProductClick(LocalStorage.getCustomerNumber(), 
+                                        LocalStorage.getBranchId(),
+                                        $scope.item);
 
     AnalyticsService.recordViewDetail(LocalStorage.getCustomerNumber(), 
                                       LocalStorage.getBranchId(),

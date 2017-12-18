@@ -83,6 +83,8 @@ angular.module('bekApp')
           '',
           LocalStorage.getCustomerNumber(),
           LocalStorage.getBranchId());
+
+        
       }
     }
 

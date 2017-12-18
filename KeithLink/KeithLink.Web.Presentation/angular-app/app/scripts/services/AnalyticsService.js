@@ -108,6 +108,8 @@ angular.module('bekApp')
                                  '', 
                                  item.position);
 
+            item.sourceProductList = addedFrom;
+
             // inject customernumber and branch into detail hit
             $window.ga('set', 'dimension7', customerNumber);
             $window.ga('set', 'dimension6', branchId);
@@ -141,7 +143,7 @@ angular.module('bekApp')
             Analytics.trackCart('remove', removedFrom);
         },
         
-        recordProductListClick: function(customerNumber, branchId, item){
+        recordProductClick: function(customerNumber, branchId, item){
             var whatList = SessionService.sourceProductList.pop();
             SessionService.sourceProductList.push(whatList);
 
