@@ -2,9 +2,9 @@
 
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI',
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'AnalyticsService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV) {
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, AnalyticsService) {
 
          $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
              var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
@@ -420,6 +420,11 @@ angular.module('bekApp')
 
     function init() {
       $scope.lists = lists;
+
+      AnalyticsService.recordCheckout(null, 
+                                      1, // step
+                                      "Enter ATO"); //option
+
       CartService.getShipDates().then(function(shipdates){
 
         if(shipdates && shipdates.length > 0){
@@ -769,7 +774,10 @@ angular.module('bekApp')
         }).finally(function() {
           processingUpdateCart = false;
           if($scope.continueToCart){
-          $state.go('menu.cart.items', {cartId: basketId});
+              AnalyticsService.recordCheckout(cart, 
+                                              2, // step
+                                              "Leave ATO"); //option
+              $state.go('menu.cart.items', {cartId: basketId});
           }
         });
       }

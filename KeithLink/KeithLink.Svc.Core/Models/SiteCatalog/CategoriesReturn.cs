@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     public class CategoriesReturn
     {
         [DataMember(Name = "categories")]
-        [ElasticProperty(Name = "categories")]
+        //[ElasticProperty(Name = "categories")]
         public List<Category> Categories { get; set; }
     }
 }

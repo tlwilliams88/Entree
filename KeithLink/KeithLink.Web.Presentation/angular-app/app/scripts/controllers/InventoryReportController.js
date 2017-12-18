@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$filter', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List', 'ListPagingModel',
-    function($scope, $filter, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List, ListPagingModel) {
+  .controller('InventoryReportController', ['$scope', '$filter', '$analytics', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'Constants', 'DateService', 'ProductService', 'PricingService', 'ListService', 'List', 'ListPagingModel', '$timeout',
+    function($scope, $filter, $analytics, $q, $modal, $stateParams, $state, toaster, reports, Constants, DateService, ProductService, PricingService, ListService, List, ListPagingModel, $timeout) {
       $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
@@ -202,7 +202,7 @@ angular.module('bekApp')
         $scope.successMessage = '';
         $scope.errorMessage = '';
 
-        ProductService.getProductDetails(itemNumber)
+        ProductService.getProductDetails(itemNumber, 'BEK')
           .then(function(item) {
             $scope.successMessage = 'Added Item # ' + itemNumber + ' to the report.';
             $scope.inventoryForm.$setDirty();
@@ -462,6 +462,86 @@ angular.module('bekApp')
           }
         });
       };
+      
+        $scope.findElementByIndex = function(query) {
+            $('tbody > tr').removeClass('foundItem');
+            
+            if(query.length > 0) {
+                var foundItemsByName = $filter('filter')($scope.report.items, {name: query}),
+                    foundItemsById = $filter('filter')($scope.report.items, {itemnumber: query}),
+                    foundItemsByBrand = $filter('filter')($scope.report.items, {brand: query}),
+                    foundItemsByClass = $filter('filter')($scope.report.items, {class: query});
+                
+                $scope.foundItems = [];
+                
+                foundItemsByName.forEach(function(item) {
+                    $scope.foundItems.push(item);
+                })
+                
+                foundItemsById.forEach(function(item) {
+                    $scope.foundItems.push(item);
+                })
+                
+                foundItemsByBrand.forEach(function(item) {
+                    $scope.foundItems.push(item)
+                })
+                
+                foundItemsByClass.forEach(function(item) {
+                    $scope.foundItems.push(item);
+                })
+                
+                $scope.foundItems.sort(function(a, b) {
+                    return a.position - b.position;
+                })
+                
+                $scope.foundItemIdx = $scope.report.items.indexOf($scope.foundItems[0]);
+                $scope.initialIndex = 0;
+                $('tbody > tr').get(($scope.foundItemIdx)).classList += ' foundItem';
+                
+                var w = $(window);
+                
+                $('html,body').animate({scrollTop: $('.foundItem').offset().top - (w.height()/7)}, 50 );
+            }
+        }
+              
+        $scope.goToNextFoundElement = function() {
+          
+          if($scope.initialIndex == ($scope.foundItems.length - 1)) {
+              return false;
+          }
+          
+          if($scope.initialIndex < ($scope.foundItems.length - 1)) {
+              $('tbody > tr').removeClass('foundItem');
+              $scope.initialIndex = $scope.initialIndex+1;
+              $scope.foundItemIdx = $scope.report.items.indexOf($scope.foundItems[$scope.initialIndex]);
+              $('tbody > tr').get(($scope.foundItemIdx)).classList += ' foundItem';
+              
+              var w = $(window);
+              $('html,body').animate({scrollTop: $('.foundItem').offset().top - (w.height()/7)}, 50 );
+          }
+        }
+
+        $scope.goToPreviousFoundElement = function() {
+          
+          if($scope.initialIndex == 0) {
+              return false;
+          } else {
+              $('tbody > tr').removeClass('foundItem');
+              
+              $scope.initialIndex = $scope.initialIndex-1;
+              $scope.foundItemIdx = $scope.report.items.indexOf($scope.foundItems[$scope.initialIndex]);
+              $('tbody > tr').get(($scope.foundItemIdx)).classList += ' foundItem';
+              
+              var w = $(window);
+              $('html,body').animate({scrollTop: $('.foundItem').offset().top - (w.height()/7)}, 50 );
+          }
+        }
+
+        $timeout(function() {
+          $('#findInput').on("input", function() { 
+              $scope.findElementByIndex(this.value);
+          })
+        }, 100);
 
       init();
     }

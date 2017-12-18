@@ -9,7 +9,7 @@
 // must have for infinite scroll
 html, body {
   height: 100%;
-  background-color: #FDFDFD;
+  background-color: $color-white;
   font-family: helvetica;
 }
 
@@ -50,9 +50,16 @@ td {
   padding-bottom: $gutter-size;
 }
 
+@media (min-width: 991px) {
+    .view-web {
+        padding-left: 51px;
+    }
+}
+
+
 // everything below page-header-bar, located in each menu child state
 .page-content {
-  margin-top: 30px;
+  margin-top: 10px;
   // padding-right: 15px;
 }
 
@@ -110,7 +117,7 @@ td {
 }
 
 .highlightRows:nth-of-type(even) {
-  background-color: #F3F1EB !important;
+  background-color: #F3F1EB;
 }
 
 .block-display {
@@ -136,4 +143,44 @@ td {
 
 #loading-bar .bar {
   height: 5px;
+}
+
+.width-87Percent {
+    width: 87%;
+}
+
+.width-100Percent {
+    width: 100%;
+}
+
+.padding-left-200px {
+    padding-left: 200px;
+}
+
+@media (max-width: 991px) {
+    .padding-bottom-10 {
+        padding-bottom: 10px;
+    }
+}
+
+.foundItem {
+    background-color: $color-yellow !important;
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+ /*Bootstrap 4 override*/
+ -webkit-appearance: searchfield-cancel-button;
+}
+
+@-moz-document url-prefix() {
+
+    .firefox-margin-right {
+        margin-right: 195px !important;
+    }
+
+
+    .firefox-input-width {
+        width: 200px !important;
+    }
+
 }

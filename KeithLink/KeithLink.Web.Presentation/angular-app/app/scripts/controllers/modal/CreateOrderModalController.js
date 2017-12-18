@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'IsMobile', 'IsOffline', 'SelectedList', 'ApplicationSettingsService',
-  function ($scope, $modalInstance, $q, $filter, $analytics, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, IsMobile, IsOffline, SelectedList, ApplicationSettingsService) {
+.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'Orders', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'IsMobile', 'IsOffline', 'SelectedList', 'ApplicationSettingsService',
+  function ($scope, $modalInstance, $q, $filter, $analytics, Orders, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, IsMobile, IsOffline, SelectedList, ApplicationSettingsService) {
 
   /*******************
     DEFAULT DATA
@@ -10,6 +10,7 @@ angular.module('bekApp')
   $scope.currentCustomer = CurrentCustomer;
   $scope.shipDates = ShipDates;
   $scope.lists = Lists;
+  $scope.orders = (Orders && Orders.results) ? Orders.results: [];
   $scope.cartHeaders = CartHeaders;
   $scope.customListHeaders = CustomListHeaders;
   $scope.listIsOpen = true;
@@ -47,19 +48,10 @@ angular.module('bekApp')
   $scope.invalidType = false;
 
   $scope.toggleOpenTab = function(tab) {
-    if(tab == 'List'){
-      $scope.listIsOpen = true;
-      $scope.quickAddIsOpen = false;
-      $scope.importIsOpen = false;
-    } else if(tab == 'Quick Add'){
-      $scope.quickAddIsOpen = true;
-      $scope.listIsOpen = false;
-      $scope.importIsOpen = false;
-    } else {
-      $scope.importIsOpen = true;
-      $scope.listIsOpen = false;
-      $scope.quickAddIsOpen = false;
-    }
+      $scope.listIsOpen = (tab == 'List') ? true : false;
+      $scope.quickAddIsOpen = (tab == 'Quick Add') ? true : false;
+      $scope.importIsOpen = (tab == 'Import') ? true : false;
+      $scope.orderIsOpen =  (tab == 'Previous Order') ? true : false;
   };
 
   /*******************
@@ -86,15 +78,42 @@ angular.module('bekApp')
       cart.listType = $scope.selectedList.type;
     //   ListService.setLastOrderList(cart.listId, cart.listType, cart.id);
       $modalInstance.close(cart);
-      $scope.displayMessage('success', 'Successfully created new cart.');
+      if(cart.valid){
+        $scope.displayMessage('success', 'Successfully created new cart.');        
+      }
     }, function(error) {
       $scope.displayMessage('error', error);
     });
 
   };
 
+  $scope.createCartFromOrder = function(cart, order) {
+
+    var itemstovalidate = [];
+    if (order.items){
+      order.items.forEach(function(item){
+        itemstovalidate.push({
+          itemnumber: item.itemnumber,
+          quantity: item.quantityordered,
+          each: item.each
+          });
+        });
+      }    
+
+    $scope.validateItemsAndUpdateCart(itemstovalidate).then(function(items){
+      if(order.items.length != $scope.selectedCart.items.length){
+         $scope.displayMessage('error', 'Some items were removed due to availability. Please review your order.');
+      }
+      $scope.createCart($scope.selectedCart, 'QuickAdd');
+    });    
+  };
+
   $scope.setSelectedList = function(list) {
     $scope.selectedList = list;
+  };
+
+  $scope.setSelectedOrder = function(order) {
+    $scope.selectedOrder = order;
   };
 
   $scope.setDefaultList = function() {
@@ -198,15 +217,16 @@ angular.module('bekApp')
   $scope.validateItemsAndUpdateCart = function(items){
     // filter items where quantity is greater than 0 and item number is valid
     var newCartItems = getRowsWithQuantity(items);
-    $scope.validateItems(newCartItems).then(function(cartItems){
+    return $scope.validateItems(newCartItems).then(function(cartItems){
       $scope.selectedCart.items = [];
       cartItems.forEach(function(item){
-        if(item.product){
+        if(item.product && ($scope.quickAddIsOpen || item.valid)){
           item.product.quantity = item.item.quantity;
           item.product.each = item.item.each;
           $scope.selectedCart.items.push(item.product);
         }
       });
+      return cartItems;
     });
   };
 

@@ -28,27 +28,18 @@ namespace KeithLink.Svc.Impl.Helpers
             _elasticSearchUri = new Uri(BEKConfiguration.Get("ElasticSearchURL"));
             _connectionConfig = new ConnectionSettings(_elasticSearchUri);
             _client = new ElasticClient(_connectionConfig);
-
         }
 
         #endregion
 
         #region " methods / functions "
-
-        public ElasticsearchResponse<DynamicDictionary> RawSearch(string index, string type, object filter)
-        {
-            ElasticsearchResponse<DynamicDictionary> response = _client.Raw.Search(index, type, filter);
-            return response;
-        }
-
         #endregion
 
         #region " properties "
 
-            public ElasticClient Client
-            {
-                get { return _client; }
-            }
+        public ElasticClient ElasticClient {
+            get { return _client; }
+        }
 
         #endregion
 

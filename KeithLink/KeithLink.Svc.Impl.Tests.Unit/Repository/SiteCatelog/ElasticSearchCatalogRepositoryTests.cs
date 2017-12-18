@@ -1,5 +1,7 @@
-﻿using System.Dynamic;
-
+﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
+using System.Linq;
 using FluentAssertions;
 
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -9,37 +11,23 @@ using KeithLink.Svc.Impl.Seams;
 
 using Xunit;
 
-namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
-    public class ElasticSearchCatalogRepositoryTests : BaseDITests {
-        #region LoadProductFromElasticSearchProduct
-        public class LoadProductFromElasticSearchProduct {
-            [Fact]
-            public void GoodItem_DetailIsExpected() {
-                // arrange
-                ICatalogRepository testunit = MakeTestsRepository();
-                dynamic testProduct = MakeTestProduct();
-                bool testListOnly = false;
-                string expected = "Slush Flavor Watermelon / 102438 / DRAFT - METRO SWEET / Grocery / 6 / 64 OZ";
-
-                // act
-                Product result = testunit.LoadProductFromElasticSearchProduct(testListOnly, testProduct);
-
-                // assert
-                result.Detail.Should()
-                      .Be(expected);
-            }
-        }
-        #endregion LoadProductFromElasticSearchProduct
+namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog
+{
+    public class ElasticSearchCatalogRepositoryTests : BaseDITests
+    {
 
         #region Setup
-        private static ICatalogRepository MakeTestsRepository() {
+        private static ICatalogRepository MakeTestsRepository()
+        {
+            BEKConfiguration.Reset();
             BEKConfiguration.Add("ElasticSearchURL", "http://localhost/Test");
 
             ElasticSearchCatalogRepositoryImpl testunit = new ElasticSearchCatalogRepositoryImpl();
             return testunit;
         }
 
-        private static dynamic MakeTestProduct() {
+        private static dynamic MakeTestProduct()
+        {
             dynamic testProduct = new ExpandoObject();
             testProduct._index = "fsa";
             testProduct._type = "product";
@@ -138,6 +126,85 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Repository.SiteCatelog {
             testProduct._source.marketing_name_ngram_analyzed = null;
             return testProduct;
         }
-        #endregion Setup
+
+        #endregion
+
+        #region attributes
+        #endregion
+
+        #region LoadProductFromElasticSearchProduct
+        public class LoadProductFromElasticSearchProduct
+        {
+            [Fact]
+            public void GoodItem_DetailIsExpected()
+            {
+                // arrange
+                var testunit = MakeTestsRepository();
+                dynamic testProduct = MakeTestProduct();
+                bool testListOnly = false;
+                var expected = "Slush Flavor Watermelon / 102438 / DRAFT - METRO SWEET / Grocery / 6 / 64 OZ";
+
+                // act
+                Product result = testunit.LoadProductFromElasticSearchProduct(testListOnly, testProduct);
+
+                // assert
+                result.Detail.Should()
+                      .Be(expected);
+            }
+
+        }
+        #endregion
+
+        #region SeekSpecialFilters
+        public class SeekSpecialFilter
+        {
+            [Fact]
+            public void ContainsSpecialFilter_ReturnsOneItem()
+            {
+                // arrange
+                var testunit2 = MakeTestsRepository();
+                dynamic testFacet = "mfrname: PACKER___itemspecs: sellsheet___temp_zone: c___specialfilters: test";
+
+                // act
+                List<string> result = testunit2.SeekSpecialFilters(testFacet);
+
+                // assert
+                result.Count.Should()
+                    .Be(1);
+            }
+
+            [Fact]
+            public void ContainsSpecialFilter_ReturnsValue()
+            {
+                // arrange
+                var testunit2 = MakeTestsRepository();
+                dynamic testFacet = "mfrname: PACKER___itemspecs: sellsheet___temp_zone: c___specialfilters:test";
+                String expected = "test";
+                // act
+                List<string> result = testunit2.SeekSpecialFilters(testFacet);
+
+                // assert
+                result.First().Should()
+                    .Be(expected);
+            }
+
+            [Fact]
+            public void NoSpecialFilter_ReturnsZeroItems()
+            {
+                // arrange
+                var testunit = MakeTestsRepository();
+                dynamic testFacet = "mfrname: PACKER___itemspecs: sellsheet___temp_zone: c";
+
+                // act
+                List<string> result = testunit.SeekSpecialFilters(testFacet);
+
+                // assert
+                result.Count.Should()
+                    .Be(0);
+            }
+
+        }
+        #endregion
+
     }
 }

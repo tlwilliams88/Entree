@@ -4,7 +4,7 @@
 <div class="modal-body">
 
   <ul class="list-group">
-    <li class="hand list-group-item" ng-if="!item.favorite" ng-click="addItemToFavorites(item)"><span class="large-icon" favorite-icons></span>Favorites</li>
+    <li class="hand list-group-item" ng-if="!item.favorite && !isCustomInventoryList" ng-click="addItemToFavorites(item)"><span class="large-icon" favorite-icons></span>Favorites</li>
     <!-- <li class="hand list-group-item" ng-repeat="list in lists | sortLists" ng-if="list.isSpecialList && !list.isFavoritesList" ng-click="addItemToReminderList(item)">{{list.name}}</li> -->
   </ul>
 
@@ -19,12 +19,12 @@
   <div>
     <h3>Lists</h3>
     <ul class="list-group">
-      <li ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" ng-click="addItemToList(list.name, list.listid, item, selectedList)" class="hand list-group-item">{{list.name}}</li>
+      <li ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" ng-click="addItemToList(item, list)" class="hand list-group-item">{{list.name}}</li>
       <li class="hand list-group-item" ng-click="createListWithItem(item)">Create New List...</li>
     </ul>
   </div>
 
-  <div ng-if="changeOrders.length > 0 && item.nonstock !== 'Y' && canCreateOrders">
+  <div ng-if="changeOrders.length > 0 && item.nonstock !== 'Y' && canCreateOrders && !isCustomInventoryList">
     <h3>Change Orders</h3>
     <ul class="list-group">
       <li ng-repeat="order in changeOrders" ng-click="addItemToChangeOrder(order, item)" class="hand list-group-item"># {{::order.invoicenumber}}</li>

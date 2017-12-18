@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService',
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService', 
     function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService) {
 
     var Service = {
@@ -82,6 +82,7 @@ angular.module('bekApp')
           $log.debug(profile);
           profile.displayRole = AccessService.getRoleDisplayString(profile.rolename);
           Service.updateDisplayName(profile);
+
           return profile;
         });
       },

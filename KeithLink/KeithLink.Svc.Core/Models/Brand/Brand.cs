@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Models.Brand
 {
     
     [DataContract(Name="brand")]
-    [ElasticType(Name="brand")]
+    //[ElasticType(Name="brand")]
     public class Brand
     {
         #region " attributes "
@@ -27,15 +27,15 @@ namespace KeithLink.Svc.Core.Models.Brand
         #region " properties "
 
         [DataMember(Name="brand_control_label")]
-        [ElasticProperty(Name="brand_control_label")]
+        //[ElasticProperty(Name="brand_control_label")]
         public string BrandControlLabel {get;set;}
 
         [DataMember(Name="extended_description")]
-        [ElasticProperty(Name="extended_description")]
+        //[ElasticProperty(Name="extended_description")]
 		public string ExtendedDescription { get; set; }
 
         [DataMember(Name="imageurl")]
-        [ElasticProperty(Name="imageurl")]
+        //[ElasticProperty(Name="imageurl")]
 		public string ImageURL { get; set; }
         #endregion
     }

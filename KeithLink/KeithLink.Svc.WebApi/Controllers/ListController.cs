@@ -341,8 +341,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
 
             try {
-                _listService.SaveItem(this.AuthenticatedUser, this.SelectedUserContext, type, 
-                                      listId, newItem);
+                _listService.AddItem(this.AuthenticatedUser, this.SelectedUserContext, type, 
+                                     listId, newItem);
 
                 var list = new ListModel()
                 {

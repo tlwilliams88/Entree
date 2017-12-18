@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Impl.Repository.Brands
         public BrandsReturn GetHouseBrands()
         {
 
-            var response = _esHelper.Client.Search<Brand>(s => s
+            var response = _esHelper.ElasticClient.Search<Brand>(s => s
                 .From(0)
                 .Size(50)
                 .Type(Constants.ES_TYPE_BRAND)

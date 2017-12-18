@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Models.Brand
 
         #region " properties "
         [DataMember(Name = "brands")]
-        [ElasticProperty(Name = "brands")]
+        //[ElasticProperty(Name = "brands")]
         [JsonProperty("brands")]
         public List<Brand> Brands { get; set; }
         #endregion

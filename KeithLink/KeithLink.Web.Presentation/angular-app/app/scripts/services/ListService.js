@@ -684,7 +684,6 @@ angular.module('bekApp')
         addItem: function (list, item) {
           delete item.listitemid;
           item.position = 0;
-          item.label = null;
           item.parlevel = null;
           item.active = true;
 

@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', '$filter', '$timeout', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService', 'ApplicationSettingsService', 'UtilityService', 'blockUI', 'LocalStorage', 'SessionService', 'campaignInfo', 'ENV', 'AnalyticsService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
@@ -19,7 +19,9 @@ angular.module('bekApp')
       blockUI,
       LocalStorage,
       SessionService,
-      campaignInfo, ENV
+      campaignInfo, 
+      ENV,
+      AnalyticsService
     ) {
 
     // $scope.$on('$stateChangeStart',
@@ -64,6 +66,22 @@ angular.module('bekApp')
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
     $scope.displayText = $stateParams.brand ? $stateParams.brand : $stateParams.category;
+    if($scope.paramType != null &&
+       $scope.paramId != null){
+      LocalStorage.setSearchTerms($scope.paramType + ": " + $scope.paramId);
+    }
+    else{
+      if($scope.$resolve != null &&
+         $scope.$resolve.campaignInfo != null){
+        LocalStorage.setSearchTerms("Campaign: " + $scope.$resolve.campaignInfo.description);
+        AnalyticsService.recordPromotion($scope.$resolve.campaignInfo.uri,
+                                         $scope.$resolve.campaignInfo.name,
+                                         $scope.$resolve.campaignInfo.enddate.toString(),
+                                         '',
+                                         LocalStorage.getCustomerNumber(),
+                                         LocalStorage.getBranchId());
+      }
+    }
 
     $scope.selectedSortParameter = 'Relevance';
     $scope.sortParametervalue = '';
@@ -293,6 +311,12 @@ angular.module('bekApp')
         if($scope.toggleView){
           resetPage($scope.products, true);
         }
+
+      AnalyticsService.recordSearchImpressions($scope.products, 
+                                               LocalStorage.getCustomerNumber(),
+                                               LocalStorage.getBranchId(),
+                                               LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+
       blockUI.stop();
       blockUI.stop();
       });
@@ -592,6 +616,11 @@ angular.module('bekApp')
         //   guiders.show('searchpage_tutorial');
         // }
 
+        AnalyticsService.recordSearchImpressions($scope.products, 
+                                                 LocalStorage.getCustomerNumber(),
+                                                 LocalStorage.getBranchId(),
+                                                 LocalStorage.getSearchTerms() + '-1');
+
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
         }
@@ -626,17 +655,6 @@ angular.module('bekApp')
         blockUI.stop();
 
         delete $scope.searchMessage;
-
-        $timeout(function() {
-            $('.nav').on( 'mousewheel DOMMouseScroll', function (e) { 
-
-                var d = e.originalEvent.wheelDelta || -e.originalEvent.detail,
-                    dir = d > 0 ? 'up' : 'down',
-                    stop = (dir == 'up' && this.scrollTop == 0) || 
-                           (dir == 'down' && this.scrollTop >= this.scrollHeight-this.offsetHeight);
-                stop && e.preventDefault();
-            });
-        }, 100);
 
         return data.facets;
         });
@@ -846,7 +864,7 @@ angular.module('bekApp')
       name: 'Relevance',
     }, {
       name: 'Item #',
-      value: 'itemnumber'
+      value: 'itemnumber.keyword'
     }, {
       name: 'Name',
       value: 'name_not_analyzed'

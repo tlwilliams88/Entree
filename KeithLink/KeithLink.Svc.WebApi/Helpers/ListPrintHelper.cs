@@ -18,6 +18,7 @@ using System.Text;
 using System.Web;
 
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.WebApi.Helpers
 {
@@ -64,10 +65,18 @@ namespace KeithLink.Svc.WebApi.Helpers
 
             ListModel list = listService.ReadList(userProfile, userContext, type, listId, options.ShowPrices);
 
+            var NotesHash = listService.GetNotesHash(userContext);
+            foreach (var item in list.Items) {
+                if (NotesHash.ContainsKey(item.ItemNumber)) {
+                    item.Notes = NotesHash[item.ItemNumber].Notes;
+                }
+            }
+
             if (list == null)
                 return null;
 
             ListModel printlist = list.Clone();
+            printlist.ListId = 0;
 
             if (options.Filter != null)
             {
@@ -98,17 +107,27 @@ namespace KeithLink.Svc.WebApi.Helpers
 
             ReportViewer rv = new ReportViewer();
             rv.ProcessingMode = ProcessingMode.Local;
-            string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
+
+
             Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+
             string rptName = ChooseReportFromOptions(options, userContext, customer);
             Stream rdlcStream = assembly.GetManifestResourceStream(rptName);
+
             rv.LocalReport.LoadReportDefinition(rdlcStream);
+
             rv.LocalReport.SetParameters
                 (MakeReportOptionsForPrintListReport(options, printModel.Name, userContext, customer));
             GatherInfoAboutItems(type, listId, options, printModel, userContext, userProfile, customer, listService);
+
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
+
+            string deviceInfo = (options.Landscape) ? KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE 
+                                                    : KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_PORTRAIT;
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
+
             Stream stream = new MemoryStream(bytes);
+
             return stream;
         }
 
@@ -137,24 +156,43 @@ namespace KeithLink.Svc.WebApi.Helpers
         { // Choose different Report for different columns ; grouping doesn't change column widths so no different name
             if (customer != null)
             {
-                if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
-                else if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes == false))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
-                else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
-                else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes == false))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
-                else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
-                else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes == false))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
-                else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
-                else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes == false))
-                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
+                if (options.Landscape) {
+                    if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeYesParYesPriceYesNotes;
+                    else if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeYesParYesPriceNoNotes;
+                    else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeYesParNoPriceYesNotes;
+                    else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeYesParNoPriceNoNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeNoParYesPriceYesNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeNoParYesPriceNoNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeNoParNoPriceYesNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LandscapeNoParNoPriceNoNotes;
+                } else {
+                    if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitYesParYesPriceYesNotes;
+                    else if ((options.ShowParValues) & (options.ShowPrices) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitYesParYesPriceNoNotes;
+                    else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitYesParNoPriceYesNotes;
+                    else if ((options.ShowParValues) & (options.ShowPrices == false) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitYesParNoPriceNoNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitNoParYesPriceYesNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitNoParYesPriceNoNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitNoParNoPriceYesNotes;
+                    else if ((options.ShowParValues == false) & (options.ShowPrices == false) & (options.ShowNotes == false))
+                        return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_PortraitNoParNoPriceNoNotes;
+                }
             }
-            return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
+            return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST;
         }
 
         private static ReportParameter[] MakeReportOptionsForPrintListReport(PrintListModel options, string listName, UserSelectedContext userContext,

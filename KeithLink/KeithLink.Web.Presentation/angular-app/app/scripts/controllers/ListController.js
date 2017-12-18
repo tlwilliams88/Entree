@@ -9,9 +9,11 @@
  */
 angular.module('bekApp')
   .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList',
-   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService',
+   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService', 'ProductService', 'OrderService',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
-     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService) {
+     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService, ProductService, OrderService) {
+         
+    $scope.addToQty = 1;
 
     if(originalList.name == 'Non BEK Items'){
       originalList.listid = 'nonbeklist';
@@ -26,6 +28,26 @@ angular.module('bekApp')
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
+    $scope.quickAddLists = [];
+    
+    $scope.lists.forEach(function(list){
+        if(list.permissions.canAddItems == true && !list.permissions.specialDisplay){
+            $scope.quickAddLists.push(list);
+        }
+    })
+        
+    if ($scope.isOrderEntryCustomer) {
+        CartService.getCartHeaders().then(function(resp){
+            $scope.cartHeaders = resp;
+        })
+        $scope.changeOrders = OrderService.changeOrderHeaders;
+
+        if($scope.changeOrders == null || $scope.changeOrders.length == 0) {
+            OrderService.getChangeOrders().then(function(resp){
+              $scope.changeOrders = resp;
+            });
+        }
+    }
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
@@ -222,7 +244,6 @@ angular.module('bekApp')
         if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
           $scope.selectedList.allSelected = true;
         }
-        // updateItemPositions();
       }
     };
 
@@ -282,7 +303,6 @@ angular.module('bekApp')
       if(initialPageLoad){
         $scope.currentPage = 1;
         $scope.visitedPages.push({page: 1, items: $scope.selectedList.items, deletedCount: 0});
-        // updateItemPositions();
       }
       $scope.setRange();
 
@@ -337,7 +357,6 @@ angular.module('bekApp')
       else{
        $scope.setStartAndEndPoints(list);
       }
-    //    updateItemPositions();
       if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
         $scope.selectedList.allSelected = true;
       }
@@ -643,38 +662,6 @@ angular.module('bekApp')
       $scope.selectedList.isRenaming = false;
     };
 
-      // saves new item indexes in cached editPosition field after sorting or ordering the list items
-    //  function updateItemPositions() {
-    // 
-    //   if($scope.selectedList.read_only){
-    //     return;
-    //   }
-    //   var deletedItemCount = 0;
-    //   var currentPageDeletes = 0;
-    //   var currentPageDeletedCount = 0;
-    //   $scope.itemCountOffset = 0;
-    //   $scope.visitedPages.forEach(function(page){
-    //   if($scope.currentPage > page.page){
-    //     deletedItemCount += page.deletedCount;
-    //   }
-    //   if($scope.currentPage === page.page){
-    //     currentPageDeletedCount = page.deletedCount;
-    //   }
-    //   $scope.itemCountOffset += page.deletedCount;
-    //   });
-    // 
-    //   $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
-    //   $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
-    //   var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
-    //   angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
-    //     if(!item.isdeleted){
-    //         item.position = newPosition;
-    //         item.editPosition = newPosition;
-    //         newPosition += 1;
-    //     }
-    //   });
-    // }
-
     /**********
     DELETE ITEMS
     **********/
@@ -690,7 +677,6 @@ angular.module('bekApp')
       $scope.forms.listForm.$setDirty();
       item.isdeleted = true;
       updateDeletedCount();
-    //   updateItemPositions();
     };
 
     $scope.deleteMultipleItems = function() {
@@ -712,7 +698,6 @@ angular.module('bekApp')
       }
 
       $scope.selectedList.allSelected = false;
-    //   updateItemPositions();
       $scope.forms.listForm.$setDirty();
       $scope.isDeletingItem = false;
     };
@@ -801,18 +786,17 @@ angular.module('bekApp')
             ProductService.getProductDetails(itemNumber, 'BEK').then(function(item) {
                 var list = {
                     listid: $scope.selectedList.listid,
-                    type: $scope.selectedList.type
+                    type: $scope.selectedList.type,
+                    name: $scope.selectedList.name
                 }
                 $scope.selectedList.items.push(item);
                 ListService.addItem(list, item).then(function(data){
                     $scope.addedItem = true;
-                    listPagingModel.loadList();
+                    $scope.goToList(list.listid, list.type);
                     $scope.listItemNumber = '';
                     blockUI.stop();
-                    $scope.displayMessage('success', 'Successfully added item to list.');
-                }, function() {
+                }, function(error) {
                     blockUI.stop();
-                    $scope.displayMessage('error', 'Error adding item to list.');
                 });
             });
         });
@@ -1065,13 +1049,16 @@ angular.module('bekApp')
 
     $scope.clearFilter = function(clearSearch){
       if($scope.unsavedChangesConfirmation()){
-        if(clearSearch){
+        if(clearSearch == true){
           $scope.listSearchTerm = '';
         }
 
-        $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-        $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
-        $scope.filterItems( $scope.listSearchTerm );
+        if($scope.selectedList.is_contract_list == true) {
+            $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
+            $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
+        }
+
+        $scope.filterItems();
       }
     };
 
