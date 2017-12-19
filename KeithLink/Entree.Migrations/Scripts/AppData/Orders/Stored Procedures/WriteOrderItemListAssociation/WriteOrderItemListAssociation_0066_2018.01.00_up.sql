@@ -6,7 +6,7 @@ CREATE PROCEDURE [Orders].[WriteOrderItemListAssociation]
 -- =============================================
 			@ControlNumber	NVARCHAR (40),
 			@ItemNumber 	NVARCHAR (15),
-            @SourceList     NVARCHAR (40)
+            @SourceList     NVARCHAR (80)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from

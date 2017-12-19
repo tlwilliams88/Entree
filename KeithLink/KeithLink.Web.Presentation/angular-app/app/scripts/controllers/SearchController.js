@@ -322,7 +322,7 @@ angular.module('bekApp')
                                                LocalStorage.getBranchId(),
                                                LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
 
-        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+      SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
 
       blockUI.stop();
       blockUI.stop();
@@ -629,6 +629,7 @@ angular.module('bekApp')
                                                  LocalStorage.getSearchTerms() + '-1');
 
         SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-1');
+
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
         }

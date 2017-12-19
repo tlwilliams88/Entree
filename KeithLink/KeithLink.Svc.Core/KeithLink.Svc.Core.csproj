@@ -338,6 +338,7 @@
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
     <Compile Include="Interface\OnlinePayments\Log\IKPayLogRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
+    <Compile Include="Interface\Orders\IOrderedItemsFromListRepository.cs" />
     <Compile Include="Interface\Orders\IOrderedFromListRepository.cs" />
     <Compile Include="Interface\Orders\IOrderHistoryWriter.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderLogic.cs" />
@@ -459,6 +460,7 @@
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
+    <Compile Include="Models\Orders\OrderItemFromList.cs" />
     <Compile Include="Models\Orders\Order2List.cs" />
     <Compile Include="Models\PowerMenu\Order\LoginModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderHeaderModel.cs" />

@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('AnalyticsService', ['$window', '$state', 'Analytics', 'SessionService', function($window, $state, Analytics, SessionService) {
+  .factory('AnalyticsService', ['Analytics', 'SessionService', function(Analytics, SessionService) {
 
     var Service = {
 
@@ -33,20 +33,33 @@ angular.module('bekApp')
             cart.items.forEach(function(item){
                 item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
 
-                // Add item to transaction
-                Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
-            });
+                var itemid = item.itemnumber;
 
-            // Create transaction
-            Analytics.trackTransaction(orderNumber, 
-                                       customerBranch + '.' + customerNumber + '.' + customerName, 
-                                       cart.subtotal, 
-                                       '', 
-                                       '', 
-                                       '', 
-                                       'ListId: ' + cart.listid, 
-                                       'Cart Submission', 
-                                       '');
+                // Add item to transaction
+                Analytics.addProduct(itemid, 
+                                     item.name, 
+                                     item.class, 
+                                     item.brand, 
+                                     '', 
+                                     item.price, 
+                                     item.quantity, 
+                                     '', 
+                                     item.position);
+
+                // create tracker for each product (since they come from seperate lists)
+                Analytics.trackTransaction(orderNumber, 
+                                           customerBranch + '.' + customerNumber + '.' + customerName, 
+                                           cart.subtotal, 
+                                           '', 
+                                           '', 
+                                           '', 
+                                           item.sourceProductList, 
+                                           'Cart Submission', 
+                                           '');
+
+                Analytics.set('dimension8', 1);
+                Analytics.set('dimension9', item.quantity);
+            });
         },
         
         recordCheckout: function(cart, step, option){
@@ -69,9 +82,7 @@ angular.module('bekApp')
 
              if (cart != null){
                 cart.items.forEach(function(item){
-                  Analytics.addProduct(item.itemnumber +
-                                       "_" +
-                                       addedFrom, 
+                  Analytics.addProduct(item.itemnumber, 
                                        item.name, 
                                        item.class, 
                                        item.brand, 
@@ -82,23 +93,25 @@ angular.module('bekApp')
                                        item.position);
                 });
             }
-            // Add item being added
-           // inject customernumber and branch into detail hit
-            $window.ga('set', 'dimension7', customerNumber);
-            $window.ga('set', 'dimension6', branchId);
+
+            // inject customernumber and branch into detail hit
+            Analytics.set('dimension7', customerNumber);
+            Analytics.set('dimension6', branchId);
 
             // Create Cart Record
             Analytics.trackCart('add', addedFrom);
          },
         
         recordAddToCart: function(item, customerNumber, branchId){
-            var addedFrom = SessionService.sourceProductList.pop();
-            SessionService.sourceProductList.push(addedFrom);
+            var addedFrom = '';
+
+            if(SessionService.sourceProductList.length>0){
+              addedFrom = SessionService.sourceProductList.pop();
+              SessionService.sourceProductList.push(addedFrom);
+            }
 
             // Add item being added
-            Analytics.addProduct(item.itemnumber +
-                                 "_" +
-                                 addedFrom, 
+            Analytics.addProduct(item.itemnumber, 
                                  item.name, 
                                  item.class, 
                                  item.brand, 
@@ -111,21 +124,18 @@ angular.module('bekApp')
             item.sourceProductList = addedFrom;
 
             // inject customernumber and branch into detail hit
-            $window.ga('set', 'dimension7', customerNumber);
-            $window.ga('set', 'dimension6', branchId);
+            Analytics.set('dimension7', customerNumber);
+            Analytics.set('dimension6', branchId);
 
             // Create Cart Record
             Analytics.trackCart('add', addedFrom);
         },
         
         recordRemoveItem: function(item, customerNumber, branchId){
-            var removedFrom = SessionService.sourceProductList.pop();
-            SessionService.sourceProductList.push(removedFrom);
+            var removedFrom = item.sourceProductList;
 
             // Add item being removed
-            Analytics.addProduct(item.itemnumber +
-                                 "_" +
-                                 removedFrom, 
+            Analytics.addProduct(item.itemnumber, 
                                  item.name, 
                                  item.class, 
                                  item.brand, 
@@ -144,13 +154,15 @@ angular.module('bekApp')
         },
         
         recordProductClick: function(customerNumber, branchId, item){
-            var whatList = SessionService.sourceProductList.pop();
-            SessionService.sourceProductList.push(whatList);
+            var whatList = '';
+
+            if(SessionService.sourceProductList.length>0){
+              whatList = SessionService.sourceProductList.pop();
+              SessionService.sourceProductList.push(whatList);
+            }
 
             // Add Item Viewed
-            Analytics.addProduct(item.itemnumber +
-                                 "_" +
-                                 whatList, 
+            Analytics.addProduct(item.itemnumber, 
                                  item.name, 
                                  item.class, 
                                  item.brand, 
@@ -168,13 +180,15 @@ angular.module('bekApp')
         },
         
         recordViewDetail: function(customerNumber, branchId, item){
-            var whatList = SessionService.sourceProductList.pop();
-            SessionService.sourceProductList.push(whatList);
+            var whatList = '';
+
+            if(SessionService.sourceProductList.length>0){
+              whatList = SessionService.sourceProductList.pop();
+              SessionService.sourceProductList.push(whatList);
+            }
 
             // Add Item Viewed
-            Analytics.addProduct(item.itemnumber +
-                                 "_" +
-                                 whatList, 
+            Analytics.addProduct(item.itemnumber, 
                                  item.name, 
                                  item.class, 
                                  item.brand, 
@@ -185,16 +199,11 @@ angular.module('bekApp')
                                  item.position);
 
             // inject customernumber and branch into detail hit
-            $window.ga('set', 'dimension7', customerNumber);
-            $window.ga('set', 'dimension6', branchId);
-            
+            Analytics.set('dimension7', customerNumber);
+            Analytics.set('dimension6', branchId);
+              
             Analytics.trackDetail();
-        },
-
-        setSelectedCustomer: function(customerNumber, branchId){
-            // inject customernumber and branch into detail hit
-            $window.ga('set', 'dimension7', customerNumber);
-            $window.ga('set', 'dimension6', branchId);
+            Analytics.set('list', whatList);
         },
 
         recordSearchImpressions: function(products, customerNumber, branchId, listName){
@@ -245,7 +254,7 @@ angular.module('bekApp')
                                '');
           });
 
-            Analytics.trackEvent('Internal Promotions', 
+          Analytics.trackEvent('Internal Promotions', 
                                'impressions', 
                                '', 
                                0, 
@@ -263,8 +272,8 @@ angular.module('bekApp')
             Analytics.addPromo(id, name, creative, position);
 
             // inject customernumber and branch into detail hit
-            $window.ga('set', 'dimension7', customerNumber);
-            $window.ga('set', 'dimension6', branchId);
+            Analytics.set('dimension7', customerNumber);
+            Analytics.set('dimension6', branchId);
             
             Analytics.promoClick(name);
         }

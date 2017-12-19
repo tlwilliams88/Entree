@@ -383,7 +383,7 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
             ShoppingCartLogicImpl testunit = new ShoppingCartLogicImpl(mockDependents.BasketRepository.Object, mockDependents.CatalogLogic.Object, mockDependents.PriceLogic.Object,
                                                                        mockDependents.OrderQueueLogic.Object, mockDependents.PurchaseOrderRepository.Object, mockDependents.GenericQueueRepository.Object,
-                                                                       mockDependents.BasketLogic.Object, mockDependents.OrderHistoryLogic.Object, mockDependents.CustomerRepository.Object,
+                                                                       mockDependents.BasketLogic.Object, mockDependents.OrderHistoryLogic.Object, null, mockDependents.CustomerRepository.Object,
                                                                        mockDependents.AuditLogRepository.Object, mockDependents.NotesListLogic.Object, mockDependents.UserActiveCartLogic.Object,
                                                                        mockDependents.ExternalCatalogRepository.Object, mockDependents.CacheRepository.Object, mockDependents.EventLogRepository.Object,
                                                                        mockDependents.OrderedFromListRepository.Object);
