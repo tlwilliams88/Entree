@@ -178,55 +178,43 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
             public Mock<IOrderedFromListRepository> OrderedFromListRepository { get; set; }
 
+            public Mock<IOrderedItemsFromListRepository> OrderedItemsFromListRepository { get; set; }
+
             public static void RegisterInContainer(ref ContainerBuilder cb) {
-                cb.RegisterInstance(MakeICacheRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeICacheRepository().Object)
                   .As<ICacheRepository>();
-                cb.RegisterInstance(MakeICustomerRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeICustomerRepository().Object)
                   .As<ICustomerRepository>();
-                cb.RegisterInstance(MakeIBasketRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeIBasketRepository().Object)
                   .As<IBasketRepository>();
-                cb.RegisterInstance(MakeICatalogLogic()
-                                            .Object)
+                cb.RegisterInstance(MakeICatalogLogic().Object)
                   .As<ICatalogLogic>();
-                cb.RegisterInstance(MakeIPriceLogic()
-                                            .Object)
+                cb.RegisterInstance(MakeIPriceLogic().Object)
                   .As<IPriceLogic>();
-                cb.RegisterInstance(MakeIPurchaseOrderRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeIPurchaseOrderRepository().Object)
                   .As<IPurchaseOrderRepository>();
-                cb.RegisterInstance(MakeIGenericQueueRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeIGenericQueueRepository().Object)
                   .As<IGenericQueueRepository>();
-                cb.RegisterInstance(MakeIBasketLogic()
-                                            .Object)
+                cb.RegisterInstance(MakeIBasketLogic().Object)
                   .As<IBasketLogic>();
-                cb.RegisterInstance(MakeINotesListLogic()
-                                            .Object)
+                cb.RegisterInstance(MakeINotesListLogic().Object)
                   .As<INotesListLogic>();
-                cb.RegisterInstance(MakeIOrderQueueLogic()
-                                            .Object)
+                cb.RegisterInstance(MakeIOrderQueueLogic().Object)
                   .As<IOrderQueueLogic>();
-                cb.RegisterInstance(MakeIOrderHistoryLogic()
-                                            .Object)
+                cb.RegisterInstance(MakeIOrderHistoryLogic().Object)
                   .As<IOrderHistoryLogic>();
-                cb.RegisterInstance(MakeIAuditLogRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeIAuditLogRepository().Object)
                   .As<IAuditLogRepository>();
-                cb.RegisterInstance(MakeIEventLogRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeIEventLogRepository().Object)
                   .As<IEventLogRepository>();
-                cb.RegisterInstance(MakeIUserActiveCartLogic()
-                                            .Object)
+                cb.RegisterInstance(MakeIUserActiveCartLogic().Object)
                   .As<IUserActiveCartLogic>();
-                cb.RegisterInstance(MakeIExternalCatalogRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeIExternalCatalogRepository().Object)
                   .As<IExternalCatalogRepository>();
-                cb.RegisterInstance(MakeIOrderedFromListRepository()
-                                            .Object)
+                cb.RegisterInstance(MakeIOrderedFromListRepository().Object)
                   .As<IOrderedFromListRepository>();
+                cb.RegisterInstance(MakeIOrderedItemsFromListRepository().Object)
+                  .As<IOrderedItemsFromListRepository>();
             }
 
             public static Mock<ICacheRepository> MakeICacheRepository() {
@@ -350,6 +338,13 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
                 return mock;
             }
+
+            public static Mock<IOrderedItemsFromListRepository> MakeIOrderedItemsFromListRepository()
+            {
+                Mock<IOrderedItemsFromListRepository> mock = new Mock<IOrderedItemsFromListRepository>();
+
+                return mock;
+            }
         }
 
         private static IShoppingCartLogic MakeTestsLogic(bool useAutoFac, ref MockDependents mockDependents) {
@@ -377,13 +372,15 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             mockDependents.OrderHistoryLogic = MockDependents.MakeIOrderHistoryLogic();
             mockDependents.OrderQueueLogic = MockDependents.MakeIOrderQueueLogic();
             mockDependents.OrderedFromListRepository = MockDependents.MakeIOrderedFromListRepository();
+            mockDependents.OrderedItemsFromListRepository = MockDependents.MakeIOrderedItemsFromListRepository();
             mockDependents.PriceLogic = MockDependents.MakeIPriceLogic();
             mockDependents.PurchaseOrderRepository = MockDependents.MakeIPurchaseOrderRepository();
             mockDependents.UserActiveCartLogic = MockDependents.MakeIUserActiveCartLogic();
 
             ShoppingCartLogicImpl testunit = new ShoppingCartLogicImpl(mockDependents.BasketRepository.Object, mockDependents.CatalogLogic.Object, mockDependents.PriceLogic.Object,
                                                                        mockDependents.OrderQueueLogic.Object, mockDependents.PurchaseOrderRepository.Object, mockDependents.GenericQueueRepository.Object,
-                                                                       mockDependents.BasketLogic.Object, mockDependents.OrderHistoryLogic.Object, null, mockDependents.CustomerRepository.Object,
+                                                                       mockDependents.BasketLogic.Object, mockDependents.OrderHistoryLogic.Object, mockDependents.OrderedItemsFromListRepository.Object, 
+                                                                       mockDependents.CustomerRepository.Object,
                                                                        mockDependents.AuditLogRepository.Object, mockDependents.NotesListLogic.Object, mockDependents.UserActiveCartLogic.Object,
                                                                        mockDependents.ExternalCatalogRepository.Object, mockDependents.CacheRepository.Object, mockDependents.EventLogRepository.Object,
                                                                        mockDependents.OrderedFromListRepository.Object);
