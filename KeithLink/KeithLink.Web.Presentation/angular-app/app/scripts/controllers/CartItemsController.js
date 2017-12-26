@@ -256,10 +256,6 @@ angular.module('bekApp')
         return;
         }
 
-        AnalyticsService.recordCheckout(cart, 
-                                        Constants.SubmitCart, // step
-                                        ''); //option
-
          CartService.isSubmitted(cart.id).then(function(hasBeenSubmitted){
           if(!hasBeenSubmitted){
             $scope.saveCart(cart)
@@ -305,8 +301,7 @@ angular.module('bekApp')
               }
             
             var customerName = $scope.selectedUserContext.customer.customerName;
-            AnalyticsService.recordTransaction(customerName, 
-                                               orderNumber, 
+            AnalyticsService.recordTransaction(orderNumber, 
                                                cart,
                                                $scope.selectedUserContext.customer.customerNumber,
                                                $scope.selectedUserContext.customer.customerBranch);

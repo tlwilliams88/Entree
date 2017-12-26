@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('AnalyticsService', ['Analytics', 'SessionService', function(Analytics, SessionService) {
+  .factory('AnalyticsService', ['Analytics', 'SessionService', 'Constants', function(Analytics, SessionService, Constants) {
 
     var Service = {
 
@@ -29,59 +29,81 @@ angular.module('bekApp')
                                  })
         },
         
-        recordTransaction: function(customerName, orderNumber, cart, customerNumber, customerBranch){
+        recordTransaction: function(orderNumber, cart, customerNumber, customerBranch){
+
+            var pieceCount = 0;
+            var itemCount = cart.items.length;
+            var tranPosition = 0;
+
             cart.items.forEach(function(item){
+              pieceCount += item.quantity;
+            });
+
+            for (var i = 0; i < cart.items.length; i++){
+              // The transaction in GA is our lineitem.  The reason is that
+              // in their basic reports, they give a way to make a relationship
+              // between a transaction and the list it came from.  We give a 
+              // way to have each lineitem be drawn from a different list.
+                var item = cart.items[i];
+
                 item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
 
-                var itemid = item.itemnumber;
+                var cost = item.price;
+                if (item.catchweight){
+                  cost = item.price * item.average_weight
+                }
+
+                tranPosition++;
 
                 // Add item to transaction
-                Analytics.addProduct(itemid, 
+                Analytics.addProduct(item.itemnumber, 
                                      item.name, 
                                      item.class, 
                                      item.brand, 
                                      '', 
-                                     item.price, 
+                                     cost.toString(), 
                                      item.quantity, 
                                      '', 
-                                     item.position);
+                                     tranPosition);
 
                 // create tracker for each product (since they come from seperate lists)
-                Analytics.trackTransaction(orderNumber, 
-                                           customerBranch + '.' + customerNumber + '.' + customerName, 
-                                           cart.subtotal, 
+                Analytics.trackTransaction(orderNumber + '.' +
+                                             tranPosition.toString() + '.' +
+                                             item.itemnumber, 
+                                           orderNumber, 
+                                           item.extPrice, 
                                            '', 
                                            '', 
                                            '', 
                                            item.sourceProductList, 
-                                           'Cart Submission', 
+                                           '', 
                                            '');
 
-                Analytics.set('dimension8', 1);
-                Analytics.set('dimension9', item.quantity);
-            });
+                Analytics.set('dimension8', itemCount.toString());
+                Analytics.set('dimension9', pieceCount.toString());
+
+                Analytics.set('dimension7', customerNumber);
+                Analytics.set('dimension6', customerBranch);
+
+                Analytics.trackEvent('Process', 
+                                     'TH', 
+                                     '', 
+                                     '0', 
+                                     true);
+            }
         },
         
         recordCheckout: function(cart, step, option){
+            var sendIndex = 0;
             if (cart != null){
-                cart.items.forEach(function(item){
-                    item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
+              for (var i = 0; i < cart.items.length; i++){
+                  var item = cart.items[i];
 
-                    // Add item to cart
-                    Analytics.addProduct(item.itemnumber, item.name, item.class, item.brand, '', item.price, item.quantity, '', item.position);
-                });
-            }
+                  item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
 
-            // Create Checkout Record
-            Analytics.trackCheckout(step, option);
-        },
+                  sendIndex++;
 
-        recordNewCartWithItems: function(cart, customerNumber, branchId){
-            var addedFrom = SessionService.sourceProductList.pop();
-            SessionService.sourceProductList.push(addedFrom);
-
-             if (cart != null){
-                cart.items.forEach(function(item){
+                  // Add item to cart
                   Analytics.addProduct(item.itemnumber, 
                                        item.name, 
                                        item.class, 
@@ -91,16 +113,27 @@ angular.module('bekApp')
                                        item.quantity, 
                                        '', 
                                        item.position);
-                });
+
+                  // Create Checkout Record
+                  Analytics._setAction('checkout', 
+                                       getActionFieldObject(null, 
+                                                            null, 
+                                                            null, 
+                                                            null, 
+                                                            null, 
+                                                            null, 
+                                                            item.sourceProductList, 
+                                                            step, 
+                                                            option));
+
+                  Analytics.trackEvent('Process', 
+                                         'TC', 
+                                         '', 
+                                         0, 
+                                         true);
+              }
             }
-
-            // inject customernumber and branch into detail hit
-            Analytics.set('dimension7', customerNumber);
-            Analytics.set('dimension6', branchId);
-
-            // Create Cart Record
-            Analytics.trackCart('add', addedFrom);
-         },
+        },
         
         recordAddToCart: function(item, customerNumber, branchId){
             var addedFrom = '';
@@ -221,7 +254,7 @@ angular.module('bekApp')
                                     pageIndex, 
                                     item.caseprice.toString());
             renderedIndex++;
-            if(renderedIndex>20){
+            if(renderedIndex>40){
                   Analytics.trackEvent('Search', 
                                        'Listing', 
                                        '', 

@@ -2,9 +2,9 @@
 
 angular.module('bekApp')
   .controller('AddToOrderController', ['$rootScope', '$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 
-   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'AnalyticsService',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster', 'ENV', 'AnalyticsService', 'SessionService',
     function ($rootScope, $scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
-     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, AnalyticsService) {
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster, ENV, AnalyticsService, SessionService) {
 
          $scope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
              var toCart = (toState.name == 'menu.cart.items' || fromState.name == 'menu.cart.items'),
@@ -343,6 +343,9 @@ angular.module('bekApp')
       $scope.endPoint = parseInt($scope.pagingPageSize);
       $scope.setCurrentPageAfterRedirect();
       $scope.setRange();
+
+      SessionService.sourceProductList.push('ATO: ' + $scope.selectedList.name);
+
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
 
       if($stateParams.listItems){
@@ -655,6 +658,10 @@ angular.module('bekApp')
             sameListItems = undefined;
         }
         var continueToCart = $scope.continueToCart;
+
+        AnalyticsService.recordCheckout(null, 
+                                        Constants.LeaveAddToOrder, // step
+                                        ""); //option
 
         blockUI.start('Loading List...').then(function(){
             $state.go('menu.addtoorder.items', {
