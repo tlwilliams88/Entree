@@ -424,10 +424,6 @@ angular.module('bekApp')
     function init() {
       $scope.lists = lists;
 
-      AnalyticsService.recordCheckout(null, 
-                                      Constants.EnterAddToOrder, // step
-                                      ""); //option
-
       CartService.getShipDates().then(function(shipdates){
 
         if(shipdates && shipdates.length > 0){
@@ -659,10 +655,6 @@ angular.module('bekApp')
         }
         var continueToCart = $scope.continueToCart;
 
-        AnalyticsService.recordCheckout(null, 
-                                        Constants.LeaveAddToOrder, // step
-                                        ""); //option
-
         blockUI.start('Loading List...').then(function(){
             $state.go('menu.addtoorder.items', {
               listId: list.listid,
@@ -781,9 +773,6 @@ angular.module('bekApp')
         }).finally(function() {
           processingUpdateCart = false;
           if($scope.continueToCart){
-              AnalyticsService.recordCheckout(cart, 
-                                              Constants.LeaveAddToOrder, // step
-                                              ''); //option
               $state.go('menu.cart.items', {cartId: basketId});
           }
         });
@@ -1164,6 +1153,10 @@ angular.module('bekApp')
           }
       });
     };
+
+    AnalyticsService.recordCheckout(null, 
+                                    Constants.checkoutSteps.EnterAddToOrder, // step
+                                    ""); //option
 
     init();
 

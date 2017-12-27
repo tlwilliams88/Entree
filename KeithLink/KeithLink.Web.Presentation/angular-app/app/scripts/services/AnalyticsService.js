@@ -66,17 +66,22 @@ angular.module('bekApp')
                                      '', 
                                      tranPosition);
 
+                var fromlist = item.sourceProductList;
+                if(fromlist == null){
+                  fromlist = "";
+                }
+
                 // create tracker for each product (since they come from seperate lists)
                 Analytics.trackTransaction(orderNumber + '.' +
-                                             tranPosition.toString() + '.' +
+                                             (tranPosition).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}) + '.' +
                                              item.itemnumber, 
                                            orderNumber, 
                                            item.extPrice, 
                                            '', 
                                            '', 
                                            '', 
-                                           item.sourceProductList, 
-                                           '', 
+                                           fromlist, 
+                                           Constants.checkoutSteps.SubmitCart, 
                                            '');
 
                 Analytics.set('dimension8', itemCount.toString());
@@ -115,16 +120,12 @@ angular.module('bekApp')
                                        item.position);
 
                   // Create Checkout Record
-                  Analytics._setAction('checkout', 
-                                       getActionFieldObject(null, 
-                                                            null, 
-                                                            null, 
-                                                            null, 
-                                                            null, 
-                                                            null, 
-                                                            item.sourceProductList, 
-                                                            step, 
-                                                            option));
+                  Analytics.setAction('checkout', 
+                                       {
+                                        list : item.sourceProductList,
+                                        step : step,
+                                        option : option
+                                       });
 
                   Analytics.trackEvent('Process', 
                                          'TC', 
@@ -133,6 +134,18 @@ angular.module('bekApp')
                                          true);
               }
             }
+            // Create Checkout Record
+            Analytics.setAction('checkout', 
+                                {
+                                  step : step,
+                                  option : option
+                                });
+
+            Analytics.trackEvent('Process', 
+                                 'TC', 
+                                 '', 
+                                 0, 
+                                 true);
         },
         
         recordAddToCart: function(item, customerNumber, branchId){

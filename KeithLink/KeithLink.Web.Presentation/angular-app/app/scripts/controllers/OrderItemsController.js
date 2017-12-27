@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderItemsController', ['$scope', '$modal', '$filter', 'order', 'OrderService', 'ListService', 'Constants',
-  function ($scope, $modal, $filter, order, OrderService, ListService, Constants) {
+.controller('OrderItemsController', ['$scope', '$modal', '$filter', 'order', 'OrderService', 'ListService', 'Constants', 'AnalyticsService',
+  function ($scope, $modal, $filter, order, OrderService, ListService, Constants, AnalyticsService) {
 
   $scope.sortOrder = false;
   $scope.sortBy = 'linenumber';
@@ -15,6 +15,10 @@ angular.module('bekApp')
 
   $scope.getOrder = function(orderNumber) {
     OrderService.getOrderDetails(orderNumber).then(function(order) {
+      AnalyticsService.recordCheckout(order, 
+                                      Constants.checkoutSteps.CheckStatus, // step
+                                      ""); //option
+
       $scope.setOrder(order);
       $scope.displayMessage('success', 'Successfully retrieved latest info for order.');
     });

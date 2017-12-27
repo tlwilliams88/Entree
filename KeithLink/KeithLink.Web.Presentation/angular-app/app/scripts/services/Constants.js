@@ -97,12 +97,11 @@ angular.module('bekApp')
 
     checkoutSteps: {
       EnterAddToOrder: 1,
-      LeaveAddToOrder: 2,
+      ViewCart: 2,
       SubmitCart: 3,
       CheckStatus: 4,
-      GetConfirmation: 5,
-      StartChangeOrder: 6,
-      SubmitChangeOrder: 7
+      StartChangeOrder: 5,
+      SubmitChangeOrder: 6
     },
 
     jskeycodes: {

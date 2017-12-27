@@ -89,6 +89,7 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Marketing\CampaignCustomers.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Marketing\CatalogCampaignHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Orders\OrderedItemsFromList.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
@@ -2065,7 +2066,6 @@
     <Folder Include="Migrations\Data\IntegrationTests\ETL\" />
     <Folder Include="Migrations\Data\IntegrationTests\Invoice\" />
     <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
-    <Folder Include="Migrations\Data\IntegrationTests\Orders\" />
     <Folder Include="Migrations\Data\IntegrationTests\Profile\" />
     <Folder Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\" />
   </ItemGroup>

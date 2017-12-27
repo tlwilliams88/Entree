@@ -8,9 +8,9 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants',
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'LocalStorage',
    'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService',
-    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService,
+    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, LocalStorage, CartService, OrderService, UtilityService,
      PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService) {
 
     // redirect to url with correct ID as a param
@@ -301,6 +301,11 @@ angular.module('bekApp')
               }
             
             var customerName = $scope.selectedUserContext.customer.customerName;
+
+            AnalyticsService.recordCheckout(cart, 
+                                            Constants.checkoutSteps.SubmitCart, // step
+                                            ""); //option
+
             AnalyticsService.recordTransaction(orderNumber, 
                                                cart,
                                                $scope.selectedUserContext.customer.customerNumber,
@@ -390,10 +395,6 @@ angular.module('bekApp')
       if (!processingSaveChangeOrder && !invalidItemFound) {
         processingSaveChangeOrder = true;
 
-        AnalyticsService.recordCheckout(cart, 
-                                        Constants.StartChangeOrder, // step
-                                        ''); //option
-
         var changeOrder = angular.copy(order);
 
         changeOrder.items.forEach(function(item) {
@@ -446,8 +447,8 @@ angular.module('bekApp')
               $scope.setRecentlyOrderedUNFIItems(order);
               $scope.displayMessage('success', 'Successfully submitted change order.');
 
-              AnalyticsService.recordCheckout(cart, 
-                                              Constants.SubmitChangeOrder, // step
+              AnalyticsService.recordCheckout(order, 
+                                              Constants.checkoutSteps.SubmitChangeOrder, // step
                                               ''); //option
 
               $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
@@ -617,4 +618,9 @@ angular.module('bekApp')
       $scope.startEditCartName(originalBasket.name);
       CartService.renameCart = false;
     }
+
+    AnalyticsService.recordCheckout($scope.currentCart, 
+                                    Constants.checkoutSteps.ViewCart, // step
+                                    ""); //option
+
   }]);
