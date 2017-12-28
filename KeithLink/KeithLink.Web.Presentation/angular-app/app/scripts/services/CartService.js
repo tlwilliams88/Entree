@@ -210,10 +210,9 @@ angular.module('bekApp')
             Service.cartHeaders.push(cart);
 
             // display messages
+            toaster.pop('success', null, data.successmsg);
             if (data.warningmsg) {
-              toaster.pop('success', null, data.warningmsg);
-            } else {
-              toaster.pop('success', null, 'Successfully imported a new cart.');
+              toaster.pop('error', null, data.warningmsg);
             }
 
             deferred.resolve(data);

@@ -18,5 +18,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 		public string ErrorMessage { get; set; }
 		[DataMember(Name = "warningmsg")]
 		public string WarningMessage { get; set; }
-	}
+        [DataMember(Name = "successmsg")]
+        public string SuccessMessage { get; set; }
+    }
 }

@@ -27,10 +27,8 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 namespace KeithLink.Svc.Impl.Logic {
     public class ImportLogicImpl : IImportLogic {
         #region ctor
-        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic,
-                               IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic,
+        public ImportLogicImpl(ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic,
                                ICustomInventoryItemsRepository customInventoryRepo, ISiteCatalogService catalogService) {
-            this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
             _catalogService = catalogService;
             this.eventLogRepository = eventLogRepository;
@@ -44,7 +42,6 @@ namespace KeithLink.Svc.Impl.Logic {
         #endregion
 
         #region attributes
-        private readonly IListLogic listServiceRepository;
         private readonly ICatalogLogic catalogLogic;
         private readonly ISiteCatalogService _catalogService;
         private readonly ICustomInventoryItemsRepository _customInventoryRepo;
@@ -52,8 +49,8 @@ namespace KeithLink.Svc.Impl.Logic {
         private readonly IShoppingCartLogic shoppingCartLogic;
         private readonly IPriceLogic priceLogic;
 
-        private readonly StringBuilder _errors;
-        private readonly StringBuilder _warnings;
+        private StringBuilder _errors;
+        private StringBuilder _warnings;
 
         private const char CSV_DELIMITER = ',';
         private const char TAB_DELIMITER = '\t';
@@ -68,123 +65,6 @@ namespace KeithLink.Svc.Impl.Logic {
         #endregion
 
         #region methods
-        private void SendErrorEmail(ListImportFileModel file, Exception ex) {
-            try {
-                string errorMessage = string.Format("File Import error.\n\nImport Options:\nSelected Format: {0}\nSkip First Line: {1}\nFile Name:{2}", file.FileFormat, file.IgnoreFirstLine, file.FileName);
-
-                ContentType ct = null;
-                Attachment attach = null;
-
-                switch (file.FileFormat) {
-                    case FileFormat.Excel:
-                        file.Stream.Seek(0, SeekOrigin.Begin);
-                        ct = new ContentType("application/msexcel");
-                        attach = new Attachment(file.Stream, ct);
-                        attach.ContentDisposition.FileName = file.FileName;
-                        break;
-                    default:
-                        ct = new ContentType(MediaTypeNames.Text.Plain);
-                        byte[] stringBytes = Encoding.UTF8.GetBytes(file.Contents);
-                        MemoryStream memStream = new MemoryStream();
-                        memStream.Write(stringBytes, 0, stringBytes.Length);
-                        memStream.Seek(0, SeekOrigin.Begin);
-                        attach = new Attachment(memStream, ct);
-                        attach.ContentDisposition.FileName = file.FileName;
-                        break;
-                }
-
-                ExceptionEmail.Send(ex, errorMessage, "File Import Error", attach);
-            } catch (Exception emailEx) {
-                eventLogRepository.WriteErrorLog("Error sending Import failure email", emailEx);
-            }
-        }
-
-        private List<ListItemModel> parseListDelimited(ListImportFileModel file, char delimiter, UserProfile user, UserSelectedContext catalogInfo) {
-            List<ListItemModel> returnValue = new List<ListItemModel>();
-
-            int itemNumberColumn = 0;
-            int labelColumn = -1;
-            //See if we can determine which columns the item number and label exist
-            if (file.IgnoreFirstLine) {
-                List<string> header = file.Contents.Split(new[] {
-                                              Environment.NewLine,
-                                              "\n"
-                                          }, StringSplitOptions.None)
-                                          .Take(1)
-                                          .Select(i => i.Split(delimiter)
-                                                        .ToList())
-                                          .FirstOrDefault();
-                int colCount = 0;
-                foreach (string col in header) {
-                    if (col.Replace("\"", string.Empty)
-                           .Equals("item", StringComparison.CurrentCultureIgnoreCase)) {
-                        itemNumberColumn = colCount;
-                    } else if (col.Replace("\"", string.Empty)
-                                  .Equals("label", StringComparison.CurrentCultureIgnoreCase)) {
-                        labelColumn = colCount;
-                    }
-                    colCount++;
-                }
-            }
-
-            IEnumerable<string> rows = file.Contents.Split(new[] {
-                                               Environment.NewLine,
-                                               "\n"
-                                           }, StringSplitOptions.None)
-                                           .Skip(file.IgnoreFirstLine ? 1 : 0);
-            returnValue = rows
-                    .Where(line => !string.IsNullOrWhiteSpace(line))
-                    .Select(i => i.Split(delimiter))
-                    .Select(l => new ListItemModel {
-                        ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
-                        Label = labelColumn == -1 ? string.Empty : l[labelColumn].Replace("\"", string.Empty),
-                        CatalogId = catalogInfo.BranchId
-                    })
-                    .Where(x => !string.IsNullOrEmpty(x.ItemNumber))
-                    .ToList();
-
-            return returnValue;
-        }
-
-        private List<ListItemModel> parseListExcel(ListImportFileModel file, UserProfile user, UserSelectedContext catalogInfo) {
-            List<ListItemModel> returnValue = new List<ListItemModel>();
-
-            IExcelDataReader rdr = null;
-
-            if (Path.GetExtension(file.FileName)
-                    .Equals(BINARY_EXCEL_EXTENSION, StringComparison.InvariantCultureIgnoreCase)) {
-                rdr = ExcelReaderFactory.CreateBinaryReader(file.Stream);
-            } else {
-                rdr = ExcelReaderFactory.CreateOpenXmlReader(file.Stream);
-            }
-            int itemNumberColumn = 0;
-            int labelColumn = -1;
-
-            if (file.IgnoreFirstLine) {
-                rdr.Read(); // Skip the first line
-                for (int i = 0; i < rdr.FieldCount - 1; i++) {
-                    if (rdr.GetString(i)
-                           .Equals("item", StringComparison.CurrentCultureIgnoreCase)) {
-                        itemNumberColumn = i;
-                    } else if (rdr.GetString(i)
-                                  .Equals("label", StringComparison.CurrentCultureIgnoreCase)) {
-                        labelColumn = i;
-                    }
-                }
-            }
-
-            while (rdr.Read()) {
-                returnValue.Add(new ListItemModel {
-                    ItemNumber = rdr.GetString(itemNumberColumn)
-                                    .PadLeft(6, '0'),
-                    Label = labelColumn == -1 ? string.Empty : rdr.GetString(labelColumn),
-                    CatalogId = catalogInfo.BranchId
-                });
-            }
-
-            return returnValue;
-        }
-
         public OrderImportModel ImportOrder(UserProfile user, UserSelectedContext catalogInfo, OrderImportFileModel file) {
             OrderImportModel returnModel = new OrderImportModel();
 
@@ -194,11 +74,6 @@ namespace KeithLink.Svc.Impl.Logic {
             };
 
             ListModel parList = null;
-
-            if (file.Options.ImportByInventory &&
-                file.Options.ListId.HasValue) {
-                parList = listServiceRepository.ReadList(user, catalogInfo, file.Options.ListId.Value);
-            }
 
             List<ShoppingCartItem> items = new List<ShoppingCartItem>();
 
@@ -236,13 +111,14 @@ namespace KeithLink.Svc.Impl.Logic {
 
             returnModel.ErrorMessage = _errors.ToString();
 
+            returnModel.SuccessMessage = "Import Successful.";
+
             StringBuilder warningMsg = new StringBuilder();
-            if (returnModel.Success) {
-                warningMsg.Append("Import successful.  Please check the items in your cart.");
-            } else {
+            if (_warnings != null && _warnings.Length>0) {
                 warningMsg.Append(_warnings);
             }
             returnModel.WarningMessage = warningMsg.ToString();
+
             return returnModel;
         }
 
@@ -269,7 +145,13 @@ namespace KeithLink.Svc.Impl.Logic {
                     newCart.SubTotal += (decimal) item.LineTotal(item.Each ? price.PackagePrice : price.CasePrice);
                     if ((decimal) item.LineTotal(item.Each ? price.PackagePrice : price.CasePrice) > 0) {
                         goodItems.Add(item);
+                    } else {
+                        _warnings = new StringBuilder();
+                        _warnings.AppendLine("Some items failed to import.  Please check the items in your cart.");
                     }
+                } else {
+                    _warnings = new StringBuilder();
+                    _warnings.AppendLine("Some items failed to import.  Please check the items in your cart.");
                 }
             }
             items = goodItems;
@@ -403,6 +285,8 @@ namespace KeithLink.Svc.Impl.Logic {
                 }
             } catch (Exception ex) {
                 eventLogRepository.WriteErrorLog("Bad parse of file", ex);
+                _warnings = new StringBuilder();
+                _warnings.Append("Some items failed to import.  Please check the items in your cart.");
             }
 
             if (returnValue.Count == 0) {
