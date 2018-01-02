@@ -38,14 +38,16 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
 
       var sortArray = ListService.sortObject;
 
-       var params = {
-        size: this.pageSize,
-        from: this.pageIndex,
-        terms: this.searchTerm,
-        sort: sortArray,
-        filter: this.filter,
-        message: 'Loading List...'
-       };
+     var params = {
+      size: this.pageSize,
+      from: this.pageIndex,
+      terms: this.searchTerm,
+      sort: sortArray,
+      filter: this.filter,
+      message: 'Loading List...'
+     };
+
+
 
       this.startLoading();
       return ListService.getList(
@@ -63,14 +65,8 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
       return filterParamObject;
     },
 
-    filterListItems: function(searchTerm) {
-      if(searchTerm){
-        this.searchTerm = searchTerm;
-      } else {
-        this.searchTerm = '';
-        this.filter = '';
-      }
-
+    filterListItems: function(searchTerm) {      
+      this.searchTerm = (searchTerm) ? searchTerm : '';
       this.pageIndex = 0;
       this.loadList();
     },
