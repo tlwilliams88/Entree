@@ -324,7 +324,9 @@ angular.module('bekApp')
                                                  + '-' 
                                                  + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
 
-      SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+      SessionService.sourceProductList.push(LocalStorage.getSearchTerms() 
+                                              + '-' 
+                                              + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
 
       blockUI.stop();
       blockUI.stop();
@@ -631,7 +633,7 @@ angular.module('bekApp')
                                                  LocalStorage.getSearchTerms() 
                                                    + '-01');
 
-        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-1');
+        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-01');
 
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
