@@ -1014,7 +1014,10 @@ angular.module('bekApp')
             params: {
                 size: Constants.infiniteScrollPageSize,
                 from: 0,
-                sort: $scope.sort,
+                sort: ($scope.sort!=null) 
+                      ? [{field: $scope.sort.field, 
+                          order: ($scope.sort.sortDescending) ? 'desc' : 'asc'}] 
+                      : null,
                 filter: $scope.selectedFilterView
             }
             

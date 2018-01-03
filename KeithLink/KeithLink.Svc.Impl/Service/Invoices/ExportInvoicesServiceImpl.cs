@@ -144,7 +144,7 @@ namespace KeithLink.Svc.Impl.Service.Invoices
                 DateRange = request.DateRange
             };
             if (request.Sort != null) {
-                myPaging.Sort.Add(request.Sort);
+                myPaging.Sort = request.Sort;
             }
 
             var list = _invLogic.GetInvoiceHeaders(user, context, myPaging, forAllCustomers);
