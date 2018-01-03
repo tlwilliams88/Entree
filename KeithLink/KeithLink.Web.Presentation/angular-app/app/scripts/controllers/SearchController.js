@@ -320,7 +320,9 @@ angular.module('bekApp')
       AnalyticsService.recordSearchImpressions($scope.products, 
                                                LocalStorage.getCustomerNumber(),
                                                LocalStorage.getBranchId(),
-                                               LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+                                               LocalStorage.getSearchTerms() 
+                                                 + '-' 
+                                                 + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
 
       SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
 
@@ -626,7 +628,8 @@ angular.module('bekApp')
         AnalyticsService.recordSearchImpressions($scope.products, 
                                                  LocalStorage.getCustomerNumber(),
                                                  LocalStorage.getBranchId(),
-                                                 LocalStorage.getSearchTerms() + '-1');
+                                                 LocalStorage.getSearchTerms() 
+                                                   + '-01');
 
         SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-1');
 
