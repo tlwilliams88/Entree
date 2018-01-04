@@ -8,7 +8,7 @@ using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Core.Models.Orders
 {
-    public class OrderItemFromList
+    public class OrderedItemFromList
     {
         public string ControlNumber { get; set; }
         public string ItemNumber { get; set; }

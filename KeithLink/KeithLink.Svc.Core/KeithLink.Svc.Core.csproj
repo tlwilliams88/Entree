@@ -460,7 +460,7 @@
     <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
-    <Compile Include="Models\Orders\OrderItemFromList.cs" />
+    <Compile Include="Models\Orders\OrderedItemFromList.cs" />
     <Compile Include="Models\Orders\Order2List.cs" />
     <Compile Include="Models\PowerMenu\Order\LoginModel.cs" />
     <Compile Include="Models\PowerMenu\Order\OrderHeaderModel.cs" />

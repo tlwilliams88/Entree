@@ -75,7 +75,7 @@ namespace KeithLink.Svc.Impl.Tests.Integration.Repository.Orders
                 var repo = MakeRepo();
                 var controlNumber = "111111";
                 var itemNumber = "123456";
-                var testRecord = new OrderItemFromList() {
+                var testRecord = new OrderedItemFromList() {
                     ControlNumber = controlNumber,
                     ItemNumber = itemNumber,
                     SourceList = "TestList"

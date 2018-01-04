@@ -159,7 +159,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 if (item.SourceProductList != null &&
                     item.SourceProductList.Length > 0) {
-                    _orderedItemsFromListRepository.Write(new OrderItemFromList() {
+                    _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
                         ControlNumber = newCartId.ToString(),
                         ItemNumber = item.ItemNumber,
                         SourceList = item.SourceProductList

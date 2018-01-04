@@ -252,7 +252,7 @@ angular.module('bekApp')
                                     pageIndex, 
                                     item.caseprice.toString());
             renderedIndex++;
-            if(renderedIndex>40){
+            if(renderedIndex>Constants.Analytics.HowManyProductsToThisChunk){
                   Analytics.trackEvent('Search', 
                                        'Listing', 
                                        '', 

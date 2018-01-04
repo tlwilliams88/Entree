@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
         [DataMember(Name = "storagetemp")]
         public string StorageTemp { get; set; }
 
-        [DataMember(Name = "sourceProductList")]
+        [DataMember(Name = "sourceproductlist")]
         public string SourceProductList { get; set; }
 
         [DataMember(Name = "createddate")]

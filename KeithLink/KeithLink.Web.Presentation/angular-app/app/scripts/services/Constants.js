@@ -204,6 +204,10 @@ angular.module('bekApp')
       singlequote: 222
     },
 
+    Analytics: {
+      HowManyProductsToThisChunk: 40
+    },
+
     infiniteScrollPageSize: 50,
     promoItemsSize: 6
   });

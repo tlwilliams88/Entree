@@ -31,20 +31,20 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         }
         #endregion
 
-        public OrderItemFromList Read(string controlNumber, string itemNumber)
+        public OrderedItemFromList Read(string controlNumber, string itemNumber)
         {
-            return ReadOne<OrderItemFromList>(new CommandDefinition(
+            return ReadOne<OrderedItemFromList>(new CommandDefinition(
                 STOREDPROC_GET_ONE,
                 new { @ControlNumber = controlNumber, @ItemNumber = itemNumber },
                 commandType: CommandType.StoredProcedure
             ));
         }
 
-        public void Write(OrderItemFromList o2l) {
+        public void Write(OrderedItemFromList orderedItemFromList) {
             DynamicParameters parms = new DynamicParameters();
-            parms.Add(PARMNAME_CONTROLNUM, o2l.ControlNumber);
-            parms.Add(PARMNAME_ITEMNUMBER, o2l.ItemNumber);
-            parms.Add(PARMNAME_SOURCELIST, o2l.SourceList);
+            parms.Add(PARMNAME_CONTROLNUM, orderedItemFromList.ControlNumber);
+            parms.Add(PARMNAME_ITEMNUMBER, orderedItemFromList.ItemNumber);
+            parms.Add(PARMNAME_SOURCELIST, orderedItemFromList.SourceList);
 
             ExecuteCommand(STOREDPROC_WRITE_ONE, parms);
         }

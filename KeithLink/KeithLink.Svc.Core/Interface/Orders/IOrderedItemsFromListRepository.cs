@@ -9,9 +9,9 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
     public interface IOrderedItemsFromListRepository
     {
-        OrderItemFromList Read(string controlNumber, string ItemNumber);
+        OrderedItemFromList Read(string controlNumber, string ItemNumber);
 
-        void Write(OrderItemFromList o2l);
+        void Write(OrderedItemFromList orderedItemFromList);
 
         void Purge(int PurgeDays);
     }
