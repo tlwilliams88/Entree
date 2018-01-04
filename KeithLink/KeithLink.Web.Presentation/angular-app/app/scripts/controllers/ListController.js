@@ -1009,7 +1009,7 @@ angular.module('bekApp')
             var params = {
                 listType: $scope.selectedList.type,
                 listId: $scope.selectedList.listid,
-                sort: $scope.sort[0]
+                sort: $scope.sort
             }
             if($scope.selectedList.is_contract_list == true) {
                 params.filter = $scope.selectedFilter;

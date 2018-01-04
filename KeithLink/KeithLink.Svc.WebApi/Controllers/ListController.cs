@@ -104,9 +104,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 if (exportRequest.Sort != null) {
                     List<SortInfo> slist = new List<SortInfo>();
-                    slist.Add(exportRequest.Sort);
+                    if (exportRequest != null &&
+                        exportRequest.Sort != null) {
+                        slist = exportRequest.Sort;
+                    }
                     exportListModel.Items = exportListModel.Items.AsQueryable()
-                                            .Sort(slist)
+                                            .Sort(slist, typeof(ListItemModel).GetProperties().First().Name)
                                             .ToList();
                 }
 
