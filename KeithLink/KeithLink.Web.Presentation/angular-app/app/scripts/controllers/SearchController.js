@@ -73,13 +73,18 @@ angular.module('bekApp')
     else{
       if($scope.$resolve != null &&
          $scope.$resolve.campaignInfo != null){
-        LocalStorage.setSearchTerms("Campaign: " + $scope.$resolve.campaignInfo.description);
-        AnalyticsService.recordPromotion($scope.$resolve.campaignInfo.uri,
-                                         $scope.$resolve.campaignInfo.name,
-                                         $scope.$resolve.campaignInfo.enddate.toString(),
-                                         '',
-                                         LocalStorage.getCustomerNumber(),
-                                         LocalStorage.getBranchId());
+        LocalStorage.setSearchTerms("campaign: " + 
+          $scope.$resolve.campaignInfo.description);
+        
+        AnalyticsService.recordPromotionClick(
+          $scope.$resolve.campaignInfo.uri,
+          $scope.$resolve.campaignInfo.name,
+          $scope.$resolve.campaignInfo.enddate.toString(),
+          '',
+          LocalStorage.getCustomerNumber(),
+          LocalStorage.getBranchId());
+
+        
       }
     }
 
@@ -315,7 +320,13 @@ angular.module('bekApp')
       AnalyticsService.recordSearchImpressions($scope.products, 
                                                LocalStorage.getCustomerNumber(),
                                                LocalStorage.getBranchId(),
-                                               LocalStorage.getSearchTerms() + '-' + $scope.currentPage);
+                                               LocalStorage.getSearchTerms() 
+                                                 + '-' 
+                                                 + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
+
+      SessionService.sourceProductList.push(LocalStorage.getSearchTerms() 
+                                              + '-' 
+                                              + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
 
       blockUI.stop();
       blockUI.stop();
@@ -619,7 +630,10 @@ angular.module('bekApp')
         AnalyticsService.recordSearchImpressions($scope.products, 
                                                  LocalStorage.getCustomerNumber(),
                                                  LocalStorage.getBranchId(),
-                                                 LocalStorage.getSearchTerms() + '-1');
+                                                 LocalStorage.getSearchTerms() 
+                                                   + '-01');
+
+        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-01');
 
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);

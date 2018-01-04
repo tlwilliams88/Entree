@@ -11,6 +11,7 @@ angular.module('bekApp').factory('SessionService', function() {
   var storage = {
 
     userProfile: null,
+    sourceProductList: []
 
   };
   return storage;

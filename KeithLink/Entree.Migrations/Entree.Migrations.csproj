@@ -89,6 +89,7 @@
     <Compile Include="Migrations\Data\IntegrationTests\Lists\RemindersHeaders.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Marketing\CampaignCustomers.cs" />
     <Compile Include="Migrations\Data\IntegrationTests\Marketing\CatalogCampaignHeaders.cs" />
+    <Compile Include="Migrations\Data\IntegrationTests\Orders\OrderedItemsFromList.cs" />
     <Compile Include="Migrations\v2017.04.00\Migration0019.cs" />
     <Compile Include="Migrations\Helpers\ScriptsCollectionHelper.cs" />
     <Compile Include="Migrations\v0001.11.00_baseline\Migration0001.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Migrations\v2017.06.03\Migration0064.cs" />
     <Compile Include="Migrations\v2017.06.03\Migration0065.cs" />
     <Compile Include="Migrations\v2017.06.03\Migration0063.cs" />
+    <Compile Include="Migrations\v2018.01.00\Migration0066.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1896,10 +1898,22 @@
     <Content Include="Scripts\AppData\Orders\Stored Procedures\DeleteOrderListAssociation\DeleteOrderListAssociation_0014_2017.02.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderItemListAssociation\PurgeOrderItemsListAssociation_0066_2018.01.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderItemListAssociation\PurgeOrderItemsListAssociation_0066_2018.01.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\PurgeOrderListAssociation_0014_2017.02.00_down.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\PurgeOrderListAssociation\PurgeOrderListAssociation_0014_2017.02.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderItemListAssociation\ReadOrderItemListAssociation_0066_2018.01.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderItemListAssociation\ReadOrderItemListAssociation_0066_2018.01.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\ReadOrderListAssociation\ReadOrderListAssociation_0014_2017.02.00_down.sql">
@@ -1924,6 +1938,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\usp_GetNextControlNumber\usp_GetNextControlNumber_0001_0001.11.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderItemListAssociation\WriteOrderItemListAssociation_0066_2018.01.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderItemListAssociation\WriteOrderItemListAssociation_0066_2018.01.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Stored Procedures\WriteOrderListAssociation\WriteOrderListAssociation_0014_2017.02.00_down.sql">
@@ -1954,6 +1974,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\OrderedFromList\OrderedFromList_0034_2017.04.00_up.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedItemsFromList\OrderedItemsFromList_0066_2018.01.00_down.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\AppData\Orders\Tables\OrderedItemsFromList\OrderedItemsFromList_0066_2018.01.00_up.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\AppData\Orders\Tables\OrderHistoryDetail\Constraints\OrderHistoryDetailConstraint_0001_0001.11.00_up.sql">
@@ -2028,7 +2054,6 @@
     <Folder Include="Migrations\Data\IntegrationTests\ETL\" />
     <Folder Include="Migrations\Data\IntegrationTests\Invoice\" />
     <Folder Include="Migrations\Data\IntegrationTests\Messaging\" />
-    <Folder Include="Migrations\Data\IntegrationTests\Orders\" />
     <Folder Include="Migrations\Data\IntegrationTests\Profile\" />
     <Folder Include="Scripts\AppData\List\Stored Procedures\UpdateSentOnContractListChangeByCustomerNumberBranch\" />
   </ItemGroup>

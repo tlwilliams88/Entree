@@ -118,6 +118,7 @@
     <Compile Include="Repository\Marketing\CampaignCustomerRepositoryTests.cs" />
     <Compile Include="Repository\Marketing\CatalogCampaignHeaderRepositoryTests.cs" />
     <Compile Include="Repository\MigratedDatabaseTest.cs" />
+    <Compile Include="Repository\Orders\OrderedFromListRepositoryTestscs.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Email\" />
@@ -137,7 +138,6 @@
     <Folder Include="Repository\Messaging\" />
     <Folder Include="Repository\Network\" />
     <Folder Include="Repository\OnlinePayments\" />
-    <Folder Include="Repository\Orders\" />
     <Folder Include="Repository\PowerMenu\" />
     <Folder Include="Repository\Profile\" />
     <Folder Include="Repository\Queue\" />
