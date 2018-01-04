@@ -331,7 +331,7 @@ angular.module('bekApp')
     function setSelectedList(list) {
       $scope.selectedList = list;
 
-      if($scope.selectedList.type == 2) {
+      if($scope.selectedList.type == Constants.listType.Contract) {
         listPagingModel.filter = {
           field: 'delta',
           value: 'active'
