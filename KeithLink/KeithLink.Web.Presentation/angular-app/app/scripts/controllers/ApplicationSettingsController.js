@@ -19,7 +19,9 @@
         $scope.resetPage();
 
         $scope.addToOrderFields =  angular.copy($scope.listFields);
-        $scope.addToOrderFields = $scope.addToOrderFields.slice(0,7);
+        $scope.addToOrderFields.splice(7,1); //drop out the parlevel field from the copy
+        // to create the addtoorderfields from the hardcoded listfields
+
         $scope.pageSizes.selectedSize = LocalStorage.getPageSize();
 
         var sortSettings = LocalStorage.getDefaultSort(),
@@ -33,21 +35,38 @@
               orderAssigner;
           //loop through each section to apply saved settings to view. Numeric characters represent the index of the field in the listFields/atoFields arrays
           //y/n represent whether or not the field will be sorted descending. Each numeric character is followed by the y/n that corresponds to it
+          //these were just using the index of the presentation array to set the selected and such, but in
+          //the case of addtoorder we want to skip on of the fields, so we need to actually map
+          //by the code 
             for (i = 0;  i < atoSettings.length; i++) {
+              var visualIndex = 0;
+              for (var y = 0; y < $scope.addToOrderFields.length; y++){
+                if($scope.addToOrderFields[y].code == atoSettings[i]){
+                  visualIndex = y;
+                  break;
+                }
+              }
               if(atoSettings[i] !== 'y' && atoSettings[i] !== 'n'){
                 orderAssigner = (i === 0) ? 1 : 2 ;                
-                $scope.addToOrderFields[atoSettings[i]].order = orderAssigner;
-                $scope.addToOrderFields[atoSettings[i]].sortDesc = atoSettings[i + 1];
-                $scope.addToOrderFields[atoSettings[i]].isSelected = true;
+                $scope.addToOrderFields[visualIndex].order = orderAssigner;
+                $scope.addToOrderFields[visualIndex].sortDesc = atoSettings[i + 1];
+                $scope.addToOrderFields[visualIndex].isSelected = true;
               }
             }
 
             for (i = 0;  i < listSettings.length; i++) {
+              var visualIndex = 0;
+              for (var y = 0; y < $scope.listFields.length; y++){
+                if($scope.listFields[y].code == listSettings[i]){
+                  visualIndex = y;
+                  break;
+                }
+              }
               if(listSettings[i] !== 'y' && listSettings[i] !== 'n'){
                 orderAssigner = (i === 0) ? 1 : 2 ;                
-                $scope.listFields[listSettings[i]].order = orderAssigner;
-                $scope.listFields[listSettings[i]].sortDesc = listSettings[i + 1];
-                $scope.listFields[listSettings[i]].isSelected = true;
+                $scope.listFields[visualIndex].order = orderAssigner;
+                $scope.listFields[visualIndex].sortDesc = listSettings[i + 1];
+                $scope.listFields[visualIndex].isSelected = true;
               }
             }
         }
@@ -77,7 +96,8 @@
             { 'value': 'itemclass', 'text': 'Category', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 4  },
             { 'value': 'notes', 'text': 'Notes', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code':  5 },
             { 'value': 'label', 'text': 'Label', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 6 },
-            { 'value': 'parlevel', 'text': 'Par Level', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 7 }];
+            { 'value': 'parlevel', 'text': 'Par Level', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 7 },
+            { 'value': 'category', 'text': 'Contract Category', 'order': '', 'sortDesc': 'n', 'isSelected': false, 'code': 8 }];
       };
 
       $scope.setDesc = function(field){

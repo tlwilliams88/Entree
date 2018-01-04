@@ -205,6 +205,9 @@ angular.module('bekApp')
           var deferred = $q.defer();
             //if no stored page size, use default 30
              var filterObject = LocalStorage.getDefaultSort();
+
+             // the following needs to be kept in sync with the fields in the 
+             // app settings controller to send the sort settings
              var  fields =  [
              { 'field': 'position', 'order': ''},
              { 'field': 'itemnumber', 'order': ''},
@@ -213,7 +216,8 @@ angular.module('bekApp')
              { 'field': 'itemclass', 'order': ''},
              { 'field': 'notes', 'order': ''},
              { 'field': 'label', 'order': ''},
-             { 'field': 'parlevel', 'order': ''}];
+             { 'field': 'parlevel', 'order': ''},
+             { 'field': 'category', 'order': ''}];
 
              //Decode stored sort preferences and buils params sort object with it.
              //A description of how this works exists on the BEK ecommerce wiki under the title: Default Sort String: Explaination
