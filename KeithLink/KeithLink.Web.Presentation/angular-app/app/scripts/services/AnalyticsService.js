@@ -106,7 +106,10 @@ angular.module('bekApp')
 
                   item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
 
-                  sendIndex++;
+                  var cost = item.price;
+                  if (item.catchweight){
+                    cost = item.price * item.average_weight
+                  }
 
                   // Add item to cart
                   Analytics.addProduct(item.itemnumber, 
@@ -114,36 +117,18 @@ angular.module('bekApp')
                                        item.class, 
                                        item.brand, 
                                        '', 
-                                       item.price, 
+                                       cost.toString(), 
                                        item.quantity, 
                                        '', 
                                        item.position);
-
-                  // Create Checkout Record
-                  Analytics.setAction('checkout', 
-                                       {
-                                        list : item.sourceProductList,
-                                        step : step,
-                                        option : option
-                                       });
-
-                  Analytics.trackEvent('Process', 
-                                         'TC', 
-                                         '', 
-                                         0, 
-                                         true);
-              }
+                }
             }
             // Create Checkout Record
-            Analytics.setAction('checkout', 
-                                {
-                                  step : step,
-                                  option : option
-                                });
+            Analytics.trackCheckout(step, option);
 
             Analytics.trackEvent('Process', 
                                  'TC', 
-                                 '', 
+                                 step, 
                                  0, 
                                  true);
         },
