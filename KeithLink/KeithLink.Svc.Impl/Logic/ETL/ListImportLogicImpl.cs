@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         IStagingRepository _stagingRepository;
         IEventLogRepository _eventLogRepository;
         private readonly IOrderedFromListRepository _order2ListRepo;
-        private readonly IOrderedItemsFromListRepository _orderItems2ListRepo;
+        private readonly IOrderedItemsFromListRepository _orderItemsFromListRepo;
         private readonly IContractChangesRepository _contractChangesRepo;
 
         #endregion
@@ -34,11 +34,11 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         #region constructor
 
         public ListImportLogicImpl( IStagingRepository stagingRepository, IEventLogRepository eventLogRepository,
-            IOrderedFromListRepository order2ListRepo, IOrderedItemsFromListRepository orderItems2ListRepo, IContractChangesRepository contractChangesRepo) {
+            IOrderedFromListRepository order2ListRepo, IOrderedItemsFromListRepository orderItemsFromListRepo, IContractChangesRepository contractChangesRepo) {
             _stagingRepository = stagingRepository;
             _eventLogRepository = eventLogRepository;
             _order2ListRepo = order2ListRepo;
-            _orderItems2ListRepo = _orderItems2ListRepo;
+            _orderItemsFromListRepo = orderItemsFromListRepo;
             _contractChangesRepo = contractChangesRepo;
         }
 
@@ -122,7 +122,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                 DateTime start = DateTime.Now;
                 _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Starting:  Purge cart items/order from list associations {0}", start.ToString()));
 
-                _orderItems2ListRepo.Purge(Configuration.CartOrOrder2ListIdPurgeDays);
+                _orderItemsFromListRepo.Purge(Configuration.CartOrOrder2ListIdPurgeDays);
 
                 TimeSpan took = DateTime.Now - start;
                 _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Finished:  Purge cart items/order from list associations.  Process took {0}", took.ToString()));
