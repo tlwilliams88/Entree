@@ -30,6 +30,17 @@ angular.module('bekApp')
     $scope.labels = ListService.labels;
     $scope.quickAddLists = [];
     
+    var listPagingModel = new ListPagingModel(
+      originalList.listid,
+      originalList.type,
+      resetPage,
+      appendListItems,
+      startLoading,
+      stopLoading,
+      $scope.sort,
+      $scope.pagingPageSize
+    );
+
     $scope.lists.forEach(function(list){
         if(list.permissions.canAddItems == true && !list.permissions.specialDisplay){
             $scope.quickAddLists.push(list);
@@ -98,17 +109,19 @@ angular.module('bekApp')
           }]
         }
       }
-    ];
+    ];   
 
-    if(originalList.is_contract_list == true) {
+    function setDefaultContractFilter(list) {
+      if(list && list.is_contract_list == true) {
         $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-        $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;    
-    };
+        listPagingModel.filter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;    
+      };
+    }
+    setDefaultContractFilter(originalList);
 
     $scope.selectFilterParameter = function(filterparameter) {
       $scope.selectedFilterParameter = filterparameter.name;
-      $scope.selectedFilter = filterparameter.filter;
-      
+      listPagingModel.filter = filterparameter.filter;
       $scope.currentPage = 1;
 
       $scope.filterItems();
@@ -238,7 +251,7 @@ angular.module('bekApp')
       });
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems, $scope.selectedFilter);
+        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems, listPagingModel.filter);
       } else {
         $scope.setStartAndEndPoints(visited[0]);
         if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
@@ -380,17 +393,6 @@ angular.module('bekApp')
       $scope.sort = $stateParams.sortingParams.sort;
     }
 
-    var listPagingModel = new ListPagingModel(
-      originalList.listid,
-      originalList.type,
-      resetPage,
-      appendListItems,
-      startLoading,
-      stopLoading,
-      $scope.sort,
-      $scope.pagingPageSize
-    );
-
     // LIST INTERACTIONS
     $scope.goToList = function(id, listtype) {
       if($scope.selectedList.iscustominventory){
@@ -398,13 +400,8 @@ angular.module('bekApp')
       }
       
       var list = $filter('filter')($scope.lists, {listid: id})[0];
-      
-      var isContractList = list && list.is_contract_list == true ? true : false;
-      
-      if(isContractList == true){
-          $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-          $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
-      }
+            
+      setDefaultContractFilter(list);
 
       var lastlist = {
           listid: id,
@@ -451,14 +448,9 @@ angular.module('bekApp')
 
     $scope.filterItems = function(searchTerm) {
         $scope.filtered = true;
-        if($scope.unsavedChangesConfirmation() && searchTerm) {
+        if($scope.unsavedChangesConfirmation()) {
             $scope.initPagingValues(true);
             listPagingModel.filterListItems(searchTerm);
-        } else if($scope.unsavedChangesConfirmation() && $scope.selectedFilter) {
-            $scope.initPagingValues(true);
-            listPagingModel.filterListItemsByMultipleFields($scope.selectedFilter);
-        } else {
-            listPagingModel.filterListItems();
         }
     };
 
@@ -1012,7 +1004,7 @@ angular.module('bekApp')
                 sort: $scope.sort
             }
             if($scope.selectedList.is_contract_list == true) {
-                params.filter = $scope.selectedFilter;
+                params.filter = listPagingModel.filter;
             }
             return params;
           },
@@ -1052,10 +1044,8 @@ angular.module('bekApp')
         if(clearSearch == true){
           $scope.listSearchTerm = '';
         }
-
-        if($scope.selectedList.is_contract_list == true) {
-            $scope.selectedFilterParameter = $scope.availableFilterParameters[1].name;
-            $scope.selectedFilter = $filter('filter')($scope.availableFilterParameters, {name: $scope.selectedFilterParameter})[0].filter;
+        else {
+          setDefaultContractFilter($scope.selectedList);
         }
 
         $scope.filterItems();
@@ -1088,7 +1078,7 @@ angular.module('bekApp')
           },
           contractFilter: function() {
             return {
-              filter: $scope.selectedFilter
+              filter: listPagingModel.filter
             };
           }
         }

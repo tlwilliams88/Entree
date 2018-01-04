@@ -276,14 +276,7 @@ angular.module('bekApp')
     $scope.setRange();
 
     if(!visited.length){
-        if($scope.selectedList.type == 2) {
-            var filter = {
-                            field: 'delta',
-                            value: 'active'
-                         }
-        }
-
-      listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, [], filter);
+      listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, [], listPagingModel.filter);
     }
     else{
       var foundStartPoint = false;
@@ -337,6 +330,14 @@ angular.module('bekApp')
 
     function setSelectedList(list) {
       $scope.selectedList = list;
+
+      if($scope.selectedList.type == Constants.listType.Contract) {
+        listPagingModel.filter = {
+          field: 'delta',
+          value: 'active'
+        }
+      }
+
       $scope.startingPoint = 0;
       $scope.visitedPages = [];
       $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
