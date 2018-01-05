@@ -317,16 +317,20 @@ angular.module('bekApp')
           resetPage($scope.products, true);
         }
 
+      var listName = LocalStorage.getSearchTerms();
+      if(listName.indexOf('campaign:')==-1){
+        listName += '-' 
+                    + LocalStorage.getPageSize()
+                    + '-'
+                    + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+      }
+
       AnalyticsService.recordSearchImpressions($scope.products, 
                                                LocalStorage.getCustomerNumber(),
                                                LocalStorage.getBranchId(),
-                                               LocalStorage.getSearchTerms() 
-                                                 + '-' 
-                                                 + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
+                                               listName);
 
-      SessionService.sourceProductList.push(LocalStorage.getSearchTerms() 
-                                              + '-' 
-                                              + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
+      SessionService.sourceProductList.push(listName);
 
       blockUI.stop();
       blockUI.stop();
@@ -627,13 +631,19 @@ angular.module('bekApp')
         //   guiders.show('searchpage_tutorial');
         // }
 
+        var listName = LocalStorage.getSearchTerms(); 
+        if(listName.indexOf('campaign:')==-1){
+          listName += '-'
+                      + LocalStorage.getPageSize()
+                      + '-01'
+        }            
+
         AnalyticsService.recordSearchImpressions($scope.products, 
                                                  LocalStorage.getCustomerNumber(),
                                                  LocalStorage.getBranchId(),
-                                                 LocalStorage.getSearchTerms() 
-                                                   + '-01');
+                                                 listName);
 
-        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-01');
+        SessionService.sourceProductList.push(listName);
 
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
