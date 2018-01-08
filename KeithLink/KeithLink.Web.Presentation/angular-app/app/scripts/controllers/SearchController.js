@@ -680,49 +680,72 @@ angular.module('bekApp')
     function buildListName(){
 
         var listName = LocalStorage.getSearchTerms(); 
+
         if(listName.indexOf('campaign:')==-1){
+
           listName = $scope.paramType + ": "; 
-          if($scope.parentcategories.selected.length) {
+
+          if($scope.parentcategories && 
+             $scope.parentcategories.selected.length) {
             listName += $scope.parentcategories.selected;
           }
           else{
             listName += $scope.paramId;  
           }
-          if($stateParams.deptName) {
+
+          if($stateParams && 
+             $stateParams.deptName) {
             listName += '-' 
                          + $stateParams.deptName;
           }
-          if($scope.subcategories.selected.length) { 
+
+          if($scope.parentcategories && 
+             $scope.subcategories.selected.length) { 
             listName += '-' 
                         + $scope.subcategories.selected;
           }
-          if($scope.brands.selected.length) { 
+
+          if($scope.brands && 
+             $scope.brands.selected.length) { 
             listName += '-' 
                         + $scope.brands.selected;
           }
-          if($scope.manufacturers.selected.length) { 
+
+          if($scope.manufacturers && 
+             $scope.manufacturers.selected.length) { 
             listName += '-' 
                         + $scope.manufacturers.selected;
           }
-          if($scope.dietary.selected.length) { 
+
+          if($scope.dietary && 
+             $scope.dietary.selected.length) { 
             listName += '-' 
                         + $scope.dietary.selected;
           }
-          if($scope.itemspecs.selected.length) { 
+
+          if($scope.itemspecs && 
+             $scope.itemspecs.selected.length) { 
             listName += '-' 
                         + $scope.itemspecs.selected;
           }
-          if($scope.temp_zones.selected.length) { 
+
+          if($scope.temp_zones && 
+             $scope.temp_zones.selected.length) { 
             listName += '-' 
                         + $scope.temp_zones.selected;
           }
-          if($scope.specialfilters.selected.length) { 
+
+          if($scope.specialfilters && 
+             $scope.specialfilters.selected.length) { 
             listName += '-' 
                           + $scope.specialfilters.selected;
           }
+
           listName += '-' 
                         + LocalStorage.getPageSize();
+
           listName += '-';
+
           listName += ($scope.currentPage)
                         ? ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
                         : "01";
