@@ -10,7 +10,6 @@ angular.module('bekApp')
 
   $scope.loadingResults = true;
 
-  var currentUserSelectedContext = {};
   var customers = [];
   $scope.errorMessage = '';
   $scope.invoiceCustomers = {};
@@ -611,23 +610,13 @@ angular.module('bekApp')
   ************/
 
   function setTempContextForViewingAllCustomers() {
-    var tempContext;
-    //store current user context temporarily
-    currentUserSelectedContext = $scope.selectedUserContext;
-    //wipe user context and replace text with all customers
-    if(!$scope.isInternalUser){
-      tempContext = {
-        text: 'All Customers'
-      };
-      $scope.setSelectedUserContext(tempContext);
-    } else {
-      $scope.setSelectedUserContext(currentUserSelectedContext);
-    }
+    var tempContext = ($scope.isInternalUser) ? $scope.selectedUserContext : {text: 'All Customers'};
+      $scope.setSelectedUserContext(tempContext);    
   }
 
   //toggles state between all customer invoices and single customer invoices
   $scope.setViewingAllCustomers = function (invoiceContext) {
-    $scope.viewingAllCustomers = $scope.selectedInvoiceContext.isViewingAllCustomers;
+    $scope.viewingAllCustomers = (!$scope.isInternalUser) || $scope.selectedInvoiceContext.isViewingAllCustomers;
     // $scope.selectedInvoiceContext = invoiceContext;
      $scope.errorMessage = '';
     
@@ -652,7 +641,7 @@ angular.module('bekApp')
 
   function changeUserContext(stateName, stateParams, customerNumber, customerBranch) {
     //generate and set customer context to customerNumber that user selected
-    CustomerService.getCustomerDetailsKey(customerNumber, customerBranch).then(function (customer) {
+    CustomerService.getCustomerDetails(customerNumber, customerBranch).then(function (customer) {
       var generatedUserContext = {
         id: customer.customerNumber,
         text: customer.displayname,
