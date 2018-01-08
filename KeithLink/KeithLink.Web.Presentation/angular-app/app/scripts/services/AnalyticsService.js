@@ -104,11 +104,16 @@ angular.module('bekApp')
               for (var i = 0; i < cart.items.length; i++){
                   var item = cart.items[i];
 
-                  item.price = item.caseprice && item.packageprice == '0.00' ? item.caseprice : item.packageprice;
+                  var price = 0.00; 
+                  if(item.caseprice){
+                    price = item.caseprice && item.packageprice == '0.00' 
+                              ? item.caseprice 
+                              : item.packageprice;
+                  }
 
-                  var cost = item.price;
+                  var cost = price;
                   if (item.catchweight){
-                    cost = item.price * item.average_weight
+                    cost = price * item.average_weight
                   }
 
                   // Add item to cart

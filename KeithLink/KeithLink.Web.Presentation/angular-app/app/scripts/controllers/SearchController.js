@@ -317,16 +317,14 @@ angular.module('bekApp')
           resetPage($scope.products, true);
         }
 
+      var listName = buildListName();            
+
       AnalyticsService.recordSearchImpressions($scope.products, 
                                                LocalStorage.getCustomerNumber(),
                                                LocalStorage.getBranchId(),
-                                               LocalStorage.getSearchTerms() 
-                                                 + '-' 
-                                                 + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
+                                               listName);
 
-      SessionService.sourceProductList.push(LocalStorage.getSearchTerms() 
-                                              + '-' 
-                                              + ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false}));
+      SessionService.sourceProductList.push(listName);
 
       blockUI.stop();
       blockUI.stop();
@@ -627,13 +625,14 @@ angular.module('bekApp')
         //   guiders.show('searchpage_tutorial');
         // }
 
+        var listName = buildListName();            
+
         AnalyticsService.recordSearchImpressions($scope.products, 
                                                  LocalStorage.getCustomerNumber(),
                                                  LocalStorage.getBranchId(),
-                                                 LocalStorage.getSearchTerms() 
-                                                   + '-01');
+                                                 listName);
 
-        SessionService.sourceProductList.push(LocalStorage.getSearchTerms() + '-01');
+        SessionService.sourceProductList.push(listName);
 
         if(fromFunction !== 'sorting'){
           resetPage(data.products, true);
@@ -678,6 +677,91 @@ angular.module('bekApp')
       });
     }
 
+    function buildListName(){
+
+        var listName = LocalStorage.getSearchTerms(); 
+
+        if(listName.indexOf('campaign:')==-1){
+
+          listName = $scope.paramType + ": "; 
+
+          if($scope.parentcategories &&
+             'selected' in $scope.parentcategories &&
+             $scope.parentcategories.selected.length) {
+            listName += $scope.parentcategories.selected;
+          }
+          else{
+            listName += $scope.paramId;  
+          }
+
+          if($stateParams && 
+             $stateParams.deptName) {
+            listName += '-' 
+                         + $stateParams.deptName;
+          }
+
+          if($scope.parentcategories && 
+             'selected' in $scope.subcategories &&
+             $scope.subcategories.selected.length) { 
+            listName += '-' 
+                        + $scope.subcategories.selected;
+          }
+
+          if($scope.brands && 
+             'selected' in $scope.brands &&
+             $scope.brands.selected.length) { 
+            listName += '-' 
+                        + $scope.brands.selected;
+          }
+
+          if($scope.manufacturers && 
+             'selected' in $scope.manufacturers &&
+             $scope.manufacturers.selected.length) { 
+            listName += '-' 
+                        + $scope.manufacturers.selected;
+          }
+
+          if($scope.dietary && 
+             'selected' in $scope.dietary &&
+             $scope.dietary.selected.length) { 
+            listName += '-' 
+                        + $scope.dietary.selected;
+          }
+
+          if($scope.itemspecs && 
+             'selected' in $scope.itemspecs &&
+             $scope.itemspecs.selected.length) { 
+            listName += '-' 
+                        + $scope.itemspecs.selected;
+          }
+
+          if($scope.temp_zones && 
+             'selected' in $scope.temp_zones &&
+             $scope.temp_zones.selected.length) { 
+            listName += '-' 
+                        + $scope.temp_zones.selected;
+          }
+
+          if($scope.specialfilters && 
+             'selected' in $scope.specialfilters &&
+             $scope.specialfilters.selected.length) { 
+            listName += '-' 
+                          + $scope.specialfilters.selected;
+          }
+
+          listName += '-' 
+                        + LocalStorage.getPageSize();
+
+          listName += '-';
+
+          listName += ($scope.currentPage)
+                        ? ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+                        : "01";
+        }            
+
+        return listName;
+
+    }
 
 
     /*************
