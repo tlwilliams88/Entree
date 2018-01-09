@@ -139,6 +139,12 @@ namespace KeithLink.Svc.Impl.Logic
             if (catalogId != null)
                 cartBranchId = catalogId;
 
+            int startpos = 1;
+            foreach (var item in cart.Items)
+            {
+                item.Position = startpos++;
+            }
+
             Guid newCartId = basketRepository.CreateOrUpdateBasket(customer.CustomerId, 
                                                          cartBranchId.ToLower(), 
                                                          newBasket, 
@@ -152,11 +158,8 @@ namespace KeithLink.Svc.Impl.Logic
 		        });
 		    }
 
-            int startpos = 1;
             foreach (var item in cart.Items)
             {
-                item.Position = startpos++;
-
                 if (item.SourceProductList != null &&
                     item.SourceProductList.Length > 0) {
                     _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
