@@ -22,6 +22,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -496,6 +497,147 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                                                        It.IsAny<bool>()), Times.Once);
             }
 
+            [Fact]
+            public void EveryCallWithBasketThatHasListId_CallsOrderedFromListRepositoryOnce()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                ShoppingCart testCart = new ShoppingCart
+                {
+                    Active = true,
+                    BranchId = "FUT",
+                    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+                    Name = "Fake Cart Name",
+                    ListType = ListType.Contract,
+                    ListId = 1,
+                    Items = new List<ShoppingCartItem> {
+                        new ShoppingCartItem {
+                            ItemNumber = "123456",
+                            CatalogId = "FUT",
+                            SourceProductList = "Test List"
+                        }
+                    }
+                };
+                var expected = "fut";
+
+                // act
+                var result = testunit.CreateCart(fakeUser, testContext, testCart);
+
+                // assert - verify that createorupdatebasket is called once where the lineposition of the first item is "1"
+                mockDependents.OrderedFromListRepository.Verify(m => m.Write(It.IsAny<OrderedFromList>()), Times.Once);
+            }
+
+            [Fact]
+            public void EveryCallWithBasketThatDoesntHaveListId_DoesNotCallsOrderedFromListRepository()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                ShoppingCart testCart = new ShoppingCart
+                {
+                    Active = true,
+                    BranchId = "FUT",
+                    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+                    Name = "Fake Cart Name",
+                    Items = new List<ShoppingCartItem> {
+                        new ShoppingCartItem {
+                            ItemNumber = "123456",
+                            CatalogId = "FUT",
+                            SourceProductList = "Test List"
+                        }
+                    }
+                };
+                var expected = "fut";
+
+                // act
+                var result = testunit.CreateCart(fakeUser, testContext, testCart);
+
+                // assert - verify that createorupdatebasket is called once where the lineposition of the first item is "1"
+                mockDependents.OrderedFromListRepository.Verify(m => m.Write(It.IsAny<OrderedFromList>()), Times.Never);
+            }
+
+            [Fact]
+            public void CallWithCartWithOneItemHavingSourceList_CallsOrderedItemsFromListRepositoryOnce()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                ShoppingCart testCart = new ShoppingCart
+                {
+                    Active = true,
+                    BranchId = "FUT",
+                    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+                    Name = "Fake Cart Name",
+                    Items = new List<ShoppingCartItem> {
+                        new ShoppingCartItem {
+                            ItemNumber = "123456",
+                            CatalogId = "FUT",
+                            SourceProductList = "Test List"
+                        }
+                    }
+                };
+                var expected = "fut";
+
+                // act
+                var result = testunit.CreateCart(fakeUser, testContext, testCart);
+
+                // assert - verify that createorupdatebasket is called once where the lineposition of the first item is "1"
+                mockDependents.OrderedItemsFromListRepository.Verify(m => m.Write(It.IsAny<OrderedItemFromList>()), Times.Once);
+            }
+
+            [Fact]
+            public void CallWithCartWithOneItemNotHavingSourceList_CallsOrderedItemsFromListRepositoryZeroTimes()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(false, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                ShoppingCart testCart = new ShoppingCart
+                {
+                    Active = true,
+                    BranchId = "FUT",
+                    CartId = new Guid("dddddddddddddddddddddddddddddddd"),
+                    Name = "Fake Cart Name",
+                    Items = new List<ShoppingCartItem> {
+                        new ShoppingCartItem {
+                            ItemNumber = "123456",
+                            CatalogId = "FUT"
+                        }
+                    }
+                };
+                var expected = "fut";
+
+                // act
+                var result = testunit.CreateCart(fakeUser, testContext, testCart);
+
+                // assert - verify that createorupdatebasket is called once where the lineposition of the first item is "1"
+                mockDependents.OrderedItemsFromListRepository.Verify(m => m.Write(It.IsAny<OrderedItemFromList>()), Times.Never);
+            }
+
         }
 
         #region Setup
@@ -703,6 +845,8 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
             public static Mock<IOrderedItemsFromListRepository> MakeIOrderedItemsFromListRepository()
             {
                 Mock<IOrderedItemsFromListRepository> mock = new Mock<IOrderedItemsFromListRepository>();
+
+                mock.Setup(f => f.Write(It.IsAny<OrderedItemFromList>()));
 
                 return mock;
             }
