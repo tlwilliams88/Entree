@@ -4,10 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using Autofac;
-
-using FluentAssertions;
-
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Interfaces.Logging;
 using KeithLink.Svc.Core.Enumerations.List;
@@ -20,7 +16,6 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
@@ -28,12 +23,13 @@ using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Logic;
 
+using Autofac;
+using FluentAssertions;
 using Moq;
-
 using Xunit;
 
-using Product = KeithLink.Svc.Core.Models.SiteCatalog.Product;
-using UserProfile = KeithLink.Svc.Core.Models.Profile.UserProfile;
+using Basket = KeithLink.Svc.Core.Models.Generated.Basket;
+using LineItem = KeithLink.Svc.Core.Models.Generated.LineItem;
 
 namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
     public class ShoppingCartLogicTests : BaseDITests {
@@ -640,6 +636,154 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
         }
 
+        public class ReadCart
+        {
+            [Fact]
+            public void CallForCartWithGoodId_CartWithNameIsExpected()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                Guid testCartId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                string expected = "Fake Name";
+
+                // act
+                var result = testunit.ReadCart(fakeUser, testContext, testCartId);
+
+                // assert
+                result.Name
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void CallForCartWithGoodId_ActiveCartIsExpected()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                Guid testCartId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                bool expected = true;
+
+                // act
+                var result = testunit.ReadCart(fakeUser, testContext, testCartId);
+
+                // assert
+                result.Active
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void CallForCartWithGoodId_CartHavingIdIsExpected()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                Guid testCartId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                bool expected = true;
+
+                // act
+                var result = testunit.ReadCart(fakeUser, testContext, testCartId);
+
+                // assert
+                result.Active
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void CallForCartWithGoodId_CartHavingNameIsExpected()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                Guid testCartId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                string expected = "Fake Name";
+
+                // act
+                var result = testunit.ReadCart(fakeUser, testContext, testCartId);
+
+                // assert
+                result.Name
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void CallForCartWithGoodId_CartHavingShippingDateIsExpected()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                Guid testCartId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                string expected = "1/1/2017";
+
+                // act
+                var result = testunit.ReadCart(fakeUser, testContext, testCartId);
+
+                // assert
+                result.RequestedShipDate
+                      .Should()
+                      .Be(expected);
+            }
+
+            [Fact]
+            public void CallForCartWithGoodId_CartHavingBranchIsExpected()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IShoppingCartLogic testunit = MakeTestsLogic(true, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testContext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "234567"
+                };
+                Guid testCartId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                string expected = "FUT";
+
+                // act
+                var result = testunit.ReadCart(fakeUser, testContext, testCartId);
+
+                // assert
+                result.BranchId
+                      .Should()
+                      .Be(expected);
+            }
+
+        }
+
         #region Setup
         public class MockDependents {
             public Mock<ICacheRepository> CacheRepository { get; set; }
@@ -783,10 +927,14 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
                 Mock<IBasketLogic> mock = new Mock<IBasketLogic>();
 
                 Basket returnedBasket = new Basket {
-                    Id = "dddddddddddddddddddddddddddddddd",
+                    Active = true,
+                    Id = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1).ToString(),
                     DisplayName = "Fake Name",
                     BranchId = "FUT",
-                    RequestedShipDate = "1/1/2017"
+                    RequestedShipDate = "1/1/2017",
+                    ListType = (int)BasketType.Cart,
+                    TempSubTotal = 0,
+                    ReadOnly = false
                 };
                 mock.Setup(f => f.RetrieveSharedCustomerBasket(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
                     .Returns(returnedBasket);
@@ -826,6 +974,11 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Logic {
 
             public static Mock<IUserActiveCartLogic> MakeIUserActiveCartLogic() {
                 Mock<IUserActiveCartLogic> mock = new Mock<IUserActiveCartLogic>();
+
+                mock.Setup(f => f.GetUserActiveCart(It.IsAny<UserSelectedContext>(), It.IsAny<Guid>()))
+                    .Returns(new UserActiveCartModel() {
+                                                         CartId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+                                                         UserId = new Guid(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1) });
 
                 return mock;
             }
