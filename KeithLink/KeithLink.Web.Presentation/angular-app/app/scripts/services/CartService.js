@@ -127,6 +127,11 @@ angular.module('bekApp')
           if (!item.quantity || item.quantity === 0) {
             item.quantity = 1;
           }
+
+          AnalyticsService.recordAddToCart(
+            item,
+            LocalStorage.getCustomerNumber(),
+            LocalStorage.getBranchId());
         });
 
         if (name && name !== 'New') {
@@ -160,7 +165,6 @@ angular.module('bekApp')
         newCart.listid = listid;
         newCart.listtype = listtype;
         return Cart.save({}, newCart).$promise.then(function(response) {
-          AnalyticsService.recordAddToCart(newCart);
           if(response.successResponse){
             newCart.id = response.successResponse.listitemid;
             newCart.createddate = new Date();
@@ -210,10 +214,9 @@ angular.module('bekApp')
             Service.cartHeaders.push(cart);
 
             // display messages
+            toaster.pop('success', null, data.successmsg);
             if (data.warningmsg) {
-              toaster.pop('success', null, data.warningmsg);
-            } else {
-              toaster.pop('success', null, 'Successfully imported a new cart.');
+              toaster.pop('error', null, data.warningmsg);
             }
 
             deferred.resolve(data);
@@ -366,6 +369,11 @@ angular.module('bekApp')
         if (!item.quantity || item.quantity === 0) {
           item.quantity = 1;
         }
+
+        AnalyticsService.recordAddToCart(
+          item,
+          LocalStorage.getCustomerNumber(),
+          LocalStorage.getBranchId());
 
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
           Service.getCartHeaders();

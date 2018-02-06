@@ -64,12 +64,13 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IUserActiveCartLogic _activeCartLogic;
         private readonly IExternalCatalogRepository _externalCatalogRepo;
         private readonly IOrderedFromListRepository _orderedFromListRepository;
+        private readonly IOrderedItemsFromListRepository _orderedItemsFromListRepository;
         #endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
-									 IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
+									 IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, IOrderedItemsFromListRepository orderedItemsFromListRepository,
                                      ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository,
                                      INotesListLogic notesLogic, IUserActiveCartLogic userActiveCartLogic, IExternalCatalogRepository externalCatalogRepo,
                                      ICacheRepository cache, IEventLogRepository log, IOrderedFromListRepository orderedFromListRepository)
@@ -90,6 +91,7 @@ namespace KeithLink.Svc.Impl.Logic
             _activeCartLogic = userActiveCartLogic;
             _externalCatalogRepo = externalCatalogRepo;
             _orderedFromListRepository = orderedFromListRepository;
+		    _orderedItemsFromListRepository = orderedItemsFromListRepository;
 		}
         #endregion
 
@@ -156,7 +158,19 @@ namespace KeithLink.Svc.Impl.Logic
 		        });
 		    }
 
-		    return newCartId;
+            foreach (var item in cart.Items)
+            {
+                if (item.SourceProductList != null &&
+                    item.SourceProductList.Length > 0) {
+                    _orderedItemsFromListRepository.Write(new OrderedItemFromList() {
+                        ControlNumber = newCartId.ToString(),
+                        ItemNumber = item.ItemNumber,
+                        SourceList = item.SourceProductList
+                    });
+                }
+            }
+
+            return newCartId;
 		}
 
         public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
@@ -433,6 +447,11 @@ namespace KeithLink.Svc.Impl.Logic
                 }
 
                 cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+
+                var sourceList = _orderedItemsFromListRepository.Read(cart.CartId.ToString(), item.ItemNumber);
+                if (sourceList != null) {
+                    item.SourceProductList = sourceList.SourceList;
+                }
             }
 
             cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);

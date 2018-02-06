@@ -84,6 +84,12 @@ angular.module('bekApp')
 
     ProductService.getCampaigns().then(function(resp) {
         $scope.promoItems = resp;
+
+        AnalyticsService.recordPromotion(
+          $scope.promoItems,
+          LocalStorage.getCustomerNumber(),
+          LocalStorage.getBranchId());
+
     });
 
     // get promo/marketing items

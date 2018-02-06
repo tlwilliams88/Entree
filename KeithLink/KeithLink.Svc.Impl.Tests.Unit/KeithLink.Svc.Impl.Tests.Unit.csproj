@@ -38,6 +38,7 @@
       <HintPath>..\packages\Castle.Core.4.1.0\lib\net45\Castle.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="Elasticsearch.Net, Version=5.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
       <HintPath>..\packages\Elasticsearch.Net.5.5.0\lib\net45\Elasticsearch.Net.dll</HintPath>
@@ -113,6 +114,7 @@
     <Compile Include="Logic\OnlinePayments\OnlinePaymentLogicTests.cs" />
     <Compile Include="Logic\Orders\OrderLogicTests.cs" />
     <Compile Include="Logic\Reports\ReportLogicTests.cs" />
+    <Compile Include="Logic\ImportLogicTests.cs" />
     <Compile Include="Logic\ShoppingCartLogicTests.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogListLogicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -95,6 +95,15 @@ angular.module('bekApp')
       MARKETING: 'marketing'
     },
 
+    checkoutSteps: {
+      EnterAddToOrder: 1,
+      ViewCart: 2,
+      SubmitCart: 3,
+      CheckStatus: 4,
+      StartChangeOrder: 5,
+      SubmitChangeOrder: 6
+    },
+
     jskeycodes: {
       backspace: 8,
       tab: 9,
@@ -193,6 +202,10 @@ angular.module('bekApp')
       backslash: 220,
       closebracket: 221,
       singlequote: 222
+    },
+
+    Analytics: {
+      HowManyProductsToThisChunk: 40
     },
 
     infiniteScrollPageSize: 50,

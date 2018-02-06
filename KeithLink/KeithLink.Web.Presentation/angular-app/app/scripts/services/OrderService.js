@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'PricingService', 'Order', 'LocalStorage', 'DateService', 'Constants',
-    function ($http, $q, $filter, UtilityService, ExportService, PricingService, Order, LocalStorage, DateService, Constants) {
+  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'PricingService', 'Order', 'LocalStorage', 'DateService', 'Constants', 'AnalyticsService',
+    function ($http, $q, $filter, UtilityService, ExportService, PricingService, Order, LocalStorage, DateService, Constants, AnalyticsService) {
     
     var Service = {
 
@@ -95,6 +95,10 @@ angular.module('bekApp')
           LocalStorage.setLastList(lastlist);
         }
         
+        AnalyticsService.recordCheckout(order, 
+                                        Constants.checkoutSteps.StartChangeOrder, // step
+                                        ''); //option
+
         order.items.forEach(function(item){
           if(item.quantity == 0 && item.status && item.status.toUpperCase() === 'OUT OF STOCK'){
             item.quantity = item.quantityordered;

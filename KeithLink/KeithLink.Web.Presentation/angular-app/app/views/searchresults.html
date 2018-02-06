@@ -625,10 +625,20 @@
             <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
           </td>
           <td>
-            {{item.name}}
+              <span ng-if="item.marketing_name">{{item.marketing_name}}</span>
+              <span ng-if="item.name && !item.marketing_name">{{item.name}}</span>
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.brand_extended_description}}
+            <span ng-if="item.brand_extended_description && !item.marketing_brand">
+              <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })">
+                {{item.brand_extended_description}}
+              </a>
+              <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+                {{item.brand_extended_description}}
+              </a>
+            </span>
+            <span ng-if="!item.brand_extended_description && !item.marketing_brand">{{item.brand}}</span>
+            <span ng-if="item.marketing_brand">{{item.marketing_brand}}</span>
           </td>
           <td class="hidden-mobile-visible-print">
             {{item.packsize}}
@@ -669,7 +679,18 @@
                 </tr>
                 <tr>
                   <td>Brand</td>
-                  <td>{{::item.brand_extended_description}}</td>
+                  <td>
+                    <span ng-if="item.brand_extended_description && !item.marketing_brand">
+                      <a ng-if="$state.params.catalogType == 'UNFI'" ui-sref="menu.catalog.products.brand({type:'search', catalogType: 'UNFI', id: item.brand_extended_description })">
+                        {{::item.brand_extended_description}}
+                      </a>
+                      <a ng-if="$state.params.catalogType == 'BEK'" ui-sref="menu.catalog.products.brand({type:'brand', catalogType: 'BEK', id: item.brand_extended_description })">
+                        {{::item.brand_extended_description}}
+                      </a>
+                    </span>
+                    <span ng-if="!item.brand_extended_description && !item.marketing_brand">{{::item.brand}}</span>
+                    <span ng-if="item.marketing_brand">{{::item.marketing_brand}}</span>
+                  </td>
                 </tr>
                 <tr>
                   <td colspan="2" item-icons></td>

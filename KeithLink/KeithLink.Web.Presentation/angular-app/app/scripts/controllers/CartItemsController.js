@@ -8,9 +8,9 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants',
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'LocalStorage',
    'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists', 'AnalyticsService',
-    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService,
+    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, LocalStorage, CartService, OrderService, UtilityService,
      PricingService, DateService, changeOrders, originalBasket, criticalItemsLists, AnalyticsService) {
 
     // redirect to url with correct ID as a param
@@ -256,10 +256,6 @@ angular.module('bekApp')
         return;
         }
 
-        AnalyticsService.recordCheckout(cart, 
-                                        3, // step
-                                        "Submit Cart"); //option
-
          CartService.isSubmitted(cart.id).then(function(hasBeenSubmitted){
           if(!hasBeenSubmitted){
             $scope.saveCart(cart)
@@ -305,8 +301,12 @@ angular.module('bekApp')
               }
             
             var customerName = $scope.selectedUserContext.customer.customerName;
-            AnalyticsService.recordTransaction(customerName, 
-                                               orderNumber, 
+
+            AnalyticsService.recordCheckout(cart, 
+                                            Constants.checkoutSteps.SubmitCart, // step
+                                            ""); //option
+
+            AnalyticsService.recordTransaction(orderNumber, 
                                                cart,
                                                $scope.selectedUserContext.customer.customerNumber,
                                                $scope.selectedUserContext.customer.customerBranch);
@@ -374,7 +374,10 @@ angular.module('bekApp')
     };
 
     $scope.deleteItem = function(item) {
-        AnalyticsService.recordRemoveItem(item);
+        AnalyticsService.recordRemoveItem(
+          item,
+          LocalStorage.getCustomerNumber(),
+          LocalStorage.getBranchId());
 
         var idx = $scope.currentCart.items.indexOf(item);
         $scope.currentCart.items.splice(idx, 1);
@@ -443,6 +446,11 @@ angular.module('bekApp')
             .then(function(invoiceNumber) {
               $scope.setRecentlyOrderedUNFIItems(order);
               $scope.displayMessage('success', 'Successfully submitted change order.');
+
+              AnalyticsService.recordCheckout(order, 
+                                              Constants.checkoutSteps.SubmitChangeOrder, // step
+                                              ''); //option
+
               $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
             }, function(error) {
               $scope.displayMessage('error', 'Error re-submitting order.');
@@ -610,4 +618,9 @@ angular.module('bekApp')
       $scope.startEditCartName(originalBasket.name);
       CartService.renameCart = false;
     }
+
+    AnalyticsService.recordCheckout($scope.currentCart, 
+                                    Constants.checkoutSteps.ViewCart, // step
+                                    ""); //option
+
   }]);
