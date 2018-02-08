@@ -96,7 +96,7 @@ angular.module('bekApp')
     },
 
     checkoutSteps: {
-      EnterAddToOrder: 1,
+      CreateCart: 1,
       ViewCart: 2,
       SubmitCart: 3,
       CheckStatus: 4,

@@ -683,7 +683,7 @@ angular.module('bekApp')
 
         if(listName.indexOf('campaign:')==-1){
 
-          listName = $scope.paramType + ": "; 
+          listName = $scope.paramType + ":"; 
 
           if($scope.parentcategories &&
              'selected' in $scope.parentcategories &&
@@ -703,56 +703,56 @@ angular.module('bekApp')
           if($scope.parentcategories && 
              'selected' in $scope.subcategories &&
              $scope.subcategories.selected.length) { 
-            listName += '-' 
+            listName += '\\s-' 
                         + $scope.subcategories.selected;
           }
 
           if($scope.brands && 
              'selected' in $scope.brands &&
              $scope.brands.selected.length) { 
-            listName += '-' 
+            listName += '\\b-' 
                         + $scope.brands.selected;
           }
 
           if($scope.manufacturers && 
              'selected' in $scope.manufacturers &&
              $scope.manufacturers.selected.length) { 
-            listName += '-' 
+            listName += '\\m-' 
                         + $scope.manufacturers.selected;
           }
 
           if($scope.dietary && 
              'selected' in $scope.dietary &&
              $scope.dietary.selected.length) { 
-            listName += '-' 
+            listName += '\\d-' 
                         + $scope.dietary.selected;
           }
 
           if($scope.itemspecs && 
              'selected' in $scope.itemspecs &&
              $scope.itemspecs.selected.length) { 
-            listName += '-' 
+            listName += '\\i-' 
                         + $scope.itemspecs.selected;
           }
 
           if($scope.temp_zones && 
              'selected' in $scope.temp_zones &&
              $scope.temp_zones.selected.length) { 
-            listName += '-' 
+            listName += '\\t-' 
                         + $scope.temp_zones.selected;
           }
 
           if($scope.specialfilters && 
              'selected' in $scope.specialfilters &&
              $scope.specialfilters.selected.length) { 
-            listName += '-' 
+            listName += '\\f-' 
                           + $scope.specialfilters.selected;
           }
 
-          listName += '-' 
+          listName += '\\ps-' 
                         + LocalStorage.getPageSize();
 
-          listName += '-';
+          listName += '\\n-';
 
           listName += ($scope.currentPage)
                         ? ($scope.currentPage).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
