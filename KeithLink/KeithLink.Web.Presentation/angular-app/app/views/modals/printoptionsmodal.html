@@ -20,18 +20,37 @@
 <div class="modal-footer">
     <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
     <span style="width:58%" class="text-left pull-left">
-      <span style="margin-right:10px;" ng-show="printingOrder"><input type="checkbox" value="Landscape" class="hidden-print bek-no-drag hand" ng-model="landscape" no-dirty-check> Print Landscape</span>
-      <span style="margin-right:10px;"><input type="checkbox" value="shownotes" class="hidden-print bek-no-drag hand" ng-model="shownotes" no-dirty-check> Print Notes</span>
-      <span ng-class="{'hidden-icon' : defaultList }" style="margin-right:10px;"><input type="checkbox" value="showparvalues" class="hidden-print bek-no-drag hand" ng-model="showparvalues" no-dirty-check> Print Par Values</span>
-      <span ng-class="{'hidden-icon' : defaultList }" ><input type="checkbox" value="grouplabels" class="hidden-print bek-no-drag hand" ng-model="groupLabels" no-dirty-check> Group By Label</span>
+      <div>
+         <span style="margin-right:10px;">
+             <input type="checkbox" value="Landscape" class="hidden-print bek-no-drag hand" ng-model="landscape" no-dirty-check /> 
+                Print Landscape
+         </span>
+         <span style="margin-right:10px;">
+             <input type="checkbox" value="shownotes" class="hidden-print bek-no-drag hand" ng-model="shownotes" no-dirty-check /> 
+             Print Notes
+         </span>
+         <span ng-class="{'hidden-icon' : defaultList }" style="margin-right:10px;">
+             <input type="checkbox" value="showparvalues" class="hidden-print bek-no-drag hand" ng-model="showparvalues" no-dirty-check /> 
+             Print Par Values
+         </span>
+         <span ng-class="{'hidden-icon' : defaultList }" >
+             <input type="checkbox" value="grouplabels" class="hidden-print bek-no-drag hand" ng-model="groupLabels" no-dirty-check /> 
+             Group By Label
+         </span>
+      </div>
       <div ng-show="canSeePrices">
-        <span style="margin-right:10px;"><input type="checkbox" value = "showprices" class="hidden-print bek-no-drag hand" ng-model="showprices" no-dirty-check> Print Prices</span>
+        <span style="margin-right:10px;">
+            <input type="checkbox" value = "showprices" class="hidden-print bek-no-drag hand" ng-model="showprices" no-dirty-check /> 
+            Print Prices
+        </span>
       </div>
 
     </span>
     <span style="width:25%">
-      <button class="btn-lg btn btn-primary" ng-if="printingOrder" type="submit" ng-click="printList(list, landscape, showparvalues, groupLabels, shownotes, showprices)">Print Cart</button>
-       <button class="btn-lg btn btn-primary" ng-if="!printingOrder" type="submit" ng-click="printList(list, true, showparvalues, groupLabels, shownotes, showprices)">Print List</button>
+      <button class="btn-lg btn btn-primary"  type="submit" ng-click="printList(list, landscape, showparvalues, groupLabels, shownotes, showprices)">
+          <span ng-if="printingOrder == true;">Print Cart</span>
+          <span ng-if="printingOrder == false;">Print List</span>
+      </button>
       <button class="btn-lg btn btn-default" type="button" ng-click="cancel()">Cancel</button>
   </span>
 </div>
