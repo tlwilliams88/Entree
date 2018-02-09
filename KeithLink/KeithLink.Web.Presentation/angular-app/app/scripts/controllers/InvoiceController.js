@@ -20,6 +20,7 @@ angular.module('bekApp')
   $scope.userCanPayInvoice = canPayInvoices;
   $scope.collapsed = false;
   $scope.customerTotalToPay = [];
+  $scope.numberOfSelectedInvoices = 0;
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -737,6 +738,7 @@ angular.module('bekApp')
     }
     
     calculateTotalForCustomer(invoice);
+    $scope.getSelectedInvoices($scope.invoices);
     $scope.invoiceForm.$setDirty();
   };
   
@@ -759,7 +761,7 @@ angular.module('bekApp')
     customerInvoices.forEach(function(invoice){
     if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
       invoice.isSelected = customer.selected;
-      if (invoice.amountdue != 0) {
+      if (invoice.amountdue != 0 && invoice.banks.length > 0) {
         $scope.selectInvoice(invoice, invoice.isSelected);
       }
     }
@@ -807,8 +809,12 @@ angular.module('bekApp')
                   }
             });
       });
+      
       return selectedInvoices;
     }
+    
+    $scope.numberOfSelectedInvoices = selectedInvoices.length;
+    
     if(callback){
       $q.all(deferredPromises).then(function(){
         return callback(selectedInvoices);

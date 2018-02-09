@@ -20,7 +20,16 @@
     <div class="col-md-4 col-md-push-8">
       <!-- Account Summary -->
       <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" ng-if="canViewInvoices">
-        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser || hidePayNowButton" class="pull-right btn btn-primary btn-lg" analytics-on analytics-category="Homepage-Pay-Invoice" analytics-event="Pay Invoice Button">Pay Now</a>
+        <a 
+            ng-if="canViewInvoices"
+            ui-sref="menu.invoice" 
+            class="pull-right btn btn-primary btn-lg" 
+            analytics-on 
+            analytics-category="Homepage-Pay-Invoice" 
+            analytics-event="Pay Invoice Button">
+            <span ng-hide="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton">Pay Now</span>
+            <span ng-show="hidePayNowButton" >View Invoices</span>
+        </a>
         <h4><strong>Account Balance</strong></h4>
         <div loading-spinner="loadingAccountBalance"></div>
         <div ng-show="!loadingAccountBalance">
