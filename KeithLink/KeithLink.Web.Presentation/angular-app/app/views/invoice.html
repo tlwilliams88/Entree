@@ -41,7 +41,7 @@
     <button
       type="button"
       ng-if="selectedFilterView.name !== 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser && userCanPayInvoice"
-      ng-disabled="numberOfSelectedInvoices == 0 || errorMessage.length || validating"
+      ng-disabled="getSelectedInvoices() <= 0 || errorMessage.length || validating"
       ng-click="payInvoices()"
       class="btn-lg btn btn-primary pull-right-sm pull-right-xs hidden-md hidden-lg hidden-print"
       analytics-on
@@ -52,7 +52,7 @@
     <button
       type="button"
       ng-if="selectedFilterView.name === 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser && userCanPayInvoice"
-      ng-disabled="numberOfSelectedInvoices == 0 || errorMessage.length || validating"
+      ng-disabled="getSelectedInvoices() <= 0|| errorMessage.length || validating"
       ng-click="payInvoices()"
       class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print">
       Update Payment(s)
@@ -108,7 +108,7 @@
     <button
       type="button"
       ng-if="selectedFilterView.name !== 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser && userCanPayInvoice"
-      ng-disabled="numberOfSelectedInvoices == 0 || errorMessage.length || validating"
+      ng-disabled="getSelectedInvoices() <= 0|| errorMessage.length || validating"
       ng-click="payInvoices()"
       class="btn-lg btn btn-primary pull-right-sm hidden-xs hidden-sm"
       analytics-on
@@ -119,7 +119,7 @@
     <button
       type="button"
       ng-if="selectedFilterView.name === 'Invoices Pending Payment' && hasPayableInvoices && !isInternalUser && userCanPayInvoice"
-      ng-disabled="numberOfSelectedInvoices == 0 || errorMessage.length || validating"
+      ng-disabled="getSelectedInvoices() <= 0|| errorMessage.length || validating"
       ng-click="payInvoices()"
       class="btn-lg btn btn-primary pull-right-sm">
       Update Payment(s)

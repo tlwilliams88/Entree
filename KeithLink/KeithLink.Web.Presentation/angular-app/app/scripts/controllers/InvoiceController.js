@@ -789,37 +789,35 @@ angular.module('bekApp')
   $scope.getSelectedInvoices = function(invoices, callback) {
     var selectedInvoices = [];
     var deferredPromises = [];
-    if(Object.keys($scope.invoices).length > 0){
-        Object.keys($scope.invoices).forEach(function(key) {
-            $scope.invoices[key].forEach(function(record){
-              if(record.isSelected){
-                  var deferred = $q.defer();
-                  selectedInvoices.push(record);
-                  
-                  deferred.resolve(record);
-                  deferredPromises.push(deferred.promise);
-              }
+    if(invoices != null && Object.keys(invoices).length > 0) { // Uses the invoices object passed in
+        Object.keys(invoices).forEach(function(key) {
+            invoices[key].forEach(function(record){
+                if(record.isSelected){
+                    var deferred = $q.defer();
+                    selectedInvoices.push(record);
+
+                    deferred.resolve(record);
+                    deferredPromises.push(deferred.promise);
+                }
             });
-      });
+        });
     } else {
-        Object.keys($scope.invoices).forEach(function(key) {
+        Object.keys($scope.invoices).forEach(function(key) { // Uses the scope invoices object and returns a value
             $scope.invoices[key].forEach(function(record){
                   if(record.isSelected){
                     selectedInvoices.push(record);
                   }
             });
       });
-      
-      return selectedInvoices;
     }
-    
-    $scope.numberOfSelectedInvoices = selectedInvoices.length;
-    
+
     if(callback){
       $q.all(deferredPromises).then(function(){
         return callback(selectedInvoices);
       });
     }
+    
+    return selectedInvoices;
   };
 
   $scope.defaultDates = function(payments){
