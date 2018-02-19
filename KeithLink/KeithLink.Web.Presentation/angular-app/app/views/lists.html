@@ -462,8 +462,8 @@
               <th ng-if="listHasCustomItems && selectedList.is_contract_list == false" class="sort-col-header drop-column" ng-click="sortList('supplier',sort[0].order)">
                 <span>Supplier <span sort-icons field="'supplier'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th ng-if="selectedList.is_contract_list == true" class="sort-col-header drop-column">
-                  <span>Date <span ng-if="selectedFilterParameter != 'Recently Deleted Items'">Added</span><span ng-if="selectedFilterParameter == 'Recently Added/Deleted Items'"> - </span><span ng-if="selectedFilterParameter == 'Recently Deleted Items' || selectedFilterParameter == 'Recently Added/Deleted Items'">Deleted</span>
+              <th class="sort-col-header drop-column">
+                  <span ng-if="selectedList.is_contract_list == true">Date <span ng-if="selectedFilterParameter != 'Recently Deleted Items'">Added</span><span ng-if="selectedFilterParameter == 'Recently Added/Deleted Items'"> - </span><span ng-if="selectedFilterParameter == 'Recently Deleted Items' || selectedFilterParameter == 'Recently Added/Deleted Items'">Deleted</span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
