@@ -279,7 +279,7 @@
                     <h5>Payment Amount: <span ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</span>
                       <input
                       remove-positive-numbers
-                      ng-disabled="isInternalAccountAdminUser || (selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending') || invoice.banks.length <= 1"
+                      ng-disabled="isInternalAccountAdminUser || (selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending') || invoice.banks.length == 0"
                       name="paymentAmount"
                       id="paymentAmount"
                       status = '{{invoice.statusdescription}}'
