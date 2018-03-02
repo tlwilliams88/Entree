@@ -20,6 +20,7 @@ angular.module('bekApp')
   $scope.userCanPayInvoice = canPayInvoices;
   $scope.collapsed = false;
   $scope.customerTotalToPay = [];
+  $scope.numberOfSelectedInvoices = 0;
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -737,6 +738,7 @@ angular.module('bekApp')
     }
     
     calculateTotalForCustomer(invoice);
+    $scope.getSelectedInvoices($scope.invoices);
     $scope.invoiceForm.$setDirty();
   };
   
@@ -759,7 +761,7 @@ angular.module('bekApp')
     customerInvoices.forEach(function(invoice){
     if(invoice.userCanPayInvoice && !($scope.selectedFilterViewName != 'Invoices Pending Payment' && invoice.statusdescription == 'Payment Pending')){
       invoice.isSelected = customer.selected;
-      if (invoice.amountdue != 0) {
+      if (invoice.amountdue != 0 && invoice.banks.length > 0) {
         $scope.selectInvoice(invoice, invoice.isSelected);
       }
     }
@@ -787,33 +789,35 @@ angular.module('bekApp')
   $scope.getSelectedInvoices = function(invoices, callback) {
     var selectedInvoices = [];
     var deferredPromises = [];
-    if(Object.keys($scope.invoices).length > 0){
-        Object.keys($scope.invoices).forEach(function(key) {
-            $scope.invoices[key].forEach(function(record){
-              if(record.isSelected){
-                  var deferred = $q.defer();
-                  selectedInvoices.push(record);
-                  
-                  deferred.resolve(record);
-                  deferredPromises.push(deferred.promise);
-              }
+    if(invoices != null && Object.keys(invoices).length > 0) { // Uses the invoices object passed in
+        Object.keys(invoices).forEach(function(key) {
+            invoices[key].forEach(function(record){
+                if(record.isSelected){
+                    var deferred = $q.defer();
+                    selectedInvoices.push(record);
+
+                    deferred.resolve(record);
+                    deferredPromises.push(deferred.promise);
+                }
             });
-      });
+        });
     } else {
-        Object.keys($scope.invoices).forEach(function(key) {
+        Object.keys($scope.invoices).forEach(function(key) { // Uses the scope invoices object and returns a value
             $scope.invoices[key].forEach(function(record){
                   if(record.isSelected){
                     selectedInvoices.push(record);
                   }
             });
       });
-      return selectedInvoices;
     }
+
     if(callback){
       $q.all(deferredPromises).then(function(){
         return callback(selectedInvoices);
       });
     }
+    
+    return selectedInvoices;
   };
 
   $scope.defaultDates = function(payments){
