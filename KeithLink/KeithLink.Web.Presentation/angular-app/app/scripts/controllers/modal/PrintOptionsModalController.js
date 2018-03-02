@@ -3,9 +3,14 @@
 angular.module('bekApp')
 .controller('PrintOptionsModalController', ['$scope', '$analytics', '$modalInstance', 'PrintService', 'ListService', 'CartService', 'list', 'cart', 'pagingModelOptions', 'contractFilter',
   function ($scope, $analytics, $modalInstance, PrintService, ListService, CartService, list, cart, pagingModelOptions, contractFilter) {
-
-  $scope.list = list;
-  if(cart){
+ 
+  $scope.printingOrder = false;
+  
+  if(list) {
+      $scope.list = list;
+  }
+  
+  if(cart) {
     $scope.cart = cart;
     $scope.printingOrder = true;
   }
@@ -23,7 +28,7 @@ angular.module('bekApp')
     columns: 3
   }];
   $scope.selectedLabelOption = $scope.labelOptions[0]; // pre-select first option
-  $scope.groupLabels = $scope.showparvalues = $scope.shownotes= $scope.landscape = false;
+  $scope.groupLabels = $scope.showparvalues = $scope.shownotes = $scope.landscape = false;
 
   // $scope.printLabels = function(items, labelOption) {
   //   var data = {
