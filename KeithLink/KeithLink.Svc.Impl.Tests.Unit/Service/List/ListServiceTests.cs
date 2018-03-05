@@ -320,7 +320,32 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                             new ListItemModel {
                                 ItemNumber = "123456",
                                 Category = "Fake Category",
-                                Each = false
+                                Each = false,
+                                CatalogId = "FUT"
+                            }
+                        }
+                    });
+
+                mock.Setup(h => h.GetListModel(It.IsAny<UserProfile>(),
+                                               It.IsAny<UserSelectedContext>(),
+                                               It.Is<long>(i => i == 2)))
+                    .Returns(new ListModel
+                    {
+                        ListId = 2,
+                        CustomerNumber = "123456",
+                        BranchId = "FUT",
+                        Items = new List<ListItemModel> {
+                            new ListItemModel {
+                                ItemNumber = "123456",
+                                Category = "Fake Category",
+                                Each = false,
+                                CatalogId = "FUT"
+                            },
+                            new ListItemModel {
+                                ItemNumber = "12345",
+                                Category = "Fake Category",
+                                Each = false,
+                                CatalogId = "U1"
                             }
                         }
                     });
@@ -354,16 +379,6 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
                                 }
                             }
                         }
-                    });
-
-                mock.Setup(h => h.GetListModel(It.IsAny<UserProfile>(),
-                                               It.IsAny<UserSelectedContext>(),
-                                               It.Is<long>(i => i == 2)))
-                    .Returns(new ListModel
-                    {
-                        ListId = 2,
-                        CustomerNumber = "123456",
-                        BranchId = "FUT"
                     });
 
                 mock.Setup(h => h.CreateOrUpdateList(It.IsAny<UserProfile>(),
@@ -2745,6 +2760,66 @@ namespace KeithLink.Svc.Impl.Tests.Unit.Service.List
 
                 // assert
                 mockDependents.CustomListLogic.Verify(m => m.GetListModel(It.IsAny<UserProfile>(), It.IsAny<UserSelectedContext>(), It.IsAny<long>()), Times.Exactly(4), "not called");
+            }
+
+            [Fact]
+            public void AnyUserAnyContext_OneUItemCallsCatalogLogicGetBranchIdOnce()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IListService testunit = MakeTestsService(false, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                ListCopyShareModel copyListModel = new ListCopyShareModel
+                {
+                    ListId = 2,
+                    Customers = new List<Customer> {
+                        new Customer {
+                            CustomerBranch = "FUT",
+                            CustomerNumber = "234567"
+                        }
+                    }
+                };
+
+                // act
+                testunit.CopyList(fakeUser, testcontext, copyListModel);
+
+                // assert
+                mockDependents.CatalogLogic.Verify(m => m.GetBranchId(It.IsAny<string>(), It.IsAny<string>()), Times.Once, "not called");
+            }
+
+            [Fact]
+            public void AnyUserAnyContext_OneUItemCallsCatalogLogicGetCatalogTypeFromCatalogIdOnce()
+            {
+                // arrange
+                MockDependents mockDependents = new MockDependents();
+                IListService testunit = MakeTestsService(false, ref mockDependents);
+                UserProfile fakeUser = new UserProfile();
+                UserSelectedContext testcontext = new UserSelectedContext
+                {
+                    BranchId = "FUT",
+                    CustomerId = "123456"
+                };
+                ListCopyShareModel copyListModel = new ListCopyShareModel
+                {
+                    ListId = 2,
+                    Customers = new List<Customer> {
+                        new Customer {
+                            CustomerBranch = "FUT",
+                            CustomerNumber = "234567"
+                        }
+                    }
+                };
+
+                // act
+                testunit.CopyList(fakeUser, testcontext, copyListModel);
+
+                // assert
+                mockDependents.CatalogLogic.Verify(m => m.GetCatalogTypeFromCatalogId(It.IsAny<string>()), Times.Once, "not called");
             }
         }
 
