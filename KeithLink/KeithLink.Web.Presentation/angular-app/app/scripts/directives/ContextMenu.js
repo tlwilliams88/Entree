@@ -9,8 +9,8 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     // scope: true,
-    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter',
-    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter){
+    controller: ['$scope', '$rootScope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService', '$filter', 'AnalyticsService', 'Constants',
+    function($scope, $rootScope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService, $filter, AnalyticsService, Constants){
 
       if ($scope.isOrderEntryCustomer) {
         var cartHeaders = CartService.cartHeaders,
@@ -108,6 +108,10 @@ angular.module('bekApp')
         var items = [item];
         CartService.renameCart = true;
         
+        AnalyticsService.recordCheckout(null, 
+                                        Constants.checkoutSteps.CreateCart, // step
+                                        "From Context Menu"); //option
+
         var contractList = $filter('filter')($scope.lists, { type: 2 }),
             historyList = $filter('filter')($scope.lists, { type: 5 }),
             favoritesList = $filter('filter')($scope.lists, { type: 1 }),

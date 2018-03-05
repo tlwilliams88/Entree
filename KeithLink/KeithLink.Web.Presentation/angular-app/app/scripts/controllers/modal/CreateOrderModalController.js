@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'Orders', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'IsMobile', 'IsOffline', 'SelectedList', 'ApplicationSettingsService',
-  function ($scope, $modalInstance, $q, $filter, $analytics, Orders, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, IsMobile, IsOffline, SelectedList, ApplicationSettingsService) {
+.controller('CreateOrderModalController', ['$scope', '$modalInstance', '$q', '$filter', '$analytics', 'Orders', 'CartService', 'ListService', 'LocalStorage', 'UtilityService', 'SessionService','CurrentCustomer', 'ShipDates', 'CartHeaders', 'Lists', 'CustomListHeaders', 'IsMobile', 'IsOffline', 'SelectedList', 'ApplicationSettingsService', 'Constants', 'AnalyticsService',
+  function ($scope, $modalInstance, $q, $filter, $analytics, Orders, CartService, ListService, LocalStorage, UtilityService, SessionService, CurrentCustomer, ShipDates, CartHeaders, Lists, CustomListHeaders, IsMobile, IsOffline, SelectedList, ApplicationSettingsService, Constants, AnalyticsService) {
 
   /*******************
     DEFAULT DATA
@@ -78,6 +78,14 @@ angular.module('bekApp')
       cart.listType = $scope.selectedList.type;
     //   ListService.setLastOrderList(cart.listId, cart.listType, cart.id);
       $modalInstance.close(cart);
+
+      if(fromFunction == null){
+        AnalyticsService.recordCheckout(null, 
+                                        Constants.checkoutSteps.CreateCart, // step
+                                        "From List"); //option
+
+      }
+
       if(cart.valid){
         $scope.displayMessage('success', 'Successfully created new cart.');        
       }
@@ -91,6 +99,10 @@ angular.module('bekApp')
 
     var itemstovalidate = [];
     if (order.items){
+      AnalyticsService.recordCheckout(null, 
+                                      Constants.checkoutSteps.CreateCart, // step
+                                      "From Order"); //option
+
       order.items.forEach(function(item){
         itemstovalidate.push({
           itemnumber: item.itemnumber,
@@ -234,6 +246,10 @@ angular.module('bekApp')
 
     if($scope.enableSubmit){
       $scope.createCart($scope.selectedCart, 'QuickAdd');
+
+      AnalyticsService.recordCheckout(null, 
+                                      Constants.checkoutSteps.CreateCart, // step
+                                      "From Quick Add"); //option
     }
 
   };
@@ -258,7 +274,12 @@ angular.module('bekApp')
 
   $scope.startOrderUpload = function(options) {
     var file = $scope.files[0];
+
     $analytics.eventTrack('Import Order', {category: 'Orders'});
+    AnalyticsService.recordCheckout(null, 
+                                    Constants.checkoutSteps.CreateCart, // step
+                                    "From Import Order"); //option
+
     CartService.importCart(file, options, $scope.selectedCart).then(function(data) {
       data.type = 'Import';
       $modalInstance.close(data);
