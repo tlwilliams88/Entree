@@ -301,12 +301,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     .AsQueryable();
             stopWatch.Read(_log, "GetPagedOrders - Total time to get lookupcontrolnumberandstatus asqueryable");
 
-            PagingModel myPaging = new PagingModel() { // from is not set in this copy to avoid skip in the following paging
-                Size = paging.Size,
-                Filter = paging.Filter,
-                Sort = paging.Sort
-            };
-            PagedResults<Order> pagedData = data.GetPage(myPaging);
+            PagedResults<Order> pagedData = new PagedResults<Order>();
+            pagedData.Results = new List<Order>();
+            foreach (var header in headers)
+            {
+                pagedData.Results.Add(header.ToOrder());
+            }
             stopWatch.Read(_log, "GetPagedOrders - Total time to get page");
 
             pagedData.TotalResults = _historyHeaderRepo.GetCustomerOrderHistoryHeaders(customerInfo.BranchId, customerInfo.CustomerId)
@@ -365,9 +365,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                         break;
                     case "deliverydate":
                         if (paging.Sort[0].Order.Equals("asc")) {
-                            headersQry = headersQry.OrderBy(h => h.DeliveryDate);
-                        } else {
-                            headersQry = headersQry.OrderByDescending(h => h.DeliveryDate);
+                            headersQry = headersQry.OrderBy(h => h.DeliveryDate.Substring(6))
+                                                   .ThenBy(h => h.DeliveryDate.Substring(0, 2))
+                                                   .ThenBy(h => h.DeliveryDate.Substring(3, 2));
+                        }
+                        else {
+                            headersQry = headersQry.OrderByDescending(h => h.DeliveryDate.Substring(6))
+                                                   .ThenByDescending(h => h.DeliveryDate.Substring(0, 2))
+                                                   .ThenByDescending(h => h.DeliveryDate.Substring(3, 2));
                         }
                         break;
                     case "ordertotal":
