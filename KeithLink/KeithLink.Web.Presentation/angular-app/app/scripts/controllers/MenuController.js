@@ -81,7 +81,7 @@ angular.module('bekApp')
 
   if (AccessService.isOrderEntryCustomer()) {
 
-    $scope.numOrdersToDisplay = 5;
+    $scope.numOrdersToDisplay = 4;
     $scope.numCartsToDisplay = 4;
 
     if (CartService.cartHeaders.length === 0 && $scope.canCreateOrders) {
