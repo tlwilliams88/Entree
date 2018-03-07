@@ -79,7 +79,7 @@ angular.module('bekApp')
         });
 
         modalInstance.result.then(function(cart) {
-          if(cart.valid){
+          if(cart.valid == true || cart.success == true){
             if(cart.type && cart.type == 'QuickAdd'){
               $state.go('menu.cart.items', {cartId: cart.id});
             } else if(cart.type && cart.type == 'Import') {
