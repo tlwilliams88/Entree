@@ -28,7 +28,7 @@
             analytics-category="Homepage-Pay-Invoice" 
             analytics-event="Pay Invoice Button">
             <span ng-hide="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton">Pay Now</span>
-            <span ng-show="hidePayNowButton" >View Invoices</span>
+            <span ng-show="selectedUserContext.customer.balance.totalbalance == 0 || hidePayNowButton" >View Invoices</span>
         </a>
         <h4><strong>Account Balance</strong></h4>
         <div loading-spinner="loadingAccountBalance"></div>
