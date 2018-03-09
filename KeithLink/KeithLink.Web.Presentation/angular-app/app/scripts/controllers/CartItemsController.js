@@ -59,6 +59,7 @@ angular.module('bekApp')
       originalBasket.items =  OrderService.filterDeletedOrderItems(originalBasket);
     }
     $scope.currentCart = angular.copy(originalBasket);
+    $scope.currentCart.isRenaming = false;
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     $scope.isMobile = ENV.mobileApp;
     $scope.invalidSelectedDate = false;
